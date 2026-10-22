@@ -31,18 +31,27 @@ pub struct DateHistogramGrouping {
 
 impl DateHistogramGrouping {
     /// Creates a builder for [`DateHistogramGrouping`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> DateHistogramGroupingBuilder {
         DateHistogramGroupingBuilder::new()
     }
 
     /// Creates a [`DateHistogramGrouping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateHistogramGroupingBuilder,
-        ) -> DateHistogramGroupingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateHistogramGrouping>>(
+        f: impl FnOnce(DateHistogramGroupingBuilder) -> B,
     ) -> DateHistogramGrouping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateHistogramGroupingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_histogram_grouping_members {
+    pub struct field;
 }
 
 /// Builder for [`DateHistogramGrouping`].
@@ -168,7 +177,7 @@ impl<S0> DateHistogramGroupingBuilder<(S0,)> {
 }
 
 impl DateHistogramGroupingBuilder<(crate::typed::builder::NotSet,)> {
-    /// The date field that is to be rolled up.
+    /// **Required.** The date field that is to be rolled up.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -179,9 +188,12 @@ impl DateHistogramGroupingBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DateHistogramGroupingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DateHistogramGroupingBuilder<(S0,)> {
     /// Builds a [`DateHistogramGrouping`].
-    pub fn build(self) -> DateHistogramGrouping {
+    pub fn build(self) -> DateHistogramGrouping
+    where
+        S0: crate::typed::builder::IsSet<date_histogram_grouping_members::field>,
+    {
         DateHistogramGrouping {
             delay: self.delay,
             field: self.field.unwrap(),
@@ -194,16 +206,24 @@ impl DateHistogramGroupingBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DateHistogramGroupingBuilder<(crate::typed::builder::Set,)>> for DateHistogramGrouping {
-    fn from(builder: DateHistogramGroupingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DateHistogramGroupingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_histogram_grouping_members::field>,
+{
+    type Output = DateHistogramGrouping;
+
+    fn build(self) -> DateHistogramGrouping {
+        Self::build(self)
     }
 }
 
-impl DateHistogramGroupingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DateHistogramGrouping { match field {} }
+impl<S0> From<DateHistogramGroupingBuilder<(S0,)>> for DateHistogramGrouping
+where
+    S0: crate::typed::builder::IsSet<date_histogram_grouping_members::field>,
+{
+    fn from(builder: DateHistogramGroupingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -216,19 +236,28 @@ pub struct FieldMetric {
 
 impl FieldMetric {
     /// Creates a builder for [`FieldMetric`].
+    ///
+    /// Required: `field`, `metrics`.
     pub fn builder() -> FieldMetricBuilder {
         FieldMetricBuilder::new()
     }
 
     /// Creates a [`FieldMetric`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldMetricBuilder,
-        )
-            -> FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `metrics`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldMetric>>(
+        f: impl FnOnce(FieldMetricBuilder) -> B,
     ) -> FieldMetric {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldMetricBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_metric_members {
+    pub struct field;
+    pub struct metrics;
 }
 
 /// Builder for [`FieldMetric`].
@@ -260,7 +289,7 @@ impl<S0, S1> FieldMetricBuilder<(S0, S1)> {
 }
 
 impl<S1> FieldMetricBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to collect metrics for. This must be a numeric of some kind.
+    /// **Required.** The field to collect metrics for. This must be a numeric of some kind.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -272,7 +301,7 @@ impl<S1> FieldMetricBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FieldMetricBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An array of metrics to collect for the field. At least one metric must be configured.
+    /// **Required.** An array of metrics to collect for the field. At least one metric must be configured.
     pub fn metrics(
         self,
         value: impl Into<Vec<Metric>>,
@@ -306,9 +335,13 @@ impl<S0> FieldMetricBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FieldMetricBuilder<(S0, S1)> {
     /// Builds a [`FieldMetric`].
-    pub fn build(self) -> FieldMetric {
+    pub fn build(self) -> FieldMetric
+    where
+        S0: crate::typed::builder::IsSet<field_metric_members::field>,
+        S1: crate::typed::builder::IsSet<field_metric_members::metrics>,
+    {
         FieldMetric {
             field: self.field.unwrap(),
             metrics: self.metrics.unwrap(),
@@ -316,26 +349,26 @@ impl FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FieldMetric
+impl<S0, S1> crate::typed::builder::Build for FieldMetricBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<field_metric_members::field>,
+    S1: crate::typed::builder::IsSet<field_metric_members::metrics>,
 {
-    fn from(
-        builder: FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldMetric;
+
+    fn build(self) -> FieldMetric {
+        Self::build(self)
     }
 }
 
-impl<S1> FieldMetricBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FieldMetric { match field {} }
-}
-
-impl FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `metrics` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metrics: crate::typed::builder::MissingRequiredField) -> FieldMetric { match metrics {} }
+impl<S0, S1> From<FieldMetricBuilder<(S0, S1)>> for FieldMetric
+where
+    S0: crate::typed::builder::IsSet<field_metric_members::field>,
+    S1: crate::typed::builder::IsSet<field_metric_members::metrics>,
+{
+    fn from(builder: FieldMetricBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -361,7 +394,9 @@ impl Groupings {
     }
 
     /// Creates a [`Groupings`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GroupingsBuilder) -> GroupingsBuilder) -> Groupings {
+    pub fn of<B: crate::typed::builder::Build<Output = Groupings>>(
+        f: impl FnOnce(GroupingsBuilder) -> B,
+    ) -> Groupings {
         f(Self::builder()).build()
     }
 }
@@ -399,11 +434,9 @@ impl GroupingsBuilder {
     }
 
     /// Sets [`date_histogram`](Self::date_histogram) with a builder.
-    pub fn date_histogram_with(
+    pub fn date_histogram_with<B: crate::typed::builder::Build<Output = DateHistogramGrouping>>(
         self,
-        f: impl FnOnce(
-            DateHistogramGroupingBuilder,
-        ) -> DateHistogramGroupingBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DateHistogramGroupingBuilder) -> B,
     ) -> Self {
         self.date_histogram(f(DateHistogramGroupingBuilder::new()).build())
     }
@@ -421,14 +454,9 @@ impl GroupingsBuilder {
     }
 
     /// Sets [`histogram`](Self::histogram) with a builder.
-    pub fn histogram_with(
+    pub fn histogram_with<B: crate::typed::builder::Build<Output = HistogramGrouping>>(
         self,
-        f: impl FnOnce(
-            HistogramGroupingBuilder,
-        ) -> HistogramGroupingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HistogramGroupingBuilder) -> B,
     ) -> Self {
         self.histogram(f(HistogramGroupingBuilder::new()).build())
     }
@@ -448,9 +476,9 @@ impl GroupingsBuilder {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<B: crate::typed::builder::Build<Output = TermsGrouping>>(
         self,
-        f: impl FnOnce(TermsGroupingBuilder) -> TermsGroupingBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TermsGroupingBuilder) -> B,
     ) -> Self {
         self.terms(f(TermsGroupingBuilder::new()).build())
     }
@@ -464,6 +492,14 @@ impl GroupingsBuilder {
             histogram: self.histogram,
             terms: self.terms,
         }
+    }
+}
+
+impl crate::typed::builder::Build for GroupingsBuilder {
+    type Output = Groupings;
+
+    fn build(self) -> Groupings {
+        Self::build(self)
     }
 }
 
@@ -487,21 +523,28 @@ pub struct HistogramGrouping {
 
 impl HistogramGrouping {
     /// Creates a builder for [`HistogramGrouping`].
+    ///
+    /// Required: `fields`, `interval`.
     pub fn builder() -> HistogramGroupingBuilder {
         HistogramGroupingBuilder::new()
     }
 
     /// Creates a [`HistogramGrouping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HistogramGroupingBuilder,
-        ) -> HistogramGroupingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `fields`, `interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = HistogramGrouping>>(
+        f: impl FnOnce(HistogramGroupingBuilder) -> B,
     ) -> HistogramGrouping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HistogramGroupingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod histogram_grouping_members {
+    pub struct fields;
+    pub struct interval;
 }
 
 /// Builder for [`HistogramGrouping`].
@@ -535,7 +578,7 @@ impl<S0, S1> HistogramGroupingBuilder<(S0, S1)> {
 }
 
 impl<S1> HistogramGroupingBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The set of fields that you wish to build histograms for.
+    /// **Required.** The set of fields that you wish to build histograms for.
     /// All fields specified must be some kind of numeric.
     /// Order does not matter.
     pub fn fields(
@@ -549,7 +592,7 @@ impl<S1> HistogramGroupingBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> HistogramGroupingBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The interval of histogram buckets to be generated when rolling up.
+    /// **Required.** The interval of histogram buckets to be generated when rolling up.
     /// For example, a value of `5` creates buckets that are five units wide (`0-5`, `5-10`, etc).
     /// Note that only one interval can be specified in the histogram group, meaning that all fields being grouped via the histogram must share the same interval.
     pub fn interval(
@@ -562,9 +605,13 @@ impl<S0> HistogramGroupingBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl HistogramGroupingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HistogramGroupingBuilder<(S0, S1)> {
     /// Builds a [`HistogramGrouping`].
-    pub fn build(self) -> HistogramGrouping {
+    pub fn build(self) -> HistogramGrouping
+    where
+        S0: crate::typed::builder::IsSet<histogram_grouping_members::fields>,
+        S1: crate::typed::builder::IsSet<histogram_grouping_members::interval>,
+    {
         HistogramGrouping {
             fields: self.fields.unwrap(),
             interval: self.interval.unwrap(),
@@ -572,26 +619,26 @@ impl HistogramGroupingBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<HistogramGroupingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for HistogramGrouping
+impl<S0, S1> crate::typed::builder::Build for HistogramGroupingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<histogram_grouping_members::fields>,
+    S1: crate::typed::builder::IsSet<histogram_grouping_members::interval>,
 {
-    fn from(
-        builder: HistogramGroupingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = HistogramGrouping;
+
+    fn build(self) -> HistogramGrouping {
+        Self::build(self)
     }
 }
 
-impl<S1> HistogramGroupingBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> HistogramGrouping { match fields {} }
-}
-
-impl HistogramGroupingBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> HistogramGrouping { match interval {} }
+impl<S0, S1> From<HistogramGroupingBuilder<(S0, S1)>> for HistogramGrouping
+where
+    S0: crate::typed::builder::IsSet<histogram_grouping_members::fields>,
+    S1: crate::typed::builder::IsSet<histogram_grouping_members::interval>,
+{
+    fn from(builder: HistogramGroupingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -618,16 +665,27 @@ pub struct TermsGrouping {
 
 impl TermsGrouping {
     /// Creates a builder for [`TermsGrouping`].
+    ///
+    /// Required: `fields`.
     pub fn builder() -> TermsGroupingBuilder {
         TermsGroupingBuilder::new()
     }
 
     /// Creates a [`TermsGrouping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermsGroupingBuilder) -> TermsGroupingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsGrouping>>(
+        f: impl FnOnce(TermsGroupingBuilder) -> B,
     ) -> TermsGrouping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsGroupingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_grouping_members {
+    pub struct fields;
 }
 
 /// Builder for [`TermsGrouping`].
@@ -656,7 +714,7 @@ impl<S0> TermsGroupingBuilder<(S0,)> {
 }
 
 impl TermsGroupingBuilder<(crate::typed::builder::NotSet,)> {
-    /// The set of fields that you wish to collect terms for.
+    /// **Required.** The set of fields that you wish to collect terms for.
     /// This array can contain fields that are both keyword and numerics.
     /// Order does not matter.
     pub fn fields(
@@ -669,23 +727,34 @@ impl TermsGroupingBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermsGroupingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsGroupingBuilder<(S0,)> {
     /// Builds a [`TermsGrouping`].
-    pub fn build(self) -> TermsGrouping {
+    pub fn build(self) -> TermsGrouping
+    where
+        S0: crate::typed::builder::IsSet<terms_grouping_members::fields>,
+    {
         TermsGrouping {
             fields: self.fields.unwrap(),
         }
     }
 }
 
-impl From<TermsGroupingBuilder<(crate::typed::builder::Set,)>> for TermsGrouping {
-    fn from(builder: TermsGroupingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermsGroupingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_grouping_members::fields>,
+{
+    type Output = TermsGrouping;
+
+    fn build(self) -> TermsGrouping {
+        Self::build(self)
     }
 }
 
-impl TermsGroupingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> TermsGrouping { match fields {} }
+impl<S0> From<TermsGroupingBuilder<(S0,)>> for TermsGrouping
+where
+    S0: crate::typed::builder::IsSet<terms_grouping_members::fields>,
+{
+    fn from(builder: TermsGroupingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

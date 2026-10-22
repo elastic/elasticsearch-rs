@@ -37,25 +37,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `history_id`, `version`, `body`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `history_id`, `version`, `body`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct history_id;
+    pub struct version;
+    pub struct body;
 }
 
 /// Builder for [`Request`].
@@ -221,7 +225,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The history ID
+    /// **Required.** The history ID
     pub fn history_id(
         self,
         value: impl Into<String>,
@@ -233,7 +237,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The version number
+    /// **Required.** The version number
     pub fn version(self, value: i64) -> RequestBuilder<(S0, crate::typed::builder::Set, S2), C> {
         let mut builder = self.with_state();
         builder.version = Some(value);
@@ -242,7 +246,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn body(
         self,
         value: impl Into<serde_json::Value>,
@@ -253,18 +257,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::history_id>,
+        S1: crate::typed::builder::IsSet<request_members::version>,
+        S2: crate::typed::builder::IsSet<request_members::body>,
+    {
         Request {
             history_id: self.history_id.unwrap(),
             version: self.version.unwrap(),
@@ -280,90 +280,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::history_id>,
+    S1: crate::typed::builder::IsSet<request_members::version>,
+    S2: crate::typed::builder::IsSet<request_members::body>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `history_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, history_id: crate::typed::builder::MissingRequiredField) -> Request { match history_id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `history_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, history_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match history_id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> Request { match version {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `version` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, version: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match version {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `body` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, body: crate::typed::builder::MissingRequiredField) -> Request { match body {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `body` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, body: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match body {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::history_id>,
+        S1: crate::typed::builder::IsSet<request_members::version>,
+        S2: crate::typed::builder::IsSet<request_members::body>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -36,7 +36,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -146,6 +148,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -260,16 +270,27 @@ pub struct StreamStatus {
 
 impl StreamStatus {
     /// Creates a builder for [`StreamStatus`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> StreamStatusBuilder {
         StreamStatusBuilder::new()
     }
 
     /// Creates a [`StreamStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StreamStatusBuilder) -> StreamStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = StreamStatus>>(
+        f: impl FnOnce(StreamStatusBuilder) -> B,
     ) -> StreamStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StreamStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stream_status_members {
+    pub struct enabled;
 }
 
 /// Builder for [`StreamStatus`].
@@ -298,7 +319,7 @@ impl<S0> StreamStatusBuilder<(S0,)> {
 }
 
 impl StreamStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// If true, the stream feature is enabled.
+    /// **Required.** If true, the stream feature is enabled.
     pub fn enabled(self, value: bool) -> StreamStatusBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -306,23 +327,34 @@ impl StreamStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StreamStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StreamStatusBuilder<(S0,)> {
     /// Builds a [`StreamStatus`].
-    pub fn build(self) -> StreamStatus {
+    pub fn build(self) -> StreamStatus
+    where
+        S0: crate::typed::builder::IsSet<stream_status_members::enabled>,
+    {
         StreamStatus {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<StreamStatusBuilder<(crate::typed::builder::Set,)>> for StreamStatus {
-    fn from(builder: StreamStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StreamStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<stream_status_members::enabled>,
+{
+    type Output = StreamStatus;
+
+    fn build(self) -> StreamStatus {
+        Self::build(self)
     }
 }
 
-impl StreamStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> StreamStatus { match enabled {} }
+impl<S0> From<StreamStatusBuilder<(S0,)>> for StreamStatus
+where
+    S0: crate::typed::builder::IsSet<stream_status_members::enabled>,
+{
+    fn from(builder: StreamStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

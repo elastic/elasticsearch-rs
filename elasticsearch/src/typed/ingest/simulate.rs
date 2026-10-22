@@ -41,16 +41,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `docs`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `docs`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct docs;
 }
 
 /// Builder for [`Request`].
@@ -196,18 +207,18 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Pipeline>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::PipelineBuilder,
-        ) -> crate::typed::ingest::_types::PipelineBuilder,
+        f: impl FnOnce(crate::typed::ingest::_types::PipelineBuilder) -> B,
     ) -> Self {
         self.pipeline(f(crate::typed::ingest::_types::PipelineBuilder::new()).build())
     }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Sample documents to test in the pipeline.
+    /// **Required.** Sample documents to test in the pipeline.
     pub fn docs(
         self,
         value: impl Into<Vec<crate::typed::ingest::_types::Document>>,
@@ -231,12 +242,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Document>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::DocumentBuilder,
-        )
-            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ingest::_types::DocumentBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
     }
@@ -252,20 +262,22 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Document>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::DocumentBuilder,
-        )
-            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ingest::_types::DocumentBuilder) -> B,
     ) -> Self {
         self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::docs>,
+    {
         Request {
             id: self.id,
             verbose: self.verbose,
@@ -279,23 +291,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::docs>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, docs: crate::typed::builder::MissingRequiredField) -> Request { match docs {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `docs` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, docs: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match docs {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::docs>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

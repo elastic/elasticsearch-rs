@@ -15,27 +15,34 @@ pub struct NodeShutdownStatus {
 
 impl NodeShutdownStatus {
     /// Creates a builder for [`NodeShutdownStatus`].
+    ///
+    /// Required: `node_id`, `type`, `reason`, `shutdown_startedmillis`, `status`, `shard_migration`, `persistent_tasks`, `plugins`.
     pub fn builder() -> NodeShutdownStatusBuilder {
         NodeShutdownStatusBuilder::new()
     }
 
     /// Creates a [`NodeShutdownStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeShutdownStatusBuilder,
-        ) -> NodeShutdownStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node_id`, `type`, `reason`, `shutdown_startedmillis`, `status`, `shard_migration`, `persistent_tasks`, `plugins`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeShutdownStatus>>(
+        f: impl FnOnce(NodeShutdownStatusBuilder) -> B,
     ) -> NodeShutdownStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeShutdownStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_shutdown_status_members {
+    pub struct node_id;
+    pub struct r#type;
+    pub struct reason;
+    pub struct shutdown_startedmillis;
+    pub struct status;
+    pub struct shard_migration;
+    pub struct persistent_tasks;
+    pub struct plugins;
 }
 
 /// Builder for [`NodeShutdownStatus`].
@@ -109,6 +116,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> NodeShutdownStatusBuilder<(S0, S1, S2, S3, 
 impl<S1, S2, S3, S4, S5, S6, S7>
     NodeShutdownStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::NodeId>,
@@ -122,6 +130,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     NodeShutdownStatusBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<ShutdownType>,
@@ -135,6 +144,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     NodeShutdownStatusBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<String>,
@@ -148,6 +158,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     NodeShutdownStatusBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn shutdown_startedmillis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -161,6 +172,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     NodeShutdownStatusBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ShutdownStatus>,
@@ -174,6 +186,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn shard_migration(
         self,
         value: impl Into<ShardMigrationStatus>,
@@ -184,11 +197,9 @@ impl<S0, S1, S2, S3, S4, S6, S7>
     }
 
     /// Sets [`shard_migration`](Self::shard_migration) with a builder.
-    pub fn shard_migration_with(
+    pub fn shard_migration_with<B: crate::typed::builder::Build<Output = ShardMigrationStatus>>(
         self,
-        f: impl FnOnce(
-            ShardMigrationStatusBuilder,
-        ) -> ShardMigrationStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardMigrationStatusBuilder) -> B,
     ) -> NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7)> {
         self.shard_migration(f(ShardMigrationStatusBuilder::new()).build())
     }
@@ -197,6 +208,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn persistent_tasks(
         self,
         value: impl Into<PersistentTaskStatus>,
@@ -207,11 +219,9 @@ impl<S0, S1, S2, S3, S4, S5, S7>
     }
 
     /// Sets [`persistent_tasks`](Self::persistent_tasks) with a builder.
-    pub fn persistent_tasks_with(
+    pub fn persistent_tasks_with<B: crate::typed::builder::Build<Output = PersistentTaskStatus>>(
         self,
-        f: impl FnOnce(
-            PersistentTaskStatusBuilder,
-        ) -> PersistentTaskStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PersistentTaskStatusBuilder) -> B,
     ) -> NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7)> {
         self.persistent_tasks(f(PersistentTaskStatusBuilder::new()).build())
     }
@@ -220,6 +230,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn plugins(
         self,
         value: impl Into<PluginsStatus>,
@@ -230,28 +241,27 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 
     /// Sets [`plugins`](Self::plugins) with a builder.
-    pub fn plugins_with(
+    pub fn plugins_with<B: crate::typed::builder::Build<Output = PluginsStatus>>(
         self,
-        f: impl FnOnce(PluginsStatusBuilder) -> PluginsStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PluginsStatusBuilder) -> B,
     ) -> NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)> {
         self.plugins(f(PluginsStatusBuilder::new()).build())
     }
 }
 
-impl
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`NodeShutdownStatus`].
-    pub fn build(self) -> NodeShutdownStatus {
+    pub fn build(self) -> NodeShutdownStatus
+    where
+        S0: crate::typed::builder::IsSet<node_shutdown_status_members::node_id>,
+        S1: crate::typed::builder::IsSet<node_shutdown_status_members::r#type>,
+        S2: crate::typed::builder::IsSet<node_shutdown_status_members::reason>,
+        S3: crate::typed::builder::IsSet<node_shutdown_status_members::shutdown_startedmillis>,
+        S4: crate::typed::builder::IsSet<node_shutdown_status_members::status>,
+        S5: crate::typed::builder::IsSet<node_shutdown_status_members::shard_migration>,
+        S6: crate::typed::builder::IsSet<node_shutdown_status_members::persistent_tasks>,
+        S7: crate::typed::builder::IsSet<node_shutdown_status_members::plugins>,
+    {
         NodeShutdownStatus {
             node_id: self.node_id.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -265,161 +275,40 @@ impl
     }
 }
 
-impl
-    From<
-        NodeShutdownStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeShutdownStatus
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<node_shutdown_status_members::node_id>,
+    S1: crate::typed::builder::IsSet<node_shutdown_status_members::r#type>,
+    S2: crate::typed::builder::IsSet<node_shutdown_status_members::reason>,
+    S3: crate::typed::builder::IsSet<node_shutdown_status_members::shutdown_startedmillis>,
+    S4: crate::typed::builder::IsSet<node_shutdown_status_members::status>,
+    S5: crate::typed::builder::IsSet<node_shutdown_status_members::shard_migration>,
+    S6: crate::typed::builder::IsSet<node_shutdown_status_members::persistent_tasks>,
+    S7: crate::typed::builder::IsSet<node_shutdown_status_members::plugins>,
 {
-    fn from(
-        builder: NodeShutdownStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeShutdownStatus;
+
+    fn build(self) -> NodeShutdownStatus {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    NodeShutdownStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for NodeShutdownStatus
+where
+    S0: crate::typed::builder::IsSet<node_shutdown_status_members::node_id>,
+    S1: crate::typed::builder::IsSet<node_shutdown_status_members::r#type>,
+    S2: crate::typed::builder::IsSet<node_shutdown_status_members::reason>,
+    S3: crate::typed::builder::IsSet<node_shutdown_status_members::shutdown_startedmillis>,
+    S4: crate::typed::builder::IsSet<node_shutdown_status_members::status>,
+    S5: crate::typed::builder::IsSet<node_shutdown_status_members::shard_migration>,
+    S6: crate::typed::builder::IsSet<node_shutdown_status_members::persistent_tasks>,
+    S7: crate::typed::builder::IsSet<node_shutdown_status_members::plugins>,
 {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match node_id {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match r#type {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match reason {} }
-}
-
-impl<S4, S5, S6, S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `shutdown_startedmillis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shutdown_startedmillis: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match shutdown_startedmillis {} }
-}
-
-impl<S5, S6, S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match status {} }
-}
-
-impl<S6, S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `shard_migration` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_migration: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match shard_migration {} }
-}
-
-impl<S7>
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `persistent_tasks` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, persistent_tasks: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match persistent_tasks {} }
-}
-
-impl
-    NodeShutdownStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `plugins` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, plugins: crate::typed::builder::MissingRequiredField) -> NodeShutdownStatus { match plugins {} }
+    fn from(builder: NodeShutdownStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -429,18 +318,27 @@ pub struct PersistentTaskStatus {
 
 impl PersistentTaskStatus {
     /// Creates a builder for [`PersistentTaskStatus`].
+    ///
+    /// Required: `status`.
     pub fn builder() -> PersistentTaskStatusBuilder {
         PersistentTaskStatusBuilder::new()
     }
 
     /// Creates a [`PersistentTaskStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PersistentTaskStatusBuilder,
-        ) -> PersistentTaskStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = PersistentTaskStatus>>(
+        f: impl FnOnce(PersistentTaskStatusBuilder) -> B,
     ) -> PersistentTaskStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PersistentTaskStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod persistent_task_status_members {
+    pub struct status;
 }
 
 /// Builder for [`PersistentTaskStatus`].
@@ -469,6 +367,7 @@ impl<S0> PersistentTaskStatusBuilder<(S0,)> {
 }
 
 impl PersistentTaskStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ShutdownStatus>,
@@ -479,25 +378,36 @@ impl PersistentTaskStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PersistentTaskStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PersistentTaskStatusBuilder<(S0,)> {
     /// Builds a [`PersistentTaskStatus`].
-    pub fn build(self) -> PersistentTaskStatus {
+    pub fn build(self) -> PersistentTaskStatus
+    where
+        S0: crate::typed::builder::IsSet<persistent_task_status_members::status>,
+    {
         PersistentTaskStatus {
             status: self.status.unwrap(),
         }
     }
 }
 
-impl From<PersistentTaskStatusBuilder<(crate::typed::builder::Set,)>> for PersistentTaskStatus {
-    fn from(builder: PersistentTaskStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PersistentTaskStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<persistent_task_status_members::status>,
+{
+    type Output = PersistentTaskStatus;
+
+    fn build(self) -> PersistentTaskStatus {
+        Self::build(self)
     }
 }
 
-impl PersistentTaskStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> PersistentTaskStatus { match status {} }
+impl<S0> From<PersistentTaskStatusBuilder<(S0,)>> for PersistentTaskStatus
+where
+    S0: crate::typed::builder::IsSet<persistent_task_status_members::status>,
+{
+    fn from(builder: PersistentTaskStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -507,16 +417,27 @@ pub struct PluginsStatus {
 
 impl PluginsStatus {
     /// Creates a builder for [`PluginsStatus`].
+    ///
+    /// Required: `status`.
     pub fn builder() -> PluginsStatusBuilder {
         PluginsStatusBuilder::new()
     }
 
     /// Creates a [`PluginsStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PluginsStatusBuilder) -> PluginsStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = PluginsStatus>>(
+        f: impl FnOnce(PluginsStatusBuilder) -> B,
     ) -> PluginsStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PluginsStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod plugins_status_members {
+    pub struct status;
 }
 
 /// Builder for [`PluginsStatus`].
@@ -545,6 +466,7 @@ impl<S0> PluginsStatusBuilder<(S0,)> {
 }
 
 impl PluginsStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ShutdownStatus>,
@@ -555,25 +477,36 @@ impl PluginsStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PluginsStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PluginsStatusBuilder<(S0,)> {
     /// Builds a [`PluginsStatus`].
-    pub fn build(self) -> PluginsStatus {
+    pub fn build(self) -> PluginsStatus
+    where
+        S0: crate::typed::builder::IsSet<plugins_status_members::status>,
+    {
         PluginsStatus {
             status: self.status.unwrap(),
         }
     }
 }
 
-impl From<PluginsStatusBuilder<(crate::typed::builder::Set,)>> for PluginsStatus {
-    fn from(builder: PluginsStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PluginsStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<plugins_status_members::status>,
+{
+    type Output = PluginsStatus;
+
+    fn build(self) -> PluginsStatus {
+        Self::build(self)
     }
 }
 
-impl PluginsStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> PluginsStatus { match status {} }
+impl<S0> From<PluginsStatusBuilder<(S0,)>> for PluginsStatus
+where
+    S0: crate::typed::builder::IsSet<plugins_status_members::status>,
+{
+    fn from(builder: PluginsStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`shutdown.get_node`](crate::typed::shutdown::ShutdownClient::get_node).
@@ -618,7 +551,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -746,6 +681,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -861,18 +804,27 @@ pub struct ShardMigrationStatus {
 
 impl ShardMigrationStatus {
     /// Creates a builder for [`ShardMigrationStatus`].
+    ///
+    /// Required: `status`.
     pub fn builder() -> ShardMigrationStatusBuilder {
         ShardMigrationStatusBuilder::new()
     }
 
     /// Creates a [`ShardMigrationStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardMigrationStatusBuilder,
-        ) -> ShardMigrationStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardMigrationStatus>>(
+        f: impl FnOnce(ShardMigrationStatusBuilder) -> B,
     ) -> ShardMigrationStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardMigrationStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_migration_status_members {
+    pub struct status;
 }
 
 /// Builder for [`ShardMigrationStatus`].
@@ -901,6 +853,7 @@ impl<S0> ShardMigrationStatusBuilder<(S0,)> {
 }
 
 impl ShardMigrationStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ShutdownStatus>,
@@ -911,25 +864,36 @@ impl ShardMigrationStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ShardMigrationStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShardMigrationStatusBuilder<(S0,)> {
     /// Builds a [`ShardMigrationStatus`].
-    pub fn build(self) -> ShardMigrationStatus {
+    pub fn build(self) -> ShardMigrationStatus
+    where
+        S0: crate::typed::builder::IsSet<shard_migration_status_members::status>,
+    {
         ShardMigrationStatus {
             status: self.status.unwrap(),
         }
     }
 }
 
-impl From<ShardMigrationStatusBuilder<(crate::typed::builder::Set,)>> for ShardMigrationStatus {
-    fn from(builder: ShardMigrationStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShardMigrationStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shard_migration_status_members::status>,
+{
+    type Output = ShardMigrationStatus;
+
+    fn build(self) -> ShardMigrationStatus {
+        Self::build(self)
     }
 }
 
-impl ShardMigrationStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ShardMigrationStatus { match status {} }
+impl<S0> From<ShardMigrationStatusBuilder<(S0,)>> for ShardMigrationStatus
+where
+    S0: crate::typed::builder::IsSet<shard_migration_status_members::status>,
+{
+    fn from(builder: ShardMigrationStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

@@ -50,19 +50,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`, `repository`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `name`, `repository`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
+    pub struct repository;
 }
 
 /// Builder for [`Request`].
@@ -218,7 +227,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the snapshot repository to register or update.
+    /// **Required.** The name of the snapshot repository to register or update.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -230,7 +239,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn repository(
         self,
         value: impl Into<crate::typed::snapshot::_types::Repository>,
@@ -241,9 +250,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::repository>,
+    {
         Request {
             name: self.name.unwrap(),
             master_timeout: self.master_timeout,
@@ -258,41 +271,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+    S1: crate::typed::builder::IsSet<request_members::repository>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> Request { match repository {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `repository` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, repository: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match repository {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::repository>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -350,7 +350,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1299,14 +1301,14 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -1327,11 +1329,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`collapse`](Self::collapse) with a builder.
-    pub fn collapse_with(
+    pub fn collapse_with<B: crate::typed::builder::Build<Output = _types::FieldCollapse>>(
         self,
-        f: impl FnOnce(
-            _types::FieldCollapseBuilder,
-        ) -> _types::FieldCollapseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(_types::FieldCollapseBuilder) -> B,
     ) -> Self {
         self.collapse(f(_types::FieldCollapseBuilder::new()).build())
     }
@@ -1398,11 +1398,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`highlight`](Self::highlight) with a builder.
-    pub fn highlight_with(
+    pub fn highlight_with<B: crate::typed::builder::Build<Output = _types::Highlight>>(
         self,
-        f: impl FnOnce(
-            _types::HighlightBuilder,
-        ) -> _types::HighlightBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(_types::HighlightBuilder) -> B,
     ) -> Self {
         self.highlight(f(_types::HighlightBuilder::new()).build())
     }
@@ -1494,13 +1492,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`docvalue_fields2`](Self::docvalue_fields2), with a builder.
-    pub fn add_docvalue_fields2_with(
+    pub fn add_docvalue_fields2_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_docvalue_fields2(
             f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build(),
@@ -1532,12 +1528,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`rank`](Self::rank) with a builder.
-    pub fn rank_with(
+    pub fn rank_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::RankContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::RankContainerBuilder,
-        )
-            -> crate::typed::_types::RankContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::RankContainerBuilder) -> B,
     ) -> Self {
         self.rank(f(crate::typed::_types::RankContainerBuilder::new()).build())
     }
@@ -1576,13 +1571,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`post_filter`](Self::post_filter) with a builder.
-    pub fn post_filter_with(
+    pub fn post_filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.post_filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1619,13 +1612,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1659,12 +1650,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`retriever`](Self::retriever) with a builder.
-    pub fn retriever_with(
+    pub fn retriever_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::RetrieverContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::RetrieverContainerBuilder,
-        )
-            -> crate::typed::_types::RetrieverContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::RetrieverContainerBuilder) -> B,
     ) -> Self {
         self.retriever(f(crate::typed::_types::RetrieverContainerBuilder::new()).build())
     }
@@ -1700,13 +1690,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -1761,14 +1750,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`slice`](Self::slice) with a builder.
-    pub fn slice_with(
+    pub fn slice_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::SlicedScroll>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::SlicedScrollBuilder,
-        ) -> crate::typed::_types::SlicedScrollBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::SlicedScrollBuilder) -> B,
     ) -> Self {
         self.slice(f(crate::typed::_types::SlicedScrollBuilder::new()).build())
     }
@@ -1831,13 +1817,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_fields(f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build())
     }
@@ -1855,9 +1839,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`suggest`](Self::suggest) with a builder.
-    pub fn suggest_with(
+    pub fn suggest_with<B: crate::typed::builder::Build<Output = _types::Suggester>>(
         self,
-        f: impl FnOnce(_types::SuggesterBuilder) -> _types::SuggesterBuilder,
+        f: impl FnOnce(_types::SuggesterBuilder) -> B,
     ) -> Self {
         self.suggest(f(_types::SuggesterBuilder::new()).build())
     }
@@ -1962,11 +1946,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`pit`](Self::pit) with a builder.
-    pub fn pit_with(
+    pub fn pit_with<B: crate::typed::builder::Build<Output = _types::PointInTimeReference>>(
         self,
-        f: impl FnOnce(
-            _types::PointInTimeReferenceBuilder,
-        ) -> _types::PointInTimeReferenceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(_types::PointInTimeReferenceBuilder) -> B,
     ) -> Self {
         self.pit(f(_types::PointInTimeReferenceBuilder::new()).build())
     }
@@ -2003,14 +1985,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -2157,6 +2137,14 @@ impl<C> RequestBuilder<(), C> {
             stats2: self.stats2,
             project_routing: self.project_routing,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -2733,23 +2721,30 @@ pub struct ResponseBody {
 
 impl ResponseBody {
     /// Creates a builder for [`ResponseBody`].
+    ///
+    /// Required: `took`, `timed_out`, `shards`, `hits`.
     pub fn builder() -> ResponseBodyBuilder {
         ResponseBodyBuilder::new()
     }
 
     /// Creates a [`ResponseBody`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResponseBodyBuilder,
-        ) -> ResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `took`, `timed_out`, `shards`, `hits`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResponseBody>>(
+        f: impl FnOnce(ResponseBodyBuilder) -> B,
     ) -> ResponseBody {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResponseBodyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod response_body_members {
+    pub struct took;
+    pub struct timed_out;
+    pub struct shards;
+    pub struct hits;
 }
 
 /// Builder for [`ResponseBody`].
@@ -2888,18 +2883,11 @@ impl<S0, S1, S2, S3> ResponseBodyBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ClusterStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ClusterStatisticsBuilder,
-        ) -> crate::typed::_types::ClusterStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ClusterStatisticsBuilder) -> B,
     ) -> Self {
         self.clusters(f(crate::typed::_types::ClusterStatisticsBuilder::new()).build())
     }
@@ -2967,9 +2955,9 @@ impl<S0, S1, S2, S3> ResponseBodyBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`profile`](Self::profile) with a builder.
-    pub fn profile_with(
+    pub fn profile_with<B: crate::typed::builder::Build<Output = _types::Profile>>(
         self,
-        f: impl FnOnce(_types::ProfileBuilder) -> _types::ProfileBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(_types::ProfileBuilder) -> B,
     ) -> Self {
         self.profile(f(_types::ProfileBuilder::new()).build())
     }
@@ -3049,7 +3037,7 @@ impl<S0, S1, S2, S3> ResponseBodyBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ResponseBodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The number of milliseconds it took Elasticsearch to run the request.
+    /// **Required.** The number of milliseconds it took Elasticsearch to run the request.
     /// This value is calculated by measuring the time elapsed between receipt of a request on the coordinating node and the time at which the coordinating node is ready to send the response.
     /// It includes:
     ///
@@ -3070,7 +3058,7 @@ impl<S1, S2, S3> ResponseBodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3)
 }
 
 impl<S0, S2, S3> ResponseBodyBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// If `true`, the request timed out before completion; returned results may be partial or empty.
+    /// **Required.** If `true`, the request timed out before completion; returned results may be partial or empty.
     pub fn timed_out(
         self,
         value: bool,
@@ -3082,7 +3070,7 @@ impl<S0, S2, S3> ResponseBodyBuilder<(S0, crate::typed::builder::NotSet, S2, S3)
 }
 
 impl<S0, S1, S3> ResponseBodyBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// A count of shards used for the request.
+    /// **Required.** A count of shards used for the request.
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -3093,22 +3081,18 @@ impl<S0, S1, S3> ResponseBodyBuilder<(S0, S1, crate::typed::builder::NotSet, S3)
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> ResponseBodyBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> ResponseBodyBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The returned documents and metadata.
+    /// **Required.** The returned documents and metadata.
     pub fn hits(
         self,
         value: impl Into<_types::HitsMetadata>,
@@ -3119,26 +3103,23 @@ impl<S0, S1, S2> ResponseBodyBuilder<(S0, S1, S2, crate::typed::builder::NotSet)
     }
 
     /// Sets [`hits`](Self::hits) with a builder.
-    pub fn hits_with(
+    pub fn hits_with<B: crate::typed::builder::Build<Output = _types::HitsMetadata>>(
         self,
-        f: impl FnOnce(
-            _types::HitsMetadataBuilder,
-        ) -> _types::HitsMetadataBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(_types::HitsMetadataBuilder) -> B,
     ) -> ResponseBodyBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.hits(f(_types::HitsMetadataBuilder::new()).build())
     }
 }
 
-impl
-    ResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ResponseBodyBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ResponseBody`].
-    pub fn build(self) -> ResponseBody {
+    pub fn build(self) -> ResponseBody
+    where
+        S0: crate::typed::builder::IsSet<response_body_members::took>,
+        S1: crate::typed::builder::IsSet<response_body_members::timed_out>,
+        S2: crate::typed::builder::IsSet<response_body_members::shards>,
+        S3: crate::typed::builder::IsSet<response_body_members::hits>,
+    {
         ResponseBody {
             took: self.took.unwrap(),
             timed_out: self.timed_out.unwrap(),
@@ -3158,69 +3139,28 @@ impl
     }
 }
 
-impl
-    From<
-        ResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ResponseBody
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ResponseBodyBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<response_body_members::took>,
+    S1: crate::typed::builder::IsSet<response_body_members::timed_out>,
+    S2: crate::typed::builder::IsSet<response_body_members::shards>,
+    S3: crate::typed::builder::IsSet<response_body_members::hits>,
 {
-    fn from(
-        builder: ResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ResponseBody;
+
+    fn build(self) -> ResponseBody {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ResponseBodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> ResponseBody { match took {} }
-}
-
-impl<S2, S3>
-    ResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ResponseBodyBuilder<(S0, S1, S2, S3)>> for ResponseBody
+where
+    S0: crate::typed::builder::IsSet<response_body_members::took>,
+    S1: crate::typed::builder::IsSet<response_body_members::timed_out>,
+    S2: crate::typed::builder::IsSet<response_body_members::shards>,
+    S3: crate::typed::builder::IsSet<response_body_members::hits>,
 {
-    /// `timed_out` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timed_out: crate::typed::builder::MissingRequiredField) -> ResponseBody { match timed_out {} }
-}
-
-impl<S3>
-    ResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> ResponseBody { match shards {} }
-}
-
-impl
-    ResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> ResponseBody { match hits {} }
+    fn from(builder: ResponseBodyBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

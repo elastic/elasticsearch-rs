@@ -11,23 +11,30 @@ pub struct DatabaseConfigurationMetadata {
 
 impl DatabaseConfigurationMetadata {
     /// Creates a builder for [`DatabaseConfigurationMetadata`].
+    ///
+    /// Required: `id`, `version`, `modified_date_millis`, `database`.
     pub fn builder() -> DatabaseConfigurationMetadataBuilder {
         DatabaseConfigurationMetadataBuilder::new()
     }
 
     /// Creates a [`DatabaseConfigurationMetadata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatabaseConfigurationMetadataBuilder,
-        ) -> DatabaseConfigurationMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `version`, `modified_date_millis`, `database`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatabaseConfigurationMetadata>>(
+        f: impl FnOnce(DatabaseConfigurationMetadataBuilder) -> B,
     ) -> DatabaseConfigurationMetadata {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatabaseConfigurationMetadataBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod database_configuration_metadata_members {
+    pub struct id;
+    pub struct version;
+    pub struct modified_date_millis;
+    pub struct database;
 }
 
 /// Builder for [`DatabaseConfigurationMetadata`].
@@ -79,6 +86,7 @@ impl<S0, S1, S2, S3> DatabaseConfigurationMetadataBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DatabaseConfigurationMetadataBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -90,6 +98,7 @@ impl<S1, S2, S3> DatabaseConfigurationMetadataBuilder<(crate::typed::builder::No
 }
 
 impl<S0, S2, S3> DatabaseConfigurationMetadataBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn version(
         self,
         value: i64,
@@ -101,6 +110,7 @@ impl<S0, S2, S3> DatabaseConfigurationMetadataBuilder<(S0, crate::typed::builder
 }
 
 impl<S0, S1, S3> DatabaseConfigurationMetadataBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn modified_date_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -112,6 +122,7 @@ impl<S0, S1, S3> DatabaseConfigurationMetadataBuilder<(S0, S1, crate::typed::bui
 }
 
 impl<S0, S1, S2> DatabaseConfigurationMetadataBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn database(
         self,
         value: impl Into<crate::typed::ingest::_types::DatabaseConfiguration>,
@@ -122,29 +133,27 @@ impl<S0, S1, S2> DatabaseConfigurationMetadataBuilder<(S0, S1, S2, crate::typed:
     }
 
     /// Sets [`database`](Self::database) with a builder.
-    pub fn database_with(
+    pub fn database_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::DatabaseConfiguration>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::DatabaseConfigurationBuilder,
-        ) -> crate::typed::ingest::_types::DatabaseConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ingest::_types::DatabaseConfigurationBuilder) -> B,
     ) -> DatabaseConfigurationMetadataBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.database(f(crate::typed::ingest::_types::DatabaseConfigurationBuilder::new()).build())
     }
 }
 
-impl
-    DatabaseConfigurationMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DatabaseConfigurationMetadataBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DatabaseConfigurationMetadata`].
-    pub fn build(self) -> DatabaseConfigurationMetadata {
+    pub fn build(self) -> DatabaseConfigurationMetadata
+    where
+        S0: crate::typed::builder::IsSet<database_configuration_metadata_members::id>,
+        S1: crate::typed::builder::IsSet<database_configuration_metadata_members::version>,
+        S2: crate::typed::builder::IsSet<
+            database_configuration_metadata_members::modified_date_millis,
+        >,
+        S3: crate::typed::builder::IsSet<database_configuration_metadata_members::database>,
+    {
         DatabaseConfigurationMetadata {
             id: self.id.unwrap(),
             version: self.version.unwrap(),
@@ -154,71 +163,32 @@ impl
     }
 }
 
-impl
-    From<
-        DatabaseConfigurationMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DatabaseConfigurationMetadata
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for DatabaseConfigurationMetadataBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<database_configuration_metadata_members::id>,
+    S1: crate::typed::builder::IsSet<database_configuration_metadata_members::version>,
+    S2: crate::typed::builder::IsSet<database_configuration_metadata_members::modified_date_millis>,
+    S3: crate::typed::builder::IsSet<database_configuration_metadata_members::database>,
 {
-    fn from(
-        builder: DatabaseConfigurationMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DatabaseConfigurationMetadata;
+
+    fn build(self) -> DatabaseConfigurationMetadata {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DatabaseConfigurationMetadataBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationMetadata { match id {} }
-}
-
-impl<S2, S3>
-    DatabaseConfigurationMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DatabaseConfigurationMetadataBuilder<(S0, S1, S2, S3)>>
+    for DatabaseConfigurationMetadata
+where
+    S0: crate::typed::builder::IsSet<database_configuration_metadata_members::id>,
+    S1: crate::typed::builder::IsSet<database_configuration_metadata_members::version>,
+    S2: crate::typed::builder::IsSet<database_configuration_metadata_members::modified_date_millis>,
+    S3: crate::typed::builder::IsSet<database_configuration_metadata_members::database>,
 {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationMetadata { match version {} }
-}
-
-impl<S3>
-    DatabaseConfigurationMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `modified_date_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, modified_date_millis: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationMetadata { match modified_date_millis {} }
-}
-
-impl
-    DatabaseConfigurationMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `database` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, database: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationMetadata { match database {} }
+    fn from(builder: DatabaseConfigurationMetadataBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ingest.get_geoip_database`](crate::typed::ingest::IngestClient::get_geoip_database).
@@ -258,7 +228,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -370,6 +342,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

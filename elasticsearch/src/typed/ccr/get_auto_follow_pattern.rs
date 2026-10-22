@@ -9,21 +9,28 @@ pub struct AutoFollowPattern {
 
 impl AutoFollowPattern {
     /// Creates a builder for [`AutoFollowPattern`].
+    ///
+    /// Required: `name`, `pattern`.
     pub fn builder() -> AutoFollowPatternBuilder {
         AutoFollowPatternBuilder::new()
     }
 
     /// Creates a [`AutoFollowPattern`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoFollowPatternBuilder,
-        ) -> AutoFollowPatternBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoFollowPattern>>(
+        f: impl FnOnce(AutoFollowPatternBuilder) -> B,
     ) -> AutoFollowPattern {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoFollowPatternBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod auto_follow_pattern_members {
+    pub struct name;
+    pub struct pattern;
 }
 
 /// Builder for [`AutoFollowPattern`].
@@ -57,6 +64,7 @@ impl<S0, S1> AutoFollowPatternBuilder<(S0, S1)> {
 }
 
 impl<S1> AutoFollowPatternBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -68,6 +76,7 @@ impl<S1> AutoFollowPatternBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AutoFollowPatternBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn pattern(
         self,
         value: impl Into<AutoFollowPatternSummary>,
@@ -78,25 +87,21 @@ impl<S0> AutoFollowPatternBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`pattern`](Self::pattern) with a builder.
-    pub fn pattern_with(
+    pub fn pattern_with<B: crate::typed::builder::Build<Output = AutoFollowPatternSummary>>(
         self,
-        f: impl FnOnce(
-            AutoFollowPatternSummaryBuilder,
-        ) -> AutoFollowPatternSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoFollowPatternSummaryBuilder) -> B,
     ) -> AutoFollowPatternBuilder<(S0, crate::typed::builder::Set)> {
         self.pattern(f(AutoFollowPatternSummaryBuilder::new()).build())
     }
 }
 
-impl AutoFollowPatternBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AutoFollowPatternBuilder<(S0, S1)> {
     /// Builds a [`AutoFollowPattern`].
-    pub fn build(self) -> AutoFollowPattern {
+    pub fn build(self) -> AutoFollowPattern
+    where
+        S0: crate::typed::builder::IsSet<auto_follow_pattern_members::name>,
+        S1: crate::typed::builder::IsSet<auto_follow_pattern_members::pattern>,
+    {
         AutoFollowPattern {
             name: self.name.unwrap(),
             pattern: self.pattern.unwrap(),
@@ -104,26 +109,26 @@ impl AutoFollowPatternBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<AutoFollowPatternBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AutoFollowPattern
+impl<S0, S1> crate::typed::builder::Build for AutoFollowPatternBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<auto_follow_pattern_members::name>,
+    S1: crate::typed::builder::IsSet<auto_follow_pattern_members::pattern>,
 {
-    fn from(
-        builder: AutoFollowPatternBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoFollowPattern;
+
+    fn build(self) -> AutoFollowPattern {
+        Self::build(self)
     }
 }
 
-impl<S1> AutoFollowPatternBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> AutoFollowPattern { match name {} }
-}
-
-impl AutoFollowPatternBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> AutoFollowPattern { match pattern {} }
+impl<S0, S1> From<AutoFollowPatternBuilder<(S0, S1)>> for AutoFollowPattern
+where
+    S0: crate::typed::builder::IsSet<auto_follow_pattern_members::name>,
+    S1: crate::typed::builder::IsSet<auto_follow_pattern_members::pattern>,
+{
+    fn from(builder: AutoFollowPatternBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -144,24 +149,31 @@ pub struct AutoFollowPatternSummary {
 
 impl AutoFollowPatternSummary {
     /// Creates a builder for [`AutoFollowPatternSummary`].
+    ///
+    /// Required: `active`, `remote_cluster`, `leader_index_patterns`, `leader_index_exclusion_patterns`, `max_outstanding_read_requests`.
     pub fn builder() -> AutoFollowPatternSummaryBuilder {
         AutoFollowPatternSummaryBuilder::new()
     }
 
     /// Creates a [`AutoFollowPatternSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoFollowPatternSummaryBuilder,
-        ) -> AutoFollowPatternSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active`, `remote_cluster`, `leader_index_patterns`, `leader_index_exclusion_patterns`, `max_outstanding_read_requests`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoFollowPatternSummary>>(
+        f: impl FnOnce(AutoFollowPatternSummaryBuilder) -> B,
     ) -> AutoFollowPatternSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoFollowPatternSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod auto_follow_pattern_summary_members {
+    pub struct active;
+    pub struct remote_cluster;
+    pub struct leader_index_patterns;
+    pub struct leader_index_exclusion_patterns;
+    pub struct max_outstanding_read_requests;
 }
 
 /// Builder for [`AutoFollowPatternSummary`].
@@ -241,6 +253,7 @@ impl<S0, S1, S2, S3, S4> AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, S4)> {
 impl<S1, S2, S3, S4>
     AutoFollowPatternSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
+    /// **Required.**
     pub fn active(
         self,
         value: bool,
@@ -254,7 +267,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     AutoFollowPatternSummaryBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// The remote cluster containing the leader indices to match against.
+    /// **Required.** The remote cluster containing the leader indices to match against.
     pub fn remote_cluster(
         self,
         value: impl Into<String>,
@@ -268,7 +281,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     AutoFollowPatternSummaryBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// An array of simple index patterns to match against indices in the remote cluster specified by the remote_cluster field.
+    /// **Required.** An array of simple index patterns to match against indices in the remote cluster specified by the remote_cluster field.
     pub fn leader_index_patterns(
         self,
         value: impl Into<crate::typed::_types::IndexPatterns>,
@@ -308,7 +321,7 @@ impl<S0, S1, S3, S4> AutoFollowPatternSummaryBuilder<(S0, S1, crate::typed::buil
 impl<S0, S1, S2, S4>
     AutoFollowPatternSummaryBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// An array of simple index patterns that can be used to exclude indices from being auto-followed.
+    /// **Required.** An array of simple index patterns that can be used to exclude indices from being auto-followed.
     pub fn leader_index_exclusion_patterns(
         self,
         value: impl Into<crate::typed::_types::IndexPatterns>,
@@ -348,7 +361,7 @@ impl<S0, S1, S2, S4> AutoFollowPatternSummaryBuilder<(S0, S1, S2, crate::typed::
 impl<S0, S1, S2, S3>
     AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// The maximum number of outstanding reads requests from the remote cluster.
+    /// **Required.** The maximum number of outstanding reads requests from the remote cluster.
     pub fn max_outstanding_read_requests(
         self,
         value: i32,
@@ -359,17 +372,22 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    AutoFollowPatternSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AutoFollowPatternSummary`].
-    pub fn build(self) -> AutoFollowPatternSummary {
+    pub fn build(self) -> AutoFollowPatternSummary
+    where
+        S0: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::active>,
+        S1: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::remote_cluster>,
+        S2: crate::typed::builder::IsSet<
+            auto_follow_pattern_summary_members::leader_index_patterns,
+        >,
+        S3: crate::typed::builder::IsSet<
+            auto_follow_pattern_summary_members::leader_index_exclusion_patterns,
+        >,
+        S4: crate::typed::builder::IsSet<
+            auto_follow_pattern_summary_members::max_outstanding_read_requests,
+        >,
+    {
         AutoFollowPatternSummary {
             active: self.active.unwrap(),
             remote_cluster: self.remote_cluster.unwrap(),
@@ -381,92 +399,42 @@ impl
     }
 }
 
-impl
-    From<
-        AutoFollowPatternSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AutoFollowPatternSummary
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::active>,
+    S1: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::remote_cluster>,
+    S2: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::leader_index_patterns>,
+    S3: crate::typed::builder::IsSet<
+        auto_follow_pattern_summary_members::leader_index_exclusion_patterns,
+    >,
+    S4: crate::typed::builder::IsSet<
+        auto_follow_pattern_summary_members::max_outstanding_read_requests,
+    >,
 {
-    fn from(
-        builder: AutoFollowPatternSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoFollowPatternSummary;
+
+    fn build(self) -> AutoFollowPatternSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    AutoFollowPatternSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, S4)>>
+    for AutoFollowPatternSummary
+where
+    S0: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::active>,
+    S1: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::remote_cluster>,
+    S2: crate::typed::builder::IsSet<auto_follow_pattern_summary_members::leader_index_patterns>,
+    S3: crate::typed::builder::IsSet<
+        auto_follow_pattern_summary_members::leader_index_exclusion_patterns,
+    >,
+    S4: crate::typed::builder::IsSet<
+        auto_follow_pattern_summary_members::max_outstanding_read_requests,
+    >,
 {
-    /// `active` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active: crate::typed::builder::MissingRequiredField) -> AutoFollowPatternSummary { match active {} }
-}
-
-impl<S2, S3, S4>
-    AutoFollowPatternSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `remote_cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remote_cluster: crate::typed::builder::MissingRequiredField) -> AutoFollowPatternSummary { match remote_cluster {} }
-}
-
-impl<S3, S4>
-    AutoFollowPatternSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `leader_index_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_index_patterns: crate::typed::builder::MissingRequiredField) -> AutoFollowPatternSummary { match leader_index_patterns {} }
-}
-
-impl<S4>
-    AutoFollowPatternSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `leader_index_exclusion_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_index_exclusion_patterns: crate::typed::builder::MissingRequiredField) -> AutoFollowPatternSummary { match leader_index_exclusion_patterns {} }
-}
-
-impl
-    AutoFollowPatternSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_outstanding_read_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_outstanding_read_requests: crate::typed::builder::MissingRequiredField) -> AutoFollowPatternSummary { match max_outstanding_read_requests {} }
+    fn from(builder: AutoFollowPatternSummaryBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ccr.get_auto_follow_pattern`](crate::typed::ccr::CcrClient::get_auto_follow_pattern).
@@ -509,7 +477,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -637,6 +607,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

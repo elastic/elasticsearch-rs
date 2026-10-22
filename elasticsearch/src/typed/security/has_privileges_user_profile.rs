@@ -12,21 +12,28 @@ pub struct HasPrivilegesUserProfileErrors {
 
 impl HasPrivilegesUserProfileErrors {
     /// Creates a builder for [`HasPrivilegesUserProfileErrors`].
+    ///
+    /// Required: `count`, `details`.
     pub fn builder() -> HasPrivilegesUserProfileErrorsBuilder {
         HasPrivilegesUserProfileErrorsBuilder::new()
     }
 
     /// Creates a [`HasPrivilegesUserProfileErrors`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HasPrivilegesUserProfileErrorsBuilder,
-        ) -> HasPrivilegesUserProfileErrorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `details`.
+    pub fn of<B: crate::typed::builder::Build<Output = HasPrivilegesUserProfileErrors>>(
+        f: impl FnOnce(HasPrivilegesUserProfileErrorsBuilder) -> B,
     ) -> HasPrivilegesUserProfileErrors {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HasPrivilegesUserProfileErrorsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod has_privileges_user_profile_errors_members {
+    pub struct count;
+    pub struct details;
 }
 
 /// Builder for [`HasPrivilegesUserProfileErrors`].
@@ -70,6 +77,7 @@ impl<S0, S1> HasPrivilegesUserProfileErrorsBuilder<(S0, S1)> {
 }
 
 impl<S1> HasPrivilegesUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -81,6 +89,7 @@ impl<S1> HasPrivilegesUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn details(
         self,
         value: impl Into<
@@ -110,13 +119,12 @@ impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<crate::typed::security::_types::UserProfileId>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_details(
             key,
@@ -139,13 +147,12 @@ impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)>
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<crate::typed::security::_types::UserProfileId>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.add_details(
             key,
@@ -154,11 +161,13 @@ impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)>
     }
 }
 
-impl
-    HasPrivilegesUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> HasPrivilegesUserProfileErrorsBuilder<(S0, S1)> {
     /// Builds a [`HasPrivilegesUserProfileErrors`].
-    pub fn build(self) -> HasPrivilegesUserProfileErrors {
+    pub fn build(self) -> HasPrivilegesUserProfileErrors
+    where
+        S0: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::count>,
+        S1: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::details>,
+    {
         HasPrivilegesUserProfileErrors {
             count: self.count.unwrap(),
             details: self.details.unwrap(),
@@ -166,39 +175,27 @@ impl
     }
 }
 
-impl
-    From<
-        HasPrivilegesUserProfileErrorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HasPrivilegesUserProfileErrors
+impl<S0, S1> crate::typed::builder::Build for HasPrivilegesUserProfileErrorsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::count>,
+    S1: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::details>,
 {
-    fn from(
-        builder: HasPrivilegesUserProfileErrorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HasPrivilegesUserProfileErrors;
+
+    fn build(self) -> HasPrivilegesUserProfileErrors {
+        Self::build(self)
     }
 }
 
-impl<S1> HasPrivilegesUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> HasPrivilegesUserProfileErrors { match count {} }
-}
-
-impl
-    HasPrivilegesUserProfileErrorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<HasPrivilegesUserProfileErrorsBuilder<(S0, S1)>>
+    for HasPrivilegesUserProfileErrors
+where
+    S0: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::count>,
+    S1: crate::typed::builder::IsSet<has_privileges_user_profile_errors_members::details>,
 {
-    /// `details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, details: crate::typed::builder::MissingRequiredField) -> HasPrivilegesUserProfileErrors { match details {} }
+    fn from(builder: HasPrivilegesUserProfileErrorsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -220,7 +217,9 @@ impl PrivilegesCheck {
     }
 
     /// Creates a [`PrivilegesCheck`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PrivilegesCheckBuilder) -> PrivilegesCheckBuilder) -> PrivilegesCheck {
+    pub fn of<B: crate::typed::builder::Build<Output = PrivilegesCheck>>(
+        f: impl FnOnce(PrivilegesCheckBuilder) -> B,
+    ) -> PrivilegesCheck {
         f(Self::builder()).build()
     }
 }
@@ -273,16 +272,13 @@ impl PrivilegesCheckBuilder {
     }
 
     /// Adds an element to [`application`](Self::application), with a builder.
-    pub fn add_application_with(
+    pub fn add_application_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::has_privileges::ApplicationPrivilegesCheck,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::has_privileges::ApplicationPrivilegesCheckBuilder,
-        )
-            -> crate::typed::security::has_privileges::ApplicationPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::has_privileges::ApplicationPrivilegesCheckBuilder) -> B,
     ) -> Self {
         self.add_application(
             f(crate::typed::security::has_privileges::ApplicationPrivilegesCheckBuilder::new())
@@ -348,14 +344,13 @@ impl PrivilegesCheckBuilder {
     }
 
     /// Adds an element to [`index`](Self::index), with a builder.
-    pub fn add_index_with(
+    pub fn add_index_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::has_privileges::IndexPrivilegesCheck,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::has_privileges::IndexPrivilegesCheckBuilder,
-        ) -> crate::typed::security::has_privileges::IndexPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::has_privileges::IndexPrivilegesCheckBuilder) -> B,
     ) -> Self {
         self.add_index(
             f(crate::typed::security::has_privileges::IndexPrivilegesCheckBuilder::new()).build(),
@@ -371,6 +366,14 @@ impl PrivilegesCheckBuilder {
             cluster: self.cluster,
             index: self.index,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PrivilegesCheckBuilder {
+    type Output = PrivilegesCheck;
+
+    fn build(self) -> PrivilegesCheck {
+        Self::build(self)
     }
 }
 
@@ -415,19 +418,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `uids`, `privileges`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `uids`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct uids;
+    pub struct privileges;
 }
 
 /// Builder for [`Request`].
@@ -532,7 +544,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A list of profile IDs. The privileges are checked for associated users of the profiles.
+    /// **Required.** A list of profile IDs. The privileges are checked for associated users of the profiles.
     pub fn uids(
         self,
         value: impl Into<Vec<crate::typed::security::_types::UserProfileId>>,
@@ -570,7 +582,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::Set, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// An object containing all the privileges to be checked.
+    /// **Required.** An object containing all the privileges to be checked.
     pub fn privileges(
         self,
         value: impl Into<PrivilegesCheck>,
@@ -581,17 +593,21 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`privileges`](Self::privileges) with a builder.
-    pub fn privileges_with(
+    pub fn privileges_with<B: crate::typed::builder::Build<Output = PrivilegesCheck>>(
         self,
-        f: impl FnOnce(PrivilegesCheckBuilder) -> PrivilegesCheckBuilder,
+        f: impl FnOnce(PrivilegesCheckBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.privileges(f(PrivilegesCheckBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::uids>,
+        S1: crate::typed::builder::IsSet<request_members::privileges>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -603,41 +619,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::uids>,
+    S1: crate::typed::builder::IsSet<request_members::privileges>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `uids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uids: crate::typed::builder::MissingRequiredField) -> Request { match uids {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `uids` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, uids: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match uids {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> Request { match privileges {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `privileges` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, privileges: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match privileges {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::uids>,
+        S1: crate::typed::builder::IsSet<request_members::privileges>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

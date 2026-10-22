@@ -122,16 +122,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `datafeed_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `datafeed_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct datafeed_id;
 }
 
 /// Builder for [`Request`].
@@ -388,14 +399,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -425,12 +436,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`chunking_config`](Self::chunking_config) with a builder.
-    pub fn chunking_config_with(
+    pub fn chunking_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::ChunkingConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::ChunkingConfigBuilder,
-        )
-            -> crate::typed::ml::_types::ChunkingConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ml::_types::ChunkingConfigBuilder) -> B,
     ) -> Self {
         self.chunking_config(f(crate::typed::ml::_types::ChunkingConfigBuilder::new()).build())
     }
@@ -458,13 +468,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`delayed_data_check_config`](Self::delayed_data_check_config) with a builder.
-    pub fn delayed_data_check_config_with(
+    pub fn delayed_data_check_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DelayedDataCheckConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DelayedDataCheckConfigBuilder,
-        ) -> crate::typed::ml::_types::DelayedDataCheckConfigBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DelayedDataCheckConfigBuilder) -> B,
     ) -> Self {
         self.delayed_data_check_config(
             f(crate::typed::ml::_types::DelayedDataCheckConfigBuilder::new()).build(),
@@ -519,11 +527,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`indices_options`](Self::indices_options) with a builder.
-    pub fn indices_options_with(
+    pub fn indices_options_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::IndicesOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::IndicesOptionsBuilder,
-        ) -> crate::typed::_types::IndicesOptionsBuilder,
+        f: impl FnOnce(crate::typed::_types::IndicesOptionsBuilder) -> B,
     ) -> Self {
         self.indices_options(f(crate::typed::_types::IndicesOptionsBuilder::new()).build())
     }
@@ -592,13 +600,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -649,14 +655,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -696,13 +700,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -751,7 +754,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A numerical character string that uniquely identifies the datafeed.
+    /// **Required.** A numerical character string that uniquely identifies the datafeed.
     /// This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
     /// It must start and end with alphanumeric characters.
     pub fn datafeed_id(
@@ -764,9 +767,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::datafeed_id>,
+    {
         Request {
             datafeed_id: self.datafeed_id.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -797,23 +803,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::datafeed_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `datafeed_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, datafeed_id: crate::typed::builder::MissingRequiredField) -> Request { match datafeed_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `datafeed_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, datafeed_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match datafeed_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::datafeed_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

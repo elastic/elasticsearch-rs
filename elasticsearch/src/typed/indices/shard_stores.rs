@@ -8,18 +8,27 @@ pub struct IndicesShardStores {
 
 impl IndicesShardStores {
     /// Creates a builder for [`IndicesShardStores`].
+    ///
+    /// Required: `shards`.
     pub fn builder() -> IndicesShardStoresBuilder {
         IndicesShardStoresBuilder::new()
     }
 
     /// Creates a [`IndicesShardStores`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesShardStoresBuilder,
-        ) -> IndicesShardStoresBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesShardStores>>(
+        f: impl FnOnce(IndicesShardStoresBuilder) -> B,
     ) -> IndicesShardStores {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesShardStoresBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_shard_stores_members {
+    pub struct shards;
 }
 
 /// Builder for [`IndicesShardStores`].
@@ -48,6 +57,7 @@ impl<S0> IndicesShardStoresBuilder<(S0,)> {
 }
 
 impl IndicesShardStoresBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<indexmap::IndexMap<String, ShardStoreWrapper>>,
@@ -72,12 +82,10 @@ impl IndicesShardStoresBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardStoreWrapper>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ShardStoreWrapperBuilder,
-        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardStoreWrapperBuilder) -> B,
     ) -> IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
         self.add_shards(key, f(ShardStoreWrapperBuilder::new()).build())
     }
@@ -97,36 +105,45 @@ impl IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardStoreWrapper>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ShardStoreWrapperBuilder,
-        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardStoreWrapperBuilder) -> B,
     ) -> Self {
         self.add_shards(key, f(ShardStoreWrapperBuilder::new()).build())
     }
 }
 
-impl IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndicesShardStoresBuilder<(S0,)> {
     /// Builds a [`IndicesShardStores`].
-    pub fn build(self) -> IndicesShardStores {
+    pub fn build(self) -> IndicesShardStores
+    where
+        S0: crate::typed::builder::IsSet<indices_shard_stores_members::shards>,
+    {
         IndicesShardStores {
             shards: self.shards.unwrap(),
         }
     }
 }
 
-impl From<IndicesShardStoresBuilder<(crate::typed::builder::Set,)>> for IndicesShardStores {
-    fn from(builder: IndicesShardStoresBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndicesShardStoresBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indices_shard_stores_members::shards>,
+{
+    type Output = IndicesShardStores;
+
+    fn build(self) -> IndicesShardStores {
+        Self::build(self)
     }
 }
 
-impl IndicesShardStoresBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> IndicesShardStores { match shards {} }
+impl<S0> From<IndicesShardStoresBuilder<(S0,)>> for IndicesShardStores
+where
+    S0: crate::typed::builder::IsSet<indices_shard_stores_members::shards>,
+{
+    fn from(builder: IndicesShardStoresBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.shard_stores`](crate::typed::indices::IndicesClient::shard_stores).
@@ -190,7 +207,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -377,6 +396,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -536,16 +563,27 @@ pub struct ShardStore {
 
 impl ShardStore {
     /// Creates a builder for [`ShardStore`].
+    ///
+    /// Required: `allocation`.
     pub fn builder() -> ShardStoreBuilder {
         ShardStoreBuilder::new()
     }
 
     /// Creates a [`ShardStore`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `allocation`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStore>>(
+        f: impl FnOnce(ShardStoreBuilder) -> B,
     ) -> ShardStore {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardStoreBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_store_members {
+    pub struct allocation;
 }
 
 /// Builder for [`ShardStore`].
@@ -606,14 +644,9 @@ impl<S0> ShardStoreBuilder<(S0,)> {
     }
 
     /// Sets [`store_exception`](Self::store_exception) with a builder.
-    pub fn store_exception_with(
+    pub fn store_exception_with<B: crate::typed::builder::Build<Output = ShardStoreException>>(
         self,
-        f: impl FnOnce(
-            ShardStoreExceptionBuilder,
-        ) -> ShardStoreExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardStoreExceptionBuilder) -> B,
     ) -> Self {
         self.store_exception(f(ShardStoreExceptionBuilder::new()).build())
     }
@@ -639,7 +672,7 @@ impl<S0> ShardStoreBuilder<(S0,)> {
 }
 
 impl ShardStoreBuilder<(crate::typed::builder::NotSet,)> {
-    /// The status of the store copy, whether it is used as a primary, replica, or not used at all.
+    /// **Required.** The status of the store copy, whether it is used as a primary, replica, or not used at all.
     pub fn allocation(
         self,
         value: impl Into<ShardStoreAllocation>,
@@ -650,9 +683,12 @@ impl ShardStoreBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ShardStoreBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShardStoreBuilder<(S0,)> {
     /// Builds a [`ShardStore`].
-    pub fn build(self) -> ShardStore {
+    pub fn build(self) -> ShardStore
+    where
+        S0: crate::typed::builder::IsSet<shard_store_members::allocation>,
+    {
         ShardStore {
             allocation: self.allocation.unwrap(),
             allocation_id: self.allocation_id,
@@ -662,16 +698,24 @@ impl ShardStoreBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ShardStoreBuilder<(crate::typed::builder::Set,)>> for ShardStore {
-    fn from(builder: ShardStoreBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShardStoreBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shard_store_members::allocation>,
+{
+    type Output = ShardStore;
+
+    fn build(self) -> ShardStore {
+        Self::build(self)
     }
 }
 
-impl ShardStoreBuilder<(crate::typed::builder::NotSet,)> {
-    /// `allocation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allocation: crate::typed::builder::MissingRequiredField) -> ShardStore { match allocation {} }
+impl<S0> From<ShardStoreBuilder<(S0,)>> for ShardStore
+where
+    S0: crate::typed::builder::IsSet<shard_store_members::allocation>,
+{
+    fn from(builder: ShardStoreBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -695,21 +739,28 @@ pub struct ShardStoreException {
 
 impl ShardStoreException {
     /// Creates a builder for [`ShardStoreException`].
+    ///
+    /// Required: `reason`, `type`.
     pub fn builder() -> ShardStoreExceptionBuilder {
         ShardStoreExceptionBuilder::new()
     }
 
     /// Creates a [`ShardStoreException`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardStoreExceptionBuilder,
-        ) -> ShardStoreExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `reason`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStoreException>>(
+        f: impl FnOnce(ShardStoreExceptionBuilder) -> B,
     ) -> ShardStoreException {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardStoreExceptionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_store_exception_members {
+    pub struct reason;
+    pub struct r#type;
 }
 
 /// Builder for [`ShardStoreException`].
@@ -743,6 +794,7 @@ impl<S0, S1> ShardStoreExceptionBuilder<(S0, S1)> {
 }
 
 impl<S1> ShardStoreExceptionBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<String>,
@@ -754,6 +806,7 @@ impl<S1> ShardStoreExceptionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ShardStoreExceptionBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -764,9 +817,13 @@ impl<S0> ShardStoreExceptionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ShardStoreExceptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ShardStoreExceptionBuilder<(S0, S1)> {
     /// Builds a [`ShardStoreException`].
-    pub fn build(self) -> ShardStoreException {
+    pub fn build(self) -> ShardStoreException
+    where
+        S0: crate::typed::builder::IsSet<shard_store_exception_members::reason>,
+        S1: crate::typed::builder::IsSet<shard_store_exception_members::r#type>,
+    {
         ShardStoreException {
             reason: self.reason.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -774,29 +831,26 @@ impl ShardStoreExceptionBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<ShardStoreExceptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ShardStoreException
+impl<S0, S1> crate::typed::builder::Build for ShardStoreExceptionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shard_store_exception_members::reason>,
+    S1: crate::typed::builder::IsSet<shard_store_exception_members::r#type>,
 {
-    fn from(
-        builder: ShardStoreExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardStoreException;
+
+    fn build(self) -> ShardStoreException {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardStoreExceptionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> ShardStoreException { match reason {} }
-}
-
-impl ShardStoreExceptionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ShardStoreException { match r#type {} }
+impl<S0, S1> From<ShardStoreExceptionBuilder<(S0, S1)>> for ShardStoreException
+where
+    S0: crate::typed::builder::IsSet<shard_store_exception_members::reason>,
+    S1: crate::typed::builder::IsSet<shard_store_exception_members::r#type>,
+{
+    fn from(builder: ShardStoreExceptionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -813,23 +867,30 @@ pub struct ShardStoreNode {
 
 impl ShardStoreNode {
     /// Creates a builder for [`ShardStoreNode`].
+    ///
+    /// Required: `attributes`, `name`, `roles`, `transport_address`.
     pub fn builder() -> ShardStoreNodeBuilder {
         ShardStoreNodeBuilder::new()
     }
 
     /// Creates a [`ShardStoreNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardStoreNodeBuilder,
-        ) -> ShardStoreNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `name`, `roles`, `transport_address`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStoreNode>>(
+        f: impl FnOnce(ShardStoreNodeBuilder) -> B,
     ) -> ShardStoreNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardStoreNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_store_node_members {
+    pub struct attributes;
+    pub struct name;
+    pub struct roles;
+    pub struct transport_address;
 }
 
 /// Builder for [`ShardStoreNode`].
@@ -909,6 +970,7 @@ impl<S0, S1, S2, S3> ShardStoreNodeBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ShardStoreNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -944,6 +1006,7 @@ impl<S1, S2, S3> ShardStoreNodeBuilder<(crate::typed::builder::Set, S1, S2, S3)>
 }
 
 impl<S0, S2, S3> ShardStoreNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -955,6 +1018,7 @@ impl<S0, S2, S3> ShardStoreNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3> ShardStoreNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -989,6 +1053,7 @@ impl<S0, S1, S3> ShardStoreNodeBuilder<(S0, S1, crate::typed::builder::Set, S3)>
 }
 
 impl<S0, S1, S2> ShardStoreNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -999,16 +1064,15 @@ impl<S0, S1, S2> ShardStoreNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSe
     }
 }
 
-impl
-    ShardStoreNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ShardStoreNodeBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ShardStoreNode`].
-    pub fn build(self) -> ShardStoreNode {
+    pub fn build(self) -> ShardStoreNode
+    where
+        S0: crate::typed::builder::IsSet<shard_store_node_members::attributes>,
+        S1: crate::typed::builder::IsSet<shard_store_node_members::name>,
+        S2: crate::typed::builder::IsSet<shard_store_node_members::roles>,
+        S3: crate::typed::builder::IsSet<shard_store_node_members::transport_address>,
+    {
         ShardStoreNode {
             attributes: self.attributes.unwrap(),
             ephemeral_id: self.ephemeral_id,
@@ -1020,71 +1084,30 @@ impl
     }
 }
 
-impl
-    From<
-        ShardStoreNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardStoreNode
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ShardStoreNodeBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<shard_store_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<shard_store_node_members::name>,
+    S2: crate::typed::builder::IsSet<shard_store_node_members::roles>,
+    S3: crate::typed::builder::IsSet<shard_store_node_members::transport_address>,
 {
-    fn from(
-        builder: ShardStoreNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardStoreNode;
+
+    fn build(self) -> ShardStoreNode {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ShardStoreNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> ShardStoreNode { match attributes {} }
-}
-
-impl<S2, S3>
-    ShardStoreNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ShardStoreNodeBuilder<(S0, S1, S2, S3)>> for ShardStoreNode
+where
+    S0: crate::typed::builder::IsSet<shard_store_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<shard_store_node_members::name>,
+    S2: crate::typed::builder::IsSet<shard_store_node_members::roles>,
+    S3: crate::typed::builder::IsSet<shard_store_node_members::transport_address>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ShardStoreNode { match name {} }
-}
-
-impl<S3>
-    ShardStoreNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> ShardStoreNode { match roles {} }
-}
-
-impl
-    ShardStoreNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> ShardStoreNode { match transport_address {} }
+    fn from(builder: ShardStoreNodeBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1110,18 +1133,27 @@ pub struct ShardStoreWrapper {
 
 impl ShardStoreWrapper {
     /// Creates a builder for [`ShardStoreWrapper`].
+    ///
+    /// Required: `stores`.
     pub fn builder() -> ShardStoreWrapperBuilder {
         ShardStoreWrapperBuilder::new()
     }
 
     /// Creates a [`ShardStoreWrapper`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardStoreWrapperBuilder,
-        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `stores`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStoreWrapper>>(
+        f: impl FnOnce(ShardStoreWrapperBuilder) -> B,
     ) -> ShardStoreWrapper {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardStoreWrapperBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_store_wrapper_members {
+    pub struct stores;
 }
 
 /// Builder for [`ShardStoreWrapper`].
@@ -1150,6 +1182,7 @@ impl<S0> ShardStoreWrapperBuilder<(S0,)> {
 }
 
 impl ShardStoreWrapperBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn stores(
         self,
         value: impl Into<Vec<ShardStore>>,
@@ -1173,9 +1206,9 @@ impl ShardStoreWrapperBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`stores`](Self::stores), with a builder.
-    pub fn add_stores_with(
+    pub fn add_stores_with<B: crate::typed::builder::Build<Output = ShardStore>>(
         self,
-        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardStoreBuilder) -> B,
     ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
         self.add_stores(f(ShardStoreBuilder::new()).build())
     }
@@ -1191,31 +1224,42 @@ impl ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`stores`](Self::stores), with a builder.
-    pub fn add_stores_with(
+    pub fn add_stores_with<B: crate::typed::builder::Build<Output = ShardStore>>(
         self,
-        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardStoreBuilder) -> B,
     ) -> Self {
         self.add_stores(f(ShardStoreBuilder::new()).build())
     }
 }
 
-impl ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShardStoreWrapperBuilder<(S0,)> {
     /// Builds a [`ShardStoreWrapper`].
-    pub fn build(self) -> ShardStoreWrapper {
+    pub fn build(self) -> ShardStoreWrapper
+    where
+        S0: crate::typed::builder::IsSet<shard_store_wrapper_members::stores>,
+    {
         ShardStoreWrapper {
             stores: self.stores.unwrap(),
         }
     }
 }
 
-impl From<ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>> for ShardStoreWrapper {
-    fn from(builder: ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShardStoreWrapperBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shard_store_wrapper_members::stores>,
+{
+    type Output = ShardStoreWrapper;
+
+    fn build(self) -> ShardStoreWrapper {
+        Self::build(self)
     }
 }
 
-impl ShardStoreWrapperBuilder<(crate::typed::builder::NotSet,)> {
-    /// `stores` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stores: crate::typed::builder::MissingRequiredField) -> ShardStoreWrapper { match stores {} }
+impl<S0> From<ShardStoreWrapperBuilder<(S0,)>> for ShardStoreWrapper
+where
+    S0: crate::typed::builder::IsSet<shard_store_wrapper_members::stores>,
+{
+    fn from(builder: ShardStoreWrapperBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

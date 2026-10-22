@@ -9,18 +9,27 @@ pub struct AnalyticsCollection {
 
 impl AnalyticsCollection {
     /// Creates a builder for [`AnalyticsCollection`].
+    ///
+    /// Required: `event_data_stream`.
     pub fn builder() -> AnalyticsCollectionBuilder {
         AnalyticsCollectionBuilder::new()
     }
 
     /// Creates a [`AnalyticsCollection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalyticsCollectionBuilder,
-        ) -> AnalyticsCollectionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `event_data_stream`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalyticsCollection>>(
+        f: impl FnOnce(AnalyticsCollectionBuilder) -> B,
     ) -> AnalyticsCollection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalyticsCollectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analytics_collection_members {
+    pub struct event_data_stream;
 }
 
 /// Builder for [`AnalyticsCollection`].
@@ -49,7 +58,7 @@ impl<S0> AnalyticsCollectionBuilder<(S0,)> {
 }
 
 impl AnalyticsCollectionBuilder<(crate::typed::builder::NotSet,)> {
-    /// Data stream for the collection.
+    /// **Required.** Data stream for the collection.
     pub fn event_data_stream(
         self,
         value: impl Into<EventDataStream>,
@@ -60,33 +69,44 @@ impl AnalyticsCollectionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`event_data_stream`](Self::event_data_stream) with a builder.
-    pub fn event_data_stream_with(
+    pub fn event_data_stream_with<B: crate::typed::builder::Build<Output = EventDataStream>>(
         self,
-        f: impl FnOnce(EventDataStreamBuilder) -> EventDataStreamBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(EventDataStreamBuilder) -> B,
     ) -> AnalyticsCollectionBuilder<(crate::typed::builder::Set,)> {
         self.event_data_stream(f(EventDataStreamBuilder::new()).build())
     }
 }
 
-impl AnalyticsCollectionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnalyticsCollectionBuilder<(S0,)> {
     /// Builds a [`AnalyticsCollection`].
-    pub fn build(self) -> AnalyticsCollection {
+    pub fn build(self) -> AnalyticsCollection
+    where
+        S0: crate::typed::builder::IsSet<analytics_collection_members::event_data_stream>,
+    {
         AnalyticsCollection {
             event_data_stream: self.event_data_stream.unwrap(),
         }
     }
 }
 
-impl From<AnalyticsCollectionBuilder<(crate::typed::builder::Set,)>> for AnalyticsCollection {
-    fn from(builder: AnalyticsCollectionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnalyticsCollectionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<analytics_collection_members::event_data_stream>,
+{
+    type Output = AnalyticsCollection;
+
+    fn build(self) -> AnalyticsCollection {
+        Self::build(self)
     }
 }
 
-impl AnalyticsCollectionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `event_data_stream` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, event_data_stream: crate::typed::builder::MissingRequiredField) -> AnalyticsCollection { match event_data_stream {} }
+impl<S0> From<AnalyticsCollectionBuilder<(S0,)>> for AnalyticsCollection
+where
+    S0: crate::typed::builder::IsSet<analytics_collection_members::event_data_stream>,
+{
+    fn from(builder: AnalyticsCollectionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -96,16 +116,27 @@ pub struct EventDataStream {
 
 impl EventDataStream {
     /// Creates a builder for [`EventDataStream`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> EventDataStreamBuilder {
         EventDataStreamBuilder::new()
     }
 
     /// Creates a [`EventDataStream`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EventDataStreamBuilder) -> EventDataStreamBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = EventDataStream>>(
+        f: impl FnOnce(EventDataStreamBuilder) -> B,
     ) -> EventDataStream {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EventDataStreamBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod event_data_stream_members {
+    pub struct name;
 }
 
 /// Builder for [`EventDataStream`].
@@ -134,6 +165,7 @@ impl<S0> EventDataStreamBuilder<(S0,)> {
 }
 
 impl EventDataStreamBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -144,25 +176,36 @@ impl EventDataStreamBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EventDataStreamBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EventDataStreamBuilder<(S0,)> {
     /// Builds a [`EventDataStream`].
-    pub fn build(self) -> EventDataStream {
+    pub fn build(self) -> EventDataStream
+    where
+        S0: crate::typed::builder::IsSet<event_data_stream_members::name>,
+    {
         EventDataStream {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<EventDataStreamBuilder<(crate::typed::builder::Set,)>> for EventDataStream {
-    fn from(builder: EventDataStreamBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EventDataStreamBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<event_data_stream_members::name>,
+{
+    type Output = EventDataStream;
+
+    fn build(self) -> EventDataStream {
+        Self::build(self)
     }
 }
 
-impl EventDataStreamBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> EventDataStream { match name {} }
+impl<S0> From<EventDataStreamBuilder<(S0,)>> for EventDataStream
+where
+    S0: crate::typed::builder::IsSet<event_data_stream_members::name>,
+{
+    fn from(builder: EventDataStreamBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -193,22 +236,29 @@ pub struct SearchApplication {
 
 impl SearchApplication {
     /// Creates a builder for [`SearchApplication`].
+    ///
+    /// Required: `indices`, `name`, `updated_at_millis`.
     pub fn builder() -> SearchApplicationBuilder {
         SearchApplicationBuilder::new()
     }
 
     /// Creates a [`SearchApplication`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchApplicationBuilder,
-        ) -> SearchApplicationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `indices`, `name`, `updated_at_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchApplication>>(
+        f: impl FnOnce(SearchApplicationBuilder) -> B,
     ) -> SearchApplication {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchApplicationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_application_members {
+    pub struct indices;
+    pub struct name;
+    pub struct updated_at_millis;
 }
 
 /// Builder for [`SearchApplication`].
@@ -290,18 +340,16 @@ impl<S0, S1, S2> SearchApplicationBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = SearchApplicationTemplate>>(
         self,
-        f: impl FnOnce(
-            SearchApplicationTemplateBuilder,
-        ) -> SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SearchApplicationTemplateBuilder) -> B,
     ) -> Self {
         self.template(f(SearchApplicationTemplateBuilder::new()).build())
     }
 }
 
 impl<S1, S2> SearchApplicationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Indices that are part of the Search Application.
+    /// **Required.** Indices that are part of the Search Application.
     pub fn indices(
         self,
         value: impl Into<Vec<crate::typed::_types::IndexName>>,
@@ -336,7 +384,7 @@ impl<S1, S2> SearchApplicationBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> SearchApplicationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Search Application name
+    /// **Required.** Search Application name
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -348,7 +396,7 @@ impl<S0, S2> SearchApplicationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> SearchApplicationBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Last time the Search Application was updated.
+    /// **Required.** Last time the Search Application was updated.
     pub fn updated_at_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -359,15 +407,14 @@ impl<S0, S1> SearchApplicationBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    SearchApplicationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> SearchApplicationBuilder<(S0, S1, S2)> {
     /// Builds a [`SearchApplication`].
-    pub fn build(self) -> SearchApplication {
+    pub fn build(self) -> SearchApplication
+    where
+        S0: crate::typed::builder::IsSet<search_application_members::indices>,
+        S1: crate::typed::builder::IsSet<search_application_members::name>,
+        S2: crate::typed::builder::IsSet<search_application_members::updated_at_millis>,
+    {
         SearchApplication {
             indices: self.indices.unwrap(),
             analytics_collection_name: self.analytics_collection_name,
@@ -378,54 +425,28 @@ impl
     }
 }
 
-impl
-    From<
-        SearchApplicationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SearchApplication
+impl<S0, S1, S2> crate::typed::builder::Build for SearchApplicationBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<search_application_members::indices>,
+    S1: crate::typed::builder::IsSet<search_application_members::name>,
+    S2: crate::typed::builder::IsSet<search_application_members::updated_at_millis>,
 {
-    fn from(
-        builder: SearchApplicationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SearchApplication;
+
+    fn build(self) -> SearchApplication {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> SearchApplicationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> SearchApplication { match indices {} }
-}
-
-impl<S2>
-    SearchApplicationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<SearchApplicationBuilder<(S0, S1, S2)>> for SearchApplication
+where
+    S0: crate::typed::builder::IsSet<search_application_members::indices>,
+    S1: crate::typed::builder::IsSet<search_application_members::name>,
+    S2: crate::typed::builder::IsSet<search_application_members::updated_at_millis>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> SearchApplication { match name {} }
-}
-
-impl
-    SearchApplicationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `updated_at_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, updated_at_millis: crate::typed::builder::MissingRequiredField) -> SearchApplication { match updated_at_millis {} }
+    fn from(builder: SearchApplicationBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -442,18 +463,27 @@ pub struct SearchApplicationParameters {
 
 impl SearchApplicationParameters {
     /// Creates a builder for [`SearchApplicationParameters`].
+    ///
+    /// Required: `indices`.
     pub fn builder() -> SearchApplicationParametersBuilder {
         SearchApplicationParametersBuilder::new()
     }
 
     /// Creates a [`SearchApplicationParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchApplicationParametersBuilder,
-        ) -> SearchApplicationParametersBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchApplicationParameters>>(
+        f: impl FnOnce(SearchApplicationParametersBuilder) -> B,
     ) -> SearchApplicationParameters {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchApplicationParametersBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_application_parameters_members {
+    pub struct indices;
 }
 
 /// Builder for [`SearchApplicationParameters`].
@@ -517,18 +547,16 @@ impl<S0> SearchApplicationParametersBuilder<(S0,)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = SearchApplicationTemplate>>(
         self,
-        f: impl FnOnce(
-            SearchApplicationTemplateBuilder,
-        ) -> SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SearchApplicationTemplateBuilder) -> B,
     ) -> Self {
         self.template(f(SearchApplicationTemplateBuilder::new()).build())
     }
 }
 
 impl SearchApplicationParametersBuilder<(crate::typed::builder::NotSet,)> {
-    /// Indices that are part of the Search Application.
+    /// **Required.** Indices that are part of the Search Application.
     pub fn indices(
         self,
         value: impl Into<Vec<crate::typed::_types::IndexName>>,
@@ -562,9 +590,12 @@ impl SearchApplicationParametersBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl SearchApplicationParametersBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SearchApplicationParametersBuilder<(S0,)> {
     /// Builds a [`SearchApplicationParameters`].
-    pub fn build(self) -> SearchApplicationParameters {
+    pub fn build(self) -> SearchApplicationParameters
+    where
+        S0: crate::typed::builder::IsSet<search_application_parameters_members::indices>,
+    {
         SearchApplicationParameters {
             indices: self.indices.unwrap(),
             analytics_collection_name: self.analytics_collection_name,
@@ -573,18 +604,24 @@ impl SearchApplicationParametersBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SearchApplicationParametersBuilder<(crate::typed::builder::Set,)>>
-    for SearchApplicationParameters
+impl<S0> crate::typed::builder::Build for SearchApplicationParametersBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<search_application_parameters_members::indices>,
 {
-    fn from(builder: SearchApplicationParametersBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SearchApplicationParameters;
+
+    fn build(self) -> SearchApplicationParameters {
+        Self::build(self)
     }
 }
 
-impl SearchApplicationParametersBuilder<(crate::typed::builder::NotSet,)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> SearchApplicationParameters { match indices {} }
+impl<S0> From<SearchApplicationParametersBuilder<(S0,)>> for SearchApplicationParameters
+where
+    S0: crate::typed::builder::IsSet<search_application_parameters_members::indices>,
+{
+    fn from(builder: SearchApplicationParametersBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -595,18 +632,27 @@ pub struct SearchApplicationTemplate {
 
 impl SearchApplicationTemplate {
     /// Creates a builder for [`SearchApplicationTemplate`].
+    ///
+    /// Required: `script`.
     pub fn builder() -> SearchApplicationTemplateBuilder {
         SearchApplicationTemplateBuilder::new()
     }
 
     /// Creates a [`SearchApplicationTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchApplicationTemplateBuilder,
-        ) -> SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchApplicationTemplate>>(
+        f: impl FnOnce(SearchApplicationTemplateBuilder) -> B,
     ) -> SearchApplicationTemplate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchApplicationTemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_application_template_members {
+    pub struct script;
 }
 
 /// Builder for [`SearchApplicationTemplate`].
@@ -635,7 +681,7 @@ impl<S0> SearchApplicationTemplateBuilder<(S0,)> {
 }
 
 impl SearchApplicationTemplateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The associated mustache template.
+    /// **Required.** The associated mustache template.
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -646,33 +692,42 @@ impl SearchApplicationTemplateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SearchApplicationTemplateBuilder<(S0,)> {
     /// Builds a [`SearchApplicationTemplate`].
-    pub fn build(self) -> SearchApplicationTemplate {
+    pub fn build(self) -> SearchApplicationTemplate
+    where
+        S0: crate::typed::builder::IsSet<search_application_template_members::script>,
+    {
         SearchApplicationTemplate {
             script: self.script.unwrap(),
         }
     }
 }
 
-impl From<SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>>
-    for SearchApplicationTemplate
+impl<S0> crate::typed::builder::Build for SearchApplicationTemplateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<search_application_template_members::script>,
 {
-    fn from(builder: SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SearchApplicationTemplate;
+
+    fn build(self) -> SearchApplicationTemplate {
+        Self::build(self)
     }
 }
 
-impl SearchApplicationTemplateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> SearchApplicationTemplate { match script {} }
+impl<S0> From<SearchApplicationTemplateBuilder<(S0,)>> for SearchApplicationTemplate
+where
+    S0: crate::typed::builder::IsSet<search_application_template_members::script>,
+{
+    fn from(builder: SearchApplicationTemplateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

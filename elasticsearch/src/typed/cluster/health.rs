@@ -46,35 +46,42 @@ pub struct HealthResponseBody {
 
 impl HealthResponseBody {
     /// Creates a builder for [`HealthResponseBody`].
+    ///
+    /// Required: `active_primary_shards`, `active_shards`, `active_shards_percent_as_number`, `cluster_name`, `delayed_unassigned_shards`, `initializing_shards`, `number_of_data_nodes`, `number_of_in_flight_fetch`, `number_of_nodes`, `number_of_pending_tasks`, `relocating_shards`, `status`, `task_max_waiting_in_queue_millis`, `timed_out`, `unassigned_primary_shards`, `unassigned_shards`.
     pub fn builder() -> HealthResponseBodyBuilder {
         HealthResponseBodyBuilder::new()
     }
 
     /// Creates a [`HealthResponseBody`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HealthResponseBodyBuilder,
-        ) -> HealthResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active_primary_shards`, `active_shards`, `active_shards_percent_as_number`, `cluster_name`, `delayed_unassigned_shards`, `initializing_shards`, `number_of_data_nodes`, `number_of_in_flight_fetch`, `number_of_nodes`, `number_of_pending_tasks`, `relocating_shards`, `status`, `task_max_waiting_in_queue_millis`, `timed_out`, `unassigned_primary_shards`, `unassigned_shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = HealthResponseBody>>(
+        f: impl FnOnce(HealthResponseBodyBuilder) -> B,
     ) -> HealthResponseBody {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HealthResponseBodyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod health_response_body_members {
+    pub struct active_primary_shards;
+    pub struct active_shards;
+    pub struct active_shards_percent_as_number;
+    pub struct cluster_name;
+    pub struct delayed_unassigned_shards;
+    pub struct initializing_shards;
+    pub struct number_of_data_nodes;
+    pub struct number_of_in_flight_fetch;
+    pub struct number_of_nodes;
+    pub struct number_of_pending_tasks;
+    pub struct relocating_shards;
+    pub struct status;
+    pub struct task_max_waiting_in_queue_millis;
+    pub struct timed_out;
+    pub struct unassigned_primary_shards;
+    pub struct unassigned_shards;
 }
 
 /// Builder for [`HealthResponseBody`].
@@ -254,22 +261,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
     }
 
     /// Adds an entry to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndexHealthStats>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            IndexHealthStatsBuilder,
-        ) -> IndexHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexHealthStatsBuilder) -> B,
     ) -> Self {
         self.add_indices(key, f(IndexHealthStatsBuilder::new()).build())
     }
@@ -313,7 +308,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of active primary shards.
+    /// **Required.** The number of active primary shards.
     pub fn active_primary_shards(
         self,
         value: i32,
@@ -361,7 +356,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The total number of active primary and replica shards.
+    /// **Required.** The total number of active primary and replica shards.
     pub fn active_shards(
         self,
         value: i32,
@@ -409,7 +404,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The ratio of active shards in the cluster expressed as a percentage.
+    /// **Required.** The ratio of active shards in the cluster expressed as a percentage.
     pub fn active_shards_percent_as_number(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -457,7 +452,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The name of the cluster.
+    /// **Required.** The name of the cluster.
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -505,7 +500,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of shards whose allocation has been delayed by the timeout settings.
+    /// **Required.** The number of shards whose allocation has been delayed by the timeout settings.
     pub fn delayed_unassigned_shards(
         self,
         value: i32,
@@ -553,7 +548,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of shards that are under initialization.
+    /// **Required.** The number of shards that are under initialization.
     pub fn initializing_shards(
         self,
         value: i32,
@@ -601,7 +596,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of nodes that are dedicated data nodes.
+    /// **Required.** The number of nodes that are dedicated data nodes.
     pub fn number_of_data_nodes(
         self,
         value: i32,
@@ -649,7 +644,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of unfinished fetches.
+    /// **Required.** The number of unfinished fetches.
     pub fn number_of_in_flight_fetch(
         self,
         value: i32,
@@ -697,7 +692,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of nodes within the cluster.
+    /// **Required.** The number of nodes within the cluster.
     pub fn number_of_nodes(
         self,
         value: i32,
@@ -745,7 +740,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of cluster-level changes that have not yet been executed.
+    /// **Required.** The number of cluster-level changes that have not yet been executed.
     pub fn number_of_pending_tasks(
         self,
         value: i32,
@@ -793,7 +788,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11, S12, S13, S14, S15>
         S15,
     )>
 {
-    /// The number of shards that are under relocation.
+    /// **Required.** The number of shards that are under relocation.
     pub fn relocating_shards(
         self,
         value: i32,
@@ -841,6 +836,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<crate::typed::_types::HealthStatus>,
@@ -888,7 +884,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S13, S14, S15>
         S15,
     )>
 {
-    /// The time expressed in milliseconds since the earliest initiated task is waiting for being performed.
+    /// **Required.** The time expressed in milliseconds since the earliest initiated task is waiting for being performed.
     pub fn task_max_waiting_in_queue_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -936,7 +932,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S14, S15>
         S15,
     )>
 {
-    /// If false the response returned within the period of time that is specified by the timeout parameter (30s by default)
+    /// **Required.** If false the response returned within the period of time that is specified by the timeout parameter (30s by default)
     pub fn timed_out(
         self,
         value: bool,
@@ -984,7 +980,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S15>
         S15,
     )>
 {
-    /// The number of primary shards that are not allocated.
+    /// **Required.** The number of primary shards that are not allocated.
     pub fn unassigned_primary_shards(
         self,
         value: i32,
@@ -1032,7 +1028,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The number of shards that are not allocated.
+    /// **Required.** The number of shards that are not allocated.
     pub fn unassigned_shards(
         self,
         value: i32,
@@ -1060,28 +1056,50 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
     }
 }
 
-impl
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
     HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
     )>
 {
     /// Builds a [`HealthResponseBody`].
-    pub fn build(self) -> HealthResponseBody {
+    pub fn build(self) -> HealthResponseBody
+    where
+        S0: crate::typed::builder::IsSet<health_response_body_members::active_primary_shards>,
+        S1: crate::typed::builder::IsSet<health_response_body_members::active_shards>,
+        S2: crate::typed::builder::IsSet<
+            health_response_body_members::active_shards_percent_as_number,
+        >,
+        S3: crate::typed::builder::IsSet<health_response_body_members::cluster_name>,
+        S4: crate::typed::builder::IsSet<health_response_body_members::delayed_unassigned_shards>,
+        S5: crate::typed::builder::IsSet<health_response_body_members::initializing_shards>,
+        S6: crate::typed::builder::IsSet<health_response_body_members::number_of_data_nodes>,
+        S7: crate::typed::builder::IsSet<health_response_body_members::number_of_in_flight_fetch>,
+        S8: crate::typed::builder::IsSet<health_response_body_members::number_of_nodes>,
+        S9: crate::typed::builder::IsSet<health_response_body_members::number_of_pending_tasks>,
+        S10: crate::typed::builder::IsSet<health_response_body_members::relocating_shards>,
+        S11: crate::typed::builder::IsSet<health_response_body_members::status>,
+        S12: crate::typed::builder::IsSet<
+            health_response_body_members::task_max_waiting_in_queue_millis,
+        >,
+        S13: crate::typed::builder::IsSet<health_response_body_members::timed_out>,
+        S14: crate::typed::builder::IsSet<health_response_body_members::unassigned_primary_shards>,
+        S15: crate::typed::builder::IsSet<health_response_body_members::unassigned_shards>,
+    {
         HealthResponseBody {
             active_primary_shards: self.active_primary_shards.unwrap(),
             active_shards: self.active_shards.unwrap(),
@@ -1106,55 +1124,10 @@ impl
     }
 }
 
-impl
-    From<
-        HealthResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HealthResponseBody
-{
-    fn from(
-        builder: HealthResponseBodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
-    }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::NotSet,
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
+    crate::typed::builder::Build
+    for HealthResponseBodyBuilder<(
+        S0,
         S1,
         S2,
         S3,
@@ -1171,385 +1144,96 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S14,
         S15,
     )>
+where
+    S0: crate::typed::builder::IsSet<health_response_body_members::active_primary_shards>,
+    S1: crate::typed::builder::IsSet<health_response_body_members::active_shards>,
+    S2: crate::typed::builder::IsSet<health_response_body_members::active_shards_percent_as_number>,
+    S3: crate::typed::builder::IsSet<health_response_body_members::cluster_name>,
+    S4: crate::typed::builder::IsSet<health_response_body_members::delayed_unassigned_shards>,
+    S5: crate::typed::builder::IsSet<health_response_body_members::initializing_shards>,
+    S6: crate::typed::builder::IsSet<health_response_body_members::number_of_data_nodes>,
+    S7: crate::typed::builder::IsSet<health_response_body_members::number_of_in_flight_fetch>,
+    S8: crate::typed::builder::IsSet<health_response_body_members::number_of_nodes>,
+    S9: crate::typed::builder::IsSet<health_response_body_members::number_of_pending_tasks>,
+    S10: crate::typed::builder::IsSet<health_response_body_members::relocating_shards>,
+    S11: crate::typed::builder::IsSet<health_response_body_members::status>,
+    S12: crate::typed::builder::IsSet<
+        health_response_body_members::task_max_waiting_in_queue_millis,
+    >,
+    S13: crate::typed::builder::IsSet<health_response_body_members::timed_out>,
+    S14: crate::typed::builder::IsSet<health_response_body_members::unassigned_primary_shards>,
+    S15: crate::typed::builder::IsSet<health_response_body_members::unassigned_shards>,
 {
-    /// `active_primary_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_primary_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match active_primary_shards {} }
+    type Output = HealthResponseBody;
+
+    fn build(self) -> HealthResponseBody {
+        Self::build(self)
+    }
 }
 
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
+    From<
+        HealthResponseBodyBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+        )>,
+    > for HealthResponseBody
+where
+    S0: crate::typed::builder::IsSet<health_response_body_members::active_primary_shards>,
+    S1: crate::typed::builder::IsSet<health_response_body_members::active_shards>,
+    S2: crate::typed::builder::IsSet<health_response_body_members::active_shards_percent_as_number>,
+    S3: crate::typed::builder::IsSet<health_response_body_members::cluster_name>,
+    S4: crate::typed::builder::IsSet<health_response_body_members::delayed_unassigned_shards>,
+    S5: crate::typed::builder::IsSet<health_response_body_members::initializing_shards>,
+    S6: crate::typed::builder::IsSet<health_response_body_members::number_of_data_nodes>,
+    S7: crate::typed::builder::IsSet<health_response_body_members::number_of_in_flight_fetch>,
+    S8: crate::typed::builder::IsSet<health_response_body_members::number_of_nodes>,
+    S9: crate::typed::builder::IsSet<health_response_body_members::number_of_pending_tasks>,
+    S10: crate::typed::builder::IsSet<health_response_body_members::relocating_shards>,
+    S11: crate::typed::builder::IsSet<health_response_body_members::status>,
+    S12: crate::typed::builder::IsSet<
+        health_response_body_members::task_max_waiting_in_queue_millis,
+    >,
+    S13: crate::typed::builder::IsSet<health_response_body_members::timed_out>,
+    S14: crate::typed::builder::IsSet<health_response_body_members::unassigned_primary_shards>,
+    S15: crate::typed::builder::IsSet<health_response_body_members::unassigned_shards>,
 {
-    /// `active_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match active_shards {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `active_shards_percent_as_number` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_shards_percent_as_number: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match active_shards_percent_as_number {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match cluster_name {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `delayed_unassigned_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delayed_unassigned_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match delayed_unassigned_shards {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `initializing_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match initializing_shards {} }
-}
-
-impl<S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `number_of_data_nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_data_nodes: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match number_of_data_nodes {} }
-}
-
-impl<S8, S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `number_of_in_flight_fetch` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_in_flight_fetch: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match number_of_in_flight_fetch {} }
-}
-
-impl<S9, S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `number_of_nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_nodes: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match number_of_nodes {} }
-}
-
-impl<S10, S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `number_of_pending_tasks` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_pending_tasks: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match number_of_pending_tasks {} }
-}
-
-impl<S11, S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `relocating_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, relocating_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match relocating_shards {} }
-}
-
-impl<S12, S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match status {} }
-}
-
-impl<S13, S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `task_max_waiting_in_queue_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_max_waiting_in_queue_millis: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match task_max_waiting_in_queue_millis {} }
-}
-
-impl<S14, S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S14,
-        S15,
-    )>
-{
-    /// `timed_out` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timed_out: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match timed_out {} }
-}
-
-impl<S15>
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S15,
-    )>
-{
-    /// `unassigned_primary_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_primary_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match unassigned_primary_shards {} }
-}
-
-impl
-    HealthResponseBodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `unassigned_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_shards: crate::typed::builder::MissingRequiredField) -> HealthResponseBody { match unassigned_shards {} }
+    fn from(
+        builder: HealthResponseBodyBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+        )>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1569,28 +1253,35 @@ pub struct IndexHealthStats {
 
 impl IndexHealthStats {
     /// Creates a builder for [`IndexHealthStats`].
+    ///
+    /// Required: `active_primary_shards`, `active_shards`, `initializing_shards`, `number_of_replicas`, `number_of_shards`, `relocating_shards`, `status`, `unassigned_shards`, `unassigned_primary_shards`.
     pub fn builder() -> IndexHealthStatsBuilder {
         IndexHealthStatsBuilder::new()
     }
 
     /// Creates a [`IndexHealthStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexHealthStatsBuilder,
-        ) -> IndexHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active_primary_shards`, `active_shards`, `initializing_shards`, `number_of_replicas`, `number_of_shards`, `relocating_shards`, `status`, `unassigned_shards`, `unassigned_primary_shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexHealthStats>>(
+        f: impl FnOnce(IndexHealthStatsBuilder) -> B,
     ) -> IndexHealthStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexHealthStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_health_stats_members {
+    pub struct active_primary_shards;
+    pub struct active_shards;
+    pub struct initializing_shards;
+    pub struct number_of_replicas;
+    pub struct number_of_shards;
+    pub struct relocating_shards;
+    pub struct status;
+    pub struct unassigned_shards;
+    pub struct unassigned_primary_shards;
 }
 
 /// Builder for [`IndexHealthStats`].
@@ -1700,20 +1391,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardHealthStats>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ShardHealthStatsBuilder,
-        ) -> ShardHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardHealthStatsBuilder) -> B,
     ) -> Self {
         self.add_shards(key, f(ShardHealthStatsBuilder::new()).build())
     }
@@ -1732,6 +1413,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn active_primary_shards(
         self,
         value: i32,
@@ -1755,6 +1437,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn active_shards(
         self,
         value: i32,
@@ -1778,6 +1461,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn initializing_shards(
         self,
         value: i32,
@@ -1801,6 +1485,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn number_of_replicas(
         self,
         value: i32,
@@ -1824,6 +1509,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn number_of_shards(
         self,
         value: i32,
@@ -1847,6 +1533,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn relocating_shards(
         self,
         value: i32,
@@ -1870,6 +1557,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<crate::typed::_types::HealthStatus>,
@@ -1893,6 +1581,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn unassigned_shards(
         self,
         value: i32,
@@ -1916,6 +1605,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn unassigned_primary_shards(
         self,
         value: i32,
@@ -1926,21 +1616,22 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    IndexHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`IndexHealthStats`].
-    pub fn build(self) -> IndexHealthStats {
+    pub fn build(self) -> IndexHealthStats
+    where
+        S0: crate::typed::builder::IsSet<index_health_stats_members::active_primary_shards>,
+        S1: crate::typed::builder::IsSet<index_health_stats_members::active_shards>,
+        S2: crate::typed::builder::IsSet<index_health_stats_members::initializing_shards>,
+        S3: crate::typed::builder::IsSet<index_health_stats_members::number_of_replicas>,
+        S4: crate::typed::builder::IsSet<index_health_stats_members::number_of_shards>,
+        S5: crate::typed::builder::IsSet<index_health_stats_members::relocating_shards>,
+        S6: crate::typed::builder::IsSet<index_health_stats_members::status>,
+        S7: crate::typed::builder::IsSet<index_health_stats_members::unassigned_shards>,
+        S8: crate::typed::builder::IsSet<index_health_stats_members::unassigned_primary_shards>,
+    {
         IndexHealthStats {
             active_primary_shards: self.active_primary_shards.unwrap(),
             active_shards: self.active_shards.unwrap(),
@@ -1956,198 +1647,42 @@ impl
     }
 }
 
-impl
-    From<
-        IndexHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IndexHealthStats
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for IndexHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<index_health_stats_members::active_primary_shards>,
+    S1: crate::typed::builder::IsSet<index_health_stats_members::active_shards>,
+    S2: crate::typed::builder::IsSet<index_health_stats_members::initializing_shards>,
+    S3: crate::typed::builder::IsSet<index_health_stats_members::number_of_replicas>,
+    S4: crate::typed::builder::IsSet<index_health_stats_members::number_of_shards>,
+    S5: crate::typed::builder::IsSet<index_health_stats_members::relocating_shards>,
+    S6: crate::typed::builder::IsSet<index_health_stats_members::status>,
+    S7: crate::typed::builder::IsSet<index_health_stats_members::unassigned_shards>,
+    S8: crate::typed::builder::IsSet<index_health_stats_members::unassigned_primary_shards>,
 {
-    fn from(
-        builder: IndexHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexHealthStats;
+
+    fn build(self) -> IndexHealthStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<IndexHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>> for IndexHealthStats
+where
+    S0: crate::typed::builder::IsSet<index_health_stats_members::active_primary_shards>,
+    S1: crate::typed::builder::IsSet<index_health_stats_members::active_shards>,
+    S2: crate::typed::builder::IsSet<index_health_stats_members::initializing_shards>,
+    S3: crate::typed::builder::IsSet<index_health_stats_members::number_of_replicas>,
+    S4: crate::typed::builder::IsSet<index_health_stats_members::number_of_shards>,
+    S5: crate::typed::builder::IsSet<index_health_stats_members::relocating_shards>,
+    S6: crate::typed::builder::IsSet<index_health_stats_members::status>,
+    S7: crate::typed::builder::IsSet<index_health_stats_members::unassigned_shards>,
+    S8: crate::typed::builder::IsSet<index_health_stats_members::unassigned_primary_shards>,
 {
-    /// `active_primary_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_primary_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match active_primary_shards {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `active_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match active_shards {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `initializing_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match initializing_shards {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `number_of_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_replicas: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match number_of_replicas {} }
-}
-
-impl<S5, S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `number_of_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match number_of_shards {} }
-}
-
-impl<S6, S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `relocating_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, relocating_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match relocating_shards {} }
-}
-
-impl<S7, S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match status {} }
-}
-
-impl<S8>
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `unassigned_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match unassigned_shards {} }
-}
-
-impl
-    IndexHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `unassigned_primary_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_primary_shards: crate::typed::builder::MissingRequiredField) -> IndexHealthStats { match unassigned_primary_shards {} }
+    fn from(builder: IndexHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.health`](crate::typed::cluster::ClusterClient::health).
@@ -2228,7 +1763,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -2540,6 +2077,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -2700,26 +2245,33 @@ pub struct ShardHealthStats {
 
 impl ShardHealthStats {
     /// Creates a builder for [`ShardHealthStats`].
+    ///
+    /// Required: `active_shards`, `initializing_shards`, `primary_active`, `relocating_shards`, `status`, `unassigned_shards`, `unassigned_primary_shards`.
     pub fn builder() -> ShardHealthStatsBuilder {
         ShardHealthStatsBuilder::new()
     }
 
     /// Creates a [`ShardHealthStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardHealthStatsBuilder,
-        ) -> ShardHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active_shards`, `initializing_shards`, `primary_active`, `relocating_shards`, `status`, `unassigned_shards`, `unassigned_primary_shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardHealthStats>>(
+        f: impl FnOnce(ShardHealthStatsBuilder) -> B,
     ) -> ShardHealthStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardHealthStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_health_stats_members {
+    pub struct active_shards;
+    pub struct initializing_shards;
+    pub struct primary_active;
+    pub struct relocating_shards;
+    pub struct status;
+    pub struct unassigned_shards;
+    pub struct unassigned_primary_shards;
 }
 
 /// Builder for [`ShardHealthStats`].
@@ -2788,6 +2340,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5
 impl<S1, S2, S3, S4, S5, S6>
     ShardHealthStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn active_shards(
         self,
         value: i32,
@@ -2801,6 +2354,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     ShardHealthStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn initializing_shards(
         self,
         value: i32,
@@ -2814,6 +2368,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     ShardHealthStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn primary_active(
         self,
         value: bool,
@@ -2827,6 +2382,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     ShardHealthStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn relocating_shards(
         self,
         value: i32,
@@ -2840,6 +2396,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     ShardHealthStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<crate::typed::_types::HealthStatus>,
@@ -2853,6 +2410,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn unassigned_shards(
         self,
         value: i32,
@@ -2866,6 +2424,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn unassigned_primary_shards(
         self,
         value: i32,
@@ -2876,19 +2435,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`ShardHealthStats`].
-    pub fn build(self) -> ShardHealthStats {
+    pub fn build(self) -> ShardHealthStats
+    where
+        S0: crate::typed::builder::IsSet<shard_health_stats_members::active_shards>,
+        S1: crate::typed::builder::IsSet<shard_health_stats_members::initializing_shards>,
+        S2: crate::typed::builder::IsSet<shard_health_stats_members::primary_active>,
+        S3: crate::typed::builder::IsSet<shard_health_stats_members::relocating_shards>,
+        S4: crate::typed::builder::IsSet<shard_health_stats_members::status>,
+        S5: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_shards>,
+        S6: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_primary_shards>,
+    {
         ShardHealthStats {
             active_shards: self.active_shards.unwrap(),
             initializing_shards: self.initializing_shards.unwrap(),
@@ -2901,136 +2459,38 @@ impl
     }
 }
 
-impl
-    From<
-        ShardHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardHealthStats
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<shard_health_stats_members::active_shards>,
+    S1: crate::typed::builder::IsSet<shard_health_stats_members::initializing_shards>,
+    S2: crate::typed::builder::IsSet<shard_health_stats_members::primary_active>,
+    S3: crate::typed::builder::IsSet<shard_health_stats_members::relocating_shards>,
+    S4: crate::typed::builder::IsSet<shard_health_stats_members::status>,
+    S5: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_shards>,
+    S6: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_primary_shards>,
 {
-    fn from(
-        builder: ShardHealthStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardHealthStats;
+
+    fn build(self) -> ShardHealthStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    ShardHealthStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for ShardHealthStats
+where
+    S0: crate::typed::builder::IsSet<shard_health_stats_members::active_shards>,
+    S1: crate::typed::builder::IsSet<shard_health_stats_members::initializing_shards>,
+    S2: crate::typed::builder::IsSet<shard_health_stats_members::primary_active>,
+    S3: crate::typed::builder::IsSet<shard_health_stats_members::relocating_shards>,
+    S4: crate::typed::builder::IsSet<shard_health_stats_members::status>,
+    S5: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_shards>,
+    S6: crate::typed::builder::IsSet<shard_health_stats_members::unassigned_primary_shards>,
 {
-    /// `active_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_shards: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match active_shards {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `initializing_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing_shards: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match initializing_shards {} }
-}
-
-impl<S3, S4, S5, S6>
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `primary_active` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primary_active: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match primary_active {} }
-}
-
-impl<S4, S5, S6>
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `relocating_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, relocating_shards: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match relocating_shards {} }
-}
-
-impl<S5, S6>
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match status {} }
-}
-
-impl<S6>
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `unassigned_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_shards: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match unassigned_shards {} }
-}
-
-impl
-    ShardHealthStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `unassigned_primary_shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_primary_shards: crate::typed::builder::MissingRequiredField) -> ShardHealthStats { match unassigned_primary_shards {} }
+    fn from(builder: ShardHealthStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

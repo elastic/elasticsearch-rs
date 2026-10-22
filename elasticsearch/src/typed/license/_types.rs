@@ -33,26 +33,33 @@ impl From<i64> for LicenseMaxNodes {
 
 impl License {
     /// Creates a builder for [`License`].
+    ///
+    /// Required: `expiry_date_in_millis`, `issue_date_in_millis`, `issued_to`, `issuer`, `signature`, `type`, `uid`.
     pub fn builder() -> LicenseBuilder {
         LicenseBuilder::new()
     }
 
     /// Creates a [`License`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LicenseBuilder,
-        ) -> LicenseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `expiry_date_in_millis`, `issue_date_in_millis`, `issued_to`, `issuer`, `signature`, `type`, `uid`.
+    pub fn of<B: crate::typed::builder::Build<Output = License>>(
+        f: impl FnOnce(LicenseBuilder) -> B,
     ) -> License {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LicenseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod license_members {
+    pub struct expiry_date_in_millis;
+    pub struct issue_date_in_millis;
+    pub struct issued_to;
+    pub struct issuer;
+    pub struct signature;
+    pub struct r#type;
+    pub struct uid;
 }
 
 /// Builder for [`License`].
@@ -169,6 +176,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> LicenseBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
 impl<S1, S2, S3, S4, S5, S6>
     LicenseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn expiry_date_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -182,6 +190,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     LicenseBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn issue_date_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -195,6 +204,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     LicenseBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn issued_to(
         self,
         value: impl Into<String>,
@@ -208,6 +218,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     LicenseBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn issuer(
         self,
         value: impl Into<String>,
@@ -221,6 +232,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     LicenseBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn signature(
         self,
         value: impl Into<String>,
@@ -234,6 +246,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     LicenseBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<LicenseType>,
@@ -247,6 +260,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     LicenseBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn uid(
         self,
         value: impl Into<String>,
@@ -257,19 +271,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> LicenseBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`License`].
-    pub fn build(self) -> License {
+    pub fn build(self) -> License
+    where
+        S0: crate::typed::builder::IsSet<license_members::expiry_date_in_millis>,
+        S1: crate::typed::builder::IsSet<license_members::issue_date_in_millis>,
+        S2: crate::typed::builder::IsSet<license_members::issued_to>,
+        S3: crate::typed::builder::IsSet<license_members::issuer>,
+        S4: crate::typed::builder::IsSet<license_members::signature>,
+        S5: crate::typed::builder::IsSet<license_members::r#type>,
+        S6: crate::typed::builder::IsSet<license_members::uid>,
+    {
         License {
             expiry_date_in_millis: self.expiry_date_in_millis.unwrap(),
             issue_date_in_millis: self.issue_date_in_millis.unwrap(),
@@ -285,136 +298,37 @@ impl
     }
 }
 
-impl
-    From<
-        LicenseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for License
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for LicenseBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<license_members::expiry_date_in_millis>,
+    S1: crate::typed::builder::IsSet<license_members::issue_date_in_millis>,
+    S2: crate::typed::builder::IsSet<license_members::issued_to>,
+    S3: crate::typed::builder::IsSet<license_members::issuer>,
+    S4: crate::typed::builder::IsSet<license_members::signature>,
+    S5: crate::typed::builder::IsSet<license_members::r#type>,
+    S6: crate::typed::builder::IsSet<license_members::uid>,
 {
-    fn from(
-        builder: LicenseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = License;
+
+    fn build(self) -> License {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    LicenseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<LicenseBuilder<(S0, S1, S2, S3, S4, S5, S6)>> for License
+where
+    S0: crate::typed::builder::IsSet<license_members::expiry_date_in_millis>,
+    S1: crate::typed::builder::IsSet<license_members::issue_date_in_millis>,
+    S2: crate::typed::builder::IsSet<license_members::issued_to>,
+    S3: crate::typed::builder::IsSet<license_members::issuer>,
+    S4: crate::typed::builder::IsSet<license_members::signature>,
+    S5: crate::typed::builder::IsSet<license_members::r#type>,
+    S6: crate::typed::builder::IsSet<license_members::uid>,
 {
-    /// `expiry_date_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiry_date_in_millis: crate::typed::builder::MissingRequiredField) -> License { match expiry_date_in_millis {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `issue_date_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, issue_date_in_millis: crate::typed::builder::MissingRequiredField) -> License { match issue_date_in_millis {} }
-}
-
-impl<S3, S4, S5, S6>
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `issued_to` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, issued_to: crate::typed::builder::MissingRequiredField) -> License { match issued_to {} }
-}
-
-impl<S4, S5, S6>
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `issuer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, issuer: crate::typed::builder::MissingRequiredField) -> License { match issuer {} }
-}
-
-impl<S5, S6>
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `signature` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, signature: crate::typed::builder::MissingRequiredField) -> License { match signature {} }
-}
-
-impl<S6>
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> License { match r#type {} }
-}
-
-impl
-    LicenseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `uid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uid: crate::typed::builder::MissingRequiredField) -> License { match uid {} }
+    fn from(builder: LicenseBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

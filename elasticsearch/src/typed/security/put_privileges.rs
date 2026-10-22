@@ -14,16 +14,27 @@ pub struct Actions {
 
 impl Actions {
     /// Creates a builder for [`Actions`].
+    ///
+    /// Required: `actions`.
     pub fn builder() -> ActionsBuilder {
         ActionsBuilder::new()
     }
 
     /// Creates a [`Actions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ActionsBuilder) -> ActionsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `actions`.
+    pub fn of<B: crate::typed::builder::Build<Output = Actions>>(
+        f: impl FnOnce(ActionsBuilder) -> B,
     ) -> Actions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ActionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod actions_members {
+    pub struct actions;
 }
 
 /// Builder for [`Actions`].
@@ -106,6 +117,7 @@ impl<S0> ActionsBuilder<(S0,)> {
 }
 
 impl ActionsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn actions(
         self,
         value: impl Into<Vec<String>>,
@@ -139,9 +151,12 @@ impl ActionsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl ActionsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ActionsBuilder<(S0,)> {
     /// Builds a [`Actions`].
-    pub fn build(self) -> Actions {
+    pub fn build(self) -> Actions
+    where
+        S0: crate::typed::builder::IsSet<actions_members::actions>,
+    {
         Actions {
             actions: self.actions.unwrap(),
             application: self.application,
@@ -151,16 +166,24 @@ impl ActionsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ActionsBuilder<(crate::typed::builder::Set,)>> for Actions {
-    fn from(builder: ActionsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ActionsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<actions_members::actions>,
+{
+    type Output = Actions;
+
+    fn build(self) -> Actions {
+        Self::build(self)
     }
 }
 
-impl ActionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `actions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actions: crate::typed::builder::MissingRequiredField) -> Actions { match actions {} }
+impl<S0> From<ActionsBuilder<(S0,)>> for Actions
+where
+    S0: crate::typed::builder::IsSet<actions_members::actions>,
+{
+    fn from(builder: ActionsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.put_privileges`](crate::typed::security::SecurityClient::put_privileges).
@@ -211,16 +234,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `privileges`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct privileges;
 }
 
 /// Builder for [`Request`].
@@ -334,7 +368,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn privileges(
         self,
         value: impl Into<indexmap::IndexMap<String, indexmap::IndexMap<String, Actions>>>,
@@ -373,9 +407,12 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::privileges>,
+    {
         Request {
             refresh: self.refresh,
             error_trace: self.error_trace,
@@ -387,23 +424,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::privileges>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> Request { match privileges {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `privileges` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, privileges: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match privileges {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::privileges>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

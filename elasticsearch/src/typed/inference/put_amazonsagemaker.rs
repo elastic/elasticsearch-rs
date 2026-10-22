@@ -47,26 +47,30 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `task_type`, `amazonsagemaker_inference_id`, `service`, `service_settings`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `task_type`, `amazonsagemaker_inference_id`, `service`, `service_settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct task_type;
+    pub struct amazonsagemaker_inference_id;
+    pub struct service;
+    pub struct service_settings;
 }
 
 /// Builder for [`Request`].
@@ -232,11 +236,13 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::inference::_types::InferenceChunkingSettings,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::inference::_types::InferenceChunkingSettingsBuilder,
-        ) -> crate::typed::inference::_types::InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(crate::typed::inference::_types::InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(
             f(crate::typed::inference::_types::InferenceChunkingSettingsBuilder::new()).build(),
@@ -263,11 +269,13 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     }
 
     /// Sets [`task_settings`](Self::task_settings) with a builder.
-    pub fn task_settings_with(
+    pub fn task_settings_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::inference::_types::AmazonSageMakerTaskSettings,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::inference::_types::AmazonSageMakerTaskSettingsBuilder,
-        ) -> crate::typed::inference::_types::AmazonSageMakerTaskSettingsBuilder,
+        f: impl FnOnce(crate::typed::inference::_types::AmazonSageMakerTaskSettingsBuilder) -> B,
     ) -> Self {
         self.task_settings(
             f(crate::typed::inference::_types::AmazonSageMakerTaskSettingsBuilder::new()).build(),
@@ -276,7 +284,7 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
 }
 
 impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// The type of the inference task that the model will perform.
+    /// **Required.** The type of the inference task that the model will perform.
     pub fn task_type(
         self,
         value: impl Into<crate::typed::inference::_types::TaskTypeAmazonSageMaker>,
@@ -288,7 +296,7 @@ impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), 
 }
 
 impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), C> {
-    /// The unique identifier of the inference endpoint.
+    /// **Required.** The unique identifier of the inference endpoint.
     pub fn amazonsagemaker_inference_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -300,7 +308,7 @@ impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), 
 }
 
 impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), C> {
-    /// The type of service supported for the specified task type. In this case, `amazon_sagemaker`.
+    /// **Required.** The type of service supported for the specified task type. In this case, `amazon_sagemaker`.
     pub fn service(
         self,
         value: impl Into<crate::typed::inference::_types::AmazonSageMakerServiceType>,
@@ -312,7 +320,7 @@ impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), 
 }
 
 impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), C> {
-    /// Settings used to install the inference model.
+    /// **Required.** Settings used to install the inference model.
     /// These settings are specific to the `amazon_sagemaker` service and `service_settings.api` you specified.
     pub fn service_settings(
         self,
@@ -324,18 +332,13 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), 
     }
 
     /// Sets [`service_settings`](Self::service_settings) with a builder.
-    pub fn service_settings_with(
+    pub fn service_settings_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::inference::_types::AmazonSageMakerServiceSettings,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::inference::_types::AmazonSageMakerServiceSettingsBuilder,
-        )
-            -> crate::typed::inference::_types::AmazonSageMakerServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::inference::_types::AmazonSageMakerServiceSettingsBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, S2, crate::typed::builder::Set), C> {
         self.service_settings(
             f(crate::typed::inference::_types::AmazonSageMakerServiceSettingsBuilder::new())
@@ -344,19 +347,15 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), 
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_type>,
+        S1: crate::typed::builder::IsSet<request_members::amazonsagemaker_inference_id>,
+        S2: crate::typed::builder::IsSet<request_members::service>,
+        S3: crate::typed::builder::IsSet<request_members::service_settings>,
+    {
         Request {
             task_type: self.task_type.unwrap(),
             amazonsagemaker_inference_id: self.amazonsagemaker_inference_id.unwrap(),
@@ -373,128 +372,32 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::task_type>,
+    S1: crate::typed::builder::IsSet<request_members::amazonsagemaker_inference_id>,
+    S2: crate::typed::builder::IsSet<request_members::service>,
+    S3: crate::typed::builder::IsSet<request_members::service_settings>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> Request { match task_type {} }
-}
-impl<S1, S2, S3>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), &crate::Elasticsearch>
-{
-    /// `task_type` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, task_type: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match task_type {} }
-}
-
-impl<S2, S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `amazonsagemaker_inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, amazonsagemaker_inference_id: crate::typed::builder::MissingRequiredField) -> Request { match amazonsagemaker_inference_id {} }
-}
-impl<S2, S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `amazonsagemaker_inference_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, amazonsagemaker_inference_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match amazonsagemaker_inference_id {} }
-}
-
-impl<S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> Request { match service {} }
-}
-impl<S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `service` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, service: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match service {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> Request { match service_settings {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `service_settings` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, service_settings: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match service_settings {} }
+impl<S0, S1, S2, S3> RequestBuilder<(S0, S1, S2, S3), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_type>,
+        S1: crate::typed::builder::IsSet<request_members::amazonsagemaker_inference_id>,
+        S2: crate::typed::builder::IsSet<request_members::service>,
+        S3: crate::typed::builder::IsSet<request_members::service_settings>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

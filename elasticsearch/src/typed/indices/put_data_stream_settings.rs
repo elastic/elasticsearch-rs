@@ -10,21 +10,28 @@ pub struct DataStreamSettingsError {
 
 impl DataStreamSettingsError {
     /// Creates a builder for [`DataStreamSettingsError`].
+    ///
+    /// Required: `index`, `error`.
     pub fn builder() -> DataStreamSettingsErrorBuilder {
         DataStreamSettingsErrorBuilder::new()
     }
 
     /// Creates a [`DataStreamSettingsError`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamSettingsErrorBuilder,
-        ) -> DataStreamSettingsErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `error`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamSettingsError>>(
+        f: impl FnOnce(DataStreamSettingsErrorBuilder) -> B,
     ) -> DataStreamSettingsError {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamSettingsErrorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_settings_error_members {
+    pub struct index;
+    pub struct error;
 }
 
 /// Builder for [`DataStreamSettingsError`].
@@ -60,6 +67,7 @@ impl<S0, S1> DataStreamSettingsErrorBuilder<(S0, S1)> {
 }
 
 impl<S1> DataStreamSettingsErrorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -71,7 +79,7 @@ impl<S1> DataStreamSettingsErrorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DataStreamSettingsErrorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A message explaining why the settings could not be applied to specific indices.
+    /// **Required.** A message explaining why the settings could not be applied to specific indices.
     pub fn error(
         self,
         value: impl Into<String>,
@@ -82,9 +90,13 @@ impl<S0> DataStreamSettingsErrorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DataStreamSettingsErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataStreamSettingsErrorBuilder<(S0, S1)> {
     /// Builds a [`DataStreamSettingsError`].
-    pub fn build(self) -> DataStreamSettingsError {
+    pub fn build(self) -> DataStreamSettingsError
+    where
+        S0: crate::typed::builder::IsSet<data_stream_settings_error_members::index>,
+        S1: crate::typed::builder::IsSet<data_stream_settings_error_members::error>,
+    {
         DataStreamSettingsError {
             index: self.index.unwrap(),
             error: self.error.unwrap(),
@@ -92,29 +104,26 @@ impl DataStreamSettingsErrorBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<DataStreamSettingsErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DataStreamSettingsError
+impl<S0, S1> crate::typed::builder::Build for DataStreamSettingsErrorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_settings_error_members::index>,
+    S1: crate::typed::builder::IsSet<data_stream_settings_error_members::error>,
 {
-    fn from(
-        builder: DataStreamSettingsErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamSettingsError;
+
+    fn build(self) -> DataStreamSettingsError {
+        Self::build(self)
     }
 }
 
-impl<S1> DataStreamSettingsErrorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> DataStreamSettingsError { match index {} }
-}
-
-impl DataStreamSettingsErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `error` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, error: crate::typed::builder::MissingRequiredField) -> DataStreamSettingsError { match error {} }
+impl<S0, S1> From<DataStreamSettingsErrorBuilder<(S0, S1)>> for DataStreamSettingsError
+where
+    S0: crate::typed::builder::IsSet<data_stream_settings_error_members::index>,
+    S1: crate::typed::builder::IsSet<data_stream_settings_error_members::error>,
+{
+    fn from(builder: DataStreamSettingsErrorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -131,21 +140,28 @@ pub struct IndexSettingResults {
 
 impl IndexSettingResults {
     /// Creates a builder for [`IndexSettingResults`].
+    ///
+    /// Required: `applied_to_data_stream_only`, `applied_to_data_stream_and_backing_indices`.
     pub fn builder() -> IndexSettingResultsBuilder {
         IndexSettingResultsBuilder::new()
     }
 
     /// Creates a [`IndexSettingResults`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexSettingResultsBuilder,
-        ) -> IndexSettingResultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `applied_to_data_stream_only`, `applied_to_data_stream_and_backing_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingResults>>(
+        f: impl FnOnce(IndexSettingResultsBuilder) -> B,
     ) -> IndexSettingResults {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexSettingResultsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_setting_results_members {
+    pub struct applied_to_data_stream_only;
+    pub struct applied_to_data_stream_and_backing_indices;
 }
 
 /// Builder for [`IndexSettingResults`].
@@ -201,21 +217,16 @@ impl<S0, S1> IndexSettingResultsBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`errors`](Self::errors), with a builder.
-    pub fn add_errors_with(
+    pub fn add_errors_with<B: crate::typed::builder::Build<Output = DataStreamSettingsError>>(
         self,
-        f: impl FnOnce(
-            DataStreamSettingsErrorBuilder,
-        ) -> DataStreamSettingsErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamSettingsErrorBuilder) -> B,
     ) -> Self {
         self.add_errors(f(DataStreamSettingsErrorBuilder::new()).build())
     }
 }
 
 impl<S1> IndexSettingResultsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The list of settings that were applied to the data stream but not to backing indices. These will be applied to
+    /// **Required.** The list of settings that were applied to the data stream but not to backing indices. These will be applied to
     /// the write index the next time the data stream is rolled over.
     pub fn applied_to_data_stream_only(
         self,
@@ -251,7 +262,7 @@ impl<S1> IndexSettingResultsBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> IndexSettingResultsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The list of settings that were applied to the data stream and to all of its backing indices. These settings will
+    /// **Required.** The list of settings that were applied to the data stream and to all of its backing indices. These settings will
     /// also be applied to the write index the next time the data stream is rolled over.
     pub fn applied_to_data_stream_and_backing_indices(
         self,
@@ -289,9 +300,17 @@ impl<S0> IndexSettingResultsBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndexSettingResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexSettingResultsBuilder<(S0, S1)> {
     /// Builds a [`IndexSettingResults`].
-    pub fn build(self) -> IndexSettingResults {
+    pub fn build(self) -> IndexSettingResults
+    where
+        S0: crate::typed::builder::IsSet<
+            index_setting_results_members::applied_to_data_stream_only,
+        >,
+        S1: crate::typed::builder::IsSet<
+            index_setting_results_members::applied_to_data_stream_and_backing_indices,
+        >,
+    {
         IndexSettingResults {
             applied_to_data_stream_only: self.applied_to_data_stream_only.unwrap(),
             applied_to_data_stream_and_backing_indices: self
@@ -302,29 +321,30 @@ impl IndexSettingResultsBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<IndexSettingResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexSettingResults
+impl<S0, S1> crate::typed::builder::Build for IndexSettingResultsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_setting_results_members::applied_to_data_stream_only>,
+    S1: crate::typed::builder::IsSet<
+        index_setting_results_members::applied_to_data_stream_and_backing_indices,
+    >,
 {
-    fn from(
-        builder: IndexSettingResultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexSettingResults;
+
+    fn build(self) -> IndexSettingResults {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexSettingResultsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `applied_to_data_stream_only` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applied_to_data_stream_only: crate::typed::builder::MissingRequiredField) -> IndexSettingResults { match applied_to_data_stream_only {} }
-}
-
-impl IndexSettingResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `applied_to_data_stream_and_backing_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applied_to_data_stream_and_backing_indices: crate::typed::builder::MissingRequiredField) -> IndexSettingResults { match applied_to_data_stream_and_backing_indices {} }
+impl<S0, S1> From<IndexSettingResultsBuilder<(S0, S1)>> for IndexSettingResults
+where
+    S0: crate::typed::builder::IsSet<index_setting_results_members::applied_to_data_stream_only>,
+    S1: crate::typed::builder::IsSet<
+        index_setting_results_members::applied_to_data_stream_and_backing_indices,
+    >,
+{
+    fn from(builder: IndexSettingResultsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.put_data_stream_settings`](crate::typed::indices::IndicesClient::put_data_stream_settings).
@@ -375,19 +395,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`, `settings`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `name`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
+    pub struct settings;
 }
 
 /// Builder for [`Request`].
@@ -542,7 +571,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A comma-separated list of data streams or data stream patterns.
+    /// **Required.** A comma-separated list of data streams or data stream patterns.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -554,7 +583,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn settings(
         self,
         value: impl Into<crate::typed::indices::_types::IndexSettings>,
@@ -565,19 +594,23 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.settings(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::settings>,
+    {
         Request {
             name: self.name.unwrap(),
             dry_run: self.dry_run,
@@ -592,41 +625,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+    S1: crate::typed::builder::IsSet<request_members::settings>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> Request { match settings {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `settings` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, settings: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match settings {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::settings>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -758,24 +778,31 @@ pub struct UpdatedDataStreamSettings {
 
 impl UpdatedDataStreamSettings {
     /// Creates a builder for [`UpdatedDataStreamSettings`].
+    ///
+    /// Required: `name`, `applied_to_data_stream`, `settings`, `effective_settings`, `index_settings_results`.
     pub fn builder() -> UpdatedDataStreamSettingsBuilder {
         UpdatedDataStreamSettingsBuilder::new()
     }
 
     /// Creates a [`UpdatedDataStreamSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UpdatedDataStreamSettingsBuilder,
-        ) -> UpdatedDataStreamSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `applied_to_data_stream`, `settings`, `effective_settings`, `index_settings_results`.
+    pub fn of<B: crate::typed::builder::Build<Output = UpdatedDataStreamSettings>>(
+        f: impl FnOnce(UpdatedDataStreamSettingsBuilder) -> B,
     ) -> UpdatedDataStreamSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UpdatedDataStreamSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod updated_data_stream_settings_members {
+    pub struct name;
+    pub struct applied_to_data_stream;
+    pub struct settings;
+    pub struct effective_settings;
+    pub struct index_settings_results;
 }
 
 /// Builder for [`UpdatedDataStreamSettings`].
@@ -849,7 +876,7 @@ impl<S0, S1, S2, S3, S4> UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, S4)> 
 impl<S1, S2, S3, S4>
     UpdatedDataStreamSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// The data stream name.
+    /// **Required.** The data stream name.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -863,7 +890,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     UpdatedDataStreamSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// If the settings were successfully applied to the data stream (or would have been, if running in `dry_run`
+    /// **Required.** If the settings were successfully applied to the data stream (or would have been, if running in `dry_run`
     /// mode), it is `true`. If an error occurred, it is `false`.
     pub fn applied_to_data_stream(
         self,
@@ -878,7 +905,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     UpdatedDataStreamSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The settings that are specfic to this data stream that will override any settings from the matching index template.
+    /// **Required.** The settings that are specfic to this data stream that will override any settings from the matching index template.
     pub fn settings(
         self,
         value: impl Into<crate::typed::indices::_types::IndexSettings>,
@@ -889,11 +916,11 @@ impl<S0, S1, S3, S4>
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> UpdatedDataStreamSettingsBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.settings(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
@@ -902,7 +929,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     UpdatedDataStreamSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// The settings that are effective on this data stream, taking into account the settings from the matching index
+    /// **Required.** The settings that are effective on this data stream, taking into account the settings from the matching index
     /// template and the settings specific to this data stream.
     pub fn effective_settings(
         self,
@@ -914,11 +941,11 @@ impl<S0, S1, S2, S4>
     }
 
     /// Sets [`effective_settings`](Self::effective_settings) with a builder.
-    pub fn effective_settings_with(
+    pub fn effective_settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> UpdatedDataStreamSettingsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.effective_settings(
             f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build(),
@@ -929,7 +956,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// Information about whether and where each setting was applied.
+    /// **Required.** Information about whether and where each setting was applied.
     pub fn index_settings_results(
         self,
         value: impl Into<IndexSettingResults>,
@@ -940,30 +967,30 @@ impl<S0, S1, S2, S3>
     }
 
     /// Sets [`index_settings_results`](Self::index_settings_results) with a builder.
-    pub fn index_settings_results_with(
+    pub fn index_settings_results_with<
+        B: crate::typed::builder::Build<Output = IndexSettingResults>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexSettingResultsBuilder,
-        ) -> IndexSettingResultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexSettingResultsBuilder) -> B,
     ) -> UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.index_settings_results(f(IndexSettingResultsBuilder::new()).build())
     }
 }
 
-impl
-    UpdatedDataStreamSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`UpdatedDataStreamSettings`].
-    pub fn build(self) -> UpdatedDataStreamSettings {
+    pub fn build(self) -> UpdatedDataStreamSettings
+    where
+        S0: crate::typed::builder::IsSet<updated_data_stream_settings_members::name>,
+        S1: crate::typed::builder::IsSet<
+            updated_data_stream_settings_members::applied_to_data_stream,
+        >,
+        S2: crate::typed::builder::IsSet<updated_data_stream_settings_members::settings>,
+        S3: crate::typed::builder::IsSet<updated_data_stream_settings_members::effective_settings>,
+        S4: crate::typed::builder::IsSet<
+            updated_data_stream_settings_members::index_settings_results,
+        >,
+    {
         UpdatedDataStreamSettings {
             name: self.name.unwrap(),
             applied_to_data_stream: self.applied_to_data_stream.unwrap(),
@@ -975,90 +1002,32 @@ impl
     }
 }
 
-impl
-    From<
-        UpdatedDataStreamSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UpdatedDataStreamSettings
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<updated_data_stream_settings_members::name>,
+    S1: crate::typed::builder::IsSet<updated_data_stream_settings_members::applied_to_data_stream>,
+    S2: crate::typed::builder::IsSet<updated_data_stream_settings_members::settings>,
+    S3: crate::typed::builder::IsSet<updated_data_stream_settings_members::effective_settings>,
+    S4: crate::typed::builder::IsSet<updated_data_stream_settings_members::index_settings_results>,
 {
-    fn from(
-        builder: UpdatedDataStreamSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UpdatedDataStreamSettings;
+
+    fn build(self) -> UpdatedDataStreamSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    UpdatedDataStreamSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, S4)>>
+    for UpdatedDataStreamSettings
+where
+    S0: crate::typed::builder::IsSet<updated_data_stream_settings_members::name>,
+    S1: crate::typed::builder::IsSet<updated_data_stream_settings_members::applied_to_data_stream>,
+    S2: crate::typed::builder::IsSet<updated_data_stream_settings_members::settings>,
+    S3: crate::typed::builder::IsSet<updated_data_stream_settings_members::effective_settings>,
+    S4: crate::typed::builder::IsSet<updated_data_stream_settings_members::index_settings_results>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> UpdatedDataStreamSettings { match name {} }
-}
-
-impl<S2, S3, S4>
-    UpdatedDataStreamSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `applied_to_data_stream` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applied_to_data_stream: crate::typed::builder::MissingRequiredField) -> UpdatedDataStreamSettings { match applied_to_data_stream {} }
-}
-
-impl<S3, S4>
-    UpdatedDataStreamSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> UpdatedDataStreamSettings { match settings {} }
-}
-
-impl<S4>
-    UpdatedDataStreamSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `effective_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, effective_settings: crate::typed::builder::MissingRequiredField) -> UpdatedDataStreamSettings { match effective_settings {} }
-}
-
-impl
-    UpdatedDataStreamSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `index_settings_results` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_settings_results: crate::typed::builder::MissingRequiredField) -> UpdatedDataStreamSettings { match index_settings_results {} }
+    fn from(builder: UpdatedDataStreamSettingsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }

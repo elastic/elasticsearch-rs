@@ -258,27 +258,31 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `field`, `zoom`, `x`, `y`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `index`, `field`, `zoom`, `x`, `y`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct field;
+    pub struct zoom;
+    pub struct x;
+    pub struct y;
 }
 
 /// Builder for [`Request`].
@@ -653,14 +657,14 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     }
 
     /// Adds an entry to [`aggs`](Self::aggs), with a builder.
-    pub fn add_aggs_with(
+    pub fn add_aggs_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggs(
             key,
@@ -784,13 +788,11 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -827,14 +829,12 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -937,7 +937,7 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
 }
 
 impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// A list of indices, data streams, or aliases to search.
+    /// **Required.** A list of indices, data streams, or aliases to search.
     /// It supports wildcards (`*`).
     /// To search all data streams and indices, omit this parameter or use `*` or `_all`.
     /// To search a remote cluster, use the `<cluster>:<target>` syntax.
@@ -952,7 +952,7 @@ impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4), C> {
-    /// A field that contains the geospatial data to return.
+    /// **Required.** A field that contains the geospatial data to return.
     /// It must be a `geo_point` or `geo_shape` field.
     /// The field must have doc values enabled. It cannot be a nested field.
     ///
@@ -970,7 +970,7 @@ impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4), C> {
-    /// The zoom level of the vector tile to search. It accepts `0` to `29`.
+    /// **Required.** The zoom level of the vector tile to search. It accepts `0` to `29`.
     pub fn zoom(
         self,
         value: impl Into<_types::ZoomLevel>,
@@ -982,7 +982,7 @@ impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4), C> {
-    /// The X coordinate for the vector tile to search.
+    /// **Required.** The X coordinate for the vector tile to search.
     pub fn x(
         self,
         value: impl Into<_types::Coordinate>,
@@ -994,7 +994,7 @@ impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet), C> {
-    /// The Y coordinate for the vector tile to search.
+    /// **Required.** The Y coordinate for the vector tile to search.
     pub fn y(
         self,
         value: impl Into<_types::Coordinate>,
@@ -1005,20 +1005,16 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::N
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::field>,
+        S2: crate::typed::builder::IsSet<request_members::zoom>,
+        S3: crate::typed::builder::IsSet<request_members::x>,
+        S4: crate::typed::builder::IsSet<request_members::y>,
+    {
         Request {
             index: self.index.unwrap(),
             field: self.field.unwrap(),
@@ -1056,168 +1052,34 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, S4, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3, S4), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::field>,
+    S2: crate::typed::builder::IsSet<request_members::zoom>,
+    S3: crate::typed::builder::IsSet<request_members::x>,
+    S4: crate::typed::builder::IsSet<request_members::y>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl<S1, S2, S3, S4>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), &crate::Elasticsearch>
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<S2, S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> Request { match field {} }
-}
-impl<S2, S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `field` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, field: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match field {} }
-}
-
-impl<S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `zoom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, zoom: crate::typed::builder::MissingRequiredField) -> Request { match zoom {} }
-}
-impl<S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `zoom` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, zoom: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match zoom {} }
-}
-
-impl<S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `x` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, x: crate::typed::builder::MissingRequiredField) -> Request { match x {} }
-}
-impl<S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `x` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, x: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match x {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `y` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, y: crate::typed::builder::MissingRequiredField) -> Request { match y {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `y` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, y: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match y {} }
+impl<S0, S1, S2, S3, S4> RequestBuilder<(S0, S1, S2, S3, S4), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::field>,
+        S2: crate::typed::builder::IsSet<request_members::zoom>,
+        S3: crate::typed::builder::IsSet<request_members::x>,
+        S4: crate::typed::builder::IsSet<request_members::y>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

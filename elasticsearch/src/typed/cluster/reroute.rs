@@ -27,7 +27,9 @@ impl Command {
     }
 
     /// Creates a [`Command`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CommandBuilder) -> CommandBuilder) -> Command {
+    pub fn of<B: crate::typed::builder::Build<Output = Command>>(
+        f: impl FnOnce(CommandBuilder) -> B,
+    ) -> Command {
         f(Self::builder()).build()
     }
 }
@@ -68,15 +70,9 @@ impl CommandBuilder {
     }
 
     /// Sets [`cancel`](Self::cancel) with a builder.
-    pub fn cancel_with(
+    pub fn cancel_with<B: crate::typed::builder::Build<Output = CommandCancelAction>>(
         self,
-        f: impl FnOnce(
-            CommandCancelActionBuilder,
-        ) -> CommandCancelActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CommandCancelActionBuilder) -> B,
     ) -> Self {
         self.cancel(f(CommandCancelActionBuilder::new()).build())
     }
@@ -94,16 +90,9 @@ impl CommandBuilder {
     }
 
     /// Sets [`move`](Self::move) with a builder.
-    pub fn move_with(
+    pub fn move_with<B: crate::typed::builder::Build<Output = CommandMoveAction>>(
         self,
-        f: impl FnOnce(
-            CommandMoveActionBuilder,
-        ) -> CommandMoveActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CommandMoveActionBuilder) -> B,
     ) -> Self {
         self.r#move(f(CommandMoveActionBuilder::new()).build())
     }
@@ -121,15 +110,11 @@ impl CommandBuilder {
     }
 
     /// Sets [`allocate_replica`](Self::allocate_replica) with a builder.
-    pub fn allocate_replica_with(
+    pub fn allocate_replica_with<
+        B: crate::typed::builder::Build<Output = CommandAllocateReplicaAction>,
+    >(
         self,
-        f: impl FnOnce(
-            CommandAllocateReplicaActionBuilder,
-        ) -> CommandAllocateReplicaActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CommandAllocateReplicaActionBuilder) -> B,
     ) -> Self {
         self.allocate_replica(f(CommandAllocateReplicaActionBuilder::new()).build())
     }
@@ -153,16 +138,11 @@ impl CommandBuilder {
     }
 
     /// Sets [`allocate_stale_primary`](Self::allocate_stale_primary) with a builder.
-    pub fn allocate_stale_primary_with(
+    pub fn allocate_stale_primary_with<
+        B: crate::typed::builder::Build<Output = CommandAllocatePrimaryAction>,
+    >(
         self,
-        f: impl FnOnce(
-            CommandAllocatePrimaryActionBuilder,
-        ) -> CommandAllocatePrimaryActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CommandAllocatePrimaryActionBuilder) -> B,
     ) -> Self {
         self.allocate_stale_primary(f(CommandAllocatePrimaryActionBuilder::new()).build())
     }
@@ -186,16 +166,11 @@ impl CommandBuilder {
     }
 
     /// Sets [`allocate_empty_primary`](Self::allocate_empty_primary) with a builder.
-    pub fn allocate_empty_primary_with(
+    pub fn allocate_empty_primary_with<
+        B: crate::typed::builder::Build<Output = CommandAllocatePrimaryAction>,
+    >(
         self,
-        f: impl FnOnce(
-            CommandAllocatePrimaryActionBuilder,
-        ) -> CommandAllocatePrimaryActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CommandAllocatePrimaryActionBuilder) -> B,
     ) -> Self {
         self.allocate_empty_primary(f(CommandAllocatePrimaryActionBuilder::new()).build())
     }
@@ -211,6 +186,14 @@ impl CommandBuilder {
             allocate_stale_primary: self.allocate_stale_primary,
             allocate_empty_primary: self.allocate_empty_primary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CommandBuilder {
+    type Output = Command;
+
+    fn build(self) -> Command {
+        Self::build(self)
     }
 }
 
@@ -231,23 +214,30 @@ pub struct CommandAllocatePrimaryAction {
 
 impl CommandAllocatePrimaryAction {
     /// Creates a builder for [`CommandAllocatePrimaryAction`].
+    ///
+    /// Required: `index`, `shard`, `node`, `accept_data_loss`.
     pub fn builder() -> CommandAllocatePrimaryActionBuilder {
         CommandAllocatePrimaryActionBuilder::new()
     }
 
     /// Creates a [`CommandAllocatePrimaryAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommandAllocatePrimaryActionBuilder,
-        ) -> CommandAllocatePrimaryActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `shard`, `node`, `accept_data_loss`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommandAllocatePrimaryAction>>(
+        f: impl FnOnce(CommandAllocatePrimaryActionBuilder) -> B,
     ) -> CommandAllocatePrimaryAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommandAllocatePrimaryActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod command_allocate_primary_action_members {
+    pub struct index;
+    pub struct shard;
+    pub struct node;
+    pub struct accept_data_loss;
 }
 
 /// Builder for [`CommandAllocatePrimaryAction`].
@@ -299,6 +289,7 @@ impl<S0, S1, S2, S3> CommandAllocatePrimaryActionBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> CommandAllocatePrimaryActionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -310,6 +301,7 @@ impl<S1, S2, S3> CommandAllocatePrimaryActionBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> CommandAllocatePrimaryActionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -321,6 +313,7 @@ impl<S0, S2, S3> CommandAllocatePrimaryActionBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> CommandAllocatePrimaryActionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<String>,
@@ -332,7 +325,7 @@ impl<S0, S1, S3> CommandAllocatePrimaryActionBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> CommandAllocatePrimaryActionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// If a node which has a copy of the data rejoins the cluster later on, that data will be deleted. To ensure that these implications are well-understood, this command requires the flag accept_data_loss to be explicitly set to true
+    /// **Required.** If a node which has a copy of the data rejoins the cluster later on, that data will be deleted. To ensure that these implications are well-understood, this command requires the flag accept_data_loss to be explicitly set to true
     pub fn accept_data_loss(
         self,
         value: bool,
@@ -343,16 +336,15 @@ impl<S0, S1, S2> CommandAllocatePrimaryActionBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    CommandAllocatePrimaryActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> CommandAllocatePrimaryActionBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`CommandAllocatePrimaryAction`].
-    pub fn build(self) -> CommandAllocatePrimaryAction {
+    pub fn build(self) -> CommandAllocatePrimaryAction
+    where
+        S0: crate::typed::builder::IsSet<command_allocate_primary_action_members::index>,
+        S1: crate::typed::builder::IsSet<command_allocate_primary_action_members::shard>,
+        S2: crate::typed::builder::IsSet<command_allocate_primary_action_members::node>,
+        S3: crate::typed::builder::IsSet<command_allocate_primary_action_members::accept_data_loss>,
+    {
         CommandAllocatePrimaryAction {
             index: self.index.unwrap(),
             shard: self.shard.unwrap(),
@@ -362,71 +354,32 @@ impl
     }
 }
 
-impl
-    From<
-        CommandAllocatePrimaryActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CommandAllocatePrimaryAction
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for CommandAllocatePrimaryActionBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<command_allocate_primary_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_allocate_primary_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_allocate_primary_action_members::node>,
+    S3: crate::typed::builder::IsSet<command_allocate_primary_action_members::accept_data_loss>,
 {
-    fn from(
-        builder: CommandAllocatePrimaryActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CommandAllocatePrimaryAction;
+
+    fn build(self) -> CommandAllocatePrimaryAction {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> CommandAllocatePrimaryActionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> CommandAllocatePrimaryAction { match index {} }
-}
-
-impl<S2, S3>
-    CommandAllocatePrimaryActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<CommandAllocatePrimaryActionBuilder<(S0, S1, S2, S3)>>
+    for CommandAllocatePrimaryAction
+where
+    S0: crate::typed::builder::IsSet<command_allocate_primary_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_allocate_primary_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_allocate_primary_action_members::node>,
+    S3: crate::typed::builder::IsSet<command_allocate_primary_action_members::accept_data_loss>,
 {
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> CommandAllocatePrimaryAction { match shard {} }
-}
-
-impl<S3>
-    CommandAllocatePrimaryActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> CommandAllocatePrimaryAction { match node {} }
-}
-
-impl
-    CommandAllocatePrimaryActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `accept_data_loss` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, accept_data_loss: crate::typed::builder::MissingRequiredField) -> CommandAllocatePrimaryAction { match accept_data_loss {} }
+    fn from(builder: CommandAllocatePrimaryActionBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -438,22 +391,29 @@ pub struct CommandAllocateReplicaAction {
 
 impl CommandAllocateReplicaAction {
     /// Creates a builder for [`CommandAllocateReplicaAction`].
+    ///
+    /// Required: `index`, `shard`, `node`.
     pub fn builder() -> CommandAllocateReplicaActionBuilder {
         CommandAllocateReplicaActionBuilder::new()
     }
 
     /// Creates a [`CommandAllocateReplicaAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommandAllocateReplicaActionBuilder,
-        ) -> CommandAllocateReplicaActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `shard`, `node`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommandAllocateReplicaAction>>(
+        f: impl FnOnce(CommandAllocateReplicaActionBuilder) -> B,
     ) -> CommandAllocateReplicaAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommandAllocateReplicaActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod command_allocate_replica_action_members {
+    pub struct index;
+    pub struct shard;
+    pub struct node;
 }
 
 /// Builder for [`CommandAllocateReplicaAction`].
@@ -500,6 +460,7 @@ impl<S0, S1, S2> CommandAllocateReplicaActionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CommandAllocateReplicaActionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -511,6 +472,7 @@ impl<S1, S2> CommandAllocateReplicaActionBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2> CommandAllocateReplicaActionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -522,6 +484,7 @@ impl<S0, S2> CommandAllocateReplicaActionBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1> CommandAllocateReplicaActionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<String>,
@@ -532,15 +495,14 @@ impl<S0, S1> CommandAllocateReplicaActionBuilder<(S0, S1, crate::typed::builder:
     }
 }
 
-impl
-    CommandAllocateReplicaActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CommandAllocateReplicaActionBuilder<(S0, S1, S2)> {
     /// Builds a [`CommandAllocateReplicaAction`].
-    pub fn build(self) -> CommandAllocateReplicaAction {
+    pub fn build(self) -> CommandAllocateReplicaAction
+    where
+        S0: crate::typed::builder::IsSet<command_allocate_replica_action_members::index>,
+        S1: crate::typed::builder::IsSet<command_allocate_replica_action_members::shard>,
+        S2: crate::typed::builder::IsSet<command_allocate_replica_action_members::node>,
+    {
         CommandAllocateReplicaAction {
             index: self.index.unwrap(),
             shard: self.shard.unwrap(),
@@ -549,54 +511,29 @@ impl
     }
 }
 
-impl
-    From<
-        CommandAllocateReplicaActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CommandAllocateReplicaAction
+impl<S0, S1, S2> crate::typed::builder::Build for CommandAllocateReplicaActionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<command_allocate_replica_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_allocate_replica_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_allocate_replica_action_members::node>,
 {
-    fn from(
-        builder: CommandAllocateReplicaActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CommandAllocateReplicaAction;
+
+    fn build(self) -> CommandAllocateReplicaAction {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CommandAllocateReplicaActionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> CommandAllocateReplicaAction { match index {} }
-}
-
-impl<S2>
-    CommandAllocateReplicaActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CommandAllocateReplicaActionBuilder<(S0, S1, S2)>>
+    for CommandAllocateReplicaAction
+where
+    S0: crate::typed::builder::IsSet<command_allocate_replica_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_allocate_replica_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_allocate_replica_action_members::node>,
 {
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> CommandAllocateReplicaAction { match shard {} }
-}
-
-impl
-    CommandAllocateReplicaActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> CommandAllocateReplicaAction { match node {} }
+    fn from(builder: CommandAllocateReplicaActionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -610,22 +547,29 @@ pub struct CommandCancelAction {
 
 impl CommandCancelAction {
     /// Creates a builder for [`CommandCancelAction`].
+    ///
+    /// Required: `index`, `shard`, `node`.
     pub fn builder() -> CommandCancelActionBuilder {
         CommandCancelActionBuilder::new()
     }
 
     /// Creates a [`CommandCancelAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommandCancelActionBuilder,
-        ) -> CommandCancelActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `shard`, `node`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommandCancelAction>>(
+        f: impl FnOnce(CommandCancelActionBuilder) -> B,
     ) -> CommandCancelAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommandCancelActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod command_cancel_action_members {
+    pub struct index;
+    pub struct shard;
+    pub struct node;
 }
 
 /// Builder for [`CommandCancelAction`].
@@ -686,6 +630,7 @@ impl<S0, S1, S2> CommandCancelActionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CommandCancelActionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -697,6 +642,7 @@ impl<S1, S2> CommandCancelActionBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> CommandCancelActionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -708,6 +654,7 @@ impl<S0, S2> CommandCancelActionBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> CommandCancelActionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<String>,
@@ -718,15 +665,14 @@ impl<S0, S1> CommandCancelActionBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    CommandCancelActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CommandCancelActionBuilder<(S0, S1, S2)> {
     /// Builds a [`CommandCancelAction`].
-    pub fn build(self) -> CommandCancelAction {
+    pub fn build(self) -> CommandCancelAction
+    where
+        S0: crate::typed::builder::IsSet<command_cancel_action_members::index>,
+        S1: crate::typed::builder::IsSet<command_cancel_action_members::shard>,
+        S2: crate::typed::builder::IsSet<command_cancel_action_members::node>,
+    {
         CommandCancelAction {
             index: self.index.unwrap(),
             shard: self.shard.unwrap(),
@@ -736,54 +682,28 @@ impl
     }
 }
 
-impl
-    From<
-        CommandCancelActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CommandCancelAction
+impl<S0, S1, S2> crate::typed::builder::Build for CommandCancelActionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<command_cancel_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_cancel_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_cancel_action_members::node>,
 {
-    fn from(
-        builder: CommandCancelActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CommandCancelAction;
+
+    fn build(self) -> CommandCancelAction {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CommandCancelActionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> CommandCancelAction { match index {} }
-}
-
-impl<S2>
-    CommandCancelActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CommandCancelActionBuilder<(S0, S1, S2)>> for CommandCancelAction
+where
+    S0: crate::typed::builder::IsSet<command_cancel_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_cancel_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_cancel_action_members::node>,
 {
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> CommandCancelAction { match shard {} }
-}
-
-impl
-    CommandCancelActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> CommandCancelAction { match node {} }
+    fn from(builder: CommandCancelActionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -798,23 +718,30 @@ pub struct CommandMoveAction {
 
 impl CommandMoveAction {
     /// Creates a builder for [`CommandMoveAction`].
+    ///
+    /// Required: `index`, `shard`, `from_node`, `to_node`.
     pub fn builder() -> CommandMoveActionBuilder {
         CommandMoveActionBuilder::new()
     }
 
     /// Creates a [`CommandMoveAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommandMoveActionBuilder,
-        ) -> CommandMoveActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `shard`, `from_node`, `to_node`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommandMoveAction>>(
+        f: impl FnOnce(CommandMoveActionBuilder) -> B,
     ) -> CommandMoveAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommandMoveActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod command_move_action_members {
+    pub struct index;
+    pub struct shard;
+    pub struct from_node;
+    pub struct to_node;
 }
 
 /// Builder for [`CommandMoveAction`].
@@ -866,6 +793,7 @@ impl<S0, S1, S2, S3> CommandMoveActionBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> CommandMoveActionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -877,6 +805,7 @@ impl<S1, S2, S3> CommandMoveActionBuilder<(crate::typed::builder::NotSet, S1, S2
 }
 
 impl<S0, S2, S3> CommandMoveActionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -888,7 +817,7 @@ impl<S0, S2, S3> CommandMoveActionBuilder<(S0, crate::typed::builder::NotSet, S2
 }
 
 impl<S0, S1, S3> CommandMoveActionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The node to move the shard from
+    /// **Required.** The node to move the shard from
     pub fn from_node(
         self,
         value: impl Into<String>,
@@ -900,7 +829,7 @@ impl<S0, S1, S3> CommandMoveActionBuilder<(S0, S1, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S2> CommandMoveActionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The node to move the shard to
+    /// **Required.** The node to move the shard to
     pub fn to_node(
         self,
         value: impl Into<String>,
@@ -911,16 +840,15 @@ impl<S0, S1, S2> CommandMoveActionBuilder<(S0, S1, S2, crate::typed::builder::No
     }
 }
 
-impl
-    CommandMoveActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> CommandMoveActionBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`CommandMoveAction`].
-    pub fn build(self) -> CommandMoveAction {
+    pub fn build(self) -> CommandMoveAction
+    where
+        S0: crate::typed::builder::IsSet<command_move_action_members::index>,
+        S1: crate::typed::builder::IsSet<command_move_action_members::shard>,
+        S2: crate::typed::builder::IsSet<command_move_action_members::from_node>,
+        S3: crate::typed::builder::IsSet<command_move_action_members::to_node>,
+    {
         CommandMoveAction {
             index: self.index.unwrap(),
             shard: self.shard.unwrap(),
@@ -930,71 +858,30 @@ impl
     }
 }
 
-impl
-    From<
-        CommandMoveActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CommandMoveAction
+impl<S0, S1, S2, S3> crate::typed::builder::Build for CommandMoveActionBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<command_move_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_move_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_move_action_members::from_node>,
+    S3: crate::typed::builder::IsSet<command_move_action_members::to_node>,
 {
-    fn from(
-        builder: CommandMoveActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CommandMoveAction;
+
+    fn build(self) -> CommandMoveAction {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> CommandMoveActionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> CommandMoveAction { match index {} }
-}
-
-impl<S2, S3>
-    CommandMoveActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<CommandMoveActionBuilder<(S0, S1, S2, S3)>> for CommandMoveAction
+where
+    S0: crate::typed::builder::IsSet<command_move_action_members::index>,
+    S1: crate::typed::builder::IsSet<command_move_action_members::shard>,
+    S2: crate::typed::builder::IsSet<command_move_action_members::from_node>,
+    S3: crate::typed::builder::IsSet<command_move_action_members::to_node>,
 {
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> CommandMoveAction { match shard {} }
-}
-
-impl<S3>
-    CommandMoveActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `from_node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, from_node: crate::typed::builder::MissingRequiredField) -> CommandMoveAction { match from_node {} }
-}
-
-impl
-    CommandMoveActionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `to_node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, to_node: crate::typed::builder::MissingRequiredField) -> CommandMoveAction { match to_node {} }
+    fn from(builder: CommandMoveActionBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.reroute`](crate::typed::cluster::ClusterClient::reroute).
@@ -1057,7 +944,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1250,7 +1139,10 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`commands`](Self::commands), with a builder.
-    pub fn add_commands_with(self, f: impl FnOnce(CommandBuilder) -> CommandBuilder) -> Self {
+    pub fn add_commands_with<B: crate::typed::builder::Build<Output = Command>>(
+        self,
+        f: impl FnOnce(CommandBuilder) -> B,
+    ) -> Self {
         self.add_commands(f(CommandBuilder::new()).build())
     }
 }
@@ -1271,6 +1163,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             commands: self.commands,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -1430,22 +1330,29 @@ pub struct RerouteDecision {
 
 impl RerouteDecision {
     /// Creates a builder for [`RerouteDecision`].
+    ///
+    /// Required: `decider`, `decision`, `explanation`.
     pub fn builder() -> RerouteDecisionBuilder {
         RerouteDecisionBuilder::new()
     }
 
     /// Creates a [`RerouteDecision`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RerouteDecisionBuilder,
-        ) -> RerouteDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `decider`, `decision`, `explanation`.
+    pub fn of<B: crate::typed::builder::Build<Output = RerouteDecision>>(
+        f: impl FnOnce(RerouteDecisionBuilder) -> B,
     ) -> RerouteDecision {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RerouteDecisionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reroute_decision_members {
+    pub struct decider;
+    pub struct decision;
+    pub struct explanation;
 }
 
 /// Builder for [`RerouteDecision`].
@@ -1492,6 +1399,7 @@ impl<S0, S1, S2> RerouteDecisionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RerouteDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn decider(
         self,
         value: impl Into<String>,
@@ -1503,6 +1411,7 @@ impl<S1, S2> RerouteDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RerouteDecisionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn decision(
         self,
         value: impl Into<String>,
@@ -1514,6 +1423,7 @@ impl<S0, S2> RerouteDecisionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RerouteDecisionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn explanation(
         self,
         value: impl Into<String>,
@@ -1524,15 +1434,14 @@ impl<S0, S1> RerouteDecisionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RerouteDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RerouteDecisionBuilder<(S0, S1, S2)> {
     /// Builds a [`RerouteDecision`].
-    pub fn build(self) -> RerouteDecision {
+    pub fn build(self) -> RerouteDecision
+    where
+        S0: crate::typed::builder::IsSet<reroute_decision_members::decider>,
+        S1: crate::typed::builder::IsSet<reroute_decision_members::decision>,
+        S2: crate::typed::builder::IsSet<reroute_decision_members::explanation>,
+    {
         RerouteDecision {
             decider: self.decider.unwrap(),
             decision: self.decision.unwrap(),
@@ -1541,54 +1450,28 @@ impl
     }
 }
 
-impl
-    From<
-        RerouteDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RerouteDecision
+impl<S0, S1, S2> crate::typed::builder::Build for RerouteDecisionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<reroute_decision_members::decider>,
+    S1: crate::typed::builder::IsSet<reroute_decision_members::decision>,
+    S2: crate::typed::builder::IsSet<reroute_decision_members::explanation>,
 {
-    fn from(
-        builder: RerouteDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RerouteDecision;
+
+    fn build(self) -> RerouteDecision {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RerouteDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `decider` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, decider: crate::typed::builder::MissingRequiredField) -> RerouteDecision { match decider {} }
-}
-
-impl<S2>
-    RerouteDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RerouteDecisionBuilder<(S0, S1, S2)>> for RerouteDecision
+where
+    S0: crate::typed::builder::IsSet<reroute_decision_members::decider>,
+    S1: crate::typed::builder::IsSet<reroute_decision_members::decision>,
+    S2: crate::typed::builder::IsSet<reroute_decision_members::explanation>,
 {
-    /// `decision` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, decision: crate::typed::builder::MissingRequiredField) -> RerouteDecision { match decision {} }
-}
-
-impl
-    RerouteDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `explanation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, explanation: crate::typed::builder::MissingRequiredField) -> RerouteDecision { match explanation {} }
+    fn from(builder: RerouteDecisionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1600,22 +1483,29 @@ pub struct RerouteExplanation {
 
 impl RerouteExplanation {
     /// Creates a builder for [`RerouteExplanation`].
+    ///
+    /// Required: `command`, `decisions`, `parameters`.
     pub fn builder() -> RerouteExplanationBuilder {
         RerouteExplanationBuilder::new()
     }
 
     /// Creates a [`RerouteExplanation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RerouteExplanationBuilder,
-        ) -> RerouteExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `command`, `decisions`, `parameters`.
+    pub fn of<B: crate::typed::builder::Build<Output = RerouteExplanation>>(
+        f: impl FnOnce(RerouteExplanationBuilder) -> B,
     ) -> RerouteExplanation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RerouteExplanationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reroute_explanation_members {
+    pub struct command;
+    pub struct decisions;
+    pub struct parameters;
 }
 
 /// Builder for [`RerouteExplanation`].
@@ -1662,6 +1552,7 @@ impl<S0, S1, S2> RerouteExplanationBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RerouteExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn command(
         self,
         value: impl Into<String>,
@@ -1673,6 +1564,7 @@ impl<S1, S2> RerouteExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> RerouteExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn decisions(
         self,
         value: impl Into<Vec<RerouteDecision>>,
@@ -1696,15 +1588,9 @@ impl<S0, S2> RerouteExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> 
     }
 
     /// Adds an element to [`decisions`](Self::decisions), with a builder.
-    pub fn add_decisions_with(
+    pub fn add_decisions_with<B: crate::typed::builder::Build<Output = RerouteDecision>>(
         self,
-        f: impl FnOnce(
-            RerouteDecisionBuilder,
-        ) -> RerouteDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RerouteDecisionBuilder) -> B,
     ) -> RerouteExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_decisions(f(RerouteDecisionBuilder::new()).build())
     }
@@ -1720,21 +1606,16 @@ impl<S0, S2> RerouteExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`decisions`](Self::decisions), with a builder.
-    pub fn add_decisions_with(
+    pub fn add_decisions_with<B: crate::typed::builder::Build<Output = RerouteDecision>>(
         self,
-        f: impl FnOnce(
-            RerouteDecisionBuilder,
-        ) -> RerouteDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RerouteDecisionBuilder) -> B,
     ) -> Self {
         self.add_decisions(f(RerouteDecisionBuilder::new()).build())
     }
 }
 
 impl<S0, S1> RerouteExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn parameters(
         self,
         value: impl Into<RerouteParameters>,
@@ -1745,30 +1626,22 @@ impl<S0, S1> RerouteExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`parameters`](Self::parameters) with a builder.
-    pub fn parameters_with(
+    pub fn parameters_with<B: crate::typed::builder::Build<Output = RerouteParameters>>(
         self,
-        f: impl FnOnce(
-            RerouteParametersBuilder,
-        ) -> RerouteParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RerouteParametersBuilder) -> B,
     ) -> RerouteExplanationBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.parameters(f(RerouteParametersBuilder::new()).build())
     }
 }
 
-impl
-    RerouteExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RerouteExplanationBuilder<(S0, S1, S2)> {
     /// Builds a [`RerouteExplanation`].
-    pub fn build(self) -> RerouteExplanation {
+    pub fn build(self) -> RerouteExplanation
+    where
+        S0: crate::typed::builder::IsSet<reroute_explanation_members::command>,
+        S1: crate::typed::builder::IsSet<reroute_explanation_members::decisions>,
+        S2: crate::typed::builder::IsSet<reroute_explanation_members::parameters>,
+    {
         RerouteExplanation {
             command: self.command.unwrap(),
             decisions: self.decisions.unwrap(),
@@ -1777,54 +1650,28 @@ impl
     }
 }
 
-impl
-    From<
-        RerouteExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RerouteExplanation
+impl<S0, S1, S2> crate::typed::builder::Build for RerouteExplanationBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<reroute_explanation_members::command>,
+    S1: crate::typed::builder::IsSet<reroute_explanation_members::decisions>,
+    S2: crate::typed::builder::IsSet<reroute_explanation_members::parameters>,
 {
-    fn from(
-        builder: RerouteExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RerouteExplanation;
+
+    fn build(self) -> RerouteExplanation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RerouteExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `command` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, command: crate::typed::builder::MissingRequiredField) -> RerouteExplanation { match command {} }
-}
-
-impl<S2>
-    RerouteExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RerouteExplanationBuilder<(S0, S1, S2)>> for RerouteExplanation
+where
+    S0: crate::typed::builder::IsSet<reroute_explanation_members::command>,
+    S1: crate::typed::builder::IsSet<reroute_explanation_members::decisions>,
+    S2: crate::typed::builder::IsSet<reroute_explanation_members::parameters>,
 {
-    /// `decisions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, decisions: crate::typed::builder::MissingRequiredField) -> RerouteExplanation { match decisions {} }
-}
-
-impl
-    RerouteExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `parameters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, parameters: crate::typed::builder::MissingRequiredField) -> RerouteExplanation { match parameters {} }
+    fn from(builder: RerouteExplanationBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1841,23 +1688,30 @@ pub struct RerouteParameters {
 
 impl RerouteParameters {
     /// Creates a builder for [`RerouteParameters`].
+    ///
+    /// Required: `allow_primary`, `index`, `node`, `shard`.
     pub fn builder() -> RerouteParametersBuilder {
         RerouteParametersBuilder::new()
     }
 
     /// Creates a [`RerouteParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RerouteParametersBuilder,
-        ) -> RerouteParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `allow_primary`, `index`, `node`, `shard`.
+    pub fn of<B: crate::typed::builder::Build<Output = RerouteParameters>>(
+        f: impl FnOnce(RerouteParametersBuilder) -> B,
     ) -> RerouteParameters {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RerouteParametersBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reroute_parameters_members {
+    pub struct allow_primary;
+    pub struct index;
+    pub struct node;
+    pub struct shard;
 }
 
 /// Builder for [`RerouteParameters`].
@@ -1937,6 +1791,7 @@ impl<S0, S1, S2, S3> RerouteParametersBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RerouteParametersBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn allow_primary(
         self,
         value: bool,
@@ -1948,6 +1803,7 @@ impl<S1, S2, S3> RerouteParametersBuilder<(crate::typed::builder::NotSet, S1, S2
 }
 
 impl<S0, S2, S3> RerouteParametersBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1959,6 +1815,7 @@ impl<S0, S2, S3> RerouteParametersBuilder<(S0, crate::typed::builder::NotSet, S2
 }
 
 impl<S0, S1, S3> RerouteParametersBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::NodeName>,
@@ -1970,6 +1827,7 @@ impl<S0, S1, S3> RerouteParametersBuilder<(S0, S1, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S2> RerouteParametersBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -1980,16 +1838,15 @@ impl<S0, S1, S2> RerouteParametersBuilder<(S0, S1, S2, crate::typed::builder::No
     }
 }
 
-impl
-    RerouteParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RerouteParametersBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RerouteParameters`].
-    pub fn build(self) -> RerouteParameters {
+    pub fn build(self) -> RerouteParameters
+    where
+        S0: crate::typed::builder::IsSet<reroute_parameters_members::allow_primary>,
+        S1: crate::typed::builder::IsSet<reroute_parameters_members::index>,
+        S2: crate::typed::builder::IsSet<reroute_parameters_members::node>,
+        S3: crate::typed::builder::IsSet<reroute_parameters_members::shard>,
+    {
         RerouteParameters {
             allow_primary: self.allow_primary.unwrap(),
             index: self.index.unwrap(),
@@ -2001,71 +1858,30 @@ impl
     }
 }
 
-impl
-    From<
-        RerouteParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RerouteParameters
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RerouteParametersBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<reroute_parameters_members::allow_primary>,
+    S1: crate::typed::builder::IsSet<reroute_parameters_members::index>,
+    S2: crate::typed::builder::IsSet<reroute_parameters_members::node>,
+    S3: crate::typed::builder::IsSet<reroute_parameters_members::shard>,
 {
-    fn from(
-        builder: RerouteParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RerouteParameters;
+
+    fn build(self) -> RerouteParameters {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RerouteParametersBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `allow_primary` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allow_primary: crate::typed::builder::MissingRequiredField) -> RerouteParameters { match allow_primary {} }
-}
-
-impl<S2, S3>
-    RerouteParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RerouteParametersBuilder<(S0, S1, S2, S3)>> for RerouteParameters
+where
+    S0: crate::typed::builder::IsSet<reroute_parameters_members::allow_primary>,
+    S1: crate::typed::builder::IsSet<reroute_parameters_members::index>,
+    S2: crate::typed::builder::IsSet<reroute_parameters_members::node>,
+    S3: crate::typed::builder::IsSet<reroute_parameters_members::shard>,
 {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> RerouteParameters { match index {} }
-}
-
-impl<S3>
-    RerouteParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> RerouteParameters { match node {} }
-}
-
-impl
-    RerouteParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> RerouteParameters { match shard {} }
+    fn from(builder: RerouteParametersBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Response of [`cluster.reroute`](crate::typed::cluster::ClusterClient::reroute).

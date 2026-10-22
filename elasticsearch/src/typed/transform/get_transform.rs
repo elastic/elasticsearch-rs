@@ -56,7 +56,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -241,6 +243,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -404,22 +414,29 @@ pub struct TransformSummary {
 
 impl TransformSummary {
     /// Creates a builder for [`TransformSummary`].
+    ///
+    /// Required: `dest`, `id`, `source`.
     pub fn builder() -> TransformSummaryBuilder {
         TransformSummaryBuilder::new()
     }
 
     /// Creates a [`TransformSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformSummaryBuilder,
-        ) -> TransformSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `dest`, `id`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformSummary>>(
+        f: impl FnOnce(TransformSummaryBuilder) -> B,
     ) -> TransformSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_summary_members {
+    pub struct dest;
+    pub struct id;
+    pub struct source;
 }
 
 /// Builder for [`TransformSummary`].
@@ -519,11 +536,11 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`authorization`](Self::authorization) with a builder.
-    pub fn authorization_with(
+    pub fn authorization_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::TransformAuthorization>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::TransformAuthorizationBuilder,
-        ) -> crate::typed::ml::_types::TransformAuthorizationBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::TransformAuthorizationBuilder) -> B,
     ) -> Self {
         self.authorization(
             f(crate::typed::ml::_types::TransformAuthorizationBuilder::new()).build(),
@@ -597,14 +614,11 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`latest`](Self::latest) with a builder.
-    pub fn latest_with(
+    pub fn latest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Latest>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::LatestBuilder,
-        ) -> crate::typed::transform::_types::LatestBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::LatestBuilder) -> B,
     ) -> Self {
         self.latest(f(crate::typed::transform::_types::LatestBuilder::new()).build())
     }
@@ -622,11 +636,11 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`pivot`](Self::pivot) with a builder.
-    pub fn pivot_with(
+    pub fn pivot_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Pivot>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::PivotBuilder,
-        ) -> crate::typed::transform::_types::PivotBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::PivotBuilder) -> B,
     ) -> Self {
         self.pivot(f(crate::typed::transform::_types::PivotBuilder::new()).build())
     }
@@ -649,13 +663,13 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`retention_policy`](Self::retention_policy) with a builder.
-    pub fn retention_policy_with(
+    pub fn retention_policy_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::transform::_types::RetentionPolicyContainer,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::RetentionPolicyContainerBuilder,
-        ) -> crate::typed::transform::_types::RetentionPolicyContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::RetentionPolicyContainerBuilder) -> B,
     ) -> Self {
         self.retention_policy(
             f(crate::typed::transform::_types::RetentionPolicyContainerBuilder::new()).build(),
@@ -678,11 +692,11 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Settings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SettingsBuilder,
-        ) -> crate::typed::transform::_types::SettingsBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::SettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(crate::typed::transform::_types::SettingsBuilder::new()).build())
     }
@@ -706,13 +720,11 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`sync`](Self::sync) with a builder.
-    pub fn sync_with(
+    pub fn sync_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::SyncContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SyncContainerBuilder,
-        ) -> crate::typed::transform::_types::SyncContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::SyncContainerBuilder) -> B,
     ) -> Self {
         self.sync(f(crate::typed::transform::_types::SyncContainerBuilder::new()).build())
     }
@@ -750,7 +762,7 @@ impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TransformSummaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The destination for the transform.
+    /// **Required.** The destination for the transform.
     pub fn dest(
         self,
         value: impl Into<crate::typed::transform::_types::Destination>,
@@ -761,17 +773,18 @@ impl<S1, S2> TransformSummaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Destination>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::DestinationBuilder,
-        ) -> crate::typed::transform::_types::DestinationBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::DestinationBuilder) -> B,
     ) -> TransformSummaryBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.dest(f(crate::typed::transform::_types::DestinationBuilder::new()).build())
     }
 }
 
 impl<S0, S2> TransformSummaryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -783,7 +796,7 @@ impl<S0, S2> TransformSummaryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> TransformSummaryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The source of the data for the transform.
+    /// **Required.** The source of the data for the transform.
     pub fn source(
         self,
         value: impl Into<crate::typed::transform::_types::Source>,
@@ -794,26 +807,24 @@ impl<S0, S1> TransformSummaryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Source>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SourceBuilder,
-        )
-            -> crate::typed::transform::_types::SourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::transform::_types::SourceBuilder) -> B,
     ) -> TransformSummaryBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.source(f(crate::typed::transform::_types::SourceBuilder::new()).build())
     }
 }
 
-impl
-    TransformSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TransformSummaryBuilder<(S0, S1, S2)> {
     /// Builds a [`TransformSummary`].
-    pub fn build(self) -> TransformSummary {
+    pub fn build(self) -> TransformSummary
+    where
+        S0: crate::typed::builder::IsSet<transform_summary_members::dest>,
+        S1: crate::typed::builder::IsSet<transform_summary_members::id>,
+        S2: crate::typed::builder::IsSet<transform_summary_members::source>,
+    {
         TransformSummary {
             authorization: self.authorization,
             create_time: self.create_time,
@@ -834,52 +845,26 @@ impl
     }
 }
 
-impl
-    From<
-        TransformSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TransformSummary
+impl<S0, S1, S2> crate::typed::builder::Build for TransformSummaryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<transform_summary_members::dest>,
+    S1: crate::typed::builder::IsSet<transform_summary_members::id>,
+    S2: crate::typed::builder::IsSet<transform_summary_members::source>,
 {
-    fn from(
-        builder: TransformSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TransformSummary;
+
+    fn build(self) -> TransformSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TransformSummaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `dest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dest: crate::typed::builder::MissingRequiredField) -> TransformSummary { match dest {} }
-}
-
-impl<S2>
-    TransformSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TransformSummaryBuilder<(S0, S1, S2)>> for TransformSummary
+where
+    S0: crate::typed::builder::IsSet<transform_summary_members::dest>,
+    S1: crate::typed::builder::IsSet<transform_summary_members::id>,
+    S2: crate::typed::builder::IsSet<transform_summary_members::source>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> TransformSummary { match id {} }
-}
-
-impl
-    TransformSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> TransformSummary { match source {} }
+    fn from(builder: TransformSummaryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

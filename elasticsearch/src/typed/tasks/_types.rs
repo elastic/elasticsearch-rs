@@ -33,16 +33,27 @@ pub struct NodeTasks {
 
 impl NodeTasks {
     /// Creates a builder for [`NodeTasks`].
+    ///
+    /// Required: `tasks`.
     pub fn builder() -> NodeTasksBuilder {
         NodeTasksBuilder::new()
     }
 
     /// Creates a [`NodeTasks`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeTasksBuilder) -> NodeTasksBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `tasks`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeTasks>>(
+        f: impl FnOnce(NodeTasksBuilder) -> B,
     ) -> NodeTasks {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeTasksBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_tasks_members {
+    pub struct tasks;
 }
 
 /// Builder for [`NodeTasks`].
@@ -177,6 +188,7 @@ impl<S0> NodeTasksBuilder<(S0,)> {
 }
 
 impl NodeTasksBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn tasks(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::TaskId, TaskInfo>>,
@@ -201,21 +213,10 @@ impl NodeTasksBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<B: crate::typed::builder::Build<Output = TaskInfo>>(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            TaskInfoBuilder,
-        ) -> TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TaskInfoBuilder) -> B,
     ) -> NodeTasksBuilder<(crate::typed::builder::Set,)> {
         self.add_tasks(key, f(TaskInfoBuilder::new()).build())
     }
@@ -235,29 +236,21 @@ impl NodeTasksBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<B: crate::typed::builder::Build<Output = TaskInfo>>(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            TaskInfoBuilder,
-        ) -> TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TaskInfoBuilder) -> B,
     ) -> Self {
         self.add_tasks(key, f(TaskInfoBuilder::new()).build())
     }
 }
 
-impl NodeTasksBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeTasksBuilder<(S0,)> {
     /// Builds a [`NodeTasks`].
-    pub fn build(self) -> NodeTasks {
+    pub fn build(self) -> NodeTasks
+    where
+        S0: crate::typed::builder::IsSet<node_tasks_members::tasks>,
+    {
         NodeTasks {
             name: self.name,
             transport_address: self.transport_address,
@@ -270,16 +263,24 @@ impl NodeTasksBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeTasksBuilder<(crate::typed::builder::Set,)>> for NodeTasks {
-    fn from(builder: NodeTasksBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeTasksBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_tasks_members::tasks>,
+{
+    type Output = NodeTasks;
+
+    fn build(self) -> NodeTasks {
+        Self::build(self)
     }
 }
 
-impl NodeTasksBuilder<(crate::typed::builder::NotSet,)> {
-    /// `tasks` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tasks: crate::typed::builder::MissingRequiredField) -> NodeTasks { match tasks {} }
+impl<S0> From<NodeTasksBuilder<(S0,)>> for NodeTasks
+where
+    S0: crate::typed::builder::IsSet<node_tasks_members::tasks>,
+{
+    fn from(builder: NodeTasksBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -326,27 +327,34 @@ pub struct ParentTaskInfo {
 
 impl ParentTaskInfo {
     /// Creates a builder for [`ParentTaskInfo`].
+    ///
+    /// Required: `action`, `cancellable`, `headers`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `type`.
     pub fn builder() -> ParentTaskInfoBuilder {
         ParentTaskInfoBuilder::new()
     }
 
     /// Creates a [`ParentTaskInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ParentTaskInfoBuilder,
-        ) -> ParentTaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `action`, `cancellable`, `headers`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ParentTaskInfo>>(
+        f: impl FnOnce(ParentTaskInfoBuilder) -> B,
     ) -> ParentTaskInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ParentTaskInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod parent_task_info_members {
+    pub struct action;
+    pub struct cancellable;
+    pub struct headers;
+    pub struct id;
+    pub struct node;
+    pub struct running_time_in_nanos;
+    pub struct start_time_in_millis;
+    pub struct r#type;
 }
 
 /// Builder for [`ParentTaskInfo`].
@@ -569,20 +577,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, 
     }
 
     /// Adds an element to [`children`](Self::children), with a builder.
-    pub fn add_children_with(
+    pub fn add_children_with<B: crate::typed::builder::Build<Output = TaskInfo>>(
         self,
-        f: impl FnOnce(
-            TaskInfoBuilder,
-        ) -> TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TaskInfoBuilder) -> B,
     ) -> Self {
         self.add_children(f(TaskInfoBuilder::new()).build())
     }
@@ -591,6 +588,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, 
 impl<S1, S2, S3, S4, S5, S6, S7>
     ParentTaskInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn action(
         self,
         value: impl Into<String>,
@@ -604,6 +602,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ParentTaskInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cancellable(
         self,
         value: bool,
@@ -617,6 +616,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ParentTaskInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn headers(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -656,6 +656,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ParentTaskInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: i64,
@@ -669,6 +670,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ParentTaskInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::NodeId>,
@@ -682,6 +684,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn running_time_in_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -695,6 +698,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -708,6 +712,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -718,20 +723,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`ParentTaskInfo`].
-    pub fn build(self) -> ParentTaskInfo {
+    pub fn build(self) -> ParentTaskInfo
+    where
+        S0: crate::typed::builder::IsSet<parent_task_info_members::action>,
+        S1: crate::typed::builder::IsSet<parent_task_info_members::cancellable>,
+        S2: crate::typed::builder::IsSet<parent_task_info_members::headers>,
+        S3: crate::typed::builder::IsSet<parent_task_info_members::id>,
+        S4: crate::typed::builder::IsSet<parent_task_info_members::node>,
+        S5: crate::typed::builder::IsSet<parent_task_info_members::running_time_in_nanos>,
+        S6: crate::typed::builder::IsSet<parent_task_info_members::start_time_in_millis>,
+        S7: crate::typed::builder::IsSet<parent_task_info_members::r#type>,
+    {
         ParentTaskInfo {
             action: self.action.unwrap(),
             cancelled: self.cancelled,
@@ -754,161 +758,40 @@ impl
     }
 }
 
-impl
-    From<
-        ParentTaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ParentTaskInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<parent_task_info_members::action>,
+    S1: crate::typed::builder::IsSet<parent_task_info_members::cancellable>,
+    S2: crate::typed::builder::IsSet<parent_task_info_members::headers>,
+    S3: crate::typed::builder::IsSet<parent_task_info_members::id>,
+    S4: crate::typed::builder::IsSet<parent_task_info_members::node>,
+    S5: crate::typed::builder::IsSet<parent_task_info_members::running_time_in_nanos>,
+    S6: crate::typed::builder::IsSet<parent_task_info_members::start_time_in_millis>,
+    S7: crate::typed::builder::IsSet<parent_task_info_members::r#type>,
 {
-    fn from(
-        builder: ParentTaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ParentTaskInfo;
+
+    fn build(self) -> ParentTaskInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ParentTaskInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for ParentTaskInfo
+where
+    S0: crate::typed::builder::IsSet<parent_task_info_members::action>,
+    S1: crate::typed::builder::IsSet<parent_task_info_members::cancellable>,
+    S2: crate::typed::builder::IsSet<parent_task_info_members::headers>,
+    S3: crate::typed::builder::IsSet<parent_task_info_members::id>,
+    S4: crate::typed::builder::IsSet<parent_task_info_members::node>,
+    S5: crate::typed::builder::IsSet<parent_task_info_members::running_time_in_nanos>,
+    S6: crate::typed::builder::IsSet<parent_task_info_members::start_time_in_millis>,
+    S7: crate::typed::builder::IsSet<parent_task_info_members::r#type>,
 {
-    /// `action` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, action: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match action {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `cancellable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancellable: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match cancellable {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `headers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, headers: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match headers {} }
-}
-
-impl<S4, S5, S6, S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match id {} }
-}
-
-impl<S5, S6, S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match node {} }
-}
-
-impl<S6, S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `running_time_in_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running_time_in_nanos: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match running_time_in_nanos {} }
-}
-
-impl<S7>
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match start_time_in_millis {} }
-}
-
-impl
-    ParentTaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ParentTaskInfo { match r#type {} }
+    fn from(builder: ParentTaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -953,27 +836,34 @@ pub struct TaskInfo {
 
 impl TaskInfo {
     /// Creates a builder for [`TaskInfo`].
+    ///
+    /// Required: `action`, `cancellable`, `headers`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `type`.
     pub fn builder() -> TaskInfoBuilder {
         TaskInfoBuilder::new()
     }
 
     /// Creates a [`TaskInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TaskInfoBuilder,
-        ) -> TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `action`, `cancellable`, `headers`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TaskInfo>>(
+        f: impl FnOnce(TaskInfoBuilder) -> B,
     ) -> TaskInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TaskInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod task_info_members {
+    pub struct action;
+    pub struct cancellable;
+    pub struct headers;
+    pub struct id;
+    pub struct node;
+    pub struct running_time_in_nanos;
+    pub struct start_time_in_millis;
+    pub struct r#type;
 }
 
 /// Builder for [`TaskInfo`].
@@ -1177,6 +1067,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6
 impl<S1, S2, S3, S4, S5, S6, S7>
     TaskInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn action(
         self,
         value: impl Into<String>,
@@ -1190,6 +1081,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     TaskInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cancellable(
         self,
         value: bool,
@@ -1203,6 +1095,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     TaskInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn headers(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -1242,6 +1135,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     TaskInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: i64,
@@ -1255,6 +1149,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     TaskInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::NodeId>,
@@ -1268,6 +1163,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     TaskInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn running_time_in_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1281,6 +1177,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1294,6 +1191,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1304,20 +1202,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`TaskInfo`].
-    pub fn build(self) -> TaskInfo {
+    pub fn build(self) -> TaskInfo
+    where
+        S0: crate::typed::builder::IsSet<task_info_members::action>,
+        S1: crate::typed::builder::IsSet<task_info_members::cancellable>,
+        S2: crate::typed::builder::IsSet<task_info_members::headers>,
+        S3: crate::typed::builder::IsSet<task_info_members::id>,
+        S4: crate::typed::builder::IsSet<task_info_members::node>,
+        S5: crate::typed::builder::IsSet<task_info_members::running_time_in_nanos>,
+        S6: crate::typed::builder::IsSet<task_info_members::start_time_in_millis>,
+        S7: crate::typed::builder::IsSet<task_info_members::r#type>,
+    {
         TaskInfo {
             action: self.action.unwrap(),
             cancelled: self.cancelled,
@@ -1339,161 +1236,40 @@ impl
     }
 }
 
-impl
-    From<
-        TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TaskInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<task_info_members::action>,
+    S1: crate::typed::builder::IsSet<task_info_members::cancellable>,
+    S2: crate::typed::builder::IsSet<task_info_members::headers>,
+    S3: crate::typed::builder::IsSet<task_info_members::id>,
+    S4: crate::typed::builder::IsSet<task_info_members::node>,
+    S5: crate::typed::builder::IsSet<task_info_members::running_time_in_nanos>,
+    S6: crate::typed::builder::IsSet<task_info_members::start_time_in_millis>,
+    S7: crate::typed::builder::IsSet<task_info_members::r#type>,
 {
-    fn from(
-        builder: TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TaskInfo;
+
+    fn build(self) -> TaskInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    TaskInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for TaskInfo
+where
+    S0: crate::typed::builder::IsSet<task_info_members::action>,
+    S1: crate::typed::builder::IsSet<task_info_members::cancellable>,
+    S2: crate::typed::builder::IsSet<task_info_members::headers>,
+    S3: crate::typed::builder::IsSet<task_info_members::id>,
+    S4: crate::typed::builder::IsSet<task_info_members::node>,
+    S5: crate::typed::builder::IsSet<task_info_members::running_time_in_nanos>,
+    S6: crate::typed::builder::IsSet<task_info_members::start_time_in_millis>,
+    S7: crate::typed::builder::IsSet<task_info_members::r#type>,
 {
-    /// `action` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, action: crate::typed::builder::MissingRequiredField) -> TaskInfo { match action {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `cancellable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancellable: crate::typed::builder::MissingRequiredField) -> TaskInfo { match cancellable {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `headers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, headers: crate::typed::builder::MissingRequiredField) -> TaskInfo { match headers {} }
-}
-
-impl<S4, S5, S6, S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> TaskInfo { match id {} }
-}
-
-impl<S5, S6, S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> TaskInfo { match node {} }
-}
-
-impl<S6, S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `running_time_in_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running_time_in_nanos: crate::typed::builder::MissingRequiredField) -> TaskInfo { match running_time_in_nanos {} }
-}
-
-impl<S7>
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> TaskInfo { match start_time_in_millis {} }
-}
-
-impl
-    TaskInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TaskInfo { match r#type {} }
+    fn from(builder: TaskInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1537,8 +1313,8 @@ impl TaskListResponseBase {
     }
 
     /// Creates a [`TaskListResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TaskListResponseBaseBuilder) -> TaskListResponseBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TaskListResponseBase>>(
+        f: impl FnOnce(TaskListResponseBaseBuilder) -> B,
     ) -> TaskListResponseBase {
         f(Self::builder()).build()
     }
@@ -1591,12 +1367,11 @@ impl TaskListResponseBaseBuilder {
     }
 
     /// Adds an element to [`node_failures`](Self::node_failures), with a builder.
-    pub fn add_node_failures_with(
+    pub fn add_node_failures_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.add_node_failures(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -1630,16 +1405,11 @@ impl TaskListResponseBaseBuilder {
     }
 
     /// Adds an element to [`task_failures`](Self::task_failures), with a builder.
-    pub fn add_task_failures_with(
+    pub fn add_task_failures_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TaskFailure>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TaskFailureBuilder,
-        ) -> crate::typed::_types::TaskFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::TaskFailureBuilder) -> B,
     ) -> Self {
         self.add_task_failures(f(crate::typed::_types::TaskFailureBuilder::new()).build())
     }
@@ -1665,10 +1435,10 @@ impl TaskListResponseBaseBuilder {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeTasks>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(NodeTasksBuilder) -> NodeTasksBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeTasksBuilder) -> B,
     ) -> Self {
         self.add_nodes(key, f(NodeTasksBuilder::new()).build())
     }
@@ -1696,6 +1466,14 @@ impl TaskListResponseBaseBuilder {
             nodes: self.nodes,
             tasks: self.tasks,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TaskListResponseBaseBuilder {
+    type Output = TaskListResponseBase;
+
+    fn build(self) -> TaskListResponseBase {
+        Self::build(self)
     }
 }
 

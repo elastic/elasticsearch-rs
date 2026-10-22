@@ -31,19 +31,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `calendar_id`, `events`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `calendar_id`, `events`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct calendar_id;
+    pub struct events;
 }
 
 /// Builder for [`Request`].
@@ -148,7 +157,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A string that uniquely identifies a calendar.
+    /// **Required.** A string that uniquely identifies a calendar.
     pub fn calendar_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -160,7 +169,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// A list of one of more scheduled events. The event’s start and end times can be specified as integer milliseconds since the epoch or as a string in ISO 8601 format.
+    /// **Required.** A list of one of more scheduled events. The event’s start and end times can be specified as integer milliseconds since the epoch or as a string in ISO 8601 format.
     pub fn events(
         self,
         value: impl Into<Vec<crate::typed::ml::_types::CalendarEvent>>,
@@ -184,15 +193,11 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Adds an element to [`events`](Self::events), with a builder.
-    pub fn add_events_with(
+    pub fn add_events_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::CalendarEvent>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::CalendarEventBuilder,
-        ) -> crate::typed::ml::_types::CalendarEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::CalendarEventBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.add_events(f(crate::typed::ml::_types::CalendarEventBuilder::new()).build())
     }
@@ -208,23 +213,23 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
     }
 
     /// Adds an element to [`events`](Self::events), with a builder.
-    pub fn add_events_with(
+    pub fn add_events_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::CalendarEvent>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::CalendarEventBuilder,
-        ) -> crate::typed::ml::_types::CalendarEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::CalendarEventBuilder) -> B,
     ) -> Self {
         self.add_events(f(crate::typed::ml::_types::CalendarEventBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::calendar_id>,
+        S1: crate::typed::builder::IsSet<request_members::events>,
+    {
         Request {
             calendar_id: self.calendar_id.unwrap(),
             error_trace: self.error_trace,
@@ -236,41 +241,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::calendar_id>,
+    S1: crate::typed::builder::IsSet<request_members::events>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `calendar_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, calendar_id: crate::typed::builder::MissingRequiredField) -> Request { match calendar_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `calendar_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, calendar_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match calendar_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `events` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, events: crate::typed::builder::MissingRequiredField) -> Request { match events {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `events` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, events: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match events {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::calendar_id>,
+        S1: crate::typed::builder::IsSet<request_members::events>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

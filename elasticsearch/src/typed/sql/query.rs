@@ -95,7 +95,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -329,13 +331,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -492,14 +492,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -570,6 +568,14 @@ impl<C> RequestBuilder<(), C> {
             time_zone: self.time_zone,
             wait_for_completion_timeout: self.wait_for_completion_timeout,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

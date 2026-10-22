@@ -14,24 +14,31 @@ pub struct BaseNode {
 
 impl BaseNode {
     /// Creates a builder for [`BaseNode`].
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`.
     pub fn builder() -> BaseNodeBuilder {
         BaseNodeBuilder::new()
     }
 
     /// Creates a [`BaseNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BaseNodeBuilder,
-        ) -> BaseNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`.
+    pub fn of<B: crate::typed::builder::Build<Output = BaseNode>>(
+        f: impl FnOnce(BaseNodeBuilder) -> B,
     ) -> BaseNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BaseNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod base_node_members {
+    pub struct attributes;
+    pub struct host;
+    pub struct ip;
+    pub struct name;
+    pub struct transport_address;
 }
 
 /// Builder for [`BaseNode`].
@@ -110,6 +117,7 @@ impl<S0, S1, S2, S3, S4> BaseNodeBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> BaseNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -145,6 +153,7 @@ impl<S1, S2, S3, S4> BaseNodeBuilder<(crate::typed::builder::Set, S1, S2, S3, S4
 }
 
 impl<S0, S2, S3, S4> BaseNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn host(
         self,
         value: impl Into<crate::typed::_types::Host>,
@@ -156,6 +165,7 @@ impl<S0, S2, S3, S4> BaseNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3,
 }
 
 impl<S0, S1, S3, S4> BaseNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn ip(
         self,
         value: impl Into<crate::typed::_types::Ip>,
@@ -167,6 +177,7 @@ impl<S0, S1, S3, S4> BaseNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3,
 }
 
 impl<S0, S1, S2, S4> BaseNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -178,6 +189,7 @@ impl<S0, S1, S2, S4> BaseNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2, S3> BaseNodeBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -188,17 +200,16 @@ impl<S0, S1, S2, S3> BaseNodeBuilder<(S0, S1, S2, S3, crate::typed::builder::Not
     }
 }
 
-impl
-    BaseNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> BaseNodeBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`BaseNode`].
-    pub fn build(self) -> BaseNode {
+    pub fn build(self) -> BaseNode
+    where
+        S0: crate::typed::builder::IsSet<base_node_members::attributes>,
+        S1: crate::typed::builder::IsSet<base_node_members::host>,
+        S2: crate::typed::builder::IsSet<base_node_members::ip>,
+        S3: crate::typed::builder::IsSet<base_node_members::name>,
+        S4: crate::typed::builder::IsSet<base_node_members::transport_address>,
+    {
         BaseNode {
             attributes: self.attributes.unwrap(),
             host: self.host.unwrap(),
@@ -210,90 +221,32 @@ impl
     }
 }
 
-impl
-    From<
-        BaseNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BaseNode
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for BaseNodeBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<base_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<base_node_members::host>,
+    S2: crate::typed::builder::IsSet<base_node_members::ip>,
+    S3: crate::typed::builder::IsSet<base_node_members::name>,
+    S4: crate::typed::builder::IsSet<base_node_members::transport_address>,
 {
-    fn from(
-        builder: BaseNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BaseNode;
+
+    fn build(self) -> BaseNode {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> BaseNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> BaseNode { match attributes {} }
-}
-
-impl<S2, S3, S4>
-    BaseNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<BaseNodeBuilder<(S0, S1, S2, S3, S4)>> for BaseNode
+where
+    S0: crate::typed::builder::IsSet<base_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<base_node_members::host>,
+    S2: crate::typed::builder::IsSet<base_node_members::ip>,
+    S3: crate::typed::builder::IsSet<base_node_members::name>,
+    S4: crate::typed::builder::IsSet<base_node_members::transport_address>,
 {
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> BaseNode { match host {} }
-}
-
-impl<S3, S4>
-    BaseNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `ip` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ip: crate::typed::builder::MissingRequiredField) -> BaseNode { match ip {} }
-}
-
-impl<S4>
-    BaseNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> BaseNode { match name {} }
-}
-
-impl
-    BaseNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> BaseNode { match transport_address {} }
+    fn from(builder: BaseNodeBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Implements a set of common query parameters all Cat API's support.
@@ -333,8 +286,8 @@ impl CommonCatQueryParameters {
     }
 
     /// Creates a [`CommonCatQueryParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CommonCatQueryParametersBuilder) -> CommonCatQueryParametersBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CommonCatQueryParameters>>(
+        f: impl FnOnce(CommonCatQueryParametersBuilder) -> B,
     ) -> CommonCatQueryParameters {
         f(Self::builder()).build()
     }
@@ -446,6 +399,14 @@ impl CommonCatQueryParametersBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CommonCatQueryParametersBuilder {
+    type Output = CommonCatQueryParameters;
+
+    fn build(self) -> CommonCatQueryParameters {
+        Self::build(self)
+    }
+}
+
 impl From<CommonCatQueryParametersBuilder> for CommonCatQueryParameters {
     fn from(builder: CommonCatQueryParametersBuilder) -> Self {
         builder.build()
@@ -511,8 +472,8 @@ impl CommonQueryParameters {
     }
 
     /// Creates a [`CommonQueryParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CommonQueryParametersBuilder) -> CommonQueryParametersBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CommonQueryParameters>>(
+        f: impl FnOnce(CommonQueryParametersBuilder) -> B,
     ) -> CommonQueryParameters {
         f(Self::builder()).build()
     }
@@ -604,6 +565,14 @@ impl CommonQueryParametersBuilder {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CommonQueryParametersBuilder {
+    type Output = CommonQueryParameters;
+
+    fn build(self) -> CommonQueryParameters {
+        Self::build(self)
     }
 }
 

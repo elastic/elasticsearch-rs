@@ -18,23 +18,30 @@ pub struct FollowerIndex {
 
 impl FollowerIndex {
     /// Creates a builder for [`FollowerIndex`].
+    ///
+    /// Required: `follower_index`, `leader_index`, `remote_cluster`, `status`.
     pub fn builder() -> FollowerIndexBuilder {
         FollowerIndexBuilder::new()
     }
 
     /// Creates a [`FollowerIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FollowerIndexBuilder,
-        ) -> FollowerIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `follower_index`, `leader_index`, `remote_cluster`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = FollowerIndex>>(
+        f: impl FnOnce(FollowerIndexBuilder) -> B,
     ) -> FollowerIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FollowerIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod follower_index_members {
+    pub struct follower_index;
+    pub struct leader_index;
+    pub struct remote_cluster;
+    pub struct status;
 }
 
 /// Builder for [`FollowerIndex`].
@@ -100,16 +107,16 @@ impl<S0, S1, S2, S3> FollowerIndexBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`parameters`](Self::parameters) with a builder.
-    pub fn parameters_with(
+    pub fn parameters_with<B: crate::typed::builder::Build<Output = FollowerIndexParameters>>(
         self,
-        f: impl FnOnce(FollowerIndexParametersBuilder) -> FollowerIndexParametersBuilder,
+        f: impl FnOnce(FollowerIndexParametersBuilder) -> B,
     ) -> Self {
         self.parameters(f(FollowerIndexParametersBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> FollowerIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The name of the follower index.
+    /// **Required.** The name of the follower index.
     pub fn follower_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -121,7 +128,7 @@ impl<S1, S2, S3> FollowerIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> FollowerIndexBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The name of the index in the leader cluster that is followed.
+    /// **Required.** The name of the index in the leader cluster that is followed.
     pub fn leader_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -133,7 +140,7 @@ impl<S0, S2, S3> FollowerIndexBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> FollowerIndexBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The remote cluster that contains the leader index.
+    /// **Required.** The remote cluster that contains the leader index.
     pub fn remote_cluster(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -145,7 +152,7 @@ impl<S0, S1, S3> FollowerIndexBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> FollowerIndexBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The status of the index following: `active` or `paused`.
+    /// **Required.** The status of the index following: `active` or `paused`.
     pub fn status(
         self,
         value: impl Into<FollowerIndexStatus>,
@@ -156,16 +163,15 @@ impl<S0, S1, S2> FollowerIndexBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 }
 
-impl
-    FollowerIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> FollowerIndexBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`FollowerIndex`].
-    pub fn build(self) -> FollowerIndex {
+    pub fn build(self) -> FollowerIndex
+    where
+        S0: crate::typed::builder::IsSet<follower_index_members::follower_index>,
+        S1: crate::typed::builder::IsSet<follower_index_members::leader_index>,
+        S2: crate::typed::builder::IsSet<follower_index_members::remote_cluster>,
+        S3: crate::typed::builder::IsSet<follower_index_members::status>,
+    {
         FollowerIndex {
             follower_index: self.follower_index.unwrap(),
             leader_index: self.leader_index.unwrap(),
@@ -176,71 +182,30 @@ impl
     }
 }
 
-impl
-    From<
-        FollowerIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FollowerIndex
+impl<S0, S1, S2, S3> crate::typed::builder::Build for FollowerIndexBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<follower_index_members::follower_index>,
+    S1: crate::typed::builder::IsSet<follower_index_members::leader_index>,
+    S2: crate::typed::builder::IsSet<follower_index_members::remote_cluster>,
+    S3: crate::typed::builder::IsSet<follower_index_members::status>,
 {
-    fn from(
-        builder: FollowerIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FollowerIndex;
+
+    fn build(self) -> FollowerIndex {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> FollowerIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `follower_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_index: crate::typed::builder::MissingRequiredField) -> FollowerIndex { match follower_index {} }
-}
-
-impl<S2, S3>
-    FollowerIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<FollowerIndexBuilder<(S0, S1, S2, S3)>> for FollowerIndex
+where
+    S0: crate::typed::builder::IsSet<follower_index_members::follower_index>,
+    S1: crate::typed::builder::IsSet<follower_index_members::leader_index>,
+    S2: crate::typed::builder::IsSet<follower_index_members::remote_cluster>,
+    S3: crate::typed::builder::IsSet<follower_index_members::status>,
 {
-    /// `leader_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_index: crate::typed::builder::MissingRequiredField) -> FollowerIndex { match leader_index {} }
-}
-
-impl<S3>
-    FollowerIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `remote_cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remote_cluster: crate::typed::builder::MissingRequiredField) -> FollowerIndex { match remote_cluster {} }
-}
-
-impl
-    FollowerIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> FollowerIndex { match status {} }
+    fn from(builder: FollowerIndexBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -289,8 +254,8 @@ impl FollowerIndexParameters {
     }
 
     /// Creates a [`FollowerIndexParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FollowerIndexParametersBuilder) -> FollowerIndexParametersBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FollowerIndexParameters>>(
+        f: impl FnOnce(FollowerIndexParametersBuilder) -> B,
     ) -> FollowerIndexParameters {
         f(Self::builder()).build()
     }
@@ -494,6 +459,14 @@ impl FollowerIndexParametersBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FollowerIndexParametersBuilder {
+    type Output = FollowerIndexParameters;
+
+    fn build(self) -> FollowerIndexParameters {
+        Self::build(self)
+    }
+}
+
 impl From<FollowerIndexParametersBuilder> for FollowerIndexParameters {
     fn from(builder: FollowerIndexParametersBuilder) -> Self {
         builder.build()
@@ -543,16 +516,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -668,7 +652,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A comma-delimited list of follower index patterns.
+    /// **Required.** A comma-delimited list of follower index patterns.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -679,9 +663,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             master_timeout: self.master_timeout,
@@ -693,23 +680,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -32,7 +32,9 @@ impl Configuration {
     }
 
     /// Creates a [`Configuration`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ConfigurationBuilder) -> ConfigurationBuilder) -> Configuration {
+    pub fn of<B: crate::typed::builder::Build<Output = Configuration>>(
+        f: impl FnOnce(ConfigurationBuilder) -> B,
+    ) -> Configuration {
         f(Self::builder()).build()
     }
 }
@@ -171,6 +173,14 @@ impl ConfigurationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ConfigurationBuilder {
+    type Output = Configuration;
+
+    fn build(self) -> Configuration {
+        Self::build(self)
+    }
+}
+
 impl From<ConfigurationBuilder> for Configuration {
     fn from(builder: ConfigurationBuilder) -> Self {
         builder.build()
@@ -187,23 +197,30 @@ pub struct InProgress {
 
 impl InProgress {
     /// Creates a builder for [`InProgress`].
+    ///
+    /// Required: `name`, `start_time_millis`, `state`, `uuid`.
     pub fn builder() -> InProgressBuilder {
         InProgressBuilder::new()
     }
 
     /// Creates a [`InProgress`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InProgressBuilder,
-        ) -> InProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `start_time_millis`, `state`, `uuid`.
+    pub fn of<B: crate::typed::builder::Build<Output = InProgress>>(
+        f: impl FnOnce(InProgressBuilder) -> B,
     ) -> InProgress {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InProgressBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod in_progress_members {
+    pub struct name;
+    pub struct start_time_millis;
+    pub struct state;
+    pub struct uuid;
 }
 
 /// Builder for [`InProgress`].
@@ -255,6 +272,7 @@ impl<S0, S1, S2, S3> InProgressBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InProgressBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -266,6 +284,7 @@ impl<S1, S2, S3> InProgressBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> 
 }
 
 impl<S0, S2, S3> InProgressBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn start_time_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -277,6 +296,7 @@ impl<S0, S2, S3> InProgressBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> 
 }
 
 impl<S0, S1, S3> InProgressBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn state(
         self,
         value: impl Into<String>,
@@ -288,6 +308,7 @@ impl<S0, S1, S3> InProgressBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> 
 }
 
 impl<S0, S1, S2> InProgressBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn uuid(
         self,
         value: impl Into<crate::typed::_types::Uuid>,
@@ -298,16 +319,15 @@ impl<S0, S1, S2> InProgressBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> 
     }
 }
 
-impl
-    InProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InProgressBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InProgress`].
-    pub fn build(self) -> InProgress {
+    pub fn build(self) -> InProgress
+    where
+        S0: crate::typed::builder::IsSet<in_progress_members::name>,
+        S1: crate::typed::builder::IsSet<in_progress_members::start_time_millis>,
+        S2: crate::typed::builder::IsSet<in_progress_members::state>,
+        S3: crate::typed::builder::IsSet<in_progress_members::uuid>,
+    {
         InProgress {
             name: self.name.unwrap(),
             start_time_millis: self.start_time_millis.unwrap(),
@@ -317,71 +337,30 @@ impl
     }
 }
 
-impl
-    From<
-        InProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InProgress
+impl<S0, S1, S2, S3> crate::typed::builder::Build for InProgressBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<in_progress_members::name>,
+    S1: crate::typed::builder::IsSet<in_progress_members::start_time_millis>,
+    S2: crate::typed::builder::IsSet<in_progress_members::state>,
+    S3: crate::typed::builder::IsSet<in_progress_members::uuid>,
 {
-    fn from(
-        builder: InProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InProgress;
+
+    fn build(self) -> InProgress {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InProgressBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> InProgress { match name {} }
-}
-
-impl<S2, S3>
-    InProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InProgressBuilder<(S0, S1, S2, S3)>> for InProgress
+where
+    S0: crate::typed::builder::IsSet<in_progress_members::name>,
+    S1: crate::typed::builder::IsSet<in_progress_members::start_time_millis>,
+    S2: crate::typed::builder::IsSet<in_progress_members::state>,
+    S3: crate::typed::builder::IsSet<in_progress_members::uuid>,
 {
-    /// `start_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_millis: crate::typed::builder::MissingRequiredField) -> InProgress { match start_time_millis {} }
-}
-
-impl<S3>
-    InProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> InProgress { match state {} }
-}
-
-impl
-    InProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uuid: crate::typed::builder::MissingRequiredField) -> InProgress { match uuid {} }
+    fn from(builder: InProgressBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -392,19 +371,28 @@ pub struct Invocation {
 
 impl Invocation {
     /// Creates a builder for [`Invocation`].
+    ///
+    /// Required: `snapshot_name`, `time`.
     pub fn builder() -> InvocationBuilder {
         InvocationBuilder::new()
     }
 
     /// Creates a [`Invocation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InvocationBuilder,
-        )
-            -> InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `snapshot_name`, `time`.
+    pub fn of<B: crate::typed::builder::Build<Output = Invocation>>(
+        f: impl FnOnce(InvocationBuilder) -> B,
     ) -> Invocation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InvocationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod invocation_members {
+    pub struct snapshot_name;
+    pub struct time;
 }
 
 /// Builder for [`Invocation`].
@@ -436,6 +424,7 @@ impl<S0, S1> InvocationBuilder<(S0, S1)> {
 }
 
 impl<S1> InvocationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn snapshot_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -447,6 +436,7 @@ impl<S1> InvocationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InvocationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -457,9 +447,13 @@ impl<S0> InvocationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InvocationBuilder<(S0, S1)> {
     /// Builds a [`Invocation`].
-    pub fn build(self) -> Invocation {
+    pub fn build(self) -> Invocation
+    where
+        S0: crate::typed::builder::IsSet<invocation_members::snapshot_name>,
+        S1: crate::typed::builder::IsSet<invocation_members::time>,
+    {
         Invocation {
             snapshot_name: self.snapshot_name.unwrap(),
             time: self.time.unwrap(),
@@ -467,26 +461,26 @@ impl InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for Invocation
+impl<S0, S1> crate::typed::builder::Build for InvocationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<invocation_members::snapshot_name>,
+    S1: crate::typed::builder::IsSet<invocation_members::time>,
 {
-    fn from(
-        builder: InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = Invocation;
+
+    fn build(self) -> Invocation {
+        Self::build(self)
     }
 }
 
-impl<S1> InvocationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `snapshot_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_name: crate::typed::builder::MissingRequiredField) -> Invocation { match snapshot_name {} }
-}
-
-impl InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time: crate::typed::builder::MissingRequiredField) -> Invocation { match time {} }
+impl<S0, S1> From<InvocationBuilder<(S0, S1)>> for Invocation
+where
+    S0: crate::typed::builder::IsSet<invocation_members::snapshot_name>,
+    S1: crate::typed::builder::IsSet<invocation_members::time>,
+{
+    fn from(builder: InvocationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -502,22 +496,29 @@ pub struct Policy {
 
 impl Policy {
     /// Creates a builder for [`Policy`].
+    ///
+    /// Required: `name`, `repository`, `schedule`.
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
     }
 
     /// Creates a [`Policy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PolicyBuilder,
-        ) -> PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `repository`, `schedule`.
+    pub fn of<B: crate::typed::builder::Build<Output = Policy>>(
+        f: impl FnOnce(PolicyBuilder) -> B,
     ) -> Policy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PolicyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod policy_members {
+    pub struct name;
+    pub struct repository;
+    pub struct schedule;
 }
 
 /// Builder for [`Policy`].
@@ -580,7 +581,10 @@ impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(self, f: impl FnOnce(ConfigurationBuilder) -> ConfigurationBuilder) -> Self {
+    pub fn config_with<B: crate::typed::builder::Build<Output = Configuration>>(
+        self,
+        f: impl FnOnce(ConfigurationBuilder) -> B,
+    ) -> Self {
         self.config(f(ConfigurationBuilder::new()).build())
     }
 
@@ -596,21 +600,16 @@ impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`retention`](Self::retention) with a builder.
-    pub fn retention_with(
+    pub fn retention_with<B: crate::typed::builder::Build<Output = Retention>>(
         self,
-        f: impl FnOnce(
-            RetentionBuilder,
-        ) -> RetentionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RetentionBuilder) -> B,
     ) -> Self {
         self.retention(f(RetentionBuilder::new()).build())
     }
 }
 
 impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -622,6 +621,7 @@ impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> PolicyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn repository(
         self,
         value: impl Into<String>,
@@ -633,6 +633,7 @@ impl<S0, S2> PolicyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> PolicyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn schedule(
         self,
         value: impl Into<crate::typed::watcher::_types::CronExpression>,
@@ -643,15 +644,14 @@ impl<S0, S1> PolicyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
     /// Builds a [`Policy`].
-    pub fn build(self) -> Policy {
+    pub fn build(self) -> Policy
+    where
+        S0: crate::typed::builder::IsSet<policy_members::name>,
+        S1: crate::typed::builder::IsSet<policy_members::repository>,
+        S2: crate::typed::builder::IsSet<policy_members::schedule>,
+    {
         Policy {
             config: self.config,
             name: self.name.unwrap(),
@@ -662,54 +662,28 @@ impl
     }
 }
 
-impl
-    From<
-        PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Policy
+impl<S0, S1, S2> crate::typed::builder::Build for PolicyBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<policy_members::name>,
+    S1: crate::typed::builder::IsSet<policy_members::repository>,
+    S2: crate::typed::builder::IsSet<policy_members::schedule>,
 {
-    fn from(
-        builder: PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Policy;
+
+    fn build(self) -> Policy {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Policy { match name {} }
-}
-
-impl<S2>
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<PolicyBuilder<(S0, S1, S2)>> for Policy
+where
+    S0: crate::typed::builder::IsSet<policy_members::name>,
+    S1: crate::typed::builder::IsSet<policy_members::repository>,
+    S2: crate::typed::builder::IsSet<policy_members::schedule>,
 {
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> Policy { match repository {} }
-}
-
-impl
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `schedule` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, schedule: crate::typed::builder::MissingRequiredField) -> Policy { match schedule {} }
+    fn from(builder: PolicyBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -724,22 +698,29 @@ pub struct Retention {
 
 impl Retention {
     /// Creates a builder for [`Retention`].
+    ///
+    /// Required: `expire_after`, `max_count`, `min_count`.
     pub fn builder() -> RetentionBuilder {
         RetentionBuilder::new()
     }
 
     /// Creates a [`Retention`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RetentionBuilder,
-        ) -> RetentionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `expire_after`, `max_count`, `min_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = Retention>>(
+        f: impl FnOnce(RetentionBuilder) -> B,
     ) -> Retention {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RetentionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod retention_members {
+    pub struct expire_after;
+    pub struct max_count;
+    pub struct min_count;
 }
 
 /// Builder for [`Retention`].
@@ -786,7 +767,7 @@ impl<S0, S1, S2> RetentionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RetentionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Time period after which a snapshot is considered expired and eligible for deletion. SLM deletes expired snapshots based on the slm.retention_schedule.
+    /// **Required.** Time period after which a snapshot is considered expired and eligible for deletion. SLM deletes expired snapshots based on the slm.retention_schedule.
     pub fn expire_after(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -798,7 +779,7 @@ impl<S1, S2> RetentionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RetentionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Maximum number of snapshots to retain, even if the snapshots have not yet expired. If the number of snapshots in the repository exceeds this limit, the policy retains the most recent snapshots and deletes older snapshots.
+    /// **Required.** Maximum number of snapshots to retain, even if the snapshots have not yet expired. If the number of snapshots in the repository exceeds this limit, the policy retains the most recent snapshots and deletes older snapshots.
     pub fn max_count(self, value: i32) -> RetentionBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.max_count = Some(value);
@@ -807,7 +788,7 @@ impl<S0, S2> RetentionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RetentionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Minimum number of snapshots to retain, even if the snapshots have expired.
+    /// **Required.** Minimum number of snapshots to retain, even if the snapshots have expired.
     pub fn min_count(self, value: i32) -> RetentionBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.min_count = Some(value);
@@ -815,15 +796,14 @@ impl<S0, S1> RetentionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RetentionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RetentionBuilder<(S0, S1, S2)> {
     /// Builds a [`Retention`].
-    pub fn build(self) -> Retention {
+    pub fn build(self) -> Retention
+    where
+        S0: crate::typed::builder::IsSet<retention_members::expire_after>,
+        S1: crate::typed::builder::IsSet<retention_members::max_count>,
+        S2: crate::typed::builder::IsSet<retention_members::min_count>,
+    {
         Retention {
             expire_after: self.expire_after.unwrap(),
             max_count: self.max_count.unwrap(),
@@ -832,54 +812,28 @@ impl
     }
 }
 
-impl
-    From<
-        RetentionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Retention
+impl<S0, S1, S2> crate::typed::builder::Build for RetentionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<retention_members::expire_after>,
+    S1: crate::typed::builder::IsSet<retention_members::max_count>,
+    S2: crate::typed::builder::IsSet<retention_members::min_count>,
 {
-    fn from(
-        builder: RetentionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Retention;
+
+    fn build(self) -> Retention {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RetentionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `expire_after` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expire_after: crate::typed::builder::MissingRequiredField) -> Retention { match expire_after {} }
-}
-
-impl<S2>
-    RetentionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RetentionBuilder<(S0, S1, S2)>> for Retention
+where
+    S0: crate::typed::builder::IsSet<retention_members::expire_after>,
+    S1: crate::typed::builder::IsSet<retention_members::max_count>,
+    S2: crate::typed::builder::IsSet<retention_members::min_count>,
 {
-    /// `max_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_count: crate::typed::builder::MissingRequiredField) -> Retention { match max_count {} }
-}
-
-impl
-    RetentionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `min_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_count: crate::typed::builder::MissingRequiredField) -> Retention { match min_count {} }
+    fn from(builder: RetentionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -907,24 +861,31 @@ pub struct SnapshotLifecycle {
 
 impl SnapshotLifecycle {
     /// Creates a builder for [`SnapshotLifecycle`].
+    ///
+    /// Required: `modified_date_millis`, `next_execution_millis`, `policy`, `version`, `stats`.
     pub fn builder() -> SnapshotLifecycleBuilder {
         SnapshotLifecycleBuilder::new()
     }
 
     /// Creates a [`SnapshotLifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotLifecycleBuilder,
-        ) -> SnapshotLifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `modified_date_millis`, `next_execution_millis`, `policy`, `version`, `stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotLifecycle>>(
+        f: impl FnOnce(SnapshotLifecycleBuilder) -> B,
     ) -> SnapshotLifecycle {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotLifecycleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_lifecycle_members {
+    pub struct modified_date_millis;
+    pub struct next_execution_millis;
+    pub struct policy;
+    pub struct version;
+    pub struct stats;
 }
 
 /// Builder for [`SnapshotLifecycle`].
@@ -1006,16 +967,9 @@ impl<S0, S1, S2, S3, S4> SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`in_progress`](Self::in_progress) with a builder.
-    pub fn in_progress_with(
+    pub fn in_progress_with<B: crate::typed::builder::Build<Output = InProgress>>(
         self,
-        f: impl FnOnce(
-            InProgressBuilder,
-        ) -> InProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(InProgressBuilder) -> B,
     ) -> Self {
         self.in_progress(f(InProgressBuilder::new()).build())
     }
@@ -1032,12 +986,9 @@ impl<S0, S1, S2, S3, S4> SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`last_failure`](Self::last_failure) with a builder.
-    pub fn last_failure_with(
+    pub fn last_failure_with<B: crate::typed::builder::Build<Output = Invocation>>(
         self,
-        f: impl FnOnce(
-            InvocationBuilder,
-        )
-            -> InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(InvocationBuilder) -> B,
     ) -> Self {
         self.last_failure(f(InvocationBuilder::new()).build())
     }
@@ -1054,12 +1005,9 @@ impl<S0, S1, S2, S3, S4> SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`last_success`](Self::last_success) with a builder.
-    pub fn last_success_with(
+    pub fn last_success_with<B: crate::typed::builder::Build<Output = Invocation>>(
         self,
-        f: impl FnOnce(
-            InvocationBuilder,
-        )
-            -> InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(InvocationBuilder) -> B,
     ) -> Self {
         self.last_success(f(InvocationBuilder::new()).build())
     }
@@ -1090,6 +1038,7 @@ impl<S0, S1, S2, S3, S4> SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> SnapshotLifecycleBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn modified_date_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1101,6 +1050,7 @@ impl<S1, S2, S3, S4> SnapshotLifecycleBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3, S4> SnapshotLifecycleBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn next_execution_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1112,6 +1062,7 @@ impl<S0, S2, S3, S4> SnapshotLifecycleBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3, S4> SnapshotLifecycleBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<Policy>,
@@ -1122,22 +1073,16 @@ impl<S0, S1, S3, S4> SnapshotLifecycleBuilder<(S0, S1, crate::typed::builder::No
     }
 
     /// Sets [`policy`](Self::policy) with a builder.
-    pub fn policy_with(
+    pub fn policy_with<B: crate::typed::builder::Build<Output = Policy>>(
         self,
-        f: impl FnOnce(
-            PolicyBuilder,
-        ) -> PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PolicyBuilder) -> B,
     ) -> SnapshotLifecycleBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.policy(f(PolicyBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4> SnapshotLifecycleBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// The version of the snapshot policy.
+    /// **Required.** The version of the snapshot policy.
     /// Only the latest version is stored and incremented when the policy is updated.
     pub fn version(
         self,
@@ -1150,6 +1095,7 @@ impl<S0, S1, S2, S4> SnapshotLifecycleBuilder<(S0, S1, S2, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3> SnapshotLifecycleBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stats(
         self,
         value: impl Into<Statistics>,
@@ -1160,25 +1106,24 @@ impl<S0, S1, S2, S3> SnapshotLifecycleBuilder<(S0, S1, S2, S3, crate::typed::bui
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = Statistics>>(
         self,
-        f: impl FnOnce(StatisticsBuilder) -> StatisticsBuilder,
+        f: impl FnOnce(StatisticsBuilder) -> B,
     ) -> SnapshotLifecycleBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.stats(f(StatisticsBuilder::new()).build())
     }
 }
 
-impl
-    SnapshotLifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`SnapshotLifecycle`].
-    pub fn build(self) -> SnapshotLifecycle {
+    pub fn build(self) -> SnapshotLifecycle
+    where
+        S0: crate::typed::builder::IsSet<snapshot_lifecycle_members::modified_date_millis>,
+        S1: crate::typed::builder::IsSet<snapshot_lifecycle_members::next_execution_millis>,
+        S2: crate::typed::builder::IsSet<snapshot_lifecycle_members::policy>,
+        S3: crate::typed::builder::IsSet<snapshot_lifecycle_members::version>,
+        S4: crate::typed::builder::IsSet<snapshot_lifecycle_members::stats>,
+    {
         SnapshotLifecycle {
             in_progress: self.in_progress,
             last_failure: self.last_failure,
@@ -1194,90 +1139,33 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotLifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotLifecycle
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_lifecycle_members::modified_date_millis>,
+    S1: crate::typed::builder::IsSet<snapshot_lifecycle_members::next_execution_millis>,
+    S2: crate::typed::builder::IsSet<snapshot_lifecycle_members::policy>,
+    S3: crate::typed::builder::IsSet<snapshot_lifecycle_members::version>,
+    S4: crate::typed::builder::IsSet<snapshot_lifecycle_members::stats>,
 {
-    fn from(
-        builder: SnapshotLifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotLifecycle;
+
+    fn build(self) -> SnapshotLifecycle {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> SnapshotLifecycleBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `modified_date_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, modified_date_millis: crate::typed::builder::MissingRequiredField) -> SnapshotLifecycle { match modified_date_millis {} }
-}
-
-impl<S2, S3, S4>
-    SnapshotLifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)>> for SnapshotLifecycle
+where
+    S0: crate::typed::builder::IsSet<snapshot_lifecycle_members::modified_date_millis>,
+    S1: crate::typed::builder::IsSet<snapshot_lifecycle_members::next_execution_millis>,
+    S2: crate::typed::builder::IsSet<snapshot_lifecycle_members::policy>,
+    S3: crate::typed::builder::IsSet<snapshot_lifecycle_members::version>,
+    S4: crate::typed::builder::IsSet<snapshot_lifecycle_members::stats>,
 {
-    /// `next_execution_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, next_execution_millis: crate::typed::builder::MissingRequiredField) -> SnapshotLifecycle { match next_execution_millis {} }
-}
-
-impl<S3, S4>
-    SnapshotLifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> SnapshotLifecycle { match policy {} }
-}
-
-impl<S4>
-    SnapshotLifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> SnapshotLifecycle { match version {} }
-}
-
-impl
-    SnapshotLifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> SnapshotLifecycle { match stats {} }
+    fn from(builder: SnapshotLifecycleBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1291,24 +1179,31 @@ pub struct SnapshotPolicyStats {
 
 impl SnapshotPolicyStats {
     /// Creates a builder for [`SnapshotPolicyStats`].
+    ///
+    /// Required: `policy`, `snapshots_taken`, `snapshots_failed`, `snapshots_deleted`, `snapshot_deletion_failures`.
     pub fn builder() -> SnapshotPolicyStatsBuilder {
         SnapshotPolicyStatsBuilder::new()
     }
 
     /// Creates a [`SnapshotPolicyStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotPolicyStatsBuilder,
-        ) -> SnapshotPolicyStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `policy`, `snapshots_taken`, `snapshots_failed`, `snapshots_deleted`, `snapshot_deletion_failures`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotPolicyStats>>(
+        f: impl FnOnce(SnapshotPolicyStatsBuilder) -> B,
     ) -> SnapshotPolicyStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotPolicyStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_policy_stats_members {
+    pub struct policy;
+    pub struct snapshots_taken;
+    pub struct snapshots_failed;
+    pub struct snapshots_deleted;
+    pub struct snapshot_deletion_failures;
 }
 
 /// Builder for [`SnapshotPolicyStats`].
@@ -1365,6 +1260,7 @@ impl<S0, S1, S2, S3, S4> SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> SnapshotPolicyStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<String>,
@@ -1376,6 +1272,7 @@ impl<S1, S2, S3, S4> SnapshotPolicyStatsBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2, S3, S4> SnapshotPolicyStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn snapshots_taken(
         self,
         value: i64,
@@ -1387,6 +1284,7 @@ impl<S0, S2, S3, S4> SnapshotPolicyStatsBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S3, S4> SnapshotPolicyStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn snapshots_failed(
         self,
         value: i64,
@@ -1398,6 +1296,7 @@ impl<S0, S1, S3, S4> SnapshotPolicyStatsBuilder<(S0, S1, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S4> SnapshotPolicyStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn snapshots_deleted(
         self,
         value: i64,
@@ -1409,6 +1308,7 @@ impl<S0, S1, S2, S4> SnapshotPolicyStatsBuilder<(S0, S1, S2, crate::typed::build
 }
 
 impl<S0, S1, S2, S3> SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn snapshot_deletion_failures(
         self,
         value: i64,
@@ -1419,17 +1319,16 @@ impl<S0, S1, S2, S3> SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, crate::typed::b
     }
 }
 
-impl
-    SnapshotPolicyStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`SnapshotPolicyStats`].
-    pub fn build(self) -> SnapshotPolicyStats {
+    pub fn build(self) -> SnapshotPolicyStats
+    where
+        S0: crate::typed::builder::IsSet<snapshot_policy_stats_members::policy>,
+        S1: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_taken>,
+        S2: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_failed>,
+        S3: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_deleted>,
+        S4: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshot_deletion_failures>,
+    {
         SnapshotPolicyStats {
             policy: self.policy.unwrap(),
             snapshots_taken: self.snapshots_taken.unwrap(),
@@ -1440,90 +1339,34 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotPolicyStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotPolicyStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_policy_stats_members::policy>,
+    S1: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_taken>,
+    S2: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_failed>,
+    S3: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_deleted>,
+    S4: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshot_deletion_failures>,
 {
-    fn from(
-        builder: SnapshotPolicyStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotPolicyStats;
+
+    fn build(self) -> SnapshotPolicyStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> SnapshotPolicyStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> SnapshotPolicyStats { match policy {} }
-}
-
-impl<S2, S3, S4>
-    SnapshotPolicyStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, S4)>>
+    for SnapshotPolicyStats
+where
+    S0: crate::typed::builder::IsSet<snapshot_policy_stats_members::policy>,
+    S1: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_taken>,
+    S2: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_failed>,
+    S3: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshots_deleted>,
+    S4: crate::typed::builder::IsSet<snapshot_policy_stats_members::snapshot_deletion_failures>,
 {
-    /// `snapshots_taken` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots_taken: crate::typed::builder::MissingRequiredField) -> SnapshotPolicyStats { match snapshots_taken {} }
-}
-
-impl<S3, S4>
-    SnapshotPolicyStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `snapshots_failed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots_failed: crate::typed::builder::MissingRequiredField) -> SnapshotPolicyStats { match snapshots_failed {} }
-}
-
-impl<S4>
-    SnapshotPolicyStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `snapshots_deleted` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots_deleted: crate::typed::builder::MissingRequiredField) -> SnapshotPolicyStats { match snapshots_deleted {} }
-}
-
-impl
-    SnapshotPolicyStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `snapshot_deletion_failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_deletion_failures: crate::typed::builder::MissingRequiredField) -> SnapshotPolicyStats { match snapshot_deletion_failures {} }
+    fn from(builder: SnapshotPolicyStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1573,7 +1416,9 @@ impl Statistics {
     }
 
     /// Creates a [`Statistics`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(StatisticsBuilder) -> StatisticsBuilder) -> Statistics {
+    pub fn of<B: crate::typed::builder::Build<Output = Statistics>>(
+        f: impl FnOnce(StatisticsBuilder) -> B,
+    ) -> Statistics {
         f(Self::builder()).build()
     }
 }
@@ -1749,6 +1594,14 @@ impl StatisticsBuilder {
             total_snapshots_failed: self.total_snapshots_failed,
             total_snapshots_taken: self.total_snapshots_taken,
         }
+    }
+}
+
+impl crate::typed::builder::Build for StatisticsBuilder {
+    type Output = Statistics;
+
+    fn build(self) -> Statistics {
+        Self::build(self)
     }
 }
 

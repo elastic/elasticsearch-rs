@@ -12,24 +12,31 @@ pub struct Body {
 
 impl Body {
     /// Creates a builder for [`Body`].
+    ///
+    /// Required: `id`, `node`, `start_time_millis`, `running_time_nanos`, `query`.
     pub fn builder() -> BodyBuilder {
         BodyBuilder::new()
     }
 
     /// Creates a [`Body`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BodyBuilder,
-        ) -> BodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `node`, `start_time_millis`, `running_time_nanos`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = Body>>(
+        f: impl FnOnce(BodyBuilder) -> B,
     ) -> Body {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BodyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod body_members {
+    pub struct id;
+    pub struct node;
+    pub struct start_time_millis;
+    pub struct running_time_nanos;
+    pub struct query;
 }
 
 /// Builder for [`Body`].
@@ -86,6 +93,7 @@ impl<S0, S1, S2, S3, S4> BodyBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> BodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn id(self, value: i64) -> BodyBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         let mut builder = self.with_state();
         builder.id = Some(value);
@@ -94,6 +102,7 @@ impl<S1, S2, S3, S4> BodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)
 }
 
 impl<S0, S2, S3, S4> BodyBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::NodeId>,
@@ -105,6 +114,7 @@ impl<S0, S2, S3, S4> BodyBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)
 }
 
 impl<S0, S1, S3, S4> BodyBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn start_time_millis(
         self,
         value: i64,
@@ -116,6 +126,7 @@ impl<S0, S1, S3, S4> BodyBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)
 }
 
 impl<S0, S1, S2, S4> BodyBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn running_time_nanos(
         self,
         value: i64,
@@ -127,6 +138,7 @@ impl<S0, S1, S2, S4> BodyBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)
 }
 
 impl<S0, S1, S2, S3> BodyBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<String>,
@@ -137,17 +149,16 @@ impl<S0, S1, S2, S3> BodyBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)
     }
 }
 
-impl
-    BodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> BodyBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`Body`].
-    pub fn build(self) -> Body {
+    pub fn build(self) -> Body
+    where
+        S0: crate::typed::builder::IsSet<body_members::id>,
+        S1: crate::typed::builder::IsSet<body_members::node>,
+        S2: crate::typed::builder::IsSet<body_members::start_time_millis>,
+        S3: crate::typed::builder::IsSet<body_members::running_time_nanos>,
+        S4: crate::typed::builder::IsSet<body_members::query>,
+    {
         Body {
             id: self.id.unwrap(),
             node: self.node.unwrap(),
@@ -158,90 +169,32 @@ impl
     }
 }
 
-impl
-    From<
-        BodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Body
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for BodyBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<body_members::id>,
+    S1: crate::typed::builder::IsSet<body_members::node>,
+    S2: crate::typed::builder::IsSet<body_members::start_time_millis>,
+    S3: crate::typed::builder::IsSet<body_members::running_time_nanos>,
+    S4: crate::typed::builder::IsSet<body_members::query>,
 {
-    fn from(
-        builder: BodyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Body;
+
+    fn build(self) -> Body {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> BodyBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Body { match id {} }
-}
-
-impl<S2, S3, S4>
-    BodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<BodyBuilder<(S0, S1, S2, S3, S4)>> for Body
+where
+    S0: crate::typed::builder::IsSet<body_members::id>,
+    S1: crate::typed::builder::IsSet<body_members::node>,
+    S2: crate::typed::builder::IsSet<body_members::start_time_millis>,
+    S3: crate::typed::builder::IsSet<body_members::running_time_nanos>,
+    S4: crate::typed::builder::IsSet<body_members::query>,
 {
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> Body { match node {} }
-}
-
-impl<S3, S4>
-    BodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `start_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_millis: crate::typed::builder::MissingRequiredField) -> Body { match start_time_millis {} }
-}
-
-impl<S4>
-    BodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `running_time_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running_time_nanos: crate::typed::builder::MissingRequiredField) -> Body { match running_time_nanos {} }
-}
-
-impl
-    BodyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> Body { match query {} }
+    fn from(builder: BodyBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`esql.list_queries`](crate::typed::esql::EsqlClient::list_queries).
@@ -277,7 +230,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -372,6 +327,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

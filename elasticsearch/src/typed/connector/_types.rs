@@ -99,27 +99,34 @@ impl From<&str> for ConnectorIndexName {
 
 impl Connector {
     /// Creates a builder for [`Connector`].
+    ///
+    /// Required: `configuration`, `custom_scheduling`, `deleted`, `filtering`, `is_native`, `scheduling`, `status`, `sync_now`.
     pub fn builder() -> ConnectorBuilder {
         ConnectorBuilder::new()
     }
 
     /// Creates a [`Connector`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConnectorBuilder,
-        ) -> ConnectorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `configuration`, `custom_scheduling`, `deleted`, `filtering`, `is_native`, `scheduling`, `status`, `sync_now`.
+    pub fn of<B: crate::typed::builder::Build<Output = Connector>>(
+        f: impl FnOnce(ConnectorBuilder) -> B,
     ) -> Connector {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConnectorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod connector_members {
+    pub struct configuration;
+    pub struct custom_scheduling;
+    pub struct deleted;
+    pub struct filtering;
+    pub struct is_native;
+    pub struct scheduling;
+    pub struct status;
+    pub struct sync_now;
 }
 
 /// Builder for [`Connector`].
@@ -314,9 +321,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S
     }
 
     /// Sets [`features`](Self::features) with a builder.
-    pub fn features_with(
+    pub fn features_with<B: crate::typed::builder::Build<Output = ConnectorFeatures>>(
         self,
-        f: impl FnOnce(ConnectorFeaturesBuilder) -> ConnectorFeaturesBuilder,
+        f: impl FnOnce(ConnectorFeaturesBuilder) -> B,
     ) -> Self {
         self.features(f(ConnectorFeaturesBuilder::new()).build())
     }
@@ -516,16 +523,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<B: crate::typed::builder::Build<Output = IngestPipelineParams>>(
         self,
-        f: impl FnOnce(
-            IngestPipelineParamsBuilder,
-        ) -> IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IngestPipelineParamsBuilder) -> B,
     ) -> Self {
         self.pipeline(f(IngestPipelineParamsBuilder::new()).build())
     }
@@ -556,6 +556,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S
 impl<S1, S2, S3, S4, S5, S6, S7>
     ConnectorBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn configuration(
         self,
         value: impl Into<ConnectorConfiguration>,
@@ -580,21 +581,12 @@ impl<S1, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`configuration`](Self::configuration), with a builder.
-    pub fn add_configuration_with(
+    pub fn add_configuration_with<
+        B: crate::typed::builder::Build<Output = ConnectorConfigProperties>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ConnectorConfigPropertiesBuilder,
-        ) -> ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorConfigPropertiesBuilder) -> B,
     ) -> ConnectorBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7)> {
         self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
     }
@@ -616,21 +608,12 @@ impl<S1, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`configuration`](Self::configuration), with a builder.
-    pub fn add_configuration_with(
+    pub fn add_configuration_with<
+        B: crate::typed::builder::Build<Output = ConnectorConfigProperties>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ConnectorConfigPropertiesBuilder,
-        ) -> ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorConfigPropertiesBuilder) -> B,
     ) -> Self {
         self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
     }
@@ -639,6 +622,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ConnectorBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn custom_scheduling(
         self,
         value: impl Into<ConnectorCustomScheduling>,
@@ -663,17 +647,12 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling), with a builder.
-    pub fn add_custom_scheduling_with(
+    pub fn add_custom_scheduling_with<
+        B: crate::typed::builder::Build<Output = CustomScheduling>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CustomSchedulingBuilder,
-        ) -> CustomSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CustomSchedulingBuilder) -> B,
     ) -> ConnectorBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
         self.add_custom_scheduling(key, f(CustomSchedulingBuilder::new()).build())
     }
@@ -695,17 +674,12 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling), with a builder.
-    pub fn add_custom_scheduling_with(
+    pub fn add_custom_scheduling_with<
+        B: crate::typed::builder::Build<Output = CustomScheduling>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CustomSchedulingBuilder,
-        ) -> CustomSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CustomSchedulingBuilder) -> B,
     ) -> Self {
         self.add_custom_scheduling(key, f(CustomSchedulingBuilder::new()).build())
     }
@@ -714,6 +688,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ConnectorBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn deleted(
         self,
         value: bool,
@@ -727,6 +702,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ConnectorBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn filtering(
         self,
         value: impl Into<Vec<FilteringConfig>>,
@@ -750,14 +726,9 @@ impl<S0, S1, S2, S4, S5, S6, S7>
     }
 
     /// Adds an element to [`filtering`](Self::filtering), with a builder.
-    pub fn add_filtering_with(
+    pub fn add_filtering_with<B: crate::typed::builder::Build<Output = FilteringConfig>>(
         self,
-        f: impl FnOnce(
-            FilteringConfigBuilder,
-        ) -> FilteringConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringConfigBuilder) -> B,
     ) -> ConnectorBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)> {
         self.add_filtering(f(FilteringConfigBuilder::new()).build())
     }
@@ -775,14 +746,9 @@ impl<S0, S1, S2, S4, S5, S6, S7>
     }
 
     /// Adds an element to [`filtering`](Self::filtering), with a builder.
-    pub fn add_filtering_with(
+    pub fn add_filtering_with<B: crate::typed::builder::Build<Output = FilteringConfig>>(
         self,
-        f: impl FnOnce(
-            FilteringConfigBuilder,
-        ) -> FilteringConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringConfigBuilder) -> B,
     ) -> Self {
         self.add_filtering(f(FilteringConfigBuilder::new()).build())
     }
@@ -791,6 +757,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ConnectorBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn is_native(
         self,
         value: bool,
@@ -804,6 +771,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ConnectorBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn scheduling(
         self,
         value: impl Into<SchedulingConfiguration>,
@@ -814,9 +782,9 @@ impl<S0, S1, S2, S3, S4, S6, S7>
     }
 
     /// Sets [`scheduling`](Self::scheduling) with a builder.
-    pub fn scheduling_with(
+    pub fn scheduling_with<B: crate::typed::builder::Build<Output = SchedulingConfiguration>>(
         self,
-        f: impl FnOnce(SchedulingConfigurationBuilder) -> SchedulingConfigurationBuilder,
+        f: impl FnOnce(SchedulingConfigurationBuilder) -> B,
     ) -> ConnectorBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7)> {
         self.scheduling(f(SchedulingConfigurationBuilder::new()).build())
     }
@@ -825,6 +793,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ConnectorBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ConnectorStatus>,
@@ -838,6 +807,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn sync_now(
         self,
         value: bool,
@@ -848,20 +818,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`Connector`].
-    pub fn build(self) -> Connector {
+    pub fn build(self) -> Connector
+    where
+        S0: crate::typed::builder::IsSet<connector_members::configuration>,
+        S1: crate::typed::builder::IsSet<connector_members::custom_scheduling>,
+        S2: crate::typed::builder::IsSet<connector_members::deleted>,
+        S3: crate::typed::builder::IsSet<connector_members::filtering>,
+        S4: crate::typed::builder::IsSet<connector_members::is_native>,
+        S5: crate::typed::builder::IsSet<connector_members::scheduling>,
+        S6: crate::typed::builder::IsSet<connector_members::status>,
+        S7: crate::typed::builder::IsSet<connector_members::sync_now>,
+    {
         Connector {
             api_key_id: self.api_key_id,
             api_key_secret_id: self.api_key_secret_id,
@@ -898,161 +867,40 @@ impl
     }
 }
 
-impl
-    From<
-        ConnectorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Connector
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<connector_members::configuration>,
+    S1: crate::typed::builder::IsSet<connector_members::custom_scheduling>,
+    S2: crate::typed::builder::IsSet<connector_members::deleted>,
+    S3: crate::typed::builder::IsSet<connector_members::filtering>,
+    S4: crate::typed::builder::IsSet<connector_members::is_native>,
+    S5: crate::typed::builder::IsSet<connector_members::scheduling>,
+    S6: crate::typed::builder::IsSet<connector_members::status>,
+    S7: crate::typed::builder::IsSet<connector_members::sync_now>,
 {
-    fn from(
-        builder: ConnectorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Connector;
+
+    fn build(self) -> Connector {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ConnectorBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for Connector
+where
+    S0: crate::typed::builder::IsSet<connector_members::configuration>,
+    S1: crate::typed::builder::IsSet<connector_members::custom_scheduling>,
+    S2: crate::typed::builder::IsSet<connector_members::deleted>,
+    S3: crate::typed::builder::IsSet<connector_members::filtering>,
+    S4: crate::typed::builder::IsSet<connector_members::is_native>,
+    S5: crate::typed::builder::IsSet<connector_members::scheduling>,
+    S6: crate::typed::builder::IsSet<connector_members::status>,
+    S7: crate::typed::builder::IsSet<connector_members::sync_now>,
 {
-    /// `configuration` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, configuration: crate::typed::builder::MissingRequiredField) -> Connector { match configuration {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `custom_scheduling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, custom_scheduling: crate::typed::builder::MissingRequiredField) -> Connector { match custom_scheduling {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `deleted` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted: crate::typed::builder::MissingRequiredField) -> Connector { match deleted {} }
-}
-
-impl<S4, S5, S6, S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `filtering` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filtering: crate::typed::builder::MissingRequiredField) -> Connector { match filtering {} }
-}
-
-impl<S5, S6, S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `is_native` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_native: crate::typed::builder::MissingRequiredField) -> Connector { match is_native {} }
-}
-
-impl<S6, S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `scheduling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, scheduling: crate::typed::builder::MissingRequiredField) -> Connector { match scheduling {} }
-}
-
-impl<S7>
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> Connector { match status {} }
-}
-
-impl
-    ConnectorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sync_now` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sync_now: crate::typed::builder::MissingRequiredField) -> Connector { match sync_now {} }
+    fn from(builder: ConnectorBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1102,27 +950,34 @@ impl From<&str> for ConnectorConfigPropertiesTooltip {
 
 impl ConnectorConfigProperties {
     /// Creates a builder for [`ConnectorConfigProperties`].
+    ///
+    /// Required: `default_value`, `depends_on`, `display`, `label`, `options`, `required`, `sensitive`, `value`.
     pub fn builder() -> ConnectorConfigPropertiesBuilder {
         ConnectorConfigPropertiesBuilder::new()
     }
 
     /// Creates a [`ConnectorConfigProperties`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConnectorConfigPropertiesBuilder,
-        ) -> ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `default_value`, `depends_on`, `display`, `label`, `options`, `required`, `sensitive`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConnectorConfigProperties>>(
+        f: impl FnOnce(ConnectorConfigPropertiesBuilder) -> B,
     ) -> ConnectorConfigProperties {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConnectorConfigPropertiesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod connector_config_properties_members {
+    pub struct default_value;
+    pub struct depends_on;
+    pub struct display;
+    pub struct label;
+    pub struct options;
+    pub struct required;
+    pub struct sensitive;
+    pub struct value;
 }
 
 /// Builder for [`ConnectorConfigProperties`].
@@ -1312,6 +1167,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
 impl<S1, S2, S3, S4, S5, S6, S7>
     ConnectorConfigPropertiesBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn default_value(
         self,
         value: impl Into<crate::typed::_types::ScalarValue>,
@@ -1326,6 +1182,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ConnectorConfigPropertiesBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn depends_on(
         self,
         value: impl Into<Vec<Dependency>>,
@@ -1351,12 +1208,9 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an element to [`depends_on`](Self::depends_on), with a builder.
-    pub fn add_depends_on_with(
+    pub fn add_depends_on_with<B: crate::typed::builder::Build<Output = Dependency>>(
         self,
-        f: impl FnOnce(
-            DependencyBuilder,
-        )
-            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(DependencyBuilder) -> B,
     ) -> ConnectorConfigPropertiesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
     {
         self.add_depends_on(f(DependencyBuilder::new()).build())
@@ -1375,12 +1229,9 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an element to [`depends_on`](Self::depends_on), with a builder.
-    pub fn add_depends_on_with(
+    pub fn add_depends_on_with<B: crate::typed::builder::Build<Output = Dependency>>(
         self,
-        f: impl FnOnce(
-            DependencyBuilder,
-        )
-            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(DependencyBuilder) -> B,
     ) -> Self {
         self.add_depends_on(f(DependencyBuilder::new()).build())
     }
@@ -1389,6 +1240,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ConnectorConfigPropertiesBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn display(
         self,
         value: impl Into<DisplayType>,
@@ -1403,6 +1255,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ConnectorConfigPropertiesBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn label(
         self,
         value: impl Into<String>,
@@ -1417,6 +1270,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn options(
         self,
         value: impl Into<Vec<SelectOption>>,
@@ -1442,12 +1296,9 @@ impl<S0, S1, S2, S3, S5, S6, S7>
     }
 
     /// Adds an element to [`options`](Self::options), with a builder.
-    pub fn add_options_with(
+    pub fn add_options_with<B: crate::typed::builder::Build<Output = SelectOption>>(
         self,
-        f: impl FnOnce(
-            SelectOptionBuilder,
-        )
-            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SelectOptionBuilder) -> B,
     ) -> ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
     {
         self.add_options(f(SelectOptionBuilder::new()).build())
@@ -1466,12 +1317,9 @@ impl<S0, S1, S2, S3, S5, S6, S7>
     }
 
     /// Adds an element to [`options`](Self::options), with a builder.
-    pub fn add_options_with(
+    pub fn add_options_with<B: crate::typed::builder::Build<Output = SelectOption>>(
         self,
-        f: impl FnOnce(
-            SelectOptionBuilder,
-        )
-            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SelectOptionBuilder) -> B,
     ) -> Self {
         self.add_options(f(SelectOptionBuilder::new()).build())
     }
@@ -1480,6 +1328,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn required(
         self,
         value: bool,
@@ -1494,6 +1343,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn sensitive(
         self,
         value: bool,
@@ -1508,6 +1358,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<serde_json::Value>,
@@ -1519,20 +1370,21 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
 {
     /// Builds a [`ConnectorConfigProperties`].
-    pub fn build(self) -> ConnectorConfigProperties {
+    pub fn build(self) -> ConnectorConfigProperties
+    where
+        S0: crate::typed::builder::IsSet<connector_config_properties_members::default_value>,
+        S1: crate::typed::builder::IsSet<connector_config_properties_members::depends_on>,
+        S2: crate::typed::builder::IsSet<connector_config_properties_members::display>,
+        S3: crate::typed::builder::IsSet<connector_config_properties_members::label>,
+        S4: crate::typed::builder::IsSet<connector_config_properties_members::options>,
+        S5: crate::typed::builder::IsSet<connector_config_properties_members::required>,
+        S6: crate::typed::builder::IsSet<connector_config_properties_members::sensitive>,
+        S7: crate::typed::builder::IsSet<connector_config_properties_members::value>,
+    {
         ConnectorConfigProperties {
             category: self.category,
             default_value: self.default_value.unwrap(),
@@ -1553,161 +1405,41 @@ impl
     }
 }
 
-impl
-    From<
-        ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ConnectorConfigProperties
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<connector_config_properties_members::default_value>,
+    S1: crate::typed::builder::IsSet<connector_config_properties_members::depends_on>,
+    S2: crate::typed::builder::IsSet<connector_config_properties_members::display>,
+    S3: crate::typed::builder::IsSet<connector_config_properties_members::label>,
+    S4: crate::typed::builder::IsSet<connector_config_properties_members::options>,
+    S5: crate::typed::builder::IsSet<connector_config_properties_members::required>,
+    S6: crate::typed::builder::IsSet<connector_config_properties_members::sensitive>,
+    S7: crate::typed::builder::IsSet<connector_config_properties_members::value>,
 {
-    fn from(
-        builder: ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConnectorConfigProperties;
+
+    fn build(self) -> ConnectorConfigProperties {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ConnectorConfigPropertiesBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for ConnectorConfigProperties
+where
+    S0: crate::typed::builder::IsSet<connector_config_properties_members::default_value>,
+    S1: crate::typed::builder::IsSet<connector_config_properties_members::depends_on>,
+    S2: crate::typed::builder::IsSet<connector_config_properties_members::display>,
+    S3: crate::typed::builder::IsSet<connector_config_properties_members::label>,
+    S4: crate::typed::builder::IsSet<connector_config_properties_members::options>,
+    S5: crate::typed::builder::IsSet<connector_config_properties_members::required>,
+    S6: crate::typed::builder::IsSet<connector_config_properties_members::sensitive>,
+    S7: crate::typed::builder::IsSet<connector_config_properties_members::value>,
 {
-    /// `default_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default_value: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match default_value {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `depends_on` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, depends_on: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match depends_on {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `display` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, display: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match display {} }
-}
-
-impl<S4, S5, S6, S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `label` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, label: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match label {} }
-}
-
-impl<S5, S6, S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `options` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, options: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match options {} }
-}
-
-impl<S6, S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `required` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, required: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match required {} }
-}
-
-impl<S7>
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `sensitive` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sensitive: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match sensitive {} }
-}
-
-impl
-    ConnectorConfigPropertiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> ConnectorConfigProperties { match value {} }
+    fn from(builder: ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type ConnectorConfiguration = indexmap::IndexMap<String, ConnectorConfigProperties>;
@@ -1736,8 +1468,8 @@ impl ConnectorFeatures {
     }
 
     /// Creates a [`ConnectorFeatures`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ConnectorFeaturesBuilder) -> ConnectorFeaturesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ConnectorFeatures>>(
+        f: impl FnOnce(ConnectorFeaturesBuilder) -> B,
     ) -> ConnectorFeatures {
         f(Self::builder()).build()
     }
@@ -1777,9 +1509,11 @@ impl ConnectorFeaturesBuilder {
     }
 
     /// Sets [`document_level_security`](Self::document_level_security) with a builder.
-    pub fn document_level_security_with(
+    pub fn document_level_security_with<
+        B: crate::typed::builder::Build<Output = FeatureEnabled>,
+    >(
         self,
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> Self {
         self.document_level_security(f(FeatureEnabledBuilder::new()).build())
     }
@@ -1797,9 +1531,9 @@ impl ConnectorFeaturesBuilder {
     }
 
     /// Sets [`incremental_sync`](Self::incremental_sync) with a builder.
-    pub fn incremental_sync_with(
+    pub fn incremental_sync_with<B: crate::typed::builder::Build<Output = FeatureEnabled>>(
         self,
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> Self {
         self.incremental_sync(f(FeatureEnabledBuilder::new()).build())
     }
@@ -1817,9 +1551,11 @@ impl ConnectorFeaturesBuilder {
     }
 
     /// Sets [`native_connector_api_keys`](Self::native_connector_api_keys) with a builder.
-    pub fn native_connector_api_keys_with(
+    pub fn native_connector_api_keys_with<
+        B: crate::typed::builder::Build<Output = FeatureEnabled>,
+    >(
         self,
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> Self {
         self.native_connector_api_keys(f(FeatureEnabledBuilder::new()).build())
     }
@@ -1836,9 +1572,9 @@ impl ConnectorFeaturesBuilder {
     }
 
     /// Sets [`sync_rules`](Self::sync_rules) with a builder.
-    pub fn sync_rules_with(
+    pub fn sync_rules_with<B: crate::typed::builder::Build<Output = SyncRulesFeature>>(
         self,
-        f: impl FnOnce(SyncRulesFeatureBuilder) -> SyncRulesFeatureBuilder,
+        f: impl FnOnce(SyncRulesFeatureBuilder) -> B,
     ) -> Self {
         self.sync_rules(f(SyncRulesFeatureBuilder::new()).build())
     }
@@ -1853,6 +1589,14 @@ impl ConnectorFeaturesBuilder {
             native_connector_api_keys: self.native_connector_api_keys,
             sync_rules: self.sync_rules,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ConnectorFeaturesBuilder {
+    type Output = ConnectorFeatures;
+
+    fn build(self) -> ConnectorFeatures {
+        Self::build(self)
     }
 }
 
@@ -1883,21 +1627,28 @@ pub struct ConnectorScheduling {
 
 impl ConnectorScheduling {
     /// Creates a builder for [`ConnectorScheduling`].
+    ///
+    /// Required: `enabled`, `interval`.
     pub fn builder() -> ConnectorSchedulingBuilder {
         ConnectorSchedulingBuilder::new()
     }
 
     /// Creates a [`ConnectorScheduling`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConnectorSchedulingBuilder,
-        ) -> ConnectorSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `enabled`, `interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConnectorScheduling>>(
+        f: impl FnOnce(ConnectorSchedulingBuilder) -> B,
     ) -> ConnectorScheduling {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConnectorSchedulingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod connector_scheduling_members {
+    pub struct enabled;
+    pub struct interval;
 }
 
 /// Builder for [`ConnectorScheduling`].
@@ -1931,6 +1682,7 @@ impl<S0, S1> ConnectorSchedulingBuilder<(S0, S1)> {
 }
 
 impl<S1> ConnectorSchedulingBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: bool,
@@ -1942,7 +1694,7 @@ impl<S1> ConnectorSchedulingBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ConnectorSchedulingBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The interval is expressed using the crontab syntax
+    /// **Required.** The interval is expressed using the crontab syntax
     pub fn interval(
         self,
         value: impl Into<String>,
@@ -1953,9 +1705,13 @@ impl<S0> ConnectorSchedulingBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ConnectorSchedulingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ConnectorSchedulingBuilder<(S0, S1)> {
     /// Builds a [`ConnectorScheduling`].
-    pub fn build(self) -> ConnectorScheduling {
+    pub fn build(self) -> ConnectorScheduling
+    where
+        S0: crate::typed::builder::IsSet<connector_scheduling_members::enabled>,
+        S1: crate::typed::builder::IsSet<connector_scheduling_members::interval>,
+    {
         ConnectorScheduling {
             enabled: self.enabled.unwrap(),
             interval: self.interval.unwrap(),
@@ -1963,29 +1719,26 @@ impl ConnectorSchedulingBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<ConnectorSchedulingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ConnectorScheduling
+impl<S0, S1> crate::typed::builder::Build for ConnectorSchedulingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<connector_scheduling_members::enabled>,
+    S1: crate::typed::builder::IsSet<connector_scheduling_members::interval>,
 {
-    fn from(
-        builder: ConnectorSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConnectorScheduling;
+
+    fn build(self) -> ConnectorScheduling {
+        Self::build(self)
     }
 }
 
-impl<S1> ConnectorSchedulingBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> ConnectorScheduling { match enabled {} }
-}
-
-impl ConnectorSchedulingBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> ConnectorScheduling { match interval {} }
+impl<S0, S1> From<ConnectorSchedulingBuilder<(S0, S1)>> for ConnectorScheduling
+where
+    S0: crate::typed::builder::IsSet<connector_scheduling_members::enabled>,
+    S1: crate::typed::builder::IsSet<connector_scheduling_members::interval>,
+{
+    fn from(builder: ConnectorSchedulingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2033,30 +1786,37 @@ pub struct ConnectorSyncJob {
 
 impl ConnectorSyncJob {
     /// Creates a builder for [`ConnectorSyncJob`].
+    ///
+    /// Required: `connector`, `created_at`, `deleted_document_count`, `id`, `indexed_document_count`, `indexed_document_volume`, `job_type`, `metadata`, `status`, `total_document_count`, `trigger_method`.
     pub fn builder() -> ConnectorSyncJobBuilder {
         ConnectorSyncJobBuilder::new()
     }
 
     /// Creates a [`ConnectorSyncJob`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConnectorSyncJobBuilder,
-        ) -> ConnectorSyncJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `connector`, `created_at`, `deleted_document_count`, `id`, `indexed_document_count`, `indexed_document_volume`, `job_type`, `metadata`, `status`, `total_document_count`, `trigger_method`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConnectorSyncJob>>(
+        f: impl FnOnce(ConnectorSyncJobBuilder) -> B,
     ) -> ConnectorSyncJob {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConnectorSyncJobBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod connector_sync_job_members {
+    pub struct connector;
+    pub struct created_at;
+    pub struct deleted_document_count;
+    pub struct id;
+    pub struct indexed_document_count;
+    pub struct indexed_document_volume;
+    pub struct job_type;
+    pub struct metadata;
+    pub struct status;
+    pub struct total_document_count;
+    pub struct trigger_method;
 }
 
 /// Builder for [`ConnectorSyncJob`].
@@ -2263,6 +2023,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn connector(
         self,
         value: impl Into<SyncJobConnectorReference>,
@@ -2285,17 +2046,9 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`connector`](Self::connector) with a builder.
-    pub fn connector_with(
+    pub fn connector_with<B: crate::typed::builder::Build<Output = SyncJobConnectorReference>>(
         self,
-        f: impl FnOnce(
-            SyncJobConnectorReferenceBuilder,
-        ) -> SyncJobConnectorReferenceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SyncJobConnectorReferenceBuilder) -> B,
     ) -> ConnectorSyncJobBuilder<(
         crate::typed::builder::Set,
         S1,
@@ -2328,6 +2081,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn created_at(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -2365,6 +2119,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn deleted_document_count(
         self,
         value: i64,
@@ -2402,6 +2157,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -2439,6 +2195,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn indexed_document_count(
         self,
         value: i64,
@@ -2476,6 +2233,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn indexed_document_volume(
         self,
         value: i64,
@@ -2513,6 +2271,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn job_type(
         self,
         value: impl Into<SyncJobType>,
@@ -2550,6 +2309,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn metadata(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -2641,6 +2401,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<SyncStatus>,
@@ -2678,6 +2439,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn total_document_count(
         self,
         value: i64,
@@ -2715,6 +2477,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn trigger_method(
         self,
         value: impl Into<SyncJobTriggerMethod>,
@@ -2737,23 +2500,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ConnectorSyncJobBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ConnectorSyncJob`].
-    pub fn build(self) -> ConnectorSyncJob {
+    pub fn build(self) -> ConnectorSyncJob
+    where
+        S0: crate::typed::builder::IsSet<connector_sync_job_members::connector>,
+        S1: crate::typed::builder::IsSet<connector_sync_job_members::created_at>,
+        S2: crate::typed::builder::IsSet<connector_sync_job_members::deleted_document_count>,
+        S3: crate::typed::builder::IsSet<connector_sync_job_members::id>,
+        S4: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_count>,
+        S5: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_volume>,
+        S6: crate::typed::builder::IsSet<connector_sync_job_members::job_type>,
+        S7: crate::typed::builder::IsSet<connector_sync_job_members::metadata>,
+        S8: crate::typed::builder::IsSet<connector_sync_job_members::status>,
+        S9: crate::typed::builder::IsSet<connector_sync_job_members::total_document_count>,
+        S10: crate::typed::builder::IsSet<connector_sync_job_members::trigger_method>,
+    {
         ConnectorSyncJob {
             cancelation_requested_at: self.cancelation_requested_at,
             canceled_at: self.canceled_at,
@@ -2777,260 +2541,49 @@ impl
     }
 }
 
-impl
-    From<
-        ConnectorSyncJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ConnectorSyncJob
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ConnectorSyncJobBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<connector_sync_job_members::connector>,
+    S1: crate::typed::builder::IsSet<connector_sync_job_members::created_at>,
+    S2: crate::typed::builder::IsSet<connector_sync_job_members::deleted_document_count>,
+    S3: crate::typed::builder::IsSet<connector_sync_job_members::id>,
+    S4: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_count>,
+    S5: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_volume>,
+    S6: crate::typed::builder::IsSet<connector_sync_job_members::job_type>,
+    S7: crate::typed::builder::IsSet<connector_sync_job_members::metadata>,
+    S8: crate::typed::builder::IsSet<connector_sync_job_members::status>,
+    S9: crate::typed::builder::IsSet<connector_sync_job_members::total_document_count>,
+    S10: crate::typed::builder::IsSet<connector_sync_job_members::trigger_method>,
 {
-    fn from(
-        builder: ConnectorSyncJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConnectorSyncJob;
+
+    fn build(self) -> ConnectorSyncJob {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ConnectorSyncJobBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>>
+    for ConnectorSyncJob
+where
+    S0: crate::typed::builder::IsSet<connector_sync_job_members::connector>,
+    S1: crate::typed::builder::IsSet<connector_sync_job_members::created_at>,
+    S2: crate::typed::builder::IsSet<connector_sync_job_members::deleted_document_count>,
+    S3: crate::typed::builder::IsSet<connector_sync_job_members::id>,
+    S4: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_count>,
+    S5: crate::typed::builder::IsSet<connector_sync_job_members::indexed_document_volume>,
+    S6: crate::typed::builder::IsSet<connector_sync_job_members::job_type>,
+    S7: crate::typed::builder::IsSet<connector_sync_job_members::metadata>,
+    S8: crate::typed::builder::IsSet<connector_sync_job_members::status>,
+    S9: crate::typed::builder::IsSet<connector_sync_job_members::total_document_count>,
+    S10: crate::typed::builder::IsSet<connector_sync_job_members::trigger_method>,
 {
-    /// `connector` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connector: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match connector {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `created_at` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, created_at: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match created_at {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `deleted_document_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted_document_count: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match deleted_document_count {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match id {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `indexed_document_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indexed_document_count: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match indexed_document_count {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `indexed_document_volume` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indexed_document_volume: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match indexed_document_volume {} }
-}
-
-impl<S7, S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `job_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_type: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match job_type {} }
-}
-
-impl<S8, S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match metadata {} }
-}
-
-impl<S9, S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match status {} }
-}
-
-impl<S10>
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `total_document_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_document_count: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match total_document_count {} }
-}
-
-impl
-    ConnectorSyncJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `trigger_method` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trigger_method: crate::typed::builder::MissingRequiredField) -> ConnectorSyncJob { match trigger_method {} }
+    fn from(
+        builder: ConnectorSyncJobBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3045,23 +2598,30 @@ pub struct CustomScheduling {
 
 impl CustomScheduling {
     /// Creates a builder for [`CustomScheduling`].
+    ///
+    /// Required: `configuration_overrides`, `enabled`, `interval`, `name`.
     pub fn builder() -> CustomSchedulingBuilder {
         CustomSchedulingBuilder::new()
     }
 
     /// Creates a [`CustomScheduling`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomSchedulingBuilder,
-        ) -> CustomSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `configuration_overrides`, `enabled`, `interval`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomScheduling>>(
+        f: impl FnOnce(CustomSchedulingBuilder) -> B,
     ) -> CustomScheduling {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomSchedulingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_scheduling_members {
+    pub struct configuration_overrides;
+    pub struct enabled;
+    pub struct interval;
+    pub struct name;
 }
 
 /// Builder for [`CustomScheduling`].
@@ -3127,6 +2687,7 @@ impl<S0, S1, S2, S3> CustomSchedulingBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> CustomSchedulingBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn configuration_overrides(
         self,
         value: impl Into<CustomSchedulingConfigurationOverrides>,
@@ -3137,11 +2698,11 @@ impl<S1, S2, S3> CustomSchedulingBuilder<(crate::typed::builder::NotSet, S1, S2,
     }
 
     /// Sets [`configuration_overrides`](Self::configuration_overrides) with a builder.
-    pub fn configuration_overrides_with(
+    pub fn configuration_overrides_with<
+        B: crate::typed::builder::Build<Output = CustomSchedulingConfigurationOverrides>,
+    >(
         self,
-        f: impl FnOnce(
-            CustomSchedulingConfigurationOverridesBuilder,
-        ) -> CustomSchedulingConfigurationOverridesBuilder,
+        f: impl FnOnce(CustomSchedulingConfigurationOverridesBuilder) -> B,
     ) -> CustomSchedulingBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.configuration_overrides(
             f(CustomSchedulingConfigurationOverridesBuilder::new()).build(),
@@ -3150,6 +2711,7 @@ impl<S1, S2, S3> CustomSchedulingBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3> CustomSchedulingBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: bool,
@@ -3161,6 +2723,7 @@ impl<S0, S2, S3> CustomSchedulingBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3> CustomSchedulingBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn interval(
         self,
         value: impl Into<String>,
@@ -3172,6 +2735,7 @@ impl<S0, S1, S3> CustomSchedulingBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> CustomSchedulingBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -3182,16 +2746,15 @@ impl<S0, S1, S2> CustomSchedulingBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 }
 
-impl
-    CustomSchedulingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> CustomSchedulingBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`CustomScheduling`].
-    pub fn build(self) -> CustomScheduling {
+    pub fn build(self) -> CustomScheduling
+    where
+        S0: crate::typed::builder::IsSet<custom_scheduling_members::configuration_overrides>,
+        S1: crate::typed::builder::IsSet<custom_scheduling_members::enabled>,
+        S2: crate::typed::builder::IsSet<custom_scheduling_members::interval>,
+        S3: crate::typed::builder::IsSet<custom_scheduling_members::name>,
+    {
         CustomScheduling {
             configuration_overrides: self.configuration_overrides.unwrap(),
             enabled: self.enabled.unwrap(),
@@ -3202,71 +2765,30 @@ impl
     }
 }
 
-impl
-    From<
-        CustomSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CustomScheduling
+impl<S0, S1, S2, S3> crate::typed::builder::Build for CustomSchedulingBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<custom_scheduling_members::configuration_overrides>,
+    S1: crate::typed::builder::IsSet<custom_scheduling_members::enabled>,
+    S2: crate::typed::builder::IsSet<custom_scheduling_members::interval>,
+    S3: crate::typed::builder::IsSet<custom_scheduling_members::name>,
 {
-    fn from(
-        builder: CustomSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CustomScheduling;
+
+    fn build(self) -> CustomScheduling {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> CustomSchedulingBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `configuration_overrides` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, configuration_overrides: crate::typed::builder::MissingRequiredField) -> CustomScheduling { match configuration_overrides {} }
-}
-
-impl<S2, S3>
-    CustomSchedulingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<CustomSchedulingBuilder<(S0, S1, S2, S3)>> for CustomScheduling
+where
+    S0: crate::typed::builder::IsSet<custom_scheduling_members::configuration_overrides>,
+    S1: crate::typed::builder::IsSet<custom_scheduling_members::enabled>,
+    S2: crate::typed::builder::IsSet<custom_scheduling_members::interval>,
+    S3: crate::typed::builder::IsSet<custom_scheduling_members::name>,
 {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> CustomScheduling { match enabled {} }
-}
-
-impl<S3>
-    CustomSchedulingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> CustomScheduling { match interval {} }
-}
-
-impl
-    CustomSchedulingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> CustomScheduling { match name {} }
+    fn from(builder: CustomSchedulingBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3290,10 +2812,8 @@ impl CustomSchedulingConfigurationOverrides {
     }
 
     /// Creates a [`CustomSchedulingConfigurationOverrides`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomSchedulingConfigurationOverridesBuilder,
-        ) -> CustomSchedulingConfigurationOverridesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CustomSchedulingConfigurationOverrides>>(
+        f: impl FnOnce(CustomSchedulingConfigurationOverridesBuilder) -> B,
     ) -> CustomSchedulingConfigurationOverrides {
         f(Self::builder()).build()
     }
@@ -3415,6 +2935,14 @@ impl CustomSchedulingConfigurationOverridesBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CustomSchedulingConfigurationOverridesBuilder {
+    type Output = CustomSchedulingConfigurationOverrides;
+
+    fn build(self) -> CustomSchedulingConfigurationOverrides {
+        Self::build(self)
+    }
+}
+
 impl From<CustomSchedulingConfigurationOverridesBuilder>
     for CustomSchedulingConfigurationOverrides
 {
@@ -3431,19 +2959,28 @@ pub struct Dependency {
 
 impl Dependency {
     /// Creates a builder for [`Dependency`].
+    ///
+    /// Required: `field`, `value`.
     pub fn builder() -> DependencyBuilder {
         DependencyBuilder::new()
     }
 
     /// Creates a [`Dependency`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DependencyBuilder,
-        )
-            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = Dependency>>(
+        f: impl FnOnce(DependencyBuilder) -> B,
     ) -> Dependency {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DependencyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dependency_members {
+    pub struct field;
+    pub struct value;
 }
 
 /// Builder for [`Dependency`].
@@ -3475,6 +3012,7 @@ impl<S0, S1> DependencyBuilder<(S0, S1)> {
 }
 
 impl<S1> DependencyBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<String>,
@@ -3486,6 +3024,7 @@ impl<S1> DependencyBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DependencyBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::_types::ScalarValue>,
@@ -3496,9 +3035,13 @@ impl<S0> DependencyBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DependencyBuilder<(S0, S1)> {
     /// Builds a [`Dependency`].
-    pub fn build(self) -> Dependency {
+    pub fn build(self) -> Dependency
+    where
+        S0: crate::typed::builder::IsSet<dependency_members::field>,
+        S1: crate::typed::builder::IsSet<dependency_members::value>,
+    {
         Dependency {
             field: self.field.unwrap(),
             value: self.value.unwrap(),
@@ -3506,26 +3049,26 @@ impl DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for Dependency
+impl<S0, S1> crate::typed::builder::Build for DependencyBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dependency_members::field>,
+    S1: crate::typed::builder::IsSet<dependency_members::value>,
 {
-    fn from(
-        builder: DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = Dependency;
+
+    fn build(self) -> Dependency {
+        Self::build(self)
     }
 }
 
-impl<S1> DependencyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> Dependency { match field {} }
-}
-
-impl DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> Dependency { match value {} }
+impl<S0, S1> From<DependencyBuilder<(S0, S1)>> for Dependency
+where
+    S0: crate::typed::builder::IsSet<dependency_members::field>,
+    S1: crate::typed::builder::IsSet<dependency_members::value>,
+{
+    fn from(builder: DependencyBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3549,16 +3092,27 @@ pub struct FeatureEnabled {
 
 impl FeatureEnabled {
     /// Creates a builder for [`FeatureEnabled`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> FeatureEnabledBuilder {
         FeatureEnabledBuilder::new()
     }
 
     /// Creates a [`FeatureEnabled`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = FeatureEnabled>>(
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> FeatureEnabled {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FeatureEnabledBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod feature_enabled_members {
+    pub struct enabled;
 }
 
 /// Builder for [`FeatureEnabled`].
@@ -3587,6 +3141,7 @@ impl<S0> FeatureEnabledBuilder<(S0,)> {
 }
 
 impl FeatureEnabledBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -3594,25 +3149,36 @@ impl FeatureEnabledBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FeatureEnabledBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FeatureEnabledBuilder<(S0,)> {
     /// Builds a [`FeatureEnabled`].
-    pub fn build(self) -> FeatureEnabled {
+    pub fn build(self) -> FeatureEnabled
+    where
+        S0: crate::typed::builder::IsSet<feature_enabled_members::enabled>,
+    {
         FeatureEnabled {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<FeatureEnabledBuilder<(crate::typed::builder::Set,)>> for FeatureEnabled {
-    fn from(builder: FeatureEnabledBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FeatureEnabledBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<feature_enabled_members::enabled>,
+{
+    type Output = FeatureEnabled;
+
+    fn build(self) -> FeatureEnabled {
+        Self::build(self)
     }
 }
 
-impl FeatureEnabledBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> FeatureEnabled { match enabled {} }
+impl<S0> From<FeatureEnabledBuilder<(S0,)>> for FeatureEnabled
+where
+    S0: crate::typed::builder::IsSet<feature_enabled_members::enabled>,
+{
+    fn from(builder: FeatureEnabledBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3626,18 +3192,27 @@ pub struct FilteringAdvancedSnippet {
 
 impl FilteringAdvancedSnippet {
     /// Creates a builder for [`FilteringAdvancedSnippet`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> FilteringAdvancedSnippetBuilder {
         FilteringAdvancedSnippetBuilder::new()
     }
 
     /// Creates a [`FilteringAdvancedSnippet`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringAdvancedSnippetBuilder,
-        ) -> FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringAdvancedSnippet>>(
+        f: impl FnOnce(FilteringAdvancedSnippetBuilder) -> B,
     ) -> FilteringAdvancedSnippet {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringAdvancedSnippetBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_advanced_snippet_members {
+    pub struct value;
 }
 
 /// Builder for [`FilteringAdvancedSnippet`].
@@ -3694,6 +3269,7 @@ impl<S0> FilteringAdvancedSnippetBuilder<(S0,)> {
 }
 
 impl FilteringAdvancedSnippetBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<serde_json::Value>,
@@ -3704,9 +3280,12 @@ impl FilteringAdvancedSnippetBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FilteringAdvancedSnippetBuilder<(S0,)> {
     /// Builds a [`FilteringAdvancedSnippet`].
-    pub fn build(self) -> FilteringAdvancedSnippet {
+    pub fn build(self) -> FilteringAdvancedSnippet
+    where
+        S0: crate::typed::builder::IsSet<filtering_advanced_snippet_members::value>,
+    {
         FilteringAdvancedSnippet {
             created_at: self.created_at,
             updated_at: self.updated_at,
@@ -3715,18 +3294,24 @@ impl FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)>>
-    for FilteringAdvancedSnippet
+impl<S0> crate::typed::builder::Build for FilteringAdvancedSnippetBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<filtering_advanced_snippet_members::value>,
 {
-    fn from(builder: FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = FilteringAdvancedSnippet;
+
+    fn build(self) -> FilteringAdvancedSnippet {
+        Self::build(self)
     }
 }
 
-impl FilteringAdvancedSnippetBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> FilteringAdvancedSnippet { match value {} }
+impl<S0> From<FilteringAdvancedSnippetBuilder<(S0,)>> for FilteringAdvancedSnippet
+where
+    S0: crate::typed::builder::IsSet<filtering_advanced_snippet_members::value>,
+{
+    fn from(builder: FilteringAdvancedSnippetBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3739,21 +3324,28 @@ pub struct FilteringConfig {
 
 impl FilteringConfig {
     /// Creates a builder for [`FilteringConfig`].
+    ///
+    /// Required: `active`, `draft`.
     pub fn builder() -> FilteringConfigBuilder {
         FilteringConfigBuilder::new()
     }
 
     /// Creates a [`FilteringConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringConfigBuilder,
-        ) -> FilteringConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active`, `draft`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringConfig>>(
+        f: impl FnOnce(FilteringConfigBuilder) -> B,
     ) -> FilteringConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_config_members {
+    pub struct active;
+    pub struct draft;
 }
 
 /// Builder for [`FilteringConfig`].
@@ -3801,6 +3393,7 @@ impl<S0, S1> FilteringConfigBuilder<(S0, S1)> {
 }
 
 impl<S1> FilteringConfigBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn active(
         self,
         value: impl Into<FilteringRules>,
@@ -3811,21 +3404,16 @@ impl<S1> FilteringConfigBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`active`](Self::active) with a builder.
-    pub fn active_with(
+    pub fn active_with<B: crate::typed::builder::Build<Output = FilteringRules>>(
         self,
-        f: impl FnOnce(
-            FilteringRulesBuilder,
-        ) -> FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRulesBuilder) -> B,
     ) -> FilteringConfigBuilder<(crate::typed::builder::Set, S1)> {
         self.active(f(FilteringRulesBuilder::new()).build())
     }
 }
 
 impl<S0> FilteringConfigBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn draft(
         self,
         value: impl Into<FilteringRules>,
@@ -3836,23 +3424,21 @@ impl<S0> FilteringConfigBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`draft`](Self::draft) with a builder.
-    pub fn draft_with(
+    pub fn draft_with<B: crate::typed::builder::Build<Output = FilteringRules>>(
         self,
-        f: impl FnOnce(
-            FilteringRulesBuilder,
-        ) -> FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRulesBuilder) -> B,
     ) -> FilteringConfigBuilder<(S0, crate::typed::builder::Set)> {
         self.draft(f(FilteringRulesBuilder::new()).build())
     }
 }
 
-impl FilteringConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FilteringConfigBuilder<(S0, S1)> {
     /// Builds a [`FilteringConfig`].
-    pub fn build(self) -> FilteringConfig {
+    pub fn build(self) -> FilteringConfig
+    where
+        S0: crate::typed::builder::IsSet<filtering_config_members::active>,
+        S1: crate::typed::builder::IsSet<filtering_config_members::draft>,
+    {
         FilteringConfig {
             active: self.active.unwrap(),
             domain: self.domain,
@@ -3861,26 +3447,26 @@ impl FilteringConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<FilteringConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FilteringConfig
+impl<S0, S1> crate::typed::builder::Build for FilteringConfigBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<filtering_config_members::active>,
+    S1: crate::typed::builder::IsSet<filtering_config_members::draft>,
 {
-    fn from(
-        builder: FilteringConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = FilteringConfig;
+
+    fn build(self) -> FilteringConfig {
+        Self::build(self)
     }
 }
 
-impl<S1> FilteringConfigBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `active` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active: crate::typed::builder::MissingRequiredField) -> FilteringConfig { match active {} }
-}
-
-impl FilteringConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `draft` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, draft: crate::typed::builder::MissingRequiredField) -> FilteringConfig { match draft {} }
+impl<S0, S1> From<FilteringConfigBuilder<(S0, S1)>> for FilteringConfig
+where
+    S0: crate::typed::builder::IsSet<filtering_config_members::active>,
+    S1: crate::typed::builder::IsSet<filtering_config_members::draft>,
+{
+    fn from(builder: FilteringConfigBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3907,25 +3493,32 @@ pub struct FilteringRule {
 
 impl FilteringRule {
     /// Creates a builder for [`FilteringRule`].
+    ///
+    /// Required: `field`, `id`, `order`, `policy`, `rule`, `value`.
     pub fn builder() -> FilteringRuleBuilder {
         FilteringRuleBuilder::new()
     }
 
     /// Creates a [`FilteringRule`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringRuleBuilder,
-        ) -> FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `id`, `order`, `policy`, `rule`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringRule>>(
+        f: impl FnOnce(FilteringRuleBuilder) -> B,
     ) -> FilteringRule {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringRuleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_rule_members {
+    pub struct field;
+    pub struct id;
+    pub struct order;
+    pub struct policy;
+    pub struct rule;
+    pub struct value;
 }
 
 /// Builder for [`FilteringRule`].
@@ -4015,6 +3608,7 @@ impl<S0, S1, S2, S3, S4, S5> FilteringRuleBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> FilteringRuleBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -4026,6 +3620,7 @@ impl<S1, S2, S3, S4, S5> FilteringRuleBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3, S4, S5> FilteringRuleBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -4037,6 +3632,7 @@ impl<S0, S2, S3, S4, S5> FilteringRuleBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3, S4, S5> FilteringRuleBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
+    /// **Required.**
     pub fn order(
         self,
         value: i32,
@@ -4048,6 +3644,7 @@ impl<S0, S1, S3, S4, S5> FilteringRuleBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2, S4, S5> FilteringRuleBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<FilteringPolicy>,
@@ -4059,6 +3656,7 @@ impl<S0, S1, S2, S4, S5> FilteringRuleBuilder<(S0, S1, S2, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3, S5> FilteringRuleBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
+    /// **Required.**
     pub fn rule(
         self,
         value: impl Into<FilteringRuleRule>,
@@ -4070,6 +3668,7 @@ impl<S0, S1, S2, S3, S5> FilteringRuleBuilder<(S0, S1, S2, S3, crate::typed::bui
 }
 
 impl<S0, S1, S2, S3, S4> FilteringRuleBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<String>,
@@ -4080,18 +3679,17 @@ impl<S0, S1, S2, S3, S4> FilteringRuleBuilder<(S0, S1, S2, S3, S4, crate::typed:
     }
 }
 
-impl
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> FilteringRuleBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`FilteringRule`].
-    pub fn build(self) -> FilteringRule {
+    pub fn build(self) -> FilteringRule
+    where
+        S0: crate::typed::builder::IsSet<filtering_rule_members::field>,
+        S1: crate::typed::builder::IsSet<filtering_rule_members::id>,
+        S2: crate::typed::builder::IsSet<filtering_rule_members::order>,
+        S3: crate::typed::builder::IsSet<filtering_rule_members::policy>,
+        S4: crate::typed::builder::IsSet<filtering_rule_members::rule>,
+        S5: crate::typed::builder::IsSet<filtering_rule_members::value>,
+    {
         FilteringRule {
             created_at: self.created_at,
             field: self.field.unwrap(),
@@ -4105,111 +3703,35 @@ impl
     }
 }
 
-impl
-    From<
-        FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FilteringRule
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for FilteringRuleBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<filtering_rule_members::field>,
+    S1: crate::typed::builder::IsSet<filtering_rule_members::id>,
+    S2: crate::typed::builder::IsSet<filtering_rule_members::order>,
+    S3: crate::typed::builder::IsSet<filtering_rule_members::policy>,
+    S4: crate::typed::builder::IsSet<filtering_rule_members::rule>,
+    S5: crate::typed::builder::IsSet<filtering_rule_members::value>,
 {
-    fn from(
-        builder: FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FilteringRule;
+
+    fn build(self) -> FilteringRule {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> FilteringRuleBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FilteringRule { match field {} }
-}
-
-impl<S2, S3, S4, S5>
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<FilteringRuleBuilder<(S0, S1, S2, S3, S4, S5)>> for FilteringRule
+where
+    S0: crate::typed::builder::IsSet<filtering_rule_members::field>,
+    S1: crate::typed::builder::IsSet<filtering_rule_members::id>,
+    S2: crate::typed::builder::IsSet<filtering_rule_members::order>,
+    S3: crate::typed::builder::IsSet<filtering_rule_members::policy>,
+    S4: crate::typed::builder::IsSet<filtering_rule_members::rule>,
+    S5: crate::typed::builder::IsSet<filtering_rule_members::value>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> FilteringRule { match id {} }
-}
-
-impl<S3, S4, S5>
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `order` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, order: crate::typed::builder::MissingRequiredField) -> FilteringRule { match order {} }
-}
-
-impl<S4, S5>
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> FilteringRule { match policy {} }
-}
-
-impl<S5>
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `rule` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule: crate::typed::builder::MissingRequiredField) -> FilteringRule { match rule {} }
-}
-
-impl
-    FilteringRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> FilteringRule { match value {} }
+    fn from(builder: FilteringRuleBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4239,22 +3761,29 @@ pub struct FilteringRules {
 
 impl FilteringRules {
     /// Creates a builder for [`FilteringRules`].
+    ///
+    /// Required: `advanced_snippet`, `rules`, `validation`.
     pub fn builder() -> FilteringRulesBuilder {
         FilteringRulesBuilder::new()
     }
 
     /// Creates a [`FilteringRules`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringRulesBuilder,
-        ) -> FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `advanced_snippet`, `rules`, `validation`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringRules>>(
+        f: impl FnOnce(FilteringRulesBuilder) -> B,
     ) -> FilteringRules {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringRulesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_rules_members {
+    pub struct advanced_snippet;
+    pub struct rules;
+    pub struct validation;
 }
 
 /// Builder for [`FilteringRules`].
@@ -4301,6 +3830,7 @@ impl<S0, S1, S2> FilteringRulesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FilteringRulesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn advanced_snippet(
         self,
         value: impl Into<FilteringAdvancedSnippet>,
@@ -4311,17 +3841,18 @@ impl<S1, S2> FilteringRulesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`advanced_snippet`](Self::advanced_snippet) with a builder.
-    pub fn advanced_snippet_with(
+    pub fn advanced_snippet_with<
+        B: crate::typed::builder::Build<Output = FilteringAdvancedSnippet>,
+    >(
         self,
-        f: impl FnOnce(
-            FilteringAdvancedSnippetBuilder,
-        ) -> FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FilteringAdvancedSnippetBuilder) -> B,
     ) -> FilteringRulesBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.advanced_snippet(f(FilteringAdvancedSnippetBuilder::new()).build())
     }
 }
 
 impl<S0, S2> FilteringRulesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn rules(
         self,
         value: impl Into<Vec<FilteringRule>>,
@@ -4345,18 +3876,9 @@ impl<S0, S2> FilteringRulesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Adds an element to [`rules`](Self::rules), with a builder.
-    pub fn add_rules_with(
+    pub fn add_rules_with<B: crate::typed::builder::Build<Output = FilteringRule>>(
         self,
-        f: impl FnOnce(
-            FilteringRuleBuilder,
-        ) -> FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRuleBuilder) -> B,
     ) -> FilteringRulesBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_rules(f(FilteringRuleBuilder::new()).build())
     }
@@ -4372,24 +3894,16 @@ impl<S0, S2> FilteringRulesBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`rules`](Self::rules), with a builder.
-    pub fn add_rules_with(
+    pub fn add_rules_with<B: crate::typed::builder::Build<Output = FilteringRule>>(
         self,
-        f: impl FnOnce(
-            FilteringRuleBuilder,
-        ) -> FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRuleBuilder) -> B,
     ) -> Self {
         self.add_rules(f(FilteringRuleBuilder::new()).build())
     }
 }
 
 impl<S0, S1> FilteringRulesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn validation(
         self,
         value: impl Into<FilteringRulesValidation>,
@@ -4400,28 +3914,22 @@ impl<S0, S1> FilteringRulesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`validation`](Self::validation) with a builder.
-    pub fn validation_with(
+    pub fn validation_with<B: crate::typed::builder::Build<Output = FilteringRulesValidation>>(
         self,
-        f: impl FnOnce(
-            FilteringRulesValidationBuilder,
-        ) -> FilteringRulesValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRulesValidationBuilder) -> B,
     ) -> FilteringRulesBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.validation(f(FilteringRulesValidationBuilder::new()).build())
     }
 }
 
-impl
-    FilteringRulesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FilteringRulesBuilder<(S0, S1, S2)> {
     /// Builds a [`FilteringRules`].
-    pub fn build(self) -> FilteringRules {
+    pub fn build(self) -> FilteringRules
+    where
+        S0: crate::typed::builder::IsSet<filtering_rules_members::advanced_snippet>,
+        S1: crate::typed::builder::IsSet<filtering_rules_members::rules>,
+        S2: crate::typed::builder::IsSet<filtering_rules_members::validation>,
+    {
         FilteringRules {
             advanced_snippet: self.advanced_snippet.unwrap(),
             rules: self.rules.unwrap(),
@@ -4430,54 +3938,28 @@ impl
     }
 }
 
-impl
-    From<
-        FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FilteringRules
+impl<S0, S1, S2> crate::typed::builder::Build for FilteringRulesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<filtering_rules_members::advanced_snippet>,
+    S1: crate::typed::builder::IsSet<filtering_rules_members::rules>,
+    S2: crate::typed::builder::IsSet<filtering_rules_members::validation>,
 {
-    fn from(
-        builder: FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FilteringRules;
+
+    fn build(self) -> FilteringRules {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FilteringRulesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `advanced_snippet` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, advanced_snippet: crate::typed::builder::MissingRequiredField) -> FilteringRules { match advanced_snippet {} }
-}
-
-impl<S2>
-    FilteringRulesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FilteringRulesBuilder<(S0, S1, S2)>> for FilteringRules
+where
+    S0: crate::typed::builder::IsSet<filtering_rules_members::advanced_snippet>,
+    S1: crate::typed::builder::IsSet<filtering_rules_members::rules>,
+    S2: crate::typed::builder::IsSet<filtering_rules_members::validation>,
 {
-    /// `rules` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rules: crate::typed::builder::MissingRequiredField) -> FilteringRules { match rules {} }
-}
-
-impl
-    FilteringRulesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `validation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, validation: crate::typed::builder::MissingRequiredField) -> FilteringRules { match validation {} }
+    fn from(builder: FilteringRulesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4488,21 +3970,28 @@ pub struct FilteringRulesValidation {
 
 impl FilteringRulesValidation {
     /// Creates a builder for [`FilteringRulesValidation`].
+    ///
+    /// Required: `errors`, `state`.
     pub fn builder() -> FilteringRulesValidationBuilder {
         FilteringRulesValidationBuilder::new()
     }
 
     /// Creates a [`FilteringRulesValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringRulesValidationBuilder,
-        ) -> FilteringRulesValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `errors`, `state`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringRulesValidation>>(
+        f: impl FnOnce(FilteringRulesValidationBuilder) -> B,
     ) -> FilteringRulesValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringRulesValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_rules_validation_members {
+    pub struct errors;
+    pub struct state;
 }
 
 /// Builder for [`FilteringRulesValidation`].
@@ -4538,6 +4027,7 @@ impl<S0, S1> FilteringRulesValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn errors(
         self,
         value: impl Into<Vec<FilteringValidation>>,
@@ -4561,14 +4051,9 @@ impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Adds an element to [`errors`](Self::errors), with a builder.
-    pub fn add_errors_with(
+    pub fn add_errors_with<B: crate::typed::builder::Build<Output = FilteringValidation>>(
         self,
-        f: impl FnOnce(
-            FilteringValidationBuilder,
-        ) -> FilteringValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringValidationBuilder) -> B,
     ) -> FilteringRulesValidationBuilder<(crate::typed::builder::Set, S1)> {
         self.add_errors(f(FilteringValidationBuilder::new()).build())
     }
@@ -4584,20 +4069,16 @@ impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::Set, S1)> {
     }
 
     /// Adds an element to [`errors`](Self::errors), with a builder.
-    pub fn add_errors_with(
+    pub fn add_errors_with<B: crate::typed::builder::Build<Output = FilteringValidation>>(
         self,
-        f: impl FnOnce(
-            FilteringValidationBuilder,
-        ) -> FilteringValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringValidationBuilder) -> B,
     ) -> Self {
         self.add_errors(f(FilteringValidationBuilder::new()).build())
     }
 }
 
 impl<S0> FilteringRulesValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn state(
         self,
         value: impl Into<FilteringValidationState>,
@@ -4608,9 +4089,13 @@ impl<S0> FilteringRulesValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FilteringRulesValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FilteringRulesValidationBuilder<(S0, S1)> {
     /// Builds a [`FilteringRulesValidation`].
-    pub fn build(self) -> FilteringRulesValidation {
+    pub fn build(self) -> FilteringRulesValidation
+    where
+        S0: crate::typed::builder::IsSet<filtering_rules_validation_members::errors>,
+        S1: crate::typed::builder::IsSet<filtering_rules_validation_members::state>,
+    {
         FilteringRulesValidation {
             errors: self.errors.unwrap(),
             state: self.state.unwrap(),
@@ -4618,29 +4103,26 @@ impl FilteringRulesValidationBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<FilteringRulesValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FilteringRulesValidation
+impl<S0, S1> crate::typed::builder::Build for FilteringRulesValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<filtering_rules_validation_members::errors>,
+    S1: crate::typed::builder::IsSet<filtering_rules_validation_members::state>,
 {
-    fn from(
-        builder: FilteringRulesValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FilteringRulesValidation;
+
+    fn build(self) -> FilteringRulesValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `errors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, errors: crate::typed::builder::MissingRequiredField) -> FilteringRulesValidation { match errors {} }
-}
-
-impl FilteringRulesValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> FilteringRulesValidation { match state {} }
+impl<S0, S1> From<FilteringRulesValidationBuilder<(S0, S1)>> for FilteringRulesValidation
+where
+    S0: crate::typed::builder::IsSet<filtering_rules_validation_members::errors>,
+    S1: crate::typed::builder::IsSet<filtering_rules_validation_members::state>,
+{
+    fn from(builder: FilteringRulesValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4651,21 +4133,28 @@ pub struct FilteringValidation {
 
 impl FilteringValidation {
     /// Creates a builder for [`FilteringValidation`].
+    ///
+    /// Required: `ids`, `messages`.
     pub fn builder() -> FilteringValidationBuilder {
         FilteringValidationBuilder::new()
     }
 
     /// Creates a [`FilteringValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilteringValidationBuilder,
-        ) -> FilteringValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `ids`, `messages`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilteringValidation>>(
+        f: impl FnOnce(FilteringValidationBuilder) -> B,
     ) -> FilteringValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilteringValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filtering_validation_members {
+    pub struct ids;
+    pub struct messages;
 }
 
 /// Builder for [`FilteringValidation`].
@@ -4699,6 +4188,7 @@ impl<S0, S1> FilteringValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> FilteringValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn ids(
         self,
         value: impl Into<Vec<crate::typed::_types::Id>>,
@@ -4733,6 +4223,7 @@ impl<S1> FilteringValidationBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> FilteringValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn messages(
         self,
         value: impl Into<Vec<String>>,
@@ -4766,9 +4257,13 @@ impl<S0> FilteringValidationBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl FilteringValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FilteringValidationBuilder<(S0, S1)> {
     /// Builds a [`FilteringValidation`].
-    pub fn build(self) -> FilteringValidation {
+    pub fn build(self) -> FilteringValidation
+    where
+        S0: crate::typed::builder::IsSet<filtering_validation_members::ids>,
+        S1: crate::typed::builder::IsSet<filtering_validation_members::messages>,
+    {
         FilteringValidation {
             ids: self.ids.unwrap(),
             messages: self.messages.unwrap(),
@@ -4776,29 +4271,26 @@ impl FilteringValidationBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<FilteringValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FilteringValidation
+impl<S0, S1> crate::typed::builder::Build for FilteringValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<filtering_validation_members::ids>,
+    S1: crate::typed::builder::IsSet<filtering_validation_members::messages>,
 {
-    fn from(
-        builder: FilteringValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FilteringValidation;
+
+    fn build(self) -> FilteringValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> FilteringValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ids: crate::typed::builder::MissingRequiredField) -> FilteringValidation { match ids {} }
-}
-
-impl FilteringValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `messages` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, messages: crate::typed::builder::MissingRequiredField) -> FilteringValidation { match messages {} }
+impl<S0, S1> From<FilteringValidationBuilder<(S0, S1)>> for FilteringValidation
+where
+    S0: crate::typed::builder::IsSet<filtering_validation_members::ids>,
+    S1: crate::typed::builder::IsSet<filtering_validation_members::messages>,
+{
+    fn from(builder: FilteringValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4819,21 +4311,28 @@ pub struct GreaterThanValidation {
 
 impl GreaterThanValidation {
     /// Creates a builder for [`GreaterThanValidation`].
+    ///
+    /// Required: `type`, `constraint`.
     pub fn builder() -> GreaterThanValidationBuilder {
         GreaterThanValidationBuilder::new()
     }
 
     /// Creates a [`GreaterThanValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GreaterThanValidationBuilder,
-        ) -> GreaterThanValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `constraint`.
+    pub fn of<B: crate::typed::builder::Build<Output = GreaterThanValidation>>(
+        f: impl FnOnce(GreaterThanValidationBuilder) -> B,
     ) -> GreaterThanValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GreaterThanValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod greater_than_validation_members {
+    pub struct r#type;
+    pub struct constraint;
 }
 
 /// Builder for [`GreaterThanValidation`].
@@ -4867,6 +4366,7 @@ impl<S0, S1> GreaterThanValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> GreaterThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4878,6 +4378,7 @@ impl<S1> GreaterThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GreaterThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -4888,9 +4389,13 @@ impl<S0> GreaterThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl GreaterThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GreaterThanValidationBuilder<(S0, S1)> {
     /// Builds a [`GreaterThanValidation`].
-    pub fn build(self) -> GreaterThanValidation {
+    pub fn build(self) -> GreaterThanValidation
+    where
+        S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
+        S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
+    {
         GreaterThanValidation {
             r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
@@ -4898,29 +4403,26 @@ impl GreaterThanValidationBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<GreaterThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GreaterThanValidation
+impl<S0, S1> crate::typed::builder::Build for GreaterThanValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
 {
-    fn from(
-        builder: GreaterThanValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GreaterThanValidation;
+
+    fn build(self) -> GreaterThanValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> GreaterThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GreaterThanValidation { match r#type {} }
-}
-
-impl GreaterThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `constraint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, constraint: crate::typed::builder::MissingRequiredField) -> GreaterThanValidation { match constraint {} }
+impl<S0, S1> From<GreaterThanValidationBuilder<(S0, S1)>> for GreaterThanValidation
+where
+    S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
+{
+    fn from(builder: GreaterThanValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4931,21 +4433,28 @@ pub struct IncludedInValidation {
 
 impl IncludedInValidation {
     /// Creates a builder for [`IncludedInValidation`].
+    ///
+    /// Required: `type`, `constraint`.
     pub fn builder() -> IncludedInValidationBuilder {
         IncludedInValidationBuilder::new()
     }
 
     /// Creates a [`IncludedInValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IncludedInValidationBuilder,
-        ) -> IncludedInValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `constraint`.
+    pub fn of<B: crate::typed::builder::Build<Output = IncludedInValidation>>(
+        f: impl FnOnce(IncludedInValidationBuilder) -> B,
     ) -> IncludedInValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IncludedInValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod included_in_validation_members {
+    pub struct r#type;
+    pub struct constraint;
 }
 
 /// Builder for [`IncludedInValidation`].
@@ -4979,6 +4488,7 @@ impl<S0, S1> IncludedInValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> IncludedInValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4990,6 +4500,7 @@ impl<S1> IncludedInValidationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<Vec<crate::typed::_types::ScalarValue>>,
@@ -5023,9 +4534,13 @@ impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IncludedInValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IncludedInValidationBuilder<(S0, S1)> {
     /// Builds a [`IncludedInValidation`].
-    pub fn build(self) -> IncludedInValidation {
+    pub fn build(self) -> IncludedInValidation
+    where
+        S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
+        S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
+    {
         IncludedInValidation {
             r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
@@ -5033,29 +4548,26 @@ impl IncludedInValidationBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<IncludedInValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IncludedInValidation
+impl<S0, S1> crate::typed::builder::Build for IncludedInValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
 {
-    fn from(
-        builder: IncludedInValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IncludedInValidation;
+
+    fn build(self) -> IncludedInValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> IncludedInValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IncludedInValidation { match r#type {} }
-}
-
-impl IncludedInValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `constraint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, constraint: crate::typed::builder::MissingRequiredField) -> IncludedInValidation { match constraint {} }
+impl<S0, S1> From<IncludedInValidationBuilder<(S0, S1)>> for IncludedInValidation
+where
+    S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
+{
+    fn from(builder: IncludedInValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5068,23 +4580,30 @@ pub struct IngestPipelineParams {
 
 impl IngestPipelineParams {
     /// Creates a builder for [`IngestPipelineParams`].
+    ///
+    /// Required: `extract_binary_content`, `name`, `reduce_whitespace`, `run_ml_inference`.
     pub fn builder() -> IngestPipelineParamsBuilder {
         IngestPipelineParamsBuilder::new()
     }
 
     /// Creates a [`IngestPipelineParams`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IngestPipelineParamsBuilder,
-        ) -> IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `extract_binary_content`, `name`, `reduce_whitespace`, `run_ml_inference`.
+    pub fn of<B: crate::typed::builder::Build<Output = IngestPipelineParams>>(
+        f: impl FnOnce(IngestPipelineParamsBuilder) -> B,
     ) -> IngestPipelineParams {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IngestPipelineParamsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ingest_pipeline_params_members {
+    pub struct extract_binary_content;
+    pub struct name;
+    pub struct reduce_whitespace;
+    pub struct run_ml_inference;
 }
 
 /// Builder for [`IngestPipelineParams`].
@@ -5136,6 +4655,7 @@ impl<S0, S1, S2, S3> IngestPipelineParamsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> IngestPipelineParamsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn extract_binary_content(
         self,
         value: bool,
@@ -5147,6 +4667,7 @@ impl<S1, S2, S3> IngestPipelineParamsBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3> IngestPipelineParamsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -5158,6 +4679,7 @@ impl<S0, S2, S3> IngestPipelineParamsBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3> IngestPipelineParamsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn reduce_whitespace(
         self,
         value: bool,
@@ -5169,6 +4691,7 @@ impl<S0, S1, S3> IngestPipelineParamsBuilder<(S0, S1, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2> IngestPipelineParamsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn run_ml_inference(
         self,
         value: bool,
@@ -5179,16 +4702,15 @@ impl<S0, S1, S2> IngestPipelineParamsBuilder<(S0, S1, S2, crate::typed::builder:
     }
 }
 
-impl
-    IngestPipelineParamsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> IngestPipelineParamsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`IngestPipelineParams`].
-    pub fn build(self) -> IngestPipelineParams {
+    pub fn build(self) -> IngestPipelineParams
+    where
+        S0: crate::typed::builder::IsSet<ingest_pipeline_params_members::extract_binary_content>,
+        S1: crate::typed::builder::IsSet<ingest_pipeline_params_members::name>,
+        S2: crate::typed::builder::IsSet<ingest_pipeline_params_members::reduce_whitespace>,
+        S3: crate::typed::builder::IsSet<ingest_pipeline_params_members::run_ml_inference>,
+    {
         IngestPipelineParams {
             extract_binary_content: self.extract_binary_content.unwrap(),
             name: self.name.unwrap(),
@@ -5198,71 +4720,30 @@ impl
     }
 }
 
-impl
-    From<
-        IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IngestPipelineParams
+impl<S0, S1, S2, S3> crate::typed::builder::Build for IngestPipelineParamsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<ingest_pipeline_params_members::extract_binary_content>,
+    S1: crate::typed::builder::IsSet<ingest_pipeline_params_members::name>,
+    S2: crate::typed::builder::IsSet<ingest_pipeline_params_members::reduce_whitespace>,
+    S3: crate::typed::builder::IsSet<ingest_pipeline_params_members::run_ml_inference>,
 {
-    fn from(
-        builder: IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IngestPipelineParams;
+
+    fn build(self) -> IngestPipelineParams {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> IngestPipelineParamsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `extract_binary_content` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, extract_binary_content: crate::typed::builder::MissingRequiredField) -> IngestPipelineParams { match extract_binary_content {} }
-}
-
-impl<S2, S3>
-    IngestPipelineParamsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<IngestPipelineParamsBuilder<(S0, S1, S2, S3)>> for IngestPipelineParams
+where
+    S0: crate::typed::builder::IsSet<ingest_pipeline_params_members::extract_binary_content>,
+    S1: crate::typed::builder::IsSet<ingest_pipeline_params_members::name>,
+    S2: crate::typed::builder::IsSet<ingest_pipeline_params_members::reduce_whitespace>,
+    S3: crate::typed::builder::IsSet<ingest_pipeline_params_members::run_ml_inference>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> IngestPipelineParams { match name {} }
-}
-
-impl<S3>
-    IngestPipelineParamsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `reduce_whitespace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reduce_whitespace: crate::typed::builder::MissingRequiredField) -> IngestPipelineParams { match reduce_whitespace {} }
-}
-
-impl
-    IngestPipelineParamsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `run_ml_inference` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, run_ml_inference: crate::typed::builder::MissingRequiredField) -> IngestPipelineParams { match run_ml_inference {} }
+    fn from(builder: IngestPipelineParamsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5273,21 +4754,28 @@ pub struct LessThanValidation {
 
 impl LessThanValidation {
     /// Creates a builder for [`LessThanValidation`].
+    ///
+    /// Required: `type`, `constraint`.
     pub fn builder() -> LessThanValidationBuilder {
         LessThanValidationBuilder::new()
     }
 
     /// Creates a [`LessThanValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LessThanValidationBuilder,
-        ) -> LessThanValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `constraint`.
+    pub fn of<B: crate::typed::builder::Build<Output = LessThanValidation>>(
+        f: impl FnOnce(LessThanValidationBuilder) -> B,
     ) -> LessThanValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LessThanValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod less_than_validation_members {
+    pub struct r#type;
+    pub struct constraint;
 }
 
 /// Builder for [`LessThanValidation`].
@@ -5321,6 +4809,7 @@ impl<S0, S1> LessThanValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> LessThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5332,6 +4821,7 @@ impl<S1> LessThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LessThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5342,9 +4832,13 @@ impl<S0> LessThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LessThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LessThanValidationBuilder<(S0, S1)> {
     /// Builds a [`LessThanValidation`].
-    pub fn build(self) -> LessThanValidation {
+    pub fn build(self) -> LessThanValidation
+    where
+        S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
+        S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
+    {
         LessThanValidation {
             r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
@@ -5352,29 +4846,26 @@ impl LessThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<LessThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LessThanValidation
+impl<S0, S1> crate::typed::builder::Build for LessThanValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
 {
-    fn from(
-        builder: LessThanValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LessThanValidation;
+
+    fn build(self) -> LessThanValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> LessThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LessThanValidation { match r#type {} }
-}
-
-impl LessThanValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `constraint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, constraint: crate::typed::builder::MissingRequiredField) -> LessThanValidation { match constraint {} }
+impl<S0, S1> From<LessThanValidationBuilder<(S0, S1)>> for LessThanValidation
+where
+    S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
+{
+    fn from(builder: LessThanValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5385,21 +4876,28 @@ pub struct ListTypeValidation {
 
 impl ListTypeValidation {
     /// Creates a builder for [`ListTypeValidation`].
+    ///
+    /// Required: `type`, `constraint`.
     pub fn builder() -> ListTypeValidationBuilder {
         ListTypeValidationBuilder::new()
     }
 
     /// Creates a [`ListTypeValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ListTypeValidationBuilder,
-        ) -> ListTypeValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `constraint`.
+    pub fn of<B: crate::typed::builder::Build<Output = ListTypeValidation>>(
+        f: impl FnOnce(ListTypeValidationBuilder) -> B,
     ) -> ListTypeValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ListTypeValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod list_type_validation_members {
+    pub struct r#type;
+    pub struct constraint;
 }
 
 /// Builder for [`ListTypeValidation`].
@@ -5433,6 +4931,7 @@ impl<S0, S1> ListTypeValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> ListTypeValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5444,6 +4943,7 @@ impl<S1> ListTypeValidationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ListTypeValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<String>,
@@ -5454,9 +4954,13 @@ impl<S0> ListTypeValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ListTypeValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ListTypeValidationBuilder<(S0, S1)> {
     /// Builds a [`ListTypeValidation`].
-    pub fn build(self) -> ListTypeValidation {
+    pub fn build(self) -> ListTypeValidation
+    where
+        S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
+        S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
+    {
         ListTypeValidation {
             r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
@@ -5464,29 +4968,26 @@ impl ListTypeValidationBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<ListTypeValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ListTypeValidation
+impl<S0, S1> crate::typed::builder::Build for ListTypeValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
 {
-    fn from(
-        builder: ListTypeValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ListTypeValidation;
+
+    fn build(self) -> ListTypeValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> ListTypeValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ListTypeValidation { match r#type {} }
-}
-
-impl ListTypeValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `constraint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, constraint: crate::typed::builder::MissingRequiredField) -> ListTypeValidation { match constraint {} }
+impl<S0, S1> From<ListTypeValidationBuilder<(S0, S1)>> for ListTypeValidation
+where
+    S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
+{
+    fn from(builder: ListTypeValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5497,21 +4998,28 @@ pub struct RegexValidation {
 
 impl RegexValidation {
     /// Creates a builder for [`RegexValidation`].
+    ///
+    /// Required: `type`, `constraint`.
     pub fn builder() -> RegexValidationBuilder {
         RegexValidationBuilder::new()
     }
 
     /// Creates a [`RegexValidation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RegexValidationBuilder,
-        ) -> RegexValidationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `constraint`.
+    pub fn of<B: crate::typed::builder::Build<Output = RegexValidation>>(
+        f: impl FnOnce(RegexValidationBuilder) -> B,
     ) -> RegexValidation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RegexValidationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod regex_validation_members {
+    pub struct r#type;
+    pub struct constraint;
 }
 
 /// Builder for [`RegexValidation`].
@@ -5545,6 +5053,7 @@ impl<S0, S1> RegexValidationBuilder<(S0, S1)> {
 }
 
 impl<S1> RegexValidationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5556,6 +5065,7 @@ impl<S1> RegexValidationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RegexValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<String>,
@@ -5566,9 +5076,13 @@ impl<S0> RegexValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RegexValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RegexValidationBuilder<(S0, S1)> {
     /// Builds a [`RegexValidation`].
-    pub fn build(self) -> RegexValidation {
+    pub fn build(self) -> RegexValidation
+    where
+        S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
+        S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
+    {
         RegexValidation {
             r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
@@ -5576,26 +5090,26 @@ impl RegexValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<RegexValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RegexValidation
+impl<S0, S1> crate::typed::builder::Build for RegexValidationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
 {
-    fn from(
-        builder: RegexValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RegexValidation;
+
+    fn build(self) -> RegexValidation {
+        Self::build(self)
     }
 }
 
-impl<S1> RegexValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RegexValidation { match r#type {} }
-}
-
-impl RegexValidationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `constraint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, constraint: crate::typed::builder::MissingRequiredField) -> RegexValidation { match constraint {} }
+impl<S0, S1> From<RegexValidationBuilder<(S0, S1)>> for RegexValidation
+where
+    S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
+    S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
+{
+    fn from(builder: RegexValidationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5615,8 +5129,8 @@ impl SchedulingConfiguration {
     }
 
     /// Creates a [`SchedulingConfiguration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SchedulingConfigurationBuilder) -> SchedulingConfigurationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SchedulingConfiguration>>(
+        f: impl FnOnce(SchedulingConfigurationBuilder) -> B,
     ) -> SchedulingConfiguration {
         f(Self::builder()).build()
     }
@@ -5653,14 +5167,9 @@ impl SchedulingConfigurationBuilder {
     }
 
     /// Sets [`access_control`](Self::access_control) with a builder.
-    pub fn access_control_with(
+    pub fn access_control_with<B: crate::typed::builder::Build<Output = ConnectorScheduling>>(
         self,
-        f: impl FnOnce(
-            ConnectorSchedulingBuilder,
-        ) -> ConnectorSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorSchedulingBuilder) -> B,
     ) -> Self {
         self.access_control(f(ConnectorSchedulingBuilder::new()).build())
     }
@@ -5677,14 +5186,9 @@ impl SchedulingConfigurationBuilder {
     }
 
     /// Sets [`full`](Self::full) with a builder.
-    pub fn full_with(
+    pub fn full_with<B: crate::typed::builder::Build<Output = ConnectorScheduling>>(
         self,
-        f: impl FnOnce(
-            ConnectorSchedulingBuilder,
-        ) -> ConnectorSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorSchedulingBuilder) -> B,
     ) -> Self {
         self.full(f(ConnectorSchedulingBuilder::new()).build())
     }
@@ -5701,14 +5205,9 @@ impl SchedulingConfigurationBuilder {
     }
 
     /// Sets [`incremental`](Self::incremental) with a builder.
-    pub fn incremental_with(
+    pub fn incremental_with<B: crate::typed::builder::Build<Output = ConnectorScheduling>>(
         self,
-        f: impl FnOnce(
-            ConnectorSchedulingBuilder,
-        ) -> ConnectorSchedulingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorSchedulingBuilder) -> B,
     ) -> Self {
         self.incremental(f(ConnectorSchedulingBuilder::new()).build())
     }
@@ -5722,6 +5221,14 @@ impl SchedulingConfigurationBuilder {
             full: self.full,
             incremental: self.incremental,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SchedulingConfigurationBuilder {
+    type Output = SchedulingConfiguration;
+
+    fn build(self) -> SchedulingConfiguration {
+        Self::build(self)
     }
 }
 
@@ -5739,19 +5246,28 @@ pub struct SelectOption {
 
 impl SelectOption {
     /// Creates a builder for [`SelectOption`].
+    ///
+    /// Required: `label`, `value`.
     pub fn builder() -> SelectOptionBuilder {
         SelectOptionBuilder::new()
     }
 
     /// Creates a [`SelectOption`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SelectOptionBuilder,
-        )
-            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `label`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SelectOption>>(
+        f: impl FnOnce(SelectOptionBuilder) -> B,
     ) -> SelectOption {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SelectOptionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod select_option_members {
+    pub struct label;
+    pub struct value;
 }
 
 /// Builder for [`SelectOption`].
@@ -5783,6 +5299,7 @@ impl<S0, S1> SelectOptionBuilder<(S0, S1)> {
 }
 
 impl<S1> SelectOptionBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn label(
         self,
         value: impl Into<String>,
@@ -5794,6 +5311,7 @@ impl<S1> SelectOptionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SelectOptionBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::_types::ScalarValue>,
@@ -5804,9 +5322,13 @@ impl<S0> SelectOptionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SelectOptionBuilder<(S0, S1)> {
     /// Builds a [`SelectOption`].
-    pub fn build(self) -> SelectOption {
+    pub fn build(self) -> SelectOption
+    where
+        S0: crate::typed::builder::IsSet<select_option_members::label>,
+        S1: crate::typed::builder::IsSet<select_option_members::value>,
+    {
         SelectOption {
             label: self.label.unwrap(),
             value: self.value.unwrap(),
@@ -5814,26 +5336,26 @@ impl SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SelectOption
+impl<S0, S1> crate::typed::builder::Build for SelectOptionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<select_option_members::label>,
+    S1: crate::typed::builder::IsSet<select_option_members::value>,
 {
-    fn from(
-        builder: SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SelectOption;
+
+    fn build(self) -> SelectOption {
+        Self::build(self)
     }
 }
 
-impl<S1> SelectOptionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `label` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, label: crate::typed::builder::MissingRequiredField) -> SelectOption { match label {} }
-}
-
-impl SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> SelectOption { match value {} }
+impl<S0, S1> From<SelectOptionBuilder<(S0, S1)>> for SelectOption
+where
+    S0: crate::typed::builder::IsSet<select_option_members::label>,
+    S1: crate::typed::builder::IsSet<select_option_members::value>,
+{
+    fn from(builder: SelectOptionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5853,24 +5375,31 @@ pub struct SyncJobConnectorReference {
 
 impl SyncJobConnectorReference {
     /// Creates a builder for [`SyncJobConnectorReference`].
+    ///
+    /// Required: `configuration`, `filtering`, `id`, `index_name`, `service_type`.
     pub fn builder() -> SyncJobConnectorReferenceBuilder {
         SyncJobConnectorReferenceBuilder::new()
     }
 
     /// Creates a [`SyncJobConnectorReference`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SyncJobConnectorReferenceBuilder,
-        ) -> SyncJobConnectorReferenceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `configuration`, `filtering`, `id`, `index_name`, `service_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SyncJobConnectorReference>>(
+        f: impl FnOnce(SyncJobConnectorReferenceBuilder) -> B,
     ) -> SyncJobConnectorReference {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SyncJobConnectorReferenceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sync_job_connector_reference_members {
+    pub struct configuration;
+    pub struct filtering;
+    pub struct id;
+    pub struct index_name;
+    pub struct service_type;
 }
 
 /// Builder for [`SyncJobConnectorReference`].
@@ -5957,16 +5486,9 @@ impl<S0, S1, S2, S3, S4> SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)> 
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<B: crate::typed::builder::Build<Output = IngestPipelineParams>>(
         self,
-        f: impl FnOnce(
-            IngestPipelineParamsBuilder,
-        ) -> IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IngestPipelineParamsBuilder) -> B,
     ) -> Self {
         self.pipeline(f(IngestPipelineParamsBuilder::new()).build())
     }
@@ -5986,6 +5508,7 @@ impl<S0, S1, S2, S3, S4> SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)> 
 impl<S1, S2, S3, S4>
     SyncJobConnectorReferenceBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
+    /// **Required.**
     pub fn configuration(
         self,
         value: impl Into<ConnectorConfiguration>,
@@ -6010,21 +5533,12 @@ impl<S1, S2, S3, S4>
     }
 
     /// Adds an entry to [`configuration`](Self::configuration), with a builder.
-    pub fn add_configuration_with(
+    pub fn add_configuration_with<
+        B: crate::typed::builder::Build<Output = ConnectorConfigProperties>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ConnectorConfigPropertiesBuilder,
-        ) -> ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorConfigPropertiesBuilder) -> B,
     ) -> SyncJobConnectorReferenceBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
     }
@@ -6046,21 +5560,12 @@ impl<S1, S2, S3, S4>
     }
 
     /// Adds an entry to [`configuration`](Self::configuration), with a builder.
-    pub fn add_configuration_with(
+    pub fn add_configuration_with<
+        B: crate::typed::builder::Build<Output = ConnectorConfigProperties>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ConnectorConfigPropertiesBuilder,
-        ) -> ConnectorConfigPropertiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConnectorConfigPropertiesBuilder) -> B,
     ) -> Self {
         self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
     }
@@ -6069,6 +5574,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     SyncJobConnectorReferenceBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
+    /// **Required.**
     pub fn filtering(
         self,
         value: impl Into<FilteringRules>,
@@ -6079,15 +5585,9 @@ impl<S0, S2, S3, S4>
     }
 
     /// Sets [`filtering`](Self::filtering) with a builder.
-    pub fn filtering_with(
+    pub fn filtering_with<B: crate::typed::builder::Build<Output = FilteringRules>>(
         self,
-        f: impl FnOnce(
-            FilteringRulesBuilder,
-        ) -> FilteringRulesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FilteringRulesBuilder) -> B,
     ) -> SyncJobConnectorReferenceBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
         self.filtering(f(FilteringRulesBuilder::new()).build())
     }
@@ -6096,6 +5596,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     SyncJobConnectorReferenceBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -6109,6 +5610,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     SyncJobConnectorReferenceBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
+    /// **Required.**
     pub fn index_name(
         self,
         value: impl Into<String>,
@@ -6122,6 +5624,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn service_type(
         self,
         value: impl Into<String>,
@@ -6132,17 +5635,16 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    SyncJobConnectorReferenceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`SyncJobConnectorReference`].
-    pub fn build(self) -> SyncJobConnectorReference {
+    pub fn build(self) -> SyncJobConnectorReference
+    where
+        S0: crate::typed::builder::IsSet<sync_job_connector_reference_members::configuration>,
+        S1: crate::typed::builder::IsSet<sync_job_connector_reference_members::filtering>,
+        S2: crate::typed::builder::IsSet<sync_job_connector_reference_members::id>,
+        S3: crate::typed::builder::IsSet<sync_job_connector_reference_members::index_name>,
+        S4: crate::typed::builder::IsSet<sync_job_connector_reference_members::service_type>,
+    {
         SyncJobConnectorReference {
             configuration: self.configuration.unwrap(),
             filtering: self.filtering.unwrap(),
@@ -6156,92 +5658,34 @@ impl
     }
 }
 
-impl
-    From<
-        SyncJobConnectorReferenceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SyncJobConnectorReference
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<sync_job_connector_reference_members::configuration>,
+    S1: crate::typed::builder::IsSet<sync_job_connector_reference_members::filtering>,
+    S2: crate::typed::builder::IsSet<sync_job_connector_reference_members::id>,
+    S3: crate::typed::builder::IsSet<sync_job_connector_reference_members::index_name>,
+    S4: crate::typed::builder::IsSet<sync_job_connector_reference_members::service_type>,
 {
-    fn from(
-        builder: SyncJobConnectorReferenceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SyncJobConnectorReference;
+
+    fn build(self) -> SyncJobConnectorReference {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    SyncJobConnectorReferenceBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)>>
+    for SyncJobConnectorReference
+where
+    S0: crate::typed::builder::IsSet<sync_job_connector_reference_members::configuration>,
+    S1: crate::typed::builder::IsSet<sync_job_connector_reference_members::filtering>,
+    S2: crate::typed::builder::IsSet<sync_job_connector_reference_members::id>,
+    S3: crate::typed::builder::IsSet<sync_job_connector_reference_members::index_name>,
+    S4: crate::typed::builder::IsSet<sync_job_connector_reference_members::service_type>,
 {
-    /// `configuration` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, configuration: crate::typed::builder::MissingRequiredField) -> SyncJobConnectorReference { match configuration {} }
-}
-
-impl<S2, S3, S4>
-    SyncJobConnectorReferenceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `filtering` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filtering: crate::typed::builder::MissingRequiredField) -> SyncJobConnectorReference { match filtering {} }
-}
-
-impl<S3, S4>
-    SyncJobConnectorReferenceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> SyncJobConnectorReference { match id {} }
-}
-
-impl<S4>
-    SyncJobConnectorReferenceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_name: crate::typed::builder::MissingRequiredField) -> SyncJobConnectorReference { match index_name {} }
-}
-
-impl
-    SyncJobConnectorReferenceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `service_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_type: crate::typed::builder::MissingRequiredField) -> SyncJobConnectorReference { match service_type {} }
+    fn from(builder: SyncJobConnectorReferenceBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -6279,8 +5723,8 @@ impl SyncRulesFeature {
     }
 
     /// Creates a [`SyncRulesFeature`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SyncRulesFeatureBuilder) -> SyncRulesFeatureBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SyncRulesFeature>>(
+        f: impl FnOnce(SyncRulesFeatureBuilder) -> B,
     ) -> SyncRulesFeature {
         f(Self::builder()).build()
     }
@@ -6316,9 +5760,9 @@ impl SyncRulesFeatureBuilder {
     }
 
     /// Sets [`advanced`](Self::advanced) with a builder.
-    pub fn advanced_with(
+    pub fn advanced_with<B: crate::typed::builder::Build<Output = FeatureEnabled>>(
         self,
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> Self {
         self.advanced(f(FeatureEnabledBuilder::new()).build())
     }
@@ -6336,9 +5780,9 @@ impl SyncRulesFeatureBuilder {
     }
 
     /// Sets [`basic`](Self::basic) with a builder.
-    pub fn basic_with(
+    pub fn basic_with<B: crate::typed::builder::Build<Output = FeatureEnabled>>(
         self,
-        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FeatureEnabledBuilder) -> B,
     ) -> Self {
         self.basic(f(FeatureEnabledBuilder::new()).build())
     }
@@ -6351,6 +5795,14 @@ impl SyncRulesFeatureBuilder {
             advanced: self.advanced,
             basic: self.basic,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SyncRulesFeatureBuilder {
+    type Output = SyncRulesFeature;
+
+    fn build(self) -> SyncRulesFeature {
+        Self::build(self)
     }
 }
 

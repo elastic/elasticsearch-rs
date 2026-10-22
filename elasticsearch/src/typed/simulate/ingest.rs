@@ -39,24 +39,31 @@ pub struct IngestDocumentSimulation {
 
 impl IngestDocumentSimulation {
     /// Creates a builder for [`IngestDocumentSimulation`].
+    ///
+    /// Required: `id`, `index`, `source`, `version`, `executed_pipelines`.
     pub fn builder() -> IngestDocumentSimulationBuilder {
         IngestDocumentSimulationBuilder::new()
     }
 
     /// Creates a [`IngestDocumentSimulation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IngestDocumentSimulationBuilder,
-        ) -> IngestDocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `source`, `version`, `executed_pipelines`.
+    pub fn of<B: crate::typed::builder::Build<Output = IngestDocumentSimulation>>(
+        f: impl FnOnce(IngestDocumentSimulationBuilder) -> B,
     ) -> IngestDocumentSimulation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IngestDocumentSimulationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ingest_document_simulation_members {
+    pub struct id;
+    pub struct index;
+    pub struct source;
+    pub struct version;
+    pub struct executed_pipelines;
 }
 
 /// Builder for [`IngestDocumentSimulation`].
@@ -169,12 +176,11 @@ impl<S0, S1, S2, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -197,11 +203,11 @@ impl<S0, S1, S2, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`effective_mapping`](Self::effective_mapping) with a builder.
-    pub fn effective_mapping_with(
+    pub fn effective_mapping_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.effective_mapping(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -226,7 +232,7 @@ impl<S0, S1, S2, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)> {
 impl<S1, S2, S3, S4>
     IngestDocumentSimulationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// Identifier for the document.
+    /// **Required.** Identifier for the document.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -240,7 +246,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     IngestDocumentSimulationBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// Name of the index that the document would be indexed into if this were not a simulation.
+    /// **Required.** Name of the index that the document would be indexed into if this were not a simulation.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -254,7 +260,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     IngestDocumentSimulationBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// JSON body for the document.
+    /// **Required.** JSON body for the document.
     pub fn source(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -296,6 +302,7 @@ impl<S0, S1, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, crate::typed::buil
 impl<S0, S1, S2, S4>
     IngestDocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_spec_utils::StringifiedVersionNumber>,
@@ -309,7 +316,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     IngestDocumentSimulationBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// A list of the names of the pipelines executed on this document.
+    /// **Required.** A list of the names of the pipelines executed on this document.
     pub fn executed_pipelines(
         self,
         value: impl Into<Vec<String>>,
@@ -343,17 +350,16 @@ impl<S0, S1, S2, S3> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, crate::typ
     }
 }
 
-impl
-    IngestDocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`IngestDocumentSimulation`].
-    pub fn build(self) -> IngestDocumentSimulation {
+    pub fn build(self) -> IngestDocumentSimulation
+    where
+        S0: crate::typed::builder::IsSet<ingest_document_simulation_members::id>,
+        S1: crate::typed::builder::IsSet<ingest_document_simulation_members::index>,
+        S2: crate::typed::builder::IsSet<ingest_document_simulation_members::source>,
+        S3: crate::typed::builder::IsSet<ingest_document_simulation_members::version>,
+        S4: crate::typed::builder::IsSet<ingest_document_simulation_members::executed_pipelines>,
+    {
         IngestDocumentSimulation {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -368,92 +374,34 @@ impl
     }
 }
 
-impl
-    From<
-        IngestDocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IngestDocumentSimulation
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<ingest_document_simulation_members::id>,
+    S1: crate::typed::builder::IsSet<ingest_document_simulation_members::index>,
+    S2: crate::typed::builder::IsSet<ingest_document_simulation_members::source>,
+    S3: crate::typed::builder::IsSet<ingest_document_simulation_members::version>,
+    S4: crate::typed::builder::IsSet<ingest_document_simulation_members::executed_pipelines>,
 {
-    fn from(
-        builder: IngestDocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IngestDocumentSimulation;
+
+    fn build(self) -> IngestDocumentSimulation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    IngestDocumentSimulationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)>>
+    for IngestDocumentSimulation
+where
+    S0: crate::typed::builder::IsSet<ingest_document_simulation_members::id>,
+    S1: crate::typed::builder::IsSet<ingest_document_simulation_members::index>,
+    S2: crate::typed::builder::IsSet<ingest_document_simulation_members::source>,
+    S3: crate::typed::builder::IsSet<ingest_document_simulation_members::version>,
+    S4: crate::typed::builder::IsSet<ingest_document_simulation_members::executed_pipelines>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> IngestDocumentSimulation { match id {} }
-}
-
-impl<S2, S3, S4>
-    IngestDocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> IngestDocumentSimulation { match index {} }
-}
-
-impl<S3, S4>
-    IngestDocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> IngestDocumentSimulation { match source {} }
-}
-
-impl<S4>
-    IngestDocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> IngestDocumentSimulation { match version {} }
-}
-
-impl
-    IngestDocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `executed_pipelines` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, executed_pipelines: crate::typed::builder::MissingRequiredField) -> IngestDocumentSimulation { match executed_pipelines {} }
+    fn from(builder: IngestDocumentSimulationBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -533,16 +481,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `docs`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `docs`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct docs;
 }
 
 /// Builder for [`Request`].
@@ -740,14 +699,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`component_template_substitutions`](Self::component_template_substitutions), with a builder.
-    pub fn add_component_template_substitutions_with(
+    pub fn add_component_template_substitutions_with<
+        B: crate::typed::builder::Build<Output = crate::typed::cluster::_types::ComponentTemplateNode>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::cluster::_types::ComponentTemplateNodeBuilder,
-        ) -> crate::typed::cluster::_types::ComponentTemplateNodeBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::cluster::_types::ComponentTemplateNodeBuilder) -> B,
     ) -> Self {
         self.add_component_template_substitutions(
             key,
@@ -786,15 +743,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`index_template_substitutions`](Self::index_template_substitutions), with a builder.
-    pub fn add_index_template_substitutions_with(
+    pub fn add_index_template_substitutions_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexTemplate>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexTemplateBuilder,
-        ) -> crate::typed::indices::_types::IndexTemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::IndexTemplateBuilder) -> B,
     ) -> Self {
         self.add_index_template_substitutions(
             key,
@@ -820,11 +774,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`mapping_addition`](Self::mapping_addition) with a builder.
-    pub fn mapping_addition_with(
+    pub fn mapping_addition_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mapping_addition(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -862,12 +816,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`pipeline_substitutions`](Self::pipeline_substitutions), with a builder.
-    pub fn add_pipeline_substitutions_with(
+    pub fn add_pipeline_substitutions_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Pipeline>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::PipelineBuilder,
-        ) -> crate::typed::ingest::_types::PipelineBuilder,
+        f: impl FnOnce(crate::typed::ingest::_types::PipelineBuilder) -> B,
     ) -> Self {
         self.add_pipeline_substitutions(
             key,
@@ -877,7 +831,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Sample documents to test in the pipeline.
+    /// **Required.** Sample documents to test in the pipeline.
     pub fn docs(
         self,
         value: impl Into<Vec<crate::typed::ingest::_types::Document>>,
@@ -901,12 +855,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Document>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::DocumentBuilder,
-        )
-            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ingest::_types::DocumentBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
     }
@@ -922,20 +875,22 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Document>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::DocumentBuilder,
-        )
-            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ingest::_types::DocumentBuilder) -> B,
     ) -> Self {
         self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::docs>,
+    {
         Request {
             index: self.index,
             pipeline: self.pipeline,
@@ -953,23 +908,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::docs>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, docs: crate::typed::builder::MissingRequiredField) -> Request { match docs {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `docs` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, docs: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match docs {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::docs>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -1117,8 +1075,8 @@ impl SimulateIngestDocumentResult {
     }
 
     /// Creates a [`SimulateIngestDocumentResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SimulateIngestDocumentResultBuilder) -> SimulateIngestDocumentResultBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SimulateIngestDocumentResult>>(
+        f: impl FnOnce(SimulateIngestDocumentResultBuilder) -> B,
     ) -> SimulateIngestDocumentResult {
         f(Self::builder()).build()
     }
@@ -1149,17 +1107,9 @@ impl SimulateIngestDocumentResultBuilder {
     }
 
     /// Sets [`doc`](Self::doc) with a builder.
-    pub fn doc_with(
+    pub fn doc_with<B: crate::typed::builder::Build<Output = IngestDocumentSimulation>>(
         self,
-        f: impl FnOnce(
-            IngestDocumentSimulationBuilder,
-        ) -> IngestDocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IngestDocumentSimulationBuilder) -> B,
     ) -> Self {
         self.doc(f(IngestDocumentSimulationBuilder::new()).build())
     }
@@ -1169,6 +1119,14 @@ impl SimulateIngestDocumentResultBuilder {
     /// Builds a [`SimulateIngestDocumentResult`].
     pub fn build(self) -> SimulateIngestDocumentResult {
         SimulateIngestDocumentResult { doc: self.doc }
+    }
+}
+
+impl crate::typed::builder::Build for SimulateIngestDocumentResultBuilder {
+    type Output = SimulateIngestDocumentResult;
+
+    fn build(self) -> SimulateIngestDocumentResult {
+        Self::build(self)
     }
 }
 

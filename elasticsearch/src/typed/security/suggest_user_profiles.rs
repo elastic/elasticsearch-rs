@@ -45,7 +45,9 @@ impl Hint {
     }
 
     /// Creates a [`Hint`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(HintBuilder) -> HintBuilder) -> Hint {
+    pub fn of<B: crate::typed::builder::Build<Output = Hint>>(
+        f: impl FnOnce(HintBuilder) -> B,
+    ) -> Hint {
         f(Self::builder()).build()
     }
 }
@@ -129,6 +131,14 @@ impl HintBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HintBuilder {
+    type Output = Hint;
+
+    fn build(self) -> Hint {
+        Self::build(self)
+    }
+}
+
 impl From<HintBuilder> for Hint {
     fn from(builder: HintBuilder) -> Self {
         builder.build()
@@ -193,7 +203,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -360,7 +372,10 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`hint`](Self::hint) with a builder.
-    pub fn hint_with(self, f: impl FnOnce(HintBuilder) -> HintBuilder) -> Self {
+    pub fn hint_with<B: crate::typed::builder::Build<Output = Hint>>(
+        self,
+        f: impl FnOnce(HintBuilder) -> B,
+    ) -> Self {
         self.hint(f(HintBuilder::new()).build())
     }
 }
@@ -379,6 +394,14 @@ impl<C> RequestBuilder<(), C> {
             data2: self.data2,
             hint: self.hint,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -570,21 +593,28 @@ pub struct TotalUserProfiles {
 
 impl TotalUserProfiles {
     /// Creates a builder for [`TotalUserProfiles`].
+    ///
+    /// Required: `value`, `relation`.
     pub fn builder() -> TotalUserProfilesBuilder {
         TotalUserProfilesBuilder::new()
     }
 
     /// Creates a [`TotalUserProfiles`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TotalUserProfilesBuilder,
-        ) -> TotalUserProfilesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `value`, `relation`.
+    pub fn of<B: crate::typed::builder::Build<Output = TotalUserProfiles>>(
+        f: impl FnOnce(TotalUserProfilesBuilder) -> B,
     ) -> TotalUserProfiles {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TotalUserProfilesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod total_user_profiles_members {
+    pub struct value;
+    pub struct relation;
 }
 
 /// Builder for [`TotalUserProfiles`].
@@ -618,6 +648,7 @@ impl<S0, S1> TotalUserProfilesBuilder<(S0, S1)> {
 }
 
 impl<S1> TotalUserProfilesBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn value(self, value: i64) -> TotalUserProfilesBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.value = Some(value);
@@ -626,6 +657,7 @@ impl<S1> TotalUserProfilesBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TotalUserProfilesBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn relation(
         self,
         value: impl Into<crate::typed::_types::RelationName>,
@@ -636,9 +668,13 @@ impl<S0> TotalUserProfilesBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TotalUserProfilesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TotalUserProfilesBuilder<(S0, S1)> {
     /// Builds a [`TotalUserProfiles`].
-    pub fn build(self) -> TotalUserProfiles {
+    pub fn build(self) -> TotalUserProfiles
+    where
+        S0: crate::typed::builder::IsSet<total_user_profiles_members::value>,
+        S1: crate::typed::builder::IsSet<total_user_profiles_members::relation>,
+    {
         TotalUserProfiles {
             value: self.value.unwrap(),
             relation: self.relation.unwrap(),
@@ -646,24 +682,24 @@ impl TotalUserProfilesBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<TotalUserProfilesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TotalUserProfiles
+impl<S0, S1> crate::typed::builder::Build for TotalUserProfilesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<total_user_profiles_members::value>,
+    S1: crate::typed::builder::IsSet<total_user_profiles_members::relation>,
 {
-    fn from(
-        builder: TotalUserProfilesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TotalUserProfiles;
+
+    fn build(self) -> TotalUserProfiles {
+        Self::build(self)
     }
 }
 
-impl<S1> TotalUserProfilesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> TotalUserProfiles { match value {} }
-}
-
-impl TotalUserProfilesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `relation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, relation: crate::typed::builder::MissingRequiredField) -> TotalUserProfiles { match relation {} }
+impl<S0, S1> From<TotalUserProfilesBuilder<(S0, S1)>> for TotalUserProfiles
+where
+    S0: crate::typed::builder::IsSet<total_user_profiles_members::value>,
+    S1: crate::typed::builder::IsSet<total_user_profiles_members::relation>,
+{
+    fn from(builder: TotalUserProfilesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

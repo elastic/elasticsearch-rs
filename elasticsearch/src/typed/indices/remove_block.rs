@@ -12,18 +12,27 @@ pub struct RemoveIndicesBlockStatus {
 
 impl RemoveIndicesBlockStatus {
     /// Creates a builder for [`RemoveIndicesBlockStatus`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RemoveIndicesBlockStatusBuilder {
         RemoveIndicesBlockStatusBuilder::new()
     }
 
     /// Creates a [`RemoveIndicesBlockStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoveIndicesBlockStatusBuilder,
-        ) -> RemoveIndicesBlockStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveIndicesBlockStatus>>(
+        f: impl FnOnce(RemoveIndicesBlockStatusBuilder) -> B,
     ) -> RemoveIndicesBlockStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoveIndicesBlockStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remove_indices_block_status_members {
+    pub struct name;
 }
 
 /// Builder for [`RemoveIndicesBlockStatus`].
@@ -79,18 +88,18 @@ impl<S0> RemoveIndicesBlockStatusBuilder<(S0,)> {
     }
 
     /// Sets [`exception`](Self::exception) with a builder.
-    pub fn exception_with(
+    pub fn exception_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.exception(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl RemoveIndicesBlockStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -101,9 +110,12 @@ impl RemoveIndicesBlockStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RemoveIndicesBlockStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RemoveIndicesBlockStatusBuilder<(S0,)> {
     /// Builds a [`RemoveIndicesBlockStatus`].
-    pub fn build(self) -> RemoveIndicesBlockStatus {
+    pub fn build(self) -> RemoveIndicesBlockStatus
+    where
+        S0: crate::typed::builder::IsSet<remove_indices_block_status_members::name>,
+    {
         RemoveIndicesBlockStatus {
             name: self.name.unwrap(),
             unblocked: self.unblocked,
@@ -112,18 +124,24 @@ impl RemoveIndicesBlockStatusBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RemoveIndicesBlockStatusBuilder<(crate::typed::builder::Set,)>>
-    for RemoveIndicesBlockStatus
+impl<S0> crate::typed::builder::Build for RemoveIndicesBlockStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<remove_indices_block_status_members::name>,
 {
-    fn from(builder: RemoveIndicesBlockStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RemoveIndicesBlockStatus;
+
+    fn build(self) -> RemoveIndicesBlockStatus {
+        Self::build(self)
     }
 }
 
-impl RemoveIndicesBlockStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> RemoveIndicesBlockStatus { match name {} }
+impl<S0> From<RemoveIndicesBlockStatusBuilder<(S0,)>> for RemoveIndicesBlockStatus
+where
+    S0: crate::typed::builder::IsSet<remove_indices_block_status_members::name>,
+{
+    fn from(builder: RemoveIndicesBlockStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.remove_block`](crate::typed::indices::IndicesClient::remove_block).
@@ -185,19 +203,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `block`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `index`, `block`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct block;
 }
 
 /// Builder for [`Request`].
@@ -396,7 +423,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A comma-separated list or wildcard expression of index names used to limit the request.
+    /// **Required.** A comma-separated list or wildcard expression of index names used to limit the request.
     /// By default, you must explicitly name the indices you are removing blocks from.
     /// To allow the removal of blocks from indices with `_all`, `*`, or other wildcard expressions, change the `action.destructive_requires_name` setting to `false`.
     /// You can update this setting in the `elasticsearch.yml` file or by using the cluster update settings API.
@@ -411,7 +438,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The block type to remove from the index.
+    /// **Required.** The block type to remove from the index.
     pub fn block(
         self,
         value: impl Into<crate::typed::indices::_types::IndicesBlockOptions>,
@@ -422,9 +449,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::block>,
+    {
         Request {
             index: self.index.unwrap(),
             block: self.block.unwrap(),
@@ -441,41 +472,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::block>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `block` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, block: crate::typed::builder::MissingRequiredField) -> Request { match block {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `block` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, block: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match block {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::block>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

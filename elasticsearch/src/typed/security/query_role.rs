@@ -46,16 +46,27 @@ pub struct QueryRole {
 
 impl QueryRole {
     /// Creates a builder for [`QueryRole`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> QueryRoleBuilder {
         QueryRoleBuilder::new()
     }
 
     /// Creates a [`QueryRole`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(QueryRoleBuilder) -> QueryRoleBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRole>>(
+        f: impl FnOnce(QueryRoleBuilder) -> B,
     ) -> QueryRole {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryRoleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_role_members {
+    pub struct name;
 }
 
 /// Builder for [`QueryRole`].
@@ -177,14 +188,11 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::IndicesPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::IndicesPrivilegesBuilder,
-        ) -> crate::typed::security::_types::IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::IndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_indices(f(crate::typed::security::_types::IndicesPrivilegesBuilder::new()).build())
     }
@@ -219,15 +227,13 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Adds an element to [`remote_indices`](Self::remote_indices), with a builder.
-    pub fn add_remote_indices_with(
+    pub fn add_remote_indices_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteIndicesPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteIndicesPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_indices(
             f(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder::new()).build(),
@@ -265,14 +271,13 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Adds an element to [`remote_cluster`](Self::remote_cluster), with a builder.
-    pub fn add_remote_cluster_with(
+    pub fn add_remote_cluster_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteClusterPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteClusterPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteClusterPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_cluster(
             f(crate::typed::security::_types::RemoteClusterPrivilegesBuilder::new()).build(),
@@ -298,11 +303,11 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Sets [`global`](Self::global) with a builder.
-    pub fn global_with(
+    pub fn global_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::GlobalPrivilege>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::GlobalPrivilegeBuilder,
-        ) -> crate::typed::security::_types::GlobalPrivilegeBuilder,
+        f: impl FnOnce(crate::typed::security::_types::GlobalPrivilegeBuilder) -> B,
     ) -> Self {
         self.global(f(crate::typed::security::_types::GlobalPrivilegeBuilder::new()).build())
     }
@@ -337,15 +342,13 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::ApplicationPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::ApplicationPrivilegesBuilder,
-        ) -> crate::typed::security::_types::ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::ApplicationPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_applications(
             f(crate::typed::security::_types::ApplicationPrivilegesBuilder::new()).build(),
@@ -429,13 +432,11 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     }
 
     /// Sets [`restriction`](Self::restriction) with a builder.
-    pub fn restriction_with(
+    pub fn restriction_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::Restriction>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RestrictionBuilder,
-        ) -> crate::typed::security::_types::RestrictionBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RestrictionBuilder) -> B,
     ) -> Self {
         self.restriction(f(crate::typed::security::_types::RestrictionBuilder::new()).build())
     }
@@ -490,7 +491,7 @@ impl<S0> QueryRoleBuilder<(S0,)> {
 }
 
 impl QueryRoleBuilder<(crate::typed::builder::NotSet,)> {
-    /// Name of the role.
+    /// **Required.** Name of the role.
     pub fn name(self, value: impl Into<String>) -> QueryRoleBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.name = Some(value.into());
@@ -498,9 +499,12 @@ impl QueryRoleBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl QueryRoleBuilder<(crate::typed::builder::Set,)> {
+impl<S0> QueryRoleBuilder<(S0,)> {
     /// Builds a [`QueryRole`].
-    pub fn build(self) -> QueryRole {
+    pub fn build(self) -> QueryRole
+    where
+        S0: crate::typed::builder::IsSet<query_role_members::name>,
+    {
         QueryRole {
             cluster: self.cluster,
             indices: self.indices,
@@ -519,16 +523,24 @@ impl QueryRoleBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<QueryRoleBuilder<(crate::typed::builder::Set,)>> for QueryRole {
-    fn from(builder: QueryRoleBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for QueryRoleBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<query_role_members::name>,
+{
+    type Output = QueryRole;
+
+    fn build(self) -> QueryRole {
+        Self::build(self)
     }
 }
 
-impl QueryRoleBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> QueryRole { match name {} }
+impl<S0> From<QueryRoleBuilder<(S0,)>> for QueryRole
+where
+    S0: crate::typed::builder::IsSet<query_role_members::name>,
+{
+    fn from(builder: QueryRoleBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.query_role`](crate::typed::security::SecurityClient::query_role).
@@ -592,7 +604,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -705,11 +719,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = RoleQueryContainer>>(
         self,
-        f: impl FnOnce(
-            RoleQueryContainerBuilder,
-        ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RoleQueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(RoleQueryContainerBuilder::new()).build())
     }
@@ -794,6 +806,14 @@ impl<C> RequestBuilder<(), C> {
             size: self.size,
             search_after: self.search_after,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -1083,15 +1103,17 @@ impl From<crate::typed::_types::query_dsl::TermsQueryBuilder> for RoleQueryConta
 
 impl RoleQueryContainer {
     /// Creates a builder for [`RoleQueryContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> RoleQueryContainerBuilder {
         RoleQueryContainerBuilder::new()
     }
 
     /// Creates a [`RoleQueryContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RoleQueryContainerBuilder,
-        ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = RoleQueryContainer>>(
+        f: impl FnOnce(RoleQueryContainerBuilder) -> B,
     ) -> RoleQueryContainer {
         f(Self::builder()).build()
     }
@@ -1134,11 +1156,11 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bool`](Self::bool) with a builder.
-    pub fn bool_with(
+    pub fn bool_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::BoolQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::BoolQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::BoolQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::BoolQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.bool(f(crate::typed::_types::query_dsl::BoolQueryBuilder::new()).build())
     }
@@ -1154,13 +1176,11 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`exists`](Self::exists) with a builder.
-    pub fn exists_with(
+    pub fn exists_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::ExistsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::ExistsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::ExistsQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::ExistsQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.exists(f(crate::typed::_types::query_dsl::ExistsQueryBuilder::new()).build())
     }
@@ -1177,11 +1197,11 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ids`](Self::ids) with a builder.
-    pub fn ids_with(
+    pub fn ids_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::IdsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::IdsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::IdsQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::IdsQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.ids(f(crate::typed::_types::query_dsl::IdsQueryBuilder::new()).build())
     }
@@ -1202,14 +1222,12 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::MatchQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::MatchQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::MatchQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::MatchQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.r#match(
             key,
@@ -1228,11 +1246,11 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_all`](Self::match_all) with a builder.
-    pub fn match_all_with(
+    pub fn match_all_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::MatchAllQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::MatchAllQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::MatchAllQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::MatchAllQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_all(f(crate::typed::_types::query_dsl::MatchAllQueryBuilder::new()).build())
     }
@@ -1252,14 +1270,12 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`prefix`](Self::prefix) with a builder.
-    pub fn prefix_with(
+    pub fn prefix_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::PrefixQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::PrefixQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::PrefixQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::PrefixQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.prefix(
             key,
@@ -1292,13 +1308,13 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`simple_query_string`](Self::simple_query_string) with a builder.
-    pub fn simple_query_string_with(
+    pub fn simple_query_string_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::query_dsl::SimpleQueryStringQuery,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.simple_query_string(
             f(crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder::new()).build(),
@@ -1321,14 +1337,12 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`term`](Self::term) with a builder.
-    pub fn term_with(
+    pub fn term_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::TermQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::TermQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::TermQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::TermQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.term(
             key,
@@ -1348,11 +1362,11 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::TermsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::TermsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::TermsQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::TermsQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(crate::typed::_types::query_dsl::TermsQueryBuilder::new()).build())
     }
@@ -1372,12 +1386,12 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wildcard`](Self::wildcard) with a builder.
-    pub fn wildcard_with(
+    pub fn wildcard_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::WildcardQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::WildcardQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::WildcardQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::WildcardQueryBuilder) -> B,
     ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.wildcard(
             key,
@@ -1386,21 +1400,32 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RoleQueryContainerBuilder<(S0,)> {
     /// Builds a [`RoleQueryContainer`].
-    pub fn build(self) -> RoleQueryContainer {
+    pub fn build(self) -> RoleQueryContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<RoleQueryContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<RoleQueryContainerBuilder<(crate::typed::builder::Set,)>> for RoleQueryContainer {
-    fn from(builder: RoleQueryContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RoleQueryContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<RoleQueryContainer>,
+{
+    type Output = RoleQueryContainer;
+
+    fn build(self) -> RoleQueryContainer {
+        Self::build(self)
     }
 }
 
-impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> RoleQueryContainer { match variant {} }
+impl<S0> From<RoleQueryContainerBuilder<(S0,)>> for RoleQueryContainer
+where
+    S0: crate::typed::builder::IsVariantSet<RoleQueryContainer>,
+{
+    fn from(builder: RoleQueryContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

@@ -54,25 +54,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `namespace`, `service`, `roles`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `namespace`, `service`, `roles`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct namespace;
+    pub struct service;
+    pub struct roles;
 }
 
 /// Builder for [`Request`].
@@ -240,7 +244,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The namespace, which is a top-level grouping of service accounts.
+    /// **Required.** The namespace, which is a top-level grouping of service accounts.
     /// It must start with a letter or digit and can contain only letters, digits, hyphens, and underscores, up to a maximum of 128 characters.
     /// It cannot be `elastic`, which is reserved for built-in service accounts.
     pub fn namespace(
@@ -254,7 +258,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The service name.
+    /// **Required.** The service name.
     /// It must start with a letter or digit and can contain only letters, digits, hyphens, and underscores, up to a maximum of 128 characters.
     pub fn service(
         self,
@@ -267,7 +271,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The names of the roles to grant to the service account, up to a maximum of 1000.
+    /// **Required.** The names of the roles to grant to the service account, up to a maximum of 1000.
     /// The roles are resolved when the account authenticates, so they do not have to exist yet.
     pub fn roles(
         self,
@@ -302,18 +306,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+        S2: crate::typed::builder::IsSet<request_members::roles>,
+    {
         Request {
             namespace: self.namespace.unwrap(),
             service: self.service.unwrap(),
@@ -329,90 +329,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::namespace>,
+    S1: crate::typed::builder::IsSet<request_members::service>,
+    S2: crate::typed::builder::IsSet<request_members::roles>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `namespace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, namespace: crate::typed::builder::MissingRequiredField) -> Request { match namespace {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `namespace` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, namespace: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match namespace {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> Request { match service {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `service` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, service: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match service {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> Request { match roles {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `roles` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, roles: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match roles {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+        S2: crate::typed::builder::IsSet<request_members::roles>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

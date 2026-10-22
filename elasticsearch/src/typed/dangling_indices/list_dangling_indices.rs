@@ -11,23 +11,30 @@ pub struct DanglingIndex {
 
 impl DanglingIndex {
     /// Creates a builder for [`DanglingIndex`].
+    ///
+    /// Required: `index_name`, `index_uuid`, `creation_date_millis`, `node_ids`.
     pub fn builder() -> DanglingIndexBuilder {
         DanglingIndexBuilder::new()
     }
 
     /// Creates a [`DanglingIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DanglingIndexBuilder,
-        ) -> DanglingIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_name`, `index_uuid`, `creation_date_millis`, `node_ids`.
+    pub fn of<B: crate::typed::builder::Build<Output = DanglingIndex>>(
+        f: impl FnOnce(DanglingIndexBuilder) -> B,
     ) -> DanglingIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DanglingIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dangling_index_members {
+    pub struct index_name;
+    pub struct index_uuid;
+    pub struct creation_date_millis;
+    pub struct node_ids;
 }
 
 /// Builder for [`DanglingIndex`].
@@ -79,6 +86,7 @@ impl<S0, S1, S2, S3> DanglingIndexBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DanglingIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn index_name(
         self,
         value: impl Into<String>,
@@ -90,6 +98,7 @@ impl<S1, S2, S3> DanglingIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> DanglingIndexBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn index_uuid(
         self,
         value: impl Into<String>,
@@ -101,6 +110,7 @@ impl<S0, S2, S3> DanglingIndexBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> DanglingIndexBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn creation_date_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -112,6 +122,7 @@ impl<S0, S1, S3> DanglingIndexBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> DanglingIndexBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn node_ids(
         self,
         value: impl Into<crate::typed::_types::Ids>,
@@ -122,16 +133,15 @@ impl<S0, S1, S2> DanglingIndexBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 }
 
-impl
-    DanglingIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DanglingIndexBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DanglingIndex`].
-    pub fn build(self) -> DanglingIndex {
+    pub fn build(self) -> DanglingIndex
+    where
+        S0: crate::typed::builder::IsSet<dangling_index_members::index_name>,
+        S1: crate::typed::builder::IsSet<dangling_index_members::index_uuid>,
+        S2: crate::typed::builder::IsSet<dangling_index_members::creation_date_millis>,
+        S3: crate::typed::builder::IsSet<dangling_index_members::node_ids>,
+    {
         DanglingIndex {
             index_name: self.index_name.unwrap(),
             index_uuid: self.index_uuid.unwrap(),
@@ -141,71 +151,30 @@ impl
     }
 }
 
-impl
-    From<
-        DanglingIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DanglingIndex
+impl<S0, S1, S2, S3> crate::typed::builder::Build for DanglingIndexBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<dangling_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<dangling_index_members::index_uuid>,
+    S2: crate::typed::builder::IsSet<dangling_index_members::creation_date_millis>,
+    S3: crate::typed::builder::IsSet<dangling_index_members::node_ids>,
 {
-    fn from(
-        builder: DanglingIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DanglingIndex;
+
+    fn build(self) -> DanglingIndex {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DanglingIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_name: crate::typed::builder::MissingRequiredField) -> DanglingIndex { match index_name {} }
-}
-
-impl<S2, S3>
-    DanglingIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DanglingIndexBuilder<(S0, S1, S2, S3)>> for DanglingIndex
+where
+    S0: crate::typed::builder::IsSet<dangling_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<dangling_index_members::index_uuid>,
+    S2: crate::typed::builder::IsSet<dangling_index_members::creation_date_millis>,
+    S3: crate::typed::builder::IsSet<dangling_index_members::node_ids>,
 {
-    /// `index_uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_uuid: crate::typed::builder::MissingRequiredField) -> DanglingIndex { match index_uuid {} }
-}
-
-impl<S3>
-    DanglingIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `creation_date_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, creation_date_millis: crate::typed::builder::MissingRequiredField) -> DanglingIndex { match creation_date_millis {} }
-}
-
-impl
-    DanglingIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `node_ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_ids: crate::typed::builder::MissingRequiredField) -> DanglingIndex { match node_ids {} }
+    fn from(builder: DanglingIndexBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`dangling_indices.list_dangling_indices`](crate::typed::dangling_indices::DanglingIndicesClient::list_dangling_indices).
@@ -244,7 +213,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -339,6 +310,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

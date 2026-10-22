@@ -18,18 +18,27 @@ pub struct AdaptiveAllocationsSettings {
 
 impl AdaptiveAllocationsSettings {
     /// Creates a builder for [`AdaptiveAllocationsSettings`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> AdaptiveAllocationsSettingsBuilder {
         AdaptiveAllocationsSettingsBuilder::new()
     }
 
     /// Creates a [`AdaptiveAllocationsSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AdaptiveAllocationsSettingsBuilder,
-        ) -> AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = AdaptiveAllocationsSettings>>(
+        f: impl FnOnce(AdaptiveAllocationsSettingsBuilder) -> B,
     ) -> AdaptiveAllocationsSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AdaptiveAllocationsSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod adaptive_allocations_settings_members {
+    pub struct enabled;
 }
 
 /// Builder for [`AdaptiveAllocationsSettings`].
@@ -91,7 +100,7 @@ impl<S0> AdaptiveAllocationsSettingsBuilder<(S0,)> {
 }
 
 impl AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// If true, adaptive_allocations is enabled
+    /// **Required.** If true, adaptive_allocations is enabled
     pub fn enabled(
         self,
         value: bool,
@@ -102,9 +111,12 @@ impl AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AdaptiveAllocationsSettingsBuilder<(S0,)> {
     /// Builds a [`AdaptiveAllocationsSettings`].
-    pub fn build(self) -> AdaptiveAllocationsSettings {
+    pub fn build(self) -> AdaptiveAllocationsSettings
+    where
+        S0: crate::typed::builder::IsSet<adaptive_allocations_settings_members::enabled>,
+    {
         AdaptiveAllocationsSettings {
             enabled: self.enabled.unwrap(),
             min_number_of_allocations: self.min_number_of_allocations,
@@ -113,18 +125,24 @@ impl AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)>>
-    for AdaptiveAllocationsSettings
+impl<S0> crate::typed::builder::Build for AdaptiveAllocationsSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<adaptive_allocations_settings_members::enabled>,
 {
-    fn from(builder: AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = AdaptiveAllocationsSettings;
+
+    fn build(self) -> AdaptiveAllocationsSettings {
+        Self::build(self)
     }
 }
 
-impl AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> AdaptiveAllocationsSettings { match enabled {} }
+impl<S0> From<AdaptiveAllocationsSettingsBuilder<(S0,)>> for AdaptiveAllocationsSettings
+where
+    S0: crate::typed::builder::IsSet<adaptive_allocations_settings_members::enabled>,
+{
+    fn from(builder: AdaptiveAllocationsSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -166,16 +184,27 @@ pub struct AnalysisConfig {
 
 impl AnalysisConfig {
     /// Creates a builder for [`AnalysisConfig`].
+    ///
+    /// Required: `detectors`.
     pub fn builder() -> AnalysisConfigBuilder {
         AnalysisConfigBuilder::new()
     }
 
     /// Creates a [`AnalysisConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AnalysisConfigBuilder) -> AnalysisConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `detectors`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalysisConfig>>(
+        f: impl FnOnce(AnalysisConfigBuilder) -> B,
     ) -> AnalysisConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalysisConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analysis_config_members {
+    pub struct detectors;
 }
 
 /// Builder for [`AnalysisConfig`].
@@ -373,9 +402,11 @@ impl<S0> AnalysisConfigBuilder<(S0,)> {
     }
 
     /// Sets [`per_partition_categorization`](Self::per_partition_categorization) with a builder.
-    pub fn per_partition_categorization_with(
+    pub fn per_partition_categorization_with<
+        B: crate::typed::builder::Build<Output = PerPartitionCategorization>,
+    >(
         self,
-        f: impl FnOnce(PerPartitionCategorizationBuilder) -> PerPartitionCategorizationBuilder,
+        f: impl FnOnce(PerPartitionCategorizationBuilder) -> B,
     ) -> Self {
         self.per_partition_categorization(f(PerPartitionCategorizationBuilder::new()).build())
     }
@@ -400,7 +431,7 @@ impl<S0> AnalysisConfigBuilder<(S0,)> {
 }
 
 impl AnalysisConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// Detector configuration objects specify which data fields a job analyzes. They also specify which analytical functions are used. You can specify multiple detectors for a job. If the detectors array does not contain at least one detector, no analysis can occur and an error is returned.
+    /// **Required.** Detector configuration objects specify which data fields a job analyzes. They also specify which analytical functions are used. You can specify multiple detectors for a job. If the detectors array does not contain at least one detector, no analysis can occur and an error is returned.
     pub fn detectors(
         self,
         value: impl Into<Vec<Detector>>,
@@ -424,9 +455,9 @@ impl AnalysisConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`detectors`](Self::detectors), with a builder.
-    pub fn add_detectors_with(
+    pub fn add_detectors_with<B: crate::typed::builder::Build<Output = Detector>>(
         self,
-        f: impl FnOnce(DetectorBuilder) -> DetectorBuilder,
+        f: impl FnOnce(DetectorBuilder) -> B,
     ) -> AnalysisConfigBuilder<(crate::typed::builder::Set,)> {
         self.add_detectors(f(DetectorBuilder::new()).build())
     }
@@ -442,14 +473,20 @@ impl AnalysisConfigBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`detectors`](Self::detectors), with a builder.
-    pub fn add_detectors_with(self, f: impl FnOnce(DetectorBuilder) -> DetectorBuilder) -> Self {
+    pub fn add_detectors_with<B: crate::typed::builder::Build<Output = Detector>>(
+        self,
+        f: impl FnOnce(DetectorBuilder) -> B,
+    ) -> Self {
         self.add_detectors(f(DetectorBuilder::new()).build())
     }
 }
 
-impl AnalysisConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnalysisConfigBuilder<(S0,)> {
     /// Builds a [`AnalysisConfig`].
-    pub fn build(self) -> AnalysisConfig {
+    pub fn build(self) -> AnalysisConfig
+    where
+        S0: crate::typed::builder::IsSet<analysis_config_members::detectors>,
+    {
         AnalysisConfig {
             bucket_span: self.bucket_span,
             categorization_analyzer: self.categorization_analyzer,
@@ -466,16 +503,24 @@ impl AnalysisConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AnalysisConfigBuilder<(crate::typed::builder::Set,)>> for AnalysisConfig {
-    fn from(builder: AnalysisConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnalysisConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<analysis_config_members::detectors>,
+{
+    type Output = AnalysisConfig;
+
+    fn build(self) -> AnalysisConfig {
+        Self::build(self)
     }
 }
 
-impl AnalysisConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `detectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, detectors: crate::typed::builder::MissingRequiredField) -> AnalysisConfig { match detectors {} }
+impl<S0> From<AnalysisConfigBuilder<(S0,)>> for AnalysisConfig
+where
+    S0: crate::typed::builder::IsSet<analysis_config_members::detectors>,
+{
+    fn from(builder: AnalysisConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -515,22 +560,29 @@ pub struct AnalysisConfigRead {
 
 impl AnalysisConfigRead {
     /// Creates a builder for [`AnalysisConfigRead`].
+    ///
+    /// Required: `bucket_span`, `detectors`, `influencers`.
     pub fn builder() -> AnalysisConfigReadBuilder {
         AnalysisConfigReadBuilder::new()
     }
 
     /// Creates a [`AnalysisConfigRead`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalysisConfigReadBuilder,
-        ) -> AnalysisConfigReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_span`, `detectors`, `influencers`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalysisConfigRead>>(
+        f: impl FnOnce(AnalysisConfigReadBuilder) -> B,
     ) -> AnalysisConfigRead {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalysisConfigReadBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analysis_config_read_members {
+    pub struct bucket_span;
+    pub struct detectors;
+    pub struct influencers;
 }
 
 /// Builder for [`AnalysisConfigRead`].
@@ -707,9 +759,11 @@ impl<S0, S1, S2> AnalysisConfigReadBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`per_partition_categorization`](Self::per_partition_categorization) with a builder.
-    pub fn per_partition_categorization_with(
+    pub fn per_partition_categorization_with<
+        B: crate::typed::builder::Build<Output = PerPartitionCategorization>,
+    >(
         self,
-        f: impl FnOnce(PerPartitionCategorizationBuilder) -> PerPartitionCategorizationBuilder,
+        f: impl FnOnce(PerPartitionCategorizationBuilder) -> B,
     ) -> Self {
         self.per_partition_categorization(f(PerPartitionCategorizationBuilder::new()).build())
     }
@@ -734,7 +788,7 @@ impl<S0, S1, S2> AnalysisConfigReadBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AnalysisConfigReadBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The size of the interval that the analysis is aggregated into, typically between `5m` and `1h`. This value should be either a whole number of days or equate to a
+    /// **Required.** The size of the interval that the analysis is aggregated into, typically between `5m` and `1h`. This value should be either a whole number of days or equate to a
     /// whole number of buckets in one day. If the anomaly detection job uses a datafeed with aggregations, this value must also be divisible by the interval of the date histogram aggregation.
     pub fn bucket_span(
         self,
@@ -747,7 +801,7 @@ impl<S1, S2> AnalysisConfigReadBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> AnalysisConfigReadBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Detector configuration objects specify which data fields a job analyzes. They also specify which analytical functions are used. You can specify multiple detectors for a job. If the detectors array does not contain at least one detector, no analysis can occur and an error is returned.
+    /// **Required.** Detector configuration objects specify which data fields a job analyzes. They also specify which analytical functions are used. You can specify multiple detectors for a job. If the detectors array does not contain at least one detector, no analysis can occur and an error is returned.
     pub fn detectors(
         self,
         value: impl Into<Vec<DetectorRead>>,
@@ -771,9 +825,9 @@ impl<S0, S2> AnalysisConfigReadBuilder<(S0, crate::typed::builder::NotSet, S2)> 
     }
 
     /// Adds an element to [`detectors`](Self::detectors), with a builder.
-    pub fn add_detectors_with(
+    pub fn add_detectors_with<B: crate::typed::builder::Build<Output = DetectorRead>>(
         self,
-        f: impl FnOnce(DetectorReadBuilder) -> DetectorReadBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DetectorReadBuilder) -> B,
     ) -> AnalysisConfigReadBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_detectors(f(DetectorReadBuilder::new()).build())
     }
@@ -789,16 +843,16 @@ impl<S0, S2> AnalysisConfigReadBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`detectors`](Self::detectors), with a builder.
-    pub fn add_detectors_with(
+    pub fn add_detectors_with<B: crate::typed::builder::Build<Output = DetectorRead>>(
         self,
-        f: impl FnOnce(DetectorReadBuilder) -> DetectorReadBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DetectorReadBuilder) -> B,
     ) -> Self {
         self.add_detectors(f(DetectorReadBuilder::new()).build())
     }
 }
 
 impl<S0, S1> AnalysisConfigReadBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// A comma separated list of influencer field names. Typically these can be the by, over, or partition fields that are used in the detector configuration. You might also want to use a field name that is not specifically named in a detector, but is available as part of the input data. When you use multiple detectors, the use of influencers is recommended as it aggregates results for each influencer entity.
+    /// **Required.** A comma separated list of influencer field names. Typically these can be the by, over, or partition fields that are used in the detector configuration. You might also want to use a field name that is not specifically named in a detector, but is available as part of the input data. When you use multiple detectors, the use of influencers is recommended as it aggregates results for each influencer entity.
     pub fn influencers(
         self,
         value: impl Into<Vec<crate::typed::_types::Field>>,
@@ -832,15 +886,14 @@ impl<S0, S1> AnalysisConfigReadBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    AnalysisConfigReadBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AnalysisConfigReadBuilder<(S0, S1, S2)> {
     /// Builds a [`AnalysisConfigRead`].
-    pub fn build(self) -> AnalysisConfigRead {
+    pub fn build(self) -> AnalysisConfigRead
+    where
+        S0: crate::typed::builder::IsSet<analysis_config_read_members::bucket_span>,
+        S1: crate::typed::builder::IsSet<analysis_config_read_members::detectors>,
+        S2: crate::typed::builder::IsSet<analysis_config_read_members::influencers>,
+    {
         AnalysisConfigRead {
             bucket_span: self.bucket_span.unwrap(),
             detectors: self.detectors.unwrap(),
@@ -857,54 +910,28 @@ impl
     }
 }
 
-impl
-    From<
-        AnalysisConfigReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AnalysisConfigRead
+impl<S0, S1, S2> crate::typed::builder::Build for AnalysisConfigReadBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<analysis_config_read_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<analysis_config_read_members::detectors>,
+    S2: crate::typed::builder::IsSet<analysis_config_read_members::influencers>,
 {
-    fn from(
-        builder: AnalysisConfigReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AnalysisConfigRead;
+
+    fn build(self) -> AnalysisConfigRead {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AnalysisConfigReadBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> AnalysisConfigRead { match bucket_span {} }
-}
-
-impl<S2>
-    AnalysisConfigReadBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AnalysisConfigReadBuilder<(S0, S1, S2)>> for AnalysisConfigRead
+where
+    S0: crate::typed::builder::IsSet<analysis_config_read_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<analysis_config_read_members::detectors>,
+    S2: crate::typed::builder::IsSet<analysis_config_read_members::influencers>,
 {
-    /// `detectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, detectors: crate::typed::builder::MissingRequiredField) -> AnalysisConfigRead { match detectors {} }
-}
-
-impl
-    AnalysisConfigReadBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `influencers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencers: crate::typed::builder::MissingRequiredField) -> AnalysisConfigRead { match influencers {} }
+    fn from(builder: AnalysisConfigReadBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -924,7 +951,9 @@ impl AnalysisLimits {
     }
 
     /// Creates a [`AnalysisLimits`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AnalysisLimitsBuilder) -> AnalysisLimitsBuilder) -> AnalysisLimits {
+    pub fn of<B: crate::typed::builder::Build<Output = AnalysisLimits>>(
+        f: impl FnOnce(AnalysisLimitsBuilder) -> B,
+    ) -> AnalysisLimits {
         f(Self::builder()).build()
     }
 }
@@ -984,6 +1013,14 @@ impl AnalysisLimitsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AnalysisLimitsBuilder {
+    type Output = AnalysisLimits;
+
+    fn build(self) -> AnalysisLimits {
+        Self::build(self)
+    }
+}
+
 impl From<AnalysisLimitsBuilder> for AnalysisLimits {
     fn from(builder: AnalysisLimitsBuilder) -> Self {
         builder.build()
@@ -998,18 +1035,27 @@ pub struct AnalysisMemoryLimit {
 
 impl AnalysisMemoryLimit {
     /// Creates a builder for [`AnalysisMemoryLimit`].
+    ///
+    /// Required: `model_memory_limit`.
     pub fn builder() -> AnalysisMemoryLimitBuilder {
         AnalysisMemoryLimitBuilder::new()
     }
 
     /// Creates a [`AnalysisMemoryLimit`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalysisMemoryLimitBuilder,
-        ) -> AnalysisMemoryLimitBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_memory_limit`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalysisMemoryLimit>>(
+        f: impl FnOnce(AnalysisMemoryLimitBuilder) -> B,
     ) -> AnalysisMemoryLimit {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalysisMemoryLimitBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analysis_memory_limit_members {
+    pub struct model_memory_limit;
 }
 
 /// Builder for [`AnalysisMemoryLimit`].
@@ -1038,7 +1084,7 @@ impl<S0> AnalysisMemoryLimitBuilder<(S0,)> {
 }
 
 impl AnalysisMemoryLimitBuilder<(crate::typed::builder::NotSet,)> {
-    /// Limits can be applied for the resources required to hold the mathematical models in memory. These limits are approximate and can be set per job. They do not control the memory used by other processes, for example the Elasticsearch Java processes.
+    /// **Required.** Limits can be applied for the resources required to hold the mathematical models in memory. These limits are approximate and can be set per job. They do not control the memory used by other processes, for example the Elasticsearch Java processes.
     pub fn model_memory_limit(
         self,
         value: impl Into<String>,
@@ -1049,25 +1095,36 @@ impl AnalysisMemoryLimitBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AnalysisMemoryLimitBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnalysisMemoryLimitBuilder<(S0,)> {
     /// Builds a [`AnalysisMemoryLimit`].
-    pub fn build(self) -> AnalysisMemoryLimit {
+    pub fn build(self) -> AnalysisMemoryLimit
+    where
+        S0: crate::typed::builder::IsSet<analysis_memory_limit_members::model_memory_limit>,
+    {
         AnalysisMemoryLimit {
             model_memory_limit: self.model_memory_limit.unwrap(),
         }
     }
 }
 
-impl From<AnalysisMemoryLimitBuilder<(crate::typed::builder::Set,)>> for AnalysisMemoryLimit {
-    fn from(builder: AnalysisMemoryLimitBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnalysisMemoryLimitBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<analysis_memory_limit_members::model_memory_limit>,
+{
+    type Output = AnalysisMemoryLimit;
+
+    fn build(self) -> AnalysisMemoryLimit {
+        Self::build(self)
     }
 }
 
-impl AnalysisMemoryLimitBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_memory_limit` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_memory_limit: crate::typed::builder::MissingRequiredField) -> AnalysisMemoryLimit { match model_memory_limit {} }
+impl<S0> From<AnalysisMemoryLimitBuilder<(S0,)>> for AnalysisMemoryLimit
+where
+    S0: crate::typed::builder::IsSet<analysis_memory_limit_members::model_memory_limit>,
+{
+    fn from(builder: AnalysisMemoryLimitBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1139,28 +1196,35 @@ pub struct Anomaly {
 
 impl Anomaly {
     /// Creates a builder for [`Anomaly`].
+    ///
+    /// Required: `bucket_span`, `detector_index`, `initial_record_score`, `is_interim`, `job_id`, `probability`, `record_score`, `result_type`, `timestamp`.
     pub fn builder() -> AnomalyBuilder {
         AnomalyBuilder::new()
     }
 
     /// Creates a [`Anomaly`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnomalyBuilder,
-        ) -> AnomalyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_span`, `detector_index`, `initial_record_score`, `is_interim`, `job_id`, `probability`, `record_score`, `result_type`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = Anomaly>>(
+        f: impl FnOnce(AnomalyBuilder) -> B,
     ) -> Anomaly {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnomalyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod anomaly_members {
+    pub struct bucket_span;
+    pub struct detector_index;
+    pub struct initial_record_score;
+    pub struct is_interim;
+    pub struct job_id;
+    pub struct probability;
+    pub struct record_score;
+    pub struct result_type;
+    pub struct timestamp;
 }
 
 /// Builder for [`Anomaly`].
@@ -1313,9 +1377,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> AnomalyBuilder<(S0, S1, S2, S3, S4, S5,
     }
 
     /// Sets [`anomaly_score_explanation`](Self::anomaly_score_explanation) with a builder.
-    pub fn anomaly_score_explanation_with(
+    pub fn anomaly_score_explanation_with<
+        B: crate::typed::builder::Build<Output = AnomalyExplanation>,
+    >(
         self,
-        f: impl FnOnce(AnomalyExplanationBuilder) -> AnomalyExplanationBuilder,
+        f: impl FnOnce(AnomalyExplanationBuilder) -> B,
     ) -> Self {
         self.anomaly_score_explanation(f(AnomalyExplanationBuilder::new()).build())
     }
@@ -1365,9 +1431,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> AnomalyBuilder<(S0, S1, S2, S3, S4, S5,
     }
 
     /// Adds an element to [`causes`](Self::causes), with a builder.
-    pub fn add_causes_with(
+    pub fn add_causes_with<B: crate::typed::builder::Build<Output = AnomalyCause>>(
         self,
-        f: impl FnOnce(AnomalyCauseBuilder) -> AnomalyCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AnomalyCauseBuilder) -> B,
     ) -> Self {
         self.add_causes(f(AnomalyCauseBuilder::new()).build())
     }
@@ -1421,7 +1487,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> AnomalyBuilder<(S0, S1, S2, S3, S4, S5,
     }
 
     /// Sets [`geo_results`](Self::geo_results) with a builder.
-    pub fn geo_results_with(self, f: impl FnOnce(GeoResultsBuilder) -> GeoResultsBuilder) -> Self {
+    pub fn geo_results_with<B: crate::typed::builder::Build<Output = GeoResults>>(
+        self,
+        f: impl FnOnce(GeoResultsBuilder) -> B,
+    ) -> Self {
         self.geo_results(f(GeoResultsBuilder::new()).build())
     }
 
@@ -1446,12 +1515,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> AnomalyBuilder<(S0, S1, S2, S3, S4, S5,
     }
 
     /// Adds an element to [`influencers`](Self::influencers), with a builder.
-    pub fn add_influencers_with(
+    pub fn add_influencers_with<B: crate::typed::builder::Build<Output = Influence>>(
         self,
-        f: impl FnOnce(
-            InfluenceBuilder,
-        )
-            -> InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(InfluenceBuilder) -> B,
     ) -> Self {
         self.add_influencers(f(InfluenceBuilder::new()).build())
     }
@@ -1538,7 +1604,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The length of the bucket in seconds. This value matches the `bucket_span` that is specified in the job.
+    /// **Required.** The length of the bucket in seconds. This value matches the `bucket_span` that is specified in the job.
     pub fn bucket_span(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitSeconds>,
@@ -1562,7 +1628,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// A unique identifier for the detector.
+    /// **Required.** A unique identifier for the detector.
     pub fn detector_index(
         self,
         value: i32,
@@ -1586,7 +1652,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// A normalized score between 0-100, which is based on the probability of the anomalousness of this record. This is the initial value that was calculated at the time the bucket was processed.
+    /// **Required.** A normalized score between 0-100, which is based on the probability of the anomalousness of this record. This is the initial value that was calculated at the time the bucket was processed.
     pub fn initial_record_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1610,7 +1676,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// If true, this is an interim result. In other words, the results are calculated based on partial input data.
+    /// **Required.** If true, this is an interim result. In other words, the results are calculated based on partial input data.
     pub fn is_interim(
         self,
         value: bool,
@@ -1634,7 +1700,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<String>,
@@ -1658,7 +1724,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
-    /// The probability of the individual anomaly occurring, in the range 0 to 1. For example, `0.0000772031`. This value can be held to a high precision of over 300 decimal places, so the `record_score` is provided as a human-readable and friendly interpretation of this.
+    /// **Required.** The probability of the individual anomaly occurring, in the range 0 to 1. For example, `0.0000772031`. This value can be held to a high precision of over 300 decimal places, so the `record_score` is provided as a human-readable and friendly interpretation of this.
     pub fn probability(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1682,7 +1748,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
-    /// A normalized score between 0-100, which is based on the probability of the anomalousness of this record. Unlike `initial_record_score`, this value will be updated by a re-normalization process as new data is analyzed.
+    /// **Required.** A normalized score between 0-100, which is based on the probability of the anomalousness of this record. Unlike `initial_record_score`, this value will be updated by a re-normalization process as new data is analyzed.
     pub fn record_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1706,7 +1772,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
-    /// Internal. This is always set to `record`.
+    /// **Required.** Internal. This is always set to `record`.
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -1730,7 +1796,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The start time of the bucket for which these results were calculated.
+    /// **Required.** The start time of the bucket for which these results were calculated.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1741,21 +1807,20 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> AnomalyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)> {
     /// Builds a [`Anomaly`].
-    pub fn build(self) -> Anomaly {
+    pub fn build(self) -> Anomaly
+    where
+        S0: crate::typed::builder::IsSet<anomaly_members::bucket_span>,
+        S1: crate::typed::builder::IsSet<anomaly_members::detector_index>,
+        S2: crate::typed::builder::IsSet<anomaly_members::initial_record_score>,
+        S3: crate::typed::builder::IsSet<anomaly_members::is_interim>,
+        S4: crate::typed::builder::IsSet<anomaly_members::job_id>,
+        S5: crate::typed::builder::IsSet<anomaly_members::probability>,
+        S6: crate::typed::builder::IsSet<anomaly_members::record_score>,
+        S7: crate::typed::builder::IsSet<anomaly_members::result_type>,
+        S8: crate::typed::builder::IsSet<anomaly_members::timestamp>,
+    {
         Anomaly {
             actual: self.actual,
             anomaly_score_explanation: self.anomaly_score_explanation,
@@ -1785,198 +1850,42 @@ impl
     }
 }
 
-impl
-    From<
-        AnomalyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Anomaly
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for AnomalyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<anomaly_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<anomaly_members::detector_index>,
+    S2: crate::typed::builder::IsSet<anomaly_members::initial_record_score>,
+    S3: crate::typed::builder::IsSet<anomaly_members::is_interim>,
+    S4: crate::typed::builder::IsSet<anomaly_members::job_id>,
+    S5: crate::typed::builder::IsSet<anomaly_members::probability>,
+    S6: crate::typed::builder::IsSet<anomaly_members::record_score>,
+    S7: crate::typed::builder::IsSet<anomaly_members::result_type>,
+    S8: crate::typed::builder::IsSet<anomaly_members::timestamp>,
 {
-    fn from(
-        builder: AnomalyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Anomaly;
+
+    fn build(self) -> Anomaly {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> From<AnomalyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>>
+    for Anomaly
+where
+    S0: crate::typed::builder::IsSet<anomaly_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<anomaly_members::detector_index>,
+    S2: crate::typed::builder::IsSet<anomaly_members::initial_record_score>,
+    S3: crate::typed::builder::IsSet<anomaly_members::is_interim>,
+    S4: crate::typed::builder::IsSet<anomaly_members::job_id>,
+    S5: crate::typed::builder::IsSet<anomaly_members::probability>,
+    S6: crate::typed::builder::IsSet<anomaly_members::record_score>,
+    S7: crate::typed::builder::IsSet<anomaly_members::result_type>,
+    S8: crate::typed::builder::IsSet<anomaly_members::timestamp>,
 {
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> Anomaly { match bucket_span {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `detector_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, detector_index: crate::typed::builder::MissingRequiredField) -> Anomaly { match detector_index {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `initial_record_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_record_score: crate::typed::builder::MissingRequiredField) -> Anomaly { match initial_record_score {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `is_interim` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_interim: crate::typed::builder::MissingRequiredField) -> Anomaly { match is_interim {} }
-}
-
-impl<S5, S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Anomaly { match job_id {} }
-}
-
-impl<S6, S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, probability: crate::typed::builder::MissingRequiredField) -> Anomaly { match probability {} }
-}
-
-impl<S7, S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `record_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, record_score: crate::typed::builder::MissingRequiredField) -> Anomaly { match record_score {} }
-}
-
-impl<S8>
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> Anomaly { match result_type {} }
-}
-
-impl
-    AnomalyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> Anomaly { match timestamp {} }
+    fn from(builder: AnomalyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2014,16 +1923,27 @@ pub struct AnomalyCause {
 
 impl AnomalyCause {
     /// Creates a builder for [`AnomalyCause`].
+    ///
+    /// Required: `probability`.
     pub fn builder() -> AnomalyCauseBuilder {
         AnomalyCauseBuilder::new()
     }
 
     /// Creates a [`AnomalyCause`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AnomalyCauseBuilder) -> AnomalyCauseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `probability`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnomalyCause>>(
+        f: impl FnOnce(AnomalyCauseBuilder) -> B,
     ) -> AnomalyCause {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnomalyCauseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod anomaly_cause_members {
+    pub struct probability;
 }
 
 /// Builder for [`AnomalyCause`].
@@ -2189,7 +2109,10 @@ impl<S0> AnomalyCauseBuilder<(S0,)> {
     }
 
     /// Sets [`geo_results`](Self::geo_results) with a builder.
-    pub fn geo_results_with(self, f: impl FnOnce(GeoResultsBuilder) -> GeoResultsBuilder) -> Self {
+    pub fn geo_results_with<B: crate::typed::builder::Build<Output = GeoResults>>(
+        self,
+        f: impl FnOnce(GeoResultsBuilder) -> B,
+    ) -> Self {
         self.geo_results(f(GeoResultsBuilder::new()).build())
     }
 
@@ -2213,12 +2136,9 @@ impl<S0> AnomalyCauseBuilder<(S0,)> {
     }
 
     /// Adds an element to [`influencers`](Self::influencers), with a builder.
-    pub fn add_influencers_with(
+    pub fn add_influencers_with<B: crate::typed::builder::Build<Output = Influence>>(
         self,
-        f: impl FnOnce(
-            InfluenceBuilder,
-        )
-            -> InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(InfluenceBuilder) -> B,
     ) -> Self {
         self.add_influencers(f(InfluenceBuilder::new()).build())
     }
@@ -2288,6 +2208,7 @@ impl<S0> AnomalyCauseBuilder<(S0,)> {
 }
 
 impl AnomalyCauseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn probability(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -2298,9 +2219,12 @@ impl AnomalyCauseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AnomalyCauseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnomalyCauseBuilder<(S0,)> {
     /// Builds a [`AnomalyCause`].
-    pub fn build(self) -> AnomalyCause {
+    pub fn build(self) -> AnomalyCause
+    where
+        S0: crate::typed::builder::IsSet<anomaly_cause_members::probability>,
+    {
         AnomalyCause {
             actual: self.actual,
             by_field_name: self.by_field_name,
@@ -2321,16 +2245,24 @@ impl AnomalyCauseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AnomalyCauseBuilder<(crate::typed::builder::Set,)>> for AnomalyCause {
-    fn from(builder: AnomalyCauseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnomalyCauseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<anomaly_cause_members::probability>,
+{
+    type Output = AnomalyCause;
+
+    fn build(self) -> AnomalyCause {
+        Self::build(self)
     }
 }
 
-impl AnomalyCauseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, probability: crate::typed::builder::MissingRequiredField) -> AnomalyCause { match probability {} }
+impl<S0> From<AnomalyCauseBuilder<(S0,)>> for AnomalyCause
+where
+    S0: crate::typed::builder::IsSet<anomaly_cause_members::probability>,
+{
+    fn from(builder: AnomalyCauseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2374,8 +2306,8 @@ impl AnomalyExplanation {
     }
 
     /// Creates a [`AnomalyExplanation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AnomalyExplanationBuilder) -> AnomalyExplanationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AnomalyExplanation>>(
+        f: impl FnOnce(AnomalyExplanationBuilder) -> B,
     ) -> AnomalyExplanation {
         f(Self::builder()).build()
     }
@@ -2565,6 +2497,14 @@ impl AnomalyExplanationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AnomalyExplanationBuilder {
+    type Output = AnomalyExplanation;
+
+    fn build(self) -> AnomalyExplanation {
+        Self::build(self)
+    }
+}
+
 impl From<AnomalyExplanationBuilder> for AnomalyExplanation {
     fn from(builder: AnomalyExplanationBuilder) -> Self {
         builder.build()
@@ -2581,21 +2521,28 @@ pub struct ApiKeyAuthorization {
 
 impl ApiKeyAuthorization {
     /// Creates a builder for [`ApiKeyAuthorization`].
+    ///
+    /// Required: `id`, `name`.
     pub fn builder() -> ApiKeyAuthorizationBuilder {
         ApiKeyAuthorizationBuilder::new()
     }
 
     /// Creates a [`ApiKeyAuthorization`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApiKeyAuthorizationBuilder,
-        ) -> ApiKeyAuthorizationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApiKeyAuthorization>>(
+        f: impl FnOnce(ApiKeyAuthorizationBuilder) -> B,
     ) -> ApiKeyAuthorization {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApiKeyAuthorizationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod api_key_authorization_members {
+    pub struct id;
+    pub struct name;
 }
 
 /// Builder for [`ApiKeyAuthorization`].
@@ -2629,7 +2576,7 @@ impl<S0, S1> ApiKeyAuthorizationBuilder<(S0, S1)> {
 }
 
 impl<S1> ApiKeyAuthorizationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The identifier for the API key.
+    /// **Required.** The identifier for the API key.
     pub fn id(
         self,
         value: impl Into<String>,
@@ -2641,7 +2588,7 @@ impl<S1> ApiKeyAuthorizationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ApiKeyAuthorizationBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the API key.
+    /// **Required.** The name of the API key.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -2652,9 +2599,13 @@ impl<S0> ApiKeyAuthorizationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ApiKeyAuthorizationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ApiKeyAuthorizationBuilder<(S0, S1)> {
     /// Builds a [`ApiKeyAuthorization`].
-    pub fn build(self) -> ApiKeyAuthorization {
+    pub fn build(self) -> ApiKeyAuthorization
+    where
+        S0: crate::typed::builder::IsSet<api_key_authorization_members::id>,
+        S1: crate::typed::builder::IsSet<api_key_authorization_members::name>,
+    {
         ApiKeyAuthorization {
             id: self.id.unwrap(),
             name: self.name.unwrap(),
@@ -2662,29 +2613,26 @@ impl ApiKeyAuthorizationBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<ApiKeyAuthorizationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ApiKeyAuthorization
+impl<S0, S1> crate::typed::builder::Build for ApiKeyAuthorizationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<api_key_authorization_members::id>,
+    S1: crate::typed::builder::IsSet<api_key_authorization_members::name>,
 {
-    fn from(
-        builder: ApiKeyAuthorizationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ApiKeyAuthorization;
+
+    fn build(self) -> ApiKeyAuthorization {
+        Self::build(self)
     }
 }
 
-impl<S1> ApiKeyAuthorizationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ApiKeyAuthorization { match id {} }
-}
-
-impl ApiKeyAuthorizationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ApiKeyAuthorization { match name {} }
+impl<S0, S1> From<ApiKeyAuthorizationBuilder<(S0, S1)>> for ApiKeyAuthorization
+where
+    S0: crate::typed::builder::IsSet<api_key_authorization_members::id>,
+    S1: crate::typed::builder::IsSet<api_key_authorization_members::name>,
+{
+    fn from(builder: ApiKeyAuthorizationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2732,29 +2680,36 @@ pub struct BucketInfluencer {
 
 impl BucketInfluencer {
     /// Creates a builder for [`BucketInfluencer`].
+    ///
+    /// Required: `anomaly_score`, `bucket_span`, `influencer_field_name`, `initial_anomaly_score`, `is_interim`, `job_id`, `probability`, `raw_anomaly_score`, `result_type`, `timestamp`.
     pub fn builder() -> BucketInfluencerBuilder {
         BucketInfluencerBuilder::new()
     }
 
     /// Creates a [`BucketInfluencer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketInfluencerBuilder,
-        ) -> BucketInfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `anomaly_score`, `bucket_span`, `influencer_field_name`, `initial_anomaly_score`, `is_interim`, `job_id`, `probability`, `raw_anomaly_score`, `result_type`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = BucketInfluencer>>(
+        f: impl FnOnce(BucketInfluencerBuilder) -> B,
     ) -> BucketInfluencer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketInfluencerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_influencer_members {
+    pub struct anomaly_score;
+    pub struct bucket_span;
+    pub struct influencer_field_name;
+    pub struct initial_anomaly_score;
+    pub struct is_interim;
+    pub struct job_id;
+    pub struct probability;
+    pub struct raw_anomaly_score;
+    pub struct result_type;
+    pub struct timestamp;
 }
 
 /// Builder for [`BucketInfluencer`].
@@ -2866,7 +2821,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// A normalized score between 0-100, which is calculated for each bucket influencer. This score might be updated as
+    /// **Required.** A normalized score between 0-100, which is calculated for each bucket influencer. This score might be updated as
     /// newer data is analyzed.
     pub fn anomaly_score(
         self,
@@ -2903,7 +2858,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
+    /// **Required.** The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
     pub fn bucket_span(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitSeconds>,
@@ -2939,7 +2894,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The field name of the influencer.
+    /// **Required.** The field name of the influencer.
     pub fn influencer_field_name(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -2975,7 +2930,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The score between 0-100 for each bucket influencer. This score is the initial value that was calculated at the
+    /// **Required.** The score between 0-100 for each bucket influencer. This score is the initial value that was calculated at the
     /// time the bucket was processed.
     pub fn initial_anomaly_score(
         self,
@@ -3012,7 +2967,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// If true, this is an interim result. In other words, the results are calculated based on partial input data.
+    /// **Required.** If true, this is an interim result. In other words, the results are calculated based on partial input data.
     pub fn is_interim(
         self,
         value: bool,
@@ -3048,7 +3003,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -3084,7 +3039,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
-    /// The probability that the bucket has this behavior, in the range 0 to 1. This value can be held to a high precision
+    /// **Required.** The probability that the bucket has this behavior, in the range 0 to 1. This value can be held to a high precision
     /// of over 300 decimal places, so the `anomaly_score` is provided as a human-readable and friendly interpretation of
     /// this.
     pub fn probability(
@@ -3122,7 +3077,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
-    /// Internal.
+    /// **Required.** Internal.
     pub fn raw_anomaly_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -3158,7 +3113,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
-    /// Internal. This value is always set to `bucket_influencer`.
+    /// **Required.** Internal. This value is always set to `bucket_influencer`.
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -3194,7 +3149,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The start time of the bucket for which these results were calculated.
+    /// **Required.** The start time of the bucket for which these results were calculated.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -3216,22 +3171,23 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 }
 
-impl
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    BucketInfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`BucketInfluencer`].
-    pub fn build(self) -> BucketInfluencer {
+    pub fn build(self) -> BucketInfluencer
+    where
+        S0: crate::typed::builder::IsSet<bucket_influencer_members::anomaly_score>,
+        S1: crate::typed::builder::IsSet<bucket_influencer_members::bucket_span>,
+        S2: crate::typed::builder::IsSet<bucket_influencer_members::influencer_field_name>,
+        S3: crate::typed::builder::IsSet<bucket_influencer_members::initial_anomaly_score>,
+        S4: crate::typed::builder::IsSet<bucket_influencer_members::is_interim>,
+        S5: crate::typed::builder::IsSet<bucket_influencer_members::job_id>,
+        S6: crate::typed::builder::IsSet<bucket_influencer_members::probability>,
+        S7: crate::typed::builder::IsSet<bucket_influencer_members::raw_anomaly_score>,
+        S8: crate::typed::builder::IsSet<bucket_influencer_members::result_type>,
+        S9: crate::typed::builder::IsSet<bucket_influencer_members::timestamp>,
+    {
         BucketInfluencer {
             anomaly_score: self.anomaly_score.unwrap(),
             bucket_span: self.bucket_span.unwrap(),
@@ -3248,228 +3204,44 @@ impl
     }
 }
 
-impl
-    From<
-        BucketInfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BucketInfluencer
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for BucketInfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<bucket_influencer_members::anomaly_score>,
+    S1: crate::typed::builder::IsSet<bucket_influencer_members::bucket_span>,
+    S2: crate::typed::builder::IsSet<bucket_influencer_members::influencer_field_name>,
+    S3: crate::typed::builder::IsSet<bucket_influencer_members::initial_anomaly_score>,
+    S4: crate::typed::builder::IsSet<bucket_influencer_members::is_interim>,
+    S5: crate::typed::builder::IsSet<bucket_influencer_members::job_id>,
+    S6: crate::typed::builder::IsSet<bucket_influencer_members::probability>,
+    S7: crate::typed::builder::IsSet<bucket_influencer_members::raw_anomaly_score>,
+    S8: crate::typed::builder::IsSet<bucket_influencer_members::result_type>,
+    S9: crate::typed::builder::IsSet<bucket_influencer_members::timestamp>,
 {
-    fn from(
-        builder: BucketInfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BucketInfluencer;
+
+    fn build(self) -> BucketInfluencer {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<BucketInfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>> for BucketInfluencer
+where
+    S0: crate::typed::builder::IsSet<bucket_influencer_members::anomaly_score>,
+    S1: crate::typed::builder::IsSet<bucket_influencer_members::bucket_span>,
+    S2: crate::typed::builder::IsSet<bucket_influencer_members::influencer_field_name>,
+    S3: crate::typed::builder::IsSet<bucket_influencer_members::initial_anomaly_score>,
+    S4: crate::typed::builder::IsSet<bucket_influencer_members::is_interim>,
+    S5: crate::typed::builder::IsSet<bucket_influencer_members::job_id>,
+    S6: crate::typed::builder::IsSet<bucket_influencer_members::probability>,
+    S7: crate::typed::builder::IsSet<bucket_influencer_members::raw_anomaly_score>,
+    S8: crate::typed::builder::IsSet<bucket_influencer_members::result_type>,
+    S9: crate::typed::builder::IsSet<bucket_influencer_members::timestamp>,
 {
-    /// `anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, anomaly_score: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match anomaly_score {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match bucket_span {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `influencer_field_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_field_name: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match influencer_field_name {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `initial_anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_anomaly_score: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match initial_anomaly_score {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `is_interim` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_interim: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match is_interim {} }
-}
-
-impl<S6, S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match job_id {} }
-}
-
-impl<S7, S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, probability: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match probability {} }
-}
-
-impl<S8, S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `raw_anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, raw_anomaly_score: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match raw_anomaly_score {} }
-}
-
-impl<S9>
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match result_type {} }
-}
-
-impl
-    BucketInfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> BucketInfluencer { match timestamp {} }
+    fn from(builder: BucketInfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3505,29 +3277,36 @@ pub struct BucketSummary {
 
 impl BucketSummary {
     /// Creates a builder for [`BucketSummary`].
+    ///
+    /// Required: `anomaly_score`, `bucket_influencers`, `bucket_span`, `event_count`, `initial_anomaly_score`, `is_interim`, `job_id`, `processing_time_ms`, `result_type`, `timestamp`.
     pub fn builder() -> BucketSummaryBuilder {
         BucketSummaryBuilder::new()
     }
 
     /// Creates a [`BucketSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketSummaryBuilder,
-        ) -> BucketSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `anomaly_score`, `bucket_influencers`, `bucket_span`, `event_count`, `initial_anomaly_score`, `is_interim`, `job_id`, `processing_time_ms`, `result_type`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = BucketSummary>>(
+        f: impl FnOnce(BucketSummaryBuilder) -> B,
     ) -> BucketSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_summary_members {
+    pub struct anomaly_score;
+    pub struct bucket_influencers;
+    pub struct bucket_span;
+    pub struct event_count;
+    pub struct initial_anomaly_score;
+    pub struct is_interim;
+    pub struct job_id;
+    pub struct processing_time_ms;
+    pub struct result_type;
+    pub struct timestamp;
 }
 
 /// Builder for [`BucketSummary`].
@@ -3640,7 +3419,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The maximum anomaly score, between 0-100, for any of the bucket influencers. This is an overall, rate-limited
+    /// **Required.** The maximum anomaly score, between 0-100, for any of the bucket influencers. This is an overall, rate-limited
     /// score for the job. All the anomaly records in the bucket contribute to this score. This value might be updated as
     /// new data is analyzed.
     pub fn anomaly_score(
@@ -3678,6 +3457,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn bucket_influencers(
         self,
         value: impl Into<Vec<BucketInfluencer>>,
@@ -3723,22 +3503,11 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Adds an element to [`bucket_influencers`](Self::bucket_influencers), with a builder.
-    pub fn add_bucket_influencers_with(
+    pub fn add_bucket_influencers_with<
+        B: crate::typed::builder::Build<Output = BucketInfluencer>,
+    >(
         self,
-        f: impl FnOnce(
-            BucketInfluencerBuilder,
-        ) -> BucketInfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(BucketInfluencerBuilder) -> B,
     ) -> BucketSummaryBuilder<(
         S0,
         crate::typed::builder::Set,
@@ -3778,22 +3547,11 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Adds an element to [`bucket_influencers`](Self::bucket_influencers), with a builder.
-    pub fn add_bucket_influencers_with(
+    pub fn add_bucket_influencers_with<
+        B: crate::typed::builder::Build<Output = BucketInfluencer>,
+    >(
         self,
-        f: impl FnOnce(
-            BucketInfluencerBuilder,
-        ) -> BucketInfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(BucketInfluencerBuilder) -> B,
     ) -> Self {
         self.add_bucket_influencers(f(BucketInfluencerBuilder::new()).build())
     }
@@ -3813,7 +3571,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
+    /// **Required.** The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
     pub fn bucket_span(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitSeconds>,
@@ -3849,7 +3607,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The number of input data records processed in this bucket.
+    /// **Required.** The number of input data records processed in this bucket.
     pub fn event_count(
         self,
         value: i64,
@@ -3885,7 +3643,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The maximum anomaly score for any of the bucket influencers. This is the initial value that was calculated at the
+    /// **Required.** The maximum anomaly score for any of the bucket influencers. This is the initial value that was calculated at the
     /// time the bucket was processed.
     pub fn initial_anomaly_score(
         self,
@@ -3922,7 +3680,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// If true, this is an interim result. In other words, the results are calculated based on partial input data.
+    /// **Required.** If true, this is an interim result. In other words, the results are calculated based on partial input data.
     pub fn is_interim(
         self,
         value: bool,
@@ -3958,7 +3716,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -3994,7 +3752,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
-    /// The amount of time, in milliseconds, that it took to analyze the bucket contents and calculate results.
+    /// **Required.** The amount of time, in milliseconds, that it took to analyze the bucket contents and calculate results.
     pub fn processing_time_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -4030,7 +3788,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
-    /// Internal. This value is always set to bucket.
+    /// **Required.** Internal. This value is always set to bucket.
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -4066,7 +3824,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The start time of the bucket. This timestamp uniquely identifies the bucket. Events that occur exactly at the
+    /// **Required.** The start time of the bucket. This timestamp uniquely identifies the bucket. Events that occur exactly at the
     /// timestamp of the bucket are included in the results for the bucket.
     pub fn timestamp(
         self,
@@ -4089,22 +3847,23 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 }
 
-impl
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    BucketSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`BucketSummary`].
-    pub fn build(self) -> BucketSummary {
+    pub fn build(self) -> BucketSummary
+    where
+        S0: crate::typed::builder::IsSet<bucket_summary_members::anomaly_score>,
+        S1: crate::typed::builder::IsSet<bucket_summary_members::bucket_influencers>,
+        S2: crate::typed::builder::IsSet<bucket_summary_members::bucket_span>,
+        S3: crate::typed::builder::IsSet<bucket_summary_members::event_count>,
+        S4: crate::typed::builder::IsSet<bucket_summary_members::initial_anomaly_score>,
+        S5: crate::typed::builder::IsSet<bucket_summary_members::is_interim>,
+        S6: crate::typed::builder::IsSet<bucket_summary_members::job_id>,
+        S7: crate::typed::builder::IsSet<bucket_summary_members::processing_time_ms>,
+        S8: crate::typed::builder::IsSet<bucket_summary_members::result_type>,
+        S9: crate::typed::builder::IsSet<bucket_summary_members::timestamp>,
+    {
         BucketSummary {
             anomaly_score: self.anomaly_score.unwrap(),
             bucket_influencers: self.bucket_influencers.unwrap(),
@@ -4121,228 +3880,44 @@ impl
     }
 }
 
-impl
-    From<
-        BucketSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BucketSummary
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for BucketSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<bucket_summary_members::anomaly_score>,
+    S1: crate::typed::builder::IsSet<bucket_summary_members::bucket_influencers>,
+    S2: crate::typed::builder::IsSet<bucket_summary_members::bucket_span>,
+    S3: crate::typed::builder::IsSet<bucket_summary_members::event_count>,
+    S4: crate::typed::builder::IsSet<bucket_summary_members::initial_anomaly_score>,
+    S5: crate::typed::builder::IsSet<bucket_summary_members::is_interim>,
+    S6: crate::typed::builder::IsSet<bucket_summary_members::job_id>,
+    S7: crate::typed::builder::IsSet<bucket_summary_members::processing_time_ms>,
+    S8: crate::typed::builder::IsSet<bucket_summary_members::result_type>,
+    S9: crate::typed::builder::IsSet<bucket_summary_members::timestamp>,
 {
-    fn from(
-        builder: BucketSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BucketSummary;
+
+    fn build(self) -> BucketSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<BucketSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>> for BucketSummary
+where
+    S0: crate::typed::builder::IsSet<bucket_summary_members::anomaly_score>,
+    S1: crate::typed::builder::IsSet<bucket_summary_members::bucket_influencers>,
+    S2: crate::typed::builder::IsSet<bucket_summary_members::bucket_span>,
+    S3: crate::typed::builder::IsSet<bucket_summary_members::event_count>,
+    S4: crate::typed::builder::IsSet<bucket_summary_members::initial_anomaly_score>,
+    S5: crate::typed::builder::IsSet<bucket_summary_members::is_interim>,
+    S6: crate::typed::builder::IsSet<bucket_summary_members::job_id>,
+    S7: crate::typed::builder::IsSet<bucket_summary_members::processing_time_ms>,
+    S8: crate::typed::builder::IsSet<bucket_summary_members::result_type>,
+    S9: crate::typed::builder::IsSet<bucket_summary_members::timestamp>,
 {
-    /// `anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, anomaly_score: crate::typed::builder::MissingRequiredField) -> BucketSummary { match anomaly_score {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `bucket_influencers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_influencers: crate::typed::builder::MissingRequiredField) -> BucketSummary { match bucket_influencers {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> BucketSummary { match bucket_span {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `event_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, event_count: crate::typed::builder::MissingRequiredField) -> BucketSummary { match event_count {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `initial_anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_anomaly_score: crate::typed::builder::MissingRequiredField) -> BucketSummary { match initial_anomaly_score {} }
-}
-
-impl<S6, S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `is_interim` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_interim: crate::typed::builder::MissingRequiredField) -> BucketSummary { match is_interim {} }
-}
-
-impl<S7, S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> BucketSummary { match job_id {} }
-}
-
-impl<S8, S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `processing_time_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processing_time_ms: crate::typed::builder::MissingRequiredField) -> BucketSummary { match processing_time_ms {} }
-}
-
-impl<S9>
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> BucketSummary { match result_type {} }
-}
-
-impl
-    BucketSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> BucketSummary { match timestamp {} }
+    fn from(builder: BucketSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4371,22 +3946,29 @@ pub struct CalendarEvent {
 
 impl CalendarEvent {
     /// Creates a builder for [`CalendarEvent`].
+    ///
+    /// Required: `description`, `end_time`, `start_time`.
     pub fn builder() -> CalendarEventBuilder {
         CalendarEventBuilder::new()
     }
 
     /// Creates a [`CalendarEvent`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CalendarEventBuilder,
-        ) -> CalendarEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `description`, `end_time`, `start_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = CalendarEvent>>(
+        f: impl FnOnce(CalendarEventBuilder) -> B,
     ) -> CalendarEvent {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CalendarEventBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod calendar_event_members {
+    pub struct description;
+    pub struct end_time;
+    pub struct start_time;
 }
 
 /// Builder for [`CalendarEvent`].
@@ -4507,7 +4089,7 @@ impl<S0, S1, S2> CalendarEventBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CalendarEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// A description of the scheduled event.
+    /// **Required.** A description of the scheduled event.
     pub fn description(
         self,
         value: impl Into<String>,
@@ -4519,7 +4101,7 @@ impl<S1, S2> CalendarEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> CalendarEventBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The timestamp for the end of the scheduled event in milliseconds since the epoch or ISO 8601 format.
+    /// **Required.** The timestamp for the end of the scheduled event in milliseconds since the epoch or ISO 8601 format.
     pub fn end_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -4531,7 +4113,7 @@ impl<S0, S2> CalendarEventBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> CalendarEventBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The timestamp for the beginning of the scheduled event in milliseconds since the epoch or ISO 8601 format.
+    /// **Required.** The timestamp for the beginning of the scheduled event in milliseconds since the epoch or ISO 8601 format.
     pub fn start_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -4542,15 +4124,14 @@ impl<S0, S1> CalendarEventBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    CalendarEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CalendarEventBuilder<(S0, S1, S2)> {
     /// Builds a [`CalendarEvent`].
-    pub fn build(self) -> CalendarEvent {
+    pub fn build(self) -> CalendarEvent
+    where
+        S0: crate::typed::builder::IsSet<calendar_event_members::description>,
+        S1: crate::typed::builder::IsSet<calendar_event_members::end_time>,
+        S2: crate::typed::builder::IsSet<calendar_event_members::start_time>,
+    {
         CalendarEvent {
             calendar_id: self.calendar_id,
             event_id: self.event_id,
@@ -4564,54 +4145,28 @@ impl
     }
 }
 
-impl
-    From<
-        CalendarEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CalendarEvent
+impl<S0, S1, S2> crate::typed::builder::Build for CalendarEventBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<calendar_event_members::description>,
+    S1: crate::typed::builder::IsSet<calendar_event_members::end_time>,
+    S2: crate::typed::builder::IsSet<calendar_event_members::start_time>,
 {
-    fn from(
-        builder: CalendarEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CalendarEvent;
+
+    fn build(self) -> CalendarEvent {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CalendarEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> CalendarEvent { match description {} }
-}
-
-impl<S2>
-    CalendarEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CalendarEventBuilder<(S0, S1, S2)>> for CalendarEvent
+where
+    S0: crate::typed::builder::IsSet<calendar_event_members::description>,
+    S1: crate::typed::builder::IsSet<calendar_event_members::end_time>,
+    S2: crate::typed::builder::IsSet<calendar_event_members::start_time>,
 {
-    /// `end_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_time: crate::typed::builder::MissingRequiredField) -> CalendarEvent { match end_time {} }
-}
-
-impl
-    CalendarEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `start_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time: crate::typed::builder::MissingRequiredField) -> CalendarEvent { match start_time {} }
+    fn from(builder: CalendarEventBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4659,10 +4214,8 @@ impl CategorizationAnalyzerDefinition {
     }
 
     /// Creates a [`CategorizationAnalyzerDefinition`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CategorizationAnalyzerDefinitionBuilder,
-        ) -> CategorizationAnalyzerDefinitionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CategorizationAnalyzerDefinition>>(
+        f: impl FnOnce(CategorizationAnalyzerDefinitionBuilder) -> B,
     ) -> CategorizationAnalyzerDefinition {
         f(Self::builder()).build()
     }
@@ -4775,6 +4328,14 @@ impl CategorizationAnalyzerDefinitionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CategorizationAnalyzerDefinitionBuilder {
+    type Output = CategorizationAnalyzerDefinition;
+
+    fn build(self) -> CategorizationAnalyzerDefinition {
+        Self::build(self)
+    }
+}
+
 impl From<CategorizationAnalyzerDefinitionBuilder> for CategorizationAnalyzerDefinition {
     fn from(builder: CategorizationAnalyzerDefinitionBuilder) -> Self {
         builder.build()
@@ -4826,27 +4387,34 @@ pub struct Category {
 
 impl Category {
     /// Creates a builder for [`Category`].
+    ///
+    /// Required: `category_id`, `examples`, `job_id`, `max_matching_length`, `regex`, `terms`, `result_type`, `mlcategory`.
     pub fn builder() -> CategoryBuilder {
         CategoryBuilder::new()
     }
 
     /// Creates a [`Category`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CategoryBuilder,
-        ) -> CategoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `category_id`, `examples`, `job_id`, `max_matching_length`, `regex`, `terms`, `result_type`, `mlcategory`.
+    pub fn of<B: crate::typed::builder::Build<Output = Category>>(
+        f: impl FnOnce(CategoryBuilder) -> B,
     ) -> Category {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CategoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod category_members {
+    pub struct category_id;
+    pub struct examples;
+    pub struct job_id;
+    pub struct max_matching_length;
+    pub struct regex;
+    pub struct terms;
+    pub struct result_type;
+    pub struct mlcategory;
 }
 
 /// Builder for [`Category`].
@@ -5026,7 +4594,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6
 impl<S1, S2, S3, S4, S5, S6, S7>
     CategoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// A unique identifier for the category. category_id is unique at the job level, even when per-partition categorization is enabled.
+    /// **Required.** A unique identifier for the category. category_id is unique at the job level, even when per-partition categorization is enabled.
     pub fn category_id(
         self,
         value: u64,
@@ -5040,7 +4608,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     CategoryBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
-    /// A list of examples of actual values that matched the category.
+    /// **Required.** A list of examples of actual values that matched the category.
     pub fn examples(
         self,
         value: impl Into<Vec<String>>,
@@ -5079,7 +4647,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     CategoryBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -5093,7 +4661,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     CategoryBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// The maximum length of the fields that matched the category. The value is increased by 10% to enable matching for similar fields that have not been analyzed.
+    /// **Required.** The maximum length of the fields that matched the category. The value is increased by 10% to enable matching for similar fields that have not been analyzed.
     pub fn max_matching_length(
         self,
         value: u64,
@@ -5107,7 +4675,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     CategoryBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// A regular expression that is used to search for values that match the category.
+    /// **Required.** A regular expression that is used to search for values that match the category.
     pub fn regex(
         self,
         value: impl Into<String>,
@@ -5121,7 +4689,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     CategoryBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
-    /// A space separated list of the common tokens that are matched in values of the category.
+    /// **Required.** A space separated list of the common tokens that are matched in values of the category.
     pub fn terms(
         self,
         value: impl Into<String>,
@@ -5135,6 +4703,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     CategoryBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -5148,6 +4717,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn mlcategory(
         self,
         value: impl Into<String>,
@@ -5158,20 +4728,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`Category`].
-    pub fn build(self) -> Category {
+    pub fn build(self) -> Category
+    where
+        S0: crate::typed::builder::IsSet<category_members::category_id>,
+        S1: crate::typed::builder::IsSet<category_members::examples>,
+        S2: crate::typed::builder::IsSet<category_members::job_id>,
+        S3: crate::typed::builder::IsSet<category_members::max_matching_length>,
+        S4: crate::typed::builder::IsSet<category_members::regex>,
+        S5: crate::typed::builder::IsSet<category_members::terms>,
+        S6: crate::typed::builder::IsSet<category_members::result_type>,
+        S7: crate::typed::builder::IsSet<category_members::mlcategory>,
+    {
         Category {
             category_id: self.category_id.unwrap(),
             examples: self.examples.unwrap(),
@@ -5191,161 +4760,40 @@ impl
     }
 }
 
-impl
-    From<
-        CategoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Category
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<category_members::category_id>,
+    S1: crate::typed::builder::IsSet<category_members::examples>,
+    S2: crate::typed::builder::IsSet<category_members::job_id>,
+    S3: crate::typed::builder::IsSet<category_members::max_matching_length>,
+    S4: crate::typed::builder::IsSet<category_members::regex>,
+    S5: crate::typed::builder::IsSet<category_members::terms>,
+    S6: crate::typed::builder::IsSet<category_members::result_type>,
+    S7: crate::typed::builder::IsSet<category_members::mlcategory>,
 {
-    fn from(
-        builder: CategoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Category;
+
+    fn build(self) -> Category {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    CategoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for Category
+where
+    S0: crate::typed::builder::IsSet<category_members::category_id>,
+    S1: crate::typed::builder::IsSet<category_members::examples>,
+    S2: crate::typed::builder::IsSet<category_members::job_id>,
+    S3: crate::typed::builder::IsSet<category_members::max_matching_length>,
+    S4: crate::typed::builder::IsSet<category_members::regex>,
+    S5: crate::typed::builder::IsSet<category_members::terms>,
+    S6: crate::typed::builder::IsSet<category_members::result_type>,
+    S7: crate::typed::builder::IsSet<category_members::mlcategory>,
 {
-    /// `category_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, category_id: crate::typed::builder::MissingRequiredField) -> Category { match category_id {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `examples` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, examples: crate::typed::builder::MissingRequiredField) -> Category { match examples {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Category { match job_id {} }
-}
-
-impl<S4, S5, S6, S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `max_matching_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_matching_length: crate::typed::builder::MissingRequiredField) -> Category { match max_matching_length {} }
-}
-
-impl<S5, S6, S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `regex` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, regex: crate::typed::builder::MissingRequiredField) -> Category { match regex {} }
-}
-
-impl<S6, S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `terms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, terms: crate::typed::builder::MissingRequiredField) -> Category { match terms {} }
-}
-
-impl<S7>
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> Category { match result_type {} }
-}
-
-impl
-    CategoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `mlcategory` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mlcategory: crate::typed::builder::MissingRequiredField) -> Category { match mlcategory {} }
+    fn from(builder: CategoryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5362,16 +4810,27 @@ pub struct ChunkingConfig {
 
 impl ChunkingConfig {
     /// Creates a builder for [`ChunkingConfig`].
+    ///
+    /// Required: `mode`.
     pub fn builder() -> ChunkingConfigBuilder {
         ChunkingConfigBuilder::new()
     }
 
     /// Creates a [`ChunkingConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChunkingConfigBuilder) -> ChunkingConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `mode`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChunkingConfig>>(
+        f: impl FnOnce(ChunkingConfigBuilder) -> B,
     ) -> ChunkingConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChunkingConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chunking_config_members {
+    pub struct mode;
 }
 
 /// Builder for [`ChunkingConfig`].
@@ -5415,7 +4874,7 @@ impl<S0> ChunkingConfigBuilder<(S0,)> {
 }
 
 impl ChunkingConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// If the mode is `auto`, the chunk size is dynamically calculated;
+    /// **Required.** If the mode is `auto`, the chunk size is dynamically calculated;
     /// this is the recommended value when the datafeed does not use aggregations.
     /// If the mode is `manual`, chunking is applied according to the specified `time_span`;
     /// use this mode when the datafeed uses aggregations. If the mode is `off`, no chunking is applied.
@@ -5429,9 +4888,12 @@ impl ChunkingConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ChunkingConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChunkingConfigBuilder<(S0,)> {
     /// Builds a [`ChunkingConfig`].
-    pub fn build(self) -> ChunkingConfig {
+    pub fn build(self) -> ChunkingConfig
+    where
+        S0: crate::typed::builder::IsSet<chunking_config_members::mode>,
+    {
         ChunkingConfig {
             mode: self.mode.unwrap(),
             time_span: self.time_span,
@@ -5439,16 +4901,24 @@ impl ChunkingConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ChunkingConfigBuilder<(crate::typed::builder::Set,)>> for ChunkingConfig {
-    fn from(builder: ChunkingConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ChunkingConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<chunking_config_members::mode>,
+{
+    type Output = ChunkingConfig;
+
+    fn build(self) -> ChunkingConfig {
+        Self::build(self)
     }
 }
 
-impl ChunkingConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> ChunkingConfig { match mode {} }
+impl<S0> From<ChunkingConfigBuilder<(S0,)>> for ChunkingConfig
+where
+    S0: crate::typed::builder::IsSet<chunking_config_members::mode>,
+{
+    fn from(builder: ChunkingConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5487,8 +4957,8 @@ impl ClassificationInferenceOptions {
     }
 
     /// Creates a [`ClassificationInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> ClassificationInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ClassificationInferenceOptions>>(
+        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> B,
     ) -> ClassificationInferenceOptions {
         f(Self::builder()).build()
     }
@@ -5591,6 +5061,14 @@ impl ClassificationInferenceOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ClassificationInferenceOptionsBuilder {
+    type Output = ClassificationInferenceOptions;
+
+    fn build(self) -> ClassificationInferenceOptions {
+        Self::build(self)
+    }
+}
+
 impl From<ClassificationInferenceOptionsBuilder> for ClassificationInferenceOptions {
     fn from(builder: ClassificationInferenceOptionsBuilder) -> Self {
         builder.build()
@@ -5623,8 +5101,8 @@ impl CommonTokenizationConfig {
     }
 
     /// Creates a [`CommonTokenizationConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CommonTokenizationConfigBuilder) -> CommonTokenizationConfigBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CommonTokenizationConfig>>(
+        f: impl FnOnce(CommonTokenizationConfigBuilder) -> B,
     ) -> CommonTokenizationConfig {
         f(Self::builder()).build()
     }
@@ -5727,6 +5205,14 @@ impl CommonTokenizationConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CommonTokenizationConfigBuilder {
+    type Output = CommonTokenizationConfig;
+
+    fn build(self) -> CommonTokenizationConfig {
+        Self::build(self)
+    }
+}
+
 impl From<CommonTokenizationConfigBuilder> for CommonTokenizationConfig {
     fn from(builder: CommonTokenizationConfigBuilder) -> Self {
         builder.build()
@@ -5780,31 +5266,38 @@ pub struct DataCounts {
 
 impl DataCounts {
     /// Creates a builder for [`DataCounts`].
+    ///
+    /// Required: `bucket_count`, `empty_bucket_count`, `input_bytes`, `input_field_count`, `input_record_count`, `invalid_date_count`, `job_id`, `missing_field_count`, `out_of_order_timestamp_count`, `processed_field_count`, `processed_record_count`, `sparse_bucket_count`.
     pub fn builder() -> DataCountsBuilder {
         DataCountsBuilder::new()
     }
 
     /// Creates a [`DataCounts`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataCountsBuilder,
-        ) -> DataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_count`, `empty_bucket_count`, `input_bytes`, `input_field_count`, `input_record_count`, `invalid_date_count`, `job_id`, `missing_field_count`, `out_of_order_timestamp_count`, `processed_field_count`, `processed_record_count`, `sparse_bucket_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataCounts>>(
+        f: impl FnOnce(DataCountsBuilder) -> B,
     ) -> DataCounts {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataCountsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_counts_members {
+    pub struct bucket_count;
+    pub struct empty_bucket_count;
+    pub struct input_bytes;
+    pub struct input_field_count;
+    pub struct input_record_count;
+    pub struct invalid_date_count;
+    pub struct job_id;
+    pub struct missing_field_count;
+    pub struct out_of_order_timestamp_count;
+    pub struct processed_field_count;
+    pub struct processed_record_count;
+    pub struct sparse_bucket_count;
 }
 
 /// Builder for [`DataCounts`].
@@ -6011,6 +5504,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn bucket_count(
         self,
         value: i64,
@@ -6050,6 +5544,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn empty_bucket_count(
         self,
         value: i64,
@@ -6089,6 +5584,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn input_bytes(
         self,
         value: i64,
@@ -6128,6 +5624,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn input_field_count(
         self,
         value: i64,
@@ -6167,6 +5664,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn input_record_count(
         self,
         value: i64,
@@ -6206,6 +5704,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn invalid_date_count(
         self,
         value: i64,
@@ -6245,6 +5744,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -6284,6 +5784,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn missing_field_count(
         self,
         value: i64,
@@ -6323,6 +5824,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn out_of_order_timestamp_count(
         self,
         value: i64,
@@ -6362,6 +5864,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn processed_field_count(
         self,
         value: i64,
@@ -6401,6 +5904,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn processed_record_count(
         self,
         value: i64,
@@ -6440,6 +5944,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn sparse_bucket_count(
         self,
         value: i64,
@@ -6463,24 +5968,25 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    DataCountsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`DataCounts`].
-    pub fn build(self) -> DataCounts {
+    pub fn build(self) -> DataCounts
+    where
+        S0: crate::typed::builder::IsSet<data_counts_members::bucket_count>,
+        S1: crate::typed::builder::IsSet<data_counts_members::empty_bucket_count>,
+        S2: crate::typed::builder::IsSet<data_counts_members::input_bytes>,
+        S3: crate::typed::builder::IsSet<data_counts_members::input_field_count>,
+        S4: crate::typed::builder::IsSet<data_counts_members::input_record_count>,
+        S5: crate::typed::builder::IsSet<data_counts_members::invalid_date_count>,
+        S6: crate::typed::builder::IsSet<data_counts_members::job_id>,
+        S7: crate::typed::builder::IsSet<data_counts_members::missing_field_count>,
+        S8: crate::typed::builder::IsSet<data_counts_members::out_of_order_timestamp_count>,
+        S9: crate::typed::builder::IsSet<data_counts_members::processed_field_count>,
+        S10: crate::typed::builder::IsSet<data_counts_members::processed_record_count>,
+        S11: crate::typed::builder::IsSet<data_counts_members::sparse_bucket_count>,
+    {
         DataCounts {
             bucket_count: self.bucket_count.unwrap(),
             earliest_record_timestamp: self.earliest_record_timestamp,
@@ -6505,294 +6011,50 @@ impl
     }
 }
 
-impl
-    From<
-        DataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataCounts
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for DataCountsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<data_counts_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<data_counts_members::empty_bucket_count>,
+    S2: crate::typed::builder::IsSet<data_counts_members::input_bytes>,
+    S3: crate::typed::builder::IsSet<data_counts_members::input_field_count>,
+    S4: crate::typed::builder::IsSet<data_counts_members::input_record_count>,
+    S5: crate::typed::builder::IsSet<data_counts_members::invalid_date_count>,
+    S6: crate::typed::builder::IsSet<data_counts_members::job_id>,
+    S7: crate::typed::builder::IsSet<data_counts_members::missing_field_count>,
+    S8: crate::typed::builder::IsSet<data_counts_members::out_of_order_timestamp_count>,
+    S9: crate::typed::builder::IsSet<data_counts_members::processed_field_count>,
+    S10: crate::typed::builder::IsSet<data_counts_members::processed_record_count>,
+    S11: crate::typed::builder::IsSet<data_counts_members::sparse_bucket_count>,
 {
-    fn from(
-        builder: DataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataCounts;
+
+    fn build(self) -> DataCounts {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<DataCountsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>> for DataCounts
+where
+    S0: crate::typed::builder::IsSet<data_counts_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<data_counts_members::empty_bucket_count>,
+    S2: crate::typed::builder::IsSet<data_counts_members::input_bytes>,
+    S3: crate::typed::builder::IsSet<data_counts_members::input_field_count>,
+    S4: crate::typed::builder::IsSet<data_counts_members::input_record_count>,
+    S5: crate::typed::builder::IsSet<data_counts_members::invalid_date_count>,
+    S6: crate::typed::builder::IsSet<data_counts_members::job_id>,
+    S7: crate::typed::builder::IsSet<data_counts_members::missing_field_count>,
+    S8: crate::typed::builder::IsSet<data_counts_members::out_of_order_timestamp_count>,
+    S9: crate::typed::builder::IsSet<data_counts_members::processed_field_count>,
+    S10: crate::typed::builder::IsSet<data_counts_members::processed_record_count>,
+    S11: crate::typed::builder::IsSet<data_counts_members::sparse_bucket_count>,
 {
-    /// `bucket_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match bucket_count {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `empty_bucket_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, empty_bucket_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match empty_bucket_count {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `input_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_bytes: crate::typed::builder::MissingRequiredField) -> DataCounts { match input_bytes {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `input_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_field_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match input_field_count {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `input_record_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_record_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match input_record_count {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `invalid_date_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, invalid_date_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match invalid_date_count {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> DataCounts { match job_id {} }
-}
-
-impl<S8, S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `missing_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, missing_field_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match missing_field_count {} }
-}
-
-impl<S9, S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `out_of_order_timestamp_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, out_of_order_timestamp_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match out_of_order_timestamp_count {} }
-}
-
-impl<S10, S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `processed_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processed_field_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match processed_field_count {} }
-}
-
-impl<S11>
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `processed_record_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processed_record_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match processed_record_count {} }
-}
-
-impl
-    DataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sparse_bucket_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sparse_bucket_count: crate::typed::builder::MissingRequiredField) -> DataCounts { match sparse_bucket_count {} }
+    fn from(
+        builder: DataCountsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6817,7 +6079,9 @@ impl DataDescription {
     }
 
     /// Creates a [`DataDescription`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DataDescriptionBuilder) -> DataDescriptionBuilder) -> DataDescription {
+    pub fn of<B: crate::typed::builder::Build<Output = DataDescription>>(
+        f: impl FnOnce(DataDescriptionBuilder) -> B,
+    ) -> DataDescription {
         f(Self::builder()).build()
     }
 }
@@ -6903,6 +6167,14 @@ impl DataDescriptionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataDescriptionBuilder {
+    type Output = DataDescription;
+
+    fn build(self) -> DataDescription {
+        Self::build(self)
+    }
+}
+
 impl From<DataDescriptionBuilder> for DataDescription {
     fn from(builder: DataDescriptionBuilder) -> Self {
         builder.build()
@@ -6952,24 +6224,31 @@ pub struct Datafeed {
 
 impl Datafeed {
     /// Creates a builder for [`Datafeed`].
+    ///
+    /// Required: `datafeed_id`, `indices`, `job_id`, `query`, `delayed_data_check_config`.
     pub fn builder() -> DatafeedBuilder {
         DatafeedBuilder::new()
     }
 
     /// Creates a [`Datafeed`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatafeedBuilder,
-        ) -> DatafeedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `datafeed_id`, `indices`, `job_id`, `query`, `delayed_data_check_config`.
+    pub fn of<B: crate::typed::builder::Build<Output = Datafeed>>(
+        f: impl FnOnce(DatafeedBuilder) -> B,
     ) -> Datafeed {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatafeedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod datafeed_members {
+    pub struct datafeed_id;
+    pub struct indices;
+    pub struct job_id;
+    pub struct query;
+    pub struct delayed_data_check_config;
 }
 
 /// Builder for [`Datafeed`].
@@ -7096,14 +6375,14 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -7124,9 +6403,9 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`authorization`](Self::authorization) with a builder.
-    pub fn authorization_with(
+    pub fn authorization_with<B: crate::typed::builder::Build<Output = DatafeedAuthorization>>(
         self,
-        f: impl FnOnce(DatafeedAuthorizationBuilder) -> DatafeedAuthorizationBuilder,
+        f: impl FnOnce(DatafeedAuthorizationBuilder) -> B,
     ) -> Self {
         self.authorization(f(DatafeedAuthorizationBuilder::new()).build())
     }
@@ -7143,9 +6422,9 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`chunking_config`](Self::chunking_config) with a builder.
-    pub fn chunking_config_with(
+    pub fn chunking_config_with<B: crate::typed::builder::Build<Output = ChunkingConfig>>(
         self,
-        f: impl FnOnce(ChunkingConfigBuilder) -> ChunkingConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ChunkingConfigBuilder) -> B,
     ) -> Self {
         self.chunking_config(f(ChunkingConfigBuilder::new()).build())
     }
@@ -7233,13 +6512,12 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -7288,14 +6566,12 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -7321,11 +6597,11 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`indices_options`](Self::indices_options) with a builder.
-    pub fn indices_options_with(
+    pub fn indices_options_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::IndicesOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::IndicesOptionsBuilder,
-        ) -> crate::typed::_types::IndicesOptionsBuilder,
+        f: impl FnOnce(crate::typed::_types::IndicesOptionsBuilder) -> B,
     ) -> Self {
         self.indices_options(f(crate::typed::_types::IndicesOptionsBuilder::new()).build())
     }
@@ -7347,6 +6623,7 @@ impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> DatafeedBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn datafeed_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -7358,6 +6635,7 @@ impl<S1, S2, S3, S4> DatafeedBuilder<(crate::typed::builder::NotSet, S1, S2, S3,
 }
 
 impl<S0, S2, S3, S4> DatafeedBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<String>>,
@@ -7392,6 +6670,7 @@ impl<S0, S2, S3, S4> DatafeedBuilder<(S0, crate::typed::builder::Set, S2, S3, S4
 }
 
 impl<S0, S1, S3, S4> DatafeedBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -7403,6 +6682,7 @@ impl<S0, S1, S3, S4> DatafeedBuilder<(S0, S1, crate::typed::builder::NotSet, S3,
 }
 
 impl<S0, S1, S2, S4> DatafeedBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<crate::typed::_types::query_dsl::QueryContainer>,
@@ -7413,19 +6693,18 @@ impl<S0, S1, S2, S4> DatafeedBuilder<(S0, S1, S2, crate::typed::builder::NotSet,
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> DatafeedBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3> DatafeedBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn delayed_data_check_config(
         self,
         value: impl Into<DelayedDataCheckConfig>,
@@ -7436,27 +6715,26 @@ impl<S0, S1, S2, S3> DatafeedBuilder<(S0, S1, S2, S3, crate::typed::builder::Not
     }
 
     /// Sets [`delayed_data_check_config`](Self::delayed_data_check_config) with a builder.
-    pub fn delayed_data_check_config_with(
+    pub fn delayed_data_check_config_with<
+        B: crate::typed::builder::Build<Output = DelayedDataCheckConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            DelayedDataCheckConfigBuilder,
-        ) -> DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DelayedDataCheckConfigBuilder) -> B,
     ) -> DatafeedBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.delayed_data_check_config(f(DelayedDataCheckConfigBuilder::new()).build())
     }
 }
 
-impl
-    DatafeedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DatafeedBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`Datafeed`].
-    pub fn build(self) -> Datafeed {
+    pub fn build(self) -> Datafeed
+    where
+        S0: crate::typed::builder::IsSet<datafeed_members::datafeed_id>,
+        S1: crate::typed::builder::IsSet<datafeed_members::indices>,
+        S2: crate::typed::builder::IsSet<datafeed_members::job_id>,
+        S3: crate::typed::builder::IsSet<datafeed_members::query>,
+        S4: crate::typed::builder::IsSet<datafeed_members::delayed_data_check_config>,
+    {
         Datafeed {
             aggregations: self.aggregations,
             authorization: self.authorization,
@@ -7479,90 +6757,32 @@ impl
     }
 }
 
-impl
-    From<
-        DatafeedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Datafeed
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for DatafeedBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<datafeed_members::datafeed_id>,
+    S1: crate::typed::builder::IsSet<datafeed_members::indices>,
+    S2: crate::typed::builder::IsSet<datafeed_members::job_id>,
+    S3: crate::typed::builder::IsSet<datafeed_members::query>,
+    S4: crate::typed::builder::IsSet<datafeed_members::delayed_data_check_config>,
 {
-    fn from(
-        builder: DatafeedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Datafeed;
+
+    fn build(self) -> Datafeed {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DatafeedBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `datafeed_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, datafeed_id: crate::typed::builder::MissingRequiredField) -> Datafeed { match datafeed_id {} }
-}
-
-impl<S2, S3, S4>
-    DatafeedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DatafeedBuilder<(S0, S1, S2, S3, S4)>> for Datafeed
+where
+    S0: crate::typed::builder::IsSet<datafeed_members::datafeed_id>,
+    S1: crate::typed::builder::IsSet<datafeed_members::indices>,
+    S2: crate::typed::builder::IsSet<datafeed_members::job_id>,
+    S3: crate::typed::builder::IsSet<datafeed_members::query>,
+    S4: crate::typed::builder::IsSet<datafeed_members::delayed_data_check_config>,
 {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> Datafeed { match indices {} }
-}
-
-impl<S3, S4>
-    DatafeedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Datafeed { match job_id {} }
-}
-
-impl<S4>
-    DatafeedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> Datafeed { match query {} }
-}
-
-impl
-    DatafeedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `delayed_data_check_config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delayed_data_check_config: crate::typed::builder::MissingRequiredField) -> Datafeed { match delayed_data_check_config {} }
+    fn from(builder: DatafeedBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7585,8 +6805,8 @@ impl DatafeedAuthorization {
     }
 
     /// Creates a [`DatafeedAuthorization`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DatafeedAuthorizationBuilder) -> DatafeedAuthorizationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedAuthorization>>(
+        f: impl FnOnce(DatafeedAuthorizationBuilder) -> B,
     ) -> DatafeedAuthorization {
         f(Self::builder()).build()
     }
@@ -7624,14 +6844,9 @@ impl DatafeedAuthorizationBuilder {
     }
 
     /// Sets [`api_key`](Self::api_key) with a builder.
-    pub fn api_key_with(
+    pub fn api_key_with<B: crate::typed::builder::Build<Output = ApiKeyAuthorization>>(
         self,
-        f: impl FnOnce(
-            ApiKeyAuthorizationBuilder,
-        ) -> ApiKeyAuthorizationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApiKeyAuthorizationBuilder) -> B,
     ) -> Self {
         self.api_key(f(ApiKeyAuthorizationBuilder::new()).build())
     }
@@ -7677,6 +6892,14 @@ impl DatafeedAuthorizationBuilder {
             roles: self.roles,
             service_account: self.service_account,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DatafeedAuthorizationBuilder {
+    type Output = DatafeedAuthorization;
+
+    fn build(self) -> DatafeedAuthorization {
+        Self::build(self)
     }
 }
 
@@ -7749,7 +6972,9 @@ impl DatafeedConfig {
     }
 
     /// Creates a [`DatafeedConfig`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DatafeedConfigBuilder) -> DatafeedConfigBuilder) -> DatafeedConfig {
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedConfig>>(
+        f: impl FnOnce(DatafeedConfigBuilder) -> B,
+    ) -> DatafeedConfig {
         f(Self::builder()).build()
     }
 }
@@ -7836,14 +7061,14 @@ impl DatafeedConfigBuilder {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -7864,9 +7089,9 @@ impl DatafeedConfigBuilder {
     }
 
     /// Sets [`chunking_config`](Self::chunking_config) with a builder.
-    pub fn chunking_config_with(
+    pub fn chunking_config_with<B: crate::typed::builder::Build<Output = ChunkingConfig>>(
         self,
-        f: impl FnOnce(ChunkingConfigBuilder) -> ChunkingConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ChunkingConfigBuilder) -> B,
     ) -> Self {
         self.chunking_config(f(ChunkingConfigBuilder::new()).build())
     }
@@ -7899,11 +7124,11 @@ impl DatafeedConfigBuilder {
     }
 
     /// Sets [`delayed_data_check_config`](Self::delayed_data_check_config) with a builder.
-    pub fn delayed_data_check_config_with(
+    pub fn delayed_data_check_config_with<
+        B: crate::typed::builder::Build<Output = DelayedDataCheckConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            DelayedDataCheckConfigBuilder,
-        ) -> DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DelayedDataCheckConfigBuilder) -> B,
     ) -> Self {
         self.delayed_data_check_config(f(DelayedDataCheckConfigBuilder::new()).build())
     }
@@ -7951,11 +7176,11 @@ impl DatafeedConfigBuilder {
     }
 
     /// Sets [`indices_options`](Self::indices_options) with a builder.
-    pub fn indices_options_with(
+    pub fn indices_options_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::IndicesOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::IndicesOptionsBuilder,
-        ) -> crate::typed::_types::IndicesOptionsBuilder,
+        f: impl FnOnce(crate::typed::_types::IndicesOptionsBuilder) -> B,
     ) -> Self {
         self.indices_options(f(crate::typed::_types::IndicesOptionsBuilder::new()).build())
     }
@@ -8029,13 +7254,11 @@ impl DatafeedConfigBuilder {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -8083,14 +7306,12 @@ impl DatafeedConfigBuilder {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -8129,13 +7350,12 @@ impl DatafeedConfigBuilder {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -8180,6 +7400,14 @@ impl DatafeedConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DatafeedConfigBuilder {
+    type Output = DatafeedConfig;
+
+    fn build(self) -> DatafeedConfig {
+        Self::build(self)
+    }
+}
+
 impl From<DatafeedConfigBuilder> for DatafeedConfig {
     fn from(builder: DatafeedConfigBuilder) -> Self {
         builder.build()
@@ -8200,21 +7428,28 @@ pub struct DatafeedRunningState {
 
 impl DatafeedRunningState {
     /// Creates a builder for [`DatafeedRunningState`].
+    ///
+    /// Required: `real_time_configured`, `real_time_running`.
     pub fn builder() -> DatafeedRunningStateBuilder {
         DatafeedRunningStateBuilder::new()
     }
 
     /// Creates a [`DatafeedRunningState`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatafeedRunningStateBuilder,
-        ) -> DatafeedRunningStateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `real_time_configured`, `real_time_running`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedRunningState>>(
+        f: impl FnOnce(DatafeedRunningStateBuilder) -> B,
     ) -> DatafeedRunningState {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatafeedRunningStateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod datafeed_running_state_members {
+    pub struct real_time_configured;
+    pub struct real_time_running;
 }
 
 /// Builder for [`DatafeedRunningState`].
@@ -8262,21 +7497,18 @@ impl<S0, S1> DatafeedRunningStateBuilder<(S0, S1)> {
     }
 
     /// Sets [`search_interval`](Self::search_interval) with a builder.
-    pub fn search_interval_with(
+    pub fn search_interval_with<
+        B: crate::typed::builder::Build<Output = RunningStateSearchInterval>,
+    >(
         self,
-        f: impl FnOnce(
-            RunningStateSearchIntervalBuilder,
-        ) -> RunningStateSearchIntervalBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RunningStateSearchIntervalBuilder) -> B,
     ) -> Self {
         self.search_interval(f(RunningStateSearchIntervalBuilder::new()).build())
     }
 }
 
 impl<S1> DatafeedRunningStateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Indicates if the datafeed is "real-time"; meaning that the datafeed has no configured `end` time.
+    /// **Required.** Indicates if the datafeed is "real-time"; meaning that the datafeed has no configured `end` time.
     pub fn real_time_configured(
         self,
         value: bool,
@@ -8288,7 +7520,7 @@ impl<S1> DatafeedRunningStateBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DatafeedRunningStateBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Indicates whether the datafeed has finished running on the available past data.
+    /// **Required.** Indicates whether the datafeed has finished running on the available past data.
     /// For datafeeds without a configured `end` time, this means that the datafeed is now running on "real-time" data.
     pub fn real_time_running(
         self,
@@ -8300,9 +7532,13 @@ impl<S0> DatafeedRunningStateBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DatafeedRunningStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DatafeedRunningStateBuilder<(S0, S1)> {
     /// Builds a [`DatafeedRunningState`].
-    pub fn build(self) -> DatafeedRunningState {
+    pub fn build(self) -> DatafeedRunningState
+    where
+        S0: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_configured>,
+        S1: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_running>,
+    {
         DatafeedRunningState {
             real_time_configured: self.real_time_configured.unwrap(),
             real_time_running: self.real_time_running.unwrap(),
@@ -8311,29 +7547,26 @@ impl DatafeedRunningStateBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<DatafeedRunningStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DatafeedRunningState
+impl<S0, S1> crate::typed::builder::Build for DatafeedRunningStateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_configured>,
+    S1: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_running>,
 {
-    fn from(
-        builder: DatafeedRunningStateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DatafeedRunningState;
+
+    fn build(self) -> DatafeedRunningState {
+        Self::build(self)
     }
 }
 
-impl<S1> DatafeedRunningStateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `real_time_configured` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, real_time_configured: crate::typed::builder::MissingRequiredField) -> DatafeedRunningState { match real_time_configured {} }
-}
-
-impl DatafeedRunningStateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `real_time_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, real_time_running: crate::typed::builder::MissingRequiredField) -> DatafeedRunningState { match real_time_running {} }
+impl<S0, S1> From<DatafeedRunningStateBuilder<(S0, S1)>> for DatafeedRunningState
+where
+    S0: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_configured>,
+    S1: crate::typed::builder::IsSet<datafeed_running_state_members::real_time_running>,
+{
+    fn from(builder: DatafeedRunningStateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8373,19 +7606,28 @@ pub struct DatafeedStats {
 
 impl DatafeedStats {
     /// Creates a builder for [`DatafeedStats`].
+    ///
+    /// Required: `datafeed_id`, `state`.
     pub fn builder() -> DatafeedStatsBuilder {
         DatafeedStatsBuilder::new()
     }
 
     /// Creates a [`DatafeedStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatafeedStatsBuilder,
-        )
-            -> DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `datafeed_id`, `state`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedStats>>(
+        f: impl FnOnce(DatafeedStatsBuilder) -> B,
     ) -> DatafeedStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatafeedStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod datafeed_stats_members {
+    pub struct datafeed_id;
+    pub struct state;
 }
 
 /// Builder for [`DatafeedStats`].
@@ -8453,17 +7695,9 @@ impl<S0, S1> DatafeedStatsBuilder<(S0, S1)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<B: crate::typed::builder::Build<Output = DiscoveryNodeCompact>>(
         self,
-        f: impl FnOnce(
-            DiscoveryNodeCompactBuilder,
-        ) -> DiscoveryNodeCompactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiscoveryNodeCompactBuilder) -> B,
     ) -> Self {
         self.node(f(DiscoveryNodeCompactBuilder::new()).build())
     }
@@ -8481,17 +7715,9 @@ impl<S0, S1> DatafeedStatsBuilder<(S0, S1)> {
     }
 
     /// Sets [`timing_stats`](Self::timing_stats) with a builder.
-    pub fn timing_stats_with(
+    pub fn timing_stats_with<B: crate::typed::builder::Build<Output = DatafeedTimingStats>>(
         self,
-        f: impl FnOnce(
-            DatafeedTimingStatsBuilder,
-        ) -> DatafeedTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DatafeedTimingStatsBuilder) -> B,
     ) -> Self {
         self.timing_stats(f(DatafeedTimingStatsBuilder::new()).build())
     }
@@ -8510,21 +7736,16 @@ impl<S0, S1> DatafeedStatsBuilder<(S0, S1)> {
     }
 
     /// Sets [`running_state`](Self::running_state) with a builder.
-    pub fn running_state_with(
+    pub fn running_state_with<B: crate::typed::builder::Build<Output = DatafeedRunningState>>(
         self,
-        f: impl FnOnce(
-            DatafeedRunningStateBuilder,
-        ) -> DatafeedRunningStateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DatafeedRunningStateBuilder) -> B,
     ) -> Self {
         self.running_state(f(DatafeedRunningStateBuilder::new()).build())
     }
 }
 
 impl<S1> DatafeedStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A numerical character string that uniquely identifies the datafeed.
+    /// **Required.** A numerical character string that uniquely identifies the datafeed.
     /// This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
     /// It must start and end with alphanumeric characters.
     pub fn datafeed_id(
@@ -8538,7 +7759,7 @@ impl<S1> DatafeedStatsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DatafeedStatsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The status of the datafeed, which can be one of the following values: `starting`, `started`, `stopping`, `stopped`.
+    /// **Required.** The status of the datafeed, which can be one of the following values: `starting`, `started`, `stopping`, `stopped`.
     pub fn state(
         self,
         value: impl Into<DatafeedState>,
@@ -8549,9 +7770,13 @@ impl<S0> DatafeedStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DatafeedStatsBuilder<(S0, S1)> {
     /// Builds a [`DatafeedStats`].
-    pub fn build(self) -> DatafeedStats {
+    pub fn build(self) -> DatafeedStats
+    where
+        S0: crate::typed::builder::IsSet<datafeed_stats_members::datafeed_id>,
+        S1: crate::typed::builder::IsSet<datafeed_stats_members::state>,
+    {
         DatafeedStats {
             assignment_explanation: self.assignment_explanation,
             datafeed_id: self.datafeed_id.unwrap(),
@@ -8563,26 +7788,26 @@ impl DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DatafeedStats
+impl<S0, S1> crate::typed::builder::Build for DatafeedStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<datafeed_stats_members::datafeed_id>,
+    S1: crate::typed::builder::IsSet<datafeed_stats_members::state>,
 {
-    fn from(
-        builder: DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DatafeedStats;
+
+    fn build(self) -> DatafeedStats {
+        Self::build(self)
     }
 }
 
-impl<S1> DatafeedStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `datafeed_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, datafeed_id: crate::typed::builder::MissingRequiredField) -> DatafeedStats { match datafeed_id {} }
-}
-
-impl DatafeedStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> DatafeedStats { match state {} }
+impl<S0, S1> From<DatafeedStatsBuilder<(S0, S1)>> for DatafeedStats
+where
+    S0: crate::typed::builder::IsSet<datafeed_stats_members::datafeed_id>,
+    S1: crate::typed::builder::IsSet<datafeed_stats_members::state>,
+{
+    fn from(builder: DatafeedStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8608,24 +7833,31 @@ pub struct DatafeedTimingStats {
 
 impl DatafeedTimingStats {
     /// Creates a builder for [`DatafeedTimingStats`].
+    ///
+    /// Required: `bucket_count`, `exponential_average_search_time_per_hour_ms`, `job_id`, `search_count`, `total_search_time_ms`.
     pub fn builder() -> DatafeedTimingStatsBuilder {
         DatafeedTimingStatsBuilder::new()
     }
 
     /// Creates a [`DatafeedTimingStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatafeedTimingStatsBuilder,
-        ) -> DatafeedTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_count`, `exponential_average_search_time_per_hour_ms`, `job_id`, `search_count`, `total_search_time_ms`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedTimingStats>>(
+        f: impl FnOnce(DatafeedTimingStatsBuilder) -> B,
     ) -> DatafeedTimingStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatafeedTimingStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod datafeed_timing_stats_members {
+    pub struct bucket_count;
+    pub struct exponential_average_search_time_per_hour_ms;
+    pub struct job_id;
+    pub struct search_count;
+    pub struct total_search_time_ms;
 }
 
 /// Builder for [`DatafeedTimingStats`].
@@ -8706,12 +7938,11 @@ impl<S0, S1, S2, S3, S4> DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`exponential_average_calculation_context`](Self::exponential_average_calculation_context) with a builder.
-    pub fn exponential_average_calculation_context_with(
+    pub fn exponential_average_calculation_context_with<
+        B: crate::typed::builder::Build<Output = ExponentialAverageCalculationContext>,
+    >(
         self,
-        f: impl FnOnce(
-            ExponentialAverageCalculationContextBuilder,
-        )
-            -> ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ExponentialAverageCalculationContextBuilder) -> B,
     ) -> Self {
         self.exponential_average_calculation_context(
             f(ExponentialAverageCalculationContextBuilder::new()).build(),
@@ -8738,7 +7969,7 @@ impl<S0, S1, S2, S3, S4> DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> DatafeedTimingStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// The number of buckets processed.
+    /// **Required.** The number of buckets processed.
     pub fn bucket_count(
         self,
         value: i64,
@@ -8750,7 +7981,7 @@ impl<S1, S2, S3, S4> DatafeedTimingStatsBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2, S3, S4> DatafeedTimingStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The exponential average search time per hour, in milliseconds.
+    /// **Required.** The exponential average search time per hour, in milliseconds.
     pub fn exponential_average_search_time_per_hour_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -8762,7 +7993,7 @@ impl<S0, S2, S3, S4> DatafeedTimingStatsBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S3, S4> DatafeedTimingStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -8774,7 +8005,7 @@ impl<S0, S1, S3, S4> DatafeedTimingStatsBuilder<(S0, S1, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S4> DatafeedTimingStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// The number of searches run by the datafeed.
+    /// **Required.** The number of searches run by the datafeed.
     pub fn search_count(
         self,
         value: i64,
@@ -8786,7 +8017,7 @@ impl<S0, S1, S2, S4> DatafeedTimingStatsBuilder<(S0, S1, S2, crate::typed::build
 }
 
 impl<S0, S1, S2, S3> DatafeedTimingStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The total time the datafeed spent searching, in milliseconds.
+    /// **Required.** The total time the datafeed spent searching, in milliseconds.
     pub fn total_search_time_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -8797,17 +8028,18 @@ impl<S0, S1, S2, S3> DatafeedTimingStatsBuilder<(S0, S1, S2, S3, crate::typed::b
     }
 }
 
-impl
-    DatafeedTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`DatafeedTimingStats`].
-    pub fn build(self) -> DatafeedTimingStats {
+    pub fn build(self) -> DatafeedTimingStats
+    where
+        S0: crate::typed::builder::IsSet<datafeed_timing_stats_members::bucket_count>,
+        S1: crate::typed::builder::IsSet<
+            datafeed_timing_stats_members::exponential_average_search_time_per_hour_ms,
+        >,
+        S2: crate::typed::builder::IsSet<datafeed_timing_stats_members::job_id>,
+        S3: crate::typed::builder::IsSet<datafeed_timing_stats_members::search_count>,
+        S4: crate::typed::builder::IsSet<datafeed_timing_stats_members::total_search_time_ms>,
+    {
         DatafeedTimingStats {
             bucket_count: self.bucket_count.unwrap(),
             exponential_average_search_time_per_hour_ms: self
@@ -8822,90 +8054,38 @@ impl
     }
 }
 
-impl
-    From<
-        DatafeedTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DatafeedTimingStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<datafeed_timing_stats_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<
+        datafeed_timing_stats_members::exponential_average_search_time_per_hour_ms,
+    >,
+    S2: crate::typed::builder::IsSet<datafeed_timing_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<datafeed_timing_stats_members::search_count>,
+    S4: crate::typed::builder::IsSet<datafeed_timing_stats_members::total_search_time_ms>,
 {
-    fn from(
-        builder: DatafeedTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DatafeedTimingStats;
+
+    fn build(self) -> DatafeedTimingStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DatafeedTimingStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `bucket_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_count: crate::typed::builder::MissingRequiredField) -> DatafeedTimingStats { match bucket_count {} }
-}
-
-impl<S2, S3, S4>
-    DatafeedTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)>>
+    for DatafeedTimingStats
+where
+    S0: crate::typed::builder::IsSet<datafeed_timing_stats_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<
+        datafeed_timing_stats_members::exponential_average_search_time_per_hour_ms,
+    >,
+    S2: crate::typed::builder::IsSet<datafeed_timing_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<datafeed_timing_stats_members::search_count>,
+    S4: crate::typed::builder::IsSet<datafeed_timing_stats_members::total_search_time_ms>,
 {
-    /// `exponential_average_search_time_per_hour_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponential_average_search_time_per_hour_ms: crate::typed::builder::MissingRequiredField) -> DatafeedTimingStats { match exponential_average_search_time_per_hour_ms {} }
-}
-
-impl<S3, S4>
-    DatafeedTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> DatafeedTimingStats { match job_id {} }
-}
-
-impl<S4>
-    DatafeedTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `search_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_count: crate::typed::builder::MissingRequiredField) -> DatafeedTimingStats { match search_count {} }
-}
-
-impl
-    DatafeedTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_search_time_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_search_time_ms: crate::typed::builder::MissingRequiredField) -> DatafeedTimingStats { match total_search_time_ms {} }
+    fn from(builder: DatafeedTimingStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8973,18 +8153,27 @@ pub struct DataframeAnalysis {
 
 impl DataframeAnalysis {
     /// Creates a builder for [`DataframeAnalysis`].
+    ///
+    /// Required: `dependent_variable`.
     pub fn builder() -> DataframeAnalysisBuilder {
         DataframeAnalysisBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysis`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisBuilder,
-        ) -> DataframeAnalysisBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `dependent_variable`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysis>>(
+        f: impl FnOnce(DataframeAnalysisBuilder) -> B,
     ) -> DataframeAnalysis {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_members {
+    pub struct dependent_variable;
 }
 
 /// Builder for [`DataframeAnalysis`].
@@ -9180,12 +8369,11 @@ impl<S0> DataframeAnalysisBuilder<(S0,)> {
     }
 
     /// Adds an element to [`feature_processors`](Self::feature_processors), with a builder.
-    pub fn add_feature_processors_with(
+    pub fn add_feature_processors_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorBuilder,
-        )
-            -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorBuilder) -> B,
     ) -> Self {
         self.add_feature_processors(f(DataframeAnalysisFeatureProcessorBuilder::new()).build())
     }
@@ -9324,7 +8512,7 @@ impl<S0> DataframeAnalysisBuilder<(S0,)> {
 }
 
 impl DataframeAnalysisBuilder<(crate::typed::builder::NotSet,)> {
-    /// Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
+    /// **Required.** Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
     /// For classification analysis, the data type of the field must be numeric (`integer`, `short`, `long`, `byte`), categorical (`ip` or `keyword`), or `boolean`. There must be no more than 30 different values in this field.
     /// For regression analysis, the data type of the field must be numeric.
     pub fn dependent_variable(
@@ -9337,9 +8525,12 @@ impl DataframeAnalysisBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeAnalysisBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysis`].
-    pub fn build(self) -> DataframeAnalysis {
+    pub fn build(self) -> DataframeAnalysis
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analysis_members::dependent_variable>,
+    {
         DataframeAnalysis {
             alpha: self.alpha,
             dependent_variable: self.dependent_variable.unwrap(),
@@ -9364,16 +8555,24 @@ impl DataframeAnalysisBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeAnalysisBuilder<(crate::typed::builder::Set,)>> for DataframeAnalysis {
-    fn from(builder: DataframeAnalysisBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DataframeAnalysisBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_members::dependent_variable>,
+{
+    type Output = DataframeAnalysis;
+
+    fn build(self) -> DataframeAnalysis {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisBuilder<(crate::typed::builder::NotSet,)> {
-    /// `dependent_variable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dependent_variable: crate::typed::builder::MissingRequiredField) -> DataframeAnalysis { match dependent_variable {} }
+impl<S0> From<DataframeAnalysisBuilder<(S0,)>> for DataframeAnalysis
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_members::dependent_variable>,
+{
+    fn from(builder: DataframeAnalysisBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9393,8 +8592,8 @@ impl DataframeAnalysisAnalyzedFields {
     }
 
     /// Creates a [`DataframeAnalysisAnalyzedFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> DataframeAnalysisAnalyzedFieldsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisAnalyzedFields>>(
+        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> DataframeAnalysisAnalyzedFields {
         f(Self::builder()).build()
     }
@@ -9465,6 +8664,14 @@ impl DataframeAnalysisAnalyzedFieldsBuilder {
             includes: self.includes,
             excludes: self.excludes,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataframeAnalysisAnalyzedFieldsBuilder {
+    type Output = DataframeAnalysisAnalyzedFields;
+
+    fn build(self) -> DataframeAnalysisAnalyzedFields {
+        Self::build(self)
     }
 }
 
@@ -9544,18 +8751,27 @@ pub struct DataframeAnalysisClassification {
 
 impl DataframeAnalysisClassification {
     /// Creates a builder for [`DataframeAnalysisClassification`].
+    ///
+    /// Required: `dependent_variable`.
     pub fn builder() -> DataframeAnalysisClassificationBuilder {
         DataframeAnalysisClassificationBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisClassification`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisClassificationBuilder,
-        ) -> DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `dependent_variable`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisClassification>>(
+        f: impl FnOnce(DataframeAnalysisClassificationBuilder) -> B,
     ) -> DataframeAnalysisClassification {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisClassificationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_classification_members {
+    pub struct dependent_variable;
 }
 
 /// Builder for [`DataframeAnalysisClassification`].
@@ -9757,12 +8973,11 @@ impl<S0> DataframeAnalysisClassificationBuilder<(S0,)> {
     }
 
     /// Adds an element to [`feature_processors`](Self::feature_processors), with a builder.
-    pub fn add_feature_processors_with(
+    pub fn add_feature_processors_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorBuilder,
-        )
-            -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorBuilder) -> B,
     ) -> Self {
         self.add_feature_processors(f(DataframeAnalysisFeatureProcessorBuilder::new()).build())
     }
@@ -9924,7 +9139,7 @@ impl<S0> DataframeAnalysisClassificationBuilder<(S0,)> {
 }
 
 impl DataframeAnalysisClassificationBuilder<(crate::typed::builder::NotSet,)> {
-    /// Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
+    /// **Required.** Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
     /// For classification analysis, the data type of the field must be numeric (`integer`, `short`, `long`, `byte`), categorical (`ip` or `keyword`), or `boolean`. There must be no more than 30 different values in this field.
     /// For regression analysis, the data type of the field must be numeric.
     pub fn dependent_variable(
@@ -9937,9 +9152,14 @@ impl DataframeAnalysisClassificationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisClassificationBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysisClassification`].
-    pub fn build(self) -> DataframeAnalysisClassification {
+    pub fn build(self) -> DataframeAnalysisClassification
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_classification_members::dependent_variable,
+        >,
+    {
         DataframeAnalysisClassification {
             alpha: self.alpha,
             dependent_variable: self.dependent_variable.unwrap(),
@@ -9966,20 +9186,24 @@ impl DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalysisClassification
+impl<S0> crate::typed::builder::Build for DataframeAnalysisClassificationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_classification_members::dependent_variable>,
 {
-    fn from(
-        builder: DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisClassification;
+
+    fn build(self) -> DataframeAnalysisClassification {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisClassificationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `dependent_variable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dependent_variable: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisClassification { match dependent_variable {} }
+impl<S0> From<DataframeAnalysisClassificationBuilder<(S0,)>> for DataframeAnalysisClassification
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_classification_members::dependent_variable>,
+{
+    fn from(builder: DataframeAnalysisClassificationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10039,15 +9263,17 @@ impl From<DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)>>
 
 impl DataframeAnalysisContainer {
     /// Creates a builder for [`DataframeAnalysisContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> DataframeAnalysisContainerBuilder {
         DataframeAnalysisContainerBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisContainerBuilder,
-        ) -> DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisContainer>>(
+        f: impl FnOnce(DataframeAnalysisContainerBuilder) -> B,
     ) -> DataframeAnalysisContainer {
         f(Self::builder()).build()
     }
@@ -10090,11 +9316,11 @@ impl DataframeAnalysisContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisClassification>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisClassificationBuilder,
-        ) -> DataframeAnalysisClassificationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisClassificationBuilder) -> B,
     ) -> DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification(f(DataframeAnalysisClassificationBuilder::new()).build())
     }
@@ -10110,11 +9336,11 @@ impl DataframeAnalysisContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`outlier_detection`](Self::outlier_detection) with a builder.
-    pub fn outlier_detection_with(
+    pub fn outlier_detection_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisOutlierDetection>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisOutlierDetectionBuilder,
-        ) -> DataframeAnalysisOutlierDetectionBuilder,
+        f: impl FnOnce(DataframeAnalysisOutlierDetectionBuilder) -> B,
     ) -> DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)> {
         self.outlier_detection(f(DataframeAnalysisOutlierDetectionBuilder::new()).build())
     }
@@ -10130,35 +9356,44 @@ impl DataframeAnalysisContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisRegression>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisRegressionBuilder,
-        ) -> DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisRegressionBuilder) -> B,
     ) -> DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression(f(DataframeAnalysisRegressionBuilder::new()).build())
     }
 }
 
-impl DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisContainerBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysisContainer`].
-    pub fn build(self) -> DataframeAnalysisContainer {
+    pub fn build(self) -> DataframeAnalysisContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<DataframeAnalysisContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalysisContainer
+impl<S0> crate::typed::builder::Build for DataframeAnalysisContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalysisContainer>,
 {
-    fn from(builder: DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisContainer;
+
+    fn build(self) -> DataframeAnalysisContainer {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisContainer { match variant {} }
+impl<S0> From<DataframeAnalysisContainerBuilder<(S0,)>> for DataframeAnalysisContainer
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalysisContainer>,
+{
+    fn from(builder: DataframeAnalysisContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10306,16 +9541,17 @@ impl
 
 impl DataframeAnalysisFeatureProcessor {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessor`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> DataframeAnalysisFeatureProcessorBuilder {
         DataframeAnalysisFeatureProcessorBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorBuilder,
-        )
-            -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessor>>(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessor {
         f(Self::builder()).build()
     }
@@ -10360,15 +9596,11 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`frequency_encoding`](Self::frequency_encoding) with a builder.
-    pub fn frequency_encoding_with(
+    pub fn frequency_encoding_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorFrequencyEncoding>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
         self.frequency_encoding(
             f(DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder::new()).build(),
@@ -10388,13 +9620,11 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`multi_encoding`](Self::multi_encoding) with a builder.
-    pub fn multi_encoding_with(
+    pub fn multi_encoding_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorMultiEncoding>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorMultiEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorMultiEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
         self.multi_encoding(f(DataframeAnalysisFeatureProcessorMultiEncodingBuilder::new()).build())
     }
@@ -10412,14 +9642,11 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`n_gram_encoding`](Self::n_gram_encoding) with a builder.
-    pub fn n_gram_encoding_with(
+    pub fn n_gram_encoding_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorNGramEncoding>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorNGramEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorNGramEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
         self.n_gram_encoding(
             f(DataframeAnalysisFeatureProcessorNGramEncodingBuilder::new()).build(),
@@ -10439,14 +9666,11 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`one_hot_encoding`](Self::one_hot_encoding) with a builder.
-    pub fn one_hot_encoding_with(
+    pub fn one_hot_encoding_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorOneHotEncoding>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorOneHotEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorOneHotEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
         self.one_hot_encoding(
             f(DataframeAnalysisFeatureProcessorOneHotEncodingBuilder::new()).build(),
@@ -10466,16 +9690,11 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`target_mean_encoding`](Self::target_mean_encoding) with a builder.
-    pub fn target_mean_encoding_with(
+    pub fn target_mean_encoding_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorTargetMeanEncoding>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
         self.target_mean_encoding(
             f(DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder::new()).build(),
@@ -10483,27 +9702,34 @@ impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisFeatureProcessorBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysisFeatureProcessor`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessor {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessor
+    where
+        S0: crate::typed::builder::IsVariantSet<DataframeAnalysisFeatureProcessor>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalysisFeatureProcessor
+impl<S0> crate::typed::builder::Build for DataframeAnalysisFeatureProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalysisFeatureProcessor>,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessor;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessor {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessor { match variant {} }
+impl<S0> From<DataframeAnalysisFeatureProcessorBuilder<(S0,)>> for DataframeAnalysisFeatureProcessor
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalysisFeatureProcessor>,
+{
+    fn from(builder: DataframeAnalysisFeatureProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10517,22 +9743,31 @@ pub struct DataframeAnalysisFeatureProcessorFrequencyEncoding {
 
 impl DataframeAnalysisFeatureProcessorFrequencyEncoding {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessorFrequencyEncoding`].
+    ///
+    /// Required: `feature_name`, `field`, `frequency_map`.
     pub fn builder() -> DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder {
         DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessorFrequencyEncoding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_name`, `field`, `frequency_map`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorFrequencyEncoding>,
+    >(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorFrequencyEncoding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_feature_processor_frequency_encoding_members {
+    pub struct feature_name;
+    pub struct field;
+    pub struct frequency_map;
 }
 
 /// Builder for [`DataframeAnalysisFeatureProcessorFrequencyEncoding`].
@@ -10585,7 +9820,7 @@ impl<S1, S2>
         S2,
     )>
 {
-    /// The resulting feature name.
+    /// **Required.** The resulting feature name.
     pub fn feature_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -10607,6 +9842,7 @@ impl<S0, S2>
         S2,
     )>
 {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -10628,7 +9864,7 @@ impl<S0, S1>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The resulting frequency map for the field value. If the field value is missing from the frequency_map, the resulting value is 0.
+    /// **Required.** The resulting frequency map for the field value. If the field value is missing from the frequency_map, the resulting value is 0.
     pub fn frequency_map(
         self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::support::Float64>>,
@@ -10677,15 +9913,20 @@ impl<S0, S1>
     }
 }
 
-impl
-    DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(S0, S1, S2)> {
     /// Builds a [`DataframeAnalysisFeatureProcessorFrequencyEncoding`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessorFrequencyEncoding {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessorFrequencyEncoding
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_frequency_encoding_members::feature_name,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_frequency_encoding_members::field,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_frequency_encoding_members::frequency_map,
+        >,
+    {
         DataframeAnalysisFeatureProcessorFrequencyEncoding {
             feature_name: self.feature_name.unwrap(),
             field: self.field.unwrap(),
@@ -10694,60 +9935,44 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalysisFeatureProcessorFrequencyEncoding
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::feature_name,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::field,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::frequency_map,
+    >,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessorFrequencyEncoding;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessorFrequencyEncoding {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-    )>
+impl<S0, S1, S2> From<DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(S0, S1, S2)>>
+    for DataframeAnalysisFeatureProcessorFrequencyEncoding
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::feature_name,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::field,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_frequency_encoding_members::frequency_map,
+    >,
 {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorFrequencyEncoding { match feature_name {} }
-}
-
-impl<S2>
-    DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorFrequencyEncoding { match field {} }
-}
-
-impl
-    DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `frequency_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, frequency_map: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorFrequencyEncoding { match frequency_map {} }
+    fn from(
+        builder: DataframeAnalysisFeatureProcessorFrequencyEncodingBuilder<(S0, S1, S2)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10758,20 +9983,29 @@ pub struct DataframeAnalysisFeatureProcessorMultiEncoding {
 
 impl DataframeAnalysisFeatureProcessorMultiEncoding {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessorMultiEncoding`].
+    ///
+    /// Required: `processors`.
     pub fn builder() -> DataframeAnalysisFeatureProcessorMultiEncodingBuilder {
         DataframeAnalysisFeatureProcessorMultiEncodingBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessorMultiEncoding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorMultiEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `processors`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorMultiEncoding>,
+    >(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorMultiEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorMultiEncoding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisFeatureProcessorMultiEncodingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_feature_processor_multi_encoding_members {
+    pub struct processors;
 }
 
 /// Builder for [`DataframeAnalysisFeatureProcessorMultiEncoding`].
@@ -10802,7 +10036,7 @@ impl<S0> DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(S0,)> {
 }
 
 impl DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(crate::typed::builder::NotSet,)> {
-    /// The ordered array of custom processors to execute. Must be more than 1.
+    /// **Required.** The ordered array of custom processors to execute. Must be more than 1.
     pub fn processors(
         self,
         value: impl Into<Vec<i32>>,
@@ -10836,31 +10070,44 @@ impl DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(crate::typed::builde
     }
 }
 
-impl DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysisFeatureProcessorMultiEncoding`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessorMultiEncoding {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessorMultiEncoding
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_multi_encoding_members::processors,
+        >,
+    {
         DataframeAnalysisFeatureProcessorMultiEncoding {
             processors: self.processors.unwrap(),
         }
     }
 }
 
-impl From<DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalysisFeatureProcessorMultiEncoding
+impl<S0> crate::typed::builder::Build
+    for DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_multi_encoding_members::processors,
+    >,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessorMultiEncoding;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessorMultiEncoding {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processors: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorMultiEncoding { match processors {} }
+impl<S0> From<DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(S0,)>>
+    for DataframeAnalysisFeatureProcessorMultiEncoding
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_multi_encoding_members::processors,
+    >,
+{
+    fn from(builder: DataframeAnalysisFeatureProcessorMultiEncodingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10884,21 +10131,30 @@ pub struct DataframeAnalysisFeatureProcessorNGramEncoding {
 
 impl DataframeAnalysisFeatureProcessorNGramEncoding {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessorNGramEncoding`].
+    ///
+    /// Required: `field`, `n_grams`.
     pub fn builder() -> DataframeAnalysisFeatureProcessorNGramEncodingBuilder {
         DataframeAnalysisFeatureProcessorNGramEncodingBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessorNGramEncoding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorNGramEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `n_grams`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorNGramEncoding>,
+    >(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorNGramEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorNGramEncoding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisFeatureProcessorNGramEncodingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_feature_processor_n_gram_encoding_members {
+    pub struct field;
+    pub struct n_grams;
 }
 
 /// Builder for [`DataframeAnalysisFeatureProcessorNGramEncoding`].
@@ -10998,7 +10254,7 @@ impl<S0, S1> DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, S1)> {
 impl<S1>
     DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(crate::typed::builder::NotSet, S1)>
 {
-    /// The name of the text field to encode.
+    /// **Required.** The name of the text field to encode.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -11013,7 +10269,7 @@ impl<S1>
 impl<S0>
     DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, crate::typed::builder::NotSet)>
 {
-    /// Specifies which n-grams to gather. It’s an array of integer values where the minimum value is 1, and a maximum value is 5.
+    /// **Required.** Specifies which n-grams to gather. It’s an array of integer values where the minimum value is 1, and a maximum value is 5.
     pub fn n_grams(
         self,
         value: impl Into<Vec<i32>>,
@@ -11049,14 +10305,17 @@ impl<S0> DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, crate::typed
     }
 }
 
-impl
-    DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, S1)> {
     /// Builds a [`DataframeAnalysisFeatureProcessorNGramEncoding`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessorNGramEncoding {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessorNGramEncoding
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_n_gram_encoding_members::field,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_n_gram_encoding_members::n_grams,
+        >,
+    {
         DataframeAnalysisFeatureProcessorNGramEncoding {
             feature_prefix: self.feature_prefix,
             field: self.field.unwrap(),
@@ -11068,41 +10327,36 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalysisFeatureProcessorNGramEncoding
+impl<S0, S1> crate::typed::builder::Build
+    for DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_n_gram_encoding_members::field,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_n_gram_encoding_members::n_grams,
+    >,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessorNGramEncoding;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessorNGramEncoding {
+        Self::build(self)
     }
 }
 
-impl<S1>
-    DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(crate::typed::builder::NotSet, S1)>
+impl<S0, S1> From<DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, S1)>>
+    for DataframeAnalysisFeatureProcessorNGramEncoding
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_n_gram_encoding_members::field,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_n_gram_encoding_members::n_grams,
+    >,
 {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorNGramEncoding { match field {} }
-}
-
-impl
-    DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `n_grams` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, n_grams: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorNGramEncoding { match n_grams {} }
+    fn from(builder: DataframeAnalysisFeatureProcessorNGramEncodingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11115,21 +10369,30 @@ pub struct DataframeAnalysisFeatureProcessorOneHotEncoding {
 
 impl DataframeAnalysisFeatureProcessorOneHotEncoding {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessorOneHotEncoding`].
+    ///
+    /// Required: `field`, `hot_map`.
     pub fn builder() -> DataframeAnalysisFeatureProcessorOneHotEncodingBuilder {
         DataframeAnalysisFeatureProcessorOneHotEncodingBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessorOneHotEncoding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorOneHotEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `hot_map`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorOneHotEncoding>,
+    >(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorOneHotEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorOneHotEncoding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisFeatureProcessorOneHotEncodingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_feature_processor_one_hot_encoding_members {
+    pub struct field;
+    pub struct hot_map;
 }
 
 /// Builder for [`DataframeAnalysisFeatureProcessorOneHotEncoding`].
@@ -11170,7 +10433,7 @@ impl<S0, S1> DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, S1)> {
 impl<S1>
     DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(crate::typed::builder::NotSet, S1)>
 {
-    /// The name of the field to encode.
+    /// **Required.** The name of the field to encode.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -11185,7 +10448,7 @@ impl<S1>
 impl<S0>
     DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, crate::typed::builder::NotSet)>
 {
-    /// The one hot map mapping the field value with the column name.
+    /// **Required.** The one hot map mapping the field value with the column name.
     pub fn hot_map(
         self,
         value: impl Into<String>,
@@ -11197,14 +10460,17 @@ impl<S0>
     }
 }
 
-impl
-    DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, S1)> {
     /// Builds a [`DataframeAnalysisFeatureProcessorOneHotEncoding`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessorOneHotEncoding {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessorOneHotEncoding
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_one_hot_encoding_members::field,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_one_hot_encoding_members::hot_map,
+        >,
+    {
         DataframeAnalysisFeatureProcessorOneHotEncoding {
             field: self.field.unwrap(),
             hot_map: self.hot_map.unwrap(),
@@ -11212,41 +10478,36 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalysisFeatureProcessorOneHotEncoding
+impl<S0, S1> crate::typed::builder::Build
+    for DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_one_hot_encoding_members::field,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_one_hot_encoding_members::hot_map,
+    >,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessorOneHotEncoding;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessorOneHotEncoding {
+        Self::build(self)
     }
 }
 
-impl<S1>
-    DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(crate::typed::builder::NotSet, S1)>
+impl<S0, S1> From<DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, S1)>>
+    for DataframeAnalysisFeatureProcessorOneHotEncoding
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_one_hot_encoding_members::field,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_one_hot_encoding_members::hot_map,
+    >,
 {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorOneHotEncoding { match field {} }
-}
-
-impl
-    DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `hot_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hot_map: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorOneHotEncoding { match hot_map {} }
+    fn from(builder: DataframeAnalysisFeatureProcessorOneHotEncodingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11263,23 +10524,32 @@ pub struct DataframeAnalysisFeatureProcessorTargetMeanEncoding {
 
 impl DataframeAnalysisFeatureProcessorTargetMeanEncoding {
     /// Creates a builder for [`DataframeAnalysisFeatureProcessorTargetMeanEncoding`].
+    ///
+    /// Required: `default_value`, `feature_name`, `field`, `target_map`.
     pub fn builder() -> DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder {
         DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisFeatureProcessorTargetMeanEncoding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder,
-        ) -> DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `default_value`, `feature_name`, `field`, `target_map`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessorTargetMeanEncoding>,
+    >(
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder) -> B,
     ) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_feature_processor_target_mean_encoding_members {
+    pub struct default_value;
+    pub struct feature_name;
+    pub struct field;
+    pub struct target_map;
 }
 
 /// Builder for [`DataframeAnalysisFeatureProcessorTargetMeanEncoding`].
@@ -11338,7 +10608,7 @@ impl<S1, S2, S3>
         S3,
     )>
 {
-    /// The default value if field value is not found in the target_map.
+    /// **Required.** The default value if field value is not found in the target_map.
     pub fn default_value(
         self,
         value: i32,
@@ -11362,7 +10632,7 @@ impl<S0, S2, S3>
         S3,
     )>
 {
-    /// The resulting feature name.
+    /// **Required.** The resulting feature name.
     pub fn feature_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -11386,7 +10656,7 @@ impl<S0, S1, S3>
         S3,
     )>
 {
-    /// The name of the field to encode.
+    /// **Required.** The name of the field to encode.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -11410,7 +10680,7 @@ impl<S0, S1, S2>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The field value to target mean transition map.
+    /// **Required.** The field value to target mean transition map.
     pub fn target_map(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -11466,16 +10736,23 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DataframeAnalysisFeatureProcessorTargetMeanEncoding`].
-    pub fn build(self) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding {
+    pub fn build(self) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_target_mean_encoding_members::default_value,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_target_mean_encoding_members::feature_name,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_target_mean_encoding_members::field,
+        >,
+        S3: crate::typed::builder::IsSet<
+            dataframe_analysis_feature_processor_target_mean_encoding_members::target_map,
+        >,
+    {
         DataframeAnalysisFeatureProcessorTargetMeanEncoding {
             default_value: self.default_value.unwrap(),
             feature_name: self.feature_name.unwrap(),
@@ -11485,78 +10762,51 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalysisFeatureProcessorTargetMeanEncoding
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::default_value,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::feature_name,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::field,
+    >,
+    S3: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::target_map,
+    >,
 {
-    fn from(
-        builder: DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisFeatureProcessorTargetMeanEncoding;
+
+    fn build(self) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3>
+    From<DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(S0, S1, S2, S3)>>
+    for DataframeAnalysisFeatureProcessorTargetMeanEncoding
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::default_value,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::feature_name,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::field,
+    >,
+    S3: crate::typed::builder::IsSet<
+        dataframe_analysis_feature_processor_target_mean_encoding_members::target_map,
+    >,
 {
-    /// `default_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default_value: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding { match default_value {} }
-}
-
-impl<S2, S3>
-    DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding { match feature_name {} }
-}
-
-impl<S3>
-    DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding { match field {} }
-}
-
-impl
-    DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `target_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_map: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisFeatureProcessorTargetMeanEncoding { match target_map {} }
+    fn from(
+        builder: DataframeAnalysisFeatureProcessorTargetMeanEncodingBuilder<(S0, S1, S2, S3)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11588,10 +10838,8 @@ impl DataframeAnalysisOutlierDetection {
     }
 
     /// Creates a [`DataframeAnalysisOutlierDetection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisOutlierDetectionBuilder,
-        ) -> DataframeAnalysisOutlierDetectionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisOutlierDetection>>(
+        f: impl FnOnce(DataframeAnalysisOutlierDetectionBuilder) -> B,
     ) -> DataframeAnalysisOutlierDetection {
         f(Self::builder()).build()
     }
@@ -11715,6 +10963,14 @@ impl DataframeAnalysisOutlierDetectionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeAnalysisOutlierDetectionBuilder {
+    type Output = DataframeAnalysisOutlierDetection;
+
+    fn build(self) -> DataframeAnalysisOutlierDetection {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeAnalysisOutlierDetectionBuilder> for DataframeAnalysisOutlierDetection {
     fn from(builder: DataframeAnalysisOutlierDetectionBuilder) -> Self {
         builder.build()
@@ -11792,18 +11048,27 @@ pub struct DataframeAnalysisRegression {
 
 impl DataframeAnalysisRegression {
     /// Creates a builder for [`DataframeAnalysisRegression`].
+    ///
+    /// Required: `dependent_variable`.
     pub fn builder() -> DataframeAnalysisRegressionBuilder {
         DataframeAnalysisRegressionBuilder::new()
     }
 
     /// Creates a [`DataframeAnalysisRegression`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalysisRegressionBuilder,
-        ) -> DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `dependent_variable`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalysisRegression>>(
+        f: impl FnOnce(DataframeAnalysisRegressionBuilder) -> B,
     ) -> DataframeAnalysisRegression {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalysisRegressionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analysis_regression_members {
+    pub struct dependent_variable;
 }
 
 /// Builder for [`DataframeAnalysisRegression`].
@@ -12005,12 +11270,11 @@ impl<S0> DataframeAnalysisRegressionBuilder<(S0,)> {
     }
 
     /// Adds an element to [`feature_processors`](Self::feature_processors), with a builder.
-    pub fn add_feature_processors_with(
+    pub fn add_feature_processors_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisFeatureProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisFeatureProcessorBuilder,
-        )
-            -> DataframeAnalysisFeatureProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisFeatureProcessorBuilder) -> B,
     ) -> Self {
         self.add_feature_processors(f(DataframeAnalysisFeatureProcessorBuilder::new()).build())
     }
@@ -12179,7 +11443,7 @@ impl<S0> DataframeAnalysisRegressionBuilder<(S0,)> {
 }
 
 impl DataframeAnalysisRegressionBuilder<(crate::typed::builder::NotSet,)> {
-    /// Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
+    /// **Required.** Defines which field of the document is to be predicted. It must match one of the fields in the index being used to train. If this field is missing from a document, then that document will not be used for training, but a prediction with the trained model will be generated for it. It is also known as continuous target variable.
     /// For classification analysis, the data type of the field must be numeric (`integer`, `short`, `long`, `byte`), categorical (`ip` or `keyword`), or `boolean`. There must be no more than 30 different values in this field.
     /// For regression analysis, the data type of the field must be numeric.
     pub fn dependent_variable(
@@ -12192,9 +11456,12 @@ impl DataframeAnalysisRegressionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalysisRegressionBuilder<(S0,)> {
     /// Builds a [`DataframeAnalysisRegression`].
-    pub fn build(self) -> DataframeAnalysisRegression {
+    pub fn build(self) -> DataframeAnalysisRegression
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analysis_regression_members::dependent_variable>,
+    {
         DataframeAnalysisRegression {
             alpha: self.alpha,
             dependent_variable: self.dependent_variable.unwrap(),
@@ -12221,18 +11488,24 @@ impl DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalysisRegression
+impl<S0> crate::typed::builder::Build for DataframeAnalysisRegressionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_regression_members::dependent_variable>,
 {
-    fn from(builder: DataframeAnalysisRegressionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeAnalysisRegression;
+
+    fn build(self) -> DataframeAnalysisRegression {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalysisRegressionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `dependent_variable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dependent_variable: crate::typed::builder::MissingRequiredField) -> DataframeAnalysisRegression { match dependent_variable {} }
+impl<S0> From<DataframeAnalysisRegressionBuilder<(S0,)>> for DataframeAnalysisRegression
+where
+    S0: crate::typed::builder::IsSet<dataframe_analysis_regression_members::dependent_variable>,
+{
+    fn from(builder: DataframeAnalysisRegressionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12260,24 +11533,31 @@ pub struct DataframeAnalytics {
 
 impl DataframeAnalytics {
     /// Creates a builder for [`DataframeAnalytics`].
+    ///
+    /// Required: `data_counts`, `id`, `memory_usage`, `progress`, `state`.
     pub fn builder() -> DataframeAnalyticsBuilder {
         DataframeAnalyticsBuilder::new()
     }
 
     /// Creates a [`DataframeAnalytics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsBuilder,
-        ) -> DataframeAnalyticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `data_counts`, `id`, `memory_usage`, `progress`, `state`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalytics>>(
+        f: impl FnOnce(DataframeAnalyticsBuilder) -> B,
     ) -> DataframeAnalytics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_members {
+    pub struct data_counts;
+    pub struct id;
+    pub struct memory_usage;
+    pub struct progress;
+    pub struct state;
 }
 
 /// Builder for [`DataframeAnalytics`].
@@ -12354,12 +11634,11 @@ impl<S0, S1, S2, S3, S4> DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`analysis_stats`](Self::analysis_stats) with a builder.
-    pub fn analysis_stats_with(
+    pub fn analysis_stats_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsContainerBuilder,
-        )
-            -> DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalyticsStatsContainerBuilder) -> B,
     ) -> Self {
         self.analysis_stats(f(DataframeAnalyticsStatsContainerBuilder::new()).build())
     }
@@ -12389,23 +11668,18 @@ impl<S0, S1, S2, S3, S4> DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeAttributes>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeAttributesBuilder,
-        ) -> crate::typed::_types::NodeAttributesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeAttributesBuilder) -> B,
     ) -> Self {
         self.node(f(crate::typed::_types::NodeAttributesBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3, S4> DataframeAnalyticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// An object that provides counts for the quantity of documents skipped, used in training, or available for testing.
+    /// **Required.** An object that provides counts for the quantity of documents skipped, used in training, or available for testing.
     pub fn data_counts(
         self,
         value: impl Into<DataframeAnalyticsStatsDataCounts>,
@@ -12416,22 +11690,18 @@ impl<S1, S2, S3, S4> DataframeAnalyticsBuilder<(crate::typed::builder::NotSet, S
     }
 
     /// Sets [`data_counts`](Self::data_counts) with a builder.
-    pub fn data_counts_with(
+    pub fn data_counts_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsDataCounts>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsDataCountsBuilder,
-        ) -> DataframeAnalyticsStatsDataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsDataCountsBuilder) -> B,
     ) -> DataframeAnalyticsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         self.data_counts(f(DataframeAnalyticsStatsDataCountsBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4> DataframeAnalyticsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The unique identifier of the data frame analytics job.
+    /// **Required.** The unique identifier of the data frame analytics job.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -12443,7 +11713,7 @@ impl<S0, S2, S3, S4> DataframeAnalyticsBuilder<(S0, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S3, S4> DataframeAnalyticsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// An object describing memory usage of the analytics. It is present only after the job is started and memory usage is reported.
+    /// **Required.** An object describing memory usage of the analytics. It is present only after the job is started and memory usage is reported.
     pub fn memory_usage(
         self,
         value: impl Into<DataframeAnalyticsStatsMemoryUsage>,
@@ -12454,21 +11724,18 @@ impl<S0, S1, S3, S4> DataframeAnalyticsBuilder<(S0, S1, crate::typed::builder::N
     }
 
     /// Sets [`memory_usage`](Self::memory_usage) with a builder.
-    pub fn memory_usage_with(
+    pub fn memory_usage_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsMemoryUsage>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsMemoryUsageBuilder,
-        ) -> DataframeAnalyticsStatsMemoryUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsMemoryUsageBuilder) -> B,
     ) -> DataframeAnalyticsBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.memory_usage(f(DataframeAnalyticsStatsMemoryUsageBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4> DataframeAnalyticsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// The progress report of the data frame analytics job by phase.
+    /// **Required.** The progress report of the data frame analytics job by phase.
     pub fn progress(
         self,
         value: impl Into<Vec<DataframeAnalyticsStatsProgress>>,
@@ -12492,14 +11759,11 @@ impl<S0, S1, S2, S4> DataframeAnalyticsBuilder<(S0, S1, S2, crate::typed::builde
     }
 
     /// Adds an element to [`progress`](Self::progress), with a builder.
-    pub fn add_progress_with(
+    pub fn add_progress_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsProgress>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsProgressBuilder,
-        ) -> DataframeAnalyticsStatsProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsProgressBuilder) -> B,
     ) -> DataframeAnalyticsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.add_progress(f(DataframeAnalyticsStatsProgressBuilder::new()).build())
     }
@@ -12515,21 +11779,18 @@ impl<S0, S1, S2, S4> DataframeAnalyticsBuilder<(S0, S1, S2, crate::typed::builde
     }
 
     /// Adds an element to [`progress`](Self::progress), with a builder.
-    pub fn add_progress_with(
+    pub fn add_progress_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsProgress>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsProgressBuilder,
-        ) -> DataframeAnalyticsStatsProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsProgressBuilder) -> B,
     ) -> Self {
         self.add_progress(f(DataframeAnalyticsStatsProgressBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3> DataframeAnalyticsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The status of the data frame analytics job, which can be one of the following values: failed, started, starting, stopping, stopped.
+    /// **Required.** The status of the data frame analytics job, which can be one of the following values: failed, started, starting, stopping, stopped.
     pub fn state(
         self,
         value: impl Into<DataframeState>,
@@ -12540,17 +11801,16 @@ impl<S0, S1, S2, S3> DataframeAnalyticsBuilder<(S0, S1, S2, S3, crate::typed::bu
     }
 }
 
-impl
-    DataframeAnalyticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`DataframeAnalytics`].
-    pub fn build(self) -> DataframeAnalytics {
+    pub fn build(self) -> DataframeAnalytics
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_members::data_counts>,
+        S1: crate::typed::builder::IsSet<dataframe_analytics_members::id>,
+        S2: crate::typed::builder::IsSet<dataframe_analytics_members::memory_usage>,
+        S3: crate::typed::builder::IsSet<dataframe_analytics_members::progress>,
+        S4: crate::typed::builder::IsSet<dataframe_analytics_members::state>,
+    {
         DataframeAnalytics {
             analysis_stats: self.analysis_stats,
             assignment_explanation: self.assignment_explanation,
@@ -12564,90 +11824,34 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalytics
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_members::data_counts>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_members::id>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_members::memory_usage>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_members::progress>,
+    S4: crate::typed::builder::IsSet<dataframe_analytics_members::state>,
 {
-    fn from(
-        builder: DataframeAnalyticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalytics;
+
+    fn build(self) -> DataframeAnalytics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DataframeAnalyticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `data_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_counts: crate::typed::builder::MissingRequiredField) -> DataframeAnalytics { match data_counts {} }
-}
-
-impl<S2, S3, S4>
-    DataframeAnalyticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)>>
+    for DataframeAnalytics
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_members::data_counts>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_members::id>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_members::memory_usage>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_members::progress>,
+    S4: crate::typed::builder::IsSet<dataframe_analytics_members::state>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DataframeAnalytics { match id {} }
-}
-
-impl<S3, S4>
-    DataframeAnalyticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `memory_usage` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory_usage: crate::typed::builder::MissingRequiredField) -> DataframeAnalytics { match memory_usage {} }
-}
-
-impl<S4>
-    DataframeAnalyticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `progress` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, progress: crate::typed::builder::MissingRequiredField) -> DataframeAnalytics { match progress {} }
-}
-
-impl
-    DataframeAnalyticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> DataframeAnalytics { match state {} }
+    fn from(builder: DataframeAnalyticsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12670,8 +11874,8 @@ impl DataframeAnalyticsAuthorization {
     }
 
     /// Creates a [`DataframeAnalyticsAuthorization`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataframeAnalyticsAuthorizationBuilder) -> DataframeAnalyticsAuthorizationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsAuthorization>>(
+        f: impl FnOnce(DataframeAnalyticsAuthorizationBuilder) -> B,
     ) -> DataframeAnalyticsAuthorization {
         f(Self::builder()).build()
     }
@@ -12709,14 +11913,9 @@ impl DataframeAnalyticsAuthorizationBuilder {
     }
 
     /// Sets [`api_key`](Self::api_key) with a builder.
-    pub fn api_key_with(
+    pub fn api_key_with<B: crate::typed::builder::Build<Output = ApiKeyAuthorization>>(
         self,
-        f: impl FnOnce(
-            ApiKeyAuthorizationBuilder,
-        ) -> ApiKeyAuthorizationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApiKeyAuthorizationBuilder) -> B,
     ) -> Self {
         self.api_key(f(ApiKeyAuthorizationBuilder::new()).build())
     }
@@ -12765,6 +11964,14 @@ impl DataframeAnalyticsAuthorizationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeAnalyticsAuthorizationBuilder {
+    type Output = DataframeAnalyticsAuthorization;
+
+    fn build(self) -> DataframeAnalyticsAuthorization {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeAnalyticsAuthorizationBuilder> for DataframeAnalyticsAuthorization {
     fn from(builder: DataframeAnalyticsAuthorizationBuilder) -> Self {
         builder.build()
@@ -12782,18 +11989,27 @@ pub struct DataframeAnalyticsDestination {
 
 impl DataframeAnalyticsDestination {
     /// Creates a builder for [`DataframeAnalyticsDestination`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> DataframeAnalyticsDestinationBuilder {
         DataframeAnalyticsDestinationBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsDestination`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsDestinationBuilder,
-        ) -> DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsDestination>>(
+        f: impl FnOnce(DataframeAnalyticsDestinationBuilder) -> B,
     ) -> DataframeAnalyticsDestination {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsDestinationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_destination_members {
+    pub struct index;
 }
 
 /// Builder for [`DataframeAnalyticsDestination`].
@@ -12837,7 +12053,7 @@ impl<S0> DataframeAnalyticsDestinationBuilder<(S0,)> {
 }
 
 impl DataframeAnalyticsDestinationBuilder<(crate::typed::builder::NotSet,)> {
-    /// Defines the destination index to store the results of the data frame analytics job.
+    /// **Required.** Defines the destination index to store the results of the data frame analytics job.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -12848,9 +12064,12 @@ impl DataframeAnalyticsDestinationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalyticsDestinationBuilder<(S0,)> {
     /// Builds a [`DataframeAnalyticsDestination`].
-    pub fn build(self) -> DataframeAnalyticsDestination {
+    pub fn build(self) -> DataframeAnalyticsDestination
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_destination_members::index>,
+    {
         DataframeAnalyticsDestination {
             index: self.index.unwrap(),
             results_field: self.results_field,
@@ -12858,18 +12077,24 @@ impl DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalyticsDestination
+impl<S0> crate::typed::builder::Build for DataframeAnalyticsDestinationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_destination_members::index>,
 {
-    fn from(builder: DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsDestination;
+
+    fn build(self) -> DataframeAnalyticsDestination {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalyticsDestinationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsDestination { match index {} }
+impl<S0> From<DataframeAnalyticsDestinationBuilder<(S0,)>> for DataframeAnalyticsDestination
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_destination_members::index>,
+{
+    fn from(builder: DataframeAnalyticsDestinationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12892,23 +12117,30 @@ pub struct DataframeAnalyticsFieldSelection {
 
 impl DataframeAnalyticsFieldSelection {
     /// Creates a builder for [`DataframeAnalyticsFieldSelection`].
+    ///
+    /// Required: `is_included`, `is_required`, `mapping_types`, `name`.
     pub fn builder() -> DataframeAnalyticsFieldSelectionBuilder {
         DataframeAnalyticsFieldSelectionBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsFieldSelection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsFieldSelectionBuilder,
-        ) -> DataframeAnalyticsFieldSelectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_included`, `is_required`, `mapping_types`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsFieldSelection>>(
+        f: impl FnOnce(DataframeAnalyticsFieldSelectionBuilder) -> B,
     ) -> DataframeAnalyticsFieldSelection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsFieldSelectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_field_selection_members {
+    pub struct is_included;
+    pub struct is_required;
+    pub struct mapping_types;
+    pub struct name;
 }
 
 /// Builder for [`DataframeAnalyticsFieldSelection`].
@@ -12992,7 +12224,7 @@ impl<S0, S1, S2, S3> DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     DataframeAnalyticsFieldSelectionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// Whether the field is selected to be included in the analysis.
+    /// **Required.** Whether the field is selected to be included in the analysis.
     pub fn is_included(
         self,
         value: bool,
@@ -13006,7 +12238,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     DataframeAnalyticsFieldSelectionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Whether the field is required.
+    /// **Required.** Whether the field is required.
     pub fn is_required(
         self,
         value: bool,
@@ -13020,7 +12252,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     DataframeAnalyticsFieldSelectionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The mapping types of the field.
+    /// **Required.** The mapping types of the field.
     pub fn mapping_types(
         self,
         value: impl Into<Vec<String>>,
@@ -13057,7 +12289,7 @@ impl<S0, S1, S3> DataframeAnalyticsFieldSelectionBuilder<(S0, S1, crate::typed::
 impl<S0, S1, S2>
     DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The field name.
+    /// **Required.** The field name.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -13068,16 +12300,17 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    DataframeAnalyticsFieldSelectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DataframeAnalyticsFieldSelection`].
-    pub fn build(self) -> DataframeAnalyticsFieldSelection {
+    pub fn build(self) -> DataframeAnalyticsFieldSelection
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_included>,
+        S1: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_required>,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analytics_field_selection_members::mapping_types,
+        >,
+        S3: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::name>,
+    {
         DataframeAnalyticsFieldSelection {
             is_included: self.is_included.unwrap(),
             is_required: self.is_required.unwrap(),
@@ -13089,73 +12322,32 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsFieldSelectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsFieldSelection
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_included>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_required>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::mapping_types>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::name>,
 {
-    fn from(
-        builder: DataframeAnalyticsFieldSelectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsFieldSelection;
+
+    fn build(self) -> DataframeAnalyticsFieldSelection {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    DataframeAnalyticsFieldSelectionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, S3)>>
+    for DataframeAnalyticsFieldSelection
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_included>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::is_required>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::mapping_types>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_field_selection_members::name>,
 {
-    /// `is_included` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_included: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsFieldSelection { match is_included {} }
-}
-
-impl<S2, S3>
-    DataframeAnalyticsFieldSelectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `is_required` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_required: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsFieldSelection { match is_required {} }
-}
-
-impl<S3>
-    DataframeAnalyticsFieldSelectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `mapping_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mapping_types: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsFieldSelection { match mapping_types {} }
-}
-
-impl
-    DataframeAnalyticsFieldSelectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsFieldSelection { match name {} }
+    fn from(builder: DataframeAnalyticsFieldSelectionBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13168,21 +12360,28 @@ pub struct DataframeAnalyticsMemoryEstimation {
 
 impl DataframeAnalyticsMemoryEstimation {
     /// Creates a builder for [`DataframeAnalyticsMemoryEstimation`].
+    ///
+    /// Required: `expected_memory_with_disk`, `expected_memory_without_disk`.
     pub fn builder() -> DataframeAnalyticsMemoryEstimationBuilder {
         DataframeAnalyticsMemoryEstimationBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsMemoryEstimation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsMemoryEstimationBuilder,
-        ) -> DataframeAnalyticsMemoryEstimationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `expected_memory_with_disk`, `expected_memory_without_disk`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsMemoryEstimation>>(
+        f: impl FnOnce(DataframeAnalyticsMemoryEstimationBuilder) -> B,
     ) -> DataframeAnalyticsMemoryEstimation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsMemoryEstimationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_memory_estimation_members {
+    pub struct expected_memory_with_disk;
+    pub struct expected_memory_without_disk;
 }
 
 /// Builder for [`DataframeAnalyticsMemoryEstimation`].
@@ -13221,7 +12420,7 @@ impl<S0, S1> DataframeAnalyticsMemoryEstimationBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeAnalyticsMemoryEstimationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Estimated memory usage under the assumption that overflowing to disk is allowed during data frame analytics. expected_memory_with_disk is usually smaller than expected_memory_without_disk as using disk allows to limit the main memory needed to perform data frame analytics.
+    /// **Required.** Estimated memory usage under the assumption that overflowing to disk is allowed during data frame analytics. expected_memory_with_disk is usually smaller than expected_memory_without_disk as using disk allows to limit the main memory needed to perform data frame analytics.
     pub fn expected_memory_with_disk(
         self,
         value: impl Into<String>,
@@ -13233,7 +12432,7 @@ impl<S1> DataframeAnalyticsMemoryEstimationBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0> DataframeAnalyticsMemoryEstimationBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Estimated memory usage under the assumption that the whole data frame analytics should happen in memory (i.e. without overflowing to disk).
+    /// **Required.** Estimated memory usage under the assumption that the whole data frame analytics should happen in memory (i.e. without overflowing to disk).
     pub fn expected_memory_without_disk(
         self,
         value: impl Into<String>,
@@ -13244,14 +12443,17 @@ impl<S0> DataframeAnalyticsMemoryEstimationBuilder<(S0, crate::typed::builder::N
     }
 }
 
-impl
-    DataframeAnalyticsMemoryEstimationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeAnalyticsMemoryEstimationBuilder<(S0, S1)> {
     /// Builds a [`DataframeAnalyticsMemoryEstimation`].
-    pub fn build(self) -> DataframeAnalyticsMemoryEstimation {
+    pub fn build(self) -> DataframeAnalyticsMemoryEstimation
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analytics_memory_estimation_members::expected_memory_with_disk,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analytics_memory_estimation_members::expected_memory_without_disk,
+        >,
+    {
         DataframeAnalyticsMemoryEstimation {
             expected_memory_with_disk: self.expected_memory_with_disk.unwrap(),
             expected_memory_without_disk: self.expected_memory_without_disk.unwrap(),
@@ -13259,39 +12461,35 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsMemoryEstimationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsMemoryEstimation
+impl<S0, S1> crate::typed::builder::Build for DataframeAnalyticsMemoryEstimationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_memory_estimation_members::expected_memory_with_disk,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_memory_estimation_members::expected_memory_without_disk,
+    >,
 {
-    fn from(
-        builder: DataframeAnalyticsMemoryEstimationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsMemoryEstimation;
+
+    fn build(self) -> DataframeAnalyticsMemoryEstimation {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeAnalyticsMemoryEstimationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `expected_memory_with_disk` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expected_memory_with_disk: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsMemoryEstimation { match expected_memory_with_disk {} }
-}
-
-impl
-    DataframeAnalyticsMemoryEstimationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeAnalyticsMemoryEstimationBuilder<(S0, S1)>>
+    for DataframeAnalyticsMemoryEstimation
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_memory_estimation_members::expected_memory_with_disk,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_memory_estimation_members::expected_memory_without_disk,
+    >,
 {
-    /// `expected_memory_without_disk` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expected_memory_without_disk: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsMemoryEstimation { match expected_memory_without_disk {} }
+    fn from(builder: DataframeAnalyticsMemoryEstimationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13311,18 +12509,27 @@ pub struct DataframeAnalyticsSource {
 
 impl DataframeAnalyticsSource {
     /// Creates a builder for [`DataframeAnalyticsSource`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> DataframeAnalyticsSourceBuilder {
         DataframeAnalyticsSourceBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsSource`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsSourceBuilder,
-        ) -> DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsSource>>(
+        f: impl FnOnce(DataframeAnalyticsSourceBuilder) -> B,
     ) -> DataframeAnalyticsSource {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsSourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_source_members {
+    pub struct index;
 }
 
 /// Builder for [`DataframeAnalyticsSource`].
@@ -13377,13 +12584,11 @@ impl<S0> DataframeAnalyticsSourceBuilder<(S0,)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -13419,14 +12624,12 @@ impl<S0> DataframeAnalyticsSourceBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -13447,16 +12650,18 @@ impl<S0> DataframeAnalyticsSourceBuilder<(S0,)> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisAnalyzedFields>,
+    >(
         self,
-        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> DataframeAnalysisAnalyzedFieldsBuilder,
+        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> Self {
         self.source(f(DataframeAnalysisAnalyzedFieldsBuilder::new()).build())
     }
 }
 
 impl DataframeAnalyticsSourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// Index or indices on which to perform the analysis. It can be a single index or index pattern as well as an array of indices or patterns. NOTE: If your source indices contain documents with the same IDs, only the document that is indexed last appears in the destination index.
+    /// **Required.** Index or indices on which to perform the analysis. It can be a single index or index pattern as well as an array of indices or patterns. NOTE: If your source indices contain documents with the same IDs, only the document that is indexed last appears in the destination index.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -13467,9 +12672,12 @@ impl DataframeAnalyticsSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalyticsSourceBuilder<(S0,)> {
     /// Builds a [`DataframeAnalyticsSource`].
-    pub fn build(self) -> DataframeAnalyticsSource {
+    pub fn build(self) -> DataframeAnalyticsSource
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_source_members::index>,
+    {
         DataframeAnalyticsSource {
             index: self.index.unwrap(),
             query: self.query,
@@ -13479,18 +12687,24 @@ impl DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalyticsSource
+impl<S0> crate::typed::builder::Build for DataframeAnalyticsSourceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_source_members::index>,
 {
-    fn from(builder: DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsSource;
+
+    fn build(self) -> DataframeAnalyticsSource {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalyticsSourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsSource { match index {} }
+impl<S0> From<DataframeAnalyticsSourceBuilder<(S0,)>> for DataframeAnalyticsSource
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_source_members::index>,
+{
+    fn from(builder: DataframeAnalyticsSourceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13534,16 +12748,17 @@ impl
 
 impl DataframeAnalyticsStatsContainer {
     /// Creates a builder for [`DataframeAnalyticsStatsContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> DataframeAnalyticsStatsContainerBuilder {
         DataframeAnalyticsStatsContainerBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsContainerBuilder,
-        )
-            -> DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsContainer>>(
+        f: impl FnOnce(DataframeAnalyticsStatsContainerBuilder) -> B,
     ) -> DataframeAnalyticsStatsContainer {
         f(Self::builder()).build()
     }
@@ -13588,17 +12803,11 @@ impl DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification_stats`](Self::classification_stats) with a builder.
-    pub fn classification_stats_with(
+    pub fn classification_stats_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsHyperparameters>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsHyperparametersBuilder,
-        ) -> DataframeAnalyticsStatsHyperparametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsHyperparametersBuilder) -> B,
     ) -> DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification_stats(f(DataframeAnalyticsStatsHyperparametersBuilder::new()).build())
     }
@@ -13616,15 +12825,11 @@ impl DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`outlier_detection_stats`](Self::outlier_detection_stats) with a builder.
-    pub fn outlier_detection_stats_with(
+    pub fn outlier_detection_stats_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsOutlierDetection>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsOutlierDetectionBuilder,
-        ) -> DataframeAnalyticsStatsOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsOutlierDetectionBuilder) -> B,
     ) -> DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)> {
         self.outlier_detection_stats(
             f(DataframeAnalyticsStatsOutlierDetectionBuilder::new()).build(),
@@ -13644,43 +12849,44 @@ impl DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression_stats`](Self::regression_stats) with a builder.
-    pub fn regression_stats_with(
+    pub fn regression_stats_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsHyperparameters>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsStatsHyperparametersBuilder,
-        ) -> DataframeAnalyticsStatsHyperparametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeAnalyticsStatsHyperparametersBuilder) -> B,
     ) -> DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression_stats(f(DataframeAnalyticsStatsHyperparametersBuilder::new()).build())
     }
 }
 
-impl DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeAnalyticsStatsContainerBuilder<(S0,)> {
     /// Builds a [`DataframeAnalyticsStatsContainer`].
-    pub fn build(self) -> DataframeAnalyticsStatsContainer {
+    pub fn build(self) -> DataframeAnalyticsStatsContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<DataframeAnalyticsStatsContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)>>
-    for DataframeAnalyticsStatsContainer
+impl<S0> crate::typed::builder::Build for DataframeAnalyticsStatsContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalyticsStatsContainer>,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsContainer;
+
+    fn build(self) -> DataframeAnalyticsStatsContainer {
+        Self::build(self)
     }
 }
 
-impl DataframeAnalyticsStatsContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsContainer { match variant {} }
+impl<S0> From<DataframeAnalyticsStatsContainerBuilder<(S0,)>> for DataframeAnalyticsStatsContainer
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeAnalyticsStatsContainer>,
+{
+    fn from(builder: DataframeAnalyticsStatsContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13695,22 +12901,29 @@ pub struct DataframeAnalyticsStatsDataCounts {
 
 impl DataframeAnalyticsStatsDataCounts {
     /// Creates a builder for [`DataframeAnalyticsStatsDataCounts`].
+    ///
+    /// Required: `skipped_docs_count`, `test_docs_count`, `training_docs_count`.
     pub fn builder() -> DataframeAnalyticsStatsDataCountsBuilder {
         DataframeAnalyticsStatsDataCountsBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsDataCounts`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsDataCountsBuilder,
-        ) -> DataframeAnalyticsStatsDataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `skipped_docs_count`, `test_docs_count`, `training_docs_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsDataCounts>>(
+        f: impl FnOnce(DataframeAnalyticsStatsDataCountsBuilder) -> B,
     ) -> DataframeAnalyticsStatsDataCounts {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsStatsDataCountsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_stats_data_counts_members {
+    pub struct skipped_docs_count;
+    pub struct test_docs_count;
+    pub struct training_docs_count;
 }
 
 /// Builder for [`DataframeAnalyticsStatsDataCounts`].
@@ -13757,7 +12970,7 @@ impl<S0, S1, S2> DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DataframeAnalyticsStatsDataCountsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The number of documents that are skipped during the analysis because they contained values that are not supported by the analysis. For example, outlier detection does not support missing fields so it skips documents with missing fields. Likewise, all types of analysis skip documents that contain arrays with more than one element.
+    /// **Required.** The number of documents that are skipped during the analysis because they contained values that are not supported by the analysis. For example, outlier detection does not support missing fields so it skips documents with missing fields. Likewise, all types of analysis skip documents that contain arrays with more than one element.
     pub fn skipped_docs_count(
         self,
         value: i32,
@@ -13769,7 +12982,7 @@ impl<S1, S2> DataframeAnalyticsStatsDataCountsBuilder<(crate::typed::builder::No
 }
 
 impl<S0, S2> DataframeAnalyticsStatsDataCountsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The number of documents that are not used for training the model and can be used for testing.
+    /// **Required.** The number of documents that are not used for training the model and can be used for testing.
     pub fn test_docs_count(
         self,
         value: i32,
@@ -13781,7 +12994,7 @@ impl<S0, S2> DataframeAnalyticsStatsDataCountsBuilder<(S0, crate::typed::builder
 }
 
 impl<S0, S1> DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The number of documents that are used for training the model.
+    /// **Required.** The number of documents that are used for training the model.
     pub fn training_docs_count(
         self,
         value: i32,
@@ -13792,15 +13005,20 @@ impl<S0, S1> DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, crate::typed::bui
     }
 }
 
-impl
-    DataframeAnalyticsStatsDataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, S2)> {
     /// Builds a [`DataframeAnalyticsStatsDataCounts`].
-    pub fn build(self) -> DataframeAnalyticsStatsDataCounts {
+    pub fn build(self) -> DataframeAnalyticsStatsDataCounts
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_data_counts_members::skipped_docs_count,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_data_counts_members::test_docs_count,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_data_counts_members::training_docs_count,
+        >,
+    {
         DataframeAnalyticsStatsDataCounts {
             skipped_docs_count: self.skipped_docs_count.unwrap(),
             test_docs_count: self.test_docs_count.unwrap(),
@@ -13809,54 +13027,42 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsStatsDataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsStatsDataCounts
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::skipped_docs_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::test_docs_count,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::training_docs_count,
+    >,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsDataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsDataCounts;
+
+    fn build(self) -> DataframeAnalyticsStatsDataCounts {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DataframeAnalyticsStatsDataCountsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `skipped_docs_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skipped_docs_count: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsDataCounts { match skipped_docs_count {} }
-}
-
-impl<S2>
-    DataframeAnalyticsStatsDataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, S2)>>
+    for DataframeAnalyticsStatsDataCounts
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::skipped_docs_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::test_docs_count,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_data_counts_members::training_docs_count,
+    >,
 {
-    /// `test_docs_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, test_docs_count: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsDataCounts { match test_docs_count {} }
-}
-
-impl
-    DataframeAnalyticsStatsDataCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `training_docs_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, training_docs_count: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsDataCounts { match training_docs_count {} }
+    fn from(builder: DataframeAnalyticsStatsDataCountsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13875,24 +13081,31 @@ pub struct DataframeAnalyticsStatsHyperparameters {
 
 impl DataframeAnalyticsStatsHyperparameters {
     /// Creates a builder for [`DataframeAnalyticsStatsHyperparameters`].
+    ///
+    /// Required: `hyperparameters`, `iteration`, `timestamp`, `timing_stats`, `validation_loss`.
     pub fn builder() -> DataframeAnalyticsStatsHyperparametersBuilder {
         DataframeAnalyticsStatsHyperparametersBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsHyperparameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsHyperparametersBuilder,
-        ) -> DataframeAnalyticsStatsHyperparametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `hyperparameters`, `iteration`, `timestamp`, `timing_stats`, `validation_loss`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsHyperparameters>>(
+        f: impl FnOnce(DataframeAnalyticsStatsHyperparametersBuilder) -> B,
     ) -> DataframeAnalyticsStatsHyperparameters {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsStatsHyperparametersBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_stats_hyperparameters_members {
+    pub struct hyperparameters;
+    pub struct iteration;
+    pub struct timestamp;
+    pub struct timing_stats;
+    pub struct validation_loss;
 }
 
 /// Builder for [`DataframeAnalyticsStatsHyperparameters`].
@@ -13951,7 +13164,7 @@ impl<S0, S1, S2, S3, S4> DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, 
 impl<S1, S2, S3, S4>
     DataframeAnalyticsStatsHyperparametersBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// An object containing the parameters of the classification analysis job.
+    /// **Required.** An object containing the parameters of the classification analysis job.
     pub fn hyperparameters(
         self,
         value: impl Into<Hyperparameters>,
@@ -13963,9 +13176,9 @@ impl<S1, S2, S3, S4>
     }
 
     /// Sets [`hyperparameters`](Self::hyperparameters) with a builder.
-    pub fn hyperparameters_with(
+    pub fn hyperparameters_with<B: crate::typed::builder::Build<Output = Hyperparameters>>(
         self,
-        f: impl FnOnce(HyperparametersBuilder) -> HyperparametersBuilder,
+        f: impl FnOnce(HyperparametersBuilder) -> B,
     ) -> DataframeAnalyticsStatsHyperparametersBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)>
     {
         self.hyperparameters(f(HyperparametersBuilder::new()).build())
@@ -13975,7 +13188,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     DataframeAnalyticsStatsHyperparametersBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// The number of iterations on the analysis.
+    /// **Required.** The number of iterations on the analysis.
     pub fn iteration(
         self,
         value: i32,
@@ -13990,7 +13203,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The timestamp when the statistics were reported in milliseconds since the epoch.
+    /// **Required.** The timestamp when the statistics were reported in milliseconds since the epoch.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -14005,7 +13218,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// An object containing time statistics about the data frame analytics job.
+    /// **Required.** An object containing time statistics about the data frame analytics job.
     pub fn timing_stats(
         self,
         value: impl Into<TimingStats>,
@@ -14017,9 +13230,9 @@ impl<S0, S1, S2, S4>
     }
 
     /// Sets [`timing_stats`](Self::timing_stats) with a builder.
-    pub fn timing_stats_with(
+    pub fn timing_stats_with<B: crate::typed::builder::Build<Output = TimingStats>>(
         self,
-        f: impl FnOnce(TimingStatsBuilder) -> TimingStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TimingStatsBuilder) -> B,
     ) -> DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)>
     {
         self.timing_stats(f(TimingStatsBuilder::new()).build())
@@ -14029,7 +13242,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// An object containing information about validation loss.
+    /// **Required.** An object containing information about validation loss.
     pub fn validation_loss(
         self,
         value: impl Into<ValidationLoss>,
@@ -14041,31 +13254,35 @@ impl<S0, S1, S2, S3>
     }
 
     /// Sets [`validation_loss`](Self::validation_loss) with a builder.
-    pub fn validation_loss_with(
+    pub fn validation_loss_with<B: crate::typed::builder::Build<Output = ValidationLoss>>(
         self,
-        f: impl FnOnce(
-            ValidationLossBuilder,
-        ) -> ValidationLossBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ValidationLossBuilder) -> B,
     ) -> DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)>
     {
         self.validation_loss(f(ValidationLossBuilder::new()).build())
     }
 }
 
-impl
-    DataframeAnalyticsStatsHyperparametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`DataframeAnalyticsStatsHyperparameters`].
-    pub fn build(self) -> DataframeAnalyticsStatsHyperparameters {
+    pub fn build(self) -> DataframeAnalyticsStatsHyperparameters
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_hyperparameters_members::hyperparameters,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_hyperparameters_members::iteration,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_hyperparameters_members::timestamp,
+        >,
+        S3: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_hyperparameters_members::timing_stats,
+        >,
+        S4: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_hyperparameters_members::validation_loss,
+        >,
+    {
         DataframeAnalyticsStatsHyperparameters {
             hyperparameters: self.hyperparameters.unwrap(),
             iteration: self.iteration.unwrap(),
@@ -14076,92 +13293,46 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsStatsHyperparametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsStatsHyperparameters
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::hyperparameters,
+    >,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_hyperparameters_members::iteration>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_stats_hyperparameters_members::timestamp>,
+    S3: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::timing_stats,
+    >,
+    S4: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::validation_loss,
+    >,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsHyperparametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsHyperparameters;
+
+    fn build(self) -> DataframeAnalyticsStatsHyperparameters {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    DataframeAnalyticsStatsHyperparametersBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, S4)>>
+    for DataframeAnalyticsStatsHyperparameters
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::hyperparameters,
+    >,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_hyperparameters_members::iteration>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_stats_hyperparameters_members::timestamp>,
+    S3: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::timing_stats,
+    >,
+    S4: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_hyperparameters_members::validation_loss,
+    >,
 {
-    /// `hyperparameters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hyperparameters: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsHyperparameters { match hyperparameters {} }
-}
-
-impl<S2, S3, S4>
-    DataframeAnalyticsStatsHyperparametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `iteration` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, iteration: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsHyperparameters { match iteration {} }
-}
-
-impl<S3, S4>
-    DataframeAnalyticsStatsHyperparametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsHyperparameters { match timestamp {} }
-}
-
-impl<S4>
-    DataframeAnalyticsStatsHyperparametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `timing_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timing_stats: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsHyperparameters { match timing_stats {} }
-}
-
-impl
-    DataframeAnalyticsStatsHyperparametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `validation_loss` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, validation_loss: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsHyperparameters { match validation_loss {} }
+    fn from(builder: DataframeAnalyticsStatsHyperparametersBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14180,21 +13351,28 @@ pub struct DataframeAnalyticsStatsMemoryUsage {
 
 impl DataframeAnalyticsStatsMemoryUsage {
     /// Creates a builder for [`DataframeAnalyticsStatsMemoryUsage`].
+    ///
+    /// Required: `peak_usage_bytes`, `status`.
     pub fn builder() -> DataframeAnalyticsStatsMemoryUsageBuilder {
         DataframeAnalyticsStatsMemoryUsageBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsMemoryUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsMemoryUsageBuilder,
-        ) -> DataframeAnalyticsStatsMemoryUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `peak_usage_bytes`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsMemoryUsage>>(
+        f: impl FnOnce(DataframeAnalyticsStatsMemoryUsageBuilder) -> B,
     ) -> DataframeAnalyticsStatsMemoryUsage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsStatsMemoryUsageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_stats_memory_usage_members {
+    pub struct peak_usage_bytes;
+    pub struct status;
 }
 
 /// Builder for [`DataframeAnalyticsStatsMemoryUsage`].
@@ -14269,7 +13447,7 @@ impl<S0, S1> DataframeAnalyticsStatsMemoryUsageBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeAnalyticsStatsMemoryUsageBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The number of bytes used at the highest peak of memory usage.
+    /// **Required.** The number of bytes used at the highest peak of memory usage.
     pub fn peak_usage_bytes(
         self,
         value: i64,
@@ -14281,7 +13459,7 @@ impl<S1> DataframeAnalyticsStatsMemoryUsageBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0> DataframeAnalyticsStatsMemoryUsageBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The memory usage status.
+    /// **Required.** The memory usage status.
     pub fn status(
         self,
         value: impl Into<String>,
@@ -14292,14 +13470,15 @@ impl<S0> DataframeAnalyticsStatsMemoryUsageBuilder<(S0, crate::typed::builder::N
     }
 }
 
-impl
-    DataframeAnalyticsStatsMemoryUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeAnalyticsStatsMemoryUsageBuilder<(S0, S1)> {
     /// Builds a [`DataframeAnalyticsStatsMemoryUsage`].
-    pub fn build(self) -> DataframeAnalyticsStatsMemoryUsage {
+    pub fn build(self) -> DataframeAnalyticsStatsMemoryUsage
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_memory_usage_members::peak_usage_bytes,
+        >,
+        S1: crate::typed::builder::IsSet<dataframe_analytics_stats_memory_usage_members::status>,
+    {
         DataframeAnalyticsStatsMemoryUsage {
             memory_reestimate_bytes: self.memory_reestimate_bytes,
             peak_usage_bytes: self.peak_usage_bytes.unwrap(),
@@ -14309,39 +13488,31 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsStatsMemoryUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsStatsMemoryUsage
+impl<S0, S1> crate::typed::builder::Build for DataframeAnalyticsStatsMemoryUsageBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_memory_usage_members::peak_usage_bytes,
+    >,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_memory_usage_members::status>,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsMemoryUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsMemoryUsage;
+
+    fn build(self) -> DataframeAnalyticsStatsMemoryUsage {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeAnalyticsStatsMemoryUsageBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `peak_usage_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, peak_usage_bytes: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsMemoryUsage { match peak_usage_bytes {} }
-}
-
-impl
-    DataframeAnalyticsStatsMemoryUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeAnalyticsStatsMemoryUsageBuilder<(S0, S1)>>
+    for DataframeAnalyticsStatsMemoryUsage
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_memory_usage_members::peak_usage_bytes,
+    >,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_memory_usage_members::status>,
 {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsMemoryUsage { match status {} }
+    fn from(builder: DataframeAnalyticsStatsMemoryUsageBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14356,22 +13527,29 @@ pub struct DataframeAnalyticsStatsOutlierDetection {
 
 impl DataframeAnalyticsStatsOutlierDetection {
     /// Creates a builder for [`DataframeAnalyticsStatsOutlierDetection`].
+    ///
+    /// Required: `parameters`, `timestamp`, `timing_stats`.
     pub fn builder() -> DataframeAnalyticsStatsOutlierDetectionBuilder {
         DataframeAnalyticsStatsOutlierDetectionBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsOutlierDetection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsOutlierDetectionBuilder,
-        ) -> DataframeAnalyticsStatsOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `parameters`, `timestamp`, `timing_stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsOutlierDetection>>(
+        f: impl FnOnce(DataframeAnalyticsStatsOutlierDetectionBuilder) -> B,
     ) -> DataframeAnalyticsStatsOutlierDetection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsStatsOutlierDetectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_stats_outlier_detection_members {
+    pub struct parameters;
+    pub struct timestamp;
+    pub struct timing_stats;
 }
 
 /// Builder for [`DataframeAnalyticsStatsOutlierDetection`].
@@ -14420,7 +13598,7 @@ impl<S0, S1, S2> DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, S2)> {
 impl<S1, S2>
     DataframeAnalyticsStatsOutlierDetectionBuilder<(crate::typed::builder::NotSet, S1, S2)>
 {
-    /// The list of job parameters specified by the user or determined by algorithmic heuristics.
+    /// **Required.** The list of job parameters specified by the user or determined by algorithmic heuristics.
     pub fn parameters(
         self,
         value: impl Into<OutlierDetectionParameters>,
@@ -14431,9 +13609,9 @@ impl<S1, S2>
     }
 
     /// Sets [`parameters`](Self::parameters) with a builder.
-    pub fn parameters_with(
+    pub fn parameters_with<B: crate::typed::builder::Build<Output = OutlierDetectionParameters>>(
         self,
-        f: impl FnOnce(OutlierDetectionParametersBuilder) -> OutlierDetectionParametersBuilder,
+        f: impl FnOnce(OutlierDetectionParametersBuilder) -> B,
     ) -> DataframeAnalyticsStatsOutlierDetectionBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.parameters(f(OutlierDetectionParametersBuilder::new()).build())
     }
@@ -14442,7 +13620,7 @@ impl<S1, S2>
 impl<S0, S2>
     DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, crate::typed::builder::NotSet, S2)>
 {
-    /// The timestamp when the statistics were reported in milliseconds since the epoch.
+    /// **Required.** The timestamp when the statistics were reported in milliseconds since the epoch.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -14456,7 +13634,7 @@ impl<S0, S2>
 impl<S0, S1>
     DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, crate::typed::builder::NotSet)>
 {
-    /// An object containing time statistics about the data frame analytics job.
+    /// **Required.** An object containing time statistics about the data frame analytics job.
     pub fn timing_stats(
         self,
         value: impl Into<TimingStats>,
@@ -14467,23 +13645,28 @@ impl<S0, S1>
     }
 
     /// Sets [`timing_stats`](Self::timing_stats) with a builder.
-    pub fn timing_stats_with(
+    pub fn timing_stats_with<B: crate::typed::builder::Build<Output = TimingStats>>(
         self,
-        f: impl FnOnce(TimingStatsBuilder) -> TimingStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TimingStatsBuilder) -> B,
     ) -> DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.timing_stats(f(TimingStatsBuilder::new()).build())
     }
 }
 
-impl
-    DataframeAnalyticsStatsOutlierDetectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, S2)> {
     /// Builds a [`DataframeAnalyticsStatsOutlierDetection`].
-    pub fn build(self) -> DataframeAnalyticsStatsOutlierDetection {
+    pub fn build(self) -> DataframeAnalyticsStatsOutlierDetection
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_outlier_detection_members::parameters,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_outlier_detection_members::timestamp,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_outlier_detection_members::timing_stats,
+        >,
+    {
         DataframeAnalyticsStatsOutlierDetection {
             parameters: self.parameters.unwrap(),
             timestamp: self.timestamp.unwrap(),
@@ -14492,56 +13675,42 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsStatsOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsStatsOutlierDetection
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::parameters,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::timestamp,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::timing_stats,
+    >,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsOutlierDetection;
+
+    fn build(self) -> DataframeAnalyticsStatsOutlierDetection {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    DataframeAnalyticsStatsOutlierDetectionBuilder<(crate::typed::builder::NotSet, S1, S2)>
+impl<S0, S1, S2> From<DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, S2)>>
+    for DataframeAnalyticsStatsOutlierDetection
+where
+    S0: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::parameters,
+    >,
+    S1: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::timestamp,
+    >,
+    S2: crate::typed::builder::IsSet<
+        dataframe_analytics_stats_outlier_detection_members::timing_stats,
+    >,
 {
-    /// `parameters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, parameters: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsOutlierDetection { match parameters {} }
-}
-
-impl<S2>
-    DataframeAnalyticsStatsOutlierDetectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsOutlierDetection { match timestamp {} }
-}
-
-impl
-    DataframeAnalyticsStatsOutlierDetectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timing_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timing_stats: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsOutlierDetection { match timing_stats {} }
+    fn from(builder: DataframeAnalyticsStatsOutlierDetectionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14554,21 +13723,28 @@ pub struct DataframeAnalyticsStatsProgress {
 
 impl DataframeAnalyticsStatsProgress {
     /// Creates a builder for [`DataframeAnalyticsStatsProgress`].
+    ///
+    /// Required: `phase`, `progress_percent`.
     pub fn builder() -> DataframeAnalyticsStatsProgressBuilder {
         DataframeAnalyticsStatsProgressBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsStatsProgress`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsStatsProgressBuilder,
-        ) -> DataframeAnalyticsStatsProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `phase`, `progress_percent`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsStatsProgress>>(
+        f: impl FnOnce(DataframeAnalyticsStatsProgressBuilder) -> B,
     ) -> DataframeAnalyticsStatsProgress {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsStatsProgressBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_stats_progress_members {
+    pub struct phase;
+    pub struct progress_percent;
 }
 
 /// Builder for [`DataframeAnalyticsStatsProgress`].
@@ -14607,7 +13783,7 @@ impl<S0, S1> DataframeAnalyticsStatsProgressBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeAnalyticsStatsProgressBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Defines the phase of the data frame analytics job.
+    /// **Required.** Defines the phase of the data frame analytics job.
     pub fn phase(
         self,
         value: impl Into<String>,
@@ -14619,7 +13795,7 @@ impl<S1> DataframeAnalyticsStatsProgressBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0> DataframeAnalyticsStatsProgressBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The progress that the data frame analytics job has made expressed in percentage.
+    /// **Required.** The progress that the data frame analytics job has made expressed in percentage.
     pub fn progress_percent(
         self,
         value: i32,
@@ -14630,11 +13806,15 @@ impl<S0> DataframeAnalyticsStatsProgressBuilder<(S0, crate::typed::builder::NotS
     }
 }
 
-impl
-    DataframeAnalyticsStatsProgressBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> DataframeAnalyticsStatsProgressBuilder<(S0, S1)> {
     /// Builds a [`DataframeAnalyticsStatsProgress`].
-    pub fn build(self) -> DataframeAnalyticsStatsProgress {
+    pub fn build(self) -> DataframeAnalyticsStatsProgress
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_stats_progress_members::phase>,
+        S1: crate::typed::builder::IsSet<
+            dataframe_analytics_stats_progress_members::progress_percent,
+        >,
+    {
         DataframeAnalyticsStatsProgress {
             phase: self.phase.unwrap(),
             progress_percent: self.progress_percent.unwrap(),
@@ -14642,39 +13822,27 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsStatsProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsStatsProgress
+impl<S0, S1> crate::typed::builder::Build for DataframeAnalyticsStatsProgressBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_stats_progress_members::phase>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_progress_members::progress_percent>,
 {
-    fn from(
-        builder: DataframeAnalyticsStatsProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsStatsProgress;
+
+    fn build(self) -> DataframeAnalyticsStatsProgress {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeAnalyticsStatsProgressBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `phase` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, phase: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsProgress { match phase {} }
-}
-
-impl
-    DataframeAnalyticsStatsProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeAnalyticsStatsProgressBuilder<(S0, S1)>>
+    for DataframeAnalyticsStatsProgress
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_stats_progress_members::phase>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_stats_progress_members::progress_percent>,
 {
-    /// `progress_percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, progress_percent: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsStatsProgress { match progress_percent {} }
+    fn from(builder: DataframeAnalyticsStatsProgressBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14706,23 +13874,30 @@ pub struct DataframeAnalyticsSummary {
 
 impl DataframeAnalyticsSummary {
     /// Creates a builder for [`DataframeAnalyticsSummary`].
+    ///
+    /// Required: `analysis`, `dest`, `id`, `source`.
     pub fn builder() -> DataframeAnalyticsSummaryBuilder {
         DataframeAnalyticsSummaryBuilder::new()
     }
 
     /// Creates a [`DataframeAnalyticsSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeAnalyticsSummaryBuilder,
-        ) -> DataframeAnalyticsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `analysis`, `dest`, `id`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeAnalyticsSummary>>(
+        f: impl FnOnce(DataframeAnalyticsSummaryBuilder) -> B,
     ) -> DataframeAnalyticsSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeAnalyticsSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_analytics_summary_members {
+    pub struct analysis;
+    pub struct dest;
+    pub struct id;
+    pub struct source;
 }
 
 /// Builder for [`DataframeAnalyticsSummary`].
@@ -14822,9 +13997,11 @@ impl<S0, S1, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`analyzed_fields`](Self::analyzed_fields) with a builder.
-    pub fn analyzed_fields_with(
+    pub fn analyzed_fields_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalysisAnalyzedFields>,
+    >(
         self,
-        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> DataframeAnalysisAnalyzedFieldsBuilder,
+        f: impl FnOnce(DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> Self {
         self.analyzed_fields(f(DataframeAnalysisAnalyzedFieldsBuilder::new()).build())
     }
@@ -14842,9 +14019,11 @@ impl<S0, S1, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`authorization`](Self::authorization) with a builder.
-    pub fn authorization_with(
+    pub fn authorization_with<
+        B: crate::typed::builder::Build<Output = DataframeAnalyticsAuthorization>,
+    >(
         self,
-        f: impl FnOnce(DataframeAnalyticsAuthorizationBuilder) -> DataframeAnalyticsAuthorizationBuilder,
+        f: impl FnOnce(DataframeAnalyticsAuthorizationBuilder) -> B,
     ) -> Self {
         self.authorization(f(DataframeAnalyticsAuthorizationBuilder::new()).build())
     }
@@ -14931,6 +14110,7 @@ impl<S0, S1, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DataframeAnalyticsSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn analysis(
         self,
         value: impl Into<DataframeAnalysisContainer>,
@@ -14941,17 +14121,16 @@ impl<S1, S2, S3> DataframeAnalyticsSummaryBuilder<(crate::typed::builder::NotSet
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<B: crate::typed::builder::Build<Output = DataframeAnalysisContainer>>(
         self,
-        f: impl FnOnce(
-            DataframeAnalysisContainerBuilder,
-        ) -> DataframeAnalysisContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalysisContainerBuilder) -> B,
     ) -> DataframeAnalyticsSummaryBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.analysis(f(DataframeAnalysisContainerBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn dest(
         self,
         value: impl Into<DataframeAnalyticsDestination>,
@@ -14962,17 +14141,16 @@ impl<S0, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, crate::typed::builder::No
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<B: crate::typed::builder::Build<Output = DataframeAnalyticsDestination>>(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsDestinationBuilder,
-        ) -> DataframeAnalyticsDestinationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalyticsDestinationBuilder) -> B,
     ) -> DataframeAnalyticsSummaryBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.dest(f(DataframeAnalyticsDestinationBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -14984,6 +14162,7 @@ impl<S0, S1, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, crate::typed::builder
 }
 
 impl<S0, S1, S2> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn source(
         self,
         value: impl Into<DataframeAnalyticsSource>,
@@ -14994,26 +14173,23 @@ impl<S0, S1, S2> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, crate::typed::bui
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<B: crate::typed::builder::Build<Output = DataframeAnalyticsSource>>(
         self,
-        f: impl FnOnce(
-            DataframeAnalyticsSourceBuilder,
-        ) -> DataframeAnalyticsSourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeAnalyticsSourceBuilder) -> B,
     ) -> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.source(f(DataframeAnalyticsSourceBuilder::new()).build())
     }
 }
 
-impl
-    DataframeAnalyticsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DataframeAnalyticsSummary`].
-    pub fn build(self) -> DataframeAnalyticsSummary {
+    pub fn build(self) -> DataframeAnalyticsSummary
+    where
+        S0: crate::typed::builder::IsSet<dataframe_analytics_summary_members::analysis>,
+        S1: crate::typed::builder::IsSet<dataframe_analytics_summary_members::dest>,
+        S2: crate::typed::builder::IsSet<dataframe_analytics_summary_members::id>,
+        S3: crate::typed::builder::IsSet<dataframe_analytics_summary_members::source>,
+    {
         DataframeAnalyticsSummary {
             allow_lazy_start: self.allow_lazy_start,
             analysis: self.analysis.unwrap(),
@@ -15032,71 +14208,32 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeAnalyticsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeAnalyticsSummary
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_summary_members::analysis>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_summary_members::dest>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_summary_members::id>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_summary_members::source>,
 {
-    fn from(
-        builder: DataframeAnalyticsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeAnalyticsSummary;
+
+    fn build(self) -> DataframeAnalyticsSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DataframeAnalyticsSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `analysis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsSummary { match analysis {} }
-}
-
-impl<S2, S3>
-    DataframeAnalyticsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)>>
+    for DataframeAnalyticsSummary
+where
+    S0: crate::typed::builder::IsSet<dataframe_analytics_summary_members::analysis>,
+    S1: crate::typed::builder::IsSet<dataframe_analytics_summary_members::dest>,
+    S2: crate::typed::builder::IsSet<dataframe_analytics_summary_members::id>,
+    S3: crate::typed::builder::IsSet<dataframe_analytics_summary_members::source>,
 {
-    /// `dest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dest: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsSummary { match dest {} }
-}
-
-impl<S3>
-    DataframeAnalyticsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsSummary { match id {} }
-}
-
-impl
-    DataframeAnalyticsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> DataframeAnalyticsSummary { match source {} }
+    fn from(builder: DataframeAnalyticsSummaryBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15116,19 +14253,27 @@ pub struct DataframeEvaluationClassification {
 
 impl DataframeEvaluationClassification {
     /// Creates a builder for [`DataframeEvaluationClassification`].
+    ///
+    /// Required: `actual_field`.
     pub fn builder() -> DataframeEvaluationClassificationBuilder {
         DataframeEvaluationClassificationBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationClassification`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationClassificationBuilder,
-        )
-            -> DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `actual_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationClassification>>(
+        f: impl FnOnce(DataframeEvaluationClassificationBuilder) -> B,
     ) -> DataframeEvaluationClassification {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationClassificationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_classification_members {
+    pub struct actual_field;
 }
 
 /// Builder for [`DataframeEvaluationClassification`].
@@ -15204,18 +14349,18 @@ impl<S0> DataframeEvaluationClassificationBuilder<(S0,)> {
     }
 
     /// Sets [`metrics`](Self::metrics) with a builder.
-    pub fn metrics_with(
+    pub fn metrics_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetrics>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsBuilder,
-        ) -> DataframeEvaluationClassificationMetricsBuilder,
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsBuilder) -> B,
     ) -> Self {
         self.metrics(f(DataframeEvaluationClassificationMetricsBuilder::new()).build())
     }
 }
 
 impl DataframeEvaluationClassificationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field of the index which contains the ground truth. The data type of this field can be boolean or integer. If the data type is integer, the value has to be either 0 (false) or 1 (true).
+    /// **Required.** The field of the index which contains the ground truth. The data type of this field can be boolean or integer. If the data type is integer, the value has to be either 0 (false) or 1 (true).
     pub fn actual_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -15226,9 +14371,12 @@ impl DataframeEvaluationClassificationBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeEvaluationClassificationBuilder<(S0,)> {
     /// Builds a [`DataframeEvaluationClassification`].
-    pub fn build(self) -> DataframeEvaluationClassification {
+    pub fn build(self) -> DataframeEvaluationClassification
+    where
+        S0: crate::typed::builder::IsSet<dataframe_evaluation_classification_members::actual_field>,
+    {
         DataframeEvaluationClassification {
             actual_field: self.actual_field.unwrap(),
             predicted_field: self.predicted_field,
@@ -15238,20 +14386,24 @@ impl DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)>>
-    for DataframeEvaluationClassification
+impl<S0> crate::typed::builder::Build for DataframeEvaluationClassificationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_classification_members::actual_field>,
 {
-    fn from(
-        builder: DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationClassification;
+
+    fn build(self) -> DataframeEvaluationClassification {
+        Self::build(self)
     }
 }
 
-impl DataframeEvaluationClassificationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `actual_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actual_field: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationClassification { match actual_field {} }
+impl<S0> From<DataframeEvaluationClassificationBuilder<(S0,)>> for DataframeEvaluationClassification
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_classification_members::actual_field>,
+{
+    fn from(builder: DataframeEvaluationClassificationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15280,10 +14432,10 @@ impl DataframeEvaluationClassificationMetrics {
     }
 
     /// Creates a [`DataframeEvaluationClassificationMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsBuilder,
-        ) -> DataframeEvaluationClassificationMetricsBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetrics>,
+    >(
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsBuilder) -> B,
     ) -> DataframeEvaluationClassificationMetrics {
         f(Self::builder()).build()
     }
@@ -15331,11 +14483,11 @@ impl DataframeEvaluationClassificationMetricsBuilder {
     }
 
     /// Sets [`auc_roc`](Self::auc_roc) with a builder.
-    pub fn auc_roc_with(
+    pub fn auc_roc_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetricsAucRoc>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsAucRocBuilder,
-        ) -> DataframeEvaluationClassificationMetricsAucRocBuilder,
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsAucRocBuilder) -> B,
     ) -> Self {
         self.auc_roc(f(DataframeEvaluationClassificationMetricsAucRocBuilder::new()).build())
     }
@@ -15474,6 +14626,14 @@ impl DataframeEvaluationClassificationMetricsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationClassificationMetricsBuilder {
+    type Output = DataframeEvaluationClassificationMetrics;
+
+    fn build(self) -> DataframeEvaluationClassificationMetrics {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationClassificationMetricsBuilder>
     for DataframeEvaluationClassificationMetrics
 {
@@ -15499,10 +14659,10 @@ impl DataframeEvaluationClassificationMetricsAucRoc {
     }
 
     /// Creates a [`DataframeEvaluationClassificationMetricsAucRoc`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsAucRocBuilder,
-        ) -> DataframeEvaluationClassificationMetricsAucRocBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetricsAucRoc>,
+    >(
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsAucRocBuilder) -> B,
     ) -> DataframeEvaluationClassificationMetricsAucRoc {
         f(Self::builder()).build()
     }
@@ -15557,6 +14717,14 @@ impl DataframeEvaluationClassificationMetricsAucRocBuilder {
             class_name: self.class_name,
             include_curve: self.include_curve,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataframeEvaluationClassificationMetricsAucRocBuilder {
+    type Output = DataframeEvaluationClassificationMetricsAucRoc;
+
+    fn build(self) -> DataframeEvaluationClassificationMetricsAucRoc {
+        Self::build(self)
     }
 }
 
@@ -15647,15 +14815,17 @@ impl
 
 impl DataframeEvaluationContainer {
     /// Creates a builder for [`DataframeEvaluationContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> DataframeEvaluationContainerBuilder {
         DataframeEvaluationContainerBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationContainerBuilder,
-        ) -> DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationContainer>>(
+        f: impl FnOnce(DataframeEvaluationContainerBuilder) -> B,
     ) -> DataframeEvaluationContainer {
         f(Self::builder()).build()
     }
@@ -15698,12 +14868,11 @@ impl DataframeEvaluationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassification>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassificationBuilder,
-        )
-            -> DataframeEvaluationClassificationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationClassificationBuilder) -> B,
     ) -> DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification(f(DataframeEvaluationClassificationBuilder::new()).build())
     }
@@ -15719,14 +14888,11 @@ impl DataframeEvaluationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`outlier_detection`](Self::outlier_detection) with a builder.
-    pub fn outlier_detection_with(
+    pub fn outlier_detection_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationOutlierDetection>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationOutlierDetectionBuilder,
-        ) -> DataframeEvaluationOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationOutlierDetectionBuilder) -> B,
     ) -> DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)> {
         self.outlier_detection(f(DataframeEvaluationOutlierDetectionBuilder::new()).build())
     }
@@ -15742,38 +14908,44 @@ impl DataframeEvaluationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegression>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationRegressionBuilder,
-        ) -> DataframeEvaluationRegressionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationRegressionBuilder) -> B,
     ) -> DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression(f(DataframeEvaluationRegressionBuilder::new()).build())
     }
 }
 
-impl DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeEvaluationContainerBuilder<(S0,)> {
     /// Builds a [`DataframeEvaluationContainer`].
-    pub fn build(self) -> DataframeEvaluationContainer {
+    pub fn build(self) -> DataframeEvaluationContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<DataframeEvaluationContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)>>
-    for DataframeEvaluationContainer
+impl<S0> crate::typed::builder::Build for DataframeEvaluationContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeEvaluationContainer>,
 {
-    fn from(builder: DataframeEvaluationContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationContainer;
+
+    fn build(self) -> DataframeEvaluationContainer {
+        Self::build(self)
     }
 }
 
-impl DataframeEvaluationContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationContainer { match variant {} }
+impl<S0> From<DataframeEvaluationContainerBuilder<(S0,)>> for DataframeEvaluationContainer
+where
+    S0: crate::typed::builder::IsVariantSet<DataframeEvaluationContainer>,
+{
+    fn from(builder: DataframeEvaluationContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15796,8 +14968,8 @@ impl DataframeEvaluationMetrics {
     }
 
     /// Creates a [`DataframeEvaluationMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataframeEvaluationMetricsBuilder) -> DataframeEvaluationMetricsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationMetrics>>(
+        f: impl FnOnce(DataframeEvaluationMetricsBuilder) -> B,
     ) -> DataframeEvaluationMetrics {
         f(Self::builder()).build()
     }
@@ -15841,11 +15013,11 @@ impl DataframeEvaluationMetricsBuilder {
     }
 
     /// Sets [`auc_roc`](Self::auc_roc) with a builder.
-    pub fn auc_roc_with(
+    pub fn auc_roc_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetricsAucRoc>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsAucRocBuilder,
-        ) -> DataframeEvaluationClassificationMetricsAucRocBuilder,
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsAucRocBuilder) -> B,
     ) -> Self {
         self.auc_roc(f(DataframeEvaluationClassificationMetricsAucRocBuilder::new()).build())
     }
@@ -15922,6 +15094,14 @@ impl DataframeEvaluationMetricsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationMetricsBuilder {
+    type Output = DataframeEvaluationMetrics;
+
+    fn build(self) -> DataframeEvaluationMetrics {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationMetricsBuilder> for DataframeEvaluationMetrics {
     fn from(builder: DataframeEvaluationMetricsBuilder) -> Self {
         builder.build()
@@ -15941,21 +15121,28 @@ pub struct DataframeEvaluationOutlierDetection {
 
 impl DataframeEvaluationOutlierDetection {
     /// Creates a builder for [`DataframeEvaluationOutlierDetection`].
+    ///
+    /// Required: `actual_field`, `predicted_probability_field`.
     pub fn builder() -> DataframeEvaluationOutlierDetectionBuilder {
         DataframeEvaluationOutlierDetectionBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationOutlierDetection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationOutlierDetectionBuilder,
-        ) -> DataframeEvaluationOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `actual_field`, `predicted_probability_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationOutlierDetection>>(
+        f: impl FnOnce(DataframeEvaluationOutlierDetectionBuilder) -> B,
     ) -> DataframeEvaluationOutlierDetection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationOutlierDetectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_outlier_detection_members {
+    pub struct actual_field;
+    pub struct predicted_probability_field;
 }
 
 /// Builder for [`DataframeEvaluationOutlierDetection`].
@@ -16011,18 +15198,18 @@ impl<S0, S1> DataframeEvaluationOutlierDetectionBuilder<(S0, S1)> {
     }
 
     /// Sets [`metrics`](Self::metrics) with a builder.
-    pub fn metrics_with(
+    pub fn metrics_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationOutlierDetectionMetrics>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationOutlierDetectionMetricsBuilder,
-        ) -> DataframeEvaluationOutlierDetectionMetricsBuilder,
+        f: impl FnOnce(DataframeEvaluationOutlierDetectionMetricsBuilder) -> B,
     ) -> Self {
         self.metrics(f(DataframeEvaluationOutlierDetectionMetricsBuilder::new()).build())
     }
 }
 
 impl<S1> DataframeEvaluationOutlierDetectionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field of the index which contains the ground truth. The data type of this field can be boolean or integer. If the data type is integer, the value has to be either 0 (false) or 1 (true).
+    /// **Required.** The field of the index which contains the ground truth. The data type of this field can be boolean or integer. If the data type is integer, the value has to be either 0 (false) or 1 (true).
     pub fn actual_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16034,7 +15221,7 @@ impl<S1> DataframeEvaluationOutlierDetectionBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0> DataframeEvaluationOutlierDetectionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The field of the index that defines the probability of whether the item belongs to the class in question or not. It’s the field that contains the results of the analysis.
+    /// **Required.** The field of the index that defines the probability of whether the item belongs to the class in question or not. It’s the field that contains the results of the analysis.
     pub fn predicted_probability_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16045,14 +15232,17 @@ impl<S0> DataframeEvaluationOutlierDetectionBuilder<(S0, crate::typed::builder::
     }
 }
 
-impl
-    DataframeEvaluationOutlierDetectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeEvaluationOutlierDetectionBuilder<(S0, S1)> {
     /// Builds a [`DataframeEvaluationOutlierDetection`].
-    pub fn build(self) -> DataframeEvaluationOutlierDetection {
+    pub fn build(self) -> DataframeEvaluationOutlierDetection
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_evaluation_outlier_detection_members::actual_field,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_evaluation_outlier_detection_members::predicted_probability_field,
+        >,
+    {
         DataframeEvaluationOutlierDetection {
             actual_field: self.actual_field.unwrap(),
             predicted_probability_field: self.predicted_probability_field.unwrap(),
@@ -16061,39 +15251,31 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeEvaluationOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeEvaluationOutlierDetection
+impl<S0, S1> crate::typed::builder::Build for DataframeEvaluationOutlierDetectionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_outlier_detection_members::actual_field>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_evaluation_outlier_detection_members::predicted_probability_field,
+    >,
 {
-    fn from(
-        builder: DataframeEvaluationOutlierDetectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationOutlierDetection;
+
+    fn build(self) -> DataframeEvaluationOutlierDetection {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeEvaluationOutlierDetectionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `actual_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actual_field: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationOutlierDetection { match actual_field {} }
-}
-
-impl
-    DataframeEvaluationOutlierDetectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeEvaluationOutlierDetectionBuilder<(S0, S1)>>
+    for DataframeEvaluationOutlierDetection
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_outlier_detection_members::actual_field>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_evaluation_outlier_detection_members::predicted_probability_field,
+    >,
 {
-    /// `predicted_probability_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, predicted_probability_field: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationOutlierDetection { match predicted_probability_field {} }
+    fn from(builder: DataframeEvaluationOutlierDetectionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16119,10 +15301,10 @@ impl DataframeEvaluationOutlierDetectionMetrics {
     }
 
     /// Creates a [`DataframeEvaluationOutlierDetectionMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationOutlierDetectionMetricsBuilder,
-        ) -> DataframeEvaluationOutlierDetectionMetricsBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationOutlierDetectionMetrics>,
+    >(
+        f: impl FnOnce(DataframeEvaluationOutlierDetectionMetricsBuilder) -> B,
     ) -> DataframeEvaluationOutlierDetectionMetrics {
         f(Self::builder()).build()
     }
@@ -16168,11 +15350,11 @@ impl DataframeEvaluationOutlierDetectionMetricsBuilder {
     }
 
     /// Sets [`auc_roc`](Self::auc_roc) with a builder.
-    pub fn auc_roc_with(
+    pub fn auc_roc_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationClassificationMetricsAucRoc>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassificationMetricsAucRocBuilder,
-        ) -> DataframeEvaluationClassificationMetricsAucRocBuilder,
+        f: impl FnOnce(DataframeEvaluationClassificationMetricsAucRocBuilder) -> B,
     ) -> Self {
         self.auc_roc(f(DataframeEvaluationClassificationMetricsAucRocBuilder::new()).build())
     }
@@ -16280,6 +15462,14 @@ impl DataframeEvaluationOutlierDetectionMetricsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationOutlierDetectionMetricsBuilder {
+    type Output = DataframeEvaluationOutlierDetectionMetrics;
+
+    fn build(self) -> DataframeEvaluationOutlierDetectionMetrics {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationOutlierDetectionMetricsBuilder>
     for DataframeEvaluationOutlierDetectionMetrics
 {
@@ -16301,21 +15491,28 @@ pub struct DataframeEvaluationRegression {
 
 impl DataframeEvaluationRegression {
     /// Creates a builder for [`DataframeEvaluationRegression`].
+    ///
+    /// Required: `actual_field`, `predicted_field`.
     pub fn builder() -> DataframeEvaluationRegressionBuilder {
         DataframeEvaluationRegressionBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationRegression`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationRegressionBuilder,
-        ) -> DataframeEvaluationRegressionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `actual_field`, `predicted_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationRegression>>(
+        f: impl FnOnce(DataframeEvaluationRegressionBuilder) -> B,
     ) -> DataframeEvaluationRegression {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationRegressionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_regression_members {
+    pub struct actual_field;
+    pub struct predicted_field;
 }
 
 /// Builder for [`DataframeEvaluationRegression`].
@@ -16368,18 +15565,18 @@ impl<S0, S1> DataframeEvaluationRegressionBuilder<(S0, S1)> {
     }
 
     /// Sets [`metrics`](Self::metrics) with a builder.
-    pub fn metrics_with(
+    pub fn metrics_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetrics>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsBuilder,
-        ) -> DataframeEvaluationRegressionMetricsBuilder,
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsBuilder) -> B,
     ) -> Self {
         self.metrics(f(DataframeEvaluationRegressionMetricsBuilder::new()).build())
     }
 }
 
 impl<S1> DataframeEvaluationRegressionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field of the index which contains the ground truth. The data type of this field must be numerical.
+    /// **Required.** The field of the index which contains the ground truth. The data type of this field must be numerical.
     pub fn actual_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16391,7 +15588,7 @@ impl<S1> DataframeEvaluationRegressionBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0> DataframeEvaluationRegressionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The field in the index that contains the predicted value, in other words the results of the regression analysis.
+    /// **Required.** The field in the index that contains the predicted value, in other words the results of the regression analysis.
     pub fn predicted_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16402,11 +15599,13 @@ impl<S0> DataframeEvaluationRegressionBuilder<(S0, crate::typed::builder::NotSet
     }
 }
 
-impl
-    DataframeEvaluationRegressionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> DataframeEvaluationRegressionBuilder<(S0, S1)> {
     /// Builds a [`DataframeEvaluationRegression`].
-    pub fn build(self) -> DataframeEvaluationRegression {
+    pub fn build(self) -> DataframeEvaluationRegression
+    where
+        S0: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::actual_field>,
+        S1: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::predicted_field>,
+    {
         DataframeEvaluationRegression {
             actual_field: self.actual_field.unwrap(),
             predicted_field: self.predicted_field.unwrap(),
@@ -16415,39 +15614,26 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeEvaluationRegressionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeEvaluationRegression
+impl<S0, S1> crate::typed::builder::Build for DataframeEvaluationRegressionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::actual_field>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::predicted_field>,
 {
-    fn from(
-        builder: DataframeEvaluationRegressionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationRegression;
+
+    fn build(self) -> DataframeEvaluationRegression {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeEvaluationRegressionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `actual_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actual_field: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationRegression { match actual_field {} }
-}
-
-impl
-    DataframeEvaluationRegressionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeEvaluationRegressionBuilder<(S0, S1)>> for DataframeEvaluationRegression
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::actual_field>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_regression_members::predicted_field>,
 {
-    /// `predicted_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, predicted_field: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationRegression { match predicted_field {} }
+    fn from(builder: DataframeEvaluationRegressionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16473,10 +15659,8 @@ impl DataframeEvaluationRegressionMetrics {
     }
 
     /// Creates a [`DataframeEvaluationRegressionMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsBuilder,
-        ) -> DataframeEvaluationRegressionMetricsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetrics>>(
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsBuilder) -> B,
     ) -> DataframeEvaluationRegressionMetrics {
         f(Self::builder()).build()
     }
@@ -16539,11 +15723,11 @@ impl DataframeEvaluationRegressionMetricsBuilder {
     }
 
     /// Sets [`msle`](Self::msle) with a builder.
-    pub fn msle_with(
+    pub fn msle_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetricsMsle>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsMsleBuilder,
-        ) -> DataframeEvaluationRegressionMetricsMsleBuilder,
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsMsleBuilder) -> B,
     ) -> Self {
         self.msle(f(DataframeEvaluationRegressionMetricsMsleBuilder::new()).build())
     }
@@ -16561,11 +15745,11 @@ impl DataframeEvaluationRegressionMetricsBuilder {
     }
 
     /// Sets [`huber`](Self::huber) with a builder.
-    pub fn huber_with(
+    pub fn huber_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetricsHuber>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsHuberBuilder,
-        ) -> DataframeEvaluationRegressionMetricsHuberBuilder,
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsHuberBuilder) -> B,
     ) -> Self {
         self.huber(f(DataframeEvaluationRegressionMetricsHuberBuilder::new()).build())
     }
@@ -16613,6 +15797,14 @@ impl DataframeEvaluationRegressionMetricsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationRegressionMetricsBuilder {
+    type Output = DataframeEvaluationRegressionMetrics;
+
+    fn build(self) -> DataframeEvaluationRegressionMetrics {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationRegressionMetricsBuilder> for DataframeEvaluationRegressionMetrics {
     fn from(builder: DataframeEvaluationRegressionMetricsBuilder) -> Self {
         builder.build()
@@ -16633,10 +15825,10 @@ impl DataframeEvaluationRegressionMetricsHuber {
     }
 
     /// Creates a [`DataframeEvaluationRegressionMetricsHuber`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsHuberBuilder,
-        ) -> DataframeEvaluationRegressionMetricsHuberBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetricsHuber>,
+    >(
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsHuberBuilder) -> B,
     ) -> DataframeEvaluationRegressionMetricsHuber {
         f(Self::builder()).build()
     }
@@ -16675,6 +15867,14 @@ impl DataframeEvaluationRegressionMetricsHuberBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationRegressionMetricsHuberBuilder {
+    type Output = DataframeEvaluationRegressionMetricsHuber;
+
+    fn build(self) -> DataframeEvaluationRegressionMetricsHuber {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationRegressionMetricsHuberBuilder>
     for DataframeEvaluationRegressionMetricsHuber
 {
@@ -16697,10 +15897,10 @@ impl DataframeEvaluationRegressionMetricsMsle {
     }
 
     /// Creates a [`DataframeEvaluationRegressionMetricsMsle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationRegressionMetricsMsleBuilder,
-        ) -> DataframeEvaluationRegressionMetricsMsleBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationRegressionMetricsMsle>,
+    >(
+        f: impl FnOnce(DataframeEvaluationRegressionMetricsMsleBuilder) -> B,
     ) -> DataframeEvaluationRegressionMetricsMsle {
         f(Self::builder()).build()
     }
@@ -16741,6 +15941,14 @@ impl DataframeEvaluationRegressionMetricsMsleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeEvaluationRegressionMetricsMsleBuilder {
+    type Output = DataframeEvaluationRegressionMetricsMsle;
+
+    fn build(self) -> DataframeEvaluationRegressionMetricsMsle {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeEvaluationRegressionMetricsMsleBuilder>
     for DataframeEvaluationRegressionMetricsMsle
 {
@@ -16776,18 +15984,27 @@ pub struct DelayedDataCheckConfig {
 
 impl DelayedDataCheckConfig {
     /// Creates a builder for [`DelayedDataCheckConfig`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> DelayedDataCheckConfigBuilder {
         DelayedDataCheckConfigBuilder::new()
     }
 
     /// Creates a [`DelayedDataCheckConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DelayedDataCheckConfigBuilder,
-        ) -> DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = DelayedDataCheckConfig>>(
+        f: impl FnOnce(DelayedDataCheckConfigBuilder) -> B,
     ) -> DelayedDataCheckConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DelayedDataCheckConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod delayed_data_check_config_members {
+    pub struct enabled;
 }
 
 /// Builder for [`DelayedDataCheckConfig`].
@@ -16833,7 +16050,7 @@ impl<S0> DelayedDataCheckConfigBuilder<(S0,)> {
 }
 
 impl DelayedDataCheckConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// Specifies whether the datafeed periodically checks for delayed data.
+    /// **Required.** Specifies whether the datafeed periodically checks for delayed data.
     pub fn enabled(
         self,
         value: bool,
@@ -16844,9 +16061,12 @@ impl DelayedDataCheckConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DelayedDataCheckConfigBuilder<(S0,)> {
     /// Builds a [`DelayedDataCheckConfig`].
-    pub fn build(self) -> DelayedDataCheckConfig {
+    pub fn build(self) -> DelayedDataCheckConfig
+    where
+        S0: crate::typed::builder::IsSet<delayed_data_check_config_members::enabled>,
+    {
         DelayedDataCheckConfig {
             check_window: self.check_window,
             enabled: self.enabled.unwrap(),
@@ -16854,16 +16074,24 @@ impl DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)>> for DelayedDataCheckConfig {
-    fn from(builder: DelayedDataCheckConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DelayedDataCheckConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<delayed_data_check_config_members::enabled>,
+{
+    type Output = DelayedDataCheckConfig;
+
+    fn build(self) -> DelayedDataCheckConfig {
+        Self::build(self)
     }
 }
 
-impl DelayedDataCheckConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> DelayedDataCheckConfig { match enabled {} }
+impl<S0> From<DelayedDataCheckConfigBuilder<(S0,)>> for DelayedDataCheckConfig
+where
+    S0: crate::typed::builder::IsSet<delayed_data_check_config_members::enabled>,
+{
+    fn from(builder: DelayedDataCheckConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -16915,7 +16143,9 @@ impl DetectionRule {
     }
 
     /// Creates a [`DetectionRule`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DetectionRuleBuilder) -> DetectionRuleBuilder) -> DetectionRule {
+    pub fn of<B: crate::typed::builder::Build<Output = DetectionRule>>(
+        f: impl FnOnce(DetectionRuleBuilder) -> B,
+    ) -> DetectionRule {
         f(Self::builder()).build()
     }
 }
@@ -16980,15 +16210,9 @@ impl DetectionRuleBuilder {
     }
 
     /// Adds an element to [`conditions`](Self::conditions), with a builder.
-    pub fn add_conditions_with(
+    pub fn add_conditions_with<B: crate::typed::builder::Build<Output = RuleCondition>>(
         self,
-        f: impl FnOnce(
-            RuleConditionBuilder,
-        ) -> RuleConditionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RuleConditionBuilder) -> B,
     ) -> Self {
         self.add_conditions(f(RuleConditionBuilder::new()).build())
     }
@@ -17024,10 +16248,10 @@ impl DetectionRuleBuilder {
     }
 
     /// Adds an entry to [`scope`](Self::scope), with a builder.
-    pub fn add_scope_with(
+    pub fn add_scope_with<B: crate::typed::builder::Build<Output = FilterRef>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(FilterRefBuilder) -> FilterRefBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FilterRefBuilder) -> B,
     ) -> Self {
         self.add_scope(key, f(FilterRefBuilder::new()).build())
     }
@@ -17041,6 +16265,14 @@ impl DetectionRuleBuilder {
             conditions: self.conditions,
             scope: self.scope,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DetectionRuleBuilder {
+    type Output = DetectionRule;
+
+    fn build(self) -> DetectionRule {
+        Self::build(self)
     }
 }
 
@@ -17091,7 +16323,9 @@ impl Detector {
     }
 
     /// Creates a [`Detector`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DetectorBuilder) -> DetectorBuilder) -> Detector {
+    pub fn of<B: crate::typed::builder::Build<Output = Detector>>(
+        f: impl FnOnce(DetectorBuilder) -> B,
+    ) -> Detector {
         f(Self::builder()).build()
     }
 }
@@ -17162,9 +16396,9 @@ impl DetectorBuilder {
     }
 
     /// Adds an element to [`custom_rules`](Self::custom_rules), with a builder.
-    pub fn add_custom_rules_with(
+    pub fn add_custom_rules_with<B: crate::typed::builder::Build<Output = DetectionRule>>(
         self,
-        f: impl FnOnce(DetectionRuleBuilder) -> DetectionRuleBuilder,
+        f: impl FnOnce(DetectionRuleBuilder) -> B,
     ) -> Self {
         self.add_custom_rules(f(DetectionRuleBuilder::new()).build())
     }
@@ -17287,6 +16521,14 @@ impl DetectorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DetectorBuilder {
+    type Output = Detector;
+
+    fn build(self) -> Detector {
+        Self::build(self)
+    }
+}
+
 impl From<DetectorBuilder> for Detector {
     fn from(builder: DetectorBuilder) -> Self {
         builder.build()
@@ -17328,16 +16570,27 @@ pub struct DetectorRead {
 
 impl DetectorRead {
     /// Creates a builder for [`DetectorRead`].
+    ///
+    /// Required: `function`.
     pub fn builder() -> DetectorReadBuilder {
         DetectorReadBuilder::new()
     }
 
     /// Creates a [`DetectorRead`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DetectorReadBuilder) -> DetectorReadBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `function`.
+    pub fn of<B: crate::typed::builder::Build<Output = DetectorRead>>(
+        f: impl FnOnce(DetectorReadBuilder) -> B,
     ) -> DetectorRead {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DetectorReadBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod detector_read_members {
+    pub struct function;
 }
 
 /// Builder for [`DetectorRead`].
@@ -17424,9 +16677,9 @@ impl<S0> DetectorReadBuilder<(S0,)> {
     }
 
     /// Adds an element to [`custom_rules`](Self::custom_rules), with a builder.
-    pub fn add_custom_rules_with(
+    pub fn add_custom_rules_with<B: crate::typed::builder::Build<Output = DetectionRule>>(
         self,
-        f: impl FnOnce(DetectionRuleBuilder) -> DetectionRuleBuilder,
+        f: impl FnOnce(DetectionRuleBuilder) -> B,
     ) -> Self {
         self.add_custom_rules(f(DetectionRuleBuilder::new()).build())
     }
@@ -17520,7 +16773,7 @@ impl<S0> DetectorReadBuilder<(S0,)> {
 }
 
 impl DetectorReadBuilder<(crate::typed::builder::NotSet,)> {
-    /// The analysis function that is used. For example, `count`, `rare`, `mean`, `min`, `max`, or `sum`.
+    /// **Required.** The analysis function that is used. For example, `count`, `rare`, `mean`, `min`, `max`, or `sum`.
     pub fn function(
         self,
         value: impl Into<String>,
@@ -17531,9 +16784,12 @@ impl DetectorReadBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DetectorReadBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DetectorReadBuilder<(S0,)> {
     /// Builds a [`DetectorRead`].
-    pub fn build(self) -> DetectorRead {
+    pub fn build(self) -> DetectorRead
+    where
+        S0: crate::typed::builder::IsSet<detector_read_members::function>,
+    {
         DetectorRead {
             function: self.function.unwrap(),
             by_field_name: self.by_field_name,
@@ -17549,16 +16805,24 @@ impl DetectorReadBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DetectorReadBuilder<(crate::typed::builder::Set,)>> for DetectorRead {
-    fn from(builder: DetectorReadBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DetectorReadBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<detector_read_members::function>,
+{
+    type Output = DetectorRead;
+
+    fn build(self) -> DetectorRead {
+        Self::build(self)
     }
 }
 
-impl DetectorReadBuilder<(crate::typed::builder::NotSet,)> {
-    /// `function` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, function: crate::typed::builder::MissingRequiredField) -> DetectorRead { match function {} }
+impl<S0> From<DetectorReadBuilder<(S0,)>> for DetectorRead
+where
+    S0: crate::typed::builder::IsSet<detector_read_members::function>,
+{
+    fn from(builder: DetectorReadBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17578,16 +16842,27 @@ pub struct DetectorUpdate {
 
 impl DetectorUpdate {
     /// Creates a builder for [`DetectorUpdate`].
+    ///
+    /// Required: `detector_index`.
     pub fn builder() -> DetectorUpdateBuilder {
         DetectorUpdateBuilder::new()
     }
 
     /// Creates a [`DetectorUpdate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DetectorUpdateBuilder) -> DetectorUpdateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `detector_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = DetectorUpdate>>(
+        f: impl FnOnce(DetectorUpdateBuilder) -> B,
     ) -> DetectorUpdate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DetectorUpdateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod detector_update_members {
+    pub struct detector_index;
 }
 
 /// Builder for [`DetectorUpdate`].
@@ -17655,16 +16930,16 @@ impl<S0> DetectorUpdateBuilder<(S0,)> {
     }
 
     /// Adds an element to [`custom_rules`](Self::custom_rules), with a builder.
-    pub fn add_custom_rules_with(
+    pub fn add_custom_rules_with<B: crate::typed::builder::Build<Output = DetectionRule>>(
         self,
-        f: impl FnOnce(DetectionRuleBuilder) -> DetectionRuleBuilder,
+        f: impl FnOnce(DetectionRuleBuilder) -> B,
     ) -> Self {
         self.add_custom_rules(f(DetectionRuleBuilder::new()).build())
     }
 }
 
 impl DetectorUpdateBuilder<(crate::typed::builder::NotSet,)> {
-    /// A unique identifier for the detector.
+    /// **Required.** A unique identifier for the detector.
     /// This identifier is based on the order of the detectors in the `analysis_config`, starting at zero.
     pub fn detector_index(
         self,
@@ -17676,9 +16951,12 @@ impl DetectorUpdateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DetectorUpdateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DetectorUpdateBuilder<(S0,)> {
     /// Builds a [`DetectorUpdate`].
-    pub fn build(self) -> DetectorUpdate {
+    pub fn build(self) -> DetectorUpdate
+    where
+        S0: crate::typed::builder::IsSet<detector_update_members::detector_index>,
+    {
         DetectorUpdate {
             detector_index: self.detector_index.unwrap(),
             description: self.description,
@@ -17687,16 +16965,24 @@ impl DetectorUpdateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DetectorUpdateBuilder<(crate::typed::builder::Set,)>> for DetectorUpdate {
-    fn from(builder: DetectorUpdateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DetectorUpdateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<detector_update_members::detector_index>,
+{
+    type Output = DetectorUpdate;
+
+    fn build(self) -> DetectorUpdate {
+        Self::build(self)
     }
 }
 
-impl DetectorUpdateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `detector_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, detector_index: crate::typed::builder::MissingRequiredField) -> DetectorUpdate { match detector_index {} }
+impl<S0> From<DetectorUpdateBuilder<(S0,)>> for DetectorUpdate
+where
+    S0: crate::typed::builder::IsSet<detector_update_members::detector_index>,
+{
+    fn from(builder: DetectorUpdateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type DiscoveryNode = indexmap::IndexMap<crate::typed::_types::Id, DiscoveryNodeContent>;
@@ -17713,24 +16999,31 @@ pub struct DiscoveryNodeCompact {
 
 impl DiscoveryNodeCompact {
     /// Creates a builder for [`DiscoveryNodeCompact`].
+    ///
+    /// Required: `name`, `ephemeral_id`, `id`, `transport_address`, `attributes`.
     pub fn builder() -> DiscoveryNodeCompactBuilder {
         DiscoveryNodeCompactBuilder::new()
     }
 
     /// Creates a [`DiscoveryNodeCompact`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiscoveryNodeCompactBuilder,
-        ) -> DiscoveryNodeCompactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `ephemeral_id`, `id`, `transport_address`, `attributes`.
+    pub fn of<B: crate::typed::builder::Build<Output = DiscoveryNodeCompact>>(
+        f: impl FnOnce(DiscoveryNodeCompactBuilder) -> B,
     ) -> DiscoveryNodeCompact {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiscoveryNodeCompactBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod discovery_node_compact_members {
+    pub struct name;
+    pub struct ephemeral_id;
+    pub struct id;
+    pub struct transport_address;
+    pub struct attributes;
 }
 
 /// Builder for [`DiscoveryNodeCompact`].
@@ -17787,6 +17080,7 @@ impl<S0, S1, S2, S3, S4> DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> DiscoveryNodeCompactBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -17798,6 +17092,7 @@ impl<S1, S2, S3, S4> DiscoveryNodeCompactBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> DiscoveryNodeCompactBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn ephemeral_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -17809,6 +17104,7 @@ impl<S0, S2, S3, S4> DiscoveryNodeCompactBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> DiscoveryNodeCompactBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -17820,6 +17116,7 @@ impl<S0, S1, S3, S4> DiscoveryNodeCompactBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> DiscoveryNodeCompactBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -17831,6 +17128,7 @@ impl<S0, S1, S2, S4> DiscoveryNodeCompactBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -17865,17 +17163,16 @@ impl<S0, S1, S2, S3> DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    DiscoveryNodeCompactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`DiscoveryNodeCompact`].
-    pub fn build(self) -> DiscoveryNodeCompact {
+    pub fn build(self) -> DiscoveryNodeCompact
+    where
+        S0: crate::typed::builder::IsSet<discovery_node_compact_members::name>,
+        S1: crate::typed::builder::IsSet<discovery_node_compact_members::ephemeral_id>,
+        S2: crate::typed::builder::IsSet<discovery_node_compact_members::id>,
+        S3: crate::typed::builder::IsSet<discovery_node_compact_members::transport_address>,
+        S4: crate::typed::builder::IsSet<discovery_node_compact_members::attributes>,
+    {
         DiscoveryNodeCompact {
             name: self.name.unwrap(),
             ephemeral_id: self.ephemeral_id.unwrap(),
@@ -17886,90 +17183,34 @@ impl
     }
 }
 
-impl
-    From<
-        DiscoveryNodeCompactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DiscoveryNodeCompact
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<discovery_node_compact_members::name>,
+    S1: crate::typed::builder::IsSet<discovery_node_compact_members::ephemeral_id>,
+    S2: crate::typed::builder::IsSet<discovery_node_compact_members::id>,
+    S3: crate::typed::builder::IsSet<discovery_node_compact_members::transport_address>,
+    S4: crate::typed::builder::IsSet<discovery_node_compact_members::attributes>,
 {
-    fn from(
-        builder: DiscoveryNodeCompactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DiscoveryNodeCompact;
+
+    fn build(self) -> DiscoveryNodeCompact {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DiscoveryNodeCompactBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeCompact { match name {} }
-}
-
-impl<S2, S3, S4>
-    DiscoveryNodeCompactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, S4)>>
+    for DiscoveryNodeCompact
+where
+    S0: crate::typed::builder::IsSet<discovery_node_compact_members::name>,
+    S1: crate::typed::builder::IsSet<discovery_node_compact_members::ephemeral_id>,
+    S2: crate::typed::builder::IsSet<discovery_node_compact_members::id>,
+    S3: crate::typed::builder::IsSet<discovery_node_compact_members::transport_address>,
+    S4: crate::typed::builder::IsSet<discovery_node_compact_members::attributes>,
 {
-    /// `ephemeral_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ephemeral_id: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeCompact { match ephemeral_id {} }
-}
-
-impl<S3, S4>
-    DiscoveryNodeCompactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeCompact { match id {} }
-}
-
-impl<S4>
-    DiscoveryNodeCompactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeCompact { match transport_address {} }
-}
-
-impl
-    DiscoveryNodeCompactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeCompact { match attributes {} }
+    fn from(builder: DiscoveryNodeCompactBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17988,27 +17229,34 @@ pub struct DiscoveryNodeContent {
 
 impl DiscoveryNodeContent {
     /// Creates a builder for [`DiscoveryNodeContent`].
+    ///
+    /// Required: `ephemeral_id`, `transport_address`, `external_id`, `attributes`, `roles`, `version`, `min_index_version`, `max_index_version`.
     pub fn builder() -> DiscoveryNodeContentBuilder {
         DiscoveryNodeContentBuilder::new()
     }
 
     /// Creates a [`DiscoveryNodeContent`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiscoveryNodeContentBuilder,
-        ) -> DiscoveryNodeContentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `ephemeral_id`, `transport_address`, `external_id`, `attributes`, `roles`, `version`, `min_index_version`, `max_index_version`.
+    pub fn of<B: crate::typed::builder::Build<Output = DiscoveryNodeContent>>(
+        f: impl FnOnce(DiscoveryNodeContentBuilder) -> B,
     ) -> DiscoveryNodeContent {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiscoveryNodeContentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod discovery_node_content_members {
+    pub struct ephemeral_id;
+    pub struct transport_address;
+    pub struct external_id;
+    pub struct attributes;
+    pub struct roles;
+    pub struct version;
+    pub struct min_index_version;
+    pub struct max_index_version;
 }
 
 /// Builder for [`DiscoveryNodeContent`].
@@ -18096,6 +17344,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> DiscoveryNodeContentBuilder<(S0, S1, S2, S3
 impl<S1, S2, S3, S4, S5, S6, S7>
     DiscoveryNodeContentBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn ephemeral_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -18109,6 +17358,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     DiscoveryNodeContentBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -18122,6 +17372,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     DiscoveryNodeContentBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn external_id(
         self,
         value: impl Into<String>,
@@ -18135,6 +17386,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     DiscoveryNodeContentBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -18174,6 +17426,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     DiscoveryNodeContentBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -18212,6 +17465,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -18225,6 +17479,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn min_index_version(
         self,
         value: i32,
@@ -18238,6 +17493,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn max_index_version(
         self,
         value: i32,
@@ -18248,20 +17504,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`DiscoveryNodeContent`].
-    pub fn build(self) -> DiscoveryNodeContent {
+    pub fn build(self) -> DiscoveryNodeContent
+    where
+        S0: crate::typed::builder::IsSet<discovery_node_content_members::ephemeral_id>,
+        S1: crate::typed::builder::IsSet<discovery_node_content_members::transport_address>,
+        S2: crate::typed::builder::IsSet<discovery_node_content_members::external_id>,
+        S3: crate::typed::builder::IsSet<discovery_node_content_members::attributes>,
+        S4: crate::typed::builder::IsSet<discovery_node_content_members::roles>,
+        S5: crate::typed::builder::IsSet<discovery_node_content_members::version>,
+        S6: crate::typed::builder::IsSet<discovery_node_content_members::min_index_version>,
+        S7: crate::typed::builder::IsSet<discovery_node_content_members::max_index_version>,
+    {
         DiscoveryNodeContent {
             name: self.name,
             ephemeral_id: self.ephemeral_id.unwrap(),
@@ -18276,161 +17531,40 @@ impl
     }
 }
 
-impl
-    From<
-        DiscoveryNodeContentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DiscoveryNodeContent
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<discovery_node_content_members::ephemeral_id>,
+    S1: crate::typed::builder::IsSet<discovery_node_content_members::transport_address>,
+    S2: crate::typed::builder::IsSet<discovery_node_content_members::external_id>,
+    S3: crate::typed::builder::IsSet<discovery_node_content_members::attributes>,
+    S4: crate::typed::builder::IsSet<discovery_node_content_members::roles>,
+    S5: crate::typed::builder::IsSet<discovery_node_content_members::version>,
+    S6: crate::typed::builder::IsSet<discovery_node_content_members::min_index_version>,
+    S7: crate::typed::builder::IsSet<discovery_node_content_members::max_index_version>,
 {
-    fn from(
-        builder: DiscoveryNodeContentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DiscoveryNodeContent;
+
+    fn build(self) -> DiscoveryNodeContent {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    DiscoveryNodeContentBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for DiscoveryNodeContent
+where
+    S0: crate::typed::builder::IsSet<discovery_node_content_members::ephemeral_id>,
+    S1: crate::typed::builder::IsSet<discovery_node_content_members::transport_address>,
+    S2: crate::typed::builder::IsSet<discovery_node_content_members::external_id>,
+    S3: crate::typed::builder::IsSet<discovery_node_content_members::attributes>,
+    S4: crate::typed::builder::IsSet<discovery_node_content_members::roles>,
+    S5: crate::typed::builder::IsSet<discovery_node_content_members::version>,
+    S6: crate::typed::builder::IsSet<discovery_node_content_members::min_index_version>,
+    S7: crate::typed::builder::IsSet<discovery_node_content_members::max_index_version>,
 {
-    /// `ephemeral_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ephemeral_id: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match ephemeral_id {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match transport_address {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `external_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, external_id: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match external_id {} }
-}
-
-impl<S4, S5, S6, S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match attributes {} }
-}
-
-impl<S5, S6, S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match roles {} }
-}
-
-impl<S6, S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match version {} }
-}
-
-impl<S7>
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `min_index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_index_version: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match min_index_version {} }
-}
-
-impl
-    DiscoveryNodeContentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_index_version: crate::typed::builder::MissingRequiredField) -> DiscoveryNodeContent { match max_index_version {} }
+    fn from(builder: DiscoveryNodeContentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18456,19 +17590,27 @@ pub struct ExponentialAverageCalculationContext {
 
 impl ExponentialAverageCalculationContext {
     /// Creates a builder for [`ExponentialAverageCalculationContext`].
+    ///
+    /// Required: `incremental_metric_value_ms`.
     pub fn builder() -> ExponentialAverageCalculationContextBuilder {
         ExponentialAverageCalculationContextBuilder::new()
     }
 
     /// Creates a [`ExponentialAverageCalculationContext`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExponentialAverageCalculationContextBuilder,
-        )
-            -> ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `incremental_metric_value_ms`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExponentialAverageCalculationContext>>(
+        f: impl FnOnce(ExponentialAverageCalculationContextBuilder) -> B,
     ) -> ExponentialAverageCalculationContext {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExponentialAverageCalculationContextBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod exponential_average_calculation_context_members {
+    pub struct incremental_metric_value_ms;
 }
 
 /// Builder for [`ExponentialAverageCalculationContext`].
@@ -18537,6 +17679,7 @@ impl<S0> ExponentialAverageCalculationContextBuilder<(S0,)> {
 }
 
 impl ExponentialAverageCalculationContextBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn incremental_metric_value_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -18547,9 +17690,14 @@ impl ExponentialAverageCalculationContextBuilder<(crate::typed::builder::NotSet,
     }
 }
 
-impl ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ExponentialAverageCalculationContextBuilder<(S0,)> {
     /// Builds a [`ExponentialAverageCalculationContext`].
-    pub fn build(self) -> ExponentialAverageCalculationContext {
+    pub fn build(self) -> ExponentialAverageCalculationContext
+    where
+        S0: crate::typed::builder::IsSet<
+            exponential_average_calculation_context_members::incremental_metric_value_ms,
+        >,
+    {
         ExponentialAverageCalculationContext {
             incremental_metric_value_ms: self.incremental_metric_value_ms.unwrap(),
             latest_timestamp: self.latest_timestamp,
@@ -18558,20 +17706,29 @@ impl ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)> 
     }
 }
 
-impl From<ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)>>
-    for ExponentialAverageCalculationContext
+impl<S0> crate::typed::builder::Build for ExponentialAverageCalculationContextBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        exponential_average_calculation_context_members::incremental_metric_value_ms,
+    >,
 {
-    fn from(
-        builder: ExponentialAverageCalculationContextBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ExponentialAverageCalculationContext;
+
+    fn build(self) -> ExponentialAverageCalculationContext {
+        Self::build(self)
     }
 }
 
-impl ExponentialAverageCalculationContextBuilder<(crate::typed::builder::NotSet,)> {
-    /// `incremental_metric_value_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, incremental_metric_value_ms: crate::typed::builder::MissingRequiredField) -> ExponentialAverageCalculationContext { match incremental_metric_value_ms {} }
+impl<S0> From<ExponentialAverageCalculationContextBuilder<(S0,)>>
+    for ExponentialAverageCalculationContext
+where
+    S0: crate::typed::builder::IsSet<
+        exponential_average_calculation_context_members::incremental_metric_value_ms,
+    >,
+{
+    fn from(builder: ExponentialAverageCalculationContextBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type FeatureExtractor = QueryFeatureExtractor;
@@ -18606,8 +17763,8 @@ impl FillMaskInferenceOptions {
     }
 
     /// Creates a [`FillMaskInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FillMaskInferenceOptionsBuilder) -> FillMaskInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FillMaskInferenceOptions>>(
+        f: impl FnOnce(FillMaskInferenceOptionsBuilder) -> B,
     ) -> FillMaskInferenceOptions {
         f(Self::builder()).build()
     }
@@ -18677,11 +17834,11 @@ impl FillMaskInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -18710,9 +17867,9 @@ impl FillMaskInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -18728,6 +17885,14 @@ impl FillMaskInferenceOptionsBuilder {
             results_field: self.results_field,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for FillMaskInferenceOptionsBuilder {
+    type Output = FillMaskInferenceOptions;
+
+    fn build(self) -> FillMaskInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -18757,8 +17922,8 @@ impl FillMaskInferenceUpdateOptions {
     }
 
     /// Creates a [`FillMaskInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FillMaskInferenceUpdateOptionsBuilder) -> FillMaskInferenceUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FillMaskInferenceUpdateOptions>>(
+        f: impl FnOnce(FillMaskInferenceUpdateOptionsBuilder) -> B,
     ) -> FillMaskInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -18808,9 +17973,11 @@ impl FillMaskInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -18839,6 +18006,14 @@ impl FillMaskInferenceUpdateOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FillMaskInferenceUpdateOptionsBuilder {
+    type Output = FillMaskInferenceUpdateOptions;
+
+    fn build(self) -> FillMaskInferenceUpdateOptions {
+        Self::build(self)
+    }
+}
+
 impl From<FillMaskInferenceUpdateOptionsBuilder> for FillMaskInferenceUpdateOptions {
     fn from(builder: FillMaskInferenceUpdateOptionsBuilder) -> Self {
         builder.build()
@@ -18858,19 +18033,28 @@ pub struct Filter {
 
 impl Filter {
     /// Creates a builder for [`Filter`].
+    ///
+    /// Required: `filter_id`, `items`.
     pub fn builder() -> FilterBuilder {
         FilterBuilder::new()
     }
 
     /// Creates a [`Filter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FilterBuilder,
-        )
-            -> FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `filter_id`, `items`.
+    pub fn of<B: crate::typed::builder::Build<Output = Filter>>(
+        f: impl FnOnce(FilterBuilder) -> B,
     ) -> Filter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filter_members {
+    pub struct filter_id;
+    pub struct items;
 }
 
 /// Builder for [`Filter`].
@@ -18917,7 +18101,7 @@ impl<S0, S1> FilterBuilder<(S0, S1)> {
 }
 
 impl<S1> FilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A string that uniquely identifies a filter.
+    /// **Required.** A string that uniquely identifies a filter.
     pub fn filter_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -18929,7 +18113,7 @@ impl<S1> FilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An array of strings which is the filter item list.
+    /// **Required.** An array of strings which is the filter item list.
     pub fn items(
         self,
         value: impl Into<Vec<String>>,
@@ -18963,9 +18147,13 @@ impl<S0> FilterBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FilterBuilder<(S0, S1)> {
     /// Builds a [`Filter`].
-    pub fn build(self) -> Filter {
+    pub fn build(self) -> Filter
+    where
+        S0: crate::typed::builder::IsSet<filter_members::filter_id>,
+        S1: crate::typed::builder::IsSet<filter_members::items>,
+    {
         Filter {
             description: self.description,
             filter_id: self.filter_id.unwrap(),
@@ -18974,24 +18162,26 @@ impl FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Filter {
-    fn from(
-        builder: FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for FilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<filter_members::filter_id>,
+    S1: crate::typed::builder::IsSet<filter_members::items>,
+{
+    type Output = Filter;
+
+    fn build(self) -> Filter {
+        Self::build(self)
     }
 }
 
-impl<S1> FilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `filter_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filter_id: crate::typed::builder::MissingRequiredField) -> Filter { match filter_id {} }
-}
-
-impl FilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `items` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, items: crate::typed::builder::MissingRequiredField) -> Filter { match items {} }
+impl<S0, S1> From<FilterBuilder<(S0, S1)>> for Filter
+where
+    S0: crate::typed::builder::IsSet<filter_members::filter_id>,
+    S1: crate::typed::builder::IsSet<filter_members::items>,
+{
+    fn from(builder: FilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19005,16 +18195,27 @@ pub struct FilterRef {
 
 impl FilterRef {
     /// Creates a builder for [`FilterRef`].
+    ///
+    /// Required: `filter_id`.
     pub fn builder() -> FilterRefBuilder {
         FilterRefBuilder::new()
     }
 
     /// Creates a [`FilterRef`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FilterRefBuilder) -> FilterRefBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `filter_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilterRef>>(
+        f: impl FnOnce(FilterRefBuilder) -> B,
     ) -> FilterRef {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilterRefBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filter_ref_members {
+    pub struct filter_id;
 }
 
 /// Builder for [`FilterRef`].
@@ -19058,7 +18259,7 @@ impl<S0> FilterRefBuilder<(S0,)> {
 }
 
 impl FilterRefBuilder<(crate::typed::builder::NotSet,)> {
-    /// The identifier for the filter.
+    /// **Required.** The identifier for the filter.
     pub fn filter_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -19069,9 +18270,12 @@ impl FilterRefBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FilterRefBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FilterRefBuilder<(S0,)> {
     /// Builds a [`FilterRef`].
-    pub fn build(self) -> FilterRef {
+    pub fn build(self) -> FilterRef
+    where
+        S0: crate::typed::builder::IsSet<filter_ref_members::filter_id>,
+    {
         FilterRef {
             filter_id: self.filter_id.unwrap(),
             filter_type: self.filter_type,
@@ -19079,16 +18283,24 @@ impl FilterRefBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FilterRefBuilder<(crate::typed::builder::Set,)>> for FilterRef {
-    fn from(builder: FilterRefBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FilterRefBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<filter_ref_members::filter_id>,
+{
+    type Output = FilterRef;
+
+    fn build(self) -> FilterRef {
+        Self::build(self)
     }
 }
 
-impl FilterRefBuilder<(crate::typed::builder::NotSet,)> {
-    /// `filter_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filter_id: crate::typed::builder::MissingRequiredField) -> FilterRef { match filter_id {} }
+impl<S0> From<FilterRefBuilder<(S0,)>> for FilterRef
+where
+    S0: crate::typed::builder::IsSet<filter_ref_members::filter_id>,
+{
+    fn from(builder: FilterRefBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19116,7 +18328,9 @@ impl GeoResults {
     }
 
     /// Creates a [`GeoResults`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GeoResultsBuilder) -> GeoResultsBuilder) -> GeoResults {
+    pub fn of<B: crate::typed::builder::Build<Output = GeoResults>>(
+        f: impl FnOnce(GeoResultsBuilder) -> B,
+    ) -> GeoResults {
         f(Self::builder()).build()
     }
 }
@@ -19173,6 +18387,14 @@ impl GeoResultsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoResultsBuilder {
+    type Output = GeoResults;
+
+    fn build(self) -> GeoResults {
+        Self::build(self)
+    }
+}
+
 impl From<GeoResultsBuilder> for GeoResults {
     fn from(builder: GeoResultsBuilder) -> Self {
         builder.build()
@@ -19197,22 +18419,29 @@ pub struct Hyperparameter {
 
 impl Hyperparameter {
     /// Creates a builder for [`Hyperparameter`].
+    ///
+    /// Required: `name`, `supplied`, `value`.
     pub fn builder() -> HyperparameterBuilder {
         HyperparameterBuilder::new()
     }
 
     /// Creates a [`Hyperparameter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HyperparameterBuilder,
-        ) -> HyperparameterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `supplied`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = Hyperparameter>>(
+        f: impl FnOnce(HyperparameterBuilder) -> B,
     ) -> Hyperparameter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HyperparameterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hyperparameter_members {
+    pub struct name;
+    pub struct supplied;
+    pub struct value;
 }
 
 /// Builder for [`Hyperparameter`].
@@ -19295,7 +18524,7 @@ impl<S0, S1, S2> HyperparameterBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> HyperparameterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Name of the hyperparameter.
+    /// **Required.** Name of the hyperparameter.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -19307,7 +18536,7 @@ impl<S1, S2> HyperparameterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> HyperparameterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Indicates if the hyperparameter is specified by the user (true) or optimized (false).
+    /// **Required.** Indicates if the hyperparameter is specified by the user (true) or optimized (false).
     pub fn supplied(
         self,
         value: bool,
@@ -19319,7 +18548,7 @@ impl<S0, S2> HyperparameterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> HyperparameterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The value of the hyperparameter, either optimized or specified by the user.
+    /// **Required.** The value of the hyperparameter, either optimized or specified by the user.
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -19330,15 +18559,14 @@ impl<S0, S1> HyperparameterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    HyperparameterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> HyperparameterBuilder<(S0, S1, S2)> {
     /// Builds a [`Hyperparameter`].
-    pub fn build(self) -> Hyperparameter {
+    pub fn build(self) -> Hyperparameter
+    where
+        S0: crate::typed::builder::IsSet<hyperparameter_members::name>,
+        S1: crate::typed::builder::IsSet<hyperparameter_members::supplied>,
+        S2: crate::typed::builder::IsSet<hyperparameter_members::value>,
+    {
         Hyperparameter {
             absolute_importance: self.absolute_importance,
             name: self.name.unwrap(),
@@ -19349,54 +18577,28 @@ impl
     }
 }
 
-impl
-    From<
-        HyperparameterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Hyperparameter
+impl<S0, S1, S2> crate::typed::builder::Build for HyperparameterBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<hyperparameter_members::name>,
+    S1: crate::typed::builder::IsSet<hyperparameter_members::supplied>,
+    S2: crate::typed::builder::IsSet<hyperparameter_members::value>,
 {
-    fn from(
-        builder: HyperparameterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Hyperparameter;
+
+    fn build(self) -> Hyperparameter {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> HyperparameterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Hyperparameter { match name {} }
-}
-
-impl<S2>
-    HyperparameterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<HyperparameterBuilder<(S0, S1, S2)>> for Hyperparameter
+where
+    S0: crate::typed::builder::IsSet<hyperparameter_members::name>,
+    S1: crate::typed::builder::IsSet<hyperparameter_members::supplied>,
+    S2: crate::typed::builder::IsSet<hyperparameter_members::value>,
 {
-    /// `supplied` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, supplied: crate::typed::builder::MissingRequiredField) -> Hyperparameter { match supplied {} }
-}
-
-impl
-    HyperparameterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> Hyperparameter { match value {} }
+    fn from(builder: HyperparameterBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19501,7 +18703,9 @@ impl Hyperparameters {
     }
 
     /// Creates a [`Hyperparameters`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(HyperparametersBuilder) -> HyperparametersBuilder) -> Hyperparameters {
+    pub fn of<B: crate::typed::builder::Build<Output = Hyperparameters>>(
+        f: impl FnOnce(HyperparametersBuilder) -> B,
+    ) -> Hyperparameters {
         f(Self::builder()).build()
     }
 }
@@ -19809,6 +19013,14 @@ impl HyperparametersBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HyperparametersBuilder {
+    type Output = Hyperparameters;
+
+    fn build(self) -> Hyperparameters {
+        Self::build(self)
+    }
+}
+
 impl From<HyperparametersBuilder> for Hyperparameters {
     fn from(builder: HyperparametersBuilder) -> Self {
         builder.build()
@@ -20016,15 +19228,17 @@ impl From<QuestionAnsweringInferenceOptionsBuilder> for InferenceConfigCreateCon
 
 impl InferenceConfigCreateContainer {
     /// Creates a builder for [`InferenceConfigCreateContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> InferenceConfigCreateContainerBuilder {
         InferenceConfigCreateContainerBuilder::new()
     }
 
     /// Creates a [`InferenceConfigCreateContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceConfigCreateContainerBuilder,
-        ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfigCreateContainer>>(
+        f: impl FnOnce(InferenceConfigCreateContainerBuilder) -> B,
     ) -> InferenceConfigCreateContainer {
         f(Self::builder()).build()
     }
@@ -20067,9 +19281,9 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<B: crate::typed::builder::Build<Output = RegressionInferenceOptions>>(
         self,
-        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> RegressionInferenceOptionsBuilder,
+        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression(f(RegressionInferenceOptionsBuilder::new()).build())
     }
@@ -20085,9 +19299,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<Output = ClassificationInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> ClassificationInferenceOptionsBuilder,
+        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification(f(ClassificationInferenceOptionsBuilder::new()).build())
     }
@@ -20105,11 +19321,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_classification`](Self::text_classification) with a builder.
-    pub fn text_classification_with(
+    pub fn text_classification_with<
+        B: crate::typed::builder::Build<Output = TextClassificationInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            TextClassificationInferenceOptionsBuilder,
-        ) -> TextClassificationInferenceOptionsBuilder,
+        f: impl FnOnce(TextClassificationInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_classification(f(TextClassificationInferenceOptionsBuilder::new()).build())
     }
@@ -20127,12 +19343,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`zero_shot_classification`](Self::zero_shot_classification) with a builder.
-    pub fn zero_shot_classification_with(
+    pub fn zero_shot_classification_with<
+        B: crate::typed::builder::Build<Output = ZeroShotClassificationInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            ZeroShotClassificationInferenceOptionsBuilder,
-        )
-            -> ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ZeroShotClassificationInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.zero_shot_classification(
             f(ZeroShotClassificationInferenceOptionsBuilder::new()).build(),
@@ -20150,9 +19365,9 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fill_mask`](Self::fill_mask) with a builder.
-    pub fn fill_mask_with(
+    pub fn fill_mask_with<B: crate::typed::builder::Build<Output = FillMaskInferenceOptions>>(
         self,
-        f: impl FnOnce(FillMaskInferenceOptionsBuilder) -> FillMaskInferenceOptionsBuilder,
+        f: impl FnOnce(FillMaskInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.fill_mask(f(FillMaskInferenceOptionsBuilder::new()).build())
     }
@@ -20167,11 +19382,9 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`learning_to_rank`](Self::learning_to_rank) with a builder.
-    pub fn learning_to_rank_with(
+    pub fn learning_to_rank_with<B: crate::typed::builder::Build<Output = LearningToRankConfig>>(
         self,
-        f: impl FnOnce(
-            LearningToRankConfigBuilder,
-        ) -> LearningToRankConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(LearningToRankConfigBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.learning_to_rank(f(LearningToRankConfigBuilder::new()).build())
     }
@@ -20187,9 +19400,9 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ner`](Self::ner) with a builder.
-    pub fn ner_with(
+    pub fn ner_with<B: crate::typed::builder::Build<Output = NerInferenceOptions>>(
         self,
-        f: impl FnOnce(NerInferenceOptionsBuilder) -> NerInferenceOptionsBuilder,
+        f: impl FnOnce(NerInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.ner(f(NerInferenceOptionsBuilder::new()).build())
     }
@@ -20205,9 +19418,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`pass_through`](Self::pass_through) with a builder.
-    pub fn pass_through_with(
+    pub fn pass_through_with<
+        B: crate::typed::builder::Build<Output = PassThroughInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(PassThroughInferenceOptionsBuilder) -> PassThroughInferenceOptionsBuilder,
+        f: impl FnOnce(PassThroughInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.pass_through(f(PassThroughInferenceOptionsBuilder::new()).build())
     }
@@ -20223,9 +19438,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_embedding`](Self::text_embedding) with a builder.
-    pub fn text_embedding_with(
+    pub fn text_embedding_with<
+        B: crate::typed::builder::Build<Output = TextEmbeddingInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(TextEmbeddingInferenceOptionsBuilder) -> TextEmbeddingInferenceOptionsBuilder,
+        f: impl FnOnce(TextEmbeddingInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_embedding(f(TextEmbeddingInferenceOptionsBuilder::new()).build())
     }
@@ -20241,9 +19458,11 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_expansion`](Self::text_expansion) with a builder.
-    pub fn text_expansion_with(
+    pub fn text_expansion_with<
+        B: crate::typed::builder::Build<Output = TextExpansionInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(TextExpansionInferenceOptionsBuilder) -> TextExpansionInferenceOptionsBuilder,
+        f: impl FnOnce(TextExpansionInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_expansion(f(TextExpansionInferenceOptionsBuilder::new()).build())
     }
@@ -20261,35 +19480,44 @@ impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`question_answering`](Self::question_answering) with a builder.
-    pub fn question_answering_with(
+    pub fn question_answering_with<
+        B: crate::typed::builder::Build<Output = QuestionAnsweringInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            QuestionAnsweringInferenceOptionsBuilder,
-        ) -> QuestionAnsweringInferenceOptionsBuilder,
+        f: impl FnOnce(QuestionAnsweringInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
         self.question_answering(f(QuestionAnsweringInferenceOptionsBuilder::new()).build())
     }
 }
 
-impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceConfigCreateContainerBuilder<(S0,)> {
     /// Builds a [`InferenceConfigCreateContainer`].
-    pub fn build(self) -> InferenceConfigCreateContainer {
+    pub fn build(self) -> InferenceConfigCreateContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<InferenceConfigCreateContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)>>
-    for InferenceConfigCreateContainer
+impl<S0> crate::typed::builder::Build for InferenceConfigCreateContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigCreateContainer>,
 {
-    fn from(builder: InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = InferenceConfigCreateContainer;
+
+    fn build(self) -> InferenceConfigCreateContainer {
+        Self::build(self)
     }
 }
 
-impl InferenceConfigCreateContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> InferenceConfigCreateContainer { match variant {} }
+impl<S0> From<InferenceConfigCreateContainerBuilder<(S0,)>> for InferenceConfigCreateContainer
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigCreateContainer>,
+{
+    fn from(builder: InferenceConfigCreateContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20456,15 +19684,17 @@ impl From<QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder:
 
 impl InferenceConfigUpdateContainer {
     /// Creates a builder for [`InferenceConfigUpdateContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> InferenceConfigUpdateContainerBuilder {
         InferenceConfigUpdateContainerBuilder::new()
     }
 
     /// Creates a [`InferenceConfigUpdateContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceConfigUpdateContainerBuilder,
-        ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfigUpdateContainer>>(
+        f: impl FnOnce(InferenceConfigUpdateContainerBuilder) -> B,
     ) -> InferenceConfigUpdateContainer {
         f(Self::builder()).build()
     }
@@ -20507,9 +19737,9 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<B: crate::typed::builder::Build<Output = RegressionInferenceOptions>>(
         self,
-        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> RegressionInferenceOptionsBuilder,
+        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression(f(RegressionInferenceOptionsBuilder::new()).build())
     }
@@ -20525,9 +19755,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<Output = ClassificationInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> ClassificationInferenceOptionsBuilder,
+        f: impl FnOnce(ClassificationInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification(f(ClassificationInferenceOptionsBuilder::new()).build())
     }
@@ -20545,11 +19777,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_classification`](Self::text_classification) with a builder.
-    pub fn text_classification_with(
+    pub fn text_classification_with<
+        B: crate::typed::builder::Build<Output = TextClassificationInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            TextClassificationInferenceUpdateOptionsBuilder,
-        ) -> TextClassificationInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(TextClassificationInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_classification(f(TextClassificationInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20567,13 +19799,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`zero_shot_classification`](Self::zero_shot_classification) with a builder.
-    pub fn zero_shot_classification_with(
+    pub fn zero_shot_classification_with<
+        B: crate::typed::builder::Build<Output = ZeroShotClassificationInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            ZeroShotClassificationInferenceUpdateOptionsBuilder,
-        ) -> ZeroShotClassificationInferenceUpdateOptionsBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ZeroShotClassificationInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.zero_shot_classification(
             f(ZeroShotClassificationInferenceUpdateOptionsBuilder::new()).build(),
@@ -20591,9 +19821,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fill_mask`](Self::fill_mask) with a builder.
-    pub fn fill_mask_with(
+    pub fn fill_mask_with<
+        B: crate::typed::builder::Build<Output = FillMaskInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(FillMaskInferenceUpdateOptionsBuilder) -> FillMaskInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(FillMaskInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.fill_mask(f(FillMaskInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20609,9 +19841,9 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ner`](Self::ner) with a builder.
-    pub fn ner_with(
+    pub fn ner_with<B: crate::typed::builder::Build<Output = NerInferenceUpdateOptions>>(
         self,
-        f: impl FnOnce(NerInferenceUpdateOptionsBuilder) -> NerInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(NerInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.ner(f(NerInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20627,11 +19859,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`pass_through`](Self::pass_through) with a builder.
-    pub fn pass_through_with(
+    pub fn pass_through_with<
+        B: crate::typed::builder::Build<Output = PassThroughInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            PassThroughInferenceUpdateOptionsBuilder,
-        ) -> PassThroughInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(PassThroughInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.pass_through(f(PassThroughInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20647,11 +19879,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_embedding`](Self::text_embedding) with a builder.
-    pub fn text_embedding_with(
+    pub fn text_embedding_with<
+        B: crate::typed::builder::Build<Output = TextEmbeddingInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            TextEmbeddingInferenceUpdateOptionsBuilder,
-        ) -> TextEmbeddingInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(TextEmbeddingInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_embedding(f(TextEmbeddingInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20667,11 +19899,11 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_expansion`](Self::text_expansion) with a builder.
-    pub fn text_expansion_with(
+    pub fn text_expansion_with<
+        B: crate::typed::builder::Build<Output = TextExpansionInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            TextExpansionInferenceUpdateOptionsBuilder,
-        ) -> TextExpansionInferenceUpdateOptionsBuilder,
+        f: impl FnOnce(TextExpansionInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_expansion(f(TextExpansionInferenceUpdateOptionsBuilder::new()).build())
     }
@@ -20689,36 +19921,44 @@ impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`question_answering`](Self::question_answering) with a builder.
-    pub fn question_answering_with(
+    pub fn question_answering_with<
+        B: crate::typed::builder::Build<Output = QuestionAnsweringInferenceUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            QuestionAnsweringInferenceUpdateOptionsBuilder,
-        )
-            -> QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QuestionAnsweringInferenceUpdateOptionsBuilder) -> B,
     ) -> InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
         self.question_answering(f(QuestionAnsweringInferenceUpdateOptionsBuilder::new()).build())
     }
 }
 
-impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceConfigUpdateContainerBuilder<(S0,)> {
     /// Builds a [`InferenceConfigUpdateContainer`].
-    pub fn build(self) -> InferenceConfigUpdateContainer {
+    pub fn build(self) -> InferenceConfigUpdateContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<InferenceConfigUpdateContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)>>
-    for InferenceConfigUpdateContainer
+impl<S0> crate::typed::builder::Build for InferenceConfigUpdateContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigUpdateContainer>,
 {
-    fn from(builder: InferenceConfigUpdateContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = InferenceConfigUpdateContainer;
+
+    fn build(self) -> InferenceConfigUpdateContainer {
+        Self::build(self)
     }
 }
 
-impl InferenceConfigUpdateContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> InferenceConfigUpdateContainer { match variant {} }
+impl<S0> From<InferenceConfigUpdateContainerBuilder<(S0,)>> for InferenceConfigUpdateContainer
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigUpdateContainer>,
+{
+    fn from(builder: InferenceConfigUpdateContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20788,8 +20028,8 @@ impl InferenceResponseResult {
     }
 
     /// Creates a [`InferenceResponseResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceResponseResultBuilder) -> InferenceResponseResultBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceResponseResult>>(
+        f: impl FnOnce(InferenceResponseResultBuilder) -> B,
     ) -> InferenceResponseResult {
         f(Self::builder()).build()
     }
@@ -20847,17 +20087,9 @@ impl InferenceResponseResultBuilder {
     }
 
     /// Adds an element to [`entities`](Self::entities), with a builder.
-    pub fn add_entities_with(
+    pub fn add_entities_with<B: crate::typed::builder::Build<Output = TrainedModelEntities>>(
         self,
-        f: impl FnOnce(
-            TrainedModelEntitiesBuilder,
-        ) -> TrainedModelEntitiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelEntitiesBuilder) -> B,
     ) -> Self {
         self.add_entities(f(TrainedModelEntitiesBuilder::new()).build())
     }
@@ -20965,15 +20197,9 @@ impl InferenceResponseResultBuilder {
     }
 
     /// Adds an element to [`top_classes`](Self::top_classes), with a builder.
-    pub fn add_top_classes_with(
+    pub fn add_top_classes_with<B: crate::typed::builder::Build<Output = TopClassEntry>>(
         self,
-        f: impl FnOnce(
-            TopClassEntryBuilder,
-        ) -> TopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TopClassEntryBuilder) -> B,
     ) -> Self {
         self.add_top_classes(f(TopClassEntryBuilder::new()).build())
     }
@@ -21020,12 +20246,11 @@ impl InferenceResponseResultBuilder {
     }
 
     /// Adds an element to [`feature_importance`](Self::feature_importance), with a builder.
-    pub fn add_feature_importance_with(
+    pub fn add_feature_importance_with<
+        B: crate::typed::builder::Build<Output = TrainedModelInferenceFeatureImportance>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelInferenceFeatureImportanceBuilder,
-        )
-            -> TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelInferenceFeatureImportanceBuilder) -> B,
     ) -> Self {
         self.add_feature_importance(f(TrainedModelInferenceFeatureImportanceBuilder::new()).build())
     }
@@ -21048,6 +20273,14 @@ impl InferenceResponseResultBuilder {
     }
 }
 
+impl crate::typed::builder::Build for InferenceResponseResultBuilder {
+    type Output = InferenceResponseResult;
+
+    fn build(self) -> InferenceResponseResult {
+        Self::build(self)
+    }
+}
+
 impl From<InferenceResponseResultBuilder> for InferenceResponseResult {
     fn from(builder: InferenceResponseResultBuilder) -> Self {
         builder.build()
@@ -21062,19 +20295,28 @@ pub struct Influence {
 
 impl Influence {
     /// Creates a builder for [`Influence`].
+    ///
+    /// Required: `influencer_field_name`, `influencer_field_values`.
     pub fn builder() -> InfluenceBuilder {
         InfluenceBuilder::new()
     }
 
     /// Creates a [`Influence`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InfluenceBuilder,
-        )
-            -> InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `influencer_field_name`, `influencer_field_values`.
+    pub fn of<B: crate::typed::builder::Build<Output = Influence>>(
+        f: impl FnOnce(InfluenceBuilder) -> B,
     ) -> Influence {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InfluenceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod influence_members {
+    pub struct influencer_field_name;
+    pub struct influencer_field_values;
 }
 
 /// Builder for [`Influence`].
@@ -21106,6 +20348,7 @@ impl<S0, S1> InfluenceBuilder<(S0, S1)> {
 }
 
 impl<S1> InfluenceBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn influencer_field_name(
         self,
         value: impl Into<String>,
@@ -21117,6 +20360,7 @@ impl<S1> InfluenceBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InfluenceBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn influencer_field_values(
         self,
         value: impl Into<Vec<String>>,
@@ -21150,9 +20394,13 @@ impl<S0> InfluenceBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InfluenceBuilder<(S0, S1)> {
     /// Builds a [`Influence`].
-    pub fn build(self) -> Influence {
+    pub fn build(self) -> Influence
+    where
+        S0: crate::typed::builder::IsSet<influence_members::influencer_field_name>,
+        S1: crate::typed::builder::IsSet<influence_members::influencer_field_values>,
+    {
         Influence {
             influencer_field_name: self.influencer_field_name.unwrap(),
             influencer_field_values: self.influencer_field_values.unwrap(),
@@ -21160,26 +20408,26 @@ impl InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for Influence
+impl<S0, S1> crate::typed::builder::Build for InfluenceBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<influence_members::influencer_field_name>,
+    S1: crate::typed::builder::IsSet<influence_members::influencer_field_values>,
 {
-    fn from(
-        builder: InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = Influence;
+
+    fn build(self) -> Influence {
+        Self::build(self)
     }
 }
 
-impl<S1> InfluenceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `influencer_field_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_field_name: crate::typed::builder::MissingRequiredField) -> Influence { match influencer_field_name {} }
-}
-
-impl InfluenceBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `influencer_field_values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_field_values: crate::typed::builder::MissingRequiredField) -> Influence { match influencer_field_values {} }
+impl<S0, S1> From<InfluenceBuilder<(S0, S1)>> for Influence
+where
+    S0: crate::typed::builder::IsSet<influence_members::influencer_field_name>,
+    S1: crate::typed::builder::IsSet<influence_members::influencer_field_values>,
+{
+    fn from(builder: InfluenceBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21218,29 +20466,36 @@ pub struct Influencer {
 
 impl Influencer {
     /// Creates a builder for [`Influencer`].
+    ///
+    /// Required: `bucket_span`, `influencer_score`, `influencer_field_name`, `influencer_field_value`, `initial_influencer_score`, `is_interim`, `job_id`, `probability`, `result_type`, `timestamp`.
     pub fn builder() -> InfluencerBuilder {
         InfluencerBuilder::new()
     }
 
     /// Creates a [`Influencer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InfluencerBuilder,
-        ) -> InfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_span`, `influencer_score`, `influencer_field_name`, `influencer_field_value`, `initial_influencer_score`, `is_interim`, `job_id`, `probability`, `result_type`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = Influencer>>(
+        f: impl FnOnce(InfluencerBuilder) -> B,
     ) -> Influencer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InfluencerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod influencer_members {
+    pub struct bucket_span;
+    pub struct influencer_score;
+    pub struct influencer_field_name;
+    pub struct influencer_field_value;
+    pub struct initial_influencer_score;
+    pub struct is_interim;
+    pub struct job_id;
+    pub struct probability;
+    pub struct result_type;
+    pub struct timestamp;
 }
 
 /// Builder for [`Influencer`].
@@ -21354,7 +20609,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
+    /// **Required.** The length of the bucket in seconds. This value matches the bucket span that is specified in the job.
     pub fn bucket_span(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitSeconds>,
@@ -21390,7 +20645,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// A normalized score between 0-100, which is based on the probability of the influencer in this bucket aggregated
+    /// **Required.** A normalized score between 0-100, which is based on the probability of the influencer in this bucket aggregated
     /// across detectors. Unlike `initial_influencer_score`, this value is updated by a re-normalization process as new
     /// data is analyzed.
     pub fn influencer_score(
@@ -21428,7 +20683,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The field name of the influencer.
+    /// **Required.** The field name of the influencer.
     pub fn influencer_field_name(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -21464,7 +20719,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The entity that influenced, contributed to, or was to blame for the anomaly.
+    /// **Required.** The entity that influenced, contributed to, or was to blame for the anomaly.
     pub fn influencer_field_value(
         self,
         value: impl Into<String>,
@@ -21500,7 +20755,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// A normalized score between 0-100, which is based on the probability of the influencer aggregated across detectors.
+    /// **Required.** A normalized score between 0-100, which is based on the probability of the influencer aggregated across detectors.
     /// This is the initial value that was calculated at the time the bucket was processed.
     pub fn initial_influencer_score(
         self,
@@ -21537,7 +20792,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// If true, this is an interim result. In other words, the results are calculated based on partial input data.
+    /// **Required.** If true, this is an interim result. In other words, the results are calculated based on partial input data.
     pub fn is_interim(
         self,
         value: bool,
@@ -21573,7 +20828,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -21609,7 +20864,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
-    /// The probability that the influencer has this behavior, in the range 0 to 1. This value can be held to a high
+    /// **Required.** The probability that the influencer has this behavior, in the range 0 to 1. This value can be held to a high
     /// precision of over 300 decimal places, so the `influencer_score` is provided as a human-readable and friendly
     /// interpretation of this value.
     pub fn probability(
@@ -21647,7 +20902,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
-    /// Internal. This value is always set to `influencer`.
+    /// **Required.** Internal. This value is always set to `influencer`.
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -21683,7 +20938,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The start time of the bucket for which these results were calculated.
+    /// **Required.** The start time of the bucket for which these results were calculated.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -21705,22 +20960,23 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 }
 
-impl
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    InfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`Influencer`].
-    pub fn build(self) -> Influencer {
+    pub fn build(self) -> Influencer
+    where
+        S0: crate::typed::builder::IsSet<influencer_members::bucket_span>,
+        S1: crate::typed::builder::IsSet<influencer_members::influencer_score>,
+        S2: crate::typed::builder::IsSet<influencer_members::influencer_field_name>,
+        S3: crate::typed::builder::IsSet<influencer_members::influencer_field_value>,
+        S4: crate::typed::builder::IsSet<influencer_members::initial_influencer_score>,
+        S5: crate::typed::builder::IsSet<influencer_members::is_interim>,
+        S6: crate::typed::builder::IsSet<influencer_members::job_id>,
+        S7: crate::typed::builder::IsSet<influencer_members::probability>,
+        S8: crate::typed::builder::IsSet<influencer_members::result_type>,
+        S9: crate::typed::builder::IsSet<influencer_members::timestamp>,
+    {
         Influencer {
             bucket_span: self.bucket_span.unwrap(),
             influencer_score: self.influencer_score.unwrap(),
@@ -21737,228 +20993,44 @@ impl
     }
 }
 
-impl
-    From<
-        InfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Influencer
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for InfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<influencer_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<influencer_members::influencer_score>,
+    S2: crate::typed::builder::IsSet<influencer_members::influencer_field_name>,
+    S3: crate::typed::builder::IsSet<influencer_members::influencer_field_value>,
+    S4: crate::typed::builder::IsSet<influencer_members::initial_influencer_score>,
+    S5: crate::typed::builder::IsSet<influencer_members::is_interim>,
+    S6: crate::typed::builder::IsSet<influencer_members::job_id>,
+    S7: crate::typed::builder::IsSet<influencer_members::probability>,
+    S8: crate::typed::builder::IsSet<influencer_members::result_type>,
+    S9: crate::typed::builder::IsSet<influencer_members::timestamp>,
 {
-    fn from(
-        builder: InfluencerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Influencer;
+
+    fn build(self) -> Influencer {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<InfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>> for Influencer
+where
+    S0: crate::typed::builder::IsSet<influencer_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<influencer_members::influencer_score>,
+    S2: crate::typed::builder::IsSet<influencer_members::influencer_field_name>,
+    S3: crate::typed::builder::IsSet<influencer_members::influencer_field_value>,
+    S4: crate::typed::builder::IsSet<influencer_members::initial_influencer_score>,
+    S5: crate::typed::builder::IsSet<influencer_members::is_interim>,
+    S6: crate::typed::builder::IsSet<influencer_members::job_id>,
+    S7: crate::typed::builder::IsSet<influencer_members::probability>,
+    S8: crate::typed::builder::IsSet<influencer_members::result_type>,
+    S9: crate::typed::builder::IsSet<influencer_members::timestamp>,
 {
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> Influencer { match bucket_span {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `influencer_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_score: crate::typed::builder::MissingRequiredField) -> Influencer { match influencer_score {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `influencer_field_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_field_name: crate::typed::builder::MissingRequiredField) -> Influencer { match influencer_field_name {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `influencer_field_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, influencer_field_value: crate::typed::builder::MissingRequiredField) -> Influencer { match influencer_field_value {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `initial_influencer_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_influencer_score: crate::typed::builder::MissingRequiredField) -> Influencer { match initial_influencer_score {} }
-}
-
-impl<S6, S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `is_interim` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_interim: crate::typed::builder::MissingRequiredField) -> Influencer { match is_interim {} }
-}
-
-impl<S7, S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Influencer { match job_id {} }
-}
-
-impl<S8, S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, probability: crate::typed::builder::MissingRequiredField) -> Influencer { match probability {} }
-}
-
-impl<S9>
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> Influencer { match result_type {} }
-}
-
-impl
-    InfluencerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> Influencer { match timestamp {} }
+    fn from(builder: InfluencerBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22061,25 +21133,32 @@ pub struct Job {
 
 impl Job {
     /// Creates a builder for [`Job`].
+    ///
+    /// Required: `allow_lazy_open`, `analysis_config`, `data_description`, `job_id`, `model_snapshot_retention_days`, `results_index_name`.
     pub fn builder() -> JobBuilder {
         JobBuilder::new()
     }
 
     /// Creates a [`Job`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobBuilder,
-        ) -> JobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `allow_lazy_open`, `analysis_config`, `data_description`, `job_id`, `model_snapshot_retention_days`, `results_index_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Job>>(
+        f: impl FnOnce(JobBuilder) -> B,
     ) -> Job {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_members {
+    pub struct allow_lazy_open;
+    pub struct analysis_config;
+    pub struct data_description;
+    pub struct job_id;
+    pub struct model_snapshot_retention_days;
+    pub struct results_index_name;
 }
 
 /// Builder for [`Job`].
@@ -22206,9 +21285,9 @@ impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`analysis_limits`](Self::analysis_limits) with a builder.
-    pub fn analysis_limits_with(
+    pub fn analysis_limits_with<B: crate::typed::builder::Build<Output = AnalysisLimits>>(
         self,
-        f: impl FnOnce(AnalysisLimitsBuilder) -> AnalysisLimitsBuilder,
+        f: impl FnOnce(AnalysisLimitsBuilder) -> B,
     ) -> Self {
         self.analysis_limits(f(AnalysisLimitsBuilder::new()).build())
     }
@@ -22246,9 +21325,9 @@ impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`blocked`](Self::blocked) with a builder.
-    pub fn blocked_with(
+    pub fn blocked_with<B: crate::typed::builder::Build<Output = JobBlocked>>(
         self,
-        f: impl FnOnce(JobBlockedBuilder) -> JobBlockedBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(JobBlockedBuilder) -> B,
     ) -> Self {
         self.blocked(f(JobBlockedBuilder::new()).build())
     }
@@ -22306,17 +21385,9 @@ impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`datafeed_config`](Self::datafeed_config) with a builder.
-    pub fn datafeed_config_with(
+    pub fn datafeed_config_with<B: crate::typed::builder::Build<Output = Datafeed>>(
         self,
-        f: impl FnOnce(
-            DatafeedBuilder,
-        ) -> DatafeedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DatafeedBuilder) -> B,
     ) -> Self {
         self.datafeed_config(f(DatafeedBuilder::new()).build())
     }
@@ -22419,9 +21490,9 @@ impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`model_plot_config`](Self::model_plot_config) with a builder.
-    pub fn model_plot_config_with(
+    pub fn model_plot_config_with<B: crate::typed::builder::Build<Output = ModelPlotConfig>>(
         self,
-        f: impl FnOnce(ModelPlotConfigBuilder) -> ModelPlotConfigBuilder,
+        f: impl FnOnce(ModelPlotConfigBuilder) -> B,
     ) -> Self {
         self.model_plot_config(f(ModelPlotConfigBuilder::new()).build())
     }
@@ -22471,7 +21542,7 @@ impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> JobBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// Advanced configuration option.
+    /// **Required.** Advanced configuration option.
     /// Specifies whether this job can open when there is insufficient machine learning node capacity for it to be immediately assigned to a node.
     pub fn allow_lazy_open(
         self,
@@ -22484,7 +21555,7 @@ impl<S1, S2, S3, S4, S5> JobBuilder<(crate::typed::builder::NotSet, S1, S2, S3, 
 }
 
 impl<S0, S2, S3, S4, S5> JobBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// The analysis configuration, which specifies how to analyze the data.
+    /// **Required.** The analysis configuration, which specifies how to analyze the data.
     /// After you create a job, you cannot change the analysis configuration; all the properties are informational.
     pub fn analysis_config(
         self,
@@ -22496,16 +21567,16 @@ impl<S0, S2, S3, S4, S5> JobBuilder<(S0, crate::typed::builder::NotSet, S2, S3, 
     }
 
     /// Sets [`analysis_config`](Self::analysis_config) with a builder.
-    pub fn analysis_config_with(
+    pub fn analysis_config_with<B: crate::typed::builder::Build<Output = AnalysisConfig>>(
         self,
-        f: impl FnOnce(AnalysisConfigBuilder) -> AnalysisConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AnalysisConfigBuilder) -> B,
     ) -> JobBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5)> {
         self.analysis_config(f(AnalysisConfigBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3, S4, S5> JobBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// The data description defines the format of the input data when you send data to the job by using the post data API.
+    /// **Required.** The data description defines the format of the input data when you send data to the job by using the post data API.
     /// Note that when configuring a datafeed, these properties are automatically set.
     /// When data is received via the post data API, it is not stored in Elasticsearch.
     /// Only the results for anomaly detection are retained.
@@ -22519,16 +21590,16 @@ impl<S0, S1, S3, S4, S5> JobBuilder<(S0, S1, crate::typed::builder::NotSet, S3, 
     }
 
     /// Sets [`data_description`](Self::data_description) with a builder.
-    pub fn data_description_with(
+    pub fn data_description_with<B: crate::typed::builder::Build<Output = DataDescription>>(
         self,
-        f: impl FnOnce(DataDescriptionBuilder) -> DataDescriptionBuilder,
+        f: impl FnOnce(DataDescriptionBuilder) -> B,
     ) -> JobBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
         self.data_description(f(DataDescriptionBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4, S5> JobBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     /// This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
     /// It must start and end with alphanumeric characters.
     pub fn job_id(
@@ -22542,7 +21613,7 @@ impl<S0, S1, S2, S4, S5> JobBuilder<(S0, S1, S2, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S2, S3, S5> JobBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// Advanced configuration option, which affects the automatic removal of old model snapshots for this job.
+    /// **Required.** Advanced configuration option, which affects the automatic removal of old model snapshots for this job.
     /// It specifies the maximum period of time (in days) that snapshots are retained.
     /// This period is relative to the timestamp of the most recent snapshot for this job.
     /// By default, snapshots ten days older than the newest snapshot are deleted.
@@ -22557,7 +21628,7 @@ impl<S0, S1, S2, S3, S5> JobBuilder<(S0, S1, S2, S3, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S3, S4> JobBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// A text string that affects the name of the machine learning results index.
+    /// **Required.** A text string that affects the name of the machine learning results index.
     /// The default value is `shared`, which generates an index named `.ml-anomalies-shared`.
     pub fn results_index_name(
         self,
@@ -22569,18 +21640,17 @@ impl<S0, S1, S2, S3, S4> JobBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::
     }
 }
 
-impl
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> JobBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`Job`].
-    pub fn build(self) -> Job {
+    pub fn build(self) -> Job
+    where
+        S0: crate::typed::builder::IsSet<job_members::allow_lazy_open>,
+        S1: crate::typed::builder::IsSet<job_members::analysis_config>,
+        S2: crate::typed::builder::IsSet<job_members::data_description>,
+        S3: crate::typed::builder::IsSet<job_members::job_id>,
+        S4: crate::typed::builder::IsSet<job_members::model_snapshot_retention_days>,
+        S5: crate::typed::builder::IsSet<job_members::results_index_name>,
+    {
         Job {
             allow_lazy_open: self.allow_lazy_open.unwrap(),
             analysis_config: self.analysis_config.unwrap(),
@@ -22610,111 +21680,34 @@ impl
     }
 }
 
-impl
-    From<
-        JobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Job
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build for JobBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<job_members::allow_lazy_open>,
+    S1: crate::typed::builder::IsSet<job_members::analysis_config>,
+    S2: crate::typed::builder::IsSet<job_members::data_description>,
+    S3: crate::typed::builder::IsSet<job_members::job_id>,
+    S4: crate::typed::builder::IsSet<job_members::model_snapshot_retention_days>,
+    S5: crate::typed::builder::IsSet<job_members::results_index_name>,
 {
-    fn from(
-        builder: JobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Job;
+
+    fn build(self) -> Job {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> JobBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `allow_lazy_open` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allow_lazy_open: crate::typed::builder::MissingRequiredField) -> Job { match allow_lazy_open {} }
-}
-
-impl<S2, S3, S4, S5>
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<JobBuilder<(S0, S1, S2, S3, S4, S5)>> for Job
+where
+    S0: crate::typed::builder::IsSet<job_members::allow_lazy_open>,
+    S1: crate::typed::builder::IsSet<job_members::analysis_config>,
+    S2: crate::typed::builder::IsSet<job_members::data_description>,
+    S3: crate::typed::builder::IsSet<job_members::job_id>,
+    S4: crate::typed::builder::IsSet<job_members::model_snapshot_retention_days>,
+    S5: crate::typed::builder::IsSet<job_members::results_index_name>,
 {
-    /// `analysis_config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis_config: crate::typed::builder::MissingRequiredField) -> Job { match analysis_config {} }
-}
-
-impl<S3, S4, S5>
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `data_description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_description: crate::typed::builder::MissingRequiredField) -> Job { match data_description {} }
-}
-
-impl<S4, S5>
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Job { match job_id {} }
-}
-
-impl<S5>
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `model_snapshot_retention_days` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_snapshot_retention_days: crate::typed::builder::MissingRequiredField) -> Job { match model_snapshot_retention_days {} }
-}
-
-impl
-    JobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `results_index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, results_index_name: crate::typed::builder::MissingRequiredField) -> Job { match results_index_name {} }
+    fn from(builder: JobBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22726,16 +21719,27 @@ pub struct JobBlocked {
 
 impl JobBlocked {
     /// Creates a builder for [`JobBlocked`].
+    ///
+    /// Required: `reason`.
     pub fn builder() -> JobBlockedBuilder {
         JobBlockedBuilder::new()
     }
 
     /// Creates a [`JobBlocked`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(JobBlockedBuilder) -> JobBlockedBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `reason`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobBlocked>>(
+        f: impl FnOnce(JobBlockedBuilder) -> B,
     ) -> JobBlocked {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobBlockedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_blocked_members {
+    pub struct reason;
 }
 
 /// Builder for [`JobBlocked`].
@@ -22778,6 +21782,7 @@ impl<S0> JobBlockedBuilder<(S0,)> {
 }
 
 impl JobBlockedBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<JobBlockedReason>,
@@ -22788,9 +21793,12 @@ impl JobBlockedBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl JobBlockedBuilder<(crate::typed::builder::Set,)> {
+impl<S0> JobBlockedBuilder<(S0,)> {
     /// Builds a [`JobBlocked`].
-    pub fn build(self) -> JobBlocked {
+    pub fn build(self) -> JobBlocked
+    where
+        S0: crate::typed::builder::IsSet<job_blocked_members::reason>,
+    {
         JobBlocked {
             reason: self.reason.unwrap(),
             task_id: self.task_id,
@@ -22798,16 +21806,24 @@ impl JobBlockedBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<JobBlockedBuilder<(crate::typed::builder::Set,)>> for JobBlocked {
-    fn from(builder: JobBlockedBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for JobBlockedBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<job_blocked_members::reason>,
+{
+    type Output = JobBlocked;
+
+    fn build(self) -> JobBlocked {
+        Self::build(self)
     }
 }
 
-impl JobBlockedBuilder<(crate::typed::builder::NotSet,)> {
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> JobBlocked { match reason {} }
+impl<S0> From<JobBlockedBuilder<(S0,)>> for JobBlocked
+where
+    S0: crate::typed::builder::IsSet<job_blocked_members::reason>,
+{
+    fn from(builder: JobBlockedBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -22902,19 +21918,28 @@ pub struct JobConfig {
 
 impl JobConfig {
     /// Creates a builder for [`JobConfig`].
+    ///
+    /// Required: `analysis_config`, `data_description`.
     pub fn builder() -> JobConfigBuilder {
         JobConfigBuilder::new()
     }
 
     /// Creates a [`JobConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobConfigBuilder,
-        )
-            -> JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `analysis_config`, `data_description`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobConfig>>(
+        f: impl FnOnce(JobConfigBuilder) -> B,
     ) -> JobConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_config_members {
+    pub struct analysis_config;
+    pub struct data_description;
 }
 
 /// Builder for [`JobConfig`].
@@ -23017,9 +22042,9 @@ impl<S0, S1> JobConfigBuilder<(S0, S1)> {
     }
 
     /// Sets [`analysis_limits`](Self::analysis_limits) with a builder.
-    pub fn analysis_limits_with(
+    pub fn analysis_limits_with<B: crate::typed::builder::Build<Output = AnalysisLimits>>(
         self,
-        f: impl FnOnce(AnalysisLimitsBuilder) -> AnalysisLimitsBuilder,
+        f: impl FnOnce(AnalysisLimitsBuilder) -> B,
     ) -> Self {
         self.analysis_limits(f(AnalysisLimitsBuilder::new()).build())
     }
@@ -23086,9 +22111,9 @@ impl<S0, S1> JobConfigBuilder<(S0, S1)> {
     }
 
     /// Sets [`datafeed_config`](Self::datafeed_config) with a builder.
-    pub fn datafeed_config_with(
+    pub fn datafeed_config_with<B: crate::typed::builder::Build<Output = DatafeedConfig>>(
         self,
-        f: impl FnOnce(DatafeedConfigBuilder) -> DatafeedConfigBuilder,
+        f: impl FnOnce(DatafeedConfigBuilder) -> B,
     ) -> Self {
         self.datafeed_config(f(DatafeedConfigBuilder::new()).build())
     }
@@ -23166,9 +22191,9 @@ impl<S0, S1> JobConfigBuilder<(S0, S1)> {
     }
 
     /// Sets [`model_plot_config`](Self::model_plot_config) with a builder.
-    pub fn model_plot_config_with(
+    pub fn model_plot_config_with<B: crate::typed::builder::Build<Output = ModelPlotConfig>>(
         self,
-        f: impl FnOnce(ModelPlotConfigBuilder) -> ModelPlotConfigBuilder,
+        f: impl FnOnce(ModelPlotConfigBuilder) -> B,
     ) -> Self {
         self.model_plot_config(f(ModelPlotConfigBuilder::new()).build())
     }
@@ -23238,7 +22263,7 @@ impl<S0, S1> JobConfigBuilder<(S0, S1)> {
 }
 
 impl<S1> JobConfigBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The analysis configuration, which specifies how to analyze the data.
+    /// **Required.** The analysis configuration, which specifies how to analyze the data.
     /// After you create a job, you cannot change the analysis configuration; all the properties are informational.
     pub fn analysis_config(
         self,
@@ -23250,16 +22275,16 @@ impl<S1> JobConfigBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`analysis_config`](Self::analysis_config) with a builder.
-    pub fn analysis_config_with(
+    pub fn analysis_config_with<B: crate::typed::builder::Build<Output = AnalysisConfig>>(
         self,
-        f: impl FnOnce(AnalysisConfigBuilder) -> AnalysisConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AnalysisConfigBuilder) -> B,
     ) -> JobConfigBuilder<(crate::typed::builder::Set, S1)> {
         self.analysis_config(f(AnalysisConfigBuilder::new()).build())
     }
 }
 
 impl<S0> JobConfigBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The data description defines the format of the input data when you send data to the job by using the post data API.
+    /// **Required.** The data description defines the format of the input data when you send data to the job by using the post data API.
     /// Note that when configure a datafeed, these properties are automatically set.
     pub fn data_description(
         self,
@@ -23271,17 +22296,21 @@ impl<S0> JobConfigBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`data_description`](Self::data_description) with a builder.
-    pub fn data_description_with(
+    pub fn data_description_with<B: crate::typed::builder::Build<Output = DataDescription>>(
         self,
-        f: impl FnOnce(DataDescriptionBuilder) -> DataDescriptionBuilder,
+        f: impl FnOnce(DataDescriptionBuilder) -> B,
     ) -> JobConfigBuilder<(S0, crate::typed::builder::Set)> {
         self.data_description(f(DataDescriptionBuilder::new()).build())
     }
 }
 
-impl JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> JobConfigBuilder<(S0, S1)> {
     /// Builds a [`JobConfig`].
-    pub fn build(self) -> JobConfig {
+    pub fn build(self) -> JobConfig
+    where
+        S0: crate::typed::builder::IsSet<job_config_members::analysis_config>,
+        S1: crate::typed::builder::IsSet<job_config_members::data_description>,
+    {
         JobConfig {
             allow_lazy_open: self.allow_lazy_open,
             analysis_config: self.analysis_config.unwrap(),
@@ -23305,26 +22334,26 @@ impl JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for JobConfig
+impl<S0, S1> crate::typed::builder::Build for JobConfigBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<job_config_members::analysis_config>,
+    S1: crate::typed::builder::IsSet<job_config_members::data_description>,
 {
-    fn from(
-        builder: JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = JobConfig;
+
+    fn build(self) -> JobConfig {
+        Self::build(self)
     }
 }
 
-impl<S1> JobConfigBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `analysis_config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis_config: crate::typed::builder::MissingRequiredField) -> JobConfig { match analysis_config {} }
-}
-
-impl JobConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `data_description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_description: crate::typed::builder::MissingRequiredField) -> JobConfig { match data_description {} }
+impl<S0, S1> From<JobConfigBuilder<(S0, S1)>> for JobConfig
+where
+    S0: crate::typed::builder::IsSet<job_config_members::analysis_config>,
+    S1: crate::typed::builder::IsSet<job_config_members::data_description>,
+{
+    fn from(builder: JobConfigBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23343,21 +22372,28 @@ pub struct JobForecastStatistics {
 
 impl JobForecastStatistics {
     /// Creates a builder for [`JobForecastStatistics`].
+    ///
+    /// Required: `total`, `forecasted_jobs`.
     pub fn builder() -> JobForecastStatisticsBuilder {
         JobForecastStatisticsBuilder::new()
     }
 
     /// Creates a [`JobForecastStatistics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobForecastStatisticsBuilder,
-        ) -> JobForecastStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `forecasted_jobs`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobForecastStatistics>>(
+        f: impl FnOnce(JobForecastStatisticsBuilder) -> B,
     ) -> JobForecastStatistics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobForecastStatisticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_forecast_statistics_members {
+    pub struct total;
+    pub struct forecasted_jobs;
 }
 
 /// Builder for [`JobForecastStatistics`].
@@ -23413,16 +22449,9 @@ impl<S0, S1> JobForecastStatisticsBuilder<(S0, S1)> {
     }
 
     /// Sets [`memory_bytes`](Self::memory_bytes) with a builder.
-    pub fn memory_bytes_with(
+    pub fn memory_bytes_with<B: crate::typed::builder::Build<Output = JobStatistics>>(
         self,
-        f: impl FnOnce(
-            JobStatisticsBuilder,
-        ) -> JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JobStatisticsBuilder) -> B,
     ) -> Self {
         self.memory_bytes(f(JobStatisticsBuilder::new()).build())
     }
@@ -23439,16 +22468,9 @@ impl<S0, S1> JobForecastStatisticsBuilder<(S0, S1)> {
     }
 
     /// Sets [`processing_time_ms`](Self::processing_time_ms) with a builder.
-    pub fn processing_time_ms_with(
+    pub fn processing_time_ms_with<B: crate::typed::builder::Build<Output = JobStatistics>>(
         self,
-        f: impl FnOnce(
-            JobStatisticsBuilder,
-        ) -> JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JobStatisticsBuilder) -> B,
     ) -> Self {
         self.processing_time_ms(f(JobStatisticsBuilder::new()).build())
     }
@@ -23465,16 +22487,9 @@ impl<S0, S1> JobForecastStatisticsBuilder<(S0, S1)> {
     }
 
     /// Sets [`records`](Self::records) with a builder.
-    pub fn records_with(
+    pub fn records_with<B: crate::typed::builder::Build<Output = JobStatistics>>(
         self,
-        f: impl FnOnce(
-            JobStatisticsBuilder,
-        ) -> JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JobStatisticsBuilder) -> B,
     ) -> Self {
         self.records(f(JobStatisticsBuilder::new()).build())
     }
@@ -23500,6 +22515,7 @@ impl<S0, S1> JobForecastStatisticsBuilder<(S0, S1)> {
 }
 
 impl<S1> JobForecastStatisticsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn total(
         self,
         value: i64,
@@ -23511,6 +22527,7 @@ impl<S1> JobForecastStatisticsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> JobForecastStatisticsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn forecasted_jobs(
         self,
         value: i32,
@@ -23521,9 +22538,13 @@ impl<S0> JobForecastStatisticsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl JobForecastStatisticsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> JobForecastStatisticsBuilder<(S0, S1)> {
     /// Builds a [`JobForecastStatistics`].
-    pub fn build(self) -> JobForecastStatistics {
+    pub fn build(self) -> JobForecastStatistics
+    where
+        S0: crate::typed::builder::IsSet<job_forecast_statistics_members::total>,
+        S1: crate::typed::builder::IsSet<job_forecast_statistics_members::forecasted_jobs>,
+    {
         JobForecastStatistics {
             memory_bytes: self.memory_bytes,
             processing_time_ms: self.processing_time_ms,
@@ -23535,29 +22556,26 @@ impl JobForecastStatisticsBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<JobForecastStatisticsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for JobForecastStatistics
+impl<S0, S1> crate::typed::builder::Build for JobForecastStatisticsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<job_forecast_statistics_members::total>,
+    S1: crate::typed::builder::IsSet<job_forecast_statistics_members::forecasted_jobs>,
 {
-    fn from(
-        builder: JobForecastStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JobForecastStatistics;
+
+    fn build(self) -> JobForecastStatistics {
+        Self::build(self)
     }
 }
 
-impl<S1> JobForecastStatisticsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> JobForecastStatistics { match total {} }
-}
-
-impl JobForecastStatisticsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `forecasted_jobs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, forecasted_jobs: crate::typed::builder::MissingRequiredField) -> JobForecastStatistics { match forecasted_jobs {} }
+impl<S0, S1> From<JobForecastStatisticsBuilder<(S0, S1)>> for JobForecastStatistics
+where
+    S0: crate::typed::builder::IsSet<job_forecast_statistics_members::total>,
+    S1: crate::typed::builder::IsSet<job_forecast_statistics_members::forecasted_jobs>,
+{
+    fn from(builder: JobForecastStatisticsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -23592,23 +22610,30 @@ pub struct JobStatistics {
 
 impl JobStatistics {
     /// Creates a builder for [`JobStatistics`].
+    ///
+    /// Required: `avg`, `max`, `min`, `total`.
     pub fn builder() -> JobStatisticsBuilder {
         JobStatisticsBuilder::new()
     }
 
     /// Creates a [`JobStatistics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobStatisticsBuilder,
-        ) -> JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `avg`, `max`, `min`, `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobStatistics>>(
+        f: impl FnOnce(JobStatisticsBuilder) -> B,
     ) -> JobStatistics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobStatisticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_statistics_members {
+    pub struct avg;
+    pub struct max;
+    pub struct min;
+    pub struct total;
 }
 
 /// Builder for [`JobStatistics`].
@@ -23660,6 +22685,7 @@ impl<S0, S1, S2, S3> JobStatisticsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> JobStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn avg(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -23671,6 +22697,7 @@ impl<S1, S2, S3> JobStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> JobStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -23682,6 +22709,7 @@ impl<S0, S2, S3> JobStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> JobStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -23693,6 +22721,7 @@ impl<S0, S1, S3> JobStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> JobStatisticsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -23703,16 +22732,15 @@ impl<S0, S1, S2> JobStatisticsBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 }
 
-impl
-    JobStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> JobStatisticsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`JobStatistics`].
-    pub fn build(self) -> JobStatistics {
+    pub fn build(self) -> JobStatistics
+    where
+        S0: crate::typed::builder::IsSet<job_statistics_members::avg>,
+        S1: crate::typed::builder::IsSet<job_statistics_members::max>,
+        S2: crate::typed::builder::IsSet<job_statistics_members::min>,
+        S3: crate::typed::builder::IsSet<job_statistics_members::total>,
+    {
         JobStatistics {
             avg: self.avg.unwrap(),
             max: self.max.unwrap(),
@@ -23722,71 +22750,30 @@ impl
     }
 }
 
-impl
-    From<
-        JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for JobStatistics
+impl<S0, S1, S2, S3> crate::typed::builder::Build for JobStatisticsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<job_statistics_members::avg>,
+    S1: crate::typed::builder::IsSet<job_statistics_members::max>,
+    S2: crate::typed::builder::IsSet<job_statistics_members::min>,
+    S3: crate::typed::builder::IsSet<job_statistics_members::total>,
 {
-    fn from(
-        builder: JobStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JobStatistics;
+
+    fn build(self) -> JobStatistics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> JobStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> JobStatistics { match avg {} }
-}
-
-impl<S2, S3>
-    JobStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<JobStatisticsBuilder<(S0, S1, S2, S3)>> for JobStatistics
+where
+    S0: crate::typed::builder::IsSet<job_statistics_members::avg>,
+    S1: crate::typed::builder::IsSet<job_statistics_members::max>,
+    S2: crate::typed::builder::IsSet<job_statistics_members::min>,
+    S3: crate::typed::builder::IsSet<job_statistics_members::total>,
 {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> JobStatistics { match max {} }
-}
-
-impl<S3>
-    JobStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> JobStatistics { match min {} }
-}
-
-impl
-    JobStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> JobStatistics { match total {} }
+    fn from(builder: JobStatisticsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23823,25 +22810,32 @@ pub struct JobStats {
 
 impl JobStats {
     /// Creates a builder for [`JobStats`].
+    ///
+    /// Required: `data_counts`, `forecasts_stats`, `job_id`, `model_size_stats`, `state`, `timing_stats`.
     pub fn builder() -> JobStatsBuilder {
         JobStatsBuilder::new()
     }
 
     /// Creates a [`JobStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobStatsBuilder,
-        ) -> JobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `data_counts`, `forecasts_stats`, `job_id`, `model_size_stats`, `state`, `timing_stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobStats>>(
+        f: impl FnOnce(JobStatsBuilder) -> B,
     ) -> JobStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_stats_members {
+    pub struct data_counts;
+    pub struct forecasts_stats;
+    pub struct job_id;
+    pub struct model_size_stats;
+    pub struct state;
+    pub struct timing_stats;
 }
 
 /// Builder for [`JobStats`].
@@ -23939,17 +22933,9 @@ impl<S0, S1, S2, S3, S4, S5> JobStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<B: crate::typed::builder::Build<Output = DiscoveryNodeCompact>>(
         self,
-        f: impl FnOnce(
-            DiscoveryNodeCompactBuilder,
-        ) -> DiscoveryNodeCompactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiscoveryNodeCompactBuilder) -> B,
     ) -> Self {
         self.node(f(DiscoveryNodeCompactBuilder::new()).build())
     }
@@ -23980,7 +22966,7 @@ impl<S0, S1, S2, S3, S4, S5> JobStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> JobStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// An object that describes the quantity of input to the job and any related error counts.
+    /// **Required.** An object that describes the quantity of input to the job and any related error counts.
     /// The `data_count` values are cumulative for the lifetime of a job.
     /// If a model snapshot is reverted or old results are deleted, the job counts are not reset.
     pub fn data_counts(
@@ -23993,31 +22979,16 @@ impl<S1, S2, S3, S4, S5> JobStatsBuilder<(crate::typed::builder::NotSet, S1, S2,
     }
 
     /// Sets [`data_counts`](Self::data_counts) with a builder.
-    pub fn data_counts_with(
+    pub fn data_counts_with<B: crate::typed::builder::Build<Output = DataCounts>>(
         self,
-        f: impl FnOnce(
-            DataCountsBuilder,
-        ) -> DataCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataCountsBuilder) -> B,
     ) -> JobStatsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)> {
         self.data_counts(f(DataCountsBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4, S5> JobStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// An object that provides statistical information about forecasts belonging to this job.
+    /// **Required.** An object that provides statistical information about forecasts belonging to this job.
     /// Some statistics are omitted if no forecasts have been made.
     pub fn forecasts_stats(
         self,
@@ -24029,21 +23000,16 @@ impl<S0, S2, S3, S4, S5> JobStatsBuilder<(S0, crate::typed::builder::NotSet, S2,
     }
 
     /// Sets [`forecasts_stats`](Self::forecasts_stats) with a builder.
-    pub fn forecasts_stats_with(
+    pub fn forecasts_stats_with<B: crate::typed::builder::Build<Output = JobForecastStatistics>>(
         self,
-        f: impl FnOnce(
-            JobForecastStatisticsBuilder,
-        ) -> JobForecastStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JobForecastStatisticsBuilder) -> B,
     ) -> JobStatsBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5)> {
         self.forecasts_stats(f(JobForecastStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3, S4, S5> JobStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<String>,
@@ -24055,7 +23021,7 @@ impl<S0, S1, S3, S4, S5> JobStatsBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2, S4, S5> JobStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// An object that provides information about the size and contents of the model.
+    /// **Required.** An object that provides information about the size and contents of the model.
     pub fn model_size_stats(
         self,
         value: impl Into<ModelSizeStats>,
@@ -24066,35 +23032,16 @@ impl<S0, S1, S2, S4, S5> JobStatsBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 
     /// Sets [`model_size_stats`](Self::model_size_stats) with a builder.
-    pub fn model_size_stats_with(
+    pub fn model_size_stats_with<B: crate::typed::builder::Build<Output = ModelSizeStats>>(
         self,
-        f: impl FnOnce(
-            ModelSizeStatsBuilder,
-        ) -> ModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ModelSizeStatsBuilder) -> B,
     ) -> JobStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
         self.model_size_stats(f(ModelSizeStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3, S5> JobStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// The status of the anomaly detection job, which can be one of the following values: `closed`, `closing`, `failed`, `opened`, `opening`.
+    /// **Required.** The status of the anomaly detection job, which can be one of the following values: `closed`, `closing`, `failed`, `opened`, `opening`.
     pub fn state(
         self,
         value: impl Into<JobState>,
@@ -24106,7 +23053,7 @@ impl<S0, S1, S2, S3, S5> JobStatsBuilder<(S0, S1, S2, S3, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S3, S4> JobStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// An object that provides statistical information about timing aspect of this job.
+    /// **Required.** An object that provides statistical information about timing aspect of this job.
     pub fn timing_stats(
         self,
         value: impl Into<JobTimingStats>,
@@ -24117,33 +23064,25 @@ impl<S0, S1, S2, S3, S4> JobStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::buil
     }
 
     /// Sets [`timing_stats`](Self::timing_stats) with a builder.
-    pub fn timing_stats_with(
+    pub fn timing_stats_with<B: crate::typed::builder::Build<Output = JobTimingStats>>(
         self,
-        f: impl FnOnce(
-            JobTimingStatsBuilder,
-        ) -> JobTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JobTimingStatsBuilder) -> B,
     ) -> JobStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.timing_stats(f(JobTimingStatsBuilder::new()).build())
     }
 }
 
-impl
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> JobStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`JobStats`].
-    pub fn build(self) -> JobStats {
+    pub fn build(self) -> JobStats
+    where
+        S0: crate::typed::builder::IsSet<job_stats_members::data_counts>,
+        S1: crate::typed::builder::IsSet<job_stats_members::forecasts_stats>,
+        S2: crate::typed::builder::IsSet<job_stats_members::job_id>,
+        S3: crate::typed::builder::IsSet<job_stats_members::model_size_stats>,
+        S4: crate::typed::builder::IsSet<job_stats_members::state>,
+        S5: crate::typed::builder::IsSet<job_stats_members::timing_stats>,
+    {
         JobStats {
             assignment_explanation: self.assignment_explanation,
             data_counts: self.data_counts.unwrap(),
@@ -24159,111 +23098,35 @@ impl
     }
 }
 
-impl
-    From<
-        JobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for JobStats
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for JobStatsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<job_stats_members::data_counts>,
+    S1: crate::typed::builder::IsSet<job_stats_members::forecasts_stats>,
+    S2: crate::typed::builder::IsSet<job_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<job_stats_members::model_size_stats>,
+    S4: crate::typed::builder::IsSet<job_stats_members::state>,
+    S5: crate::typed::builder::IsSet<job_stats_members::timing_stats>,
 {
-    fn from(
-        builder: JobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JobStats;
+
+    fn build(self) -> JobStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> JobStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `data_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_counts: crate::typed::builder::MissingRequiredField) -> JobStats { match data_counts {} }
-}
-
-impl<S2, S3, S4, S5>
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<JobStatsBuilder<(S0, S1, S2, S3, S4, S5)>> for JobStats
+where
+    S0: crate::typed::builder::IsSet<job_stats_members::data_counts>,
+    S1: crate::typed::builder::IsSet<job_stats_members::forecasts_stats>,
+    S2: crate::typed::builder::IsSet<job_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<job_stats_members::model_size_stats>,
+    S4: crate::typed::builder::IsSet<job_stats_members::state>,
+    S5: crate::typed::builder::IsSet<job_stats_members::timing_stats>,
 {
-    /// `forecasts_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, forecasts_stats: crate::typed::builder::MissingRequiredField) -> JobStats { match forecasts_stats {} }
-}
-
-impl<S3, S4, S5>
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> JobStats { match job_id {} }
-}
-
-impl<S4, S5>
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `model_size_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_size_stats: crate::typed::builder::MissingRequiredField) -> JobStats { match model_size_stats {} }
-}
-
-impl<S5>
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> JobStats { match state {} }
-}
-
-impl
-    JobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timing_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timing_stats: crate::typed::builder::MissingRequiredField) -> JobStats { match timing_stats {} }
+    fn from(builder: JobStatsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24289,23 +23152,30 @@ pub struct JobTimingStats {
 
 impl JobTimingStats {
     /// Creates a builder for [`JobTimingStats`].
+    ///
+    /// Required: `bucket_count`, `exponential_average_bucket_processing_time_per_hour_ms`, `job_id`, `total_bucket_processing_time_ms`.
     pub fn builder() -> JobTimingStatsBuilder {
         JobTimingStatsBuilder::new()
     }
 
     /// Creates a [`JobTimingStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JobTimingStatsBuilder,
-        ) -> JobTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_count`, `exponential_average_bucket_processing_time_per_hour_ms`, `job_id`, `total_bucket_processing_time_ms`.
+    pub fn of<B: crate::typed::builder::Build<Output = JobTimingStats>>(
+        f: impl FnOnce(JobTimingStatsBuilder) -> B,
     ) -> JobTimingStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JobTimingStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod job_timing_stats_members {
+    pub struct bucket_count;
+    pub struct exponential_average_bucket_processing_time_per_hour_ms;
+    pub struct job_id;
+    pub struct total_bucket_processing_time_ms;
 }
 
 /// Builder for [`JobTimingStats`].
@@ -24441,6 +23311,7 @@ impl<S0, S1, S2, S3> JobTimingStatsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> JobTimingStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn bucket_count(
         self,
         value: i64,
@@ -24452,6 +23323,7 @@ impl<S1, S2, S3> JobTimingStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3> JobTimingStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn exponential_average_bucket_processing_time_per_hour_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -24463,6 +23335,7 @@ impl<S0, S2, S3> JobTimingStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3> JobTimingStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -24474,6 +23347,7 @@ impl<S0, S1, S3> JobTimingStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2> JobTimingStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_bucket_processing_time_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -24484,16 +23358,17 @@ impl<S0, S1, S2> JobTimingStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSe
     }
 }
 
-impl
-    JobTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> JobTimingStatsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`JobTimingStats`].
-    pub fn build(self) -> JobTimingStats {
+    pub fn build(self) -> JobTimingStats
+    where
+        S0: crate::typed::builder::IsSet<job_timing_stats_members::bucket_count>,
+        S1: crate::typed::builder::IsSet<
+            job_timing_stats_members::exponential_average_bucket_processing_time_per_hour_ms,
+        >,
+        S2: crate::typed::builder::IsSet<job_timing_stats_members::job_id>,
+        S3: crate::typed::builder::IsSet<job_timing_stats_members::total_bucket_processing_time_ms>,
+    {
         JobTimingStats {
             average_bucket_processing_time_ms: self.average_bucket_processing_time_ms,
             bucket_count: self.bucket_count.unwrap(),
@@ -24510,71 +23385,34 @@ impl
     }
 }
 
-impl
-    From<
-        JobTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for JobTimingStats
+impl<S0, S1, S2, S3> crate::typed::builder::Build for JobTimingStatsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<job_timing_stats_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<
+        job_timing_stats_members::exponential_average_bucket_processing_time_per_hour_ms,
+    >,
+    S2: crate::typed::builder::IsSet<job_timing_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<job_timing_stats_members::total_bucket_processing_time_ms>,
 {
-    fn from(
-        builder: JobTimingStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JobTimingStats;
+
+    fn build(self) -> JobTimingStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> JobTimingStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `bucket_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_count: crate::typed::builder::MissingRequiredField) -> JobTimingStats { match bucket_count {} }
-}
-
-impl<S2, S3>
-    JobTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<JobTimingStatsBuilder<(S0, S1, S2, S3)>> for JobTimingStats
+where
+    S0: crate::typed::builder::IsSet<job_timing_stats_members::bucket_count>,
+    S1: crate::typed::builder::IsSet<
+        job_timing_stats_members::exponential_average_bucket_processing_time_per_hour_ms,
+    >,
+    S2: crate::typed::builder::IsSet<job_timing_stats_members::job_id>,
+    S3: crate::typed::builder::IsSet<job_timing_stats_members::total_bucket_processing_time_ms>,
 {
-    /// `exponential_average_bucket_processing_time_per_hour_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponential_average_bucket_processing_time_per_hour_ms: crate::typed::builder::MissingRequiredField) -> JobTimingStats { match exponential_average_bucket_processing_time_per_hour_ms {} }
-}
-
-impl<S3>
-    JobTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> JobTimingStats { match job_id {} }
-}
-
-impl
-    JobTimingStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_bucket_processing_time_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_bucket_processing_time_ms: crate::typed::builder::MissingRequiredField) -> JobTimingStats { match total_bucket_processing_time_ms {} }
+    fn from(builder: JobTimingStatsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24588,18 +23426,27 @@ pub struct LearningToRankConfig {
 
 impl LearningToRankConfig {
     /// Creates a builder for [`LearningToRankConfig`].
+    ///
+    /// Required: `num_top_feature_importance_values`.
     pub fn builder() -> LearningToRankConfigBuilder {
         LearningToRankConfigBuilder::new()
     }
 
     /// Creates a [`LearningToRankConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LearningToRankConfigBuilder,
-        ) -> LearningToRankConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `num_top_feature_importance_values`.
+    pub fn of<B: crate::typed::builder::Build<Output = LearningToRankConfig>>(
+        f: impl FnOnce(LearningToRankConfigBuilder) -> B,
     ) -> LearningToRankConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LearningToRankConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod learning_to_rank_config_members {
+    pub struct num_top_feature_importance_values;
 }
 
 /// Builder for [`LearningToRankConfig`].
@@ -24691,6 +23538,7 @@ impl<S0> LearningToRankConfigBuilder<(S0,)> {
 }
 
 impl LearningToRankConfigBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn num_top_feature_importance_values(
         self,
         value: i32,
@@ -24701,9 +23549,14 @@ impl LearningToRankConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LearningToRankConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LearningToRankConfigBuilder<(S0,)> {
     /// Builds a [`LearningToRankConfig`].
-    pub fn build(self) -> LearningToRankConfig {
+    pub fn build(self) -> LearningToRankConfig
+    where
+        S0: crate::typed::builder::IsSet<
+            learning_to_rank_config_members::num_top_feature_importance_values,
+        >,
+    {
         LearningToRankConfig {
             default_params: self.default_params,
             feature_extractors: self.feature_extractors,
@@ -24712,16 +23565,28 @@ impl LearningToRankConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LearningToRankConfigBuilder<(crate::typed::builder::Set,)>> for LearningToRankConfig {
-    fn from(builder: LearningToRankConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LearningToRankConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        learning_to_rank_config_members::num_top_feature_importance_values,
+    >,
+{
+    type Output = LearningToRankConfig;
+
+    fn build(self) -> LearningToRankConfig {
+        Self::build(self)
     }
 }
 
-impl LearningToRankConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `num_top_feature_importance_values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_top_feature_importance_values: crate::typed::builder::MissingRequiredField) -> LearningToRankConfig { match num_top_feature_importance_values {} }
+impl<S0> From<LearningToRankConfigBuilder<(S0,)>> for LearningToRankConfig
+where
+    S0: crate::typed::builder::IsSet<
+        learning_to_rank_config_members::num_top_feature_importance_values,
+    >,
+{
+    fn from(builder: LearningToRankConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -24767,18 +23632,27 @@ pub struct ModelPackageConfig {
 
 impl ModelPackageConfig {
     /// Creates a builder for [`ModelPackageConfig`].
+    ///
+    /// Required: `packaged_model_id`.
     pub fn builder() -> ModelPackageConfigBuilder {
         ModelPackageConfigBuilder::new()
     }
 
     /// Creates a [`ModelPackageConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ModelPackageConfigBuilder,
-        ) -> ModelPackageConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `packaged_model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = ModelPackageConfig>>(
+        f: impl FnOnce(ModelPackageConfigBuilder) -> B,
     ) -> ModelPackageConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ModelPackageConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod model_package_config_members {
+    pub struct packaged_model_id;
 }
 
 /// Builder for [`ModelPackageConfig`].
@@ -24980,9 +23854,11 @@ impl<S0> ModelPackageConfigBuilder<(S0,)> {
     }
 
     /// Sets [`prefix_strings`](Self::prefix_strings) with a builder.
-    pub fn prefix_strings_with(
+    pub fn prefix_strings_with<
+        B: crate::typed::builder::Build<Output = TrainedModelPrefixStrings>,
+    >(
         self,
-        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> TrainedModelPrefixStringsBuilder,
+        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> B,
     ) -> Self {
         self.prefix_strings(f(TrainedModelPrefixStringsBuilder::new()).build())
     }
@@ -25041,6 +23917,7 @@ impl<S0> ModelPackageConfigBuilder<(S0,)> {
 }
 
 impl ModelPackageConfigBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn packaged_model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -25051,9 +23928,12 @@ impl ModelPackageConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ModelPackageConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ModelPackageConfigBuilder<(S0,)> {
     /// Builds a [`ModelPackageConfig`].
-    pub fn build(self) -> ModelPackageConfig {
+    pub fn build(self) -> ModelPackageConfig
+    where
+        S0: crate::typed::builder::IsSet<model_package_config_members::packaged_model_id>,
+    {
         ModelPackageConfig {
             create_time: self.create_time,
             description: self.description,
@@ -25073,16 +23953,24 @@ impl ModelPackageConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ModelPackageConfigBuilder<(crate::typed::builder::Set,)>> for ModelPackageConfig {
-    fn from(builder: ModelPackageConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ModelPackageConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<model_package_config_members::packaged_model_id>,
+{
+    type Output = ModelPackageConfig;
+
+    fn build(self) -> ModelPackageConfig {
+        Self::build(self)
     }
 }
 
-impl ModelPackageConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `packaged_model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, packaged_model_id: crate::typed::builder::MissingRequiredField) -> ModelPackageConfig { match packaged_model_id {} }
+impl<S0> From<ModelPackageConfigBuilder<(S0,)>> for ModelPackageConfig
+where
+    S0: crate::typed::builder::IsSet<model_package_config_members::packaged_model_id>,
+{
+    fn from(builder: ModelPackageConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -25105,7 +23993,9 @@ impl ModelPlotConfig {
     }
 
     /// Creates a [`ModelPlotConfig`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ModelPlotConfigBuilder) -> ModelPlotConfigBuilder) -> ModelPlotConfig {
+    pub fn of<B: crate::typed::builder::Build<Output = ModelPlotConfig>>(
+        f: impl FnOnce(ModelPlotConfigBuilder) -> B,
+    ) -> ModelPlotConfig {
         f(Self::builder()).build()
     }
 }
@@ -25177,6 +24067,14 @@ impl ModelPlotConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ModelPlotConfigBuilder {
+    type Output = ModelPlotConfig;
+
+    fn build(self) -> ModelPlotConfig {
+        Self::build(self)
+    }
+}
+
 impl From<ModelPlotConfigBuilder> for ModelPlotConfig {
     fn from(builder: ModelPlotConfigBuilder) -> Self {
         builder.build()
@@ -25217,35 +24115,42 @@ pub struct ModelSizeStats {
 
 impl ModelSizeStats {
     /// Creates a builder for [`ModelSizeStats`].
+    ///
+    /// Required: `bucket_allocation_failures_count`, `job_id`, `log_time`, `memory_status`, `model_bytes`, `result_type`, `total_by_field_count`, `total_over_field_count`, `total_partition_field_count`, `categorization_status`, `categorized_doc_count`, `dead_category_count`, `failed_category_count`, `frequent_category_count`, `rare_category_count`, `total_category_count`.
     pub fn builder() -> ModelSizeStatsBuilder {
         ModelSizeStatsBuilder::new()
     }
 
     /// Creates a [`ModelSizeStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ModelSizeStatsBuilder,
-        ) -> ModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_allocation_failures_count`, `job_id`, `log_time`, `memory_status`, `model_bytes`, `result_type`, `total_by_field_count`, `total_over_field_count`, `total_partition_field_count`, `categorization_status`, `categorized_doc_count`, `dead_category_count`, `failed_category_count`, `frequent_category_count`, `rare_category_count`, `total_category_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ModelSizeStats>>(
+        f: impl FnOnce(ModelSizeStatsBuilder) -> B,
     ) -> ModelSizeStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ModelSizeStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod model_size_stats_members {
+    pub struct bucket_allocation_failures_count;
+    pub struct job_id;
+    pub struct log_time;
+    pub struct memory_status;
+    pub struct model_bytes;
+    pub struct result_type;
+    pub struct total_by_field_count;
+    pub struct total_over_field_count;
+    pub struct total_partition_field_count;
+    pub struct categorization_status;
+    pub struct categorized_doc_count;
+    pub struct dead_category_count;
+    pub struct failed_category_count;
+    pub struct frequent_category_count;
+    pub struct rare_category_count;
+    pub struct total_category_count;
 }
 
 /// Builder for [`ModelSizeStats`].
@@ -25497,6 +24402,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn bucket_allocation_failures_count(
         self,
         value: i64,
@@ -25544,6 +24450,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -25591,6 +24498,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn log_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -25638,6 +24546,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn memory_status(
         self,
         value: impl Into<MemoryStatus>,
@@ -25685,6 +24594,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn model_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -25732,6 +24642,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -25779,6 +24690,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn total_by_field_count(
         self,
         value: i64,
@@ -25826,6 +24738,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn total_over_field_count(
         self,
         value: i64,
@@ -25873,6 +24786,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn total_partition_field_count(
         self,
         value: i64,
@@ -25920,6 +24834,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn categorization_status(
         self,
         value: impl Into<CategorizationStatus>,
@@ -25967,6 +24882,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn categorized_doc_count(
         self,
         value: i32,
@@ -26014,6 +24930,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn dead_category_count(
         self,
         value: i32,
@@ -26061,6 +24978,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S13, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn failed_category_count(
         self,
         value: i32,
@@ -26108,6 +25026,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S14, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn frequent_category_count(
         self,
         value: i32,
@@ -26155,6 +25074,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S15>
         S15,
     )>
 {
+    /// **Required.**
     pub fn rare_category_count(
         self,
         value: i32,
@@ -26202,6 +25122,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn total_category_count(
         self,
         value: i32,
@@ -26229,28 +25150,48 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
     }
 }
 
-impl
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
     ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
     )>
 {
     /// Builds a [`ModelSizeStats`].
-    pub fn build(self) -> ModelSizeStats {
+    pub fn build(self) -> ModelSizeStats
+    where
+        S0: crate::typed::builder::IsSet<
+            model_size_stats_members::bucket_allocation_failures_count,
+        >,
+        S1: crate::typed::builder::IsSet<model_size_stats_members::job_id>,
+        S2: crate::typed::builder::IsSet<model_size_stats_members::log_time>,
+        S3: crate::typed::builder::IsSet<model_size_stats_members::memory_status>,
+        S4: crate::typed::builder::IsSet<model_size_stats_members::model_bytes>,
+        S5: crate::typed::builder::IsSet<model_size_stats_members::result_type>,
+        S6: crate::typed::builder::IsSet<model_size_stats_members::total_by_field_count>,
+        S7: crate::typed::builder::IsSet<model_size_stats_members::total_over_field_count>,
+        S8: crate::typed::builder::IsSet<model_size_stats_members::total_partition_field_count>,
+        S9: crate::typed::builder::IsSet<model_size_stats_members::categorization_status>,
+        S10: crate::typed::builder::IsSet<model_size_stats_members::categorized_doc_count>,
+        S11: crate::typed::builder::IsSet<model_size_stats_members::dead_category_count>,
+        S12: crate::typed::builder::IsSet<model_size_stats_members::failed_category_count>,
+        S13: crate::typed::builder::IsSet<model_size_stats_members::frequent_category_count>,
+        S14: crate::typed::builder::IsSet<model_size_stats_members::rare_category_count>,
+        S15: crate::typed::builder::IsSet<model_size_stats_members::total_category_count>,
+    {
         ModelSizeStats {
             bucket_allocation_failures_count: self.bucket_allocation_failures_count.unwrap(),
             job_id: self.job_id.unwrap(),
@@ -26278,55 +25219,10 @@ impl
     }
 }
 
-impl
-    From<
-        ModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ModelSizeStats
-{
-    fn from(
-        builder: ModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
-    }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::NotSet,
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
+    crate::typed::builder::Build
+    for ModelSizeStatsBuilder<(
+        S0,
         S1,
         S2,
         S3,
@@ -26343,385 +25239,92 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
         S14,
         S15,
     )>
+where
+    S0: crate::typed::builder::IsSet<model_size_stats_members::bucket_allocation_failures_count>,
+    S1: crate::typed::builder::IsSet<model_size_stats_members::job_id>,
+    S2: crate::typed::builder::IsSet<model_size_stats_members::log_time>,
+    S3: crate::typed::builder::IsSet<model_size_stats_members::memory_status>,
+    S4: crate::typed::builder::IsSet<model_size_stats_members::model_bytes>,
+    S5: crate::typed::builder::IsSet<model_size_stats_members::result_type>,
+    S6: crate::typed::builder::IsSet<model_size_stats_members::total_by_field_count>,
+    S7: crate::typed::builder::IsSet<model_size_stats_members::total_over_field_count>,
+    S8: crate::typed::builder::IsSet<model_size_stats_members::total_partition_field_count>,
+    S9: crate::typed::builder::IsSet<model_size_stats_members::categorization_status>,
+    S10: crate::typed::builder::IsSet<model_size_stats_members::categorized_doc_count>,
+    S11: crate::typed::builder::IsSet<model_size_stats_members::dead_category_count>,
+    S12: crate::typed::builder::IsSet<model_size_stats_members::failed_category_count>,
+    S13: crate::typed::builder::IsSet<model_size_stats_members::frequent_category_count>,
+    S14: crate::typed::builder::IsSet<model_size_stats_members::rare_category_count>,
+    S15: crate::typed::builder::IsSet<model_size_stats_members::total_category_count>,
 {
-    /// `bucket_allocation_failures_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_allocation_failures_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match bucket_allocation_failures_count {} }
+    type Output = ModelSizeStats;
+
+    fn build(self) -> ModelSizeStats {
+        Self::build(self)
+    }
 }
 
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
+    From<
+        ModelSizeStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+        )>,
+    > for ModelSizeStats
+where
+    S0: crate::typed::builder::IsSet<model_size_stats_members::bucket_allocation_failures_count>,
+    S1: crate::typed::builder::IsSet<model_size_stats_members::job_id>,
+    S2: crate::typed::builder::IsSet<model_size_stats_members::log_time>,
+    S3: crate::typed::builder::IsSet<model_size_stats_members::memory_status>,
+    S4: crate::typed::builder::IsSet<model_size_stats_members::model_bytes>,
+    S5: crate::typed::builder::IsSet<model_size_stats_members::result_type>,
+    S6: crate::typed::builder::IsSet<model_size_stats_members::total_by_field_count>,
+    S7: crate::typed::builder::IsSet<model_size_stats_members::total_over_field_count>,
+    S8: crate::typed::builder::IsSet<model_size_stats_members::total_partition_field_count>,
+    S9: crate::typed::builder::IsSet<model_size_stats_members::categorization_status>,
+    S10: crate::typed::builder::IsSet<model_size_stats_members::categorized_doc_count>,
+    S11: crate::typed::builder::IsSet<model_size_stats_members::dead_category_count>,
+    S12: crate::typed::builder::IsSet<model_size_stats_members::failed_category_count>,
+    S13: crate::typed::builder::IsSet<model_size_stats_members::frequent_category_count>,
+    S14: crate::typed::builder::IsSet<model_size_stats_members::rare_category_count>,
+    S15: crate::typed::builder::IsSet<model_size_stats_members::total_category_count>,
 {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match job_id {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `log_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, log_time: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match log_time {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `memory_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory_status: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match memory_status {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `model_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_bytes: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match model_bytes {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match result_type {} }
-}
-
-impl<S7, S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `total_by_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_by_field_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match total_by_field_count {} }
-}
-
-impl<S8, S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `total_over_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_over_field_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match total_over_field_count {} }
-}
-
-impl<S9, S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `total_partition_field_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_partition_field_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match total_partition_field_count {} }
-}
-
-impl<S10, S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `categorization_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, categorization_status: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match categorization_status {} }
-}
-
-impl<S11, S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `categorized_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, categorized_doc_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match categorized_doc_count {} }
-}
-
-impl<S12, S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `dead_category_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dead_category_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match dead_category_count {} }
-}
-
-impl<S13, S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-        S14,
-        S15,
-    )>
-{
-    /// `failed_category_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed_category_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match failed_category_count {} }
-}
-
-impl<S14, S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S14,
-        S15,
-    )>
-{
-    /// `frequent_category_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, frequent_category_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match frequent_category_count {} }
-}
-
-impl<S15>
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S15,
-    )>
-{
-    /// `rare_category_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rare_category_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match rare_category_count {} }
-}
-
-impl
-    ModelSizeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_category_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_category_count: crate::typed::builder::MissingRequiredField) -> ModelSizeStats { match total_category_count {} }
+    fn from(
+        builder: ModelSizeStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+        )>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -26754,25 +25357,32 @@ pub struct ModelSnapshot {
 
 impl ModelSnapshot {
     /// Creates a builder for [`ModelSnapshot`].
+    ///
+    /// Required: `job_id`, `min_version`, `retain`, `snapshot_doc_count`, `snapshot_id`, `timestamp`.
     pub fn builder() -> ModelSnapshotBuilder {
         ModelSnapshotBuilder::new()
     }
 
     /// Creates a [`ModelSnapshot`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ModelSnapshotBuilder,
-        ) -> ModelSnapshotBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `job_id`, `min_version`, `retain`, `snapshot_doc_count`, `snapshot_id`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = ModelSnapshot>>(
+        f: impl FnOnce(ModelSnapshotBuilder) -> B,
     ) -> ModelSnapshot {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ModelSnapshotBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod model_snapshot_members {
+    pub struct job_id;
+    pub struct min_version;
+    pub struct retain;
+    pub struct snapshot_doc_count;
+    pub struct snapshot_id;
+    pub struct timestamp;
 }
 
 /// Builder for [`ModelSnapshot`].
@@ -26893,35 +25503,16 @@ impl<S0, S1, S2, S3, S4, S5> ModelSnapshotBuilder<(S0, S1, S2, S3, S4, S5)> {
     }
 
     /// Sets [`model_size_stats`](Self::model_size_stats) with a builder.
-    pub fn model_size_stats_with(
+    pub fn model_size_stats_with<B: crate::typed::builder::Build<Output = ModelSizeStats>>(
         self,
-        f: impl FnOnce(
-            ModelSizeStatsBuilder,
-        ) -> ModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ModelSizeStatsBuilder) -> B,
     ) -> Self {
         self.model_size_stats(f(ModelSizeStatsBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3, S4, S5> ModelSnapshotBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// A numerical character string that uniquely identifies the job that the snapshot was created for.
+    /// **Required.** A numerical character string that uniquely identifies the job that the snapshot was created for.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -26933,7 +25524,7 @@ impl<S1, S2, S3, S4, S5> ModelSnapshotBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3, S4, S5> ModelSnapshotBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// The minimum version required to be able to restore the model snapshot.
+    /// **Required.** The minimum version required to be able to restore the model snapshot.
     pub fn min_version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -26945,7 +25536,7 @@ impl<S0, S2, S3, S4, S5> ModelSnapshotBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3, S4, S5> ModelSnapshotBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// If true, this snapshot will not be deleted during automatic cleanup of snapshots older than model_snapshot_retention_days. However, this snapshot will be deleted when the job is deleted. The default value is false.
+    /// **Required.** If true, this snapshot will not be deleted during automatic cleanup of snapshots older than model_snapshot_retention_days. However, this snapshot will be deleted when the job is deleted. The default value is false.
     pub fn retain(
         self,
         value: bool,
@@ -26957,7 +25548,7 @@ impl<S0, S1, S3, S4, S5> ModelSnapshotBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2, S4, S5> ModelSnapshotBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// For internal use only.
+    /// **Required.** For internal use only.
     pub fn snapshot_doc_count(
         self,
         value: i64,
@@ -26969,7 +25560,7 @@ impl<S0, S1, S2, S4, S5> ModelSnapshotBuilder<(S0, S1, S2, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3, S5> ModelSnapshotBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// A numerical character string that uniquely identifies the model snapshot.
+    /// **Required.** A numerical character string that uniquely identifies the model snapshot.
     pub fn snapshot_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -26981,7 +25572,7 @@ impl<S0, S1, S2, S3, S5> ModelSnapshotBuilder<(S0, S1, S2, S3, crate::typed::bui
 }
 
 impl<S0, S1, S2, S3, S4> ModelSnapshotBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// The creation timestamp for the snapshot.
+    /// **Required.** The creation timestamp for the snapshot.
     pub fn timestamp(
         self,
         value: i64,
@@ -26992,18 +25583,17 @@ impl<S0, S1, S2, S3, S4> ModelSnapshotBuilder<(S0, S1, S2, S3, S4, crate::typed:
     }
 }
 
-impl
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> ModelSnapshotBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`ModelSnapshot`].
-    pub fn build(self) -> ModelSnapshot {
+    pub fn build(self) -> ModelSnapshot
+    where
+        S0: crate::typed::builder::IsSet<model_snapshot_members::job_id>,
+        S1: crate::typed::builder::IsSet<model_snapshot_members::min_version>,
+        S2: crate::typed::builder::IsSet<model_snapshot_members::retain>,
+        S3: crate::typed::builder::IsSet<model_snapshot_members::snapshot_doc_count>,
+        S4: crate::typed::builder::IsSet<model_snapshot_members::snapshot_id>,
+        S5: crate::typed::builder::IsSet<model_snapshot_members::timestamp>,
+    {
         ModelSnapshot {
             description: self.description,
             job_id: self.job_id.unwrap(),
@@ -27019,111 +25609,35 @@ impl
     }
 }
 
-impl
-    From<
-        ModelSnapshotBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ModelSnapshot
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for ModelSnapshotBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<model_snapshot_members::job_id>,
+    S1: crate::typed::builder::IsSet<model_snapshot_members::min_version>,
+    S2: crate::typed::builder::IsSet<model_snapshot_members::retain>,
+    S3: crate::typed::builder::IsSet<model_snapshot_members::snapshot_doc_count>,
+    S4: crate::typed::builder::IsSet<model_snapshot_members::snapshot_id>,
+    S5: crate::typed::builder::IsSet<model_snapshot_members::timestamp>,
 {
-    fn from(
-        builder: ModelSnapshotBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ModelSnapshot;
+
+    fn build(self) -> ModelSnapshot {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> ModelSnapshotBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match job_id {} }
-}
-
-impl<S2, S3, S4, S5>
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<ModelSnapshotBuilder<(S0, S1, S2, S3, S4, S5)>> for ModelSnapshot
+where
+    S0: crate::typed::builder::IsSet<model_snapshot_members::job_id>,
+    S1: crate::typed::builder::IsSet<model_snapshot_members::min_version>,
+    S2: crate::typed::builder::IsSet<model_snapshot_members::retain>,
+    S3: crate::typed::builder::IsSet<model_snapshot_members::snapshot_doc_count>,
+    S4: crate::typed::builder::IsSet<model_snapshot_members::snapshot_id>,
+    S5: crate::typed::builder::IsSet<model_snapshot_members::timestamp>,
 {
-    /// `min_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_version: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match min_version {} }
-}
-
-impl<S3, S4, S5>
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `retain` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, retain: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match retain {} }
-}
-
-impl<S4, S5>
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `snapshot_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_doc_count: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match snapshot_doc_count {} }
-}
-
-impl<S5>
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `snapshot_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_id: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match snapshot_id {} }
-}
-
-impl
-    ModelSnapshotBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> ModelSnapshot { match timestamp {} }
+    fn from(builder: ModelSnapshotBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -27137,24 +25651,31 @@ pub struct ModelSnapshotUpgrade {
 
 impl ModelSnapshotUpgrade {
     /// Creates a builder for [`ModelSnapshotUpgrade`].
+    ///
+    /// Required: `job_id`, `snapshot_id`, `state`, `node`, `assignment_explanation`.
     pub fn builder() -> ModelSnapshotUpgradeBuilder {
         ModelSnapshotUpgradeBuilder::new()
     }
 
     /// Creates a [`ModelSnapshotUpgrade`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ModelSnapshotUpgradeBuilder,
-        ) -> ModelSnapshotUpgradeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `job_id`, `snapshot_id`, `state`, `node`, `assignment_explanation`.
+    pub fn of<B: crate::typed::builder::Build<Output = ModelSnapshotUpgrade>>(
+        f: impl FnOnce(ModelSnapshotUpgradeBuilder) -> B,
     ) -> ModelSnapshotUpgrade {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ModelSnapshotUpgradeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod model_snapshot_upgrade_members {
+    pub struct job_id;
+    pub struct snapshot_id;
+    pub struct state;
+    pub struct node;
+    pub struct assignment_explanation;
 }
 
 /// Builder for [`ModelSnapshotUpgrade`].
@@ -27211,6 +25732,7 @@ impl<S0, S1, S2, S3, S4> ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> ModelSnapshotUpgradeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -27222,6 +25744,7 @@ impl<S1, S2, S3, S4> ModelSnapshotUpgradeBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> ModelSnapshotUpgradeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn snapshot_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -27233,6 +25756,7 @@ impl<S0, S2, S3, S4> ModelSnapshotUpgradeBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> ModelSnapshotUpgradeBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn state(
         self,
         value: impl Into<SnapshotUpgradeState>,
@@ -27244,6 +25768,7 @@ impl<S0, S1, S3, S4> ModelSnapshotUpgradeBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> ModelSnapshotUpgradeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<DiscoveryNode>,
@@ -27255,6 +25780,7 @@ impl<S0, S1, S2, S4> ModelSnapshotUpgradeBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn assignment_explanation(
         self,
         value: impl Into<String>,
@@ -27265,17 +25791,16 @@ impl<S0, S1, S2, S3> ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    ModelSnapshotUpgradeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`ModelSnapshotUpgrade`].
-    pub fn build(self) -> ModelSnapshotUpgrade {
+    pub fn build(self) -> ModelSnapshotUpgrade
+    where
+        S0: crate::typed::builder::IsSet<model_snapshot_upgrade_members::job_id>,
+        S1: crate::typed::builder::IsSet<model_snapshot_upgrade_members::snapshot_id>,
+        S2: crate::typed::builder::IsSet<model_snapshot_upgrade_members::state>,
+        S3: crate::typed::builder::IsSet<model_snapshot_upgrade_members::node>,
+        S4: crate::typed::builder::IsSet<model_snapshot_upgrade_members::assignment_explanation>,
+    {
         ModelSnapshotUpgrade {
             job_id: self.job_id.unwrap(),
             snapshot_id: self.snapshot_id.unwrap(),
@@ -27286,90 +25811,34 @@ impl
     }
 }
 
-impl
-    From<
-        ModelSnapshotUpgradeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ModelSnapshotUpgrade
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<model_snapshot_upgrade_members::job_id>,
+    S1: crate::typed::builder::IsSet<model_snapshot_upgrade_members::snapshot_id>,
+    S2: crate::typed::builder::IsSet<model_snapshot_upgrade_members::state>,
+    S3: crate::typed::builder::IsSet<model_snapshot_upgrade_members::node>,
+    S4: crate::typed::builder::IsSet<model_snapshot_upgrade_members::assignment_explanation>,
 {
-    fn from(
-        builder: ModelSnapshotUpgradeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ModelSnapshotUpgrade;
+
+    fn build(self) -> ModelSnapshotUpgrade {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> ModelSnapshotUpgradeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> ModelSnapshotUpgrade { match job_id {} }
-}
-
-impl<S2, S3, S4>
-    ModelSnapshotUpgradeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, S4)>>
+    for ModelSnapshotUpgrade
+where
+    S0: crate::typed::builder::IsSet<model_snapshot_upgrade_members::job_id>,
+    S1: crate::typed::builder::IsSet<model_snapshot_upgrade_members::snapshot_id>,
+    S2: crate::typed::builder::IsSet<model_snapshot_upgrade_members::state>,
+    S3: crate::typed::builder::IsSet<model_snapshot_upgrade_members::node>,
+    S4: crate::typed::builder::IsSet<model_snapshot_upgrade_members::assignment_explanation>,
 {
-    /// `snapshot_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_id: crate::typed::builder::MissingRequiredField) -> ModelSnapshotUpgrade { match snapshot_id {} }
-}
-
-impl<S3, S4>
-    ModelSnapshotUpgradeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> ModelSnapshotUpgrade { match state {} }
-}
-
-impl<S4>
-    ModelSnapshotUpgradeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ModelSnapshotUpgrade { match node {} }
-}
-
-impl
-    ModelSnapshotUpgradeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `assignment_explanation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, assignment_explanation: crate::typed::builder::MissingRequiredField) -> ModelSnapshotUpgrade { match assignment_explanation {} }
+    fn from(builder: ModelSnapshotUpgradeBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Named entity recognition options
@@ -27395,8 +25864,8 @@ impl NerInferenceOptions {
     }
 
     /// Creates a [`NerInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NerInferenceOptionsBuilder) -> NerInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NerInferenceOptions>>(
+        f: impl FnOnce(NerInferenceOptionsBuilder) -> B,
     ) -> NerInferenceOptions {
         f(Self::builder()).build()
     }
@@ -27436,11 +25905,11 @@ impl NerInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -27489,9 +25958,9 @@ impl NerInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -27506,6 +25975,14 @@ impl NerInferenceOptionsBuilder {
             classification_labels: self.classification_labels,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for NerInferenceOptionsBuilder {
+    type Output = NerInferenceOptions;
+
+    fn build(self) -> NerInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -27532,8 +26009,8 @@ impl NerInferenceUpdateOptions {
     }
 
     /// Creates a [`NerInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NerInferenceUpdateOptionsBuilder) -> NerInferenceUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NerInferenceUpdateOptions>>(
+        f: impl FnOnce(NerInferenceUpdateOptionsBuilder) -> B,
     ) -> NerInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -27569,9 +26046,11 @@ impl NerInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -27596,6 +26075,14 @@ impl NerInferenceUpdateOptionsBuilder {
             tokenization: self.tokenization,
             results_field: self.results_field,
         }
+    }
+}
+
+impl crate::typed::builder::Build for NerInferenceUpdateOptionsBuilder {
+    type Output = NerInferenceUpdateOptions;
+
+    fn build(self) -> NerInferenceUpdateOptions {
+        Self::build(self)
     }
 }
 
@@ -27632,8 +26119,8 @@ impl NlpBertTokenizationConfig {
     }
 
     /// Creates a [`NlpBertTokenizationConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> NlpBertTokenizationConfigBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NlpBertTokenizationConfig>>(
+        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> B,
     ) -> NlpBertTokenizationConfig {
         f(Self::builder()).build()
     }
@@ -27736,6 +26223,14 @@ impl NlpBertTokenizationConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NlpBertTokenizationConfigBuilder {
+    type Output = NlpBertTokenizationConfig;
+
+    fn build(self) -> NlpBertTokenizationConfig {
+        Self::build(self)
+    }
+}
+
 impl From<NlpBertTokenizationConfigBuilder> for NlpBertTokenizationConfig {
     fn from(builder: NlpBertTokenizationConfigBuilder) -> Self {
         builder.build()
@@ -27772,8 +26267,8 @@ impl NlpRobertaTokenizationConfig {
     }
 
     /// Creates a [`NlpRobertaTokenizationConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NlpRobertaTokenizationConfigBuilder) -> NlpRobertaTokenizationConfigBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NlpRobertaTokenizationConfig>>(
+        f: impl FnOnce(NlpRobertaTokenizationConfigBuilder) -> B,
     ) -> NlpRobertaTokenizationConfig {
         f(Self::builder()).build()
     }
@@ -27891,6 +26386,14 @@ impl NlpRobertaTokenizationConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NlpRobertaTokenizationConfigBuilder {
+    type Output = NlpRobertaTokenizationConfig;
+
+    fn build(self) -> NlpRobertaTokenizationConfig {
+        Self::build(self)
+    }
+}
+
 impl From<NlpRobertaTokenizationConfigBuilder> for NlpRobertaTokenizationConfig {
     fn from(builder: NlpRobertaTokenizationConfigBuilder) -> Self {
         builder.build()
@@ -27914,8 +26417,8 @@ impl NlpTokenizationUpdateOptions {
     }
 
     /// Creates a [`NlpTokenizationUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>>(
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> NlpTokenizationUpdateOptions {
         f(Self::builder()).build()
     }
@@ -27973,6 +26476,14 @@ impl NlpTokenizationUpdateOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NlpTokenizationUpdateOptionsBuilder {
+    type Output = NlpTokenizationUpdateOptions;
+
+    fn build(self) -> NlpTokenizationUpdateOptions {
+        Self::build(self)
+    }
+}
+
 impl From<NlpTokenizationUpdateOptionsBuilder> for NlpTokenizationUpdateOptions {
     fn from(builder: NlpTokenizationUpdateOptionsBuilder) -> Self {
         builder.build()
@@ -28014,8 +26525,8 @@ impl OutlierDetectionParameters {
     }
 
     /// Creates a [`OutlierDetectionParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(OutlierDetectionParametersBuilder) -> OutlierDetectionParametersBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = OutlierDetectionParameters>>(
+        f: impl FnOnce(OutlierDetectionParametersBuilder) -> B,
     ) -> OutlierDetectionParameters {
         f(Self::builder()).build()
     }
@@ -28145,6 +26656,14 @@ impl OutlierDetectionParametersBuilder {
     }
 }
 
+impl crate::typed::builder::Build for OutlierDetectionParametersBuilder {
+    type Output = OutlierDetectionParameters;
+
+    fn build(self) -> OutlierDetectionParameters {
+        Self::build(self)
+    }
+}
+
 impl From<OutlierDetectionParametersBuilder> for OutlierDetectionParameters {
     fn from(builder: OutlierDetectionParametersBuilder) -> Self {
         builder.build()
@@ -28172,25 +26691,32 @@ pub struct OverallBucket {
 
 impl OverallBucket {
     /// Creates a builder for [`OverallBucket`].
+    ///
+    /// Required: `bucket_span`, `is_interim`, `jobs`, `overall_score`, `result_type`, `timestamp`.
     pub fn builder() -> OverallBucketBuilder {
         OverallBucketBuilder::new()
     }
 
     /// Creates a [`OverallBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OverallBucketBuilder,
-        ) -> OverallBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bucket_span`, `is_interim`, `jobs`, `overall_score`, `result_type`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = OverallBucket>>(
+        f: impl FnOnce(OverallBucketBuilder) -> B,
     ) -> OverallBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OverallBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod overall_bucket_members {
+    pub struct bucket_span;
+    pub struct is_interim;
+    pub struct jobs;
+    pub struct overall_score;
+    pub struct result_type;
+    pub struct timestamp;
 }
 
 /// Builder for [`OverallBucket`].
@@ -28267,7 +26793,7 @@ impl<S0, S1, S2, S3, S4, S5> OverallBucketBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> OverallBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// The length of the bucket in seconds. Matches the job with the longest bucket_span value.
+    /// **Required.** The length of the bucket in seconds. Matches the job with the longest bucket_span value.
     pub fn bucket_span(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitSeconds>,
@@ -28279,7 +26805,7 @@ impl<S1, S2, S3, S4, S5> OverallBucketBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3, S4, S5> OverallBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// If true, this is an interim result. In other words, the results are calculated based on partial input data.
+    /// **Required.** If true, this is an interim result. In other words, the results are calculated based on partial input data.
     pub fn is_interim(
         self,
         value: bool,
@@ -28291,7 +26817,7 @@ impl<S0, S2, S3, S4, S5> OverallBucketBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3, S4, S5> OverallBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// An array of objects that contain the max_anomaly_score per job_id.
+    /// **Required.** An array of objects that contain the max_anomaly_score per job_id.
     pub fn jobs(
         self,
         value: impl Into<Vec<OverallBucketJob>>,
@@ -28315,14 +26841,9 @@ impl<S0, S1, S3, S4, S5> OverallBucketBuilder<(S0, S1, crate::typed::builder::No
     }
 
     /// Adds an element to [`jobs`](Self::jobs), with a builder.
-    pub fn add_jobs_with(
+    pub fn add_jobs_with<B: crate::typed::builder::Build<Output = OverallBucketJob>>(
         self,
-        f: impl FnOnce(
-            OverallBucketJobBuilder,
-        ) -> OverallBucketJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(OverallBucketJobBuilder) -> B,
     ) -> OverallBucketBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
         self.add_jobs(f(OverallBucketJobBuilder::new()).build())
     }
@@ -28338,21 +26859,16 @@ impl<S0, S1, S3, S4, S5> OverallBucketBuilder<(S0, S1, crate::typed::builder::Se
     }
 
     /// Adds an element to [`jobs`](Self::jobs), with a builder.
-    pub fn add_jobs_with(
+    pub fn add_jobs_with<B: crate::typed::builder::Build<Output = OverallBucketJob>>(
         self,
-        f: impl FnOnce(
-            OverallBucketJobBuilder,
-        ) -> OverallBucketJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(OverallBucketJobBuilder) -> B,
     ) -> Self {
         self.add_jobs(f(OverallBucketJobBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4, S5> OverallBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// The top_n average of the maximum bucket anomaly_score per job.
+    /// **Required.** The top_n average of the maximum bucket anomaly_score per job.
     pub fn overall_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -28364,7 +26880,7 @@ impl<S0, S1, S2, S4, S5> OverallBucketBuilder<(S0, S1, S2, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3, S5> OverallBucketBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// Internal. This is always set to overall_bucket.
+    /// **Required.** Internal. This is always set to overall_bucket.
     pub fn result_type(
         self,
         value: impl Into<String>,
@@ -28376,7 +26892,7 @@ impl<S0, S1, S2, S3, S5> OverallBucketBuilder<(S0, S1, S2, S3, crate::typed::bui
 }
 
 impl<S0, S1, S2, S3, S4> OverallBucketBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// The start time of the bucket for which these results were calculated.
+    /// **Required.** The start time of the bucket for which these results were calculated.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -28387,18 +26903,17 @@ impl<S0, S1, S2, S3, S4> OverallBucketBuilder<(S0, S1, S2, S3, S4, crate::typed:
     }
 }
 
-impl
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> OverallBucketBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`OverallBucket`].
-    pub fn build(self) -> OverallBucket {
+    pub fn build(self) -> OverallBucket
+    where
+        S0: crate::typed::builder::IsSet<overall_bucket_members::bucket_span>,
+        S1: crate::typed::builder::IsSet<overall_bucket_members::is_interim>,
+        S2: crate::typed::builder::IsSet<overall_bucket_members::jobs>,
+        S3: crate::typed::builder::IsSet<overall_bucket_members::overall_score>,
+        S4: crate::typed::builder::IsSet<overall_bucket_members::result_type>,
+        S5: crate::typed::builder::IsSet<overall_bucket_members::timestamp>,
+    {
         OverallBucket {
             bucket_span: self.bucket_span.unwrap(),
             is_interim: self.is_interim.unwrap(),
@@ -28411,111 +26926,35 @@ impl
     }
 }
 
-impl
-    From<
-        OverallBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for OverallBucket
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for OverallBucketBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<overall_bucket_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<overall_bucket_members::is_interim>,
+    S2: crate::typed::builder::IsSet<overall_bucket_members::jobs>,
+    S3: crate::typed::builder::IsSet<overall_bucket_members::overall_score>,
+    S4: crate::typed::builder::IsSet<overall_bucket_members::result_type>,
+    S5: crate::typed::builder::IsSet<overall_bucket_members::timestamp>,
 {
-    fn from(
-        builder: OverallBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = OverallBucket;
+
+    fn build(self) -> OverallBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> OverallBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `bucket_span` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket_span: crate::typed::builder::MissingRequiredField) -> OverallBucket { match bucket_span {} }
-}
-
-impl<S2, S3, S4, S5>
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<OverallBucketBuilder<(S0, S1, S2, S3, S4, S5)>> for OverallBucket
+where
+    S0: crate::typed::builder::IsSet<overall_bucket_members::bucket_span>,
+    S1: crate::typed::builder::IsSet<overall_bucket_members::is_interim>,
+    S2: crate::typed::builder::IsSet<overall_bucket_members::jobs>,
+    S3: crate::typed::builder::IsSet<overall_bucket_members::overall_score>,
+    S4: crate::typed::builder::IsSet<overall_bucket_members::result_type>,
+    S5: crate::typed::builder::IsSet<overall_bucket_members::timestamp>,
 {
-    /// `is_interim` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_interim: crate::typed::builder::MissingRequiredField) -> OverallBucket { match is_interim {} }
-}
-
-impl<S3, S4, S5>
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `jobs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, jobs: crate::typed::builder::MissingRequiredField) -> OverallBucket { match jobs {} }
-}
-
-impl<S4, S5>
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `overall_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, overall_score: crate::typed::builder::MissingRequiredField) -> OverallBucket { match overall_score {} }
-}
-
-impl<S5>
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `result_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result_type: crate::typed::builder::MissingRequiredField) -> OverallBucket { match result_type {} }
-}
-
-impl
-    OverallBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> OverallBucket { match timestamp {} }
+    fn from(builder: OverallBucketBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -28526,21 +26965,28 @@ pub struct OverallBucketJob {
 
 impl OverallBucketJob {
     /// Creates a builder for [`OverallBucketJob`].
+    ///
+    /// Required: `job_id`, `max_anomaly_score`.
     pub fn builder() -> OverallBucketJobBuilder {
         OverallBucketJobBuilder::new()
     }
 
     /// Creates a [`OverallBucketJob`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OverallBucketJobBuilder,
-        ) -> OverallBucketJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `job_id`, `max_anomaly_score`.
+    pub fn of<B: crate::typed::builder::Build<Output = OverallBucketJob>>(
+        f: impl FnOnce(OverallBucketJobBuilder) -> B,
     ) -> OverallBucketJob {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OverallBucketJobBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod overall_bucket_job_members {
+    pub struct job_id;
+    pub struct max_anomaly_score;
 }
 
 /// Builder for [`OverallBucketJob`].
@@ -28574,6 +27020,7 @@ impl<S0, S1> OverallBucketJobBuilder<(S0, S1)> {
 }
 
 impl<S1> OverallBucketJobBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -28585,6 +27032,7 @@ impl<S1> OverallBucketJobBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> OverallBucketJobBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn max_anomaly_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -28595,9 +27043,13 @@ impl<S0> OverallBucketJobBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl OverallBucketJobBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> OverallBucketJobBuilder<(S0, S1)> {
     /// Builds a [`OverallBucketJob`].
-    pub fn build(self) -> OverallBucketJob {
+    pub fn build(self) -> OverallBucketJob
+    where
+        S0: crate::typed::builder::IsSet<overall_bucket_job_members::job_id>,
+        S1: crate::typed::builder::IsSet<overall_bucket_job_members::max_anomaly_score>,
+    {
         OverallBucketJob {
             job_id: self.job_id.unwrap(),
             max_anomaly_score: self.max_anomaly_score.unwrap(),
@@ -28605,26 +27057,26 @@ impl OverallBucketJobBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<OverallBucketJobBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for OverallBucketJob
+impl<S0, S1> crate::typed::builder::Build for OverallBucketJobBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<overall_bucket_job_members::job_id>,
+    S1: crate::typed::builder::IsSet<overall_bucket_job_members::max_anomaly_score>,
 {
-    fn from(
-        builder: OverallBucketJobBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = OverallBucketJob;
+
+    fn build(self) -> OverallBucketJob {
+        Self::build(self)
     }
 }
 
-impl<S1> OverallBucketJobBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> OverallBucketJob { match job_id {} }
-}
-
-impl OverallBucketJobBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `max_anomaly_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_anomaly_score: crate::typed::builder::MissingRequiredField) -> OverallBucketJob { match max_anomaly_score {} }
+impl<S0, S1> From<OverallBucketJobBuilder<(S0, S1)>> for OverallBucketJob
+where
+    S0: crate::typed::builder::IsSet<overall_bucket_job_members::job_id>,
+    S1: crate::typed::builder::IsSet<overall_bucket_job_members::max_anomaly_score>,
+{
+    fn from(builder: OverallBucketJobBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -28644,7 +27096,9 @@ impl Page {
     }
 
     /// Creates a [`Page`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PageBuilder) -> PageBuilder) -> Page {
+    pub fn of<B: crate::typed::builder::Build<Output = Page>>(
+        f: impl FnOnce(PageBuilder) -> B,
+    ) -> Page {
         f(Self::builder()).build()
     }
 }
@@ -28701,6 +27155,14 @@ impl PageBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PageBuilder {
+    type Output = Page;
+
+    fn build(self) -> Page {
+        Self::build(self)
+    }
+}
+
 impl From<PageBuilder> for Page {
     fn from(builder: PageBuilder) -> Self {
         builder.build()
@@ -28727,8 +27189,8 @@ impl PassThroughInferenceOptions {
     }
 
     /// Creates a [`PassThroughInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PassThroughInferenceOptionsBuilder) -> PassThroughInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PassThroughInferenceOptions>>(
+        f: impl FnOnce(PassThroughInferenceOptionsBuilder) -> B,
     ) -> PassThroughInferenceOptions {
         f(Self::builder()).build()
     }
@@ -28766,11 +27228,11 @@ impl PassThroughInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -28799,9 +27261,9 @@ impl PassThroughInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -28815,6 +27277,14 @@ impl PassThroughInferenceOptionsBuilder {
             results_field: self.results_field,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PassThroughInferenceOptionsBuilder {
+    type Output = PassThroughInferenceOptions;
+
+    fn build(self) -> PassThroughInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -28841,10 +27311,8 @@ impl PassThroughInferenceUpdateOptions {
     }
 
     /// Creates a [`PassThroughInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PassThroughInferenceUpdateOptionsBuilder,
-        ) -> PassThroughInferenceUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PassThroughInferenceUpdateOptions>>(
+        f: impl FnOnce(PassThroughInferenceUpdateOptionsBuilder) -> B,
     ) -> PassThroughInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -28880,9 +27348,11 @@ impl PassThroughInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -28910,6 +27380,14 @@ impl PassThroughInferenceUpdateOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PassThroughInferenceUpdateOptionsBuilder {
+    type Output = PassThroughInferenceUpdateOptions;
+
+    fn build(self) -> PassThroughInferenceUpdateOptions {
+        Self::build(self)
+    }
+}
+
 impl From<PassThroughInferenceUpdateOptionsBuilder> for PassThroughInferenceUpdateOptions {
     fn from(builder: PassThroughInferenceUpdateOptionsBuilder) -> Self {
         builder.build()
@@ -28933,8 +27411,8 @@ impl PerPartitionCategorization {
     }
 
     /// Creates a [`PerPartitionCategorization`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PerPartitionCategorizationBuilder) -> PerPartitionCategorizationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PerPartitionCategorization>>(
+        f: impl FnOnce(PerPartitionCategorizationBuilder) -> B,
     ) -> PerPartitionCategorization {
         f(Self::builder()).build()
     }
@@ -28992,6 +27470,14 @@ impl PerPartitionCategorizationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PerPartitionCategorizationBuilder {
+    type Output = PerPartitionCategorization;
+
+    fn build(self) -> PerPartitionCategorization {
+        Self::build(self)
+    }
+}
+
 impl From<PerPartitionCategorizationBuilder> for PerPartitionCategorization {
     fn from(builder: PerPartitionCategorizationBuilder) -> Self {
         builder.build()
@@ -29027,21 +27513,28 @@ pub struct QueryFeatureExtractor {
 
 impl QueryFeatureExtractor {
     /// Creates a builder for [`QueryFeatureExtractor`].
+    ///
+    /// Required: `feature_name`, `query`.
     pub fn builder() -> QueryFeatureExtractorBuilder {
         QueryFeatureExtractorBuilder::new()
     }
 
     /// Creates a [`QueryFeatureExtractor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryFeatureExtractorBuilder,
-        ) -> QueryFeatureExtractorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_name`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryFeatureExtractor>>(
+        f: impl FnOnce(QueryFeatureExtractorBuilder) -> B,
     ) -> QueryFeatureExtractor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryFeatureExtractorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_feature_extractor_members {
+    pub struct feature_name;
+    pub struct query;
 }
 
 /// Builder for [`QueryFeatureExtractor`].
@@ -29089,6 +27582,7 @@ impl<S0, S1> QueryFeatureExtractorBuilder<(S0, S1)> {
 }
 
 impl<S1> QueryFeatureExtractorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -29100,6 +27594,7 @@ impl<S1> QueryFeatureExtractorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> QueryFeatureExtractorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<crate::typed::_types::query_dsl::QueryContainer>,
@@ -29110,21 +27605,23 @@ impl<S0> QueryFeatureExtractorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> QueryFeatureExtractorBuilder<(S0, crate::typed::builder::Set)> {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
-impl QueryFeatureExtractorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> QueryFeatureExtractorBuilder<(S0, S1)> {
     /// Builds a [`QueryFeatureExtractor`].
-    pub fn build(self) -> QueryFeatureExtractor {
+    pub fn build(self) -> QueryFeatureExtractor
+    where
+        S0: crate::typed::builder::IsSet<query_feature_extractor_members::feature_name>,
+        S1: crate::typed::builder::IsSet<query_feature_extractor_members::query>,
+    {
         QueryFeatureExtractor {
             default_score: self.default_score,
             feature_name: self.feature_name.unwrap(),
@@ -29133,29 +27630,26 @@ impl QueryFeatureExtractorBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<QueryFeatureExtractorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for QueryFeatureExtractor
+impl<S0, S1> crate::typed::builder::Build for QueryFeatureExtractorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<query_feature_extractor_members::feature_name>,
+    S1: crate::typed::builder::IsSet<query_feature_extractor_members::query>,
 {
-    fn from(
-        builder: QueryFeatureExtractorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = QueryFeatureExtractor;
+
+    fn build(self) -> QueryFeatureExtractor {
+        Self::build(self)
     }
 }
 
-impl<S1> QueryFeatureExtractorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> QueryFeatureExtractor { match feature_name {} }
-}
-
-impl QueryFeatureExtractorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> QueryFeatureExtractor { match query {} }
+impl<S0, S1> From<QueryFeatureExtractorBuilder<(S0, S1)>> for QueryFeatureExtractor
+where
+    S0: crate::typed::builder::IsSet<query_feature_extractor_members::feature_name>,
+    S1: crate::typed::builder::IsSet<query_feature_extractor_members::query>,
+{
+    fn from(builder: QueryFeatureExtractorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Question answering inference options
@@ -29182,10 +27676,8 @@ impl QuestionAnsweringInferenceOptions {
     }
 
     /// Creates a [`QuestionAnsweringInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QuestionAnsweringInferenceOptionsBuilder,
-        ) -> QuestionAnsweringInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = QuestionAnsweringInferenceOptions>>(
+        f: impl FnOnce(QuestionAnsweringInferenceOptionsBuilder) -> B,
     ) -> QuestionAnsweringInferenceOptions {
         f(Self::builder()).build()
     }
@@ -29237,11 +27729,11 @@ impl QuestionAnsweringInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -29283,6 +27775,14 @@ impl QuestionAnsweringInferenceOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for QuestionAnsweringInferenceOptionsBuilder {
+    type Output = QuestionAnsweringInferenceOptions;
+
+    fn build(self) -> QuestionAnsweringInferenceOptions {
+        Self::build(self)
+    }
+}
+
 impl From<QuestionAnsweringInferenceOptionsBuilder> for QuestionAnsweringInferenceOptions {
     fn from(builder: QuestionAnsweringInferenceOptionsBuilder) -> Self {
         builder.build()
@@ -29309,19 +27809,27 @@ pub struct QuestionAnsweringInferenceUpdateOptions {
 
 impl QuestionAnsweringInferenceUpdateOptions {
     /// Creates a builder for [`QuestionAnsweringInferenceUpdateOptions`].
+    ///
+    /// Required: `question`.
     pub fn builder() -> QuestionAnsweringInferenceUpdateOptionsBuilder {
         QuestionAnsweringInferenceUpdateOptionsBuilder::new()
     }
 
     /// Creates a [`QuestionAnsweringInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QuestionAnsweringInferenceUpdateOptionsBuilder,
-        )
-            -> QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `question`.
+    pub fn of<B: crate::typed::builder::Build<Output = QuestionAnsweringInferenceUpdateOptions>>(
+        f: impl FnOnce(QuestionAnsweringInferenceUpdateOptionsBuilder) -> B,
     ) -> QuestionAnsweringInferenceUpdateOptions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QuestionAnsweringInferenceUpdateOptionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod question_answering_inference_update_options_members {
+    pub struct question;
 }
 
 /// Builder for [`QuestionAnsweringInferenceUpdateOptions`].
@@ -29385,9 +27893,11 @@ impl<S0> QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)> {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -29418,7 +27928,7 @@ impl<S0> QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)> {
 }
 
 impl QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The question to answer given the inference context
+    /// **Required.** The question to answer given the inference context
     pub fn question(
         self,
         value: impl Into<String>,
@@ -29429,9 +27939,14 @@ impl QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::NotS
     }
 }
 
-impl QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)> {
     /// Builds a [`QuestionAnsweringInferenceUpdateOptions`].
-    pub fn build(self) -> QuestionAnsweringInferenceUpdateOptions {
+    pub fn build(self) -> QuestionAnsweringInferenceUpdateOptions
+    where
+        S0: crate::typed::builder::IsSet<
+            question_answering_inference_update_options_members::question,
+        >,
+    {
         QuestionAnsweringInferenceUpdateOptions {
             question: self.question.unwrap(),
             num_top_classes: self.num_top_classes,
@@ -29442,20 +27957,25 @@ impl QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,
     }
 }
 
-impl From<QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>>
-    for QuestionAnsweringInferenceUpdateOptions
+impl<S0> crate::typed::builder::Build for QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<question_answering_inference_update_options_members::question>,
 {
-    fn from(
-        builder: QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = QuestionAnsweringInferenceUpdateOptions;
+
+    fn build(self) -> QuestionAnsweringInferenceUpdateOptions {
+        Self::build(self)
     }
 }
 
-impl QuestionAnsweringInferenceUpdateOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `question` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, question: crate::typed::builder::MissingRequiredField) -> QuestionAnsweringInferenceUpdateOptions { match question {} }
+impl<S0> From<QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)>>
+    for QuestionAnsweringInferenceUpdateOptions
+where
+    S0: crate::typed::builder::IsSet<question_answering_inference_update_options_members::question>,
+{
+    fn from(builder: QuestionAnsweringInferenceUpdateOptionsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29475,8 +27995,8 @@ impl RegressionInferenceOptions {
     }
 
     /// Creates a [`RegressionInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> RegressionInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RegressionInferenceOptions>>(
+        f: impl FnOnce(RegressionInferenceOptionsBuilder) -> B,
     ) -> RegressionInferenceOptions {
         f(Self::builder()).build()
     }
@@ -29534,6 +28054,14 @@ impl RegressionInferenceOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RegressionInferenceOptionsBuilder {
+    type Output = RegressionInferenceOptions;
+
+    fn build(self) -> RegressionInferenceOptions {
+        Self::build(self)
+    }
+}
+
 impl From<RegressionInferenceOptionsBuilder> for RegressionInferenceOptions {
     fn from(builder: RegressionInferenceOptionsBuilder) -> Self {
         builder.build()
@@ -29581,22 +28109,29 @@ pub struct RuleCondition {
 
 impl RuleCondition {
     /// Creates a builder for [`RuleCondition`].
+    ///
+    /// Required: `applies_to`, `operator`, `value`.
     pub fn builder() -> RuleConditionBuilder {
         RuleConditionBuilder::new()
     }
 
     /// Creates a [`RuleCondition`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RuleConditionBuilder,
-        ) -> RuleConditionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `applies_to`, `operator`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = RuleCondition>>(
+        f: impl FnOnce(RuleConditionBuilder) -> B,
     ) -> RuleCondition {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RuleConditionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rule_condition_members {
+    pub struct applies_to;
+    pub struct operator;
+    pub struct value;
 }
 
 /// Builder for [`RuleCondition`].
@@ -29643,7 +28178,7 @@ impl<S0, S1, S2> RuleConditionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RuleConditionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Specifies the result property to which the condition applies. If your detector uses `lat_long`, `metric`, `rare`, or `freq_rare` functions, you can only specify conditions that apply to time.
+    /// **Required.** Specifies the result property to which the condition applies. If your detector uses `lat_long`, `metric`, `rare`, or `freq_rare` functions, you can only specify conditions that apply to time.
     pub fn applies_to(
         self,
         value: impl Into<AppliesTo>,
@@ -29655,7 +28190,7 @@ impl<S1, S2> RuleConditionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RuleConditionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Specifies the condition operator. The available options are greater than, greater than or equals, less than, and less than or equals.
+    /// **Required.** Specifies the condition operator. The available options are greater than, greater than or equals, less than, and less than or equals.
     pub fn operator(
         self,
         value: impl Into<ConditionOperator>,
@@ -29667,7 +28202,7 @@ impl<S0, S2> RuleConditionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RuleConditionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The value that is compared against the `applies_to` field using the operator.
+    /// **Required.** The value that is compared against the `applies_to` field using the operator.
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -29678,15 +28213,14 @@ impl<S0, S1> RuleConditionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RuleConditionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RuleConditionBuilder<(S0, S1, S2)> {
     /// Builds a [`RuleCondition`].
-    pub fn build(self) -> RuleCondition {
+    pub fn build(self) -> RuleCondition
+    where
+        S0: crate::typed::builder::IsSet<rule_condition_members::applies_to>,
+        S1: crate::typed::builder::IsSet<rule_condition_members::operator>,
+        S2: crate::typed::builder::IsSet<rule_condition_members::value>,
+    {
         RuleCondition {
             applies_to: self.applies_to.unwrap(),
             operator: self.operator.unwrap(),
@@ -29695,54 +28229,28 @@ impl
     }
 }
 
-impl
-    From<
-        RuleConditionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RuleCondition
+impl<S0, S1, S2> crate::typed::builder::Build for RuleConditionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<rule_condition_members::applies_to>,
+    S1: crate::typed::builder::IsSet<rule_condition_members::operator>,
+    S2: crate::typed::builder::IsSet<rule_condition_members::value>,
 {
-    fn from(
-        builder: RuleConditionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RuleCondition;
+
+    fn build(self) -> RuleCondition {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RuleConditionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `applies_to` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applies_to: crate::typed::builder::MissingRequiredField) -> RuleCondition { match applies_to {} }
-}
-
-impl<S2>
-    RuleConditionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RuleConditionBuilder<(S0, S1, S2)>> for RuleCondition
+where
+    S0: crate::typed::builder::IsSet<rule_condition_members::applies_to>,
+    S1: crate::typed::builder::IsSet<rule_condition_members::operator>,
+    S2: crate::typed::builder::IsSet<rule_condition_members::value>,
 {
-    /// `operator` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, operator: crate::typed::builder::MissingRequiredField) -> RuleCondition { match operator {} }
-}
-
-impl
-    RuleConditionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> RuleCondition { match value {} }
+    fn from(builder: RuleConditionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29761,21 +28269,28 @@ pub struct RunningStateSearchInterval {
 
 impl RunningStateSearchInterval {
     /// Creates a builder for [`RunningStateSearchInterval`].
+    ///
+    /// Required: `end_ms`, `start_ms`.
     pub fn builder() -> RunningStateSearchIntervalBuilder {
         RunningStateSearchIntervalBuilder::new()
     }
 
     /// Creates a [`RunningStateSearchInterval`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RunningStateSearchIntervalBuilder,
-        ) -> RunningStateSearchIntervalBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `end_ms`, `start_ms`.
+    pub fn of<B: crate::typed::builder::Build<Output = RunningStateSearchInterval>>(
+        f: impl FnOnce(RunningStateSearchIntervalBuilder) -> B,
     ) -> RunningStateSearchInterval {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RunningStateSearchIntervalBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod running_state_search_interval_members {
+    pub struct end_ms;
+    pub struct start_ms;
 }
 
 /// Builder for [`RunningStateSearchInterval`].
@@ -29844,7 +28359,7 @@ impl<S0, S1> RunningStateSearchIntervalBuilder<(S0, S1)> {
 }
 
 impl<S1> RunningStateSearchIntervalBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The end time as an epoch in milliseconds.
+    /// **Required.** The end time as an epoch in milliseconds.
     pub fn end_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -29856,7 +28371,7 @@ impl<S1> RunningStateSearchIntervalBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> RunningStateSearchIntervalBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The start time as an epoch in milliseconds.
+    /// **Required.** The start time as an epoch in milliseconds.
     pub fn start_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -29867,9 +28382,13 @@ impl<S0> RunningStateSearchIntervalBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl RunningStateSearchIntervalBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RunningStateSearchIntervalBuilder<(S0, S1)> {
     /// Builds a [`RunningStateSearchInterval`].
-    pub fn build(self) -> RunningStateSearchInterval {
+    pub fn build(self) -> RunningStateSearchInterval
+    where
+        S0: crate::typed::builder::IsSet<running_state_search_interval_members::end_ms>,
+        S1: crate::typed::builder::IsSet<running_state_search_interval_members::start_ms>,
+    {
         RunningStateSearchInterval {
             end: self.end,
             end_ms: self.end_ms.unwrap(),
@@ -29879,33 +28398,26 @@ impl RunningStateSearchIntervalBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        RunningStateSearchIntervalBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for RunningStateSearchInterval
+impl<S0, S1> crate::typed::builder::Build for RunningStateSearchIntervalBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<running_state_search_interval_members::end_ms>,
+    S1: crate::typed::builder::IsSet<running_state_search_interval_members::start_ms>,
 {
-    fn from(
-        builder: RunningStateSearchIntervalBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RunningStateSearchInterval;
+
+    fn build(self) -> RunningStateSearchInterval {
+        Self::build(self)
     }
 }
 
-impl<S1> RunningStateSearchIntervalBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `end_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_ms: crate::typed::builder::MissingRequiredField) -> RunningStateSearchInterval { match end_ms {} }
-}
-
-impl
-    RunningStateSearchIntervalBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<RunningStateSearchIntervalBuilder<(S0, S1)>> for RunningStateSearchInterval
+where
+    S0: crate::typed::builder::IsSet<running_state_search_interval_members::end_ms>,
+    S1: crate::typed::builder::IsSet<running_state_search_interval_members::start_ms>,
 {
-    /// `start_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_ms: crate::typed::builder::MissingRequiredField) -> RunningStateSearchInterval { match start_ms {} }
+    fn from(builder: RunningStateSearchIntervalBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -29946,10 +28458,8 @@ impl TextClassificationInferenceOptions {
     }
 
     /// Creates a [`TextClassificationInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextClassificationInferenceOptionsBuilder,
-        ) -> TextClassificationInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextClassificationInferenceOptions>>(
+        f: impl FnOnce(TextClassificationInferenceOptionsBuilder) -> B,
     ) -> TextClassificationInferenceOptions {
         f(Self::builder()).build()
     }
@@ -30003,11 +28513,11 @@ impl TextClassificationInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -30056,9 +28566,9 @@ impl TextClassificationInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -30074,6 +28584,14 @@ impl TextClassificationInferenceOptionsBuilder {
             classification_labels: self.classification_labels,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TextClassificationInferenceOptionsBuilder {
+    type Output = TextClassificationInferenceOptions;
+
+    fn build(self) -> TextClassificationInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -30106,10 +28624,10 @@ impl TextClassificationInferenceUpdateOptions {
     }
 
     /// Creates a [`TextClassificationInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextClassificationInferenceUpdateOptionsBuilder,
-        ) -> TextClassificationInferenceUpdateOptionsBuilder,
+    pub fn of<
+        B: crate::typed::builder::Build<Output = TextClassificationInferenceUpdateOptions>,
+    >(
+        f: impl FnOnce(TextClassificationInferenceUpdateOptionsBuilder) -> B,
     ) -> TextClassificationInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -30161,9 +28679,11 @@ impl TextClassificationInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -30213,6 +28733,14 @@ impl TextClassificationInferenceUpdateOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TextClassificationInferenceUpdateOptionsBuilder {
+    type Output = TextClassificationInferenceUpdateOptions;
+
+    fn build(self) -> TextClassificationInferenceUpdateOptions {
+        Self::build(self)
+    }
+}
+
 impl From<TextClassificationInferenceUpdateOptionsBuilder>
     for TextClassificationInferenceUpdateOptions
 {
@@ -30244,8 +28772,8 @@ impl TextEmbeddingInferenceOptions {
     }
 
     /// Creates a [`TextEmbeddingInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TextEmbeddingInferenceOptionsBuilder) -> TextEmbeddingInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextEmbeddingInferenceOptions>>(
+        f: impl FnOnce(TextEmbeddingInferenceOptionsBuilder) -> B,
     ) -> TextEmbeddingInferenceOptions {
         f(Self::builder()).build()
     }
@@ -30297,11 +28825,11 @@ impl TextEmbeddingInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -30330,9 +28858,9 @@ impl TextEmbeddingInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -30347,6 +28875,14 @@ impl TextEmbeddingInferenceOptionsBuilder {
             results_field: self.results_field,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TextEmbeddingInferenceOptionsBuilder {
+    type Output = TextEmbeddingInferenceOptions;
+
+    fn build(self) -> TextEmbeddingInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -30372,10 +28908,8 @@ impl TextEmbeddingInferenceUpdateOptions {
     }
 
     /// Creates a [`TextEmbeddingInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextEmbeddingInferenceUpdateOptionsBuilder,
-        ) -> TextEmbeddingInferenceUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextEmbeddingInferenceUpdateOptions>>(
+        f: impl FnOnce(TextEmbeddingInferenceUpdateOptionsBuilder) -> B,
     ) -> TextEmbeddingInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -30410,9 +28944,11 @@ impl TextEmbeddingInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -30437,6 +28973,14 @@ impl TextEmbeddingInferenceUpdateOptionsBuilder {
             tokenization: self.tokenization,
             results_field: self.results_field,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TextEmbeddingInferenceUpdateOptionsBuilder {
+    type Output = TextEmbeddingInferenceUpdateOptions;
+
+    fn build(self) -> TextEmbeddingInferenceUpdateOptions {
+        Self::build(self)
     }
 }
 
@@ -30466,8 +29010,8 @@ impl TextExpansionInferenceOptions {
     }
 
     /// Creates a [`TextExpansionInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TextExpansionInferenceOptionsBuilder) -> TextExpansionInferenceOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextExpansionInferenceOptions>>(
+        f: impl FnOnce(TextExpansionInferenceOptionsBuilder) -> B,
     ) -> TextExpansionInferenceOptions {
         f(Self::builder()).build()
     }
@@ -30505,11 +29049,11 @@ impl TextExpansionInferenceOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -30538,9 +29082,9 @@ impl TextExpansionInferenceOptionsBuilder {
     }
 
     /// Sets [`vocabulary`](Self::vocabulary) with a builder.
-    pub fn vocabulary_with(
+    pub fn vocabulary_with<B: crate::typed::builder::Build<Output = Vocabulary>>(
         self,
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Self {
         self.vocabulary(f(VocabularyBuilder::new()).build())
     }
@@ -30554,6 +29098,14 @@ impl TextExpansionInferenceOptionsBuilder {
             results_field: self.results_field,
             vocabulary: self.vocabulary,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TextExpansionInferenceOptionsBuilder {
+    type Output = TextExpansionInferenceOptions;
+
+    fn build(self) -> TextExpansionInferenceOptions {
+        Self::build(self)
     }
 }
 
@@ -30579,10 +29131,8 @@ impl TextExpansionInferenceUpdateOptions {
     }
 
     /// Creates a [`TextExpansionInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextExpansionInferenceUpdateOptionsBuilder,
-        ) -> TextExpansionInferenceUpdateOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextExpansionInferenceUpdateOptions>>(
+        f: impl FnOnce(TextExpansionInferenceUpdateOptionsBuilder) -> B,
     ) -> TextExpansionInferenceUpdateOptions {
         f(Self::builder()).build()
     }
@@ -30617,9 +29167,11 @@ impl TextExpansionInferenceUpdateOptionsBuilder {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -30647,6 +29199,14 @@ impl TextExpansionInferenceUpdateOptionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TextExpansionInferenceUpdateOptionsBuilder {
+    type Output = TextExpansionInferenceUpdateOptions;
+
+    fn build(self) -> TextExpansionInferenceUpdateOptions {
+        Self::build(self)
+    }
+}
+
 impl From<TextExpansionInferenceUpdateOptionsBuilder> for TextExpansionInferenceUpdateOptions {
     fn from(builder: TextExpansionInferenceUpdateOptionsBuilder) -> Self {
         builder.build()
@@ -30664,16 +29224,27 @@ pub struct TimingStats {
 
 impl TimingStats {
     /// Creates a builder for [`TimingStats`].
+    ///
+    /// Required: `elapsed_time`.
     pub fn builder() -> TimingStatsBuilder {
         TimingStatsBuilder::new()
     }
 
     /// Creates a [`TimingStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TimingStatsBuilder) -> TimingStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `elapsed_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = TimingStats>>(
+        f: impl FnOnce(TimingStatsBuilder) -> B,
     ) -> TimingStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TimingStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod timing_stats_members {
+    pub struct elapsed_time;
 }
 
 /// Builder for [`TimingStats`].
@@ -30723,7 +29294,7 @@ impl<S0> TimingStatsBuilder<(S0,)> {
 }
 
 impl TimingStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Runtime of the analysis in milliseconds.
+    /// **Required.** Runtime of the analysis in milliseconds.
     pub fn elapsed_time(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -30734,9 +29305,12 @@ impl TimingStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TimingStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TimingStatsBuilder<(S0,)> {
     /// Builds a [`TimingStats`].
-    pub fn build(self) -> TimingStats {
+    pub fn build(self) -> TimingStats
+    where
+        S0: crate::typed::builder::IsSet<timing_stats_members::elapsed_time>,
+    {
         TimingStats {
             elapsed_time: self.elapsed_time.unwrap(),
             iteration_time: self.iteration_time,
@@ -30744,16 +29318,24 @@ impl TimingStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TimingStatsBuilder<(crate::typed::builder::Set,)>> for TimingStats {
-    fn from(builder: TimingStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TimingStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<timing_stats_members::elapsed_time>,
+{
+    type Output = TimingStats;
+
+    fn build(self) -> TimingStats {
+        Self::build(self)
     }
 }
 
-impl TimingStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `elapsed_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, elapsed_time: crate::typed::builder::MissingRequiredField) -> TimingStats { match elapsed_time {} }
+impl<S0> From<TimingStatsBuilder<(S0,)>> for TimingStats
+where
+    S0: crate::typed::builder::IsSet<timing_stats_members::elapsed_time>,
+{
+    fn from(builder: TimingStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Tokenization options stored in inference configuration
@@ -30801,15 +29383,17 @@ impl From<XlmRobertaTokenizationConfigBuilder> for TokenizationConfigContainer {
 
 impl TokenizationConfigContainer {
     /// Creates a builder for [`TokenizationConfigContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> TokenizationConfigContainerBuilder {
         TokenizationConfigContainerBuilder::new()
     }
 
     /// Creates a [`TokenizationConfigContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = TokenizationConfigContainer>>(
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> TokenizationConfigContainer {
         f(Self::builder()).build()
     }
@@ -30852,9 +29436,9 @@ impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bert`](Self::bert) with a builder.
-    pub fn bert_with(
+    pub fn bert_with<B: crate::typed::builder::Build<Output = NlpBertTokenizationConfig>>(
         self,
-        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> NlpBertTokenizationConfigBuilder,
+        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> B,
     ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.bert(f(NlpBertTokenizationConfigBuilder::new()).build())
     }
@@ -30870,9 +29454,9 @@ impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bert_ja`](Self::bert_ja) with a builder.
-    pub fn bert_ja_with(
+    pub fn bert_ja_with<B: crate::typed::builder::Build<Output = NlpBertTokenizationConfig>>(
         self,
-        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> NlpBertTokenizationConfigBuilder,
+        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> B,
     ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.bert_ja(f(NlpBertTokenizationConfigBuilder::new()).build())
     }
@@ -30888,9 +29472,9 @@ impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`mpnet`](Self::mpnet) with a builder.
-    pub fn mpnet_with(
+    pub fn mpnet_with<B: crate::typed::builder::Build<Output = NlpBertTokenizationConfig>>(
         self,
-        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> NlpBertTokenizationConfigBuilder,
+        f: impl FnOnce(NlpBertTokenizationConfigBuilder) -> B,
     ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.mpnet(f(NlpBertTokenizationConfigBuilder::new()).build())
     }
@@ -30906,9 +29490,9 @@ impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`roberta`](Self::roberta) with a builder.
-    pub fn roberta_with(
+    pub fn roberta_with<B: crate::typed::builder::Build<Output = NlpRobertaTokenizationConfig>>(
         self,
-        f: impl FnOnce(NlpRobertaTokenizationConfigBuilder) -> NlpRobertaTokenizationConfigBuilder,
+        f: impl FnOnce(NlpRobertaTokenizationConfigBuilder) -> B,
     ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.roberta(f(NlpRobertaTokenizationConfigBuilder::new()).build())
     }
@@ -30923,33 +29507,44 @@ impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`xlm_roberta`](Self::xlm_roberta) with a builder.
-    pub fn xlm_roberta_with(
+    pub fn xlm_roberta_with<
+        B: crate::typed::builder::Build<Output = XlmRobertaTokenizationConfig>,
+    >(
         self,
-        f: impl FnOnce(XlmRobertaTokenizationConfigBuilder) -> XlmRobertaTokenizationConfigBuilder,
+        f: impl FnOnce(XlmRobertaTokenizationConfigBuilder) -> B,
     ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.xlm_roberta(f(XlmRobertaTokenizationConfigBuilder::new()).build())
     }
 }
 
-impl TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TokenizationConfigContainerBuilder<(S0,)> {
     /// Builds a [`TokenizationConfigContainer`].
-    pub fn build(self) -> TokenizationConfigContainer {
+    pub fn build(self) -> TokenizationConfigContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<TokenizationConfigContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>>
-    for TokenizationConfigContainer
+impl<S0> crate::typed::builder::Build for TokenizationConfigContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<TokenizationConfigContainer>,
 {
-    fn from(builder: TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TokenizationConfigContainer;
+
+    fn build(self) -> TokenizationConfigContainer {
+        Self::build(self)
     }
 }
 
-impl TokenizationConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> TokenizationConfigContainer { match variant {} }
+impl<S0> From<TokenizationConfigContainerBuilder<(S0,)>> for TokenizationConfigContainer
+where
+    S0: crate::typed::builder::IsVariantSet<TokenizationConfigContainer>,
+{
+    fn from(builder: TokenizationConfigContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -30971,22 +29566,29 @@ pub struct TopClassEntry {
 
 impl TopClassEntry {
     /// Creates a builder for [`TopClassEntry`].
+    ///
+    /// Required: `class_name`, `class_probability`, `class_score`.
     pub fn builder() -> TopClassEntryBuilder {
         TopClassEntryBuilder::new()
     }
 
     /// Creates a [`TopClassEntry`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TopClassEntryBuilder,
-        ) -> TopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `class_probability`, `class_score`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopClassEntry>>(
+        f: impl FnOnce(TopClassEntryBuilder) -> B,
     ) -> TopClassEntry {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopClassEntryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_class_entry_members {
+    pub struct class_name;
+    pub struct class_probability;
+    pub struct class_score;
 }
 
 /// Builder for [`TopClassEntry`].
@@ -31033,6 +29635,7 @@ impl<S0, S1, S2> TopClassEntryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<String>,
@@ -31044,6 +29647,7 @@ impl<S1, S2> TopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> TopClassEntryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn class_probability(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -31055,6 +29659,7 @@ impl<S0, S2> TopClassEntryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> TopClassEntryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn class_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -31065,15 +29670,14 @@ impl<S0, S1> TopClassEntryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    TopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TopClassEntryBuilder<(S0, S1, S2)> {
     /// Builds a [`TopClassEntry`].
-    pub fn build(self) -> TopClassEntry {
+    pub fn build(self) -> TopClassEntry
+    where
+        S0: crate::typed::builder::IsSet<top_class_entry_members::class_name>,
+        S1: crate::typed::builder::IsSet<top_class_entry_members::class_probability>,
+        S2: crate::typed::builder::IsSet<top_class_entry_members::class_score>,
+    {
         TopClassEntry {
             class_name: self.class_name.unwrap(),
             class_probability: self.class_probability.unwrap(),
@@ -31082,54 +29686,28 @@ impl
     }
 }
 
-impl
-    From<
-        TopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TopClassEntry
+impl<S0, S1, S2> crate::typed::builder::Build for TopClassEntryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<top_class_entry_members::class_name>,
+    S1: crate::typed::builder::IsSet<top_class_entry_members::class_probability>,
+    S2: crate::typed::builder::IsSet<top_class_entry_members::class_score>,
 {
-    fn from(
-        builder: TopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TopClassEntry;
+
+    fn build(self) -> TopClassEntry {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> TopClassEntry { match class_name {} }
-}
-
-impl<S2>
-    TopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TopClassEntryBuilder<(S0, S1, S2)>> for TopClassEntry
+where
+    S0: crate::typed::builder::IsSet<top_class_entry_members::class_name>,
+    S1: crate::typed::builder::IsSet<top_class_entry_members::class_probability>,
+    S2: crate::typed::builder::IsSet<top_class_entry_members::class_score>,
 {
-    /// `class_probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_probability: crate::typed::builder::MissingRequiredField) -> TopClassEntry { match class_probability {} }
-}
-
-impl
-    TopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `class_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_score: crate::typed::builder::MissingRequiredField) -> TopClassEntry { match class_score {} }
+    fn from(builder: TopClassEntryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31144,22 +29722,29 @@ pub struct TotalFeatureImportance {
 
 impl TotalFeatureImportance {
     /// Creates a builder for [`TotalFeatureImportance`].
+    ///
+    /// Required: `feature_name`, `importance`, `classes`.
     pub fn builder() -> TotalFeatureImportanceBuilder {
         TotalFeatureImportanceBuilder::new()
     }
 
     /// Creates a [`TotalFeatureImportance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TotalFeatureImportanceBuilder,
-        ) -> TotalFeatureImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_name`, `importance`, `classes`.
+    pub fn of<B: crate::typed::builder::Build<Output = TotalFeatureImportance>>(
+        f: impl FnOnce(TotalFeatureImportanceBuilder) -> B,
     ) -> TotalFeatureImportance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TotalFeatureImportanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod total_feature_importance_members {
+    pub struct feature_name;
+    pub struct importance;
+    pub struct classes;
 }
 
 /// Builder for [`TotalFeatureImportance`].
@@ -31206,7 +29791,7 @@ impl<S0, S1, S2> TotalFeatureImportanceBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TotalFeatureImportanceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The feature for which this importance was calculated.
+    /// **Required.** The feature for which this importance was calculated.
     pub fn feature_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -31218,7 +29803,7 @@ impl<S1, S2> TotalFeatureImportanceBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2> TotalFeatureImportanceBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A collection of feature importance statistics related to the training data set for this particular feature.
+    /// **Required.** A collection of feature importance statistics related to the training data set for this particular feature.
     pub fn importance(
         self,
         value: impl Into<Vec<TotalFeatureImportanceStatistics>>,
@@ -31242,15 +29827,11 @@ impl<S0, S2> TotalFeatureImportanceBuilder<(S0, crate::typed::builder::NotSet, S
     }
 
     /// Adds an element to [`importance`](Self::importance), with a builder.
-    pub fn add_importance_with(
+    pub fn add_importance_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceStatisticsBuilder,
-        ) -> TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceStatisticsBuilder) -> B,
     ) -> TotalFeatureImportanceBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_importance(f(TotalFeatureImportanceStatisticsBuilder::new()).build())
     }
@@ -31266,22 +29847,18 @@ impl<S0, S2> TotalFeatureImportanceBuilder<(S0, crate::typed::builder::Set, S2)>
     }
 
     /// Adds an element to [`importance`](Self::importance), with a builder.
-    pub fn add_importance_with(
+    pub fn add_importance_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceStatisticsBuilder,
-        ) -> TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceStatisticsBuilder) -> B,
     ) -> Self {
         self.add_importance(f(TotalFeatureImportanceStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> TotalFeatureImportanceBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// If the trained model is a classification model, feature importance statistics are gathered per target class value.
+    /// **Required.** If the trained model is a classification model, feature importance statistics are gathered per target class value.
     pub fn classes(
         self,
         value: impl Into<Vec<TotalFeatureImportanceClass>>,
@@ -31305,14 +29882,11 @@ impl<S0, S1> TotalFeatureImportanceBuilder<(S0, S1, crate::typed::builder::NotSe
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceClass>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceClassBuilder,
-        ) -> TotalFeatureImportanceClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceClassBuilder) -> B,
     ) -> TotalFeatureImportanceBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.add_classes(f(TotalFeatureImportanceClassBuilder::new()).build())
     }
@@ -31328,28 +29902,24 @@ impl<S0, S1> TotalFeatureImportanceBuilder<(S0, S1, crate::typed::builder::Set)>
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceClass>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceClassBuilder,
-        ) -> TotalFeatureImportanceClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceClassBuilder) -> B,
     ) -> Self {
         self.add_classes(f(TotalFeatureImportanceClassBuilder::new()).build())
     }
 }
 
-impl
-    TotalFeatureImportanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TotalFeatureImportanceBuilder<(S0, S1, S2)> {
     /// Builds a [`TotalFeatureImportance`].
-    pub fn build(self) -> TotalFeatureImportance {
+    pub fn build(self) -> TotalFeatureImportance
+    where
+        S0: crate::typed::builder::IsSet<total_feature_importance_members::feature_name>,
+        S1: crate::typed::builder::IsSet<total_feature_importance_members::importance>,
+        S2: crate::typed::builder::IsSet<total_feature_importance_members::classes>,
+    {
         TotalFeatureImportance {
             feature_name: self.feature_name.unwrap(),
             importance: self.importance.unwrap(),
@@ -31358,54 +29928,28 @@ impl
     }
 }
 
-impl
-    From<
-        TotalFeatureImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TotalFeatureImportance
+impl<S0, S1, S2> crate::typed::builder::Build for TotalFeatureImportanceBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_members::feature_name>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_members::importance>,
+    S2: crate::typed::builder::IsSet<total_feature_importance_members::classes>,
 {
-    fn from(
-        builder: TotalFeatureImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TotalFeatureImportance;
+
+    fn build(self) -> TotalFeatureImportance {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TotalFeatureImportanceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportance { match feature_name {} }
-}
-
-impl<S2>
-    TotalFeatureImportanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TotalFeatureImportanceBuilder<(S0, S1, S2)>> for TotalFeatureImportance
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_members::feature_name>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_members::importance>,
+    S2: crate::typed::builder::IsSet<total_feature_importance_members::classes>,
 {
-    /// `importance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, importance: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportance { match importance {} }
-}
-
-impl
-    TotalFeatureImportanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `classes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, classes: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportance { match classes {} }
+    fn from(builder: TotalFeatureImportanceBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31418,21 +29962,28 @@ pub struct TotalFeatureImportanceClass {
 
 impl TotalFeatureImportanceClass {
     /// Creates a builder for [`TotalFeatureImportanceClass`].
+    ///
+    /// Required: `class_name`, `importance`.
     pub fn builder() -> TotalFeatureImportanceClassBuilder {
         TotalFeatureImportanceClassBuilder::new()
     }
 
     /// Creates a [`TotalFeatureImportanceClass`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TotalFeatureImportanceClassBuilder,
-        ) -> TotalFeatureImportanceClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `importance`.
+    pub fn of<B: crate::typed::builder::Build<Output = TotalFeatureImportanceClass>>(
+        f: impl FnOnce(TotalFeatureImportanceClassBuilder) -> B,
     ) -> TotalFeatureImportanceClass {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TotalFeatureImportanceClassBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod total_feature_importance_class_members {
+    pub struct class_name;
+    pub struct importance;
 }
 
 /// Builder for [`TotalFeatureImportanceClass`].
@@ -31471,7 +30022,7 @@ impl<S0, S1> TotalFeatureImportanceClassBuilder<(S0, S1)> {
 }
 
 impl<S1> TotalFeatureImportanceClassBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The target class value. Could be a string, boolean, or number.
+    /// **Required.** The target class value. Could be a string, boolean, or number.
     pub fn class_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -31483,7 +30034,7 @@ impl<S1> TotalFeatureImportanceClassBuilder<(crate::typed::builder::NotSet, S1)>
 }
 
 impl<S0> TotalFeatureImportanceClassBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A collection of feature importance statistics related to the training data set for this particular feature.
+    /// **Required.** A collection of feature importance statistics related to the training data set for this particular feature.
     pub fn importance(
         self,
         value: impl Into<Vec<TotalFeatureImportanceStatistics>>,
@@ -31507,15 +30058,11 @@ impl<S0> TotalFeatureImportanceClassBuilder<(S0, crate::typed::builder::NotSet)>
     }
 
     /// Adds an element to [`importance`](Self::importance), with a builder.
-    pub fn add_importance_with(
+    pub fn add_importance_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceStatisticsBuilder,
-        ) -> TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceStatisticsBuilder) -> B,
     ) -> TotalFeatureImportanceClassBuilder<(S0, crate::typed::builder::Set)> {
         self.add_importance(f(TotalFeatureImportanceStatisticsBuilder::new()).build())
     }
@@ -31531,23 +30078,23 @@ impl<S0> TotalFeatureImportanceClassBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`importance`](Self::importance), with a builder.
-    pub fn add_importance_with(
+    pub fn add_importance_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportanceStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceStatisticsBuilder,
-        ) -> TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceStatisticsBuilder) -> B,
     ) -> Self {
         self.add_importance(f(TotalFeatureImportanceStatisticsBuilder::new()).build())
     }
 }
 
-impl TotalFeatureImportanceClassBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TotalFeatureImportanceClassBuilder<(S0, S1)> {
     /// Builds a [`TotalFeatureImportanceClass`].
-    pub fn build(self) -> TotalFeatureImportanceClass {
+    pub fn build(self) -> TotalFeatureImportanceClass
+    where
+        S0: crate::typed::builder::IsSet<total_feature_importance_class_members::class_name>,
+        S1: crate::typed::builder::IsSet<total_feature_importance_class_members::importance>,
+    {
         TotalFeatureImportanceClass {
             class_name: self.class_name.unwrap(),
             importance: self.importance.unwrap(),
@@ -31555,36 +30102,26 @@ impl TotalFeatureImportanceClassBuilder<(crate::typed::builder::Set, crate::type
     }
 }
 
-impl
-    From<
-        TotalFeatureImportanceClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TotalFeatureImportanceClass
+impl<S0, S1> crate::typed::builder::Build for TotalFeatureImportanceClassBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_class_members::class_name>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_class_members::importance>,
 {
-    fn from(
-        builder: TotalFeatureImportanceClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TotalFeatureImportanceClass;
+
+    fn build(self) -> TotalFeatureImportanceClass {
+        Self::build(self)
     }
 }
 
-impl<S1> TotalFeatureImportanceClassBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportanceClass { match class_name {} }
-}
-
-impl
-    TotalFeatureImportanceClassBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<TotalFeatureImportanceClassBuilder<(S0, S1)>> for TotalFeatureImportanceClass
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_class_members::class_name>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_class_members::importance>,
 {
-    /// `importance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, importance: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportanceClass { match importance {} }
+    fn from(builder: TotalFeatureImportanceClassBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31599,22 +30136,29 @@ pub struct TotalFeatureImportanceStatistics {
 
 impl TotalFeatureImportanceStatistics {
     /// Creates a builder for [`TotalFeatureImportanceStatistics`].
+    ///
+    /// Required: `mean_magnitude`, `max`, `min`.
     pub fn builder() -> TotalFeatureImportanceStatisticsBuilder {
         TotalFeatureImportanceStatisticsBuilder::new()
     }
 
     /// Creates a [`TotalFeatureImportanceStatistics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TotalFeatureImportanceStatisticsBuilder,
-        ) -> TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `mean_magnitude`, `max`, `min`.
+    pub fn of<B: crate::typed::builder::Build<Output = TotalFeatureImportanceStatistics>>(
+        f: impl FnOnce(TotalFeatureImportanceStatisticsBuilder) -> B,
     ) -> TotalFeatureImportanceStatistics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TotalFeatureImportanceStatisticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod total_feature_importance_statistics_members {
+    pub struct mean_magnitude;
+    pub struct max;
+    pub struct min;
 }
 
 /// Builder for [`TotalFeatureImportanceStatistics`].
@@ -31661,7 +30205,7 @@ impl<S0, S1, S2> TotalFeatureImportanceStatisticsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TotalFeatureImportanceStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The average magnitude of this feature across all the training data. This value is the average of the absolute values of the importance for this feature.
+    /// **Required.** The average magnitude of this feature across all the training data. This value is the average of the absolute values of the importance for this feature.
     pub fn mean_magnitude(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -31673,7 +30217,7 @@ impl<S1, S2> TotalFeatureImportanceStatisticsBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2> TotalFeatureImportanceStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The maximum importance value across all the training data for this feature.
+    /// **Required.** The maximum importance value across all the training data for this feature.
     pub fn max(
         self,
         value: i32,
@@ -31685,7 +30229,7 @@ impl<S0, S2> TotalFeatureImportanceStatisticsBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1> TotalFeatureImportanceStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The minimum importance value across all the training data for this feature.
+    /// **Required.** The minimum importance value across all the training data for this feature.
     pub fn min(
         self,
         value: i32,
@@ -31696,15 +30240,16 @@ impl<S0, S1> TotalFeatureImportanceStatisticsBuilder<(S0, S1, crate::typed::buil
     }
 }
 
-impl
-    TotalFeatureImportanceStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TotalFeatureImportanceStatisticsBuilder<(S0, S1, S2)> {
     /// Builds a [`TotalFeatureImportanceStatistics`].
-    pub fn build(self) -> TotalFeatureImportanceStatistics {
+    pub fn build(self) -> TotalFeatureImportanceStatistics
+    where
+        S0: crate::typed::builder::IsSet<
+            total_feature_importance_statistics_members::mean_magnitude,
+        >,
+        S1: crate::typed::builder::IsSet<total_feature_importance_statistics_members::max>,
+        S2: crate::typed::builder::IsSet<total_feature_importance_statistics_members::min>,
+    {
         TotalFeatureImportanceStatistics {
             mean_magnitude: self.mean_magnitude.unwrap(),
             max: self.max.unwrap(),
@@ -31713,54 +30258,30 @@ impl
     }
 }
 
-impl
-    From<
-        TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TotalFeatureImportanceStatistics
+impl<S0, S1, S2> crate::typed::builder::Build
+    for TotalFeatureImportanceStatisticsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_statistics_members::mean_magnitude>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_statistics_members::max>,
+    S2: crate::typed::builder::IsSet<total_feature_importance_statistics_members::min>,
 {
-    fn from(
-        builder: TotalFeatureImportanceStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TotalFeatureImportanceStatistics;
+
+    fn build(self) -> TotalFeatureImportanceStatistics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TotalFeatureImportanceStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `mean_magnitude` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mean_magnitude: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportanceStatistics { match mean_magnitude {} }
-}
-
-impl<S2>
-    TotalFeatureImportanceStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TotalFeatureImportanceStatisticsBuilder<(S0, S1, S2)>>
+    for TotalFeatureImportanceStatistics
+where
+    S0: crate::typed::builder::IsSet<total_feature_importance_statistics_members::mean_magnitude>,
+    S1: crate::typed::builder::IsSet<total_feature_importance_statistics_members::max>,
+    S2: crate::typed::builder::IsSet<total_feature_importance_statistics_members::min>,
 {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportanceStatistics { match max {} }
-}
-
-impl
-    TotalFeatureImportanceStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> TotalFeatureImportanceStatistics { match min {} }
+    fn from(builder: TotalFeatureImportanceStatisticsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31795,23 +30316,30 @@ impl From<AdaptiveAllocationsSettings> for TrainedModelAssignmentAdaptiveAllocat
 
 impl TrainedModelAssignment {
     /// Creates a builder for [`TrainedModelAssignment`].
+    ///
+    /// Required: `assignment_state`, `routing_table`, `start_time`, `task_parameters`.
     pub fn builder() -> TrainedModelAssignmentBuilder {
         TrainedModelAssignmentBuilder::new()
     }
 
     /// Creates a [`TrainedModelAssignment`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelAssignmentBuilder,
-        ) -> TrainedModelAssignmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `assignment_state`, `routing_table`, `start_time`, `task_parameters`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelAssignment>>(
+        f: impl FnOnce(TrainedModelAssignmentBuilder) -> B,
     ) -> TrainedModelAssignment {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelAssignmentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_assignment_members {
+    pub struct assignment_state;
+    pub struct routing_table;
+    pub struct start_time;
+    pub struct task_parameters;
 }
 
 /// Builder for [`TrainedModelAssignment`].
@@ -31911,7 +30439,7 @@ impl<S0, S1, S2, S3> TrainedModelAssignmentBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> TrainedModelAssignmentBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The overall assignment state.
+    /// **Required.** The overall assignment state.
     pub fn assignment_state(
         self,
         value: impl Into<DeploymentAssignmentState>,
@@ -31923,7 +30451,7 @@ impl<S1, S2, S3> TrainedModelAssignmentBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0, S2, S3> TrainedModelAssignmentBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The allocation state for each node.
+    /// **Required.** The allocation state for each node.
     pub fn routing_table(
         self,
         value: impl Into<indexmap::IndexMap<String, TrainedModelAssignmentRoutingTable>>,
@@ -31948,16 +30476,12 @@ impl<S0, S2, S3> TrainedModelAssignmentBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Adds an entry to [`routing_table`](Self::routing_table), with a builder.
-    pub fn add_routing_table_with(
+    pub fn add_routing_table_with<
+        B: crate::typed::builder::Build<Output = TrainedModelAssignmentRoutingTable>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            TrainedModelAssignmentRoutingTableBuilder,
-        ) -> TrainedModelAssignmentRoutingTableBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelAssignmentRoutingTableBuilder) -> B,
     ) -> TrainedModelAssignmentBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.add_routing_table(
             key,
@@ -31980,16 +30504,12 @@ impl<S0, S2, S3> TrainedModelAssignmentBuilder<(S0, crate::typed::builder::Set, 
     }
 
     /// Adds an entry to [`routing_table`](Self::routing_table), with a builder.
-    pub fn add_routing_table_with(
+    pub fn add_routing_table_with<
+        B: crate::typed::builder::Build<Output = TrainedModelAssignmentRoutingTable>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            TrainedModelAssignmentRoutingTableBuilder,
-        ) -> TrainedModelAssignmentRoutingTableBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelAssignmentRoutingTableBuilder) -> B,
     ) -> Self {
         self.add_routing_table(
             key,
@@ -31999,7 +30519,7 @@ impl<S0, S2, S3> TrainedModelAssignmentBuilder<(S0, crate::typed::builder::Set, 
 }
 
 impl<S0, S1, S3> TrainedModelAssignmentBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The timestamp when the deployment started.
+    /// **Required.** The timestamp when the deployment started.
     pub fn start_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -32011,6 +30531,7 @@ impl<S0, S1, S3> TrainedModelAssignmentBuilder<(S0, S1, crate::typed::builder::N
 }
 
 impl<S0, S1, S2> TrainedModelAssignmentBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn task_parameters(
         self,
         value: impl Into<TrainedModelAssignmentTaskParameters>,
@@ -32021,36 +30542,25 @@ impl<S0, S1, S2> TrainedModelAssignmentBuilder<(S0, S1, S2, crate::typed::builde
     }
 
     /// Sets [`task_parameters`](Self::task_parameters) with a builder.
-    pub fn task_parameters_with(
+    pub fn task_parameters_with<
+        B: crate::typed::builder::Build<Output = TrainedModelAssignmentTaskParameters>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelAssignmentTaskParametersBuilder,
-        ) -> TrainedModelAssignmentTaskParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelAssignmentTaskParametersBuilder) -> B,
     ) -> TrainedModelAssignmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.task_parameters(f(TrainedModelAssignmentTaskParametersBuilder::new()).build())
     }
 }
 
-impl
-    TrainedModelAssignmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> TrainedModelAssignmentBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`TrainedModelAssignment`].
-    pub fn build(self) -> TrainedModelAssignment {
+    pub fn build(self) -> TrainedModelAssignment
+    where
+        S0: crate::typed::builder::IsSet<trained_model_assignment_members::assignment_state>,
+        S1: crate::typed::builder::IsSet<trained_model_assignment_members::routing_table>,
+        S2: crate::typed::builder::IsSet<trained_model_assignment_members::start_time>,
+        S3: crate::typed::builder::IsSet<trained_model_assignment_members::task_parameters>,
+    {
         TrainedModelAssignment {
             adaptive_allocations: self.adaptive_allocations,
             assignment_state: self.assignment_state.unwrap(),
@@ -32063,71 +30573,32 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelAssignmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelAssignment
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for TrainedModelAssignmentBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_members::assignment_state>,
+    S1: crate::typed::builder::IsSet<trained_model_assignment_members::routing_table>,
+    S2: crate::typed::builder::IsSet<trained_model_assignment_members::start_time>,
+    S3: crate::typed::builder::IsSet<trained_model_assignment_members::task_parameters>,
 {
-    fn from(
-        builder: TrainedModelAssignmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelAssignment;
+
+    fn build(self) -> TrainedModelAssignment {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> TrainedModelAssignmentBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `assignment_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, assignment_state: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignment { match assignment_state {} }
-}
-
-impl<S2, S3>
-    TrainedModelAssignmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<TrainedModelAssignmentBuilder<(S0, S1, S2, S3)>>
+    for TrainedModelAssignment
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_members::assignment_state>,
+    S1: crate::typed::builder::IsSet<trained_model_assignment_members::routing_table>,
+    S2: crate::typed::builder::IsSet<trained_model_assignment_members::start_time>,
+    S3: crate::typed::builder::IsSet<trained_model_assignment_members::task_parameters>,
 {
-    /// `routing_table` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing_table: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignment { match routing_table {} }
-}
-
-impl<S3>
-    TrainedModelAssignmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `start_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignment { match start_time {} }
-}
-
-impl
-    TrainedModelAssignmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_parameters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_parameters: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignment { match task_parameters {} }
+    fn from(builder: TrainedModelAssignmentBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32142,20 +30613,29 @@ pub struct TrainedModelAssignmentRoutingStateAndReason {
 
 impl TrainedModelAssignmentRoutingStateAndReason {
     /// Creates a builder for [`TrainedModelAssignmentRoutingStateAndReason`].
+    ///
+    /// Required: `routing_state`.
     pub fn builder() -> TrainedModelAssignmentRoutingStateAndReasonBuilder {
         TrainedModelAssignmentRoutingStateAndReasonBuilder::new()
     }
 
     /// Creates a [`TrainedModelAssignmentRoutingStateAndReason`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelAssignmentRoutingStateAndReasonBuilder,
-        ) -> TrainedModelAssignmentRoutingStateAndReasonBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `routing_state`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = TrainedModelAssignmentRoutingStateAndReason>,
+    >(
+        f: impl FnOnce(TrainedModelAssignmentRoutingStateAndReasonBuilder) -> B,
     ) -> TrainedModelAssignmentRoutingStateAndReason {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelAssignmentRoutingStateAndReasonBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_assignment_routing_state_and_reason_members {
+    pub struct routing_state;
 }
 
 /// Builder for [`TrainedModelAssignmentRoutingStateAndReason`].
@@ -32201,7 +30681,7 @@ impl<S0> TrainedModelAssignmentRoutingStateAndReasonBuilder<(S0,)> {
 }
 
 impl TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::NotSet,)> {
-    /// The current routing state.
+    /// **Required.** The current routing state.
     pub fn routing_state(
         self,
         value: impl Into<RoutingState>,
@@ -32212,9 +30692,14 @@ impl TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::
     }
 }
 
-impl TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelAssignmentRoutingStateAndReasonBuilder<(S0,)> {
     /// Builds a [`TrainedModelAssignmentRoutingStateAndReason`].
-    pub fn build(self) -> TrainedModelAssignmentRoutingStateAndReason {
+    pub fn build(self) -> TrainedModelAssignmentRoutingStateAndReason
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_assignment_routing_state_and_reason_members::routing_state,
+        >,
+    {
         TrainedModelAssignmentRoutingStateAndReason {
             reason: self.reason,
             routing_state: self.routing_state.unwrap(),
@@ -32222,20 +30707,29 @@ impl TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::
     }
 }
 
-impl From<TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::Set,)>>
-    for TrainedModelAssignmentRoutingStateAndReason
+impl<S0> crate::typed::builder::Build for TrainedModelAssignmentRoutingStateAndReasonBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_state_and_reason_members::routing_state,
+    >,
 {
-    fn from(
-        builder: TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelAssignmentRoutingStateAndReason;
+
+    fn build(self) -> TrainedModelAssignmentRoutingStateAndReason {
+        Self::build(self)
     }
 }
 
-impl TrainedModelAssignmentRoutingStateAndReasonBuilder<(crate::typed::builder::NotSet,)> {
-    /// `routing_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing_state: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentRoutingStateAndReason { match routing_state {} }
+impl<S0> From<TrainedModelAssignmentRoutingStateAndReasonBuilder<(S0,)>>
+    for TrainedModelAssignmentRoutingStateAndReason
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_state_and_reason_members::routing_state,
+    >,
+{
+    fn from(builder: TrainedModelAssignmentRoutingStateAndReasonBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32254,22 +30748,29 @@ pub struct TrainedModelAssignmentRoutingTable {
 
 impl TrainedModelAssignmentRoutingTable {
     /// Creates a builder for [`TrainedModelAssignmentRoutingTable`].
+    ///
+    /// Required: `routing_state`, `current_allocations`, `target_allocations`.
     pub fn builder() -> TrainedModelAssignmentRoutingTableBuilder {
         TrainedModelAssignmentRoutingTableBuilder::new()
     }
 
     /// Creates a [`TrainedModelAssignmentRoutingTable`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelAssignmentRoutingTableBuilder,
-        ) -> TrainedModelAssignmentRoutingTableBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `routing_state`, `current_allocations`, `target_allocations`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelAssignmentRoutingTable>>(
+        f: impl FnOnce(TrainedModelAssignmentRoutingTableBuilder) -> B,
     ) -> TrainedModelAssignmentRoutingTable {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelAssignmentRoutingTableBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_assignment_routing_table_members {
+    pub struct routing_state;
+    pub struct current_allocations;
+    pub struct target_allocations;
 }
 
 /// Builder for [`TrainedModelAssignmentRoutingTable`].
@@ -32332,7 +30833,7 @@ impl<S0, S1, S2> TrainedModelAssignmentRoutingTableBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TrainedModelAssignmentRoutingTableBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The current routing state.
+    /// **Required.** The current routing state.
     pub fn routing_state(
         self,
         value: impl Into<RoutingState>,
@@ -32344,7 +30845,7 @@ impl<S1, S2> TrainedModelAssignmentRoutingTableBuilder<(crate::typed::builder::N
 }
 
 impl<S0, S2> TrainedModelAssignmentRoutingTableBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Current number of allocations.
+    /// **Required.** Current number of allocations.
     pub fn current_allocations(
         self,
         value: i32,
@@ -32356,7 +30857,7 @@ impl<S0, S2> TrainedModelAssignmentRoutingTableBuilder<(S0, crate::typed::builde
 }
 
 impl<S0, S1> TrainedModelAssignmentRoutingTableBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Target number of allocations.
+    /// **Required.** Target number of allocations.
     pub fn target_allocations(
         self,
         value: i32,
@@ -32367,15 +30868,20 @@ impl<S0, S1> TrainedModelAssignmentRoutingTableBuilder<(S0, S1, crate::typed::bu
     }
 }
 
-impl
-    TrainedModelAssignmentRoutingTableBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrainedModelAssignmentRoutingTableBuilder<(S0, S1, S2)> {
     /// Builds a [`TrainedModelAssignmentRoutingTable`].
-    pub fn build(self) -> TrainedModelAssignmentRoutingTable {
+    pub fn build(self) -> TrainedModelAssignmentRoutingTable
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_assignment_routing_table_members::routing_state,
+        >,
+        S1: crate::typed::builder::IsSet<
+            trained_model_assignment_routing_table_members::current_allocations,
+        >,
+        S2: crate::typed::builder::IsSet<
+            trained_model_assignment_routing_table_members::target_allocations,
+        >,
+    {
         TrainedModelAssignmentRoutingTable {
             reason: self.reason,
             routing_state: self.routing_state.unwrap(),
@@ -32385,54 +30891,38 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelAssignmentRoutingTableBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelAssignmentRoutingTable
+impl<S0, S1, S2> crate::typed::builder::Build
+    for TrainedModelAssignmentRoutingTableBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_routing_table_members::routing_state>,
+    S1: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_table_members::current_allocations,
+    >,
+    S2: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_table_members::target_allocations,
+    >,
 {
-    fn from(
-        builder: TrainedModelAssignmentRoutingTableBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelAssignmentRoutingTable;
+
+    fn build(self) -> TrainedModelAssignmentRoutingTable {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TrainedModelAssignmentRoutingTableBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `routing_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing_state: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentRoutingTable { match routing_state {} }
-}
-
-impl<S2>
-    TrainedModelAssignmentRoutingTableBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TrainedModelAssignmentRoutingTableBuilder<(S0, S1, S2)>>
+    for TrainedModelAssignmentRoutingTable
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_routing_table_members::routing_state>,
+    S1: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_table_members::current_allocations,
+    >,
+    S2: crate::typed::builder::IsSet<
+        trained_model_assignment_routing_table_members::target_allocations,
+    >,
 {
-    /// `current_allocations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_allocations: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentRoutingTable { match current_allocations {} }
-}
-
-impl
-    TrainedModelAssignmentRoutingTableBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `target_allocations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_allocations: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentRoutingTable { match target_allocations {} }
+    fn from(builder: TrainedModelAssignmentRoutingTableBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32459,28 +30949,35 @@ pub struct TrainedModelAssignmentTaskParameters {
 
 impl TrainedModelAssignmentTaskParameters {
     /// Creates a builder for [`TrainedModelAssignmentTaskParameters`].
+    ///
+    /// Required: `model_bytes`, `model_id`, `deployment_id`, `number_of_allocations`, `priority`, `per_deployment_memory_bytes`, `per_allocation_memory_bytes`, `queue_capacity`, `threads_per_allocation`.
     pub fn builder() -> TrainedModelAssignmentTaskParametersBuilder {
         TrainedModelAssignmentTaskParametersBuilder::new()
     }
 
     /// Creates a [`TrainedModelAssignmentTaskParameters`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelAssignmentTaskParametersBuilder,
-        ) -> TrainedModelAssignmentTaskParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_bytes`, `model_id`, `deployment_id`, `number_of_allocations`, `priority`, `per_deployment_memory_bytes`, `per_allocation_memory_bytes`, `queue_capacity`, `threads_per_allocation`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelAssignmentTaskParameters>>(
+        f: impl FnOnce(TrainedModelAssignmentTaskParametersBuilder) -> B,
     ) -> TrainedModelAssignmentTaskParameters {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelAssignmentTaskParametersBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_assignment_task_parameters_members {
+    pub struct model_bytes;
+    pub struct model_id;
+    pub struct deployment_id;
+    pub struct number_of_allocations;
+    pub struct priority;
+    pub struct per_deployment_memory_bytes;
+    pub struct per_allocation_memory_bytes;
+    pub struct queue_capacity;
+    pub struct threads_per_allocation;
 }
 
 /// Builder for [`TrainedModelAssignmentTaskParameters`].
@@ -32586,7 +31083,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The size of the trained model in bytes.
+    /// **Required.** The size of the trained model in bytes.
     pub fn model_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -32620,7 +31117,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The unique identifier for the trained model.
+    /// **Required.** The unique identifier for the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -32654,7 +31151,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The unique identifier for the trained model deployment.
+    /// **Required.** The unique identifier for the trained model deployment.
     pub fn deployment_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -32688,7 +31185,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The total number of allocations this model is assigned across ML nodes.
+    /// **Required.** The total number of allocations this model is assigned across ML nodes.
     pub fn number_of_allocations(
         self,
         value: i32,
@@ -32722,6 +31219,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn priority(
         self,
         value: impl Into<TrainingPriority>,
@@ -32755,6 +31253,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn per_deployment_memory_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -32788,6 +31287,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn per_allocation_memory_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -32821,7 +31321,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
-    /// Number of inference requests are allowed in the queue at a time.
+    /// **Required.** Number of inference requests are allowed in the queue at a time.
     pub fn queue_capacity(
         self,
         value: i32,
@@ -32855,7 +31355,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Number of threads per allocation.
+    /// **Required.** Number of threads per allocation.
     pub fn threads_per_allocation(
         self,
         value: i32,
@@ -32876,21 +31376,40 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    TrainedModelAssignmentTaskParametersBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`TrainedModelAssignmentTaskParameters`].
-    pub fn build(self) -> TrainedModelAssignmentTaskParameters {
+    pub fn build(self) -> TrainedModelAssignmentTaskParameters
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::model_bytes,
+        >,
+        S1: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::model_id,
+        >,
+        S2: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::deployment_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::number_of_allocations,
+        >,
+        S4: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::priority,
+        >,
+        S5: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::per_deployment_memory_bytes,
+        >,
+        S6: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::per_allocation_memory_bytes,
+        >,
+        S7: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::queue_capacity,
+        >,
+        S8: crate::typed::builder::IsSet<
+            trained_model_assignment_task_parameters_members::threads_per_allocation,
+        >,
+    {
         TrainedModelAssignmentTaskParameters {
             model_bytes: self.model_bytes.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -32906,198 +31425,69 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelAssignmentTaskParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelAssignmentTaskParameters
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for TrainedModelAssignmentTaskParametersBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::model_bytes>,
+    S1: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::model_id>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::deployment_id,
+    >,
+    S3: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::number_of_allocations,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::priority>,
+    S5: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::per_deployment_memory_bytes,
+    >,
+    S6: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::per_allocation_memory_bytes,
+    >,
+    S7: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::queue_capacity,
+    >,
+    S8: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::threads_per_allocation,
+    >,
 {
-    fn from(
-        builder: TrainedModelAssignmentTaskParametersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelAssignmentTaskParameters;
+
+    fn build(self) -> TrainedModelAssignmentTaskParameters {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<TrainedModelAssignmentTaskParametersBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>>
+    for TrainedModelAssignmentTaskParameters
+where
+    S0: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::model_bytes>,
+    S1: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::model_id>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::deployment_id,
+    >,
+    S3: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::number_of_allocations,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_assignment_task_parameters_members::priority>,
+    S5: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::per_deployment_memory_bytes,
+    >,
+    S6: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::per_allocation_memory_bytes,
+    >,
+    S7: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::queue_capacity,
+    >,
+    S8: crate::typed::builder::IsSet<
+        trained_model_assignment_task_parameters_members::threads_per_allocation,
+    >,
 {
-    /// `model_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_bytes: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match model_bytes {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match model_id {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `deployment_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deployment_id: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match deployment_id {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `number_of_allocations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_allocations: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match number_of_allocations {} }
-}
-
-impl<S5, S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `priority` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, priority: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match priority {} }
-}
-
-impl<S6, S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `per_deployment_memory_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, per_deployment_memory_bytes: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match per_deployment_memory_bytes {} }
-}
-
-impl<S7, S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `per_allocation_memory_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, per_allocation_memory_bytes: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match per_allocation_memory_bytes {} }
-}
-
-impl<S8>
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `queue_capacity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queue_capacity: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match queue_capacity {} }
-}
-
-impl
-    TrainedModelAssignmentTaskParametersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `threads_per_allocation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, threads_per_allocation: crate::typed::builder::MissingRequiredField) -> TrainedModelAssignmentTaskParameters { match threads_per_allocation {} }
+    fn from(
+        builder: TrainedModelAssignmentTaskParametersBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33160,22 +31550,29 @@ pub struct TrainedModelConfig {
 
 impl TrainedModelConfig {
     /// Creates a builder for [`TrainedModelConfig`].
+    ///
+    /// Required: `model_id`, `tags`, `input`.
     pub fn builder() -> TrainedModelConfigBuilder {
         TrainedModelConfigBuilder::new()
     }
 
     /// Creates a [`TrainedModelConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelConfigBuilder,
-        ) -> TrainedModelConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_id`, `tags`, `input`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelConfig>>(
+        f: impl FnOnce(TrainedModelConfigBuilder) -> B,
     ) -> TrainedModelConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_config_members {
+    pub struct model_id;
+    pub struct tags;
+    pub struct input;
 }
 
 /// Builder for [`TrainedModelConfig`].
@@ -33424,11 +31821,11 @@ impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`inference_config`](Self::inference_config) with a builder.
-    pub fn inference_config_with(
+    pub fn inference_config_with<
+        B: crate::typed::builder::Build<Output = InferenceConfigCreateContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            InferenceConfigCreateContainerBuilder,
-        ) -> InferenceConfigCreateContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceConfigCreateContainerBuilder) -> B,
     ) -> Self {
         self.inference_config(f(InferenceConfigCreateContainerBuilder::new()).build())
     }
@@ -33458,9 +31855,9 @@ impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`metadata`](Self::metadata) with a builder.
-    pub fn metadata_with(
+    pub fn metadata_with<B: crate::typed::builder::Build<Output = TrainedModelConfigMetadata>>(
         self,
-        f: impl FnOnce(TrainedModelConfigMetadataBuilder) -> TrainedModelConfigMetadataBuilder,
+        f: impl FnOnce(TrainedModelConfigMetadataBuilder) -> B,
     ) -> Self {
         self.metadata(f(TrainedModelConfigMetadataBuilder::new()).build())
     }
@@ -33488,11 +31885,9 @@ impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`model_package`](Self::model_package) with a builder.
-    pub fn model_package_with(
+    pub fn model_package_with<B: crate::typed::builder::Build<Output = ModelPackageConfig>>(
         self,
-        f: impl FnOnce(
-            ModelPackageConfigBuilder,
-        ) -> ModelPackageConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ModelPackageConfigBuilder) -> B,
     ) -> Self {
         self.model_package(f(ModelPackageConfigBuilder::new()).build())
     }
@@ -33509,11 +31904,9 @@ impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`location`](Self::location) with a builder.
-    pub fn location_with(
+    pub fn location_with<B: crate::typed::builder::Build<Output = TrainedModelLocation>>(
         self,
-        f: impl FnOnce(
-            TrainedModelLocationBuilder,
-        ) -> TrainedModelLocationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelLocationBuilder) -> B,
     ) -> Self {
         self.location(f(TrainedModelLocationBuilder::new()).build())
     }
@@ -33541,16 +31934,18 @@ impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`prefix_strings`](Self::prefix_strings) with a builder.
-    pub fn prefix_strings_with(
+    pub fn prefix_strings_with<
+        B: crate::typed::builder::Build<Output = TrainedModelPrefixStrings>,
+    >(
         self,
-        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> TrainedModelPrefixStringsBuilder,
+        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> B,
     ) -> Self {
         self.prefix_strings(f(TrainedModelPrefixStringsBuilder::new()).build())
     }
 }
 
 impl<S1, S2> TrainedModelConfigBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Identifier for the trained model.
+    /// **Required.** Identifier for the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -33562,7 +31957,7 @@ impl<S1, S2> TrainedModelConfigBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> TrainedModelConfigBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A comma delimited string of tags. A trained model can have many tags, or none.
+    /// **Required.** A comma delimited string of tags. A trained model can have many tags, or none.
     pub fn tags(
         self,
         value: impl Into<Vec<String>>,
@@ -33597,7 +31992,7 @@ impl<S0, S2> TrainedModelConfigBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> TrainedModelConfigBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The input field names for the model definition.
+    /// **Required.** The input field names for the model definition.
     pub fn input(
         self,
         value: impl Into<TrainedModelConfigInput>,
@@ -33608,25 +32003,22 @@ impl<S0, S1> TrainedModelConfigBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`input`](Self::input) with a builder.
-    pub fn input_with(
+    pub fn input_with<B: crate::typed::builder::Build<Output = TrainedModelConfigInput>>(
         self,
-        f: impl FnOnce(
-            TrainedModelConfigInputBuilder,
-        ) -> TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelConfigInputBuilder) -> B,
     ) -> TrainedModelConfigBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.input(f(TrainedModelConfigInputBuilder::new()).build())
     }
 }
 
-impl
-    TrainedModelConfigBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrainedModelConfigBuilder<(S0, S1, S2)> {
     /// Builds a [`TrainedModelConfig`].
-    pub fn build(self) -> TrainedModelConfig {
+    pub fn build(self) -> TrainedModelConfig
+    where
+        S0: crate::typed::builder::IsSet<trained_model_config_members::model_id>,
+        S1: crate::typed::builder::IsSet<trained_model_config_members::tags>,
+        S2: crate::typed::builder::IsSet<trained_model_config_members::input>,
+    {
         TrainedModelConfig {
             model_id: self.model_id.unwrap(),
             model_type: self.model_type,
@@ -33653,54 +32045,28 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelConfig
+impl<S0, S1, S2> crate::typed::builder::Build for TrainedModelConfigBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_config_members::model_id>,
+    S1: crate::typed::builder::IsSet<trained_model_config_members::tags>,
+    S2: crate::typed::builder::IsSet<trained_model_config_members::input>,
 {
-    fn from(
-        builder: TrainedModelConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelConfig;
+
+    fn build(self) -> TrainedModelConfig {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TrainedModelConfigBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> TrainedModelConfig { match model_id {} }
-}
-
-impl<S2>
-    TrainedModelConfigBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TrainedModelConfigBuilder<(S0, S1, S2)>> for TrainedModelConfig
+where
+    S0: crate::typed::builder::IsSet<trained_model_config_members::model_id>,
+    S1: crate::typed::builder::IsSet<trained_model_config_members::tags>,
+    S2: crate::typed::builder::IsSet<trained_model_config_members::input>,
 {
-    /// `tags` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tags: crate::typed::builder::MissingRequiredField) -> TrainedModelConfig { match tags {} }
-}
-
-impl
-    TrainedModelConfigBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `input` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input: crate::typed::builder::MissingRequiredField) -> TrainedModelConfig { match input {} }
+    fn from(builder: TrainedModelConfigBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33711,18 +32077,27 @@ pub struct TrainedModelConfigInput {
 
 impl TrainedModelConfigInput {
     /// Creates a builder for [`TrainedModelConfigInput`].
+    ///
+    /// Required: `field_names`.
     pub fn builder() -> TrainedModelConfigInputBuilder {
         TrainedModelConfigInputBuilder::new()
     }
 
     /// Creates a [`TrainedModelConfigInput`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelConfigInputBuilder,
-        ) -> TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field_names`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelConfigInput>>(
+        f: impl FnOnce(TrainedModelConfigInputBuilder) -> B,
     ) -> TrainedModelConfigInput {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelConfigInputBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_config_input_members {
+    pub struct field_names;
 }
 
 /// Builder for [`TrainedModelConfigInput`].
@@ -33751,7 +32126,7 @@ impl<S0> TrainedModelConfigInputBuilder<(S0,)> {
 }
 
 impl TrainedModelConfigInputBuilder<(crate::typed::builder::NotSet,)> {
-    /// An array of input field names for the model.
+    /// **Required.** An array of input field names for the model.
     pub fn field_names(
         self,
         value: impl Into<Vec<crate::typed::_types::Field>>,
@@ -33785,27 +32160,36 @@ impl TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelConfigInputBuilder<(S0,)> {
     /// Builds a [`TrainedModelConfigInput`].
-    pub fn build(self) -> TrainedModelConfigInput {
+    pub fn build(self) -> TrainedModelConfigInput
+    where
+        S0: crate::typed::builder::IsSet<trained_model_config_input_members::field_names>,
+    {
         TrainedModelConfigInput {
             field_names: self.field_names.unwrap(),
         }
     }
 }
 
-impl From<TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)>>
-    for TrainedModelConfigInput
+impl<S0> crate::typed::builder::Build for TrainedModelConfigInputBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_config_input_members::field_names>,
 {
-    fn from(builder: TrainedModelConfigInputBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TrainedModelConfigInput;
+
+    fn build(self) -> TrainedModelConfigInput {
+        Self::build(self)
     }
 }
 
-impl TrainedModelConfigInputBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field_names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field_names: crate::typed::builder::MissingRequiredField) -> TrainedModelConfigInput { match field_names {} }
+impl<S0> From<TrainedModelConfigInputBuilder<(S0,)>> for TrainedModelConfigInput
+where
+    S0: crate::typed::builder::IsSet<trained_model_config_input_members::field_names>,
+{
+    fn from(builder: TrainedModelConfigInputBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33830,8 +32214,8 @@ impl TrainedModelConfigMetadata {
     }
 
     /// Creates a [`TrainedModelConfigMetadata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TrainedModelConfigMetadataBuilder) -> TrainedModelConfigMetadataBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelConfigMetadata>>(
+        f: impl FnOnce(TrainedModelConfigMetadataBuilder) -> B,
     ) -> TrainedModelConfigMetadata {
         f(Self::builder()).build()
     }
@@ -33928,15 +32312,9 @@ impl TrainedModelConfigMetadataBuilder {
     }
 
     /// Adds an element to [`hyperparameters`](Self::hyperparameters), with a builder.
-    pub fn add_hyperparameters_with(
+    pub fn add_hyperparameters_with<B: crate::typed::builder::Build<Output = Hyperparameter>>(
         self,
-        f: impl FnOnce(
-            HyperparameterBuilder,
-        ) -> HyperparameterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HyperparameterBuilder) -> B,
     ) -> Self {
         self.add_hyperparameters(f(HyperparameterBuilder::new()).build())
     }
@@ -33971,15 +32349,11 @@ impl TrainedModelConfigMetadataBuilder {
     }
 
     /// Adds an element to [`total_feature_importance`](Self::total_feature_importance), with a builder.
-    pub fn add_total_feature_importance_with(
+    pub fn add_total_feature_importance_with<
+        B: crate::typed::builder::Build<Output = TotalFeatureImportance>,
+    >(
         self,
-        f: impl FnOnce(
-            TotalFeatureImportanceBuilder,
-        ) -> TotalFeatureImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TotalFeatureImportanceBuilder) -> B,
     ) -> Self {
         self.add_total_feature_importance(f(TotalFeatureImportanceBuilder::new()).build())
     }
@@ -33994,6 +32368,14 @@ impl TrainedModelConfigMetadataBuilder {
             hyperparameters: self.hyperparameters,
             total_feature_importance: self.total_feature_importance,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TrainedModelConfigMetadataBuilder {
+    type Output = TrainedModelConfigMetadata;
+
+    fn build(self) -> TrainedModelConfigMetadata {
+        Self::build(self)
     }
 }
 
@@ -34015,22 +32397,29 @@ pub struct TrainedModelDeploymentAllocationStatus {
 
 impl TrainedModelDeploymentAllocationStatus {
     /// Creates a builder for [`TrainedModelDeploymentAllocationStatus`].
+    ///
+    /// Required: `allocation_count`, `state`, `target_allocation_count`.
     pub fn builder() -> TrainedModelDeploymentAllocationStatusBuilder {
         TrainedModelDeploymentAllocationStatusBuilder::new()
     }
 
     /// Creates a [`TrainedModelDeploymentAllocationStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelDeploymentAllocationStatusBuilder,
-        ) -> TrainedModelDeploymentAllocationStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `allocation_count`, `state`, `target_allocation_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelDeploymentAllocationStatus>>(
+        f: impl FnOnce(TrainedModelDeploymentAllocationStatusBuilder) -> B,
     ) -> TrainedModelDeploymentAllocationStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelDeploymentAllocationStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_deployment_allocation_status_members {
+    pub struct allocation_count;
+    pub struct state;
+    pub struct target_allocation_count;
 }
 
 /// Builder for [`TrainedModelDeploymentAllocationStatus`].
@@ -34079,7 +32468,7 @@ impl<S0, S1, S2> TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, S2)> {
 impl<S1, S2>
     TrainedModelDeploymentAllocationStatusBuilder<(crate::typed::builder::NotSet, S1, S2)>
 {
-    /// The current number of nodes where the model is allocated.
+    /// **Required.** The current number of nodes where the model is allocated.
     pub fn allocation_count(
         self,
         value: i32,
@@ -34093,7 +32482,7 @@ impl<S1, S2>
 impl<S0, S2>
     TrainedModelDeploymentAllocationStatusBuilder<(S0, crate::typed::builder::NotSet, S2)>
 {
-    /// The detailed allocation state related to the nodes.
+    /// **Required.** The detailed allocation state related to the nodes.
     pub fn state(
         self,
         value: impl Into<DeploymentAllocationState>,
@@ -34107,7 +32496,7 @@ impl<S0, S2>
 impl<S0, S1>
     TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, crate::typed::builder::NotSet)>
 {
-    /// The desired number of nodes for model allocation.
+    /// **Required.** The desired number of nodes for model allocation.
     pub fn target_allocation_count(
         self,
         value: i32,
@@ -34118,15 +32507,18 @@ impl<S0, S1>
     }
 }
 
-impl
-    TrainedModelDeploymentAllocationStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, S2)> {
     /// Builds a [`TrainedModelDeploymentAllocationStatus`].
-    pub fn build(self) -> TrainedModelDeploymentAllocationStatus {
+    pub fn build(self) -> TrainedModelDeploymentAllocationStatus
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_deployment_allocation_status_members::allocation_count,
+        >,
+        S1: crate::typed::builder::IsSet<trained_model_deployment_allocation_status_members::state>,
+        S2: crate::typed::builder::IsSet<
+            trained_model_deployment_allocation_status_members::target_allocation_count,
+        >,
+    {
         TrainedModelDeploymentAllocationStatus {
             allocation_count: self.allocation_count.unwrap(),
             state: self.state.unwrap(),
@@ -34135,56 +32527,38 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelDeploymentAllocationStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelDeploymentAllocationStatus
+impl<S0, S1, S2> crate::typed::builder::Build
+    for TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_deployment_allocation_status_members::allocation_count,
+    >,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_allocation_status_members::state>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_deployment_allocation_status_members::target_allocation_count,
+    >,
 {
-    fn from(
-        builder: TrainedModelDeploymentAllocationStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelDeploymentAllocationStatus;
+
+    fn build(self) -> TrainedModelDeploymentAllocationStatus {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    TrainedModelDeploymentAllocationStatusBuilder<(crate::typed::builder::NotSet, S1, S2)>
+impl<S0, S1, S2> From<TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, S2)>>
+    for TrainedModelDeploymentAllocationStatus
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_deployment_allocation_status_members::allocation_count,
+    >,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_allocation_status_members::state>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_deployment_allocation_status_members::target_allocation_count,
+    >,
 {
-    /// `allocation_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allocation_count: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentAllocationStatus { match allocation_count {} }
-}
-
-impl<S2>
-    TrainedModelDeploymentAllocationStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentAllocationStatus { match state {} }
-}
-
-impl
-    TrainedModelDeploymentAllocationStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `target_allocation_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_allocation_count: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentAllocationStatus { match target_allocation_count {} }
+    fn from(builder: TrainedModelDeploymentAllocationStatusBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -34243,22 +32617,29 @@ pub struct TrainedModelDeploymentNodesStats {
 
 impl TrainedModelDeploymentNodesStats {
     /// Creates a builder for [`TrainedModelDeploymentNodesStats`].
+    ///
+    /// Required: `peak_throughput_per_minute`, `routing_state`, `throughput_last_minute`.
     pub fn builder() -> TrainedModelDeploymentNodesStatsBuilder {
         TrainedModelDeploymentNodesStatsBuilder::new()
     }
 
     /// Creates a [`TrainedModelDeploymentNodesStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelDeploymentNodesStatsBuilder,
-        ) -> TrainedModelDeploymentNodesStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `peak_throughput_per_minute`, `routing_state`, `throughput_last_minute`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelDeploymentNodesStats>>(
+        f: impl FnOnce(TrainedModelDeploymentNodesStatsBuilder) -> B,
     ) -> TrainedModelDeploymentNodesStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelDeploymentNodesStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_deployment_nodes_stats_members {
+    pub struct peak_throughput_per_minute;
+    pub struct routing_state;
+    pub struct throughput_last_minute;
 }
 
 /// Builder for [`TrainedModelDeploymentNodesStats`].
@@ -34581,6 +32962,7 @@ impl<S0, S1, S2> TrainedModelDeploymentNodesStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TrainedModelDeploymentNodesStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn peak_throughput_per_minute(
         self,
         value: i64,
@@ -34592,7 +32974,7 @@ impl<S1, S2> TrainedModelDeploymentNodesStatsBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2> TrainedModelDeploymentNodesStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The current routing state and reason for the current routing state for this allocation.
+    /// **Required.** The current routing state and reason for the current routing state for this allocation.
     pub fn routing_state(
         self,
         value: impl Into<TrainedModelAssignmentRoutingStateAndReason>,
@@ -34603,19 +32985,18 @@ impl<S0, S2> TrainedModelDeploymentNodesStatsBuilder<(S0, crate::typed::builder:
     }
 
     /// Sets [`routing_state`](Self::routing_state) with a builder.
-    pub fn routing_state_with(
+    pub fn routing_state_with<
+        B: crate::typed::builder::Build<Output = TrainedModelAssignmentRoutingStateAndReason>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelAssignmentRoutingStateAndReasonBuilder,
-        ) -> TrainedModelAssignmentRoutingStateAndReasonBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelAssignmentRoutingStateAndReasonBuilder) -> B,
     ) -> TrainedModelDeploymentNodesStatsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.routing_state(f(TrainedModelAssignmentRoutingStateAndReasonBuilder::new()).build())
     }
 }
 
 impl<S0, S1> TrainedModelDeploymentNodesStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn throughput_last_minute(
         self,
         value: i32,
@@ -34626,15 +33007,20 @@ impl<S0, S1> TrainedModelDeploymentNodesStatsBuilder<(S0, S1, crate::typed::buil
     }
 }
 
-impl
-    TrainedModelDeploymentNodesStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrainedModelDeploymentNodesStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`TrainedModelDeploymentNodesStats`].
-    pub fn build(self) -> TrainedModelDeploymentNodesStats {
+    pub fn build(self) -> TrainedModelDeploymentNodesStats
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_deployment_nodes_stats_members::peak_throughput_per_minute,
+        >,
+        S1: crate::typed::builder::IsSet<
+            trained_model_deployment_nodes_stats_members::routing_state,
+        >,
+        S2: crate::typed::builder::IsSet<
+            trained_model_deployment_nodes_stats_members::throughput_last_minute,
+        >,
+    {
         TrainedModelDeploymentNodesStats {
             average_inference_time_ms: self.average_inference_time_ms,
             average_inference_time_ms_last_minute: self.average_inference_time_ms_last_minute,
@@ -34661,54 +33047,38 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelDeploymentNodesStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelDeploymentNodesStats
+impl<S0, S1, S2> crate::typed::builder::Build
+    for TrainedModelDeploymentNodesStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_deployment_nodes_stats_members::peak_throughput_per_minute,
+    >,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_nodes_stats_members::routing_state>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_deployment_nodes_stats_members::throughput_last_minute,
+    >,
 {
-    fn from(
-        builder: TrainedModelDeploymentNodesStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelDeploymentNodesStats;
+
+    fn build(self) -> TrainedModelDeploymentNodesStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TrainedModelDeploymentNodesStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `peak_throughput_per_minute` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, peak_throughput_per_minute: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentNodesStats { match peak_throughput_per_minute {} }
-}
-
-impl<S2>
-    TrainedModelDeploymentNodesStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TrainedModelDeploymentNodesStatsBuilder<(S0, S1, S2)>>
+    for TrainedModelDeploymentNodesStats
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_deployment_nodes_stats_members::peak_throughput_per_minute,
+    >,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_nodes_stats_members::routing_state>,
+    S2: crate::typed::builder::IsSet<
+        trained_model_deployment_nodes_stats_members::throughput_last_minute,
+    >,
 {
-    /// `routing_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing_state: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentNodesStats { match routing_state {} }
-}
-
-impl
-    TrainedModelDeploymentNodesStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `throughput_last_minute` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, throughput_last_minute: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentNodesStats { match throughput_last_minute {} }
+    fn from(builder: TrainedModelDeploymentNodesStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -34766,25 +33136,32 @@ pub struct TrainedModelDeploymentStats {
 
 impl TrainedModelDeploymentStats {
     /// Creates a builder for [`TrainedModelDeploymentStats`].
+    ///
+    /// Required: `deployment_id`, `model_id`, `nodes`, `peak_throughput_per_minute`, `priority`, `start_time`.
     pub fn builder() -> TrainedModelDeploymentStatsBuilder {
         TrainedModelDeploymentStatsBuilder::new()
     }
 
     /// Creates a [`TrainedModelDeploymentStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelDeploymentStatsBuilder,
-        ) -> TrainedModelDeploymentStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `deployment_id`, `model_id`, `nodes`, `peak_throughput_per_minute`, `priority`, `start_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelDeploymentStats>>(
+        f: impl FnOnce(TrainedModelDeploymentStatsBuilder) -> B,
     ) -> TrainedModelDeploymentStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelDeploymentStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_deployment_stats_members {
+    pub struct deployment_id;
+    pub struct model_id;
+    pub struct nodes;
+    pub struct peak_throughput_per_minute;
+    pub struct priority;
+    pub struct start_time;
 }
 
 /// Builder for [`TrainedModelDeploymentStats`].
@@ -34895,11 +33272,11 @@ impl<S0, S1, S2, S3, S4, S5> TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3,
     }
 
     /// Sets [`adaptive_allocations`](Self::adaptive_allocations) with a builder.
-    pub fn adaptive_allocations_with(
+    pub fn adaptive_allocations_with<
+        B: crate::typed::builder::Build<Output = AdaptiveAllocationsSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            AdaptiveAllocationsSettingsBuilder,
-        ) -> AdaptiveAllocationsSettingsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AdaptiveAllocationsSettingsBuilder) -> B,
     ) -> Self {
         self.adaptive_allocations(f(AdaptiveAllocationsSettingsBuilder::new()).build())
     }
@@ -34923,15 +33300,11 @@ impl<S0, S1, S2, S3, S4, S5> TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3,
     }
 
     /// Sets [`allocation_status`](Self::allocation_status) with a builder.
-    pub fn allocation_status_with(
+    pub fn allocation_status_with<
+        B: crate::typed::builder::Build<Output = TrainedModelDeploymentAllocationStatus>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelDeploymentAllocationStatusBuilder,
-        ) -> TrainedModelDeploymentAllocationStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelDeploymentAllocationStatusBuilder) -> B,
     ) -> Self {
         self.allocation_status(f(TrainedModelDeploymentAllocationStatusBuilder::new()).build())
     }
@@ -35063,7 +33436,7 @@ impl<S0, S1, S2, S3, S4, S5> TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3,
 impl<S1, S2, S3, S4, S5>
     TrainedModelDeploymentStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
-    /// The unique identifier for the trained model deployment.
+    /// **Required.** The unique identifier for the trained model deployment.
     pub fn deployment_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -35077,7 +33450,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     TrainedModelDeploymentStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
-    /// The unique identifier for the trained model.
+    /// **Required.** The unique identifier for the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -35091,7 +33464,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     TrainedModelDeploymentStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
-    /// The deployment stats for each node that currently has the model allocated.
+    /// **Required.** The deployment stats for each node that currently has the model allocated.
     /// In serverless, stats are reported for a single unnamed virtual node.
     pub fn nodes(
         self,
@@ -35116,15 +33489,11 @@ impl<S0, S1, S3, S4, S5>
     }
 
     /// Adds an element to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<
+        B: crate::typed::builder::Build<Output = TrainedModelDeploymentNodesStats>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelDeploymentNodesStatsBuilder,
-        ) -> TrainedModelDeploymentNodesStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelDeploymentNodesStatsBuilder) -> B,
     ) -> TrainedModelDeploymentStatsBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
         self.add_nodes(f(TrainedModelDeploymentNodesStatsBuilder::new()).build())
     }
@@ -35142,15 +33511,11 @@ impl<S0, S1, S3, S4, S5>
     }
 
     /// Adds an element to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<
+        B: crate::typed::builder::Build<Output = TrainedModelDeploymentNodesStats>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelDeploymentNodesStatsBuilder,
-        ) -> TrainedModelDeploymentNodesStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelDeploymentNodesStatsBuilder) -> B,
     ) -> Self {
         self.add_nodes(f(TrainedModelDeploymentNodesStatsBuilder::new()).build())
     }
@@ -35159,6 +33524,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     TrainedModelDeploymentStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn peak_throughput_per_minute(
         self,
         value: i64,
@@ -35172,6 +33538,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn priority(
         self,
         value: impl Into<TrainingPriority>,
@@ -35185,7 +33552,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
-    /// The epoch timestamp when the deployment started.
+    /// **Required.** The epoch timestamp when the deployment started.
     pub fn start_time(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -35196,18 +33563,19 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`TrainedModelDeploymentStats`].
-    pub fn build(self) -> TrainedModelDeploymentStats {
+    pub fn build(self) -> TrainedModelDeploymentStats
+    where
+        S0: crate::typed::builder::IsSet<trained_model_deployment_stats_members::deployment_id>,
+        S1: crate::typed::builder::IsSet<trained_model_deployment_stats_members::model_id>,
+        S2: crate::typed::builder::IsSet<trained_model_deployment_stats_members::nodes>,
+        S3: crate::typed::builder::IsSet<
+            trained_model_deployment_stats_members::peak_throughput_per_minute,
+        >,
+        S4: crate::typed::builder::IsSet<trained_model_deployment_stats_members::priority>,
+        S5: crate::typed::builder::IsSet<trained_model_deployment_stats_members::start_time>,
+    {
         TrainedModelDeploymentStats {
             adaptive_allocations: self.adaptive_allocations,
             allocation_status: self.allocation_status,
@@ -35231,113 +33599,40 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelDeploymentStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelDeploymentStats
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_deployment_stats_members::deployment_id>,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_stats_members::model_id>,
+    S2: crate::typed::builder::IsSet<trained_model_deployment_stats_members::nodes>,
+    S3: crate::typed::builder::IsSet<
+        trained_model_deployment_stats_members::peak_throughput_per_minute,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_deployment_stats_members::priority>,
+    S5: crate::typed::builder::IsSet<trained_model_deployment_stats_members::start_time>,
 {
-    fn from(
-        builder: TrainedModelDeploymentStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelDeploymentStats;
+
+    fn build(self) -> TrainedModelDeploymentStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    TrainedModelDeploymentStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for TrainedModelDeploymentStats
+where
+    S0: crate::typed::builder::IsSet<trained_model_deployment_stats_members::deployment_id>,
+    S1: crate::typed::builder::IsSet<trained_model_deployment_stats_members::model_id>,
+    S2: crate::typed::builder::IsSet<trained_model_deployment_stats_members::nodes>,
+    S3: crate::typed::builder::IsSet<
+        trained_model_deployment_stats_members::peak_throughput_per_minute,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_deployment_stats_members::priority>,
+    S5: crate::typed::builder::IsSet<trained_model_deployment_stats_members::start_time>,
 {
-    /// `deployment_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deployment_id: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match deployment_id {} }
-}
-
-impl<S2, S3, S4, S5>
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match model_id {} }
-}
-
-impl<S3, S4, S5>
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match nodes {} }
-}
-
-impl<S4, S5>
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `peak_throughput_per_minute` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, peak_throughput_per_minute: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match peak_throughput_per_minute {} }
-}
-
-impl<S5>
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `priority` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, priority: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match priority {} }
-}
-
-impl
-    TrainedModelDeploymentStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `start_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time: crate::typed::builder::MissingRequiredField) -> TrainedModelDeploymentStats { match start_time {} }
+    fn from(builder: TrainedModelDeploymentStatsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35351,24 +33646,31 @@ pub struct TrainedModelEntities {
 
 impl TrainedModelEntities {
     /// Creates a builder for [`TrainedModelEntities`].
+    ///
+    /// Required: `class_name`, `class_probability`, `entity`, `start_pos`, `end_pos`.
     pub fn builder() -> TrainedModelEntitiesBuilder {
         TrainedModelEntitiesBuilder::new()
     }
 
     /// Creates a [`TrainedModelEntities`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelEntitiesBuilder,
-        ) -> TrainedModelEntitiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `class_probability`, `entity`, `start_pos`, `end_pos`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelEntities>>(
+        f: impl FnOnce(TrainedModelEntitiesBuilder) -> B,
     ) -> TrainedModelEntities {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelEntitiesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_entities_members {
+    pub struct class_name;
+    pub struct class_probability;
+    pub struct entity;
+    pub struct start_pos;
+    pub struct end_pos;
 }
 
 /// Builder for [`TrainedModelEntities`].
@@ -35425,6 +33727,7 @@ impl<S0, S1, S2, S3, S4> TrainedModelEntitiesBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> TrainedModelEntitiesBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<String>,
@@ -35436,6 +33739,7 @@ impl<S1, S2, S3, S4> TrainedModelEntitiesBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> TrainedModelEntitiesBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn class_probability(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -35447,6 +33751,7 @@ impl<S0, S2, S3, S4> TrainedModelEntitiesBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> TrainedModelEntitiesBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn entity(
         self,
         value: impl Into<String>,
@@ -35458,6 +33763,7 @@ impl<S0, S1, S3, S4> TrainedModelEntitiesBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> TrainedModelEntitiesBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn start_pos(
         self,
         value: i32,
@@ -35469,6 +33775,7 @@ impl<S0, S1, S2, S4> TrainedModelEntitiesBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> TrainedModelEntitiesBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn end_pos(
         self,
         value: i32,
@@ -35479,17 +33786,16 @@ impl<S0, S1, S2, S3> TrainedModelEntitiesBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    TrainedModelEntitiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> TrainedModelEntitiesBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`TrainedModelEntities`].
-    pub fn build(self) -> TrainedModelEntities {
+    pub fn build(self) -> TrainedModelEntities
+    where
+        S0: crate::typed::builder::IsSet<trained_model_entities_members::class_name>,
+        S1: crate::typed::builder::IsSet<trained_model_entities_members::class_probability>,
+        S2: crate::typed::builder::IsSet<trained_model_entities_members::entity>,
+        S3: crate::typed::builder::IsSet<trained_model_entities_members::start_pos>,
+        S4: crate::typed::builder::IsSet<trained_model_entities_members::end_pos>,
+    {
         TrainedModelEntities {
             class_name: self.class_name.unwrap(),
             class_probability: self.class_probability.unwrap(),
@@ -35500,90 +33806,34 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelEntitiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelEntities
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for TrainedModelEntitiesBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_entities_members::class_name>,
+    S1: crate::typed::builder::IsSet<trained_model_entities_members::class_probability>,
+    S2: crate::typed::builder::IsSet<trained_model_entities_members::entity>,
+    S3: crate::typed::builder::IsSet<trained_model_entities_members::start_pos>,
+    S4: crate::typed::builder::IsSet<trained_model_entities_members::end_pos>,
 {
-    fn from(
-        builder: TrainedModelEntitiesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelEntities;
+
+    fn build(self) -> TrainedModelEntities {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> TrainedModelEntitiesBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> TrainedModelEntities { match class_name {} }
-}
-
-impl<S2, S3, S4>
-    TrainedModelEntitiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<TrainedModelEntitiesBuilder<(S0, S1, S2, S3, S4)>>
+    for TrainedModelEntities
+where
+    S0: crate::typed::builder::IsSet<trained_model_entities_members::class_name>,
+    S1: crate::typed::builder::IsSet<trained_model_entities_members::class_probability>,
+    S2: crate::typed::builder::IsSet<trained_model_entities_members::entity>,
+    S3: crate::typed::builder::IsSet<trained_model_entities_members::start_pos>,
+    S4: crate::typed::builder::IsSet<trained_model_entities_members::end_pos>,
 {
-    /// `class_probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_probability: crate::typed::builder::MissingRequiredField) -> TrainedModelEntities { match class_probability {} }
-}
-
-impl<S3, S4>
-    TrainedModelEntitiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `entity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, entity: crate::typed::builder::MissingRequiredField) -> TrainedModelEntities { match entity {} }
-}
-
-impl<S4>
-    TrainedModelEntitiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `start_pos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_pos: crate::typed::builder::MissingRequiredField) -> TrainedModelEntities { match start_pos {} }
-}
-
-impl
-    TrainedModelEntitiesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `end_pos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_pos: crate::typed::builder::MissingRequiredField) -> TrainedModelEntities { match end_pos {} }
+    fn from(builder: TrainedModelEntitiesBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35594,21 +33844,28 @@ pub struct TrainedModelInferenceClassImportance {
 
 impl TrainedModelInferenceClassImportance {
     /// Creates a builder for [`TrainedModelInferenceClassImportance`].
+    ///
+    /// Required: `class_name`, `importance`.
     pub fn builder() -> TrainedModelInferenceClassImportanceBuilder {
         TrainedModelInferenceClassImportanceBuilder::new()
     }
 
     /// Creates a [`TrainedModelInferenceClassImportance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelInferenceClassImportanceBuilder,
-        ) -> TrainedModelInferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `importance`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelInferenceClassImportance>>(
+        f: impl FnOnce(TrainedModelInferenceClassImportanceBuilder) -> B,
     ) -> TrainedModelInferenceClassImportance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelInferenceClassImportanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_inference_class_importance_members {
+    pub struct class_name;
+    pub struct importance;
 }
 
 /// Builder for [`TrainedModelInferenceClassImportance`].
@@ -35647,6 +33904,7 @@ impl<S0, S1> TrainedModelInferenceClassImportanceBuilder<(S0, S1)> {
 }
 
 impl<S1> TrainedModelInferenceClassImportanceBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<String>,
@@ -35658,6 +33916,7 @@ impl<S1> TrainedModelInferenceClassImportanceBuilder<(crate::typed::builder::Not
 }
 
 impl<S0> TrainedModelInferenceClassImportanceBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn importance(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -35668,14 +33927,17 @@ impl<S0> TrainedModelInferenceClassImportanceBuilder<(S0, crate::typed::builder:
     }
 }
 
-impl
-    TrainedModelInferenceClassImportanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> TrainedModelInferenceClassImportanceBuilder<(S0, S1)> {
     /// Builds a [`TrainedModelInferenceClassImportance`].
-    pub fn build(self) -> TrainedModelInferenceClassImportance {
+    pub fn build(self) -> TrainedModelInferenceClassImportance
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_inference_class_importance_members::class_name,
+        >,
+        S1: crate::typed::builder::IsSet<
+            trained_model_inference_class_importance_members::importance,
+        >,
+    {
         TrainedModelInferenceClassImportance {
             class_name: self.class_name.unwrap(),
             importance: self.importance.unwrap(),
@@ -35683,39 +33945,27 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelInferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelInferenceClassImportance
+impl<S0, S1> crate::typed::builder::Build for TrainedModelInferenceClassImportanceBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_inference_class_importance_members::class_name>,
+    S1: crate::typed::builder::IsSet<trained_model_inference_class_importance_members::importance>,
 {
-    fn from(
-        builder: TrainedModelInferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelInferenceClassImportance;
+
+    fn build(self) -> TrainedModelInferenceClassImportance {
+        Self::build(self)
     }
 }
 
-impl<S1> TrainedModelInferenceClassImportanceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceClassImportance { match class_name {} }
-}
-
-impl
-    TrainedModelInferenceClassImportanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<TrainedModelInferenceClassImportanceBuilder<(S0, S1)>>
+    for TrainedModelInferenceClassImportance
+where
+    S0: crate::typed::builder::IsSet<trained_model_inference_class_importance_members::class_name>,
+    S1: crate::typed::builder::IsSet<trained_model_inference_class_importance_members::importance>,
 {
-    /// `importance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, importance: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceClassImportance { match importance {} }
+    fn from(builder: TrainedModelInferenceClassImportanceBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35729,19 +33979,27 @@ pub struct TrainedModelInferenceFeatureImportance {
 
 impl TrainedModelInferenceFeatureImportance {
     /// Creates a builder for [`TrainedModelInferenceFeatureImportance`].
+    ///
+    /// Required: `feature_name`.
     pub fn builder() -> TrainedModelInferenceFeatureImportanceBuilder {
         TrainedModelInferenceFeatureImportanceBuilder::new()
     }
 
     /// Creates a [`TrainedModelInferenceFeatureImportance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelInferenceFeatureImportanceBuilder,
-        )
-            -> TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `feature_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelInferenceFeatureImportance>>(
+        f: impl FnOnce(TrainedModelInferenceFeatureImportanceBuilder) -> B,
     ) -> TrainedModelInferenceFeatureImportance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelInferenceFeatureImportanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_inference_feature_importance_members {
+    pub struct feature_name;
 }
 
 /// Builder for [`TrainedModelInferenceFeatureImportance`].
@@ -35808,20 +34066,18 @@ impl<S0> TrainedModelInferenceFeatureImportanceBuilder<(S0,)> {
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<
+        B: crate::typed::builder::Build<Output = TrainedModelInferenceClassImportance>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelInferenceClassImportanceBuilder,
-        ) -> TrainedModelInferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelInferenceClassImportanceBuilder) -> B,
     ) -> Self {
         self.add_classes(f(TrainedModelInferenceClassImportanceBuilder::new()).build())
     }
 }
 
 impl TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -35832,9 +34088,14 @@ impl TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::NotSe
     }
 }
 
-impl TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelInferenceFeatureImportanceBuilder<(S0,)> {
     /// Builds a [`TrainedModelInferenceFeatureImportance`].
-    pub fn build(self) -> TrainedModelInferenceFeatureImportance {
+    pub fn build(self) -> TrainedModelInferenceFeatureImportance
+    where
+        S0: crate::typed::builder::IsSet<
+            trained_model_inference_feature_importance_members::feature_name,
+        >,
+    {
         TrainedModelInferenceFeatureImportance {
             feature_name: self.feature_name.unwrap(),
             importance: self.importance,
@@ -35843,20 +34104,29 @@ impl TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)
     }
 }
 
-impl From<TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>>
-    for TrainedModelInferenceFeatureImportance
+impl<S0> crate::typed::builder::Build for TrainedModelInferenceFeatureImportanceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_inference_feature_importance_members::feature_name,
+    >,
 {
-    fn from(
-        builder: TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelInferenceFeatureImportance;
+
+    fn build(self) -> TrainedModelInferenceFeatureImportance {
+        Self::build(self)
     }
 }
 
-impl TrainedModelInferenceFeatureImportanceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceFeatureImportance { match feature_name {} }
+impl<S0> From<TrainedModelInferenceFeatureImportanceBuilder<(S0,)>>
+    for TrainedModelInferenceFeatureImportance
+where
+    S0: crate::typed::builder::IsSet<
+        trained_model_inference_feature_importance_members::feature_name,
+    >,
+{
+    fn from(builder: TrainedModelInferenceFeatureImportanceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35879,24 +34149,31 @@ pub struct TrainedModelInferenceStats {
 
 impl TrainedModelInferenceStats {
     /// Creates a builder for [`TrainedModelInferenceStats`].
+    ///
+    /// Required: `cache_miss_count`, `failure_count`, `inference_count`, `missing_all_fields_count`, `timestamp`.
     pub fn builder() -> TrainedModelInferenceStatsBuilder {
         TrainedModelInferenceStatsBuilder::new()
     }
 
     /// Creates a [`TrainedModelInferenceStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelInferenceStatsBuilder,
-        ) -> TrainedModelInferenceStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cache_miss_count`, `failure_count`, `inference_count`, `missing_all_fields_count`, `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelInferenceStats>>(
+        f: impl FnOnce(TrainedModelInferenceStatsBuilder) -> B,
     ) -> TrainedModelInferenceStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelInferenceStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_inference_stats_members {
+    pub struct cache_miss_count;
+    pub struct failure_count;
+    pub struct inference_count;
+    pub struct missing_all_fields_count;
+    pub struct timestamp;
 }
 
 /// Builder for [`TrainedModelInferenceStats`].
@@ -35955,7 +34232,7 @@ impl<S0, S1, S2, S3, S4> TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, S4)>
 impl<S1, S2, S3, S4>
     TrainedModelInferenceStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// The number of times the model was loaded for inference and was not retrieved from the cache.
+    /// **Required.** The number of times the model was loaded for inference and was not retrieved from the cache.
     /// If this number is close to the `inference_count`, the cache is not being appropriately used.
     /// This can be solved by increasing the cache size or its time-to-live (TTL).
     /// Refer to general machine learning settings for the appropriate settings.
@@ -35972,7 +34249,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     TrainedModelInferenceStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// The number of failures when using the model for inference.
+    /// **Required.** The number of failures when using the model for inference.
     pub fn failure_count(
         self,
         value: i32,
@@ -35986,7 +34263,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     TrainedModelInferenceStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The total number of times the model has been called for inference.
+    /// **Required.** The total number of times the model has been called for inference.
     /// This is across all inference contexts, including all pipelines.
     pub fn inference_count(
         self,
@@ -36001,7 +34278,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     TrainedModelInferenceStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// The number of inference calls where all the training features for the model were missing.
+    /// **Required.** The number of inference calls where all the training features for the model were missing.
     pub fn missing_all_fields_count(
         self,
         value: i32,
@@ -36015,7 +34292,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// The time when the statistics were last updated.
+    /// **Required.** The time when the statistics were last updated.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -36026,17 +34303,18 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    TrainedModelInferenceStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`TrainedModelInferenceStats`].
-    pub fn build(self) -> TrainedModelInferenceStats {
+    pub fn build(self) -> TrainedModelInferenceStats
+    where
+        S0: crate::typed::builder::IsSet<trained_model_inference_stats_members::cache_miss_count>,
+        S1: crate::typed::builder::IsSet<trained_model_inference_stats_members::failure_count>,
+        S2: crate::typed::builder::IsSet<trained_model_inference_stats_members::inference_count>,
+        S3: crate::typed::builder::IsSet<
+            trained_model_inference_stats_members::missing_all_fields_count,
+        >,
+        S4: crate::typed::builder::IsSet<trained_model_inference_stats_members::timestamp>,
+    {
         TrainedModelInferenceStats {
             cache_miss_count: self.cache_miss_count.unwrap(),
             failure_count: self.failure_count.unwrap(),
@@ -36047,92 +34325,38 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelInferenceStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelInferenceStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_inference_stats_members::cache_miss_count>,
+    S1: crate::typed::builder::IsSet<trained_model_inference_stats_members::failure_count>,
+    S2: crate::typed::builder::IsSet<trained_model_inference_stats_members::inference_count>,
+    S3: crate::typed::builder::IsSet<
+        trained_model_inference_stats_members::missing_all_fields_count,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_inference_stats_members::timestamp>,
 {
-    fn from(
-        builder: TrainedModelInferenceStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelInferenceStats;
+
+    fn build(self) -> TrainedModelInferenceStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    TrainedModelInferenceStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, S4)>>
+    for TrainedModelInferenceStats
+where
+    S0: crate::typed::builder::IsSet<trained_model_inference_stats_members::cache_miss_count>,
+    S1: crate::typed::builder::IsSet<trained_model_inference_stats_members::failure_count>,
+    S2: crate::typed::builder::IsSet<trained_model_inference_stats_members::inference_count>,
+    S3: crate::typed::builder::IsSet<
+        trained_model_inference_stats_members::missing_all_fields_count,
+    >,
+    S4: crate::typed::builder::IsSet<trained_model_inference_stats_members::timestamp>,
 {
-    /// `cache_miss_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cache_miss_count: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceStats { match cache_miss_count {} }
-}
-
-impl<S2, S3, S4>
-    TrainedModelInferenceStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `failure_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failure_count: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceStats { match failure_count {} }
-}
-
-impl<S3, S4>
-    TrainedModelInferenceStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `inference_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_count: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceStats { match inference_count {} }
-}
-
-impl<S4>
-    TrainedModelInferenceStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `missing_all_fields_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, missing_all_fields_count: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceStats { match missing_all_fields_count {} }
-}
-
-impl
-    TrainedModelInferenceStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> TrainedModelInferenceStats { match timestamp {} }
+    fn from(builder: TrainedModelInferenceStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36142,18 +34366,27 @@ pub struct TrainedModelLocation {
 
 impl TrainedModelLocation {
     /// Creates a builder for [`TrainedModelLocation`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> TrainedModelLocationBuilder {
         TrainedModelLocationBuilder::new()
     }
 
     /// Creates a [`TrainedModelLocation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelLocationBuilder,
-        ) -> TrainedModelLocationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelLocation>>(
+        f: impl FnOnce(TrainedModelLocationBuilder) -> B,
     ) -> TrainedModelLocation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelLocationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_location_members {
+    pub struct index;
 }
 
 /// Builder for [`TrainedModelLocation`].
@@ -36182,6 +34415,7 @@ impl<S0> TrainedModelLocationBuilder<(S0,)> {
 }
 
 impl TrainedModelLocationBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<TrainedModelLocationIndex>,
@@ -36192,35 +34426,44 @@ impl TrainedModelLocationBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<B: crate::typed::builder::Build<Output = TrainedModelLocationIndex>>(
         self,
-        f: impl FnOnce(
-            TrainedModelLocationIndexBuilder,
-        ) -> TrainedModelLocationIndexBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelLocationIndexBuilder) -> B,
     ) -> TrainedModelLocationBuilder<(crate::typed::builder::Set,)> {
         self.index(f(TrainedModelLocationIndexBuilder::new()).build())
     }
 }
 
-impl TrainedModelLocationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelLocationBuilder<(S0,)> {
     /// Builds a [`TrainedModelLocation`].
-    pub fn build(self) -> TrainedModelLocation {
+    pub fn build(self) -> TrainedModelLocation
+    where
+        S0: crate::typed::builder::IsSet<trained_model_location_members::index>,
+    {
         TrainedModelLocation {
             index: self.index.unwrap(),
         }
     }
 }
 
-impl From<TrainedModelLocationBuilder<(crate::typed::builder::Set,)>> for TrainedModelLocation {
-    fn from(builder: TrainedModelLocationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TrainedModelLocationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_location_members::index>,
+{
+    type Output = TrainedModelLocation;
+
+    fn build(self) -> TrainedModelLocation {
+        Self::build(self)
     }
 }
 
-impl TrainedModelLocationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> TrainedModelLocation { match index {} }
+impl<S0> From<TrainedModelLocationBuilder<(S0,)>> for TrainedModelLocation
+where
+    S0: crate::typed::builder::IsSet<trained_model_location_members::index>,
+{
+    fn from(builder: TrainedModelLocationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36230,18 +34473,27 @@ pub struct TrainedModelLocationIndex {
 
 impl TrainedModelLocationIndex {
     /// Creates a builder for [`TrainedModelLocationIndex`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> TrainedModelLocationIndexBuilder {
         TrainedModelLocationIndexBuilder::new()
     }
 
     /// Creates a [`TrainedModelLocationIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelLocationIndexBuilder,
-        ) -> TrainedModelLocationIndexBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelLocationIndex>>(
+        f: impl FnOnce(TrainedModelLocationIndexBuilder) -> B,
     ) -> TrainedModelLocationIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelLocationIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_location_index_members {
+    pub struct name;
 }
 
 /// Builder for [`TrainedModelLocationIndex`].
@@ -36270,6 +34522,7 @@ impl<S0> TrainedModelLocationIndexBuilder<(S0,)> {
 }
 
 impl TrainedModelLocationIndexBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -36280,27 +34533,36 @@ impl TrainedModelLocationIndexBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TrainedModelLocationIndexBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelLocationIndexBuilder<(S0,)> {
     /// Builds a [`TrainedModelLocationIndex`].
-    pub fn build(self) -> TrainedModelLocationIndex {
+    pub fn build(self) -> TrainedModelLocationIndex
+    where
+        S0: crate::typed::builder::IsSet<trained_model_location_index_members::name>,
+    {
         TrainedModelLocationIndex {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<TrainedModelLocationIndexBuilder<(crate::typed::builder::Set,)>>
-    for TrainedModelLocationIndex
+impl<S0> crate::typed::builder::Build for TrainedModelLocationIndexBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_location_index_members::name>,
 {
-    fn from(builder: TrainedModelLocationIndexBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TrainedModelLocationIndex;
+
+    fn build(self) -> TrainedModelLocationIndex {
+        Self::build(self)
     }
 }
 
-impl TrainedModelLocationIndexBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> TrainedModelLocationIndex { match name {} }
+impl<S0> From<TrainedModelLocationIndexBuilder<(S0,)>> for TrainedModelLocationIndex
+where
+    S0: crate::typed::builder::IsSet<trained_model_location_index_members::name>,
+{
+    fn from(builder: TrainedModelLocationIndexBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36320,8 +34582,8 @@ impl TrainedModelPrefixStrings {
     }
 
     /// Creates a [`TrainedModelPrefixStrings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> TrainedModelPrefixStringsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelPrefixStrings>>(
+        f: impl FnOnce(TrainedModelPrefixStringsBuilder) -> B,
     ) -> TrainedModelPrefixStrings {
         f(Self::builder()).build()
     }
@@ -36379,6 +34641,14 @@ impl TrainedModelPrefixStringsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TrainedModelPrefixStringsBuilder {
+    type Output = TrainedModelPrefixStrings;
+
+    fn build(self) -> TrainedModelPrefixStrings {
+        Self::build(self)
+    }
+}
+
 impl From<TrainedModelPrefixStringsBuilder> for TrainedModelPrefixStrings {
     fn from(builder: TrainedModelPrefixStringsBuilder) -> Self {
         builder.build()
@@ -36395,21 +34665,28 @@ pub struct TrainedModelSizeStats {
 
 impl TrainedModelSizeStats {
     /// Creates a builder for [`TrainedModelSizeStats`].
+    ///
+    /// Required: `model_size_bytes`, `required_native_memory_bytes`.
     pub fn builder() -> TrainedModelSizeStatsBuilder {
         TrainedModelSizeStatsBuilder::new()
     }
 
     /// Creates a [`TrainedModelSizeStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelSizeStatsBuilder,
-        ) -> TrainedModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_size_bytes`, `required_native_memory_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelSizeStats>>(
+        f: impl FnOnce(TrainedModelSizeStatsBuilder) -> B,
     ) -> TrainedModelSizeStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelSizeStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_size_stats_members {
+    pub struct model_size_bytes;
+    pub struct required_native_memory_bytes;
 }
 
 /// Builder for [`TrainedModelSizeStats`].
@@ -36443,7 +34720,7 @@ impl<S0, S1> TrainedModelSizeStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> TrainedModelSizeStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The size of the model in bytes.
+    /// **Required.** The size of the model in bytes.
     pub fn model_size_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -36455,7 +34732,7 @@ impl<S1> TrainedModelSizeStatsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TrainedModelSizeStatsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The amount of memory required to load the model in bytes.
+    /// **Required.** The amount of memory required to load the model in bytes.
     pub fn required_native_memory_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -36466,9 +34743,15 @@ impl<S0> TrainedModelSizeStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TrainedModelSizeStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TrainedModelSizeStatsBuilder<(S0, S1)> {
     /// Builds a [`TrainedModelSizeStats`].
-    pub fn build(self) -> TrainedModelSizeStats {
+    pub fn build(self) -> TrainedModelSizeStats
+    where
+        S0: crate::typed::builder::IsSet<trained_model_size_stats_members::model_size_bytes>,
+        S1: crate::typed::builder::IsSet<
+            trained_model_size_stats_members::required_native_memory_bytes,
+        >,
+    {
         TrainedModelSizeStats {
             model_size_bytes: self.model_size_bytes.unwrap(),
             required_native_memory_bytes: self.required_native_memory_bytes.unwrap(),
@@ -36476,29 +34759,30 @@ impl TrainedModelSizeStatsBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<TrainedModelSizeStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TrainedModelSizeStats
+impl<S0, S1> crate::typed::builder::Build for TrainedModelSizeStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_size_stats_members::model_size_bytes>,
+    S1: crate::typed::builder::IsSet<
+        trained_model_size_stats_members::required_native_memory_bytes,
+    >,
 {
-    fn from(
-        builder: TrainedModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelSizeStats;
+
+    fn build(self) -> TrainedModelSizeStats {
+        Self::build(self)
     }
 }
 
-impl<S1> TrainedModelSizeStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_size_bytes: crate::typed::builder::MissingRequiredField) -> TrainedModelSizeStats { match model_size_bytes {} }
-}
-
-impl TrainedModelSizeStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `required_native_memory_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, required_native_memory_bytes: crate::typed::builder::MissingRequiredField) -> TrainedModelSizeStats { match required_native_memory_bytes {} }
+impl<S0, S1> From<TrainedModelSizeStatsBuilder<(S0, S1)>> for TrainedModelSizeStats
+where
+    S0: crate::typed::builder::IsSet<trained_model_size_stats_members::model_size_bytes>,
+    S1: crate::typed::builder::IsSet<
+        trained_model_size_stats_members::required_native_memory_bytes,
+    >,
+{
+    fn from(builder: TrainedModelSizeStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36524,22 +34808,29 @@ pub struct TrainedModelStats {
 
 impl TrainedModelStats {
     /// Creates a builder for [`TrainedModelStats`].
+    ///
+    /// Required: `model_id`, `model_size_stats`, `pipeline_count`.
     pub fn builder() -> TrainedModelStatsBuilder {
         TrainedModelStatsBuilder::new()
     }
 
     /// Creates a [`TrainedModelStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelStatsBuilder,
-        ) -> TrainedModelStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_id`, `model_size_stats`, `pipeline_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelStats>>(
+        f: impl FnOnce(TrainedModelStatsBuilder) -> B,
     ) -> TrainedModelStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_stats_members {
+    pub struct model_id;
+    pub struct model_size_stats;
+    pub struct pipeline_count;
 }
 
 /// Builder for [`TrainedModelStats`].
@@ -36606,18 +34897,11 @@ impl<S0, S1, S2> TrainedModelStatsBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`deployment_stats`](Self::deployment_stats) with a builder.
-    pub fn deployment_stats_with(
+    pub fn deployment_stats_with<
+        B: crate::typed::builder::Build<Output = TrainedModelDeploymentStats>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelDeploymentStatsBuilder,
-        ) -> TrainedModelDeploymentStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelDeploymentStatsBuilder) -> B,
     ) -> Self {
         self.deployment_stats(f(TrainedModelDeploymentStatsBuilder::new()).build())
     }
@@ -36635,17 +34919,11 @@ impl<S0, S1, S2> TrainedModelStatsBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`inference_stats`](Self::inference_stats) with a builder.
-    pub fn inference_stats_with(
+    pub fn inference_stats_with<
+        B: crate::typed::builder::Build<Output = TrainedModelInferenceStats>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelInferenceStatsBuilder,
-        ) -> TrainedModelInferenceStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelInferenceStatsBuilder) -> B,
     ) -> Self {
         self.inference_stats(f(TrainedModelInferenceStatsBuilder::new()).build())
     }
@@ -36684,7 +34962,7 @@ impl<S0, S1, S2> TrainedModelStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TrainedModelStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The unique identifier of the trained model.
+    /// **Required.** The unique identifier of the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -36696,7 +34974,7 @@ impl<S1, S2> TrainedModelStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> TrainedModelStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A collection of model size stats.
+    /// **Required.** A collection of model size stats.
     pub fn model_size_stats(
         self,
         value: impl Into<TrainedModelSizeStats>,
@@ -36707,21 +34985,18 @@ impl<S0, S2> TrainedModelStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`model_size_stats`](Self::model_size_stats) with a builder.
-    pub fn model_size_stats_with(
+    pub fn model_size_stats_with<
+        B: crate::typed::builder::Build<Output = TrainedModelSizeStats>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelSizeStatsBuilder,
-        ) -> TrainedModelSizeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelSizeStatsBuilder) -> B,
     ) -> TrainedModelStatsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.model_size_stats(f(TrainedModelSizeStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> TrainedModelStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The number of ingest pipelines that currently refer to the model.
+    /// **Required.** The number of ingest pipelines that currently refer to the model.
     pub fn pipeline_count(
         self,
         value: i32,
@@ -36732,15 +35007,14 @@ impl<S0, S1> TrainedModelStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    TrainedModelStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrainedModelStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`TrainedModelStats`].
-    pub fn build(self) -> TrainedModelStats {
+    pub fn build(self) -> TrainedModelStats
+    where
+        S0: crate::typed::builder::IsSet<trained_model_stats_members::model_id>,
+        S1: crate::typed::builder::IsSet<trained_model_stats_members::model_size_stats>,
+        S2: crate::typed::builder::IsSet<trained_model_stats_members::pipeline_count>,
+    {
         TrainedModelStats {
             deployment_stats: self.deployment_stats,
             inference_stats: self.inference_stats,
@@ -36752,54 +35026,28 @@ impl
     }
 }
 
-impl
-    From<
-        TrainedModelStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrainedModelStats
+impl<S0, S1, S2> crate::typed::builder::Build for TrainedModelStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_stats_members::model_id>,
+    S1: crate::typed::builder::IsSet<trained_model_stats_members::model_size_stats>,
+    S2: crate::typed::builder::IsSet<trained_model_stats_members::pipeline_count>,
 {
-    fn from(
-        builder: TrainedModelStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelStats;
+
+    fn build(self) -> TrainedModelStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TrainedModelStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> TrainedModelStats { match model_id {} }
-}
-
-impl<S2>
-    TrainedModelStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TrainedModelStatsBuilder<(S0, S1, S2)>> for TrainedModelStats
+where
+    S0: crate::typed::builder::IsSet<trained_model_stats_members::model_id>,
+    S1: crate::typed::builder::IsSet<trained_model_stats_members::model_size_stats>,
+    S2: crate::typed::builder::IsSet<trained_model_stats_members::pipeline_count>,
 {
-    /// `model_size_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_size_stats: crate::typed::builder::MissingRequiredField) -> TrainedModelStats { match model_size_stats {} }
-}
-
-impl
-    TrainedModelStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `pipeline_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_count: crate::typed::builder::MissingRequiredField) -> TrainedModelStats { match pipeline_count {} }
+    fn from(builder: TrainedModelStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -36844,8 +35092,8 @@ impl TransformAuthorization {
     }
 
     /// Creates a [`TransformAuthorization`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TransformAuthorizationBuilder) -> TransformAuthorizationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TransformAuthorization>>(
+        f: impl FnOnce(TransformAuthorizationBuilder) -> B,
     ) -> TransformAuthorization {
         f(Self::builder()).build()
     }
@@ -36883,14 +35131,9 @@ impl TransformAuthorizationBuilder {
     }
 
     /// Sets [`api_key`](Self::api_key) with a builder.
-    pub fn api_key_with(
+    pub fn api_key_with<B: crate::typed::builder::Build<Output = ApiKeyAuthorization>>(
         self,
-        f: impl FnOnce(
-            ApiKeyAuthorizationBuilder,
-        ) -> ApiKeyAuthorizationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApiKeyAuthorizationBuilder) -> B,
     ) -> Self {
         self.api_key(f(ApiKeyAuthorizationBuilder::new()).build())
     }
@@ -36939,6 +35182,14 @@ impl TransformAuthorizationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TransformAuthorizationBuilder {
+    type Output = TransformAuthorization;
+
+    fn build(self) -> TransformAuthorization {
+        Self::build(self)
+    }
+}
+
 impl From<TransformAuthorizationBuilder> for TransformAuthorization {
     fn from(builder: TransformAuthorizationBuilder) -> Self {
         builder.build()
@@ -36955,21 +35206,28 @@ pub struct ValidationLoss {
 
 impl ValidationLoss {
     /// Creates a builder for [`ValidationLoss`].
+    ///
+    /// Required: `fold_values`, `loss_type`.
     pub fn builder() -> ValidationLossBuilder {
         ValidationLossBuilder::new()
     }
 
     /// Creates a [`ValidationLoss`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ValidationLossBuilder,
-        ) -> ValidationLossBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `fold_values`, `loss_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ValidationLoss>>(
+        f: impl FnOnce(ValidationLossBuilder) -> B,
     ) -> ValidationLoss {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ValidationLossBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod validation_loss_members {
+    pub struct fold_values;
+    pub struct loss_type;
 }
 
 /// Builder for [`ValidationLoss`].
@@ -37002,7 +35260,7 @@ impl<S0, S1> ValidationLossBuilder<(S0, S1)> {
 }
 
 impl<S1> ValidationLossBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Validation loss values for every added decision tree during the forest growing procedure.
+    /// **Required.** Validation loss values for every added decision tree during the forest growing procedure.
     pub fn fold_values(
         self,
         value: impl Into<Vec<String>>,
@@ -37037,7 +35295,7 @@ impl<S1> ValidationLossBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> ValidationLossBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The type of the loss metric. For example, binomial_logistic.
+    /// **Required.** The type of the loss metric. For example, binomial_logistic.
     pub fn loss_type(
         self,
         value: impl Into<String>,
@@ -37048,9 +35306,13 @@ impl<S0> ValidationLossBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ValidationLossBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ValidationLossBuilder<(S0, S1)> {
     /// Builds a [`ValidationLoss`].
-    pub fn build(self) -> ValidationLoss {
+    pub fn build(self) -> ValidationLoss
+    where
+        S0: crate::typed::builder::IsSet<validation_loss_members::fold_values>,
+        S1: crate::typed::builder::IsSet<validation_loss_members::loss_type>,
+    {
         ValidationLoss {
             fold_values: self.fold_values.unwrap(),
             loss_type: self.loss_type.unwrap(),
@@ -37058,26 +35320,26 @@ impl ValidationLossBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<ValidationLossBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ValidationLoss
+impl<S0, S1> crate::typed::builder::Build for ValidationLossBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<validation_loss_members::fold_values>,
+    S1: crate::typed::builder::IsSet<validation_loss_members::loss_type>,
 {
-    fn from(
-        builder: ValidationLossBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ValidationLoss;
+
+    fn build(self) -> ValidationLoss {
+        Self::build(self)
     }
 }
 
-impl<S1> ValidationLossBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `fold_values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fold_values: crate::typed::builder::MissingRequiredField) -> ValidationLoss { match fold_values {} }
-}
-
-impl ValidationLossBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `loss_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, loss_type: crate::typed::builder::MissingRequiredField) -> ValidationLoss { match loss_type {} }
+impl<S0, S1> From<ValidationLossBuilder<(S0, S1)>> for ValidationLoss
+where
+    S0: crate::typed::builder::IsSet<validation_loss_members::fold_values>,
+    S1: crate::typed::builder::IsSet<validation_loss_members::loss_type>,
+{
+    fn from(builder: ValidationLossBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -37087,16 +35349,27 @@ pub struct Vocabulary {
 
 impl Vocabulary {
     /// Creates a builder for [`Vocabulary`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> VocabularyBuilder {
         VocabularyBuilder::new()
     }
 
     /// Creates a [`Vocabulary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(VocabularyBuilder) -> VocabularyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Vocabulary>>(
+        f: impl FnOnce(VocabularyBuilder) -> B,
     ) -> Vocabulary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VocabularyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod vocabulary_members {
+    pub struct index;
 }
 
 /// Builder for [`Vocabulary`].
@@ -37125,6 +35398,7 @@ impl<S0> VocabularyBuilder<(S0,)> {
 }
 
 impl VocabularyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -37135,25 +35409,36 @@ impl VocabularyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VocabularyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VocabularyBuilder<(S0,)> {
     /// Builds a [`Vocabulary`].
-    pub fn build(self) -> Vocabulary {
+    pub fn build(self) -> Vocabulary
+    where
+        S0: crate::typed::builder::IsSet<vocabulary_members::index>,
+    {
         Vocabulary {
             index: self.index.unwrap(),
         }
     }
 }
 
-impl From<VocabularyBuilder<(crate::typed::builder::Set,)>> for Vocabulary {
-    fn from(builder: VocabularyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for VocabularyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<vocabulary_members::index>,
+{
+    type Output = Vocabulary;
+
+    fn build(self) -> Vocabulary {
+        Self::build(self)
     }
 }
 
-impl VocabularyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Vocabulary { match index {} }
+impl<S0> From<VocabularyBuilder<(S0,)>> for Vocabulary
+where
+    S0: crate::typed::builder::IsSet<vocabulary_members::index>,
+{
+    fn from(builder: VocabularyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -37182,8 +35467,8 @@ impl XlmRobertaTokenizationConfig {
     }
 
     /// Creates a [`XlmRobertaTokenizationConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(XlmRobertaTokenizationConfigBuilder) -> XlmRobertaTokenizationConfigBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = XlmRobertaTokenizationConfig>>(
+        f: impl FnOnce(XlmRobertaTokenizationConfigBuilder) -> B,
     ) -> XlmRobertaTokenizationConfig {
         f(Self::builder()).build()
     }
@@ -37286,6 +35571,14 @@ impl XlmRobertaTokenizationConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for XlmRobertaTokenizationConfigBuilder {
+    type Output = XlmRobertaTokenizationConfig;
+
+    fn build(self) -> XlmRobertaTokenizationConfig {
+        Self::build(self)
+    }
+}
+
 impl From<XlmRobertaTokenizationConfigBuilder> for XlmRobertaTokenizationConfig {
     fn from(builder: XlmRobertaTokenizationConfigBuilder) -> Self {
         builder.build()
@@ -37317,19 +35610,27 @@ pub struct ZeroShotClassificationInferenceOptions {
 
 impl ZeroShotClassificationInferenceOptions {
     /// Creates a builder for [`ZeroShotClassificationInferenceOptions`].
+    ///
+    /// Required: `classification_labels`.
     pub fn builder() -> ZeroShotClassificationInferenceOptionsBuilder {
         ZeroShotClassificationInferenceOptionsBuilder::new()
     }
 
     /// Creates a [`ZeroShotClassificationInferenceOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ZeroShotClassificationInferenceOptionsBuilder,
-        )
-            -> ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `classification_labels`.
+    pub fn of<B: crate::typed::builder::Build<Output = ZeroShotClassificationInferenceOptions>>(
+        f: impl FnOnce(ZeroShotClassificationInferenceOptionsBuilder) -> B,
     ) -> ZeroShotClassificationInferenceOptions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ZeroShotClassificationInferenceOptionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod zero_shot_classification_inference_options_members {
+    pub struct classification_labels;
 }
 
 /// Builder for [`ZeroShotClassificationInferenceOptions`].
@@ -37384,11 +35685,11 @@ impl<S0> ZeroShotClassificationInferenceOptionsBuilder<(S0,)> {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = TokenizationConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            TokenizationConfigContainerBuilder,
-        ) -> TokenizationConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenizationConfigContainerBuilder) -> B,
     ) -> Self {
         self.tokenization(f(TokenizationConfigContainerBuilder::new()).build())
     }
@@ -37451,7 +35752,7 @@ impl<S0> ZeroShotClassificationInferenceOptionsBuilder<(S0,)> {
 }
 
 impl ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The zero shot classification labels indicating entailment, neutral, and contradiction
+    /// **Required.** The zero shot classification labels indicating entailment, neutral, and contradiction
     /// Must contain exactly and only entailment, neutral, and contradiction
     pub fn classification_labels(
         self,
@@ -37486,9 +35787,14 @@ impl ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)
     }
 }
 
-impl ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ZeroShotClassificationInferenceOptionsBuilder<(S0,)> {
     /// Builds a [`ZeroShotClassificationInferenceOptions`].
-    pub fn build(self) -> ZeroShotClassificationInferenceOptions {
+    pub fn build(self) -> ZeroShotClassificationInferenceOptions
+    where
+        S0: crate::typed::builder::IsSet<
+            zero_shot_classification_inference_options_members::classification_labels,
+        >,
+    {
         ZeroShotClassificationInferenceOptions {
             tokenization: self.tokenization,
             hypothesis_template: self.hypothesis_template,
@@ -37500,20 +35806,29 @@ impl ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)
     }
 }
 
-impl From<ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)>>
-    for ZeroShotClassificationInferenceOptions
+impl<S0> crate::typed::builder::Build for ZeroShotClassificationInferenceOptionsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        zero_shot_classification_inference_options_members::classification_labels,
+    >,
 {
-    fn from(
-        builder: ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ZeroShotClassificationInferenceOptions;
+
+    fn build(self) -> ZeroShotClassificationInferenceOptions {
+        Self::build(self)
     }
 }
 
-impl ZeroShotClassificationInferenceOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `classification_labels` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, classification_labels: crate::typed::builder::MissingRequiredField) -> ZeroShotClassificationInferenceOptions { match classification_labels {} }
+impl<S0> From<ZeroShotClassificationInferenceOptionsBuilder<(S0,)>>
+    for ZeroShotClassificationInferenceOptions
+where
+    S0: crate::typed::builder::IsSet<
+        zero_shot_classification_inference_options_members::classification_labels,
+    >,
+{
+    fn from(builder: ZeroShotClassificationInferenceOptionsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -37533,20 +35848,29 @@ pub struct ZeroShotClassificationInferenceUpdateOptions {
 
 impl ZeroShotClassificationInferenceUpdateOptions {
     /// Creates a builder for [`ZeroShotClassificationInferenceUpdateOptions`].
+    ///
+    /// Required: `labels`.
     pub fn builder() -> ZeroShotClassificationInferenceUpdateOptionsBuilder {
         ZeroShotClassificationInferenceUpdateOptionsBuilder::new()
     }
 
     /// Creates a [`ZeroShotClassificationInferenceUpdateOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ZeroShotClassificationInferenceUpdateOptionsBuilder,
-        ) -> ZeroShotClassificationInferenceUpdateOptionsBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `labels`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = ZeroShotClassificationInferenceUpdateOptions>,
+    >(
+        f: impl FnOnce(ZeroShotClassificationInferenceUpdateOptionsBuilder) -> B,
     ) -> ZeroShotClassificationInferenceUpdateOptions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ZeroShotClassificationInferenceUpdateOptionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod zero_shot_classification_inference_update_options_members {
+    pub struct labels;
 }
 
 /// Builder for [`ZeroShotClassificationInferenceUpdateOptions`].
@@ -37596,9 +35920,11 @@ impl<S0> ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)> {
     }
 
     /// Sets [`tokenization`](Self::tokenization) with a builder.
-    pub fn tokenization_with(
+    pub fn tokenization_with<
+        B: crate::typed::builder::Build<Output = NlpTokenizationUpdateOptions>,
+    >(
         self,
-        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> NlpTokenizationUpdateOptionsBuilder,
+        f: impl FnOnce(NlpTokenizationUpdateOptionsBuilder) -> B,
     ) -> Self {
         self.tokenization(f(NlpTokenizationUpdateOptionsBuilder::new()).build())
     }
@@ -37629,7 +35955,7 @@ impl<S0> ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)> {
 }
 
 impl ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The labels to predict.
+    /// **Required.** The labels to predict.
     pub fn labels(
         self,
         value: impl Into<Vec<String>>,
@@ -37663,9 +35989,14 @@ impl ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder:
     }
 }
 
-impl ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)> {
     /// Builds a [`ZeroShotClassificationInferenceUpdateOptions`].
-    pub fn build(self) -> ZeroShotClassificationInferenceUpdateOptions {
+    pub fn build(self) -> ZeroShotClassificationInferenceUpdateOptions
+    where
+        S0: crate::typed::builder::IsSet<
+            zero_shot_classification_inference_update_options_members::labels,
+        >,
+    {
         ZeroShotClassificationInferenceUpdateOptions {
             tokenization: self.tokenization,
             results_field: self.results_field,
@@ -37675,18 +36006,27 @@ impl ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder:
     }
 }
 
-impl From<ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>>
-    for ZeroShotClassificationInferenceUpdateOptions
+impl<S0> crate::typed::builder::Build for ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        zero_shot_classification_inference_update_options_members::labels,
+    >,
 {
-    fn from(
-        builder: ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ZeroShotClassificationInferenceUpdateOptions;
+
+    fn build(self) -> ZeroShotClassificationInferenceUpdateOptions {
+        Self::build(self)
     }
 }
 
-impl ZeroShotClassificationInferenceUpdateOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `labels` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, labels: crate::typed::builder::MissingRequiredField) -> ZeroShotClassificationInferenceUpdateOptions { match labels {} }
+impl<S0> From<ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)>>
+    for ZeroShotClassificationInferenceUpdateOptions
+where
+    S0: crate::typed::builder::IsSet<
+        zero_shot_classification_inference_update_options_members::labels,
+    >,
+{
+    fn from(builder: ZeroShotClassificationInferenceUpdateOptionsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

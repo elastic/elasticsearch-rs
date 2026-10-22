@@ -8,16 +8,27 @@ pub struct IndexAliases {
 
 impl IndexAliases {
     /// Creates a builder for [`IndexAliases`].
+    ///
+    /// Required: `aliases`.
     pub fn builder() -> IndexAliasesBuilder {
         IndexAliasesBuilder::new()
     }
 
     /// Creates a [`IndexAliases`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexAliasesBuilder) -> IndexAliasesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `aliases`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexAliases>>(
+        f: impl FnOnce(IndexAliasesBuilder) -> B,
     ) -> IndexAliases {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexAliasesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_aliases_members {
+    pub struct aliases;
 }
 
 /// Builder for [`IndexAliases`].
@@ -46,6 +57,7 @@ impl<S0> IndexAliasesBuilder<(S0,)> {
 }
 
 impl IndexAliasesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn aliases(
         self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::indices::_types::AliasDefinition>>,
@@ -70,12 +82,12 @@ impl IndexAliasesBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::AliasDefinition>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasDefinitionBuilder,
-        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasDefinitionBuilder) -> B,
     ) -> IndexAliasesBuilder<(crate::typed::builder::Set,)> {
         self.add_aliases(
             key,
@@ -98,12 +110,12 @@ impl IndexAliasesBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::AliasDefinition>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasDefinitionBuilder,
-        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasDefinitionBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -112,25 +124,36 @@ impl IndexAliasesBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl IndexAliasesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexAliasesBuilder<(S0,)> {
     /// Builds a [`IndexAliases`].
-    pub fn build(self) -> IndexAliases {
+    pub fn build(self) -> IndexAliases
+    where
+        S0: crate::typed::builder::IsSet<index_aliases_members::aliases>,
+    {
         IndexAliases {
             aliases: self.aliases.unwrap(),
         }
     }
 }
 
-impl From<IndexAliasesBuilder<(crate::typed::builder::Set,)>> for IndexAliases {
-    fn from(builder: IndexAliasesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexAliasesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_aliases_members::aliases>,
+{
+    type Output = IndexAliases;
+
+    fn build(self) -> IndexAliases {
+        Self::build(self)
     }
 }
 
-impl IndexAliasesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `aliases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aliases: crate::typed::builder::MissingRequiredField) -> IndexAliases { match aliases {} }
+impl<S0> From<IndexAliasesBuilder<(S0,)>> for IndexAliases
+where
+    S0: crate::typed::builder::IsSet<index_aliases_members::aliases>,
+{
+    fn from(builder: IndexAliasesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -144,21 +167,28 @@ pub struct NotFoundAliases {
 
 impl NotFoundAliases {
     /// Creates a builder for [`NotFoundAliases`].
+    ///
+    /// Required: `error`, `status`.
     pub fn builder() -> NotFoundAliasesBuilder {
         NotFoundAliasesBuilder::new()
     }
 
     /// Creates a [`NotFoundAliases`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NotFoundAliasesBuilder,
-        ) -> NotFoundAliasesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `error`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = NotFoundAliases>>(
+        f: impl FnOnce(NotFoundAliasesBuilder) -> B,
     ) -> NotFoundAliases {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NotFoundAliasesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod not_found_aliases_members {
+    pub struct error;
+    pub struct status;
 }
 
 /// Builder for [`NotFoundAliases`].
@@ -214,6 +244,7 @@ impl<S0, S1> NotFoundAliasesBuilder<(S0, S1)> {
 }
 
 impl<S1> NotFoundAliasesBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn error(
         self,
         value: impl Into<String>,
@@ -225,6 +256,7 @@ impl<S1> NotFoundAliasesBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NotFoundAliasesBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn status(self, value: i32) -> NotFoundAliasesBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.status = Some(value);
@@ -232,9 +264,13 @@ impl<S0> NotFoundAliasesBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NotFoundAliasesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NotFoundAliasesBuilder<(S0, S1)> {
     /// Builds a [`NotFoundAliases`].
-    pub fn build(self) -> NotFoundAliases {
+    pub fn build(self) -> NotFoundAliases
+    where
+        S0: crate::typed::builder::IsSet<not_found_aliases_members::error>,
+        S1: crate::typed::builder::IsSet<not_found_aliases_members::status>,
+    {
         NotFoundAliases {
             error: self.error.unwrap(),
             status: self.status.unwrap(),
@@ -243,24 +279,24 @@ impl NotFoundAliasesBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<NotFoundAliasesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NotFoundAliases
+impl<S0, S1> crate::typed::builder::Build for NotFoundAliasesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<not_found_aliases_members::error>,
+    S1: crate::typed::builder::IsSet<not_found_aliases_members::status>,
 {
-    fn from(
-        builder: NotFoundAliasesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = NotFoundAliases;
+
+    fn build(self) -> NotFoundAliases {
+        Self::build(self)
     }
 }
 
-impl<S1> NotFoundAliasesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `error` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, error: crate::typed::builder::MissingRequiredField) -> NotFoundAliases { match error {} }
-}
-
-impl NotFoundAliasesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> NotFoundAliases { match status {} }
+impl<S0, S1> From<NotFoundAliasesBuilder<(S0, S1)>> for NotFoundAliases
+where
+    S0: crate::typed::builder::IsSet<not_found_aliases_members::error>,
+    S1: crate::typed::builder::IsSet<not_found_aliases_members::status>,
+{
+    fn from(builder: NotFoundAliasesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

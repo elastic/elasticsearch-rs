@@ -117,7 +117,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -339,6 +341,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -487,21 +497,28 @@ pub struct ResolveClusterInfo {
 
 impl ResolveClusterInfo {
     /// Creates a builder for [`ResolveClusterInfo`].
+    ///
+    /// Required: `connected`, `skip_unavailable`.
     pub fn builder() -> ResolveClusterInfoBuilder {
         ResolveClusterInfoBuilder::new()
     }
 
     /// Creates a [`ResolveClusterInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResolveClusterInfoBuilder,
-        ) -> ResolveClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `connected`, `skip_unavailable`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResolveClusterInfo>>(
+        f: impl FnOnce(ResolveClusterInfoBuilder) -> B,
     ) -> ResolveClusterInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResolveClusterInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod resolve_cluster_info_members {
+    pub struct connected;
+    pub struct skip_unavailable;
 }
 
 /// Builder for [`ResolveClusterInfo`].
@@ -587,23 +604,18 @@ impl<S0, S1> ResolveClusterInfoBuilder<(S0, S1)> {
     }
 
     /// Sets [`version`](Self::version) with a builder.
-    pub fn version_with(
+    pub fn version_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ElasticsearchVersionMinInfo>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ElasticsearchVersionMinInfoBuilder,
-        ) -> crate::typed::_types::ElasticsearchVersionMinInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ElasticsearchVersionMinInfoBuilder) -> B,
     ) -> Self {
         self.version(f(crate::typed::_types::ElasticsearchVersionMinInfoBuilder::new()).build())
     }
 }
 
 impl<S1> ResolveClusterInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Whether the remote cluster is connected to the local (querying) cluster.
+    /// **Required.** Whether the remote cluster is connected to the local (querying) cluster.
     pub fn connected(
         self,
         value: bool,
@@ -615,7 +627,7 @@ impl<S1> ResolveClusterInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResolveClusterInfoBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The `skip_unavailable` setting for a remote cluster.
+    /// **Required.** The `skip_unavailable` setting for a remote cluster.
     pub fn skip_unavailable(
         self,
         value: bool,
@@ -626,9 +638,13 @@ impl<S0> ResolveClusterInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ResolveClusterInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResolveClusterInfoBuilder<(S0, S1)> {
     /// Builds a [`ResolveClusterInfo`].
-    pub fn build(self) -> ResolveClusterInfo {
+    pub fn build(self) -> ResolveClusterInfo
+    where
+        S0: crate::typed::builder::IsSet<resolve_cluster_info_members::connected>,
+        S1: crate::typed::builder::IsSet<resolve_cluster_info_members::skip_unavailable>,
+    {
         ResolveClusterInfo {
             connected: self.connected.unwrap(),
             skip_unavailable: self.skip_unavailable.unwrap(),
@@ -639,29 +655,26 @@ impl ResolveClusterInfoBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<ResolveClusterInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResolveClusterInfo
+impl<S0, S1> crate::typed::builder::Build for ResolveClusterInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<resolve_cluster_info_members::connected>,
+    S1: crate::typed::builder::IsSet<resolve_cluster_info_members::skip_unavailable>,
 {
-    fn from(
-        builder: ResolveClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ResolveClusterInfo;
+
+    fn build(self) -> ResolveClusterInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> ResolveClusterInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `connected` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connected: crate::typed::builder::MissingRequiredField) -> ResolveClusterInfo { match connected {} }
-}
-
-impl ResolveClusterInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `skip_unavailable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skip_unavailable: crate::typed::builder::MissingRequiredField) -> ResolveClusterInfo { match skip_unavailable {} }
+impl<S0, S1> From<ResolveClusterInfoBuilder<(S0, S1)>> for ResolveClusterInfo
+where
+    S0: crate::typed::builder::IsSet<resolve_cluster_info_members::connected>,
+    S1: crate::typed::builder::IsSet<resolve_cluster_info_members::skip_unavailable>,
+{
+    fn from(builder: ResolveClusterInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Response of [`indices.resolve_cluster`](crate::typed::indices::IndicesClient::resolve_cluster).

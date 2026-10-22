@@ -69,16 +69,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `transform_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `transform_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct transform_id;
 }
 
 /// Builder for [`Request`].
@@ -251,11 +262,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Destination>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::DestinationBuilder,
-        ) -> crate::typed::transform::_types::DestinationBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::DestinationBuilder) -> B,
     ) -> Self {
         self.dest(f(crate::typed::transform::_types::DestinationBuilder::new()).build())
     }
@@ -320,12 +331,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Source>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SourceBuilder,
-        )
-            -> crate::typed::transform::_types::SourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::transform::_types::SourceBuilder) -> B,
     ) -> Self {
         self.source(f(crate::typed::transform::_types::SourceBuilder::new()).build())
     }
@@ -346,11 +356,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Settings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SettingsBuilder,
-        ) -> crate::typed::transform::_types::SettingsBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::SettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(crate::typed::transform::_types::SettingsBuilder::new()).build())
     }
@@ -374,13 +384,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`sync`](Self::sync) with a builder.
-    pub fn sync_with(
+    pub fn sync_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::SyncContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SyncContainerBuilder,
-        ) -> crate::typed::transform::_types::SyncContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::SyncContainerBuilder) -> B,
     ) -> Self {
         self.sync(f(crate::typed::transform::_types::SyncContainerBuilder::new()).build())
     }
@@ -415,7 +423,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Identifier for the transform.
+    /// **Required.** Identifier for the transform.
     pub fn transform_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -426,9 +434,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::transform_id>,
+    {
         Request {
             transform_id: self.transform_id.unwrap(),
             defer_validation: self.defer_validation,
@@ -450,23 +461,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::transform_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `transform_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transform_id: crate::typed::builder::MissingRequiredField) -> Request { match transform_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `transform_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, transform_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match transform_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::transform_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

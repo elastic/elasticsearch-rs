@@ -18,7 +18,9 @@ impl Access {
     }
 
     /// Creates a [`Access`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AccessBuilder) -> AccessBuilder) -> Access {
+    pub fn of<B: crate::typed::builder::Build<Output = Access>>(
+        f: impl FnOnce(AccessBuilder) -> B,
+    ) -> Access {
         f(Self::builder()).build()
     }
 }
@@ -61,11 +63,9 @@ impl AccessBuilder {
     }
 
     /// Adds an element to [`replication`](Self::replication), with a builder.
-    pub fn add_replication_with(
+    pub fn add_replication_with<B: crate::typed::builder::Build<Output = ReplicationAccess>>(
         self,
-        f: impl FnOnce(
-            ReplicationAccessBuilder,
-        ) -> ReplicationAccessBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ReplicationAccessBuilder) -> B,
     ) -> Self {
         self.add_replication(f(ReplicationAccessBuilder::new()).build())
     }
@@ -91,9 +91,9 @@ impl AccessBuilder {
     }
 
     /// Adds an element to [`search`](Self::search), with a builder.
-    pub fn add_search_with(
+    pub fn add_search_with<B: crate::typed::builder::Build<Output = SearchAccess>>(
         self,
-        f: impl FnOnce(SearchAccessBuilder) -> SearchAccessBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SearchAccessBuilder) -> B,
     ) -> Self {
         self.add_search(f(SearchAccessBuilder::new()).build())
     }
@@ -106,6 +106,14 @@ impl AccessBuilder {
             replication: self.replication,
             search: self.search,
         }
+    }
+}
+
+impl crate::typed::builder::Build for AccessBuilder {
+    type Output = Access;
+
+    fn build(self) -> Access {
+        Self::build(self)
     }
 }
 
@@ -173,27 +181,34 @@ pub struct ApiKey {
 
 impl ApiKey {
     /// Creates a builder for [`ApiKey`].
+    ///
+    /// Required: `id`, `name`, `type`, `creation`, `invalidated`, `username`, `realm`, `metadata`.
     pub fn builder() -> ApiKeyBuilder {
         ApiKeyBuilder::new()
     }
 
     /// Creates a [`ApiKey`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApiKeyBuilder,
-        ) -> ApiKeyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `name`, `type`, `creation`, `invalidated`, `username`, `realm`, `metadata`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApiKey>>(
+        f: impl FnOnce(ApiKeyBuilder) -> B,
     ) -> ApiKey {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApiKeyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod api_key_members {
+    pub struct id;
+    pub struct name;
+    pub struct r#type;
+    pub struct creation;
+    pub struct invalidated;
+    pub struct username;
+    pub struct realm;
+    pub struct metadata;
 }
 
 /// Builder for [`ApiKey`].
@@ -370,10 +385,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, 
     }
 
     /// Adds an entry to [`role_descriptors`](Self::role_descriptors), with a builder.
-    pub fn add_role_descriptors_with(
+    pub fn add_role_descriptors_with<B: crate::typed::builder::Build<Output = RoleDescriptor>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(RoleDescriptorBuilder) -> RoleDescriptorBuilder,
+        f: impl FnOnce(RoleDescriptorBuilder) -> B,
     ) -> Self {
         self.add_role_descriptors(key, f(RoleDescriptorBuilder::new()).build())
     }
@@ -425,7 +440,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, 
     }
 
     /// Sets [`access`](Self::access) with a builder.
-    pub fn access_with(self, f: impl FnOnce(AccessBuilder) -> AccessBuilder) -> Self {
+    pub fn access_with<B: crate::typed::builder::Build<Output = Access>>(
+        self,
+        f: impl FnOnce(AccessBuilder) -> B,
+    ) -> Self {
         self.access(f(AccessBuilder::new()).build())
     }
 
@@ -479,7 +497,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, 
 impl<S1, S2, S3, S4, S5, S6, S7>
     ApiKeyBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// Id for the API key
+    /// **Required.** Id for the API key
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -493,7 +511,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ApiKeyBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
-    /// Name of the API key.
+    /// **Required.** Name of the API key.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -507,7 +525,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ApiKeyBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
-    /// The type of the API key (e.g. `rest` or `cross_cluster`).
+    /// **Required.** The type of the API key (e.g. `rest` or `cross_cluster`).
     pub fn r#type(
         self,
         value: impl Into<ApiKeyType>,
@@ -521,7 +539,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ApiKeyBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// Creation time for the API key in milliseconds.
+    /// **Required.** Creation time for the API key in milliseconds.
     pub fn creation(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -535,7 +553,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ApiKeyBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// Invalidation status for the API key.
+    /// **Required.** Invalidation status for the API key.
     /// If the key has been invalidated, it has a value of `true`. Otherwise, it is `false`.
     pub fn invalidated(
         self,
@@ -550,7 +568,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ApiKeyBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
-    /// Principal for which this API key was created
+    /// **Required.** Principal for which this API key was created
     pub fn username(
         self,
         value: impl Into<crate::typed::_types::Username>,
@@ -564,7 +582,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
-    /// Realm name of the principal for which this API key was created.
+    /// **Required.** Realm name of the principal for which this API key was created.
     pub fn realm(
         self,
         value: impl Into<String>,
@@ -578,7 +596,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
-    /// Metadata of the API key
+    /// **Required.** Metadata of the API key
     pub fn metadata(
         self,
         value: impl Into<crate::typed::_types::Metadata>,
@@ -619,20 +637,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`ApiKey`].
-    pub fn build(self) -> ApiKey {
+    pub fn build(self) -> ApiKey
+    where
+        S0: crate::typed::builder::IsSet<api_key_members::id>,
+        S1: crate::typed::builder::IsSet<api_key_members::name>,
+        S2: crate::typed::builder::IsSet<api_key_members::r#type>,
+        S3: crate::typed::builder::IsSet<api_key_members::creation>,
+        S4: crate::typed::builder::IsSet<api_key_members::invalidated>,
+        S5: crate::typed::builder::IsSet<api_key_members::username>,
+        S6: crate::typed::builder::IsSet<api_key_members::realm>,
+        S7: crate::typed::builder::IsSet<api_key_members::metadata>,
+    {
         ApiKey {
             id: self.id.unwrap(),
             name: self.name.unwrap(),
@@ -655,161 +672,40 @@ impl
     }
 }
 
-impl
-    From<
-        ApiKeyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ApiKey
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<api_key_members::id>,
+    S1: crate::typed::builder::IsSet<api_key_members::name>,
+    S2: crate::typed::builder::IsSet<api_key_members::r#type>,
+    S3: crate::typed::builder::IsSet<api_key_members::creation>,
+    S4: crate::typed::builder::IsSet<api_key_members::invalidated>,
+    S5: crate::typed::builder::IsSet<api_key_members::username>,
+    S6: crate::typed::builder::IsSet<api_key_members::realm>,
+    S7: crate::typed::builder::IsSet<api_key_members::metadata>,
 {
-    fn from(
-        builder: ApiKeyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ApiKey;
+
+    fn build(self) -> ApiKey {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ApiKeyBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for ApiKey
+where
+    S0: crate::typed::builder::IsSet<api_key_members::id>,
+    S1: crate::typed::builder::IsSet<api_key_members::name>,
+    S2: crate::typed::builder::IsSet<api_key_members::r#type>,
+    S3: crate::typed::builder::IsSet<api_key_members::creation>,
+    S4: crate::typed::builder::IsSet<api_key_members::invalidated>,
+    S5: crate::typed::builder::IsSet<api_key_members::username>,
+    S6: crate::typed::builder::IsSet<api_key_members::realm>,
+    S7: crate::typed::builder::IsSet<api_key_members::metadata>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ApiKey { match id {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ApiKey { match name {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ApiKey { match r#type {} }
-}
-
-impl<S4, S5, S6, S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `creation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, creation: crate::typed::builder::MissingRequiredField) -> ApiKey { match creation {} }
-}
-
-impl<S5, S6, S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `invalidated` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, invalidated: crate::typed::builder::MissingRequiredField) -> ApiKey { match invalidated {} }
-}
-
-impl<S6, S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `username` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, username: crate::typed::builder::MissingRequiredField) -> ApiKey { match username {} }
-}
-
-impl<S7>
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `realm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, realm: crate::typed::builder::MissingRequiredField) -> ApiKey { match realm {} }
-}
-
-impl
-    ApiKeyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> ApiKey { match metadata {} }
+    fn from(builder: ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -827,18 +723,27 @@ pub struct ApplicationGlobalUserPrivileges {
 
 impl ApplicationGlobalUserPrivileges {
     /// Creates a builder for [`ApplicationGlobalUserPrivileges`].
+    ///
+    /// Required: `manage`.
     pub fn builder() -> ApplicationGlobalUserPrivilegesBuilder {
         ApplicationGlobalUserPrivilegesBuilder::new()
     }
 
     /// Creates a [`ApplicationGlobalUserPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApplicationGlobalUserPrivilegesBuilder,
-        ) -> ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `manage`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApplicationGlobalUserPrivileges>>(
+        f: impl FnOnce(ApplicationGlobalUserPrivilegesBuilder) -> B,
     ) -> ApplicationGlobalUserPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApplicationGlobalUserPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod application_global_user_privileges_members {
+    pub struct manage;
 }
 
 /// Builder for [`ApplicationGlobalUserPrivileges`].
@@ -867,6 +772,7 @@ impl<S0> ApplicationGlobalUserPrivilegesBuilder<(S0,)> {
 }
 
 impl ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn manage(
         self,
         value: impl Into<ManageUserPrivileges>,
@@ -877,39 +783,44 @@ impl ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`manage`](Self::manage) with a builder.
-    pub fn manage_with(
+    pub fn manage_with<B: crate::typed::builder::Build<Output = ManageUserPrivileges>>(
         self,
-        f: impl FnOnce(
-            ManageUserPrivilegesBuilder,
-        ) -> ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ManageUserPrivilegesBuilder) -> B,
     ) -> ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
         self.manage(f(ManageUserPrivilegesBuilder::new()).build())
     }
 }
 
-impl ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ApplicationGlobalUserPrivilegesBuilder<(S0,)> {
     /// Builds a [`ApplicationGlobalUserPrivileges`].
-    pub fn build(self) -> ApplicationGlobalUserPrivileges {
+    pub fn build(self) -> ApplicationGlobalUserPrivileges
+    where
+        S0: crate::typed::builder::IsSet<application_global_user_privileges_members::manage>,
+    {
         ApplicationGlobalUserPrivileges {
             manage: self.manage.unwrap(),
         }
     }
 }
 
-impl From<ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)>>
-    for ApplicationGlobalUserPrivileges
+impl<S0> crate::typed::builder::Build for ApplicationGlobalUserPrivilegesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<application_global_user_privileges_members::manage>,
 {
-    fn from(
-        builder: ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ApplicationGlobalUserPrivileges;
+
+    fn build(self) -> ApplicationGlobalUserPrivileges {
+        Self::build(self)
     }
 }
 
-impl ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `manage` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, manage: crate::typed::builder::MissingRequiredField) -> ApplicationGlobalUserPrivileges { match manage {} }
+impl<S0> From<ApplicationGlobalUserPrivilegesBuilder<(S0,)>> for ApplicationGlobalUserPrivileges
+where
+    S0: crate::typed::builder::IsSet<application_global_user_privileges_members::manage>,
+{
+    fn from(builder: ApplicationGlobalUserPrivilegesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -924,22 +835,29 @@ pub struct ApplicationPrivileges {
 
 impl ApplicationPrivileges {
     /// Creates a builder for [`ApplicationPrivileges`].
+    ///
+    /// Required: `application`, `privileges`, `resources`.
     pub fn builder() -> ApplicationPrivilegesBuilder {
         ApplicationPrivilegesBuilder::new()
     }
 
     /// Creates a [`ApplicationPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApplicationPrivilegesBuilder,
-        ) -> ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `application`, `privileges`, `resources`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApplicationPrivileges>>(
+        f: impl FnOnce(ApplicationPrivilegesBuilder) -> B,
     ) -> ApplicationPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApplicationPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod application_privileges_members {
+    pub struct application;
+    pub struct privileges;
+    pub struct resources;
 }
 
 /// Builder for [`ApplicationPrivileges`].
@@ -986,7 +904,7 @@ impl<S0, S1, S2> ApplicationPrivilegesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ApplicationPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The name of the application to which this entry applies.
+    /// **Required.** The name of the application to which this entry applies.
     pub fn application(
         self,
         value: impl Into<String>,
@@ -998,7 +916,7 @@ impl<S1, S2> ApplicationPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2
 }
 
 impl<S0, S2> ApplicationPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A list of strings, where each element is the name of an application privilege or action.
+    /// **Required.** A list of strings, where each element is the name of an application privilege or action.
     pub fn privileges(
         self,
         value: impl Into<Vec<String>>,
@@ -1033,7 +951,7 @@ impl<S0, S2> ApplicationPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> 
 }
 
 impl<S0, S1> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// A list resources to which the privileges are applied.
+    /// **Required.** A list resources to which the privileges are applied.
     pub fn resources(
         self,
         value: impl Into<Vec<String>>,
@@ -1067,15 +985,14 @@ impl<S0, S1> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)> 
     }
 }
 
-impl
-    ApplicationPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ApplicationPrivilegesBuilder<(S0, S1, S2)> {
     /// Builds a [`ApplicationPrivileges`].
-    pub fn build(self) -> ApplicationPrivileges {
+    pub fn build(self) -> ApplicationPrivileges
+    where
+        S0: crate::typed::builder::IsSet<application_privileges_members::application>,
+        S1: crate::typed::builder::IsSet<application_privileges_members::privileges>,
+        S2: crate::typed::builder::IsSet<application_privileges_members::resources>,
+    {
         ApplicationPrivileges {
             application: self.application.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -1084,54 +1001,28 @@ impl
     }
 }
 
-impl
-    From<
-        ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ApplicationPrivileges
+impl<S0, S1, S2> crate::typed::builder::Build for ApplicationPrivilegesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<application_privileges_members::application>,
+    S1: crate::typed::builder::IsSet<application_privileges_members::privileges>,
+    S2: crate::typed::builder::IsSet<application_privileges_members::resources>,
 {
-    fn from(
-        builder: ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ApplicationPrivileges;
+
+    fn build(self) -> ApplicationPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ApplicationPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `application` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, application: crate::typed::builder::MissingRequiredField) -> ApplicationPrivileges { match application {} }
-}
-
-impl<S2>
-    ApplicationPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ApplicationPrivilegesBuilder<(S0, S1, S2)>> for ApplicationPrivileges
+where
+    S0: crate::typed::builder::IsSet<application_privileges_members::application>,
+    S1: crate::typed::builder::IsSet<application_privileges_members::privileges>,
+    S2: crate::typed::builder::IsSet<application_privileges_members::resources>,
 {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> ApplicationPrivileges { match privileges {} }
-}
-
-impl
-    ApplicationPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `resources` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resources: crate::typed::builder::MissingRequiredField) -> ApplicationPrivileges { match resources {} }
+    fn from(builder: ApplicationPrivilegesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1144,19 +1035,28 @@ pub struct BulkError {
 
 impl BulkError {
     /// Creates a builder for [`BulkError`].
+    ///
+    /// Required: `count`, `details`.
     pub fn builder() -> BulkErrorBuilder {
         BulkErrorBuilder::new()
     }
 
     /// Creates a [`BulkError`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BulkErrorBuilder,
-        )
-            -> BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `count`, `details`.
+    pub fn of<B: crate::typed::builder::Build<Output = BulkError>>(
+        f: impl FnOnce(BulkErrorBuilder) -> B,
     ) -> BulkError {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BulkErrorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bulk_error_members {
+    pub struct count;
+    pub struct details;
 }
 
 /// Builder for [`BulkError`].
@@ -1188,7 +1088,7 @@ impl<S0, S1> BulkErrorBuilder<(S0, S1)> {
 }
 
 impl<S1> BulkErrorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The number of errors
+    /// **Required.** The number of errors
     pub fn count(self, value: i32) -> BulkErrorBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -1197,7 +1097,7 @@ impl<S1> BulkErrorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Details about the errors, keyed by role name
+    /// **Required.** Details about the errors, keyed by role name
     pub fn details(
         self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::_types::ErrorCause>>,
@@ -1222,13 +1122,12 @@ impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
         self.add_details(
             key,
@@ -1251,13 +1150,12 @@ impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.add_details(
             key,
@@ -1266,9 +1164,13 @@ impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> BulkErrorBuilder<(S0, S1)> {
     /// Builds a [`BulkError`].
-    pub fn build(self) -> BulkError {
+    pub fn build(self) -> BulkError
+    where
+        S0: crate::typed::builder::IsSet<bulk_error_members::count>,
+        S1: crate::typed::builder::IsSet<bulk_error_members::details>,
+    {
         BulkError {
             count: self.count.unwrap(),
             details: self.details.unwrap(),
@@ -1276,26 +1178,26 @@ impl BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for BulkError
+impl<S0, S1> crate::typed::builder::Build for BulkErrorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<bulk_error_members::count>,
+    S1: crate::typed::builder::IsSet<bulk_error_members::details>,
 {
-    fn from(
-        builder: BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = BulkError;
+
+    fn build(self) -> BulkError {
+        Self::build(self)
     }
 }
 
-impl<S1> BulkErrorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> BulkError { match count {} }
-}
-
-impl BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, details: crate::typed::builder::MissingRequiredField) -> BulkError { match details {} }
+impl<S0, S1> From<BulkErrorBuilder<(S0, S1)>> for BulkError
+where
+    S0: crate::typed::builder::IsSet<bulk_error_members::count>,
+    S1: crate::typed::builder::IsSet<bulk_error_members::details>,
+{
+    fn from(builder: BulkErrorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1305,16 +1207,27 @@ pub struct ClusterNode {
 
 impl ClusterNode {
     /// Creates a builder for [`ClusterNode`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> ClusterNodeBuilder {
         ClusterNodeBuilder::new()
     }
 
     /// Creates a [`ClusterNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ClusterNodeBuilder) -> ClusterNodeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterNode>>(
+        f: impl FnOnce(ClusterNodeBuilder) -> B,
     ) -> ClusterNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_node_members {
+    pub struct name;
 }
 
 /// Builder for [`ClusterNode`].
@@ -1343,6 +1256,7 @@ impl<S0> ClusterNodeBuilder<(S0,)> {
 }
 
 impl ClusterNodeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1353,25 +1267,36 @@ impl ClusterNodeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClusterNodeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClusterNodeBuilder<(S0,)> {
     /// Builds a [`ClusterNode`].
-    pub fn build(self) -> ClusterNode {
+    pub fn build(self) -> ClusterNode
+    where
+        S0: crate::typed::builder::IsSet<cluster_node_members::name>,
+    {
         ClusterNode {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<ClusterNodeBuilder<(crate::typed::builder::Set,)>> for ClusterNode {
-    fn from(builder: ClusterNodeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ClusterNodeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cluster_node_members::name>,
+{
+    type Output = ClusterNode;
+
+    fn build(self) -> ClusterNode {
+        Self::build(self)
     }
 }
 
-impl ClusterNodeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ClusterNode { match name {} }
+impl<S0> From<ClusterNodeBuilder<(S0,)>> for ClusterNode
+where
+    S0: crate::typed::builder::IsSet<cluster_node_members::name>,
+{
+    fn from(builder: ClusterNodeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1517,16 +1442,27 @@ pub struct CreatedStatus {
 
 impl CreatedStatus {
     /// Creates a builder for [`CreatedStatus`].
+    ///
+    /// Required: `created`.
     pub fn builder() -> CreatedStatusBuilder {
         CreatedStatusBuilder::new()
     }
 
     /// Creates a [`CreatedStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CreatedStatusBuilder) -> CreatedStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `created`.
+    pub fn of<B: crate::typed::builder::Build<Output = CreatedStatus>>(
+        f: impl FnOnce(CreatedStatusBuilder) -> B,
     ) -> CreatedStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CreatedStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod created_status_members {
+    pub struct created;
 }
 
 /// Builder for [`CreatedStatus`].
@@ -1555,6 +1491,7 @@ impl<S0> CreatedStatusBuilder<(S0,)> {
 }
 
 impl CreatedStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn created(self, value: bool) -> CreatedStatusBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.created = Some(value);
@@ -1562,25 +1499,36 @@ impl CreatedStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CreatedStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CreatedStatusBuilder<(S0,)> {
     /// Builds a [`CreatedStatus`].
-    pub fn build(self) -> CreatedStatus {
+    pub fn build(self) -> CreatedStatus
+    where
+        S0: crate::typed::builder::IsSet<created_status_members::created>,
+    {
         CreatedStatus {
             created: self.created.unwrap(),
         }
     }
 }
 
-impl From<CreatedStatusBuilder<(crate::typed::builder::Set,)>> for CreatedStatus {
-    fn from(builder: CreatedStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CreatedStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<created_status_members::created>,
+{
+    type Output = CreatedStatus;
+
+    fn build(self) -> CreatedStatus {
+        Self::build(self)
     }
 }
 
-impl CreatedStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `created` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, created: crate::typed::builder::MissingRequiredField) -> CreatedStatus { match created {} }
+impl<S0> From<CreatedStatusBuilder<(S0,)>> for CreatedStatus
+where
+    S0: crate::typed::builder::IsSet<created_status_members::created>,
+{
+    fn from(builder: CreatedStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1620,21 +1568,28 @@ pub struct DataSourcePrivileges {
 
 impl DataSourcePrivileges {
     /// Creates a builder for [`DataSourcePrivileges`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> DataSourcePrivilegesBuilder {
         DataSourcePrivilegesBuilder::new()
     }
 
     /// Creates a [`DataSourcePrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataSourcePrivilegesBuilder,
-        ) -> DataSourcePrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataSourcePrivileges>>(
+        f: impl FnOnce(DataSourcePrivilegesBuilder) -> B,
     ) -> DataSourcePrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataSourcePrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_source_privileges_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`DataSourcePrivileges`].
@@ -1668,7 +1623,7 @@ impl<S0, S1> DataSourcePrivilegesBuilder<(S0, S1)> {
 }
 
 impl<S1> DataSourcePrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of data source names or wildcard patterns to which the permissions in this entry apply.
+    /// **Required.** A list of data source names or wildcard patterns to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<Vec<String>>,
@@ -1703,7 +1658,7 @@ impl<S1> DataSourcePrivilegesBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The data source privileges that owners of the role have for the specified data sources.
+    /// **Required.** The data source privileges that owners of the role have for the specified data sources.
     pub fn privileges(
         self,
         value: impl Into<Vec<DataSourcePrivilege>>,
@@ -1737,9 +1692,13 @@ impl<S0> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl DataSourcePrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataSourcePrivilegesBuilder<(S0, S1)> {
     /// Builds a [`DataSourcePrivileges`].
-    pub fn build(self) -> DataSourcePrivileges {
+    pub fn build(self) -> DataSourcePrivileges
+    where
+        S0: crate::typed::builder::IsSet<data_source_privileges_members::names>,
+        S1: crate::typed::builder::IsSet<data_source_privileges_members::privileges>,
+    {
         DataSourcePrivileges {
             names: self.names.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -1747,29 +1706,26 @@ impl DataSourcePrivilegesBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<DataSourcePrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DataSourcePrivileges
+impl<S0, S1> crate::typed::builder::Build for DataSourcePrivilegesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<data_source_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<data_source_privileges_members::privileges>,
 {
-    fn from(
-        builder: DataSourcePrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataSourcePrivileges;
+
+    fn build(self) -> DataSourcePrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1> DataSourcePrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> DataSourcePrivileges { match names {} }
-}
-
-impl DataSourcePrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> DataSourcePrivileges { match privileges {} }
+impl<S0, S1> From<DataSourcePrivilegesBuilder<(S0, S1)>> for DataSourcePrivileges
+where
+    S0: crate::typed::builder::IsSet<data_source_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<data_source_privileges_members::privileges>,
+{
+    fn from(builder: DataSourcePrivilegesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1787,7 +1743,9 @@ impl FieldSecurity {
     }
 
     /// Creates a [`FieldSecurity`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder) -> FieldSecurity {
+    pub fn of<B: crate::typed::builder::Build<Output = FieldSecurity>>(
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
+    ) -> FieldSecurity {
         f(Self::builder()).build()
     }
 }
@@ -1842,6 +1800,14 @@ impl FieldSecurityBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FieldSecurityBuilder {
+    type Output = FieldSecurity;
+
+    fn build(self) -> FieldSecurity {
+        Self::build(self)
+    }
+}
+
 impl From<FieldSecurityBuilder> for FieldSecurity {
     fn from(builder: FieldSecurityBuilder) -> Self {
         builder.build()
@@ -1870,7 +1836,9 @@ impl GlobalPrivilege {
     }
 
     /// Creates a [`GlobalPrivilege`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GlobalPrivilegeBuilder) -> GlobalPrivilegeBuilder) -> GlobalPrivilege {
+    pub fn of<B: crate::typed::builder::Build<Output = GlobalPrivilege>>(
+        f: impl FnOnce(GlobalPrivilegeBuilder) -> B,
+    ) -> GlobalPrivilege {
         f(Self::builder()).build()
     }
 }
@@ -1908,11 +1876,11 @@ impl GlobalPrivilegeBuilder {
     }
 
     /// Sets [`application`](Self::application) with a builder.
-    pub fn application_with(
+    pub fn application_with<
+        B: crate::typed::builder::Build<Output = ApplicationGlobalUserPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            ApplicationGlobalUserPrivilegesBuilder,
-        ) -> ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ApplicationGlobalUserPrivilegesBuilder) -> B,
     ) -> Self {
         self.application(f(ApplicationGlobalUserPrivilegesBuilder::new()).build())
     }
@@ -1930,11 +1898,11 @@ impl GlobalPrivilegeBuilder {
     }
 
     /// Sets [`profile`](Self::profile) with a builder.
-    pub fn profile_with(
+    pub fn profile_with<
+        B: crate::typed::builder::Build<Output = WriteProfileGlobalUserPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            WriteProfileGlobalUserPrivilegesBuilder,
-        ) -> WriteProfileGlobalUserPrivilegesBuilder,
+        f: impl FnOnce(WriteProfileGlobalUserPrivilegesBuilder) -> B,
     ) -> Self {
         self.profile(f(WriteProfileGlobalUserPrivilegesBuilder::new()).build())
     }
@@ -1952,9 +1920,9 @@ impl GlobalPrivilegeBuilder {
     }
 
     /// Sets [`role`](Self::role) with a builder.
-    pub fn role_with(
+    pub fn role_with<B: crate::typed::builder::Build<Output = ManageRolesGlobalUserPrivileges>>(
         self,
-        f: impl FnOnce(ManageRolesGlobalUserPrivilegesBuilder) -> ManageRolesGlobalUserPrivilegesBuilder,
+        f: impl FnOnce(ManageRolesGlobalUserPrivilegesBuilder) -> B,
     ) -> Self {
         self.role(f(ManageRolesGlobalUserPrivilegesBuilder::new()).build())
     }
@@ -1980,14 +1948,9 @@ impl GlobalPrivilegeBuilder {
     }
 
     /// Adds an element to [`data_source`](Self::data_source), with a builder.
-    pub fn add_data_source_with(
+    pub fn add_data_source_with<B: crate::typed::builder::Build<Output = DataSourcePrivileges>>(
         self,
-        f: impl FnOnce(
-            DataSourcePrivilegesBuilder,
-        ) -> DataSourcePrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataSourcePrivilegesBuilder) -> B,
     ) -> Self {
         self.add_data_source(f(DataSourcePrivilegesBuilder::new()).build())
     }
@@ -2002,6 +1965,14 @@ impl GlobalPrivilegeBuilder {
             role: self.role,
             data_source: self.data_source,
         }
+    }
+}
+
+impl crate::typed::builder::Build for GlobalPrivilegeBuilder {
+    type Output = GlobalPrivilege;
+
+    fn build(self) -> GlobalPrivilege {
+        Self::build(self)
     }
 }
 
@@ -2122,21 +2093,28 @@ impl From<&str> for IndicesPrivilegesNames {
 
 impl IndicesPrivileges {
     /// Creates a builder for [`IndicesPrivileges`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> IndicesPrivilegesBuilder {
         IndicesPrivilegesBuilder::new()
     }
 
     /// Creates a [`IndicesPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesPrivilegesBuilder,
-        ) -> IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesPrivileges>>(
+        f: impl FnOnce(IndicesPrivilegesBuilder) -> B,
     ) -> IndicesPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_privileges_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`IndicesPrivileges`].
@@ -2190,9 +2168,9 @@ impl<S0, S1> IndicesPrivilegesBuilder<(S0, S1)> {
     }
 
     /// Sets [`field_security`](Self::field_security) with a builder.
-    pub fn field_security_with(
+    pub fn field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -2223,7 +2201,7 @@ impl<S0, S1> IndicesPrivilegesBuilder<(S0, S1)> {
 }
 
 impl<S1> IndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<IndicesPrivilegesNames>,
@@ -2235,7 +2213,7 @@ impl<S1> IndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -2269,9 +2247,13 @@ impl<S0> IndicesPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndicesPrivilegesBuilder<(S0, S1)> {
     /// Builds a [`IndicesPrivileges`].
-    pub fn build(self) -> IndicesPrivileges {
+    pub fn build(self) -> IndicesPrivileges
+    where
+        S0: crate::typed::builder::IsSet<indices_privileges_members::names>,
+        S1: crate::typed::builder::IsSet<indices_privileges_members::privileges>,
+    {
         IndicesPrivileges {
             field_security: self.field_security,
             names: self.names.unwrap(),
@@ -2282,26 +2264,26 @@ impl IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndicesPrivileges
+impl<S0, S1> crate::typed::builder::Build for IndicesPrivilegesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_members::privileges>,
 {
-    fn from(
-        builder: IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IndicesPrivileges;
+
+    fn build(self) -> IndicesPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1> IndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> IndicesPrivileges { match names {} }
-}
-
-impl IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> IndicesPrivileges { match privileges {} }
+impl<S0, S1> From<IndicesPrivilegesBuilder<(S0, S1)>> for IndicesPrivileges
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_members::privileges>,
+{
+    fn from(builder: IndicesPrivilegesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2348,21 +2330,28 @@ impl From<&str> for IndicesPrivilegesBaseNames {
 
 impl IndicesPrivilegesBase {
     /// Creates a builder for [`IndicesPrivilegesBase`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> IndicesPrivilegesBaseBuilder {
         IndicesPrivilegesBaseBuilder::new()
     }
 
     /// Creates a [`IndicesPrivilegesBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesPrivilegesBaseBuilder,
-        ) -> IndicesPrivilegesBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesPrivilegesBase>>(
+        f: impl FnOnce(IndicesPrivilegesBaseBuilder) -> B,
     ) -> IndicesPrivilegesBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesPrivilegesBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_privileges_base_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`IndicesPrivilegesBase`].
@@ -2416,9 +2405,9 @@ impl<S0, S1> IndicesPrivilegesBaseBuilder<(S0, S1)> {
     }
 
     /// Sets [`field_security`](Self::field_security) with a builder.
-    pub fn field_security_with(
+    pub fn field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -2449,7 +2438,7 @@ impl<S0, S1> IndicesPrivilegesBaseBuilder<(S0, S1)> {
 }
 
 impl<S1> IndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<IndicesPrivilegesBaseNames>,
@@ -2461,7 +2450,7 @@ impl<S1> IndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -2495,9 +2484,13 @@ impl<S0> IndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndicesPrivilegesBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndicesPrivilegesBaseBuilder<(S0, S1)> {
     /// Builds a [`IndicesPrivilegesBase`].
-    pub fn build(self) -> IndicesPrivilegesBase {
+    pub fn build(self) -> IndicesPrivilegesBase
+    where
+        S0: crate::typed::builder::IsSet<indices_privileges_base_members::names>,
+        S1: crate::typed::builder::IsSet<indices_privileges_base_members::privileges>,
+    {
         IndicesPrivilegesBase {
             field_security: self.field_security,
             names: self.names.unwrap(),
@@ -2508,29 +2501,26 @@ impl IndicesPrivilegesBaseBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<IndicesPrivilegesBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndicesPrivilegesBase
+impl<S0, S1> crate::typed::builder::Build for IndicesPrivilegesBaseBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_base_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_base_members::privileges>,
 {
-    fn from(
-        builder: IndicesPrivilegesBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndicesPrivilegesBase;
+
+    fn build(self) -> IndicesPrivilegesBase {
+        Self::build(self)
     }
 }
 
-impl<S1> IndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> IndicesPrivilegesBase { match names {} }
-}
-
-impl IndicesPrivilegesBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> IndicesPrivilegesBase { match privileges {} }
+impl<S0, S1> From<IndicesPrivilegesBaseBuilder<(S0, S1)>> for IndicesPrivilegesBase
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_base_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_base_members::privileges>,
+{
+    fn from(builder: IndicesPrivilegesBaseBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// While creating or updating a role you can provide either a JSON structure or a string to the API.
@@ -2584,8 +2574,8 @@ impl ManageRolesGlobalUserPrivileges {
     }
 
     /// Creates a [`ManageRolesGlobalUserPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ManageRolesGlobalUserPrivilegesBuilder) -> ManageRolesGlobalUserPrivilegesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ManageRolesGlobalUserPrivileges>>(
+        f: impl FnOnce(ManageRolesGlobalUserPrivilegesBuilder) -> B,
     ) -> ManageRolesGlobalUserPrivileges {
         f(Self::builder()).build()
     }
@@ -2618,11 +2608,9 @@ impl ManageRolesGlobalUserPrivilegesBuilder {
     }
 
     /// Sets [`manage`](Self::manage) with a builder.
-    pub fn manage_with(
+    pub fn manage_with<B: crate::typed::builder::Build<Output = ManageRolesPrivileges>>(
         self,
-        f: impl FnOnce(
-            ManageRolesPrivilegesBuilder,
-        ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ManageRolesPrivilegesBuilder) -> B,
     ) -> Self {
         self.manage(f(ManageRolesPrivilegesBuilder::new()).build())
     }
@@ -2634,6 +2622,14 @@ impl ManageRolesGlobalUserPrivilegesBuilder {
         ManageRolesGlobalUserPrivileges {
             manage: self.manage,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ManageRolesGlobalUserPrivilegesBuilder {
+    type Output = ManageRolesGlobalUserPrivileges;
+
+    fn build(self) -> ManageRolesGlobalUserPrivileges {
+        Self::build(self)
     }
 }
 
@@ -2653,21 +2649,28 @@ pub struct ManageRolesIndexPermissions {
 
 impl ManageRolesIndexPermissions {
     /// Creates a builder for [`ManageRolesIndexPermissions`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> ManageRolesIndexPermissionsBuilder {
         ManageRolesIndexPermissionsBuilder::new()
     }
 
     /// Creates a [`ManageRolesIndexPermissions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ManageRolesIndexPermissionsBuilder,
-        ) -> ManageRolesIndexPermissionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = ManageRolesIndexPermissions>>(
+        f: impl FnOnce(ManageRolesIndexPermissionsBuilder) -> B,
     ) -> ManageRolesIndexPermissions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ManageRolesIndexPermissionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod manage_roles_index_permissions_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`ManageRolesIndexPermissions`].
@@ -2706,7 +2709,7 @@ impl<S0, S1> ManageRolesIndexPermissionsBuilder<(S0, S1)> {
 }
 
 impl<S1> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of indices (or index name patterns) that the owners of the role can manage roles for.
+    /// **Required.** A list of indices (or index name patterns) that the owners of the role can manage roles for.
     pub fn names(
         self,
         value: impl Into<Vec<String>>,
@@ -2741,7 +2744,7 @@ impl<S1> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The index privileges that the managed roles are allowed to grant on the specified indices.
+    /// **Required.** The index privileges that the managed roles are allowed to grant on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<String>>,
@@ -2775,9 +2778,13 @@ impl<S0> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ManageRolesIndexPermissionsBuilder<(S0, S1)> {
     /// Builds a [`ManageRolesIndexPermissions`].
-    pub fn build(self) -> ManageRolesIndexPermissions {
+    pub fn build(self) -> ManageRolesIndexPermissions
+    where
+        S0: crate::typed::builder::IsSet<manage_roles_index_permissions_members::names>,
+        S1: crate::typed::builder::IsSet<manage_roles_index_permissions_members::privileges>,
+    {
         ManageRolesIndexPermissions {
             names: self.names.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -2785,36 +2792,26 @@ impl ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, crate::type
     }
 }
 
-impl
-    From<
-        ManageRolesIndexPermissionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ManageRolesIndexPermissions
+impl<S0, S1> crate::typed::builder::Build for ManageRolesIndexPermissionsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<manage_roles_index_permissions_members::names>,
+    S1: crate::typed::builder::IsSet<manage_roles_index_permissions_members::privileges>,
 {
-    fn from(
-        builder: ManageRolesIndexPermissionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ManageRolesIndexPermissions;
+
+    fn build(self) -> ManageRolesIndexPermissions {
+        Self::build(self)
     }
 }
 
-impl<S1> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> ManageRolesIndexPermissions { match names {} }
-}
-
-impl
-    ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<ManageRolesIndexPermissionsBuilder<(S0, S1)>> for ManageRolesIndexPermissions
+where
+    S0: crate::typed::builder::IsSet<manage_roles_index_permissions_members::names>,
+    S1: crate::typed::builder::IsSet<manage_roles_index_permissions_members::privileges>,
 {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> ManageRolesIndexPermissions { match privileges {} }
+    fn from(builder: ManageRolesIndexPermissionsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2824,18 +2821,27 @@ pub struct ManageRolesPrivileges {
 
 impl ManageRolesPrivileges {
     /// Creates a builder for [`ManageRolesPrivileges`].
+    ///
+    /// Required: `indices`.
     pub fn builder() -> ManageRolesPrivilegesBuilder {
         ManageRolesPrivilegesBuilder::new()
     }
 
     /// Creates a [`ManageRolesPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ManageRolesPrivilegesBuilder,
-        ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = ManageRolesPrivileges>>(
+        f: impl FnOnce(ManageRolesPrivilegesBuilder) -> B,
     ) -> ManageRolesPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ManageRolesPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod manage_roles_privileges_members {
+    pub struct indices;
 }
 
 /// Builder for [`ManageRolesPrivileges`].
@@ -2864,6 +2870,7 @@ impl<S0> ManageRolesPrivilegesBuilder<(S0,)> {
 }
 
 impl ManageRolesPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<ManageRolesIndexPermissions>>,
@@ -2887,14 +2894,11 @@ impl ManageRolesPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = ManageRolesIndexPermissions>,
+    >(
         self,
-        f: impl FnOnce(
-            ManageRolesIndexPermissionsBuilder,
-        ) -> ManageRolesIndexPermissionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ManageRolesIndexPermissionsBuilder) -> B,
     ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
         self.add_indices(f(ManageRolesIndexPermissionsBuilder::new()).build())
     }
@@ -2910,38 +2914,46 @@ impl ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = ManageRolesIndexPermissions>,
+    >(
         self,
-        f: impl FnOnce(
-            ManageRolesIndexPermissionsBuilder,
-        ) -> ManageRolesIndexPermissionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ManageRolesIndexPermissionsBuilder) -> B,
     ) -> Self {
         self.add_indices(f(ManageRolesIndexPermissionsBuilder::new()).build())
     }
 }
 
-impl ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ManageRolesPrivilegesBuilder<(S0,)> {
     /// Builds a [`ManageRolesPrivileges`].
-    pub fn build(self) -> ManageRolesPrivileges {
+    pub fn build(self) -> ManageRolesPrivileges
+    where
+        S0: crate::typed::builder::IsSet<manage_roles_privileges_members::indices>,
+    {
         ManageRolesPrivileges {
             indices: self.indices.unwrap(),
         }
     }
 }
 
-impl From<ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)>> for ManageRolesPrivileges {
-    fn from(builder: ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ManageRolesPrivilegesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<manage_roles_privileges_members::indices>,
+{
+    type Output = ManageRolesPrivileges;
+
+    fn build(self) -> ManageRolesPrivileges {
+        Self::build(self)
     }
 }
 
-impl ManageRolesPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> ManageRolesPrivileges { match indices {} }
+impl<S0> From<ManageRolesPrivilegesBuilder<(S0,)>> for ManageRolesPrivileges
+where
+    S0: crate::typed::builder::IsSet<manage_roles_privileges_members::indices>,
+{
+    fn from(builder: ManageRolesPrivilegesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2951,18 +2963,27 @@ pub struct ManageUserPrivileges {
 
 impl ManageUserPrivileges {
     /// Creates a builder for [`ManageUserPrivileges`].
+    ///
+    /// Required: `applications`.
     pub fn builder() -> ManageUserPrivilegesBuilder {
         ManageUserPrivilegesBuilder::new()
     }
 
     /// Creates a [`ManageUserPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ManageUserPrivilegesBuilder,
-        ) -> ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `applications`.
+    pub fn of<B: crate::typed::builder::Build<Output = ManageUserPrivileges>>(
+        f: impl FnOnce(ManageUserPrivilegesBuilder) -> B,
     ) -> ManageUserPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ManageUserPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod manage_user_privileges_members {
+    pub struct applications;
 }
 
 /// Builder for [`ManageUserPrivileges`].
@@ -2991,6 +3012,7 @@ impl<S0> ManageUserPrivilegesBuilder<(S0,)> {
 }
 
 impl ManageUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn applications(
         self,
         value: impl Into<Vec<String>>,
@@ -3024,25 +3046,36 @@ impl ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ManageUserPrivilegesBuilder<(S0,)> {
     /// Builds a [`ManageUserPrivileges`].
-    pub fn build(self) -> ManageUserPrivileges {
+    pub fn build(self) -> ManageUserPrivileges
+    where
+        S0: crate::typed::builder::IsSet<manage_user_privileges_members::applications>,
+    {
         ManageUserPrivileges {
             applications: self.applications.unwrap(),
         }
     }
 }
 
-impl From<ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>> for ManageUserPrivileges {
-    fn from(builder: ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ManageUserPrivilegesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<manage_user_privileges_members::applications>,
+{
+    type Output = ManageUserPrivileges;
+
+    fn build(self) -> ManageUserPrivileges {
+        Self::build(self)
     }
 }
 
-impl ManageUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `applications` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applications: crate::typed::builder::MissingRequiredField) -> ManageUserPrivileges { match applications {} }
+impl<S0> From<ManageUserPrivilegesBuilder<(S0,)>> for ManageUserPrivileges
+where
+    S0: crate::typed::builder::IsSet<manage_user_privileges_members::applications>,
+{
+    fn from(builder: ManageUserPrivilegesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3053,18 +3086,27 @@ pub struct NodeSecurityStats {
 
 impl NodeSecurityStats {
     /// Creates a builder for [`NodeSecurityStats`].
+    ///
+    /// Required: `roles`.
     pub fn builder() -> NodeSecurityStatsBuilder {
         NodeSecurityStatsBuilder::new()
     }
 
     /// Creates a [`NodeSecurityStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeSecurityStatsBuilder,
-        ) -> NodeSecurityStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `roles`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeSecurityStats>>(
+        f: impl FnOnce(NodeSecurityStatsBuilder) -> B,
     ) -> NodeSecurityStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeSecurityStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_security_stats_members {
+    pub struct roles;
 }
 
 /// Builder for [`NodeSecurityStats`].
@@ -3093,7 +3135,7 @@ impl<S0> NodeSecurityStatsBuilder<(S0,)> {
 }
 
 impl NodeSecurityStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Role statistics.
+    /// **Required.** Role statistics.
     pub fn roles(
         self,
         value: impl Into<RolesStats>,
@@ -3104,33 +3146,44 @@ impl NodeSecurityStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`roles`](Self::roles) with a builder.
-    pub fn roles_with(
+    pub fn roles_with<B: crate::typed::builder::Build<Output = RolesStats>>(
         self,
-        f: impl FnOnce(RolesStatsBuilder) -> RolesStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RolesStatsBuilder) -> B,
     ) -> NodeSecurityStatsBuilder<(crate::typed::builder::Set,)> {
         self.roles(f(RolesStatsBuilder::new()).build())
     }
 }
 
-impl NodeSecurityStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeSecurityStatsBuilder<(S0,)> {
     /// Builds a [`NodeSecurityStats`].
-    pub fn build(self) -> NodeSecurityStats {
+    pub fn build(self) -> NodeSecurityStats
+    where
+        S0: crate::typed::builder::IsSet<node_security_stats_members::roles>,
+    {
         NodeSecurityStats {
             roles: self.roles.unwrap(),
         }
     }
 }
 
-impl From<NodeSecurityStatsBuilder<(crate::typed::builder::Set,)>> for NodeSecurityStats {
-    fn from(builder: NodeSecurityStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeSecurityStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_security_stats_members::roles>,
+{
+    type Output = NodeSecurityStats;
+
+    fn build(self) -> NodeSecurityStats {
+        Self::build(self)
     }
 }
 
-impl NodeSecurityStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> NodeSecurityStats { match roles {} }
+impl<S0> From<NodeSecurityStatsBuilder<(S0,)>> for NodeSecurityStats
+where
+    S0: crate::typed::builder::IsSet<node_security_stats_members::roles>,
+{
+    fn from(builder: NodeSecurityStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3141,19 +3194,28 @@ pub struct RealmInfo {
 
 impl RealmInfo {
     /// Creates a builder for [`RealmInfo`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> RealmInfoBuilder {
         RealmInfoBuilder::new()
     }
 
     /// Creates a [`RealmInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RealmInfoBuilder,
-        )
-            -> RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RealmInfo>>(
+        f: impl FnOnce(RealmInfoBuilder) -> B,
     ) -> RealmInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RealmInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod realm_info_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`RealmInfo`].
@@ -3185,6 +3247,7 @@ impl<S0, S1> RealmInfoBuilder<(S0, S1)> {
 }
 
 impl<S1> RealmInfoBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -3196,6 +3259,7 @@ impl<S1> RealmInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RealmInfoBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3206,9 +3270,13 @@ impl<S0> RealmInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RealmInfoBuilder<(S0, S1)> {
     /// Builds a [`RealmInfo`].
-    pub fn build(self) -> RealmInfo {
+    pub fn build(self) -> RealmInfo
+    where
+        S0: crate::typed::builder::IsSet<realm_info_members::name>,
+        S1: crate::typed::builder::IsSet<realm_info_members::r#type>,
+    {
         RealmInfo {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -3216,26 +3284,26 @@ impl RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RealmInfo
+impl<S0, S1> crate::typed::builder::Build for RealmInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<realm_info_members::name>,
+    S1: crate::typed::builder::IsSet<realm_info_members::r#type>,
 {
-    fn from(
-        builder: RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RealmInfo;
+
+    fn build(self) -> RealmInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> RealmInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> RealmInfo { match name {} }
-}
-
-impl RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RealmInfo { match r#type {} }
+impl<S0, S1> From<RealmInfoBuilder<(S0, S1)>> for RealmInfo
+where
+    S0: crate::typed::builder::IsSet<realm_info_members::name>,
+    S1: crate::typed::builder::IsSet<realm_info_members::r#type>,
+{
+    fn from(builder: RealmInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3257,21 +3325,28 @@ pub struct RemoteClusterPrivileges {
 
 impl RemoteClusterPrivileges {
     /// Creates a builder for [`RemoteClusterPrivileges`].
+    ///
+    /// Required: `clusters`, `privileges`.
     pub fn builder() -> RemoteClusterPrivilegesBuilder {
         RemoteClusterPrivilegesBuilder::new()
     }
 
     /// Creates a [`RemoteClusterPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoteClusterPrivilegesBuilder,
-        ) -> RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `clusters`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoteClusterPrivileges>>(
+        f: impl FnOnce(RemoteClusterPrivilegesBuilder) -> B,
     ) -> RemoteClusterPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoteClusterPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remote_cluster_privileges_members {
+    pub struct clusters;
+    pub struct privileges;
 }
 
 /// Builder for [`RemoteClusterPrivileges`].
@@ -3307,7 +3382,7 @@ impl<S0, S1> RemoteClusterPrivilegesBuilder<(S0, S1)> {
 }
 
 impl<S1> RemoteClusterPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of cluster aliases to which the permissions in this entry apply.
+    /// **Required.** A list of cluster aliases to which the permissions in this entry apply.
     pub fn clusters(
         self,
         value: impl Into<crate::typed::_types::Names>,
@@ -3319,7 +3394,7 @@ impl<S1> RemoteClusterPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RemoteClusterPrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The cluster level privileges that owners of the role have on the remote cluster.
+    /// **Required.** The cluster level privileges that owners of the role have on the remote cluster.
     pub fn privileges(
         self,
         value: impl Into<Vec<RemoteClusterPrivilege>>,
@@ -3353,9 +3428,13 @@ impl<S0> RemoteClusterPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl RemoteClusterPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RemoteClusterPrivilegesBuilder<(S0, S1)> {
     /// Builds a [`RemoteClusterPrivileges`].
-    pub fn build(self) -> RemoteClusterPrivileges {
+    pub fn build(self) -> RemoteClusterPrivileges
+    where
+        S0: crate::typed::builder::IsSet<remote_cluster_privileges_members::clusters>,
+        S1: crate::typed::builder::IsSet<remote_cluster_privileges_members::privileges>,
+    {
         RemoteClusterPrivileges {
             clusters: self.clusters.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -3363,29 +3442,26 @@ impl RemoteClusterPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<RemoteClusterPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RemoteClusterPrivileges
+impl<S0, S1> crate::typed::builder::Build for RemoteClusterPrivilegesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<remote_cluster_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_cluster_privileges_members::privileges>,
 {
-    fn from(
-        builder: RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RemoteClusterPrivileges;
+
+    fn build(self) -> RemoteClusterPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1> RemoteClusterPrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `clusters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clusters: crate::typed::builder::MissingRequiredField) -> RemoteClusterPrivileges { match clusters {} }
-}
-
-impl RemoteClusterPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> RemoteClusterPrivileges { match privileges {} }
+impl<S0, S1> From<RemoteClusterPrivilegesBuilder<(S0, S1)>> for RemoteClusterPrivileges
+where
+    S0: crate::typed::builder::IsSet<remote_cluster_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_cluster_privileges_members::privileges>,
+{
+    fn from(builder: RemoteClusterPrivilegesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The subset of index level privileges that can be defined for remote clusters.
@@ -3435,22 +3511,29 @@ impl From<&str> for RemoteIndicesPrivilegesNames {
 
 impl RemoteIndicesPrivileges {
     /// Creates a builder for [`RemoteIndicesPrivileges`].
+    ///
+    /// Required: `clusters`, `names`, `privileges`.
     pub fn builder() -> RemoteIndicesPrivilegesBuilder {
         RemoteIndicesPrivilegesBuilder::new()
     }
 
     /// Creates a [`RemoteIndicesPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoteIndicesPrivilegesBuilder,
-        ) -> RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `clusters`, `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoteIndicesPrivileges>>(
+        f: impl FnOnce(RemoteIndicesPrivilegesBuilder) -> B,
     ) -> RemoteIndicesPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoteIndicesPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remote_indices_privileges_members {
+    pub struct clusters;
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`RemoteIndicesPrivileges`].
@@ -3517,9 +3600,9 @@ impl<S0, S1, S2> RemoteIndicesPrivilegesBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`field_security`](Self::field_security) with a builder.
-    pub fn field_security_with(
+    pub fn field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -3550,7 +3633,7 @@ impl<S0, S1, S2> RemoteIndicesPrivilegesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RemoteIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// A list of cluster aliases to which the permissions in this entry apply.
+    /// **Required.** A list of cluster aliases to which the permissions in this entry apply.
     pub fn clusters(
         self,
         value: impl Into<crate::typed::_types::Names>,
@@ -3562,7 +3645,7 @@ impl<S1, S2> RemoteIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2> RemoteIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<RemoteIndicesPrivilegesNames>,
@@ -3574,7 +3657,7 @@ impl<S0, S2> RemoteIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1> RemoteIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -3608,15 +3691,14 @@ impl<S0, S1> RemoteIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)
     }
 }
 
-impl
-    RemoteIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RemoteIndicesPrivilegesBuilder<(S0, S1, S2)> {
     /// Builds a [`RemoteIndicesPrivileges`].
-    pub fn build(self) -> RemoteIndicesPrivileges {
+    pub fn build(self) -> RemoteIndicesPrivileges
+    where
+        S0: crate::typed::builder::IsSet<remote_indices_privileges_members::clusters>,
+        S1: crate::typed::builder::IsSet<remote_indices_privileges_members::names>,
+        S2: crate::typed::builder::IsSet<remote_indices_privileges_members::privileges>,
+    {
         RemoteIndicesPrivileges {
             clusters: self.clusters.unwrap(),
             field_security: self.field_security,
@@ -3628,54 +3710,28 @@ impl
     }
 }
 
-impl
-    From<
-        RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RemoteIndicesPrivileges
+impl<S0, S1, S2> crate::typed::builder::Build for RemoteIndicesPrivilegesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<remote_indices_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_indices_privileges_members::names>,
+    S2: crate::typed::builder::IsSet<remote_indices_privileges_members::privileges>,
 {
-    fn from(
-        builder: RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RemoteIndicesPrivileges;
+
+    fn build(self) -> RemoteIndicesPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RemoteIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `clusters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clusters: crate::typed::builder::MissingRequiredField) -> RemoteIndicesPrivileges { match clusters {} }
-}
-
-impl<S2>
-    RemoteIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RemoteIndicesPrivilegesBuilder<(S0, S1, S2)>> for RemoteIndicesPrivileges
+where
+    S0: crate::typed::builder::IsSet<remote_indices_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_indices_privileges_members::names>,
+    S2: crate::typed::builder::IsSet<remote_indices_privileges_members::privileges>,
 {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> RemoteIndicesPrivileges { match names {} }
-}
-
-impl
-    RemoteIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> RemoteIndicesPrivileges { match privileges {} }
+    fn from(builder: RemoteIndicesPrivilegesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3722,23 +3778,30 @@ impl From<&str> for RemoteUserIndicesPrivilegesNames {
 
 impl RemoteUserIndicesPrivileges {
     /// Creates a builder for [`RemoteUserIndicesPrivileges`].
+    ///
+    /// Required: `clusters`, `names`, `privileges`, `allow_restricted_indices`.
     pub fn builder() -> RemoteUserIndicesPrivilegesBuilder {
         RemoteUserIndicesPrivilegesBuilder::new()
     }
 
     /// Creates a [`RemoteUserIndicesPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoteUserIndicesPrivilegesBuilder,
-        ) -> RemoteUserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `clusters`, `names`, `privileges`, `allow_restricted_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoteUserIndicesPrivileges>>(
+        f: impl FnOnce(RemoteUserIndicesPrivilegesBuilder) -> B,
     ) -> RemoteUserIndicesPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoteUserIndicesPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remote_user_indices_privileges_members {
+    pub struct clusters;
+    pub struct names;
+    pub struct privileges;
+    pub struct allow_restricted_indices;
 }
 
 /// Builder for [`RemoteUserIndicesPrivileges`].
@@ -3815,9 +3878,9 @@ impl<S0, S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`field_security`](Self::field_security), with a builder.
-    pub fn add_field_security_with(
+    pub fn add_field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.add_field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -3844,6 +3907,7 @@ impl<S0, S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn clusters(
         self,
         value: impl Into<Vec<String>>,
@@ -3878,7 +3942,7 @@ impl<S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::Set,
 }
 
 impl<S0, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<RemoteUserIndicesPrivilegesNames>,
@@ -3890,7 +3954,7 @@ impl<S0, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -3925,7 +3989,7 @@ impl<S0, S1, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
+    /// **Required.** Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
     pub fn allow_restricted_indices(
         self,
         value: bool,
@@ -3936,16 +4000,17 @@ impl<S0, S1, S2> RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    RemoteUserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RemoteUserIndicesPrivileges`].
-    pub fn build(self) -> RemoteUserIndicesPrivileges {
+    pub fn build(self) -> RemoteUserIndicesPrivileges
+    where
+        S0: crate::typed::builder::IsSet<remote_user_indices_privileges_members::clusters>,
+        S1: crate::typed::builder::IsSet<remote_user_indices_privileges_members::names>,
+        S2: crate::typed::builder::IsSet<remote_user_indices_privileges_members::privileges>,
+        S3: crate::typed::builder::IsSet<
+            remote_user_indices_privileges_members::allow_restricted_indices,
+        >,
+    {
         RemoteUserIndicesPrivileges {
             clusters: self.clusters.unwrap(),
             field_security: self.field_security,
@@ -3957,71 +4022,36 @@ impl
     }
 }
 
-impl
-    From<
-        RemoteUserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RemoteUserIndicesPrivileges
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<remote_user_indices_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_user_indices_privileges_members::names>,
+    S2: crate::typed::builder::IsSet<remote_user_indices_privileges_members::privileges>,
+    S3: crate::typed::builder::IsSet<
+        remote_user_indices_privileges_members::allow_restricted_indices,
+    >,
 {
-    fn from(
-        builder: RemoteUserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RemoteUserIndicesPrivileges;
+
+    fn build(self) -> RemoteUserIndicesPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `clusters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clusters: crate::typed::builder::MissingRequiredField) -> RemoteUserIndicesPrivileges { match clusters {} }
-}
-
-impl<S2, S3>
-    RemoteUserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)>>
+    for RemoteUserIndicesPrivileges
+where
+    S0: crate::typed::builder::IsSet<remote_user_indices_privileges_members::clusters>,
+    S1: crate::typed::builder::IsSet<remote_user_indices_privileges_members::names>,
+    S2: crate::typed::builder::IsSet<remote_user_indices_privileges_members::privileges>,
+    S3: crate::typed::builder::IsSet<
+        remote_user_indices_privileges_members::allow_restricted_indices,
+    >,
 {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> RemoteUserIndicesPrivileges { match names {} }
-}
-
-impl<S3>
-    RemoteUserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> RemoteUserIndicesPrivileges { match privileges {} }
-}
-
-impl
-    RemoteUserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `allow_restricted_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allow_restricted_indices: crate::typed::builder::MissingRequiredField) -> RemoteUserIndicesPrivileges { match allow_restricted_indices {} }
+    fn from(builder: RemoteUserIndicesPrivilegesBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4060,18 +4090,27 @@ impl From<&str> for ReplicationAccessNames {
 
 impl ReplicationAccess {
     /// Creates a builder for [`ReplicationAccess`].
+    ///
+    /// Required: `names`.
     pub fn builder() -> ReplicationAccessBuilder {
         ReplicationAccessBuilder::new()
     }
 
     /// Creates a [`ReplicationAccess`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReplicationAccessBuilder,
-        ) -> ReplicationAccessBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `names`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReplicationAccess>>(
+        f: impl FnOnce(ReplicationAccessBuilder) -> B,
     ) -> ReplicationAccess {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReplicationAccessBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod replication_access_members {
+    pub struct names;
 }
 
 /// Builder for [`ReplicationAccess`].
@@ -4115,7 +4154,7 @@ impl<S0> ReplicationAccessBuilder<(S0,)> {
 }
 
 impl ReplicationAccessBuilder<(crate::typed::builder::NotSet,)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<ReplicationAccessNames>,
@@ -4126,9 +4165,12 @@ impl ReplicationAccessBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ReplicationAccessBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ReplicationAccessBuilder<(S0,)> {
     /// Builds a [`ReplicationAccess`].
-    pub fn build(self) -> ReplicationAccess {
+    pub fn build(self) -> ReplicationAccess
+    where
+        S0: crate::typed::builder::IsSet<replication_access_members::names>,
+    {
         ReplicationAccess {
             names: self.names.unwrap(),
             allow_restricted_indices: self.allow_restricted_indices,
@@ -4136,16 +4178,24 @@ impl ReplicationAccessBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ReplicationAccessBuilder<(crate::typed::builder::Set,)>> for ReplicationAccess {
-    fn from(builder: ReplicationAccessBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ReplicationAccessBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<replication_access_members::names>,
+{
+    type Output = ReplicationAccess;
+
+    fn build(self) -> ReplicationAccess {
+        Self::build(self)
     }
 }
 
-impl ReplicationAccessBuilder<(crate::typed::builder::NotSet,)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> ReplicationAccess { match names {} }
+impl<S0> From<ReplicationAccessBuilder<(S0,)>> for ReplicationAccess
+where
+    S0: crate::typed::builder::IsSet<replication_access_members::names>,
+{
+    fn from(builder: ReplicationAccessBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4157,16 +4207,27 @@ pub struct Restriction {
 
 impl Restriction {
     /// Creates a builder for [`Restriction`].
+    ///
+    /// Required: `workflows`.
     pub fn builder() -> RestrictionBuilder {
         RestrictionBuilder::new()
     }
 
     /// Creates a [`Restriction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RestrictionBuilder) -> RestrictionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `workflows`.
+    pub fn of<B: crate::typed::builder::Build<Output = Restriction>>(
+        f: impl FnOnce(RestrictionBuilder) -> B,
     ) -> Restriction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RestrictionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod restriction_members {
+    pub struct workflows;
 }
 
 /// Builder for [`Restriction`].
@@ -4195,7 +4256,7 @@ impl<S0> RestrictionBuilder<(S0,)> {
 }
 
 impl RestrictionBuilder<(crate::typed::builder::NotSet,)> {
-    /// A list of workflows to which the API key is restricted.
+    /// **Required.** A list of workflows to which the API key is restricted.
     /// NOTE: In order to use a role restriction, an API key must be created with a single role descriptor.
     pub fn workflows(
         self,
@@ -4230,25 +4291,36 @@ impl RestrictionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl RestrictionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RestrictionBuilder<(S0,)> {
     /// Builds a [`Restriction`].
-    pub fn build(self) -> Restriction {
+    pub fn build(self) -> Restriction
+    where
+        S0: crate::typed::builder::IsSet<restriction_members::workflows>,
+    {
         Restriction {
             workflows: self.workflows.unwrap(),
         }
     }
 }
 
-impl From<RestrictionBuilder<(crate::typed::builder::Set,)>> for Restriction {
-    fn from(builder: RestrictionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RestrictionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<restriction_members::workflows>,
+{
+    type Output = Restriction;
+
+    fn build(self) -> Restriction {
+        Self::build(self)
     }
 }
 
-impl RestrictionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `workflows` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, workflows: crate::typed::builder::MissingRequiredField) -> Restriction { match workflows {} }
+impl<S0> From<RestrictionBuilder<(S0,)>> for Restriction
+where
+    S0: crate::typed::builder::IsSet<restriction_members::workflows>,
+{
+    fn from(builder: RestrictionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4303,7 +4375,9 @@ impl RoleDescriptor {
     }
 
     /// Creates a [`RoleDescriptor`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RoleDescriptorBuilder) -> RoleDescriptorBuilder) -> RoleDescriptor {
+    pub fn of<B: crate::typed::builder::Build<Output = RoleDescriptor>>(
+        f: impl FnOnce(RoleDescriptorBuilder) -> B,
+    ) -> RoleDescriptor {
         f(Self::builder()).build()
     }
 }
@@ -4384,14 +4458,9 @@ impl RoleDescriptorBuilder {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndicesPrivileges>>(
         self,
-        f: impl FnOnce(
-            IndicesPrivilegesBuilder,
-        ) -> IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_indices(f(IndicesPrivilegesBuilder::new()).build())
     }
@@ -4417,15 +4486,11 @@ impl RoleDescriptorBuilder {
     }
 
     /// Adds an element to [`remote_indices`](Self::remote_indices), with a builder.
-    pub fn add_remote_indices_with(
+    pub fn add_remote_indices_with<
+        B: crate::typed::builder::Build<Output = RemoteIndicesPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            RemoteIndicesPrivilegesBuilder,
-        ) -> RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoteIndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_indices(f(RemoteIndicesPrivilegesBuilder::new()).build())
     }
@@ -4452,14 +4517,11 @@ impl RoleDescriptorBuilder {
     }
 
     /// Adds an element to [`remote_cluster`](Self::remote_cluster), with a builder.
-    pub fn add_remote_cluster_with(
+    pub fn add_remote_cluster_with<
+        B: crate::typed::builder::Build<Output = RemoteClusterPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            RemoteClusterPrivilegesBuilder,
-        ) -> RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoteClusterPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_cluster(f(RemoteClusterPrivilegesBuilder::new()).build())
     }
@@ -4477,9 +4539,9 @@ impl RoleDescriptorBuilder {
     }
 
     /// Sets [`global`](Self::global) with a builder.
-    pub fn global_with(
+    pub fn global_with<B: crate::typed::builder::Build<Output = GlobalPrivilege>>(
         self,
-        f: impl FnOnce(GlobalPrivilegeBuilder) -> GlobalPrivilegeBuilder,
+        f: impl FnOnce(GlobalPrivilegeBuilder) -> B,
     ) -> Self {
         self.global(f(GlobalPrivilegeBuilder::new()).build())
     }
@@ -4505,15 +4567,11 @@ impl RoleDescriptorBuilder {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<Output = ApplicationPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            ApplicationPrivilegesBuilder,
-        ) -> ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApplicationPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_applications(f(ApplicationPrivilegesBuilder::new()).build())
     }
@@ -4589,9 +4647,9 @@ impl RoleDescriptorBuilder {
     }
 
     /// Sets [`restriction`](Self::restriction) with a builder.
-    pub fn restriction_with(
+    pub fn restriction_with<B: crate::typed::builder::Build<Output = Restriction>>(
         self,
-        f: impl FnOnce(RestrictionBuilder) -> RestrictionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RestrictionBuilder) -> B,
     ) -> Self {
         self.restriction(f(RestrictionBuilder::new()).build())
     }
@@ -4645,6 +4703,14 @@ impl RoleDescriptorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RoleDescriptorBuilder {
+    type Output = RoleDescriptor;
+
+    fn build(self) -> RoleDescriptor {
+        Self::build(self)
+    }
+}
+
 impl From<RoleDescriptorBuilder> for RoleDescriptor {
     fn from(builder: RoleDescriptorBuilder) -> Self {
         builder.build()
@@ -4690,21 +4756,28 @@ pub struct RoleDescriptorRead {
 
 impl RoleDescriptorRead {
     /// Creates a builder for [`RoleDescriptorRead`].
+    ///
+    /// Required: `cluster`, `indices`.
     pub fn builder() -> RoleDescriptorReadBuilder {
         RoleDescriptorReadBuilder::new()
     }
 
     /// Creates a [`RoleDescriptorRead`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RoleDescriptorReadBuilder,
-        ) -> RoleDescriptorReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster`, `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = RoleDescriptorRead>>(
+        f: impl FnOnce(RoleDescriptorReadBuilder) -> B,
     ) -> RoleDescriptorRead {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RoleDescriptorReadBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod role_descriptor_read_members {
+    pub struct cluster;
+    pub struct indices;
 }
 
 /// Builder for [`RoleDescriptorRead`].
@@ -4784,15 +4857,11 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`remote_indices`](Self::remote_indices), with a builder.
-    pub fn add_remote_indices_with(
+    pub fn add_remote_indices_with<
+        B: crate::typed::builder::Build<Output = RemoteIndicesPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            RemoteIndicesPrivilegesBuilder,
-        ) -> RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoteIndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_indices(f(RemoteIndicesPrivilegesBuilder::new()).build())
     }
@@ -4819,14 +4888,11 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`remote_cluster`](Self::remote_cluster), with a builder.
-    pub fn add_remote_cluster_with(
+    pub fn add_remote_cluster_with<
+        B: crate::typed::builder::Build<Output = RemoteClusterPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            RemoteClusterPrivilegesBuilder,
-        ) -> RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoteClusterPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_cluster(f(RemoteClusterPrivilegesBuilder::new()).build())
     }
@@ -4844,9 +4910,9 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     }
 
     /// Sets [`global`](Self::global) with a builder.
-    pub fn global_with(
+    pub fn global_with<B: crate::typed::builder::Build<Output = GlobalPrivilege>>(
         self,
-        f: impl FnOnce(GlobalPrivilegeBuilder) -> GlobalPrivilegeBuilder,
+        f: impl FnOnce(GlobalPrivilegeBuilder) -> B,
     ) -> Self {
         self.global(f(GlobalPrivilegeBuilder::new()).build())
     }
@@ -4872,15 +4938,11 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<Output = ApplicationPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            ApplicationPrivilegesBuilder,
-        ) -> ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApplicationPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_applications(f(ApplicationPrivilegesBuilder::new()).build())
     }
@@ -4956,9 +5018,9 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     }
 
     /// Sets [`restriction`](Self::restriction) with a builder.
-    pub fn restriction_with(
+    pub fn restriction_with<B: crate::typed::builder::Build<Output = Restriction>>(
         self,
-        f: impl FnOnce(RestrictionBuilder) -> RestrictionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RestrictionBuilder) -> B,
     ) -> Self {
         self.restriction(f(RestrictionBuilder::new()).build())
     }
@@ -4994,7 +5056,7 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
 }
 
 impl<S1> RoleDescriptorReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of cluster privileges. These privileges define the cluster level actions that API keys are able to execute.
+    /// **Required.** A list of cluster privileges. These privileges define the cluster level actions that API keys are able to execute.
     pub fn cluster(
         self,
         value: impl Into<Vec<ClusterPrivilege>>,
@@ -5029,7 +5091,7 @@ impl<S1> RoleDescriptorReadBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A list of indices permissions entries.
+    /// **Required.** A list of indices permissions entries.
     pub fn indices(
         self,
         value: impl Into<Vec<IndicesPrivileges>>,
@@ -5053,14 +5115,9 @@ impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndicesPrivileges>>(
         self,
-        f: impl FnOnce(
-            IndicesPrivilegesBuilder,
-        ) -> IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesPrivilegesBuilder) -> B,
     ) -> RoleDescriptorReadBuilder<(S0, crate::typed::builder::Set)> {
         self.add_indices(f(IndicesPrivilegesBuilder::new()).build())
     }
@@ -5076,22 +5133,21 @@ impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndicesPrivileges>>(
         self,
-        f: impl FnOnce(
-            IndicesPrivilegesBuilder,
-        ) -> IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_indices(f(IndicesPrivilegesBuilder::new()).build())
     }
 }
 
-impl RoleDescriptorReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     /// Builds a [`RoleDescriptorRead`].
-    pub fn build(self) -> RoleDescriptorRead {
+    pub fn build(self) -> RoleDescriptorRead
+    where
+        S0: crate::typed::builder::IsSet<role_descriptor_read_members::cluster>,
+        S1: crate::typed::builder::IsSet<role_descriptor_read_members::indices>,
+    {
         RoleDescriptorRead {
             cluster: self.cluster.unwrap(),
             indices: self.indices.unwrap(),
@@ -5108,29 +5164,26 @@ impl RoleDescriptorReadBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<RoleDescriptorReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RoleDescriptorRead
+impl<S0, S1> crate::typed::builder::Build for RoleDescriptorReadBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<role_descriptor_read_members::cluster>,
+    S1: crate::typed::builder::IsSet<role_descriptor_read_members::indices>,
 {
-    fn from(
-        builder: RoleDescriptorReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RoleDescriptorRead;
+
+    fn build(self) -> RoleDescriptorRead {
+        Self::build(self)
     }
 }
 
-impl<S1> RoleDescriptorReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster: crate::typed::builder::MissingRequiredField) -> RoleDescriptorRead { match cluster {} }
-}
-
-impl RoleDescriptorReadBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> RoleDescriptorRead { match indices {} }
+impl<S0, S1> From<RoleDescriptorReadBuilder<(S0, S1)>> for RoleDescriptorRead
+where
+    S0: crate::typed::builder::IsSet<role_descriptor_read_members::cluster>,
+    S1: crate::typed::builder::IsSet<role_descriptor_read_members::indices>,
+{
+    fn from(builder: RoleDescriptorReadBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5146,22 +5199,29 @@ pub struct RoleMapping {
 
 impl RoleMapping {
     /// Creates a builder for [`RoleMapping`].
+    ///
+    /// Required: `enabled`, `metadata`, `rules`.
     pub fn builder() -> RoleMappingBuilder {
         RoleMappingBuilder::new()
     }
 
     /// Creates a [`RoleMapping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RoleMappingBuilder,
-        ) -> RoleMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `enabled`, `metadata`, `rules`.
+    pub fn of<B: crate::typed::builder::Build<Output = RoleMapping>>(
+        f: impl FnOnce(RoleMappingBuilder) -> B,
     ) -> RoleMapping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RoleMappingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod role_mapping_members {
+    pub struct enabled;
+    pub struct metadata;
+    pub struct rules;
 }
 
 /// Builder for [`RoleMapping`].
@@ -5251,15 +5311,16 @@ impl<S0, S1, S2> RoleMappingBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`role_templates`](Self::role_templates), with a builder.
-    pub fn add_role_templates_with(
+    pub fn add_role_templates_with<B: crate::typed::builder::Build<Output = RoleTemplate>>(
         self,
-        f: impl FnOnce(RoleTemplateBuilder) -> RoleTemplateBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RoleTemplateBuilder) -> B,
     ) -> Self {
         self.add_role_templates(f(RoleTemplateBuilder::new()).build())
     }
 }
 
 impl<S1, S2> RoleMappingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> RoleMappingBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -5268,6 +5329,7 @@ impl<S1, S2> RoleMappingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RoleMappingBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn metadata(
         self,
         value: impl Into<crate::typed::_types::Metadata>,
@@ -5307,6 +5369,7 @@ impl<S0, S2> RoleMappingBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> RoleMappingBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn rules(
         self,
         value: impl Into<RoleMappingRule>,
@@ -5317,23 +5380,22 @@ impl<S0, S1> RoleMappingBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`rules`](Self::rules) with a builder.
-    pub fn rules_with(
+    pub fn rules_with<B: crate::typed::builder::Build<Output = RoleMappingRule>>(
         self,
-        f: impl FnOnce(RoleMappingRuleBuilder) -> RoleMappingRuleBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RoleMappingRuleBuilder) -> B,
     ) -> RoleMappingBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.rules(f(RoleMappingRuleBuilder::new()).build())
     }
 }
 
-impl
-    RoleMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RoleMappingBuilder<(S0, S1, S2)> {
     /// Builds a [`RoleMapping`].
-    pub fn build(self) -> RoleMapping {
+    pub fn build(self) -> RoleMapping
+    where
+        S0: crate::typed::builder::IsSet<role_mapping_members::enabled>,
+        S1: crate::typed::builder::IsSet<role_mapping_members::metadata>,
+        S2: crate::typed::builder::IsSet<role_mapping_members::rules>,
+    {
         RoleMapping {
             enabled: self.enabled.unwrap(),
             metadata: self.metadata.unwrap(),
@@ -5344,54 +5406,28 @@ impl
     }
 }
 
-impl
-    From<
-        RoleMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RoleMapping
+impl<S0, S1, S2> crate::typed::builder::Build for RoleMappingBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<role_mapping_members::enabled>,
+    S1: crate::typed::builder::IsSet<role_mapping_members::metadata>,
+    S2: crate::typed::builder::IsSet<role_mapping_members::rules>,
 {
-    fn from(
-        builder: RoleMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RoleMapping;
+
+    fn build(self) -> RoleMapping {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RoleMappingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> RoleMapping { match enabled {} }
-}
-
-impl<S2>
-    RoleMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RoleMappingBuilder<(S0, S1, S2)>> for RoleMapping
+where
+    S0: crate::typed::builder::IsSet<role_mapping_members::enabled>,
+    S1: crate::typed::builder::IsSet<role_mapping_members::metadata>,
+    S2: crate::typed::builder::IsSet<role_mapping_members::rules>,
 {
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> RoleMapping { match metadata {} }
-}
-
-impl
-    RoleMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `rules` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rules: crate::typed::builder::MissingRequiredField) -> RoleMapping { match rules {} }
+    fn from(builder: RoleMappingBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5408,13 +5444,17 @@ pub enum RoleMappingRule {
 
 impl RoleMappingRule {
     /// Creates a builder for [`RoleMappingRule`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> RoleMappingRuleBuilder {
         RoleMappingRuleBuilder::new()
     }
 
     /// Creates a [`RoleMappingRule`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RoleMappingRuleBuilder) -> RoleMappingRuleBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = RoleMappingRule>>(
+        f: impl FnOnce(RoleMappingRuleBuilder) -> B,
     ) -> RoleMappingRule {
         f(Self::builder()).build()
     }
@@ -5487,31 +5527,42 @@ impl RoleMappingRuleBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`except`](Self::except) with a builder.
-    pub fn except_with(
+    pub fn except_with<B: crate::typed::builder::Build<Output = RoleMappingRule>>(
         self,
-        f: impl FnOnce(RoleMappingRuleBuilder) -> RoleMappingRuleBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RoleMappingRuleBuilder) -> B,
     ) -> RoleMappingRuleBuilder<(crate::typed::builder::Set,)> {
         self.except(f(RoleMappingRuleBuilder::new()).build())
     }
 }
 
-impl RoleMappingRuleBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RoleMappingRuleBuilder<(S0,)> {
     /// Builds a [`RoleMappingRule`].
-    pub fn build(self) -> RoleMappingRule {
+    pub fn build(self) -> RoleMappingRule
+    where
+        S0: crate::typed::builder::IsVariantSet<RoleMappingRule>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<RoleMappingRuleBuilder<(crate::typed::builder::Set,)>> for RoleMappingRule {
-    fn from(builder: RoleMappingRuleBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RoleMappingRuleBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<RoleMappingRule>,
+{
+    type Output = RoleMappingRule;
+
+    fn build(self) -> RoleMappingRule {
+        Self::build(self)
     }
 }
 
-impl RoleMappingRuleBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> RoleMappingRule { match variant {} }
+impl<S0> From<RoleMappingRuleBuilder<(S0,)>> for RoleMappingRule
+where
+    S0: crate::typed::builder::IsVariantSet<RoleMappingRule>,
+{
+    fn from(builder: RoleMappingRuleBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5542,16 +5593,27 @@ pub struct RoleTemplate {
 
 impl RoleTemplate {
     /// Creates a builder for [`RoleTemplate`].
+    ///
+    /// Required: `template`.
     pub fn builder() -> RoleTemplateBuilder {
         RoleTemplateBuilder::new()
     }
 
     /// Creates a [`RoleTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RoleTemplateBuilder) -> RoleTemplateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `template`.
+    pub fn of<B: crate::typed::builder::Build<Output = RoleTemplate>>(
+        f: impl FnOnce(RoleTemplateBuilder) -> B,
     ) -> RoleTemplate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RoleTemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod role_template_members {
+    pub struct template;
 }
 
 /// Builder for [`RoleTemplate`].
@@ -5594,6 +5656,7 @@ impl<S0> RoleTemplateBuilder<(S0,)> {
 }
 
 impl RoleTemplateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn template(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -5604,17 +5667,20 @@ impl RoleTemplateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> RoleTemplateBuilder<(crate::typed::builder::Set,)> {
         self.template(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl RoleTemplateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RoleTemplateBuilder<(S0,)> {
     /// Builds a [`RoleTemplate`].
-    pub fn build(self) -> RoleTemplate {
+    pub fn build(self) -> RoleTemplate
+    where
+        S0: crate::typed::builder::IsSet<role_template_members::template>,
+    {
         RoleTemplate {
             format: self.format,
             template: self.template.unwrap(),
@@ -5622,16 +5688,24 @@ impl RoleTemplateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RoleTemplateBuilder<(crate::typed::builder::Set,)>> for RoleTemplate {
-    fn from(builder: RoleTemplateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RoleTemplateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<role_template_members::template>,
+{
+    type Output = RoleTemplate;
+
+    fn build(self) -> RoleTemplate {
+        Self::build(self)
     }
 }
 
-impl RoleTemplateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, template: crate::typed::builder::MissingRequiredField) -> RoleTemplate { match template {} }
+impl<S0> From<RoleTemplateBuilder<(S0,)>> for RoleTemplate
+where
+    S0: crate::typed::builder::IsSet<role_template_members::template>,
+{
+    fn from(builder: RoleTemplateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5676,8 +5750,8 @@ impl RoleTemplateQuery {
     }
 
     /// Creates a [`RoleTemplateQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RoleTemplateQueryBuilder) -> RoleTemplateQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RoleTemplateQuery>>(
+        f: impl FnOnce(RoleTemplateQueryBuilder) -> B,
     ) -> RoleTemplateQuery {
         f(Self::builder()).build()
     }
@@ -5712,9 +5786,9 @@ impl RoleTemplateQueryBuilder {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = RoleTemplateScript>>(
         self,
-        f: impl FnOnce(RoleTemplateScriptBuilder) -> RoleTemplateScriptBuilder,
+        f: impl FnOnce(RoleTemplateScriptBuilder) -> B,
     ) -> Self {
         self.template(f(RoleTemplateScriptBuilder::new()).build())
     }
@@ -5726,6 +5800,14 @@ impl RoleTemplateQueryBuilder {
         RoleTemplateQuery {
             template: self.template,
         }
+    }
+}
+
+impl crate::typed::builder::Build for RoleTemplateQueryBuilder {
+    type Output = RoleTemplateQuery;
+
+    fn build(self) -> RoleTemplateQuery {
+        Self::build(self)
     }
 }
 
@@ -5760,8 +5842,8 @@ impl RoleTemplateScript {
     }
 
     /// Creates a [`RoleTemplateScript`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RoleTemplateScriptBuilder) -> RoleTemplateScriptBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RoleTemplateScript>>(
+        f: impl FnOnce(RoleTemplateScriptBuilder) -> B,
     ) -> RoleTemplateScript {
         f(Self::builder()).build()
     }
@@ -5889,6 +5971,14 @@ impl RoleTemplateScriptBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RoleTemplateScriptBuilder {
+    type Output = RoleTemplateScript;
+
+    fn build(self) -> RoleTemplateScript {
+        Self::build(self)
+    }
+}
+
 impl From<RoleTemplateScriptBuilder> for RoleTemplateScript {
     fn from(builder: RoleTemplateScriptBuilder) -> Self {
         builder.build()
@@ -5903,16 +5993,27 @@ pub struct RolesStats {
 
 impl RolesStats {
     /// Creates a builder for [`RolesStats`].
+    ///
+    /// Required: `dls`.
     pub fn builder() -> RolesStatsBuilder {
         RolesStatsBuilder::new()
     }
 
     /// Creates a [`RolesStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RolesStatsBuilder) -> RolesStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `dls`.
+    pub fn of<B: crate::typed::builder::Build<Output = RolesStats>>(
+        f: impl FnOnce(RolesStatsBuilder) -> B,
     ) -> RolesStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RolesStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod roles_stats_members {
+    pub struct dls;
 }
 
 /// Builder for [`RolesStats`].
@@ -5941,7 +6042,7 @@ impl<S0> RolesStatsBuilder<(S0,)> {
 }
 
 impl RolesStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Document-level security (DLS) statistics.
+    /// **Required.** Document-level security (DLS) statistics.
     pub fn dls(
         self,
         value: impl Into<crate::typed::xpack::usage::SecurityRolesDls>,
@@ -5952,37 +6053,46 @@ impl RolesStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`dls`](Self::dls) with a builder.
-    pub fn dls_with(
+    pub fn dls_with<
+        B: crate::typed::builder::Build<Output = crate::typed::xpack::usage::SecurityRolesDls>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::xpack::usage::SecurityRolesDlsBuilder,
-        ) -> crate::typed::xpack::usage::SecurityRolesDlsBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::xpack::usage::SecurityRolesDlsBuilder) -> B,
     ) -> RolesStatsBuilder<(crate::typed::builder::Set,)> {
         self.dls(f(crate::typed::xpack::usage::SecurityRolesDlsBuilder::new()).build())
     }
 }
 
-impl RolesStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RolesStatsBuilder<(S0,)> {
     /// Builds a [`RolesStats`].
-    pub fn build(self) -> RolesStats {
+    pub fn build(self) -> RolesStats
+    where
+        S0: crate::typed::builder::IsSet<roles_stats_members::dls>,
+    {
         RolesStats {
             dls: self.dls.unwrap(),
         }
     }
 }
 
-impl From<RolesStatsBuilder<(crate::typed::builder::Set,)>> for RolesStats {
-    fn from(builder: RolesStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RolesStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<roles_stats_members::dls>,
+{
+    type Output = RolesStats;
+
+    fn build(self) -> RolesStats {
+        Self::build(self)
     }
 }
 
-impl RolesStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `dls` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dls: crate::typed::builder::MissingRequiredField) -> RolesStats { match dls {} }
+impl<S0> From<RolesStatsBuilder<(S0,)>> for RolesStats
+where
+    S0: crate::typed::builder::IsSet<roles_stats_members::dls>,
+{
+    fn from(builder: RolesStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6027,16 +6137,27 @@ impl From<&str> for SearchAccessNames {
 
 impl SearchAccess {
     /// Creates a builder for [`SearchAccess`].
+    ///
+    /// Required: `names`.
     pub fn builder() -> SearchAccessBuilder {
         SearchAccessBuilder::new()
     }
 
     /// Creates a [`SearchAccess`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SearchAccessBuilder) -> SearchAccessBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `names`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchAccess>>(
+        f: impl FnOnce(SearchAccessBuilder) -> B,
     ) -> SearchAccess {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchAccessBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_access_members {
+    pub struct names;
 }
 
 /// Builder for [`SearchAccess`].
@@ -6085,9 +6206,9 @@ impl<S0> SearchAccessBuilder<(S0,)> {
     }
 
     /// Sets [`field_security`](Self::field_security) with a builder.
-    pub fn field_security_with(
+    pub fn field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -6118,7 +6239,7 @@ impl<S0> SearchAccessBuilder<(S0,)> {
 }
 
 impl SearchAccessBuilder<(crate::typed::builder::NotSet,)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<SearchAccessNames>,
@@ -6129,9 +6250,12 @@ impl SearchAccessBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SearchAccessBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SearchAccessBuilder<(S0,)> {
     /// Builds a [`SearchAccess`].
-    pub fn build(self) -> SearchAccess {
+    pub fn build(self) -> SearchAccess
+    where
+        S0: crate::typed::builder::IsSet<search_access_members::names>,
+    {
         SearchAccess {
             field_security: self.field_security,
             names: self.names.unwrap(),
@@ -6141,16 +6265,24 @@ impl SearchAccessBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SearchAccessBuilder<(crate::typed::builder::Set,)>> for SearchAccess {
-    fn from(builder: SearchAccessBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SearchAccessBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<search_access_members::names>,
+{
+    type Output = SearchAccess;
+
+    fn build(self) -> SearchAccess {
+        Self::build(self)
     }
 }
 
-impl SearchAccessBuilder<(crate::typed::builder::NotSet,)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> SearchAccess { match names {} }
+impl<S0> From<SearchAccessBuilder<(S0,)>> for SearchAccess
+where
+    S0: crate::typed::builder::IsSet<search_access_members::names>,
+{
+    fn from(builder: SearchAccessBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6166,8 +6298,8 @@ impl SecuritySettings {
     }
 
     /// Creates a [`SecuritySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SecuritySettingsBuilder) -> SecuritySettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SecuritySettings>>(
+        f: impl FnOnce(SecuritySettingsBuilder) -> B,
     ) -> SecuritySettings {
         f(Self::builder()).build()
     }
@@ -6201,11 +6333,11 @@ impl SecuritySettingsBuilder {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.index(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
@@ -6215,6 +6347,14 @@ impl SecuritySettingsBuilder {
     /// Builds a [`SecuritySettings`].
     pub fn build(self) -> SecuritySettings {
         SecuritySettings { index: self.index }
+    }
+}
+
+impl crate::typed::builder::Build for SecuritySettingsBuilder {
+    type Output = SecuritySettings;
+
+    fn build(self) -> SecuritySettings {
+        Self::build(self)
     }
 }
 
@@ -6286,23 +6426,30 @@ impl From<&str> for UserFullName {
 
 impl User {
     /// Creates a builder for [`User`].
+    ///
+    /// Required: `metadata`, `roles`, `username`, `enabled`.
     pub fn builder() -> UserBuilder {
         UserBuilder::new()
     }
 
     /// Creates a [`User`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserBuilder,
-        ) -> UserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `metadata`, `roles`, `username`, `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = User>>(
+        f: impl FnOnce(UserBuilder) -> B,
     ) -> User {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_members {
+    pub struct metadata;
+    pub struct roles;
+    pub struct username;
+    pub struct enabled;
 }
 
 /// Builder for [`User`].
@@ -6396,6 +6543,7 @@ impl<S0, S1, S2, S3> UserBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> UserBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn metadata(
         self,
         value: impl Into<crate::typed::_types::Metadata>,
@@ -6435,6 +6583,7 @@ impl<S1, S2, S3> UserBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> UserBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -6469,6 +6618,7 @@ impl<S0, S2, S3> UserBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
 }
 
 impl<S0, S1, S3> UserBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn username(
         self,
         value: impl Into<crate::typed::_types::Username>,
@@ -6480,6 +6630,7 @@ impl<S0, S1, S3> UserBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
 }
 
 impl<S0, S1, S2> UserBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> UserBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -6487,16 +6638,15 @@ impl<S0, S1, S2> UserBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    UserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> UserBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`User`].
-    pub fn build(self) -> User {
+    pub fn build(self) -> User
+    where
+        S0: crate::typed::builder::IsSet<user_members::metadata>,
+        S1: crate::typed::builder::IsSet<user_members::roles>,
+        S2: crate::typed::builder::IsSet<user_members::username>,
+        S3: crate::typed::builder::IsSet<user_members::enabled>,
+    {
         User {
             email: self.email,
             full_name: self.full_name,
@@ -6509,71 +6659,30 @@ impl
     }
 }
 
-impl
-    From<
-        UserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for User
+impl<S0, S1, S2, S3> crate::typed::builder::Build for UserBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<user_members::metadata>,
+    S1: crate::typed::builder::IsSet<user_members::roles>,
+    S2: crate::typed::builder::IsSet<user_members::username>,
+    S3: crate::typed::builder::IsSet<user_members::enabled>,
 {
-    fn from(
-        builder: UserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = User;
+
+    fn build(self) -> User {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> UserBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> User { match metadata {} }
-}
-
-impl<S2, S3>
-    UserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<UserBuilder<(S0, S1, S2, S3)>> for User
+where
+    S0: crate::typed::builder::IsSet<user_members::metadata>,
+    S1: crate::typed::builder::IsSet<user_members::roles>,
+    S2: crate::typed::builder::IsSet<user_members::username>,
+    S3: crate::typed::builder::IsSet<user_members::enabled>,
 {
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> User { match roles {} }
-}
-
-impl<S3>
-    UserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `username` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, username: crate::typed::builder::MissingRequiredField) -> User { match username {} }
-}
-
-impl
-    UserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> User { match enabled {} }
+    fn from(builder: UserBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6619,22 +6728,29 @@ impl From<&str> for UserIndicesPrivilegesNames {
 
 impl UserIndicesPrivileges {
     /// Creates a builder for [`UserIndicesPrivileges`].
+    ///
+    /// Required: `names`, `privileges`, `allow_restricted_indices`.
     pub fn builder() -> UserIndicesPrivilegesBuilder {
         UserIndicesPrivilegesBuilder::new()
     }
 
     /// Creates a [`UserIndicesPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserIndicesPrivilegesBuilder,
-        ) -> UserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`, `allow_restricted_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserIndicesPrivileges>>(
+        f: impl FnOnce(UserIndicesPrivilegesBuilder) -> B,
     ) -> UserIndicesPrivileges {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserIndicesPrivilegesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_indices_privileges_members {
+    pub struct names;
+    pub struct privileges;
+    pub struct allow_restricted_indices;
 }
 
 /// Builder for [`UserIndicesPrivileges`].
@@ -6706,9 +6822,9 @@ impl<S0, S1, S2> UserIndicesPrivilegesBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`field_security`](Self::field_security), with a builder.
-    pub fn add_field_security_with(
+    pub fn add_field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.add_field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -6735,7 +6851,7 @@ impl<S0, S1, S2> UserIndicesPrivilegesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> UserIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<UserIndicesPrivilegesNames>,
@@ -6747,7 +6863,7 @@ impl<S1, S2> UserIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2
 }
 
 impl<S0, S2> UserIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -6782,7 +6898,7 @@ impl<S0, S2> UserIndicesPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> 
 }
 
 impl<S0, S1> UserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
+    /// **Required.** Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
     pub fn allow_restricted_indices(
         self,
         value: bool,
@@ -6793,15 +6909,14 @@ impl<S0, S1> UserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet
     }
 }
 
-impl
-    UserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> UserIndicesPrivilegesBuilder<(S0, S1, S2)> {
     /// Builds a [`UserIndicesPrivileges`].
-    pub fn build(self) -> UserIndicesPrivileges {
+    pub fn build(self) -> UserIndicesPrivileges
+    where
+        S0: crate::typed::builder::IsSet<user_indices_privileges_members::names>,
+        S1: crate::typed::builder::IsSet<user_indices_privileges_members::privileges>,
+        S2: crate::typed::builder::IsSet<user_indices_privileges_members::allow_restricted_indices>,
+    {
         UserIndicesPrivileges {
             field_security: self.field_security,
             names: self.names.unwrap(),
@@ -6812,54 +6927,28 @@ impl
     }
 }
 
-impl
-    From<
-        UserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UserIndicesPrivileges
+impl<S0, S1, S2> crate::typed::builder::Build for UserIndicesPrivilegesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<user_indices_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<user_indices_privileges_members::privileges>,
+    S2: crate::typed::builder::IsSet<user_indices_privileges_members::allow_restricted_indices>,
 {
-    fn from(
-        builder: UserIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserIndicesPrivileges;
+
+    fn build(self) -> UserIndicesPrivileges {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> UserIndicesPrivilegesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivileges { match names {} }
-}
-
-impl<S2>
-    UserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<UserIndicesPrivilegesBuilder<(S0, S1, S2)>> for UserIndicesPrivileges
+where
+    S0: crate::typed::builder::IsSet<user_indices_privileges_members::names>,
+    S1: crate::typed::builder::IsSet<user_indices_privileges_members::privileges>,
+    S2: crate::typed::builder::IsSet<user_indices_privileges_members::allow_restricted_indices>,
 {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivileges { match privileges {} }
-}
-
-impl
-    UserIndicesPrivilegesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `allow_restricted_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allow_restricted_indices: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivileges { match allow_restricted_indices {} }
+    fn from(builder: UserIndicesPrivilegesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6905,22 +6994,29 @@ impl From<&str> for UserIndicesPrivilegesBaseNames {
 
 impl UserIndicesPrivilegesBase {
     /// Creates a builder for [`UserIndicesPrivilegesBase`].
+    ///
+    /// Required: `names`, `privileges`, `allow_restricted_indices`.
     pub fn builder() -> UserIndicesPrivilegesBaseBuilder {
         UserIndicesPrivilegesBaseBuilder::new()
     }
 
     /// Creates a [`UserIndicesPrivilegesBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserIndicesPrivilegesBaseBuilder,
-        ) -> UserIndicesPrivilegesBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`, `allow_restricted_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserIndicesPrivilegesBase>>(
+        f: impl FnOnce(UserIndicesPrivilegesBaseBuilder) -> B,
     ) -> UserIndicesPrivilegesBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserIndicesPrivilegesBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_indices_privileges_base_members {
+    pub struct names;
+    pub struct privileges;
+    pub struct allow_restricted_indices;
 }
 
 /// Builder for [`UserIndicesPrivilegesBase`].
@@ -6992,9 +7088,9 @@ impl<S0, S1, S2> UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`field_security`](Self::field_security), with a builder.
-    pub fn add_field_security_with(
+    pub fn add_field_security_with<B: crate::typed::builder::Build<Output = FieldSecurity>>(
         self,
-        f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder,
+        f: impl FnOnce(FieldSecurityBuilder) -> B,
     ) -> Self {
         self.add_field_security(f(FieldSecurityBuilder::new()).build())
     }
@@ -7021,7 +7117,7 @@ impl<S0, S1, S2> UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> UserIndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<UserIndicesPrivilegesBaseNames>,
@@ -7033,7 +7129,7 @@ impl<S1, S2> UserIndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2> UserIndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<IndexPrivilege>>,
@@ -7068,7 +7164,7 @@ impl<S0, S2> UserIndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set, S
 }
 
 impl<S0, S1> UserIndicesPrivilegesBaseBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
+    /// **Required.** Set to `true` if using wildcard or regular expressions for patterns that cover restricted indices. Implicitly, restricted indices have limited privileges that can cause pattern tests to fail. If restricted indices are explicitly included in the `names` list, Elasticsearch checks privileges against these indices regardless of the value set for `allow_restricted_indices`.
     pub fn allow_restricted_indices(
         self,
         value: bool,
@@ -7079,15 +7175,16 @@ impl<S0, S1> UserIndicesPrivilegesBaseBuilder<(S0, S1, crate::typed::builder::No
     }
 }
 
-impl
-    UserIndicesPrivilegesBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)> {
     /// Builds a [`UserIndicesPrivilegesBase`].
-    pub fn build(self) -> UserIndicesPrivilegesBase {
+    pub fn build(self) -> UserIndicesPrivilegesBase
+    where
+        S0: crate::typed::builder::IsSet<user_indices_privileges_base_members::names>,
+        S1: crate::typed::builder::IsSet<user_indices_privileges_base_members::privileges>,
+        S2: crate::typed::builder::IsSet<
+            user_indices_privileges_base_members::allow_restricted_indices,
+        >,
+    {
         UserIndicesPrivilegesBase {
             field_security: self.field_security,
             names: self.names.unwrap(),
@@ -7098,54 +7195,32 @@ impl
     }
 }
 
-impl
-    From<
-        UserIndicesPrivilegesBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UserIndicesPrivilegesBase
+impl<S0, S1, S2> crate::typed::builder::Build for UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<user_indices_privileges_base_members::names>,
+    S1: crate::typed::builder::IsSet<user_indices_privileges_base_members::privileges>,
+    S2: crate::typed::builder::IsSet<
+        user_indices_privileges_base_members::allow_restricted_indices,
+    >,
 {
-    fn from(
-        builder: UserIndicesPrivilegesBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserIndicesPrivilegesBase;
+
+    fn build(self) -> UserIndicesPrivilegesBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> UserIndicesPrivilegesBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivilegesBase { match names {} }
-}
-
-impl<S2>
-    UserIndicesPrivilegesBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)>> for UserIndicesPrivilegesBase
+where
+    S0: crate::typed::builder::IsSet<user_indices_privileges_base_members::names>,
+    S1: crate::typed::builder::IsSet<user_indices_privileges_base_members::privileges>,
+    S2: crate::typed::builder::IsSet<
+        user_indices_privileges_base_members::allow_restricted_indices,
+    >,
 {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivilegesBase { match privileges {} }
-}
-
-impl
-    UserIndicesPrivilegesBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `allow_restricted_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allow_restricted_indices: crate::typed::builder::MissingRequiredField) -> UserIndicesPrivilegesBase { match allow_restricted_indices {} }
+    fn from(builder: UserIndicesPrivilegesBaseBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7160,23 +7235,30 @@ pub struct UserProfile {
 
 impl UserProfile {
     /// Creates a builder for [`UserProfile`].
+    ///
+    /// Required: `uid`, `user`, `data`, `labels`.
     pub fn builder() -> UserProfileBuilder {
         UserProfileBuilder::new()
     }
 
     /// Creates a [`UserProfile`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserProfileBuilder,
-        ) -> UserProfileBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `uid`, `user`, `data`, `labels`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserProfile>>(
+        f: impl FnOnce(UserProfileBuilder) -> B,
     ) -> UserProfile {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserProfileBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_profile_members {
+    pub struct uid;
+    pub struct user;
+    pub struct data;
+    pub struct labels;
 }
 
 /// Builder for [`UserProfile`].
@@ -7242,6 +7324,7 @@ impl<S0, S1, S2, S3> UserProfileBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> UserProfileBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn uid(
         self,
         value: impl Into<UserProfileId>,
@@ -7253,6 +7336,7 @@ impl<S1, S2, S3> UserProfileBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 }
 
 impl<S0, S2, S3> UserProfileBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn user(
         self,
         value: impl Into<UserProfileUser>,
@@ -7263,21 +7347,16 @@ impl<S0, S2, S3> UserProfileBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
     }
 
     /// Sets [`user`](Self::user) with a builder.
-    pub fn user_with(
+    pub fn user_with<B: crate::typed::builder::Build<Output = UserProfileUser>>(
         self,
-        f: impl FnOnce(
-            UserProfileUserBuilder,
-        ) -> UserProfileUserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UserProfileUserBuilder) -> B,
     ) -> UserProfileBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.user(f(UserProfileUserBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> UserProfileBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn data(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -7313,6 +7392,7 @@ impl<S0, S1, S3> UserProfileBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
 }
 
 impl<S0, S1, S2> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn labels(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -7351,16 +7431,15 @@ impl<S0, S1, S2> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    UserProfileBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> UserProfileBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`UserProfile`].
-    pub fn build(self) -> UserProfile {
+    pub fn build(self) -> UserProfile
+    where
+        S0: crate::typed::builder::IsSet<user_profile_members::uid>,
+        S1: crate::typed::builder::IsSet<user_profile_members::user>,
+        S2: crate::typed::builder::IsSet<user_profile_members::data>,
+        S3: crate::typed::builder::IsSet<user_profile_members::labels>,
+    {
         UserProfile {
             uid: self.uid.unwrap(),
             user: self.user.unwrap(),
@@ -7371,71 +7450,30 @@ impl
     }
 }
 
-impl
-    From<
-        UserProfileBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UserProfile
+impl<S0, S1, S2, S3> crate::typed::builder::Build for UserProfileBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<user_profile_members::uid>,
+    S1: crate::typed::builder::IsSet<user_profile_members::user>,
+    S2: crate::typed::builder::IsSet<user_profile_members::data>,
+    S3: crate::typed::builder::IsSet<user_profile_members::labels>,
 {
-    fn from(
-        builder: UserProfileBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserProfile;
+
+    fn build(self) -> UserProfile {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> UserProfileBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `uid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uid: crate::typed::builder::MissingRequiredField) -> UserProfile { match uid {} }
-}
-
-impl<S2, S3>
-    UserProfileBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<UserProfileBuilder<(S0, S1, S2, S3)>> for UserProfile
+where
+    S0: crate::typed::builder::IsSet<user_profile_members::uid>,
+    S1: crate::typed::builder::IsSet<user_profile_members::user>,
+    S2: crate::typed::builder::IsSet<user_profile_members::data>,
+    S3: crate::typed::builder::IsSet<user_profile_members::labels>,
 {
-    /// `user` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, user: crate::typed::builder::MissingRequiredField) -> UserProfile { match user {} }
-}
-
-impl<S3>
-    UserProfileBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `data` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data: crate::typed::builder::MissingRequiredField) -> UserProfile { match data {} }
-}
-
-impl
-    UserProfileBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `labels` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, labels: crate::typed::builder::MissingRequiredField) -> UserProfile { match labels {} }
+    fn from(builder: UserProfileBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7448,21 +7486,28 @@ pub struct UserProfileHitMetadata {
 
 impl UserProfileHitMetadata {
     /// Creates a builder for [`UserProfileHitMetadata`].
+    ///
+    /// Required: `primary_term`, `seq_no`.
     pub fn builder() -> UserProfileHitMetadataBuilder {
         UserProfileHitMetadataBuilder::new()
     }
 
     /// Creates a [`UserProfileHitMetadata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserProfileHitMetadataBuilder,
-        ) -> UserProfileHitMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `primary_term`, `seq_no`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserProfileHitMetadata>>(
+        f: impl FnOnce(UserProfileHitMetadataBuilder) -> B,
     ) -> UserProfileHitMetadata {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserProfileHitMetadataBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_profile_hit_metadata_members {
+    pub struct primary_term;
+    pub struct seq_no;
 }
 
 /// Builder for [`UserProfileHitMetadata`].
@@ -7496,6 +7541,7 @@ impl<S0, S1> UserProfileHitMetadataBuilder<(S0, S1)> {
 }
 
 impl<S1> UserProfileHitMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn primary_term(
         self,
         value: i64,
@@ -7507,6 +7553,7 @@ impl<S1> UserProfileHitMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> UserProfileHitMetadataBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn seq_no(
         self,
         value: impl Into<crate::typed::_types::SequenceNumber>,
@@ -7517,9 +7564,13 @@ impl<S0> UserProfileHitMetadataBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl UserProfileHitMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> UserProfileHitMetadataBuilder<(S0, S1)> {
     /// Builds a [`UserProfileHitMetadata`].
-    pub fn build(self) -> UserProfileHitMetadata {
+    pub fn build(self) -> UserProfileHitMetadata
+    where
+        S0: crate::typed::builder::IsSet<user_profile_hit_metadata_members::primary_term>,
+        S1: crate::typed::builder::IsSet<user_profile_hit_metadata_members::seq_no>,
+    {
         UserProfileHitMetadata {
             primary_term: self.primary_term.unwrap(),
             seq_no: self.seq_no.unwrap(),
@@ -7527,29 +7578,26 @@ impl UserProfileHitMetadataBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<UserProfileHitMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for UserProfileHitMetadata
+impl<S0, S1> crate::typed::builder::Build for UserProfileHitMetadataBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<user_profile_hit_metadata_members::primary_term>,
+    S1: crate::typed::builder::IsSet<user_profile_hit_metadata_members::seq_no>,
 {
-    fn from(
-        builder: UserProfileHitMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserProfileHitMetadata;
+
+    fn build(self) -> UserProfileHitMetadata {
+        Self::build(self)
     }
 }
 
-impl<S1> UserProfileHitMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `primary_term` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primary_term: crate::typed::builder::MissingRequiredField) -> UserProfileHitMetadata { match primary_term {} }
-}
-
-impl UserProfileHitMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `seq_no` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, seq_no: crate::typed::builder::MissingRequiredField) -> UserProfileHitMetadata { match seq_no {} }
+impl<S0, S1> From<UserProfileHitMetadataBuilder<(S0, S1)>> for UserProfileHitMetadata
+where
+    S0: crate::typed::builder::IsSet<user_profile_hit_metadata_members::primary_term>,
+    S1: crate::typed::builder::IsSet<user_profile_hit_metadata_members::seq_no>,
+{
+    fn from(builder: UserProfileHitMetadataBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type UserProfileId = String;
@@ -7607,22 +7655,29 @@ impl From<&str> for UserProfileUserFullName {
 
 impl UserProfileUser {
     /// Creates a builder for [`UserProfileUser`].
+    ///
+    /// Required: `realm_name`, `roles`, `username`.
     pub fn builder() -> UserProfileUserBuilder {
         UserProfileUserBuilder::new()
     }
 
     /// Creates a [`UserProfileUser`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserProfileUserBuilder,
-        ) -> UserProfileUserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `realm_name`, `roles`, `username`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserProfileUser>>(
+        f: impl FnOnce(UserProfileUserBuilder) -> B,
     ) -> UserProfileUser {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserProfileUserBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_profile_user_members {
+    pub struct realm_name;
+    pub struct roles;
+    pub struct username;
 }
 
 /// Builder for [`UserProfileUser`].
@@ -7711,6 +7766,7 @@ impl<S0, S1, S2> UserProfileUserBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> UserProfileUserBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn realm_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -7722,6 +7778,7 @@ impl<S1, S2> UserProfileUserBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> UserProfileUserBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -7756,6 +7813,7 @@ impl<S0, S2> UserProfileUserBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> UserProfileUserBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn username(
         self,
         value: impl Into<crate::typed::_types::Username>,
@@ -7766,15 +7824,14 @@ impl<S0, S1> UserProfileUserBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    UserProfileUserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> UserProfileUserBuilder<(S0, S1, S2)> {
     /// Builds a [`UserProfileUser`].
-    pub fn build(self) -> UserProfileUser {
+    pub fn build(self) -> UserProfileUser
+    where
+        S0: crate::typed::builder::IsSet<user_profile_user_members::realm_name>,
+        S1: crate::typed::builder::IsSet<user_profile_user_members::roles>,
+        S2: crate::typed::builder::IsSet<user_profile_user_members::username>,
+    {
         UserProfileUser {
             email: self.email,
             full_name: self.full_name,
@@ -7786,54 +7843,28 @@ impl
     }
 }
 
-impl
-    From<
-        UserProfileUserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UserProfileUser
+impl<S0, S1, S2> crate::typed::builder::Build for UserProfileUserBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<user_profile_user_members::realm_name>,
+    S1: crate::typed::builder::IsSet<user_profile_user_members::roles>,
+    S2: crate::typed::builder::IsSet<user_profile_user_members::username>,
 {
-    fn from(
-        builder: UserProfileUserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserProfileUser;
+
+    fn build(self) -> UserProfileUser {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> UserProfileUserBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `realm_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, realm_name: crate::typed::builder::MissingRequiredField) -> UserProfileUser { match realm_name {} }
-}
-
-impl<S2>
-    UserProfileUserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<UserProfileUserBuilder<(S0, S1, S2)>> for UserProfileUser
+where
+    S0: crate::typed::builder::IsSet<user_profile_user_members::realm_name>,
+    S1: crate::typed::builder::IsSet<user_profile_user_members::roles>,
+    S2: crate::typed::builder::IsSet<user_profile_user_members::username>,
 {
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> UserProfileUser { match roles {} }
-}
-
-impl
-    UserProfileUserBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `username` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, username: crate::typed::builder::MissingRequiredField) -> UserProfileUser { match username {} }
+    fn from(builder: UserProfileUserBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7851,25 +7882,32 @@ pub struct UserProfileWithMetadata {
 
 impl UserProfileWithMetadata {
     /// Creates a builder for [`UserProfileWithMetadata`].
+    ///
+    /// Required: `uid`, `user`, `data`, `labels`, `last_synchronized`, `doc`.
     pub fn builder() -> UserProfileWithMetadataBuilder {
         UserProfileWithMetadataBuilder::new()
     }
 
     /// Creates a [`UserProfileWithMetadata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserProfileWithMetadataBuilder,
-        ) -> UserProfileWithMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `uid`, `user`, `data`, `labels`, `last_synchronized`, `doc`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserProfileWithMetadata>>(
+        f: impl FnOnce(UserProfileWithMetadataBuilder) -> B,
     ) -> UserProfileWithMetadata {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserProfileWithMetadataBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_profile_with_metadata_members {
+    pub struct uid;
+    pub struct user;
+    pub struct data;
+    pub struct labels;
+    pub struct last_synchronized;
+    pub struct doc;
 }
 
 /// Builder for [`UserProfileWithMetadata`].
@@ -7947,6 +7985,7 @@ impl<S0, S1, S2, S3, S4, S5> UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4,
 impl<S1, S2, S3, S4, S5>
     UserProfileWithMetadataBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn uid(
         self,
         value: impl Into<UserProfileId>,
@@ -7960,6 +7999,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     UserProfileWithMetadataBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn user(
         self,
         value: impl Into<UserProfileUser>,
@@ -7970,15 +8010,9 @@ impl<S0, S2, S3, S4, S5>
     }
 
     /// Sets [`user`](Self::user) with a builder.
-    pub fn user_with(
+    pub fn user_with<B: crate::typed::builder::Build<Output = UserProfileUser>>(
         self,
-        f: impl FnOnce(
-            UserProfileUserBuilder,
-        ) -> UserProfileUserBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UserProfileUserBuilder) -> B,
     ) -> UserProfileWithMetadataBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5)> {
         self.user(f(UserProfileUserBuilder::new()).build())
     }
@@ -7987,6 +8021,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     UserProfileWithMetadataBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn data(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -8026,6 +8061,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     UserProfileWithMetadataBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn labels(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -8069,6 +8105,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     UserProfileWithMetadataBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn last_synchronized(
         self,
         value: i64,
@@ -8082,6 +8119,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn doc(
         self,
         value: impl Into<UserProfileHitMetadata>,
@@ -8092,31 +8130,25 @@ impl<S0, S1, S2, S3, S4>
     }
 
     /// Sets [`doc`](Self::doc) with a builder.
-    pub fn doc_with(
+    pub fn doc_with<B: crate::typed::builder::Build<Output = UserProfileHitMetadata>>(
         self,
-        f: impl FnOnce(
-            UserProfileHitMetadataBuilder,
-        ) -> UserProfileHitMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UserProfileHitMetadataBuilder) -> B,
     ) -> UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.doc(f(UserProfileHitMetadataBuilder::new()).build())
     }
 }
 
-impl
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`UserProfileWithMetadata`].
-    pub fn build(self) -> UserProfileWithMetadata {
+    pub fn build(self) -> UserProfileWithMetadata
+    where
+        S0: crate::typed::builder::IsSet<user_profile_with_metadata_members::uid>,
+        S1: crate::typed::builder::IsSet<user_profile_with_metadata_members::user>,
+        S2: crate::typed::builder::IsSet<user_profile_with_metadata_members::data>,
+        S3: crate::typed::builder::IsSet<user_profile_with_metadata_members::labels>,
+        S4: crate::typed::builder::IsSet<user_profile_with_metadata_members::last_synchronized>,
+        S5: crate::typed::builder::IsSet<user_profile_with_metadata_members::doc>,
+    {
         UserProfileWithMetadata {
             uid: self.uid.unwrap(),
             user: self.user.unwrap(),
@@ -8129,113 +8161,36 @@ impl
     }
 }
 
-impl
-    From<
-        UserProfileWithMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UserProfileWithMetadata
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<user_profile_with_metadata_members::uid>,
+    S1: crate::typed::builder::IsSet<user_profile_with_metadata_members::user>,
+    S2: crate::typed::builder::IsSet<user_profile_with_metadata_members::data>,
+    S3: crate::typed::builder::IsSet<user_profile_with_metadata_members::labels>,
+    S4: crate::typed::builder::IsSet<user_profile_with_metadata_members::last_synchronized>,
+    S5: crate::typed::builder::IsSet<user_profile_with_metadata_members::doc>,
 {
-    fn from(
-        builder: UserProfileWithMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UserProfileWithMetadata;
+
+    fn build(self) -> UserProfileWithMetadata {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    UserProfileWithMetadataBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for UserProfileWithMetadata
+where
+    S0: crate::typed::builder::IsSet<user_profile_with_metadata_members::uid>,
+    S1: crate::typed::builder::IsSet<user_profile_with_metadata_members::user>,
+    S2: crate::typed::builder::IsSet<user_profile_with_metadata_members::data>,
+    S3: crate::typed::builder::IsSet<user_profile_with_metadata_members::labels>,
+    S4: crate::typed::builder::IsSet<user_profile_with_metadata_members::last_synchronized>,
+    S5: crate::typed::builder::IsSet<user_profile_with_metadata_members::doc>,
 {
-    /// `uid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uid: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match uid {} }
-}
-
-impl<S2, S3, S4, S5>
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `user` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, user: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match user {} }
-}
-
-impl<S3, S4, S5>
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `data` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match data {} }
-}
-
-impl<S4, S5>
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `labels` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, labels: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match labels {} }
-}
-
-impl<S5>
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `last_synchronized` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, last_synchronized: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match last_synchronized {} }
-}
-
-impl
-    UserProfileWithMetadataBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `doc` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc: crate::typed::builder::MissingRequiredField) -> UserProfileWithMetadata { match doc {} }
+    fn from(builder: UserProfileWithMetadataBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8253,10 +8208,8 @@ impl WriteProfileGlobalUserPrivileges {
     }
 
     /// Creates a [`WriteProfileGlobalUserPrivileges`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WriteProfileGlobalUserPrivilegesBuilder,
-        ) -> WriteProfileGlobalUserPrivilegesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = WriteProfileGlobalUserPrivileges>>(
+        f: impl FnOnce(WriteProfileGlobalUserPrivilegesBuilder) -> B,
     ) -> WriteProfileGlobalUserPrivileges {
         f(Self::builder()).build()
     }
@@ -8289,11 +8242,9 @@ impl WriteProfileGlobalUserPrivilegesBuilder {
     }
 
     /// Sets [`write`](Self::write) with a builder.
-    pub fn write_with(
+    pub fn write_with<B: crate::typed::builder::Build<Output = ManageUserPrivileges>>(
         self,
-        f: impl FnOnce(
-            ManageUserPrivilegesBuilder,
-        ) -> ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ManageUserPrivilegesBuilder) -> B,
     ) -> Self {
         self.write(f(ManageUserPrivilegesBuilder::new()).build())
     }
@@ -8303,6 +8254,14 @@ impl WriteProfileGlobalUserPrivilegesBuilder {
     /// Builds a [`WriteProfileGlobalUserPrivileges`].
     pub fn build(self) -> WriteProfileGlobalUserPrivileges {
         WriteProfileGlobalUserPrivileges { write: self.write }
+    }
+}
+
+impl crate::typed::builder::Build for WriteProfileGlobalUserPrivilegesBuilder {
+    type Output = WriteProfileGlobalUserPrivileges;
+
+    fn build(self) -> WriteProfileGlobalUserPrivileges {
+        Self::build(self)
     }
 }
 

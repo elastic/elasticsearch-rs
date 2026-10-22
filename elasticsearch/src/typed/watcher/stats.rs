@@ -41,7 +41,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -181,6 +183,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -349,18 +359,27 @@ pub struct WatchRecordQueuedStats {
 
 impl WatchRecordQueuedStats {
     /// Creates a builder for [`WatchRecordQueuedStats`].
+    ///
+    /// Required: `execution_time`.
     pub fn builder() -> WatchRecordQueuedStatsBuilder {
         WatchRecordQueuedStatsBuilder::new()
     }
 
     /// Creates a [`WatchRecordQueuedStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WatchRecordQueuedStatsBuilder,
-        ) -> WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `execution_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = WatchRecordQueuedStats>>(
+        f: impl FnOnce(WatchRecordQueuedStatsBuilder) -> B,
     ) -> WatchRecordQueuedStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WatchRecordQueuedStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod watch_record_queued_stats_members {
+    pub struct execution_time;
 }
 
 /// Builder for [`WatchRecordQueuedStats`].
@@ -389,7 +408,7 @@ impl<S0> WatchRecordQueuedStatsBuilder<(S0,)> {
 }
 
 impl WatchRecordQueuedStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The time the watch was run.
+    /// **Required.** The time the watch was run.
     /// This is just before the input is being run.
     pub fn execution_time(
         self,
@@ -401,25 +420,36 @@ impl WatchRecordQueuedStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WatchRecordQueuedStatsBuilder<(S0,)> {
     /// Builds a [`WatchRecordQueuedStats`].
-    pub fn build(self) -> WatchRecordQueuedStats {
+    pub fn build(self) -> WatchRecordQueuedStats
+    where
+        S0: crate::typed::builder::IsSet<watch_record_queued_stats_members::execution_time>,
+    {
         WatchRecordQueuedStats {
             execution_time: self.execution_time.unwrap(),
         }
     }
 }
 
-impl From<WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)>> for WatchRecordQueuedStats {
-    fn from(builder: WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WatchRecordQueuedStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<watch_record_queued_stats_members::execution_time>,
+{
+    type Output = WatchRecordQueuedStats;
+
+    fn build(self) -> WatchRecordQueuedStats {
+        Self::build(self)
     }
 }
 
-impl WatchRecordQueuedStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `execution_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, execution_time: crate::typed::builder::MissingRequiredField) -> WatchRecordQueuedStats { match execution_time {} }
+impl<S0> From<WatchRecordQueuedStatsBuilder<(S0,)>> for WatchRecordQueuedStats
+where
+    S0: crate::typed::builder::IsSet<watch_record_queued_stats_members::execution_time>,
+{
+    fn from(builder: WatchRecordQueuedStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -440,24 +470,31 @@ pub struct WatchRecordStats {
 
 impl WatchRecordStats {
     /// Creates a builder for [`WatchRecordStats`].
+    ///
+    /// Required: `execution_time`, `execution_phase`, `triggered_time`, `watch_id`, `watch_record_id`.
     pub fn builder() -> WatchRecordStatsBuilder {
         WatchRecordStatsBuilder::new()
     }
 
     /// Creates a [`WatchRecordStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WatchRecordStatsBuilder,
-        ) -> WatchRecordStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `execution_time`, `execution_phase`, `triggered_time`, `watch_id`, `watch_record_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = WatchRecordStats>>(
+        f: impl FnOnce(WatchRecordStatsBuilder) -> B,
     ) -> WatchRecordStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WatchRecordStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod watch_record_stats_members {
+    pub struct execution_time;
+    pub struct execution_phase;
+    pub struct triggered_time;
+    pub struct watch_id;
+    pub struct watch_record_id;
 }
 
 /// Builder for [`WatchRecordStats`].
@@ -536,7 +573,7 @@ impl<S0, S1, S2, S3, S4> WatchRecordStatsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> WatchRecordStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// The time the watch was run.
+    /// **Required.** The time the watch was run.
     /// This is just before the input is being run.
     pub fn execution_time(
         self,
@@ -549,7 +586,7 @@ impl<S1, S2, S3, S4> WatchRecordStatsBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3, S4> WatchRecordStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The current watch execution phase.
+    /// **Required.** The current watch execution phase.
     pub fn execution_phase(
         self,
         value: impl Into<crate::typed::watcher::_types::ExecutionPhase>,
@@ -561,7 +598,7 @@ impl<S0, S2, S3, S4> WatchRecordStatsBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3, S4> WatchRecordStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// The time the watch was triggered by the trigger engine.
+    /// **Required.** The time the watch was triggered by the trigger engine.
     pub fn triggered_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -573,6 +610,7 @@ impl<S0, S1, S3, S4> WatchRecordStatsBuilder<(S0, S1, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2, S4> WatchRecordStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn watch_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -584,7 +622,7 @@ impl<S0, S1, S2, S4> WatchRecordStatsBuilder<(S0, S1, S2, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S3> WatchRecordStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The watch record identifier.
+    /// **Required.** The watch record identifier.
     pub fn watch_record_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -595,17 +633,16 @@ impl<S0, S1, S2, S3> WatchRecordStatsBuilder<(S0, S1, S2, S3, crate::typed::buil
     }
 }
 
-impl
-    WatchRecordStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> WatchRecordStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`WatchRecordStats`].
-    pub fn build(self) -> WatchRecordStats {
+    pub fn build(self) -> WatchRecordStats
+    where
+        S0: crate::typed::builder::IsSet<watch_record_stats_members::execution_time>,
+        S1: crate::typed::builder::IsSet<watch_record_stats_members::execution_phase>,
+        S2: crate::typed::builder::IsSet<watch_record_stats_members::triggered_time>,
+        S3: crate::typed::builder::IsSet<watch_record_stats_members::watch_id>,
+        S4: crate::typed::builder::IsSet<watch_record_stats_members::watch_record_id>,
+    {
         WatchRecordStats {
             execution_time: self.execution_time.unwrap(),
             execution_phase: self.execution_phase.unwrap(),
@@ -617,90 +654,33 @@ impl
     }
 }
 
-impl
-    From<
-        WatchRecordStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for WatchRecordStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for WatchRecordStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<watch_record_stats_members::execution_time>,
+    S1: crate::typed::builder::IsSet<watch_record_stats_members::execution_phase>,
+    S2: crate::typed::builder::IsSet<watch_record_stats_members::triggered_time>,
+    S3: crate::typed::builder::IsSet<watch_record_stats_members::watch_id>,
+    S4: crate::typed::builder::IsSet<watch_record_stats_members::watch_record_id>,
 {
-    fn from(
-        builder: WatchRecordStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = WatchRecordStats;
+
+    fn build(self) -> WatchRecordStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> WatchRecordStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `execution_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, execution_time: crate::typed::builder::MissingRequiredField) -> WatchRecordStats { match execution_time {} }
-}
-
-impl<S2, S3, S4>
-    WatchRecordStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<WatchRecordStatsBuilder<(S0, S1, S2, S3, S4)>> for WatchRecordStats
+where
+    S0: crate::typed::builder::IsSet<watch_record_stats_members::execution_time>,
+    S1: crate::typed::builder::IsSet<watch_record_stats_members::execution_phase>,
+    S2: crate::typed::builder::IsSet<watch_record_stats_members::triggered_time>,
+    S3: crate::typed::builder::IsSet<watch_record_stats_members::watch_id>,
+    S4: crate::typed::builder::IsSet<watch_record_stats_members::watch_record_id>,
 {
-    /// `execution_phase` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, execution_phase: crate::typed::builder::MissingRequiredField) -> WatchRecordStats { match execution_phase {} }
-}
-
-impl<S3, S4>
-    WatchRecordStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `triggered_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, triggered_time: crate::typed::builder::MissingRequiredField) -> WatchRecordStats { match triggered_time {} }
-}
-
-impl<S4>
-    WatchRecordStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `watch_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, watch_id: crate::typed::builder::MissingRequiredField) -> WatchRecordStats { match watch_id {} }
-}
-
-impl
-    WatchRecordStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `watch_record_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, watch_record_id: crate::typed::builder::MissingRequiredField) -> WatchRecordStats { match watch_record_id {} }
+    fn from(builder: WatchRecordStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -742,23 +722,30 @@ pub struct WatcherNodeStats {
 
 impl WatcherNodeStats {
     /// Creates a builder for [`WatcherNodeStats`].
+    ///
+    /// Required: `execution_thread_pool`, `watch_count`, `watcher_state`, `node_id`.
     pub fn builder() -> WatcherNodeStatsBuilder {
         WatcherNodeStatsBuilder::new()
     }
 
     /// Creates a [`WatcherNodeStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WatcherNodeStatsBuilder,
-        ) -> WatcherNodeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `execution_thread_pool`, `watch_count`, `watcher_state`, `node_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = WatcherNodeStats>>(
+        f: impl FnOnce(WatcherNodeStatsBuilder) -> B,
     ) -> WatcherNodeStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WatcherNodeStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod watcher_node_stats_members {
+    pub struct execution_thread_pool;
+    pub struct watch_count;
+    pub struct watcher_state;
+    pub struct node_id;
 }
 
 /// Builder for [`WatcherNodeStats`].
@@ -840,17 +827,9 @@ impl<S0, S1, S2, S3> WatcherNodeStatsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`current_watches`](Self::current_watches), with a builder.
-    pub fn add_current_watches_with(
+    pub fn add_current_watches_with<B: crate::typed::builder::Build<Output = WatchRecordStats>>(
         self,
-        f: impl FnOnce(
-            WatchRecordStatsBuilder,
-        ) -> WatchRecordStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(WatchRecordStatsBuilder) -> B,
     ) -> Self {
         self.add_current_watches(f(WatchRecordStatsBuilder::new()).build())
     }
@@ -880,17 +859,18 @@ impl<S0, S1, S2, S3> WatcherNodeStatsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`queued_watches`](Self::queued_watches), with a builder.
-    pub fn add_queued_watches_with(
+    pub fn add_queued_watches_with<
+        B: crate::typed::builder::Build<Output = WatchRecordQueuedStats>,
+    >(
         self,
-        f: impl FnOnce(
-            WatchRecordQueuedStatsBuilder,
-        ) -> WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WatchRecordQueuedStatsBuilder) -> B,
     ) -> Self {
         self.add_queued_watches(f(WatchRecordQueuedStatsBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> WatcherNodeStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn execution_thread_pool(
         self,
         value: impl Into<crate::typed::watcher::_types::ExecutionThreadPool>,
@@ -901,14 +881,11 @@ impl<S1, S2, S3> WatcherNodeStatsBuilder<(crate::typed::builder::NotSet, S1, S2,
     }
 
     /// Sets [`execution_thread_pool`](Self::execution_thread_pool) with a builder.
-    pub fn execution_thread_pool_with(
+    pub fn execution_thread_pool_with<
+        B: crate::typed::builder::Build<Output = crate::typed::watcher::_types::ExecutionThreadPool>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::watcher::_types::ExecutionThreadPoolBuilder,
-        ) -> crate::typed::watcher::_types::ExecutionThreadPoolBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::watcher::_types::ExecutionThreadPoolBuilder) -> B,
     ) -> WatcherNodeStatsBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.execution_thread_pool(
             f(crate::typed::watcher::_types::ExecutionThreadPoolBuilder::new()).build(),
@@ -917,7 +894,7 @@ impl<S1, S2, S3> WatcherNodeStatsBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3> WatcherNodeStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The number of watches currently registered.
+    /// **Required.** The number of watches currently registered.
     pub fn watch_count(
         self,
         value: i64,
@@ -929,7 +906,7 @@ impl<S0, S2, S3> WatcherNodeStatsBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3> WatcherNodeStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The current state of Watcher.
+    /// **Required.** The current state of Watcher.
     pub fn watcher_state(
         self,
         value: impl Into<WatcherState>,
@@ -941,6 +918,7 @@ impl<S0, S1, S3> WatcherNodeStatsBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> WatcherNodeStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -951,16 +929,15 @@ impl<S0, S1, S2> WatcherNodeStatsBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 }
 
-impl
-    WatcherNodeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> WatcherNodeStatsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`WatcherNodeStats`].
-    pub fn build(self) -> WatcherNodeStats {
+    pub fn build(self) -> WatcherNodeStats
+    where
+        S0: crate::typed::builder::IsSet<watcher_node_stats_members::execution_thread_pool>,
+        S1: crate::typed::builder::IsSet<watcher_node_stats_members::watch_count>,
+        S2: crate::typed::builder::IsSet<watcher_node_stats_members::watcher_state>,
+        S3: crate::typed::builder::IsSet<watcher_node_stats_members::node_id>,
+    {
         WatcherNodeStats {
             current_watches: self.current_watches,
             execution_thread_pool: self.execution_thread_pool.unwrap(),
@@ -972,71 +949,30 @@ impl
     }
 }
 
-impl
-    From<
-        WatcherNodeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for WatcherNodeStats
+impl<S0, S1, S2, S3> crate::typed::builder::Build for WatcherNodeStatsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<watcher_node_stats_members::execution_thread_pool>,
+    S1: crate::typed::builder::IsSet<watcher_node_stats_members::watch_count>,
+    S2: crate::typed::builder::IsSet<watcher_node_stats_members::watcher_state>,
+    S3: crate::typed::builder::IsSet<watcher_node_stats_members::node_id>,
 {
-    fn from(
-        builder: WatcherNodeStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = WatcherNodeStats;
+
+    fn build(self) -> WatcherNodeStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> WatcherNodeStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `execution_thread_pool` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, execution_thread_pool: crate::typed::builder::MissingRequiredField) -> WatcherNodeStats { match execution_thread_pool {} }
-}
-
-impl<S2, S3>
-    WatcherNodeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<WatcherNodeStatsBuilder<(S0, S1, S2, S3)>> for WatcherNodeStats
+where
+    S0: crate::typed::builder::IsSet<watcher_node_stats_members::execution_thread_pool>,
+    S1: crate::typed::builder::IsSet<watcher_node_stats_members::watch_count>,
+    S2: crate::typed::builder::IsSet<watcher_node_stats_members::watcher_state>,
+    S3: crate::typed::builder::IsSet<watcher_node_stats_members::node_id>,
 {
-    /// `watch_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, watch_count: crate::typed::builder::MissingRequiredField) -> WatcherNodeStats { match watch_count {} }
-}
-
-impl<S3>
-    WatcherNodeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `watcher_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, watcher_state: crate::typed::builder::MissingRequiredField) -> WatcherNodeStats { match watcher_state {} }
-}
-
-impl
-    WatcherNodeStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> WatcherNodeStats { match node_id {} }
+    fn from(builder: WatcherNodeStatsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

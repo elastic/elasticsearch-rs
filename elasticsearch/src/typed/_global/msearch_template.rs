@@ -67,16 +67,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `search_templates`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `search_templates`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct search_templates;
 }
 
 /// Builder for [`Request`].
@@ -296,7 +307,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn search_templates(
         self,
         value: impl Into<Vec<RequestItem>>,
@@ -330,9 +341,12 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::search_templates>,
+    {
         Request {
             index: self.index,
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
@@ -350,23 +364,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::search_templates>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `search_templates` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_templates: crate::typed::builder::MissingRequiredField) -> Request { match search_templates {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `search_templates` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, search_templates: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match search_templates {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::search_templates>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -545,7 +562,9 @@ impl TemplateConfig {
     }
 
     /// Creates a [`TemplateConfig`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TemplateConfigBuilder) -> TemplateConfigBuilder) -> TemplateConfig {
+    pub fn of<B: crate::typed::builder::Build<Output = TemplateConfig>>(
+        f: impl FnOnce(TemplateConfigBuilder) -> B,
+    ) -> TemplateConfig {
         f(Self::builder()).build()
     }
 }
@@ -667,6 +686,14 @@ impl TemplateConfigBuilder {
             profile: self.profile,
             source: self.source,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TemplateConfigBuilder {
+    type Output = TemplateConfig;
+
+    fn build(self) -> TemplateConfig {
+        Self::build(self)
     }
 }
 

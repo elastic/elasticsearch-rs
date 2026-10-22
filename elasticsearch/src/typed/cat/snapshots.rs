@@ -52,7 +52,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -231,6 +233,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -432,7 +442,9 @@ impl SnapshotsRecord {
     }
 
     /// Creates a [`SnapshotsRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SnapshotsRecordBuilder) -> SnapshotsRecordBuilder) -> SnapshotsRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotsRecord>>(
+        f: impl FnOnce(SnapshotsRecordBuilder) -> B,
+    ) -> SnapshotsRecord {
         f(Self::builder()).build()
     }
 }
@@ -675,6 +687,14 @@ impl SnapshotsRecordBuilder {
             total_shards: self.total_shards,
             reason: self.reason,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SnapshotsRecordBuilder {
+    type Output = SnapshotsRecord;
+
+    fn build(self) -> SnapshotsRecord {
+        Self::build(self)
     }
 }
 

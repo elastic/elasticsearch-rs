@@ -27,22 +27,29 @@ pub struct AggregateMetricDoubleProperty {
 
 impl AggregateMetricDoubleProperty {
     /// Creates a builder for [`AggregateMetricDoubleProperty`].
+    ///
+    /// Required: `type`, `default_metric`, `metrics`.
     pub fn builder() -> AggregateMetricDoublePropertyBuilder {
         AggregateMetricDoublePropertyBuilder::new()
     }
 
     /// Creates a [`AggregateMetricDoubleProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AggregateMetricDoublePropertyBuilder,
-        ) -> AggregateMetricDoublePropertyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `default_metric`, `metrics`.
+    pub fn of<B: crate::typed::builder::Build<Output = AggregateMetricDoubleProperty>>(
+        f: impl FnOnce(AggregateMetricDoublePropertyBuilder) -> B,
     ) -> AggregateMetricDoubleProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AggregateMetricDoublePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod aggregate_metric_double_property_members {
+    pub struct r#type;
+    pub struct default_metric;
+    pub struct metrics;
 }
 
 /// Builder for [`AggregateMetricDoubleProperty`].
@@ -246,6 +253,7 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -257,6 +265,7 @@ impl<S1, S2> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn default_metric(
         self,
         value: impl Into<String>,
@@ -268,6 +277,7 @@ impl<S0, S2> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn metrics(
         self,
         value: impl Into<Vec<String>>,
@@ -301,15 +311,14 @@ impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder
     }
 }
 
-impl
-    AggregateMetricDoublePropertyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
     /// Builds a [`AggregateMetricDoubleProperty`].
-    pub fn build(self) -> AggregateMetricDoubleProperty {
+    pub fn build(self) -> AggregateMetricDoubleProperty
+    where
+        S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
+        S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+        S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
+    {
         AggregateMetricDoubleProperty {
             meta: self.meta,
             properties: self.properties,
@@ -326,54 +335,29 @@ impl
     }
 }
 
-impl
-    From<
-        AggregateMetricDoublePropertyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AggregateMetricDoubleProperty
+impl<S0, S1, S2> crate::typed::builder::Build for AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
+    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+    S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
 {
-    fn from(
-        builder: AggregateMetricDoublePropertyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AggregateMetricDoubleProperty;
+
+    fn build(self) -> AggregateMetricDoubleProperty {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> AggregateMetricDoubleProperty { match r#type {} }
-}
-
-impl<S2>
-    AggregateMetricDoublePropertyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>>
+    for AggregateMetricDoubleProperty
+where
+    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
+    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+    S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
 {
-    /// `default_metric` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default_metric: crate::typed::builder::MissingRequiredField) -> AggregateMetricDoubleProperty { match default_metric {} }
-}
-
-impl
-    AggregateMetricDoublePropertyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `metrics` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metrics: crate::typed::builder::MissingRequiredField) -> AggregateMetricDoubleProperty { match metrics {} }
+    fn from(builder: AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -392,29 +376,36 @@ pub struct AllField {
 
 impl AllField {
     /// Creates a builder for [`AllField`].
+    ///
+    /// Required: `analyzer`, `enabled`, `omit_norms`, `search_analyzer`, `similarity`, `store`, `store_term_vector_offsets`, `store_term_vector_payloads`, `store_term_vector_positions`, `store_term_vectors`.
     pub fn builder() -> AllFieldBuilder {
         AllFieldBuilder::new()
     }
 
     /// Creates a [`AllField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AllFieldBuilder,
-        ) -> AllFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `analyzer`, `enabled`, `omit_norms`, `search_analyzer`, `similarity`, `store`, `store_term_vector_offsets`, `store_term_vector_payloads`, `store_term_vector_positions`, `store_term_vectors`.
+    pub fn of<B: crate::typed::builder::Build<Output = AllField>>(
+        f: impl FnOnce(AllFieldBuilder) -> B,
     ) -> AllField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AllFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod all_field_members {
+    pub struct analyzer;
+    pub struct enabled;
+    pub struct omit_norms;
+    pub struct search_analyzer;
+    pub struct similarity;
+    pub struct store;
+    pub struct store_term_vector_offsets;
+    pub struct store_term_vector_payloads;
+    pub struct store_term_vector_positions;
+    pub struct store_term_vectors;
 }
 
 /// Builder for [`AllField`].
@@ -511,6 +502,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn analyzer(
         self,
         value: impl Into<String>,
@@ -546,6 +538,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn enabled(
         self,
         value: bool,
@@ -581,6 +574,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn omit_norms(
         self,
         value: bool,
@@ -616,6 +610,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn search_analyzer(
         self,
         value: impl Into<String>,
@@ -651,6 +646,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn similarity(
         self,
         value: impl Into<String>,
@@ -686,6 +682,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn store(
         self,
         value: bool,
@@ -721,6 +718,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn store_term_vector_offsets(
         self,
         value: bool,
@@ -756,6 +754,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn store_term_vector_payloads(
         self,
         value: bool,
@@ -791,6 +790,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn store_term_vector_positions(
         self,
         value: bool,
@@ -826,6 +826,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn store_term_vectors(
         self,
         value: bool,
@@ -847,22 +848,23 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 }
 
-impl
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    AllFieldBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`AllField`].
-    pub fn build(self) -> AllField {
+    pub fn build(self) -> AllField
+    where
+        S0: crate::typed::builder::IsSet<all_field_members::analyzer>,
+        S1: crate::typed::builder::IsSet<all_field_members::enabled>,
+        S2: crate::typed::builder::IsSet<all_field_members::omit_norms>,
+        S3: crate::typed::builder::IsSet<all_field_members::search_analyzer>,
+        S4: crate::typed::builder::IsSet<all_field_members::similarity>,
+        S5: crate::typed::builder::IsSet<all_field_members::store>,
+        S6: crate::typed::builder::IsSet<all_field_members::store_term_vector_offsets>,
+        S7: crate::typed::builder::IsSet<all_field_members::store_term_vector_payloads>,
+        S8: crate::typed::builder::IsSet<all_field_members::store_term_vector_positions>,
+        S9: crate::typed::builder::IsSet<all_field_members::store_term_vectors>,
+    {
         AllField {
             analyzer: self.analyzer.unwrap(),
             enabled: self.enabled.unwrap(),
@@ -878,228 +880,44 @@ impl
     }
 }
 
-impl
-    From<
-        AllFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AllField
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for AllFieldBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<all_field_members::analyzer>,
+    S1: crate::typed::builder::IsSet<all_field_members::enabled>,
+    S2: crate::typed::builder::IsSet<all_field_members::omit_norms>,
+    S3: crate::typed::builder::IsSet<all_field_members::search_analyzer>,
+    S4: crate::typed::builder::IsSet<all_field_members::similarity>,
+    S5: crate::typed::builder::IsSet<all_field_members::store>,
+    S6: crate::typed::builder::IsSet<all_field_members::store_term_vector_offsets>,
+    S7: crate::typed::builder::IsSet<all_field_members::store_term_vector_payloads>,
+    S8: crate::typed::builder::IsSet<all_field_members::store_term_vector_positions>,
+    S9: crate::typed::builder::IsSet<all_field_members::store_term_vectors>,
 {
-    fn from(
-        builder: AllFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AllField;
+
+    fn build(self) -> AllField {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<AllFieldBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>> for AllField
+where
+    S0: crate::typed::builder::IsSet<all_field_members::analyzer>,
+    S1: crate::typed::builder::IsSet<all_field_members::enabled>,
+    S2: crate::typed::builder::IsSet<all_field_members::omit_norms>,
+    S3: crate::typed::builder::IsSet<all_field_members::search_analyzer>,
+    S4: crate::typed::builder::IsSet<all_field_members::similarity>,
+    S5: crate::typed::builder::IsSet<all_field_members::store>,
+    S6: crate::typed::builder::IsSet<all_field_members::store_term_vector_offsets>,
+    S7: crate::typed::builder::IsSet<all_field_members::store_term_vector_payloads>,
+    S8: crate::typed::builder::IsSet<all_field_members::store_term_vector_positions>,
+    S9: crate::typed::builder::IsSet<all_field_members::store_term_vectors>,
 {
-    /// `analyzer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analyzer: crate::typed::builder::MissingRequiredField) -> AllField { match analyzer {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> AllField { match enabled {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `omit_norms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, omit_norms: crate::typed::builder::MissingRequiredField) -> AllField { match omit_norms {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `search_analyzer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_analyzer: crate::typed::builder::MissingRequiredField) -> AllField { match search_analyzer {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `similarity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, similarity: crate::typed::builder::MissingRequiredField) -> AllField { match similarity {} }
-}
-
-impl<S6, S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `store` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store: crate::typed::builder::MissingRequiredField) -> AllField { match store {} }
-}
-
-impl<S7, S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `store_term_vector_offsets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_term_vector_offsets: crate::typed::builder::MissingRequiredField) -> AllField { match store_term_vector_offsets {} }
-}
-
-impl<S8, S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `store_term_vector_payloads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_term_vector_payloads: crate::typed::builder::MissingRequiredField) -> AllField { match store_term_vector_payloads {} }
-}
-
-impl<S9>
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `store_term_vector_positions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_term_vector_positions: crate::typed::builder::MissingRequiredField) -> AllField { match store_term_vector_positions {} }
-}
-
-impl
-    AllFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `store_term_vectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_term_vectors: crate::typed::builder::MissingRequiredField) -> AllField { match store_term_vectors {} }
+    fn from(builder: AllFieldBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1128,16 +946,27 @@ pub struct BinaryProperty {
 
 impl BinaryProperty {
     /// Creates a builder for [`BinaryProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BinaryPropertyBuilder {
         BinaryPropertyBuilder::new()
     }
 
     /// Creates a [`BinaryProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BinaryPropertyBuilder) -> BinaryPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BinaryProperty>>(
+        f: impl FnOnce(BinaryPropertyBuilder) -> B,
     ) -> BinaryProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BinaryPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod binary_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BinaryProperty`].
@@ -1337,6 +1166,7 @@ impl<S0> BinaryPropertyBuilder<(S0,)> {
 }
 
 impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1347,9 +1177,12 @@ impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BinaryPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BinaryPropertyBuilder<(S0,)> {
     /// Builds a [`BinaryProperty`].
-    pub fn build(self) -> BinaryProperty {
+    pub fn build(self) -> BinaryProperty
+    where
+        S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
+    {
         BinaryProperty {
             meta: self.meta,
             properties: self.properties,
@@ -1365,16 +1198,24 @@ impl BinaryPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BinaryPropertyBuilder<(crate::typed::builder::Set,)>> for BinaryProperty {
-    fn from(builder: BinaryPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BinaryPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
+{
+    type Output = BinaryProperty;
+
+    fn build(self) -> BinaryProperty {
+        Self::build(self)
     }
 }
 
-impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BinaryProperty { match r#type {} }
+impl<S0> From<BinaryPropertyBuilder<(S0,)>> for BinaryProperty
+where
+    S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
+{
+    fn from(builder: BinaryPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1420,16 +1261,27 @@ pub struct BooleanProperty {
 
 impl BooleanProperty {
     /// Creates a builder for [`BooleanProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BooleanPropertyBuilder {
         BooleanPropertyBuilder::new()
     }
 
     /// Creates a [`BooleanProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BooleanPropertyBuilder) -> BooleanPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BooleanProperty>>(
+        f: impl FnOnce(BooleanPropertyBuilder) -> B,
     ) -> BooleanProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BooleanPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod boolean_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BooleanProperty`].
@@ -1680,13 +1532,11 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`fielddata`](Self::fielddata) with a builder.
-    pub fn fielddata_with(
+    pub fn fielddata_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::NumericFielddata>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::NumericFielddataBuilder,
-        ) -> crate::typed::indices::_types::NumericFielddataBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::NumericFielddataBuilder) -> B,
     ) -> Self {
         self.fielddata(f(crate::typed::indices::_types::NumericFielddataBuilder::new()).build())
     }
@@ -1736,9 +1586,9 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -1768,6 +1618,7 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
 }
 
 impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1778,9 +1629,12 @@ impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BooleanPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BooleanPropertyBuilder<(S0,)> {
     /// Builds a [`BooleanProperty`].
-    pub fn build(self) -> BooleanProperty {
+    pub fn build(self) -> BooleanProperty
+    where
+        S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
+    {
         BooleanProperty {
             meta: self.meta,
             properties: self.properties,
@@ -1804,16 +1658,24 @@ impl BooleanPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BooleanPropertyBuilder<(crate::typed::builder::Set,)>> for BooleanProperty {
-    fn from(builder: BooleanPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BooleanPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
+{
+    type Output = BooleanProperty;
+
+    fn build(self) -> BooleanProperty {
+        Self::build(self)
     }
 }
 
-impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BooleanProperty { match r#type {} }
+impl<S0> From<BooleanPropertyBuilder<(S0,)>> for BooleanProperty
+where
+    S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
+{
+    fn from(builder: BooleanPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1862,18 +1724,27 @@ pub struct ByteNumberProperty {
 
 impl ByteNumberProperty {
     /// Creates a builder for [`ByteNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ByteNumberPropertyBuilder {
         ByteNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ByteNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ByteNumberPropertyBuilder,
-        ) -> ByteNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ByteNumberProperty>>(
+        f: impl FnOnce(ByteNumberPropertyBuilder) -> B,
     ) -> ByteNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ByteNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod byte_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ByteNumberProperty`].
@@ -2165,9 +2036,9 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -2209,6 +2080,7 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
 }
 
 impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2219,9 +2091,12 @@ impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ByteNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ByteNumberPropertyBuilder<(S0,)> {
     /// Builds a [`ByteNumberProperty`].
-    pub fn build(self) -> ByteNumberProperty {
+    pub fn build(self) -> ByteNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
+    {
         ByteNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -2246,16 +2121,24 @@ impl ByteNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ByteNumberPropertyBuilder<(crate::typed::builder::Set,)>> for ByteNumberProperty {
-    fn from(builder: ByteNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ByteNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
+{
+    type Output = ByteNumberProperty;
+
+    fn build(self) -> ByteNumberProperty {
+        Self::build(self)
     }
 }
 
-impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ByteNumberProperty { match r#type {} }
+impl<S0> From<ByteNumberPropertyBuilder<(S0,)>> for ByteNumberProperty
+where
+    S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
+{
+    fn from(builder: ByteNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2307,18 +2190,27 @@ pub struct ChunkRescorerChunkingSettings {
 
 impl ChunkRescorerChunkingSettings {
     /// Creates a builder for [`ChunkRescorerChunkingSettings`].
+    ///
+    /// Required: `max_chunk_size`.
     pub fn builder() -> ChunkRescorerChunkingSettingsBuilder {
         ChunkRescorerChunkingSettingsBuilder::new()
     }
 
     /// Creates a [`ChunkRescorerChunkingSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChunkRescorerChunkingSettingsBuilder,
-        ) -> ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `max_chunk_size`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChunkRescorerChunkingSettings>>(
+        f: impl FnOnce(ChunkRescorerChunkingSettingsBuilder) -> B,
     ) -> ChunkRescorerChunkingSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChunkRescorerChunkingSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chunk_rescorer_chunking_settings_members {
+    pub struct max_chunk_size;
 }
 
 /// Builder for [`ChunkRescorerChunkingSettings`].
@@ -2454,7 +2346,7 @@ impl<S0> ChunkRescorerChunkingSettingsBuilder<(S0,)> {
 }
 
 impl ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The maximum size of a chunk in words.
+    /// **Required.** The maximum size of a chunk in words.
     /// This value cannot be lower than `20` (for `sentence` strategy) or `10` (for `word` strategy).
     /// This value should not exceed the window size for the associated model.
     pub fn max_chunk_size(
@@ -2467,9 +2359,12 @@ impl ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChunkRescorerChunkingSettingsBuilder<(S0,)> {
     /// Builds a [`ChunkRescorerChunkingSettings`].
-    pub fn build(self) -> ChunkRescorerChunkingSettings {
+    pub fn build(self) -> ChunkRescorerChunkingSettings
+    where
+        S0: crate::typed::builder::IsSet<chunk_rescorer_chunking_settings_members::max_chunk_size>,
+    {
         ChunkRescorerChunkingSettings {
             max_chunk_size: self.max_chunk_size.unwrap(),
             overlap: self.overlap,
@@ -2481,18 +2376,24 @@ impl ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)>>
-    for ChunkRescorerChunkingSettings
+impl<S0> crate::typed::builder::Build for ChunkRescorerChunkingSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<chunk_rescorer_chunking_settings_members::max_chunk_size>,
 {
-    fn from(builder: ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ChunkRescorerChunkingSettings;
+
+    fn build(self) -> ChunkRescorerChunkingSettings {
+        Self::build(self)
     }
 }
 
-impl ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `max_chunk_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_chunk_size: crate::typed::builder::MissingRequiredField) -> ChunkRescorerChunkingSettings { match max_chunk_size {} }
+impl<S0> From<ChunkRescorerChunkingSettingsBuilder<(S0,)>> for ChunkRescorerChunkingSettings
+where
+    S0: crate::typed::builder::IsSet<chunk_rescorer_chunking_settings_members::max_chunk_size>,
+{
+    fn from(builder: ChunkRescorerChunkingSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2543,21 +2444,28 @@ pub struct ChunkingSettings {
 
 impl ChunkingSettings {
     /// Creates a builder for [`ChunkingSettings`].
+    ///
+    /// Required: `strategy`, `max_chunk_size`.
     pub fn builder() -> ChunkingSettingsBuilder {
         ChunkingSettingsBuilder::new()
     }
 
     /// Creates a [`ChunkingSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChunkingSettingsBuilder,
-        ) -> ChunkingSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `strategy`, `max_chunk_size`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChunkingSettings>>(
+        f: impl FnOnce(ChunkingSettingsBuilder) -> B,
     ) -> ChunkingSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChunkingSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chunking_settings_members {
+    pub struct strategy;
+    pub struct max_chunk_size;
 }
 
 /// Builder for [`ChunkingSettings`].
@@ -2676,7 +2584,7 @@ impl<S0, S1> ChunkingSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> ChunkingSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The chunking strategy: `sentence`, `word`, `none` or `recursive`.
+    /// **Required.** The chunking strategy: `sentence`, `word`, `none` or `recursive`.
     ///
     /// * If `strategy` is set to `recursive`, you must also specify:
     ///
@@ -2695,7 +2603,7 @@ impl<S1> ChunkingSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ChunkingSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The maximum size of a chunk in words.
+    /// **Required.** The maximum size of a chunk in words.
     /// This value cannot be lower than `20` (for `sentence` strategy) or `10` (for `word` strategy).
     /// This value should not exceed the window size for the associated model.
     pub fn max_chunk_size(
@@ -2708,9 +2616,13 @@ impl<S0> ChunkingSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ChunkingSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ChunkingSettingsBuilder<(S0, S1)> {
     /// Builds a [`ChunkingSettings`].
-    pub fn build(self) -> ChunkingSettings {
+    pub fn build(self) -> ChunkingSettings
+    where
+        S0: crate::typed::builder::IsSet<chunking_settings_members::strategy>,
+        S1: crate::typed::builder::IsSet<chunking_settings_members::max_chunk_size>,
+    {
         ChunkingSettings {
             strategy: self.strategy.unwrap(),
             max_chunk_size: self.max_chunk_size.unwrap(),
@@ -2722,26 +2634,26 @@ impl ChunkingSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ChunkingSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ChunkingSettings
+impl<S0, S1> crate::typed::builder::Build for ChunkingSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<chunking_settings_members::strategy>,
+    S1: crate::typed::builder::IsSet<chunking_settings_members::max_chunk_size>,
 {
-    fn from(
-        builder: ChunkingSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ChunkingSettings;
+
+    fn build(self) -> ChunkingSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> ChunkingSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `strategy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, strategy: crate::typed::builder::MissingRequiredField) -> ChunkingSettings { match strategy {} }
-}
-
-impl ChunkingSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `max_chunk_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_chunk_size: crate::typed::builder::MissingRequiredField) -> ChunkingSettings { match max_chunk_size {} }
+impl<S0, S1> From<ChunkingSettingsBuilder<(S0, S1)>> for ChunkingSettings
+where
+    S0: crate::typed::builder::IsSet<chunking_settings_members::strategy>,
+    S1: crate::typed::builder::IsSet<chunking_settings_members::max_chunk_size>,
+{
+    fn from(builder: ChunkingSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2782,18 +2694,27 @@ pub struct CompletionProperty {
 
 impl CompletionProperty {
     /// Creates a builder for [`CompletionProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CompletionPropertyBuilder {
         CompletionPropertyBuilder::new()
     }
 
     /// Creates a [`CompletionProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionPropertyBuilder,
-        ) -> CompletionPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionProperty>>(
+        f: impl FnOnce(CompletionPropertyBuilder) -> B,
     ) -> CompletionProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CompletionProperty`].
@@ -3040,14 +2961,9 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
     }
 
     /// Adds an element to [`contexts`](Self::contexts), with a builder.
-    pub fn add_contexts_with(
+    pub fn add_contexts_with<B: crate::typed::builder::Build<Output = SuggestContext>>(
         self,
-        f: impl FnOnce(
-            SuggestContextBuilder,
-        ) -> SuggestContextBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SuggestContextBuilder) -> B,
     ) -> Self {
         self.add_contexts(f(SuggestContextBuilder::new()).build())
     }
@@ -3098,6 +3014,7 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
 }
 
 impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3108,9 +3025,12 @@ impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompletionPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompletionPropertyBuilder<(S0,)> {
     /// Builds a [`CompletionProperty`].
-    pub fn build(self) -> CompletionProperty {
+    pub fn build(self) -> CompletionProperty
+    where
+        S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
+    {
         CompletionProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3132,16 +3052,24 @@ impl CompletionPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CompletionPropertyBuilder<(crate::typed::builder::Set,)>> for CompletionProperty {
-    fn from(builder: CompletionPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CompletionPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
+{
+    type Output = CompletionProperty;
+
+    fn build(self) -> CompletionProperty {
+        Self::build(self)
     }
 }
 
-impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CompletionProperty { match r#type {} }
+impl<S0> From<CompletionPropertyBuilder<(S0,)>> for CompletionProperty
+where
+    S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
+{
+    fn from(builder: CompletionPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3151,18 +3079,27 @@ pub struct CompositeSubField {
 
 impl CompositeSubField {
     /// Creates a builder for [`CompositeSubField`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CompositeSubFieldBuilder {
         CompositeSubFieldBuilder::new()
     }
 
     /// Creates a [`CompositeSubField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeSubFieldBuilder,
-        ) -> CompositeSubFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeSubField>>(
+        f: impl FnOnce(CompositeSubFieldBuilder) -> B,
     ) -> CompositeSubField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompositeSubFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod composite_sub_field_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CompositeSubField`].
@@ -3191,6 +3128,7 @@ impl<S0> CompositeSubFieldBuilder<(S0,)> {
 }
 
 impl CompositeSubFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<RuntimeFieldType>,
@@ -3201,25 +3139,36 @@ impl CompositeSubFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompositeSubFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompositeSubFieldBuilder<(S0,)> {
     /// Builds a [`CompositeSubField`].
-    pub fn build(self) -> CompositeSubField {
+    pub fn build(self) -> CompositeSubField
+    where
+        S0: crate::typed::builder::IsSet<composite_sub_field_members::r#type>,
+    {
         CompositeSubField {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<CompositeSubFieldBuilder<(crate::typed::builder::Set,)>> for CompositeSubField {
-    fn from(builder: CompositeSubFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CompositeSubFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<composite_sub_field_members::r#type>,
+{
+    type Output = CompositeSubField;
+
+    fn build(self) -> CompositeSubField {
+        Self::build(self)
     }
 }
 
-impl CompositeSubFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CompositeSubField { match r#type {} }
+impl<S0> From<CompositeSubFieldBuilder<(S0,)>> for CompositeSubField
+where
+    S0: crate::typed::builder::IsSet<composite_sub_field_members::r#type>,
+{
+    fn from(builder: CompositeSubFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3244,18 +3193,27 @@ pub struct ConstantKeywordProperty {
 
 impl ConstantKeywordProperty {
     /// Creates a builder for [`ConstantKeywordProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ConstantKeywordPropertyBuilder {
         ConstantKeywordPropertyBuilder::new()
     }
 
     /// Creates a [`ConstantKeywordProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConstantKeywordPropertyBuilder,
-        ) -> ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConstantKeywordProperty>>(
+        f: impl FnOnce(ConstantKeywordPropertyBuilder) -> B,
     ) -> ConstantKeywordProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConstantKeywordPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod constant_keyword_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ConstantKeywordProperty`].
@@ -3427,6 +3385,7 @@ impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
 }
 
 impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3437,9 +3396,12 @@ impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
     /// Builds a [`ConstantKeywordProperty`].
-    pub fn build(self) -> ConstantKeywordProperty {
+    pub fn build(self) -> ConstantKeywordProperty
+    where
+        S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
+    {
         ConstantKeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3453,18 +3415,24 @@ impl ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)>>
-    for ConstantKeywordProperty
+impl<S0> crate::typed::builder::Build for ConstantKeywordPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
 {
-    fn from(builder: ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ConstantKeywordProperty;
+
+    fn build(self) -> ConstantKeywordProperty {
+        Self::build(self)
     }
 }
 
-impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ConstantKeywordProperty { match r#type {} }
+impl<S0> From<ConstantKeywordPropertyBuilder<(S0,)>> for ConstantKeywordProperty
+where
+    S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
+{
+    fn from(builder: ConstantKeywordPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3495,8 +3463,8 @@ impl CorePropertyBase {
     }
 
     /// Creates a [`CorePropertyBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CorePropertyBaseBuilder) -> CorePropertyBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CorePropertyBase>>(
+        f: impl FnOnce(CorePropertyBaseBuilder) -> B,
     ) -> CorePropertyBase {
         f(Self::builder()).build()
     }
@@ -3681,6 +3649,14 @@ impl CorePropertyBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CorePropertyBaseBuilder {
+    type Output = CorePropertyBase;
+
+    fn build(self) -> CorePropertyBase {
+        Self::build(self)
+    }
+}
+
 impl From<CorePropertyBaseBuilder> for CorePropertyBase {
     fn from(builder: CorePropertyBaseBuilder) -> Self {
         builder.build()
@@ -3709,18 +3685,27 @@ pub struct CountedKeywordProperty {
 
 impl CountedKeywordProperty {
     /// Creates a builder for [`CountedKeywordProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CountedKeywordPropertyBuilder {
         CountedKeywordPropertyBuilder::new()
     }
 
     /// Creates a [`CountedKeywordProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CountedKeywordPropertyBuilder,
-        ) -> CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CountedKeywordProperty>>(
+        f: impl FnOnce(CountedKeywordPropertyBuilder) -> B,
     ) -> CountedKeywordProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CountedKeywordPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod counted_keyword_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CountedKeywordProperty`].
@@ -3892,6 +3877,7 @@ impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
 }
 
 impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3902,9 +3888,12 @@ impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
     /// Builds a [`CountedKeywordProperty`].
-    pub fn build(self) -> CountedKeywordProperty {
+    pub fn build(self) -> CountedKeywordProperty
+    where
+        S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
+    {
         CountedKeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3918,16 +3907,24 @@ impl CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)>> for CountedKeywordProperty {
-    fn from(builder: CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CountedKeywordPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
+{
+    type Output = CountedKeywordProperty;
+
+    fn build(self) -> CountedKeywordProperty {
+        Self::build(self)
     }
 }
 
-impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CountedKeywordProperty { match r#type {} }
+impl<S0> From<CountedKeywordPropertyBuilder<(S0,)>> for CountedKeywordProperty
+where
+    S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
+{
+    fn from(builder: CountedKeywordPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3937,18 +3934,27 @@ pub struct DataStreamTimestamp {
 
 impl DataStreamTimestamp {
     /// Creates a builder for [`DataStreamTimestamp`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> DataStreamTimestampBuilder {
         DataStreamTimestampBuilder::new()
     }
 
     /// Creates a [`DataStreamTimestamp`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamTimestampBuilder,
-        ) -> DataStreamTimestampBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamTimestamp>>(
+        f: impl FnOnce(DataStreamTimestampBuilder) -> B,
     ) -> DataStreamTimestamp {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamTimestampBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_timestamp_members {
+    pub struct enabled;
 }
 
 /// Builder for [`DataStreamTimestamp`].
@@ -3977,6 +3983,7 @@ impl<S0> DataStreamTimestampBuilder<(S0,)> {
 }
 
 impl DataStreamTimestampBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> DataStreamTimestampBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -3984,25 +3991,36 @@ impl DataStreamTimestampBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataStreamTimestampBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataStreamTimestampBuilder<(S0,)> {
     /// Builds a [`DataStreamTimestamp`].
-    pub fn build(self) -> DataStreamTimestamp {
+    pub fn build(self) -> DataStreamTimestamp
+    where
+        S0: crate::typed::builder::IsSet<data_stream_timestamp_members::enabled>,
+    {
         DataStreamTimestamp {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<DataStreamTimestampBuilder<(crate::typed::builder::Set,)>> for DataStreamTimestamp {
-    fn from(builder: DataStreamTimestampBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DataStreamTimestampBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_timestamp_members::enabled>,
+{
+    type Output = DataStreamTimestamp;
+
+    fn build(self) -> DataStreamTimestamp {
+        Self::build(self)
     }
 }
 
-impl DataStreamTimestampBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> DataStreamTimestamp { match enabled {} }
+impl<S0> From<DataStreamTimestampBuilder<(S0,)>> for DataStreamTimestamp
+where
+    S0: crate::typed::builder::IsSet<data_stream_timestamp_members::enabled>,
+{
+    fn from(builder: DataStreamTimestampBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4047,18 +4065,27 @@ pub struct DateNanosProperty {
 
 impl DateNanosProperty {
     /// Creates a builder for [`DateNanosProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DateNanosPropertyBuilder {
         DateNanosPropertyBuilder::new()
     }
 
     /// Creates a [`DateNanosProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateNanosPropertyBuilder,
-        ) -> DateNanosPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateNanosProperty>>(
+        f: impl FnOnce(DateNanosPropertyBuilder) -> B,
     ) -> DateNanosProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateNanosPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_nanos_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DateNanosProperty`].
@@ -4336,9 +4363,9 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4378,6 +4405,7 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
 }
 
 impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4388,9 +4416,12 @@ impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DateNanosPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DateNanosPropertyBuilder<(S0,)> {
     /// Builds a [`DateNanosProperty`].
-    pub fn build(self) -> DateNanosProperty {
+    pub fn build(self) -> DateNanosProperty
+    where
+        S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
+    {
         DateNanosProperty {
             meta: self.meta,
             properties: self.properties,
@@ -4414,16 +4445,24 @@ impl DateNanosPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DateNanosPropertyBuilder<(crate::typed::builder::Set,)>> for DateNanosProperty {
-    fn from(builder: DateNanosPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DateNanosPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
+{
+    type Output = DateNanosProperty;
+
+    fn build(self) -> DateNanosProperty {
+        Self::build(self)
     }
 }
 
-impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DateNanosProperty { match r#type {} }
+impl<S0> From<DateNanosPropertyBuilder<(S0,)>> for DateNanosProperty
+where
+    S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
+{
+    fn from(builder: DateNanosPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4472,16 +4511,27 @@ pub struct DateProperty {
 
 impl DateProperty {
     /// Creates a builder for [`DateProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DatePropertyBuilder {
         DatePropertyBuilder::new()
     }
 
     /// Creates a [`DateProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DatePropertyBuilder) -> DatePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateProperty>>(
+        f: impl FnOnce(DatePropertyBuilder) -> B,
     ) -> DateProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DateProperty`].
@@ -4738,13 +4788,11 @@ impl<S0> DatePropertyBuilder<(S0,)> {
     }
 
     /// Sets [`fielddata`](Self::fielddata) with a builder.
-    pub fn fielddata_with(
+    pub fn fielddata_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::NumericFielddata>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::NumericFielddataBuilder,
-        ) -> crate::typed::indices::_types::NumericFielddataBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::NumericFielddataBuilder) -> B,
     ) -> Self {
         self.fielddata(f(crate::typed::indices::_types::NumericFielddataBuilder::new()).build())
     }
@@ -4794,9 +4842,9 @@ impl<S0> DatePropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4847,6 +4895,7 @@ impl<S0> DatePropertyBuilder<(S0,)> {
 }
 
 impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4857,9 +4906,12 @@ impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DatePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DatePropertyBuilder<(S0,)> {
     /// Builds a [`DateProperty`].
-    pub fn build(self) -> DateProperty {
+    pub fn build(self) -> DateProperty
+    where
+        S0: crate::typed::builder::IsSet<date_property_members::r#type>,
+    {
         DateProperty {
             meta: self.meta,
             properties: self.properties,
@@ -4885,16 +4937,24 @@ impl DatePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DatePropertyBuilder<(crate::typed::builder::Set,)>> for DateProperty {
-    fn from(builder: DatePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DatePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_property_members::r#type>,
+{
+    type Output = DateProperty;
+
+    fn build(self) -> DateProperty {
+        Self::build(self)
     }
 }
 
-impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DateProperty { match r#type {} }
+impl<S0> From<DatePropertyBuilder<(S0,)>> for DateProperty
+where
+    S0: crate::typed::builder::IsSet<date_property_members::r#type>,
+{
+    fn from(builder: DatePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4931,18 +4991,27 @@ pub struct DateRangeProperty {
 
 impl DateRangeProperty {
     /// Creates a builder for [`DateRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DateRangePropertyBuilder {
         DateRangePropertyBuilder::new()
     }
 
     /// Creates a [`DateRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateRangePropertyBuilder,
-        ) -> DateRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateRangeProperty>>(
+        f: impl FnOnce(DateRangePropertyBuilder) -> B,
     ) -> DateRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DateRangeProperty`].
@@ -5198,6 +5267,7 @@ impl<S0> DateRangePropertyBuilder<(S0,)> {
 }
 
 impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5208,9 +5278,12 @@ impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DateRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DateRangePropertyBuilder<(S0,)> {
     /// Builds a [`DateRangeProperty`].
-    pub fn build(self) -> DateRangeProperty {
+    pub fn build(self) -> DateRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
+    {
         DateRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -5230,16 +5303,24 @@ impl DateRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DateRangePropertyBuilder<(crate::typed::builder::Set,)>> for DateRangeProperty {
-    fn from(builder: DateRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DateRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
+{
+    type Output = DateRangeProperty;
+
+    fn build(self) -> DateRangeProperty {
+        Self::build(self)
     }
 }
 
-impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DateRangeProperty { match r#type {} }
+impl<S0> From<DateRangePropertyBuilder<(S0,)>> for DateRangeProperty
+where
+    S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
+{
+    fn from(builder: DateRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5330,18 +5411,27 @@ pub struct DenseVectorIndexOptions {
 
 impl DenseVectorIndexOptions {
     /// Creates a builder for [`DenseVectorIndexOptions`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DenseVectorIndexOptionsBuilder {
         DenseVectorIndexOptionsBuilder::new()
     }
 
     /// Creates a [`DenseVectorIndexOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseVectorIndexOptionsBuilder,
-        ) -> DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseVectorIndexOptions>>(
+        f: impl FnOnce(DenseVectorIndexOptionsBuilder) -> B,
     ) -> DenseVectorIndexOptions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseVectorIndexOptionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_vector_index_options_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DenseVectorIndexOptions`].
@@ -5470,12 +5560,11 @@ impl<S0> DenseVectorIndexOptionsBuilder<(S0,)> {
     }
 
     /// Sets [`rescore_vector`](Self::rescore_vector) with a builder.
-    pub fn rescore_vector_with(
+    pub fn rescore_vector_with<
+        B: crate::typed::builder::Build<Output = DenseVectorIndexOptionsRescoreVector>,
+    >(
         self,
-        f: impl FnOnce(
-            DenseVectorIndexOptionsRescoreVectorBuilder,
-        )
-            -> DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DenseVectorIndexOptionsRescoreVectorBuilder) -> B,
     ) -> Self {
         self.rescore_vector(f(DenseVectorIndexOptionsRescoreVectorBuilder::new()).build())
     }
@@ -5580,7 +5669,7 @@ impl<S0> DenseVectorIndexOptionsBuilder<(S0,)> {
 }
 
 impl DenseVectorIndexOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The type of kNN algorithm to use.
+    /// **Required.** The type of kNN algorithm to use.
     pub fn r#type(
         self,
         value: impl Into<DenseVectorIndexOptionsType>,
@@ -5591,9 +5680,12 @@ impl DenseVectorIndexOptionsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseVectorIndexOptionsBuilder<(S0,)> {
     /// Builds a [`DenseVectorIndexOptions`].
-    pub fn build(self) -> DenseVectorIndexOptions {
+    pub fn build(self) -> DenseVectorIndexOptions
+    where
+        S0: crate::typed::builder::IsSet<dense_vector_index_options_members::r#type>,
+    {
         DenseVectorIndexOptions {
             confidence_interval: self.confidence_interval,
             ef_construction: self.ef_construction,
@@ -5611,18 +5703,24 @@ impl DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>>
-    for DenseVectorIndexOptions
+impl<S0> crate::typed::builder::Build for DenseVectorIndexOptionsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_vector_index_options_members::r#type>,
 {
-    fn from(builder: DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DenseVectorIndexOptions;
+
+    fn build(self) -> DenseVectorIndexOptions {
+        Self::build(self)
     }
 }
 
-impl DenseVectorIndexOptionsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DenseVectorIndexOptions { match r#type {} }
+impl<S0> From<DenseVectorIndexOptionsBuilder<(S0,)>> for DenseVectorIndexOptions
+where
+    S0: crate::typed::builder::IsSet<dense_vector_index_options_members::r#type>,
+{
+    fn from(builder: DenseVectorIndexOptionsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5636,19 +5734,27 @@ pub struct DenseVectorIndexOptionsRescoreVector {
 
 impl DenseVectorIndexOptionsRescoreVector {
     /// Creates a builder for [`DenseVectorIndexOptionsRescoreVector`].
+    ///
+    /// Required: `oversample`.
     pub fn builder() -> DenseVectorIndexOptionsRescoreVectorBuilder {
         DenseVectorIndexOptionsRescoreVectorBuilder::new()
     }
 
     /// Creates a [`DenseVectorIndexOptionsRescoreVector`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseVectorIndexOptionsRescoreVectorBuilder,
-        )
-            -> DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `oversample`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseVectorIndexOptionsRescoreVector>>(
+        f: impl FnOnce(DenseVectorIndexOptionsRescoreVectorBuilder) -> B,
     ) -> DenseVectorIndexOptionsRescoreVector {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseVectorIndexOptionsRescoreVectorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_vector_index_options_rescore_vector_members {
+    pub struct oversample;
 }
 
 /// Builder for [`DenseVectorIndexOptionsRescoreVector`].
@@ -5677,7 +5783,7 @@ impl<S0> DenseVectorIndexOptionsRescoreVectorBuilder<(S0,)> {
 }
 
 impl DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The oversampling factor to use when searching for the nearest neighbor. This is only applicable to the quantized formats: `bbq_*`, `int4_*`, and `int8_*`.
+    /// **Required.** The oversampling factor to use when searching for the nearest neighbor. This is only applicable to the quantized formats: `bbq_*`, `int4_*`, and `int8_*`.
     /// When provided, `oversample * k` vectors will be gathered and then their scores will be re-computed with the original vectors.
     ///
     /// valid values are between `1.0` and `10.0` (inclusive), or `0` exactly to disable oversampling.
@@ -5691,29 +5797,39 @@ impl DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::NotSet,
     }
 }
 
-impl DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseVectorIndexOptionsRescoreVectorBuilder<(S0,)> {
     /// Builds a [`DenseVectorIndexOptionsRescoreVector`].
-    pub fn build(self) -> DenseVectorIndexOptionsRescoreVector {
+    pub fn build(self) -> DenseVectorIndexOptionsRescoreVector
+    where
+        S0: crate::typed::builder::IsSet<
+            dense_vector_index_options_rescore_vector_members::oversample,
+        >,
+    {
         DenseVectorIndexOptionsRescoreVector {
             oversample: self.oversample.unwrap(),
         }
     }
 }
 
-impl From<DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)>>
-    for DenseVectorIndexOptionsRescoreVector
+impl<S0> crate::typed::builder::Build for DenseVectorIndexOptionsRescoreVectorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_vector_index_options_rescore_vector_members::oversample>,
 {
-    fn from(
-        builder: DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DenseVectorIndexOptionsRescoreVector;
+
+    fn build(self) -> DenseVectorIndexOptionsRescoreVector {
+        Self::build(self)
     }
 }
 
-impl DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `oversample` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, oversample: crate::typed::builder::MissingRequiredField) -> DenseVectorIndexOptionsRescoreVector { match oversample {} }
+impl<S0> From<DenseVectorIndexOptionsRescoreVectorBuilder<(S0,)>>
+    for DenseVectorIndexOptionsRescoreVector
+where
+    S0: crate::typed::builder::IsSet<dense_vector_index_options_rescore_vector_members::oversample>,
+{
+    fn from(builder: DenseVectorIndexOptionsRescoreVectorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5813,18 +5929,27 @@ pub struct DenseVectorProperty {
 
 impl DenseVectorProperty {
     /// Creates a builder for [`DenseVectorProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DenseVectorPropertyBuilder {
         DenseVectorPropertyBuilder::new()
     }
 
     /// Creates a [`DenseVectorProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseVectorPropertyBuilder,
-        ) -> DenseVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseVectorProperty>>(
+        f: impl FnOnce(DenseVectorPropertyBuilder) -> B,
     ) -> DenseVectorProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseVectorPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_vector_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DenseVectorProperty`].
@@ -6049,11 +6174,9 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`index_options`](Self::index_options) with a builder.
-    pub fn index_options_with(
+    pub fn index_options_with<B: crate::typed::builder::Build<Output = DenseVectorIndexOptions>>(
         self,
-        f: impl FnOnce(
-            DenseVectorIndexOptionsBuilder,
-        ) -> DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DenseVectorIndexOptionsBuilder) -> B,
     ) -> Self {
         self.index_options(f(DenseVectorIndexOptionsBuilder::new()).build())
     }
@@ -6082,6 +6205,7 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
 }
 
 impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6092,9 +6216,12 @@ impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DenseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseVectorPropertyBuilder<(S0,)> {
     /// Builds a [`DenseVectorProperty`].
-    pub fn build(self) -> DenseVectorProperty {
+    pub fn build(self) -> DenseVectorProperty
+    where
+        S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
+    {
         DenseVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -6112,16 +6239,24 @@ impl DenseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DenseVectorPropertyBuilder<(crate::typed::builder::Set,)>> for DenseVectorProperty {
-    fn from(builder: DenseVectorPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DenseVectorPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
+{
+    type Output = DenseVectorProperty;
+
+    fn build(self) -> DenseVectorProperty {
+        Self::build(self)
     }
 }
 
-impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DenseVectorProperty { match r#type {} }
+impl<S0> From<DenseVectorPropertyBuilder<(S0,)>> for DenseVectorProperty
+where
+    S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
+{
+    fn from(builder: DenseVectorPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -6212,7 +6347,9 @@ impl DocValuesConfig {
     }
 
     /// Creates a [`DocValuesConfig`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DocValuesConfigBuilder) -> DocValuesConfigBuilder) -> DocValuesConfig {
+    pub fn of<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> DocValuesConfig {
         f(Self::builder()).build()
     }
 }
@@ -6275,6 +6412,14 @@ impl DocValuesConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DocValuesConfigBuilder {
+    type Output = DocValuesConfig;
+
+    fn build(self) -> DocValuesConfig {
+        Self::build(self)
+    }
+}
+
 impl From<DocValuesConfigBuilder> for DocValuesConfig {
     fn from(builder: DocValuesConfigBuilder) -> Self {
         builder.build()
@@ -6311,8 +6456,8 @@ impl DocValuesPropertyBase {
     }
 
     /// Creates a [`DocValuesPropertyBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DocValuesPropertyBaseBuilder) -> DocValuesPropertyBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DocValuesPropertyBase>>(
+        f: impl FnOnce(DocValuesPropertyBaseBuilder) -> B,
     ) -> DocValuesPropertyBase {
         f(Self::builder()).build()
     }
@@ -6511,6 +6656,14 @@ impl DocValuesPropertyBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DocValuesPropertyBaseBuilder {
+    type Output = DocValuesPropertyBase;
+
+    fn build(self) -> DocValuesPropertyBase {
+        Self::build(self)
+    }
+}
+
 impl From<DocValuesPropertyBaseBuilder> for DocValuesPropertyBase {
     fn from(builder: DocValuesPropertyBaseBuilder) -> Self {
         builder.build()
@@ -6563,18 +6716,27 @@ pub struct DoubleNumberProperty {
 
 impl DoubleNumberProperty {
     /// Creates a builder for [`DoubleNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DoubleNumberPropertyBuilder {
         DoubleNumberPropertyBuilder::new()
     }
 
     /// Creates a [`DoubleNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DoubleNumberPropertyBuilder,
-        ) -> DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DoubleNumberProperty>>(
+        f: impl FnOnce(DoubleNumberPropertyBuilder) -> B,
     ) -> DoubleNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DoubleNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod double_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DoubleNumberProperty`].
@@ -6866,9 +7028,9 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -6910,6 +7072,7 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
 }
 
 impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6920,9 +7083,12 @@ impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
     /// Builds a [`DoubleNumberProperty`].
-    pub fn build(self) -> DoubleNumberProperty {
+    pub fn build(self) -> DoubleNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
+    {
         DoubleNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -6947,16 +7113,24 @@ impl DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)>> for DoubleNumberProperty {
-    fn from(builder: DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DoubleNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
+{
+    type Output = DoubleNumberProperty;
+
+    fn build(self) -> DoubleNumberProperty {
+        Self::build(self)
     }
 }
 
-impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DoubleNumberProperty { match r#type {} }
+impl<S0> From<DoubleNumberPropertyBuilder<(S0,)>> for DoubleNumberProperty
+where
+    S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
+{
+    fn from(builder: DoubleNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6991,18 +7165,27 @@ pub struct DoubleRangeProperty {
 
 impl DoubleRangeProperty {
     /// Creates a builder for [`DoubleRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DoubleRangePropertyBuilder {
         DoubleRangePropertyBuilder::new()
     }
 
     /// Creates a [`DoubleRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DoubleRangePropertyBuilder,
-        ) -> DoubleRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DoubleRangeProperty>>(
+        f: impl FnOnce(DoubleRangePropertyBuilder) -> B,
     ) -> DoubleRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DoubleRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod double_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DoubleRangeProperty`].
@@ -7244,6 +7427,7 @@ impl<S0> DoubleRangePropertyBuilder<(S0,)> {
 }
 
 impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7254,9 +7438,12 @@ impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DoubleRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DoubleRangePropertyBuilder<(S0,)> {
     /// Builds a [`DoubleRangeProperty`].
-    pub fn build(self) -> DoubleRangeProperty {
+    pub fn build(self) -> DoubleRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
+    {
         DoubleRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -7275,16 +7462,24 @@ impl DoubleRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DoubleRangePropertyBuilder<(crate::typed::builder::Set,)>> for DoubleRangeProperty {
-    fn from(builder: DoubleRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DoubleRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
+{
+    type Output = DoubleRangeProperty;
+
+    fn build(self) -> DoubleRangeProperty {
+        Self::build(self)
     }
 }
 
-impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DoubleRangeProperty { match r#type {} }
+impl<S0> From<DoubleRangePropertyBuilder<(S0,)>> for DoubleRangeProperty
+where
+    S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
+{
+    fn from(builder: DoubleRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -7382,16 +7577,27 @@ impl From<TextIndexPrefixes> for DynamicPropertyIndexPrefixes {
 
 impl DynamicProperty {
     /// Creates a builder for [`DynamicProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DynamicPropertyBuilder {
         DynamicPropertyBuilder::new()
     }
 
     /// Creates a [`DynamicProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DynamicPropertyBuilder) -> DynamicPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DynamicProperty>>(
+        f: impl FnOnce(DynamicPropertyBuilder) -> B,
     ) -> DynamicProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DynamicPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dynamic_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DynamicProperty`].
@@ -7711,9 +7917,9 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -7907,6 +8113,7 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
 }
 
 impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7917,9 +8124,12 @@ impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DynamicPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DynamicPropertyBuilder<(S0,)> {
     /// Builds a [`DynamicProperty`].
-    pub fn build(self) -> DynamicProperty {
+    pub fn build(self) -> DynamicProperty
+    where
+        S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
+    {
         DynamicProperty {
             meta: self.meta,
             properties: self.properties,
@@ -7957,16 +8167,24 @@ impl DynamicPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DynamicPropertyBuilder<(crate::typed::builder::Set,)>> for DynamicProperty {
-    fn from(builder: DynamicPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DynamicPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
+{
+    type Output = DynamicProperty;
+
+    fn build(self) -> DynamicProperty {
+        Self::build(self)
     }
 }
 
-impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DynamicProperty { match r#type {} }
+impl<S0> From<DynamicPropertyBuilder<(S0,)>> for DynamicProperty
+where
+    S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
+{
+    fn from(builder: DynamicPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8198,13 +8416,17 @@ impl From<RuntimeFieldBuilder<(crate::typed::builder::Set,)>> for DynamicTemplat
 
 impl DynamicTemplate {
     /// Creates a builder for [`DynamicTemplate`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> DynamicTemplateBuilder {
         DynamicTemplateBuilder::new()
     }
 
     /// Creates a [`DynamicTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DynamicTemplateBuilder) -> DynamicTemplateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DynamicTemplate>>(
+        f: impl FnOnce(DynamicTemplateBuilder) -> B,
     ) -> DynamicTemplate {
         f(Self::builder()).build()
     }
@@ -8362,17 +8584,20 @@ impl DynamicTemplateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`runtime`](Self::runtime) with a builder.
-    pub fn runtime_with(
+    pub fn runtime_with<B: crate::typed::builder::Build<Output = RuntimeField>>(
         self,
-        f: impl FnOnce(RuntimeFieldBuilder) -> RuntimeFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RuntimeFieldBuilder) -> B,
     ) -> DynamicTemplateBuilder<(crate::typed::builder::Set,)> {
         self.runtime(f(RuntimeFieldBuilder::new()).build())
     }
 }
 
-impl DynamicTemplateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DynamicTemplateBuilder<(S0,)> {
     /// Builds a [`DynamicTemplate`].
-    pub fn build(self) -> DynamicTemplate {
+    pub fn build(self) -> DynamicTemplate
+    where
+        S0: crate::typed::builder::IsVariantSet<DynamicTemplate>,
+    {
         DynamicTemplate {
             r#match: self.r#match,
             path_match: self.path_match,
@@ -8386,16 +8611,24 @@ impl DynamicTemplateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DynamicTemplateBuilder<(crate::typed::builder::Set,)>> for DynamicTemplate {
-    fn from(builder: DynamicTemplateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DynamicTemplateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DynamicTemplate>,
+{
+    type Output = DynamicTemplate;
+
+    fn build(self) -> DynamicTemplate {
+        Self::build(self)
     }
 }
 
-impl DynamicTemplateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DynamicTemplate { match variant {} }
+impl<S0> From<DynamicTemplateBuilder<(S0,)>> for DynamicTemplate
+where
+    S0: crate::typed::builder::IsVariantSet<DynamicTemplate>,
+{
+    fn from(builder: DynamicTemplateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8420,18 +8653,27 @@ pub struct ExponentialHistogramProperty {
 
 impl ExponentialHistogramProperty {
     /// Creates a builder for [`ExponentialHistogramProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ExponentialHistogramPropertyBuilder {
         ExponentialHistogramPropertyBuilder::new()
     }
 
     /// Creates a [`ExponentialHistogramProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExponentialHistogramPropertyBuilder,
-        ) -> ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExponentialHistogramProperty>>(
+        f: impl FnOnce(ExponentialHistogramPropertyBuilder) -> B,
     ) -> ExponentialHistogramProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExponentialHistogramPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod exponential_histogram_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ExponentialHistogramProperty`].
@@ -8603,6 +8845,7 @@ impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
 }
 
 impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8613,9 +8856,12 @@ impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
     /// Builds a [`ExponentialHistogramProperty`].
-    pub fn build(self) -> ExponentialHistogramProperty {
+    pub fn build(self) -> ExponentialHistogramProperty
+    where
+        S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
+    {
         ExponentialHistogramProperty {
             meta: self.meta,
             properties: self.properties,
@@ -8629,18 +8875,24 @@ impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)>>
-    for ExponentialHistogramProperty
+impl<S0> crate::typed::builder::Build for ExponentialHistogramPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
 {
-    fn from(builder: ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ExponentialHistogramProperty;
+
+    fn build(self) -> ExponentialHistogramProperty {
+        Self::build(self)
     }
 }
 
-impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ExponentialHistogramProperty { match r#type {} }
+impl<S0> From<ExponentialHistogramPropertyBuilder<(S0,)>> for ExponentialHistogramProperty
+where
+    S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
+{
+    fn from(builder: ExponentialHistogramPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8665,18 +8917,27 @@ pub struct FieldAliasProperty {
 
 impl FieldAliasProperty {
     /// Creates a builder for [`FieldAliasProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FieldAliasPropertyBuilder {
         FieldAliasPropertyBuilder::new()
     }
 
     /// Creates a [`FieldAliasProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldAliasPropertyBuilder,
-        ) -> FieldAliasPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldAliasProperty>>(
+        f: impl FnOnce(FieldAliasPropertyBuilder) -> B,
     ) -> FieldAliasProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldAliasPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_alias_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FieldAliasProperty`].
@@ -8848,6 +9109,7 @@ impl<S0> FieldAliasPropertyBuilder<(S0,)> {
 }
 
 impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8858,9 +9120,12 @@ impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FieldAliasPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldAliasPropertyBuilder<(S0,)> {
     /// Builds a [`FieldAliasProperty`].
-    pub fn build(self) -> FieldAliasProperty {
+    pub fn build(self) -> FieldAliasProperty
+    where
+        S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
+    {
         FieldAliasProperty {
             meta: self.meta,
             properties: self.properties,
@@ -8874,16 +9139,24 @@ impl FieldAliasPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FieldAliasPropertyBuilder<(crate::typed::builder::Set,)>> for FieldAliasProperty {
-    fn from(builder: FieldAliasPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FieldAliasPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
+{
+    type Output = FieldAliasProperty;
+
+    fn build(self) -> FieldAliasProperty {
+        Self::build(self)
     }
 }
 
-impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FieldAliasProperty { match r#type {} }
+impl<S0> From<FieldAliasPropertyBuilder<(S0,)>> for FieldAliasProperty
+where
+    S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
+{
+    fn from(builder: FieldAliasPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8894,19 +9167,28 @@ pub struct FieldMapping {
 
 impl FieldMapping {
     /// Creates a builder for [`FieldMapping`].
+    ///
+    /// Required: `full_name`, `mapping`.
     pub fn builder() -> FieldMappingBuilder {
         FieldMappingBuilder::new()
     }
 
     /// Creates a [`FieldMapping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldMappingBuilder,
-        )
-            -> FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `full_name`, `mapping`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldMapping>>(
+        f: impl FnOnce(FieldMappingBuilder) -> B,
     ) -> FieldMapping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldMappingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_mapping_members {
+    pub struct full_name;
+    pub struct mapping;
 }
 
 /// Builder for [`FieldMapping`].
@@ -8938,6 +9220,7 @@ impl<S0, S1> FieldMappingBuilder<(S0, S1)> {
 }
 
 impl<S1> FieldMappingBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn full_name(
         self,
         value: impl Into<String>,
@@ -8949,6 +9232,7 @@ impl<S1> FieldMappingBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FieldMappingBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn mapping(
         self,
         key: impl Into<crate::typed::_types::Field>,
@@ -8960,9 +9244,13 @@ impl<S0> FieldMappingBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FieldMappingBuilder<(S0, S1)> {
     /// Builds a [`FieldMapping`].
-    pub fn build(self) -> FieldMapping {
+    pub fn build(self) -> FieldMapping
+    where
+        S0: crate::typed::builder::IsSet<field_mapping_members::full_name>,
+        S1: crate::typed::builder::IsSet<field_mapping_members::mapping>,
+    {
         FieldMapping {
             full_name: self.full_name.unwrap(),
             mapping: self.mapping.unwrap(),
@@ -8970,26 +9258,26 @@ impl FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FieldMapping
+impl<S0, S1> crate::typed::builder::Build for FieldMappingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<field_mapping_members::full_name>,
+    S1: crate::typed::builder::IsSet<field_mapping_members::mapping>,
 {
-    fn from(
-        builder: FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldMapping;
+
+    fn build(self) -> FieldMapping {
+        Self::build(self)
     }
 }
 
-impl<S1> FieldMappingBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `full_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, full_name: crate::typed::builder::MissingRequiredField) -> FieldMapping { match full_name {} }
-}
-
-impl FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `mapping` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mapping: crate::typed::builder::MissingRequiredField) -> FieldMapping { match mapping {} }
+impl<S0, S1> From<FieldMappingBuilder<(S0, S1)>> for FieldMapping
+where
+    S0: crate::typed::builder::IsSet<field_mapping_members::full_name>,
+    S1: crate::typed::builder::IsSet<field_mapping_members::mapping>,
+{
+    fn from(builder: FieldMappingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8999,16 +9287,27 @@ pub struct FieldNamesField {
 
 impl FieldNamesField {
     /// Creates a builder for [`FieldNamesField`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> FieldNamesFieldBuilder {
         FieldNamesFieldBuilder::new()
     }
 
     /// Creates a [`FieldNamesField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FieldNamesFieldBuilder) -> FieldNamesFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldNamesField>>(
+        f: impl FnOnce(FieldNamesFieldBuilder) -> B,
     ) -> FieldNamesField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldNamesFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_names_field_members {
+    pub struct enabled;
 }
 
 /// Builder for [`FieldNamesField`].
@@ -9037,6 +9336,7 @@ impl<S0> FieldNamesFieldBuilder<(S0,)> {
 }
 
 impl FieldNamesFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> FieldNamesFieldBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -9044,25 +9344,36 @@ impl FieldNamesFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FieldNamesFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldNamesFieldBuilder<(S0,)> {
     /// Builds a [`FieldNamesField`].
-    pub fn build(self) -> FieldNamesField {
+    pub fn build(self) -> FieldNamesField
+    where
+        S0: crate::typed::builder::IsSet<field_names_field_members::enabled>,
+    {
         FieldNamesField {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<FieldNamesFieldBuilder<(crate::typed::builder::Set,)>> for FieldNamesField {
-    fn from(builder: FieldNamesFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FieldNamesFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<field_names_field_members::enabled>,
+{
+    type Output = FieldNamesField;
+
+    fn build(self) -> FieldNamesField {
+        Self::build(self)
     }
 }
 
-impl FieldNamesFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> FieldNamesField { match enabled {} }
+impl<S0> From<FieldNamesFieldBuilder<(S0,)>> for FieldNamesField
+where
+    S0: crate::typed::builder::IsSet<field_names_field_members::enabled>,
+{
+    fn from(builder: FieldNamesFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9212,18 +9523,27 @@ pub struct FlattenedProperty {
 
 impl FlattenedProperty {
     /// Creates a builder for [`FlattenedProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FlattenedPropertyBuilder {
         FlattenedPropertyBuilder::new()
     }
 
     /// Creates a [`FlattenedProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FlattenedPropertyBuilder,
-        ) -> FlattenedPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FlattenedProperty>>(
+        f: impl FnOnce(FlattenedPropertyBuilder) -> B,
     ) -> FlattenedProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FlattenedPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod flattened_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FlattenedProperty`].
@@ -9546,6 +9866,7 @@ impl<S0> FlattenedPropertyBuilder<(S0,)> {
 }
 
 impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9556,9 +9877,12 @@ impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FlattenedPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FlattenedPropertyBuilder<(S0,)> {
     /// Builds a [`FlattenedProperty`].
-    pub fn build(self) -> FlattenedProperty {
+    pub fn build(self) -> FlattenedProperty
+    where
+        S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
+    {
         FlattenedProperty {
             meta: self.meta,
             properties: self.properties,
@@ -9582,16 +9906,24 @@ impl FlattenedPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FlattenedPropertyBuilder<(crate::typed::builder::Set,)>> for FlattenedProperty {
-    fn from(builder: FlattenedPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FlattenedPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
+{
+    type Output = FlattenedProperty;
+
+    fn build(self) -> FlattenedProperty {
+        Self::build(self)
     }
 }
 
-impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FlattenedProperty { match r#type {} }
+impl<S0> From<FlattenedPropertyBuilder<(S0,)>> for FlattenedProperty
+where
+    S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
+{
+    fn from(builder: FlattenedPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9640,18 +9972,27 @@ pub struct FloatNumberProperty {
 
 impl FloatNumberProperty {
     /// Creates a builder for [`FloatNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FloatNumberPropertyBuilder {
         FloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`FloatNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FloatNumberPropertyBuilder,
-        ) -> FloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FloatNumberProperty>>(
+        f: impl FnOnce(FloatNumberPropertyBuilder) -> B,
     ) -> FloatNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FloatNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod float_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FloatNumberProperty`].
@@ -9943,9 +10284,9 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -9987,6 +10328,7 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
 }
 
 impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9997,9 +10339,12 @@ impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FloatNumberPropertyBuilder<(S0,)> {
     /// Builds a [`FloatNumberProperty`].
-    pub fn build(self) -> FloatNumberProperty {
+    pub fn build(self) -> FloatNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
+    {
         FloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -10024,16 +10369,24 @@ impl FloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FloatNumberPropertyBuilder<(crate::typed::builder::Set,)>> for FloatNumberProperty {
-    fn from(builder: FloatNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FloatNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
+{
+    type Output = FloatNumberProperty;
+
+    fn build(self) -> FloatNumberProperty {
+        Self::build(self)
     }
 }
 
-impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FloatNumberProperty { match r#type {} }
+impl<S0> From<FloatNumberPropertyBuilder<(S0,)>> for FloatNumberProperty
+where
+    S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
+{
+    fn from(builder: FloatNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10068,18 +10421,27 @@ pub struct FloatRangeProperty {
 
 impl FloatRangeProperty {
     /// Creates a builder for [`FloatRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FloatRangePropertyBuilder {
         FloatRangePropertyBuilder::new()
     }
 
     /// Creates a [`FloatRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FloatRangePropertyBuilder,
-        ) -> FloatRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FloatRangeProperty>>(
+        f: impl FnOnce(FloatRangePropertyBuilder) -> B,
     ) -> FloatRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FloatRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod float_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FloatRangeProperty`].
@@ -10321,6 +10683,7 @@ impl<S0> FloatRangePropertyBuilder<(S0,)> {
 }
 
 impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10331,9 +10694,12 @@ impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FloatRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FloatRangePropertyBuilder<(S0,)> {
     /// Builds a [`FloatRangeProperty`].
-    pub fn build(self) -> FloatRangeProperty {
+    pub fn build(self) -> FloatRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
+    {
         FloatRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -10352,16 +10718,24 @@ impl FloatRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FloatRangePropertyBuilder<(crate::typed::builder::Set,)>> for FloatRangeProperty {
-    fn from(builder: FloatRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FloatRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
+{
+    type Output = FloatRangeProperty;
+
+    fn build(self) -> FloatRangeProperty {
+        Self::build(self)
     }
 }
 
-impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FloatRangeProperty { match r#type {} }
+impl<S0> From<FloatRangePropertyBuilder<(S0,)>> for FloatRangeProperty
+where
+    S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
+{
+    fn from(builder: FloatRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10427,18 +10801,27 @@ pub struct GeoPointProperty {
 
 impl GeoPointProperty {
     /// Creates a builder for [`GeoPointProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GeoPointPropertyBuilder {
         GeoPointPropertyBuilder::new()
     }
 
     /// Creates a [`GeoPointProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoPointPropertyBuilder,
-        ) -> GeoPointPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoPointProperty>>(
+        f: impl FnOnce(GeoPointPropertyBuilder) -> B,
     ) -> GeoPointProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoPointPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_point_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GeoPointProperty`].
@@ -10724,9 +11107,9 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -10744,6 +11127,7 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
 }
 
 impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10754,9 +11138,12 @@ impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoPointPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoPointPropertyBuilder<(S0,)> {
     /// Builds a [`GeoPointProperty`].
-    pub fn build(self) -> GeoPointProperty {
+    pub fn build(self) -> GeoPointProperty
+    where
+        S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
+    {
         GeoPointProperty {
             meta: self.meta,
             properties: self.properties,
@@ -10779,16 +11166,24 @@ impl GeoPointPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoPointPropertyBuilder<(crate::typed::builder::Set,)>> for GeoPointProperty {
-    fn from(builder: GeoPointPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoPointPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
+{
+    type Output = GeoPointProperty;
+
+    fn build(self) -> GeoPointProperty {
+        Self::build(self)
     }
 }
 
-impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GeoPointProperty { match r#type {} }
+impl<S0> From<GeoPointPropertyBuilder<(S0,)>> for GeoPointProperty
+where
+    S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
+{
+    fn from(builder: GeoPointPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The `geo_shape` data type facilitates the indexing of and searching with arbitrary geo shapes such as rectangles
@@ -10831,18 +11226,27 @@ pub struct GeoShapeProperty {
 
 impl GeoShapeProperty {
     /// Creates a builder for [`GeoShapeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GeoShapePropertyBuilder {
         GeoShapePropertyBuilder::new()
     }
 
     /// Creates a [`GeoShapeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoShapePropertyBuilder,
-        ) -> GeoShapePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoShapeProperty>>(
+        f: impl FnOnce(GeoShapePropertyBuilder) -> B,
     ) -> GeoShapeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoShapePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_shape_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GeoShapeProperty`].
@@ -11126,6 +11530,7 @@ impl<S0> GeoShapePropertyBuilder<(S0,)> {
 }
 
 impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11136,9 +11541,12 @@ impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoShapePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoShapePropertyBuilder<(S0,)> {
     /// Builds a [`GeoShapeProperty`].
-    pub fn build(self) -> GeoShapeProperty {
+    pub fn build(self) -> GeoShapeProperty
+    where
+        S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
+    {
         GeoShapeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -11160,16 +11568,24 @@ impl GeoShapePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoShapePropertyBuilder<(crate::typed::builder::Set,)>> for GeoShapeProperty {
-    fn from(builder: GeoShapePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoShapePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
+{
+    type Output = GeoShapeProperty;
+
+    fn build(self) -> GeoShapeProperty {
+        Self::build(self)
     }
 }
 
-impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GeoShapeProperty { match r#type {} }
+impl<S0> From<GeoShapePropertyBuilder<(S0,)>> for GeoShapeProperty
+where
+    S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
+{
+    fn from(builder: GeoShapePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -11226,18 +11642,27 @@ pub struct HalfFloatNumberProperty {
 
 impl HalfFloatNumberProperty {
     /// Creates a builder for [`HalfFloatNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HalfFloatNumberPropertyBuilder {
         HalfFloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`HalfFloatNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HalfFloatNumberPropertyBuilder,
-        ) -> HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HalfFloatNumberProperty>>(
+        f: impl FnOnce(HalfFloatNumberPropertyBuilder) -> B,
     ) -> HalfFloatNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HalfFloatNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod half_float_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HalfFloatNumberProperty`].
@@ -11529,9 +11954,9 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11573,6 +11998,7 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
 }
 
 impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11583,9 +12009,12 @@ impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
     /// Builds a [`HalfFloatNumberProperty`].
-    pub fn build(self) -> HalfFloatNumberProperty {
+    pub fn build(self) -> HalfFloatNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
+    {
         HalfFloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -11610,18 +12039,24 @@ impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>>
-    for HalfFloatNumberProperty
+impl<S0> crate::typed::builder::Build for HalfFloatNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
 {
-    fn from(builder: HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = HalfFloatNumberProperty;
+
+    fn build(self) -> HalfFloatNumberProperty {
+        Self::build(self)
     }
 }
 
-impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HalfFloatNumberProperty { match r#type {} }
+impl<S0> From<HalfFloatNumberPropertyBuilder<(S0,)>> for HalfFloatNumberProperty
+where
+    S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
+{
+    fn from(builder: HalfFloatNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11648,18 +12083,27 @@ pub struct HistogramProperty {
 
 impl HistogramProperty {
     /// Creates a builder for [`HistogramProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HistogramPropertyBuilder {
         HistogramPropertyBuilder::new()
     }
 
     /// Creates a [`HistogramProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HistogramPropertyBuilder,
-        ) -> HistogramPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HistogramProperty>>(
+        f: impl FnOnce(HistogramPropertyBuilder) -> B,
     ) -> HistogramProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HistogramPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod histogram_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HistogramProperty`].
@@ -11845,6 +12289,7 @@ impl<S0> HistogramPropertyBuilder<(S0,)> {
 }
 
 impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11855,9 +12300,12 @@ impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HistogramPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HistogramPropertyBuilder<(S0,)> {
     /// Builds a [`HistogramProperty`].
-    pub fn build(self) -> HistogramProperty {
+    pub fn build(self) -> HistogramProperty
+    where
+        S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
+    {
         HistogramProperty {
             meta: self.meta,
             properties: self.properties,
@@ -11872,16 +12320,24 @@ impl HistogramPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HistogramPropertyBuilder<(crate::typed::builder::Set,)>> for HistogramProperty {
-    fn from(builder: HistogramPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HistogramPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
+{
+    type Output = HistogramProperty;
+
+    fn build(self) -> HistogramProperty {
+        Self::build(self)
     }
 }
 
-impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HistogramProperty { match r#type {} }
+impl<S0> From<HistogramPropertyBuilder<(S0,)>> for HistogramProperty
+where
+    S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
+{
+    fn from(builder: HistogramPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11944,18 +12400,27 @@ pub struct IcuCollationProperty {
 
 impl IcuCollationProperty {
     /// Creates a builder for [`IcuCollationProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IcuCollationPropertyBuilder {
         IcuCollationPropertyBuilder::new()
     }
 
     /// Creates a [`IcuCollationProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuCollationPropertyBuilder,
-        ) -> IcuCollationPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuCollationProperty>>(
+        f: impl FnOnce(IcuCollationPropertyBuilder) -> B,
     ) -> IcuCollationProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuCollationPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_collation_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IcuCollationProperty`].
@@ -12405,6 +12870,7 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
 }
 
 impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12415,9 +12881,12 @@ impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IcuCollationPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IcuCollationPropertyBuilder<(S0,)> {
     /// Builds a [`IcuCollationProperty`].
-    pub fn build(self) -> IcuCollationProperty {
+    pub fn build(self) -> IcuCollationProperty
+    where
+        S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
+    {
         IcuCollationProperty {
             meta: self.meta,
             properties: self.properties,
@@ -12449,16 +12918,24 @@ impl IcuCollationPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IcuCollationPropertyBuilder<(crate::typed::builder::Set,)>> for IcuCollationProperty {
-    fn from(builder: IcuCollationPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IcuCollationPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
+{
+    type Output = IcuCollationProperty;
+
+    fn build(self) -> IcuCollationProperty {
+        Self::build(self)
     }
 }
 
-impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuCollationProperty { match r#type {} }
+impl<S0> From<IcuCollationPropertyBuilder<(S0,)>> for IcuCollationProperty
+where
+    S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
+{
+    fn from(builder: IcuCollationPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12468,16 +12945,27 @@ pub struct IndexField {
 
 impl IndexField {
     /// Creates a builder for [`IndexField`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> IndexFieldBuilder {
         IndexFieldBuilder::new()
     }
 
     /// Creates a [`IndexField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexFieldBuilder) -> IndexFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexField>>(
+        f: impl FnOnce(IndexFieldBuilder) -> B,
     ) -> IndexField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_field_members {
+    pub struct enabled;
 }
 
 /// Builder for [`IndexField`].
@@ -12506,6 +12994,7 @@ impl<S0> IndexFieldBuilder<(S0,)> {
 }
 
 impl IndexFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> IndexFieldBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -12513,25 +13002,36 @@ impl IndexFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndexFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexFieldBuilder<(S0,)> {
     /// Builds a [`IndexField`].
-    pub fn build(self) -> IndexField {
+    pub fn build(self) -> IndexField
+    where
+        S0: crate::typed::builder::IsSet<index_field_members::enabled>,
+    {
         IndexField {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<IndexFieldBuilder<(crate::typed::builder::Set,)>> for IndexField {
-    fn from(builder: IndexFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_field_members::enabled>,
+{
+    type Output = IndexField;
+
+    fn build(self) -> IndexField {
+        Self::build(self)
     }
 }
 
-impl IndexFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> IndexField { match enabled {} }
+impl<S0> From<IndexFieldBuilder<(S0,)>> for IndexField
+where
+    S0: crate::typed::builder::IsSet<index_field_members::enabled>,
+{
+    fn from(builder: IndexFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -12592,18 +13092,27 @@ pub struct IntegerNumberProperty {
 
 impl IntegerNumberProperty {
     /// Creates a builder for [`IntegerNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IntegerNumberPropertyBuilder {
         IntegerNumberPropertyBuilder::new()
     }
 
     /// Creates a [`IntegerNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IntegerNumberPropertyBuilder,
-        ) -> IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntegerNumberProperty>>(
+        f: impl FnOnce(IntegerNumberPropertyBuilder) -> B,
     ) -> IntegerNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntegerNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod integer_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IntegerNumberProperty`].
@@ -12895,9 +13404,9 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -12939,6 +13448,7 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
 }
 
 impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12949,9 +13459,12 @@ impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
     /// Builds a [`IntegerNumberProperty`].
-    pub fn build(self) -> IntegerNumberProperty {
+    pub fn build(self) -> IntegerNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
+    {
         IntegerNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -12976,16 +13489,24 @@ impl IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)>> for IntegerNumberProperty {
-    fn from(builder: IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntegerNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
+{
+    type Output = IntegerNumberProperty;
+
+    fn build(self) -> IntegerNumberProperty {
+        Self::build(self)
     }
 }
 
-impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IntegerNumberProperty { match r#type {} }
+impl<S0> From<IntegerNumberPropertyBuilder<(S0,)>> for IntegerNumberProperty
+where
+    S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
+{
+    fn from(builder: IntegerNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13020,18 +13541,27 @@ pub struct IntegerRangeProperty {
 
 impl IntegerRangeProperty {
     /// Creates a builder for [`IntegerRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IntegerRangePropertyBuilder {
         IntegerRangePropertyBuilder::new()
     }
 
     /// Creates a [`IntegerRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IntegerRangePropertyBuilder,
-        ) -> IntegerRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntegerRangeProperty>>(
+        f: impl FnOnce(IntegerRangePropertyBuilder) -> B,
     ) -> IntegerRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntegerRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod integer_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IntegerRangeProperty`].
@@ -13273,6 +13803,7 @@ impl<S0> IntegerRangePropertyBuilder<(S0,)> {
 }
 
 impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13283,9 +13814,12 @@ impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntegerRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntegerRangePropertyBuilder<(S0,)> {
     /// Builds a [`IntegerRangeProperty`].
-    pub fn build(self) -> IntegerRangeProperty {
+    pub fn build(self) -> IntegerRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
+    {
         IntegerRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -13304,16 +13838,24 @@ impl IntegerRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntegerRangePropertyBuilder<(crate::typed::builder::Set,)>> for IntegerRangeProperty {
-    fn from(builder: IntegerRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntegerRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
+{
+    type Output = IntegerRangeProperty;
+
+    fn build(self) -> IntegerRangeProperty {
+        Self::build(self)
     }
 }
 
-impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IntegerRangeProperty { match r#type {} }
+impl<S0> From<IntegerRangePropertyBuilder<(S0,)>> for IntegerRangeProperty
+where
+    S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
+{
+    fn from(builder: IntegerRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13357,16 +13899,27 @@ pub struct IpProperty {
 
 impl IpProperty {
     /// Creates a builder for [`IpProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IpPropertyBuilder {
         IpPropertyBuilder::new()
     }
 
     /// Creates a [`IpProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IpPropertyBuilder) -> IpPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpProperty>>(
+        f: impl FnOnce(IpPropertyBuilder) -> B,
     ) -> IpProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IpProperty`].
@@ -13652,9 +14205,9 @@ impl<S0> IpPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -13673,6 +14226,7 @@ impl<S0> IpPropertyBuilder<(S0,)> {
 }
 
 impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13683,9 +14237,12 @@ impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpPropertyBuilder<(S0,)> {
     /// Builds a [`IpProperty`].
-    pub fn build(self) -> IpProperty {
+    pub fn build(self) -> IpProperty
+    where
+        S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
+    {
         IpProperty {
             meta: self.meta,
             properties: self.properties,
@@ -13708,16 +14265,24 @@ impl IpPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpPropertyBuilder<(crate::typed::builder::Set,)>> for IpProperty {
-    fn from(builder: IpPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
+{
+    type Output = IpProperty;
+
+    fn build(self) -> IpProperty {
+        Self::build(self)
     }
 }
 
-impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IpProperty { match r#type {} }
+impl<S0> From<IpPropertyBuilder<(S0,)>> for IpProperty
+where
+    S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
+{
+    fn from(builder: IpPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13752,16 +14317,27 @@ pub struct IpRangeProperty {
 
 impl IpRangeProperty {
     /// Creates a builder for [`IpRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IpRangePropertyBuilder {
         IpRangePropertyBuilder::new()
     }
 
     /// Creates a [`IpRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IpRangePropertyBuilder) -> IpRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpRangeProperty>>(
+        f: impl FnOnce(IpRangePropertyBuilder) -> B,
     ) -> IpRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IpRangeProperty`].
@@ -14003,6 +14579,7 @@ impl<S0> IpRangePropertyBuilder<(S0,)> {
 }
 
 impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14013,9 +14590,12 @@ impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpRangePropertyBuilder<(S0,)> {
     /// Builds a [`IpRangeProperty`].
-    pub fn build(self) -> IpRangeProperty {
+    pub fn build(self) -> IpRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
+    {
         IpRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14034,16 +14614,24 @@ impl IpRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpRangePropertyBuilder<(crate::typed::builder::Set,)>> for IpRangeProperty {
-    fn from(builder: IpRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
+{
+    type Output = IpRangeProperty;
+
+    fn build(self) -> IpRangeProperty {
+        Self::build(self)
     }
 }
 
-impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IpRangeProperty { match r#type {} }
+impl<S0> From<IpRangePropertyBuilder<(S0,)>> for IpRangeProperty
+where
+    S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
+{
+    fn from(builder: IpRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14096,16 +14684,27 @@ impl From<&str> for JoinPropertyRelations {
 
 impl JoinProperty {
     /// Creates a builder for [`JoinProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> JoinPropertyBuilder {
         JoinPropertyBuilder::new()
     }
 
     /// Creates a [`JoinProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(JoinPropertyBuilder) -> JoinPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = JoinProperty>>(
+        f: impl FnOnce(JoinPropertyBuilder) -> B,
     ) -> JoinProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JoinPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod join_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`JoinProperty`].
@@ -14312,6 +14911,7 @@ impl<S0> JoinPropertyBuilder<(S0,)> {
 }
 
 impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14322,9 +14922,12 @@ impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl JoinPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> JoinPropertyBuilder<(S0,)> {
     /// Builds a [`JoinProperty`].
-    pub fn build(self) -> JoinProperty {
+    pub fn build(self) -> JoinProperty
+    where
+        S0: crate::typed::builder::IsSet<join_property_members::r#type>,
+    {
         JoinProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14339,16 +14942,24 @@ impl JoinPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<JoinPropertyBuilder<(crate::typed::builder::Set,)>> for JoinProperty {
-    fn from(builder: JoinPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for JoinPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<join_property_members::r#type>,
+{
+    type Output = JoinProperty;
+
+    fn build(self) -> JoinProperty {
+        Self::build(self)
     }
 }
 
-impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> JoinProperty { match r#type {} }
+impl<S0> From<JoinPropertyBuilder<(S0,)>> for JoinProperty
+where
+    S0: crate::typed::builder::IsSet<join_property_members::r#type>,
+{
+    fn from(builder: JoinPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14421,16 +15032,27 @@ impl From<&str> for KeywordPropertySimilarity {
 
 impl KeywordProperty {
     /// Creates a builder for [`KeywordProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeywordPropertyBuilder {
         KeywordPropertyBuilder::new()
     }
 
     /// Creates a [`KeywordProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(KeywordPropertyBuilder) -> KeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeywordProperty>>(
+        f: impl FnOnce(KeywordPropertyBuilder) -> B,
     ) -> KeywordProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeywordPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keyword_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeywordProperty`].
@@ -14720,9 +15342,9 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -14807,6 +15429,7 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
 }
 
 impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14817,9 +15440,12 @@ impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeywordPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeywordPropertyBuilder<(S0,)> {
     /// Builds a [`KeywordProperty`].
-    pub fn build(self) -> KeywordProperty {
+    pub fn build(self) -> KeywordProperty
+    where
+        S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
+    {
         KeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14847,16 +15473,24 @@ impl KeywordPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeywordPropertyBuilder<(crate::typed::builder::Set,)>> for KeywordProperty {
-    fn from(builder: KeywordPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KeywordPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
+{
+    type Output = KeywordProperty;
+
+    fn build(self) -> KeywordProperty {
+        Self::build(self)
     }
 }
 
-impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeywordProperty { match r#type {} }
+impl<S0> From<KeywordPropertyBuilder<(S0,)>> for KeywordProperty
+where
+    S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
+{
+    fn from(builder: KeywordPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14905,18 +15539,27 @@ pub struct LongNumberProperty {
 
 impl LongNumberProperty {
     /// Creates a builder for [`LongNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LongNumberPropertyBuilder {
         LongNumberPropertyBuilder::new()
     }
 
     /// Creates a [`LongNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongNumberPropertyBuilder,
-        ) -> LongNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongNumberProperty>>(
+        f: impl FnOnce(LongNumberPropertyBuilder) -> B,
     ) -> LongNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LongNumberProperty`].
@@ -15208,9 +15851,9 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15252,6 +15895,7 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
 }
 
 impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15262,9 +15906,12 @@ impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LongNumberPropertyBuilder<(S0,)> {
     /// Builds a [`LongNumberProperty`].
-    pub fn build(self) -> LongNumberProperty {
+    pub fn build(self) -> LongNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
+    {
         LongNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -15289,16 +15936,24 @@ impl LongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LongNumberPropertyBuilder<(crate::typed::builder::Set,)>> for LongNumberProperty {
-    fn from(builder: LongNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LongNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
+{
+    type Output = LongNumberProperty;
+
+    fn build(self) -> LongNumberProperty {
+        Self::build(self)
     }
 }
 
-impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LongNumberProperty { match r#type {} }
+impl<S0> From<LongNumberPropertyBuilder<(S0,)>> for LongNumberProperty
+where
+    S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
+{
+    fn from(builder: LongNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15333,18 +15988,27 @@ pub struct LongRangeProperty {
 
 impl LongRangeProperty {
     /// Creates a builder for [`LongRangeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LongRangePropertyBuilder {
         LongRangePropertyBuilder::new()
     }
 
     /// Creates a [`LongRangeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongRangePropertyBuilder,
-        ) -> LongRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongRangeProperty>>(
+        f: impl FnOnce(LongRangePropertyBuilder) -> B,
     ) -> LongRangeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongRangePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_range_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LongRangeProperty`].
@@ -15586,6 +16250,7 @@ impl<S0> LongRangePropertyBuilder<(S0,)> {
 }
 
 impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15596,9 +16261,12 @@ impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LongRangePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LongRangePropertyBuilder<(S0,)> {
     /// Builds a [`LongRangeProperty`].
-    pub fn build(self) -> LongRangeProperty {
+    pub fn build(self) -> LongRangeProperty
+    where
+        S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
+    {
         LongRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -15617,16 +16285,24 @@ impl LongRangePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LongRangePropertyBuilder<(crate::typed::builder::Set,)>> for LongRangeProperty {
-    fn from(builder: LongRangePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LongRangePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
+{
+    type Output = LongRangeProperty;
+
+    fn build(self) -> LongRangeProperty {
+        Self::build(self)
     }
 }
 
-impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LongRangeProperty { match r#type {} }
+impl<S0> From<LongRangePropertyBuilder<(S0,)>> for LongRangeProperty
+where
+    S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
+{
+    fn from(builder: LongRangePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A variant of text that trades scoring and efficiency of positional queries for space efficiency. This field
@@ -15652,18 +16328,27 @@ pub struct MatchOnlyTextProperty {
 
 impl MatchOnlyTextProperty {
     /// Creates a builder for [`MatchOnlyTextProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> MatchOnlyTextPropertyBuilder {
         MatchOnlyTextPropertyBuilder::new()
     }
 
     /// Creates a [`MatchOnlyTextProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatchOnlyTextPropertyBuilder,
-        ) -> MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchOnlyTextProperty>>(
+        f: impl FnOnce(MatchOnlyTextPropertyBuilder) -> B,
     ) -> MatchOnlyTextProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchOnlyTextPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod match_only_text_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`MatchOnlyTextProperty`].
@@ -15765,6 +16450,7 @@ impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
 }
 
 impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15775,9 +16461,12 @@ impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
     /// Builds a [`MatchOnlyTextProperty`].
-    pub fn build(self) -> MatchOnlyTextProperty {
+    pub fn build(self) -> MatchOnlyTextProperty
+    where
+        S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
+    {
         MatchOnlyTextProperty {
             r#type: self.r#type.unwrap(),
             fields: self.fields,
@@ -15787,16 +16476,24 @@ impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)>> for MatchOnlyTextProperty {
-    fn from(builder: MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchOnlyTextPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
+{
+    type Output = MatchOnlyTextProperty;
+
+    fn build(self) -> MatchOnlyTextProperty {
+        Self::build(self)
     }
 }
 
-impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> MatchOnlyTextProperty { match r#type {} }
+impl<S0> From<MatchOnlyTextPropertyBuilder<(S0,)>> for MatchOnlyTextProperty
+where
+    S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
+{
+    fn from(builder: MatchOnlyTextPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -15833,18 +16530,27 @@ pub struct Murmur3HashProperty {
 
 impl Murmur3HashProperty {
     /// Creates a builder for [`Murmur3HashProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> Murmur3HashPropertyBuilder {
         Murmur3HashPropertyBuilder::new()
     }
 
     /// Creates a [`Murmur3HashProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            Murmur3HashPropertyBuilder,
-        ) -> Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Murmur3HashProperty>>(
+        f: impl FnOnce(Murmur3HashPropertyBuilder) -> B,
     ) -> Murmur3HashProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`Murmur3HashPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod murmur3_hash_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`Murmur3HashProperty`].
@@ -16044,6 +16750,7 @@ impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
 }
 
 impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16054,9 +16761,12 @@ impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
     /// Builds a [`Murmur3HashProperty`].
-    pub fn build(self) -> Murmur3HashProperty {
+    pub fn build(self) -> Murmur3HashProperty
+    where
+        S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
+    {
         Murmur3HashProperty {
             meta: self.meta,
             properties: self.properties,
@@ -16072,16 +16782,24 @@ impl Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)>> for Murmur3HashProperty {
-    fn from(builder: Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for Murmur3HashPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
+{
+    type Output = Murmur3HashProperty;
+
+    fn build(self) -> Murmur3HashProperty {
+        Self::build(self)
     }
 }
 
-impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Murmur3HashProperty { match r#type {} }
+impl<S0> From<Murmur3HashPropertyBuilder<(S0,)>> for Murmur3HashProperty
+where
+    S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
+{
+    fn from(builder: Murmur3HashPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16114,16 +16832,27 @@ pub struct NestedProperty {
 
 impl NestedProperty {
     /// Creates a builder for [`NestedProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NestedPropertyBuilder {
         NestedPropertyBuilder::new()
     }
 
     /// Creates a [`NestedProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NestedPropertyBuilder) -> NestedPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NestedProperty>>(
+        f: impl FnOnce(NestedPropertyBuilder) -> B,
     ) -> NestedProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NestedPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nested_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NestedProperty`].
@@ -16351,6 +17080,7 @@ impl<S0> NestedPropertyBuilder<(S0,)> {
 }
 
 impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16361,9 +17091,12 @@ impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NestedPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NestedPropertyBuilder<(S0,)> {
     /// Builds a [`NestedProperty`].
-    pub fn build(self) -> NestedProperty {
+    pub fn build(self) -> NestedProperty
+    where
+        S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
+    {
         NestedProperty {
             meta: self.meta,
             properties: self.properties,
@@ -16381,16 +17114,24 @@ impl NestedPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NestedPropertyBuilder<(crate::typed::builder::Set,)>> for NestedProperty {
-    fn from(builder: NestedPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NestedPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
+{
+    type Output = NestedProperty;
+
+    fn build(self) -> NestedProperty {
+        Self::build(self)
     }
 }
 
-impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NestedProperty { match r#type {} }
+impl<S0> From<NestedPropertyBuilder<(S0,)>> for NestedProperty
+where
+    S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
+{
+    fn from(builder: NestedPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16441,8 +17182,8 @@ impl NumberPropertyBase {
     }
 
     /// Creates a [`NumberPropertyBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NumberPropertyBaseBuilder) -> NumberPropertyBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NumberPropertyBase>>(
+        f: impl FnOnce(NumberPropertyBaseBuilder) -> B,
     ) -> NumberPropertyBase {
         f(Self::builder()).build()
     }
@@ -16706,9 +17447,9 @@ impl NumberPropertyBaseBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -16763,6 +17504,14 @@ impl NumberPropertyBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NumberPropertyBaseBuilder {
+    type Output = NumberPropertyBase;
+
+    fn build(self) -> NumberPropertyBase {
+        Self::build(self)
+    }
+}
+
 impl From<NumberPropertyBaseBuilder> for NumberPropertyBase {
     fn from(builder: NumberPropertyBaseBuilder) -> Self {
         builder.build()
@@ -16803,7 +17552,9 @@ impl ObjectProperty {
     }
 
     /// Creates a [`ObjectProperty`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ObjectPropertyBuilder) -> ObjectPropertyBuilder) -> ObjectProperty {
+    pub fn of<B: crate::typed::builder::Build<Output = ObjectProperty>>(
+        f: impl FnOnce(ObjectPropertyBuilder) -> B,
+    ) -> ObjectProperty {
         f(Self::builder()).build()
     }
 }
@@ -17029,6 +17780,14 @@ impl ObjectPropertyBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ObjectPropertyBuilder {
+    type Output = ObjectProperty;
+
+    fn build(self) -> ObjectProperty {
+        Self::build(self)
+    }
+}
+
 impl From<ObjectPropertyBuilder> for ObjectProperty {
     fn from(builder: ObjectPropertyBuilder) -> Self {
         builder.build()
@@ -17079,8 +17838,8 @@ impl PassthroughObjectProperty {
     }
 
     /// Creates a [`PassthroughObjectProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PassthroughObjectPropertyBuilder) -> PassthroughObjectPropertyBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PassthroughObjectProperty>>(
+        f: impl FnOnce(PassthroughObjectPropertyBuilder) -> B,
     ) -> PassthroughObjectProperty {
         f(Self::builder()).build()
     }
@@ -17321,6 +18080,14 @@ impl PassthroughObjectPropertyBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PassthroughObjectPropertyBuilder {
+    type Output = PassthroughObjectProperty;
+
+    fn build(self) -> PassthroughObjectProperty {
+        Self::build(self)
+    }
+}
+
 impl From<PassthroughObjectPropertyBuilder> for PassthroughObjectProperty {
     fn from(builder: PassthroughObjectPropertyBuilder) -> Self {
         builder.build()
@@ -17347,18 +18114,27 @@ pub struct PercolatorProperty {
 
 impl PercolatorProperty {
     /// Creates a builder for [`PercolatorProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PercolatorPropertyBuilder {
         PercolatorPropertyBuilder::new()
     }
 
     /// Creates a [`PercolatorProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PercolatorPropertyBuilder,
-        ) -> PercolatorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PercolatorProperty>>(
+        f: impl FnOnce(PercolatorPropertyBuilder) -> B,
     ) -> PercolatorProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PercolatorPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod percolator_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PercolatorProperty`].
@@ -17516,6 +18292,7 @@ impl<S0> PercolatorPropertyBuilder<(S0,)> {
 }
 
 impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17526,9 +18303,12 @@ impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PercolatorPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PercolatorPropertyBuilder<(S0,)> {
     /// Builds a [`PercolatorProperty`].
-    pub fn build(self) -> PercolatorProperty {
+    pub fn build(self) -> PercolatorProperty
+    where
+        S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
+    {
         PercolatorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -17541,16 +18321,24 @@ impl PercolatorPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PercolatorPropertyBuilder<(crate::typed::builder::Set,)>> for PercolatorProperty {
-    fn from(builder: PercolatorPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PercolatorPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
+{
+    type Output = PercolatorProperty;
+
+    fn build(self) -> PercolatorProperty {
+        Self::build(self)
     }
 }
 
-impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PercolatorProperty { match r#type {} }
+impl<S0> From<PercolatorPropertyBuilder<(S0,)>> for PercolatorProperty
+where
+    S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
+{
+    fn from(builder: PercolatorPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17585,16 +18373,27 @@ pub struct PointProperty {
 
 impl PointProperty {
     /// Creates a builder for [`PointProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PointPropertyBuilder {
         PointPropertyBuilder::new()
     }
 
     /// Creates a [`PointProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PointPropertyBuilder) -> PointPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PointProperty>>(
+        f: impl FnOnce(PointPropertyBuilder) -> B,
     ) -> PointProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PointPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod point_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PointProperty`].
@@ -17836,6 +18635,7 @@ impl<S0> PointPropertyBuilder<(S0,)> {
 }
 
 impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17846,9 +18646,12 @@ impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PointPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PointPropertyBuilder<(S0,)> {
     /// Builds a [`PointProperty`].
-    pub fn build(self) -> PointProperty {
+    pub fn build(self) -> PointProperty
+    where
+        S0: crate::typed::builder::IsSet<point_property_members::r#type>,
+    {
         PointProperty {
             meta: self.meta,
             properties: self.properties,
@@ -17867,16 +18670,24 @@ impl PointPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PointPropertyBuilder<(crate::typed::builder::Set,)>> for PointProperty {
-    fn from(builder: PointPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PointPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<point_property_members::r#type>,
+{
+    type Output = PointProperty;
+
+    fn build(self) -> PointProperty {
+        Self::build(self)
     }
 }
 
-impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PointProperty { match r#type {} }
+impl<S0> From<PointPropertyBuilder<(S0,)>> for PointProperty
+where
+    S0: crate::typed::builder::IsSet<point_property_members::r#type>,
+{
+    fn from(builder: PointPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -17922,7 +18733,9 @@ impl PropertyBase {
     }
 
     /// Creates a [`PropertyBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PropertyBaseBuilder) -> PropertyBaseBuilder) -> PropertyBase {
+    pub fn of<B: crate::typed::builder::Build<Output = PropertyBase>>(
+        f: impl FnOnce(PropertyBaseBuilder) -> B,
+    ) -> PropertyBase {
         f(Self::builder()).build()
     }
 }
@@ -18078,6 +18891,14 @@ impl PropertyBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PropertyBaseBuilder {
+    type Output = PropertyBase;
+
+    fn build(self) -> PropertyBase {
+        Self::build(self)
+    }
+}
+
 impl From<PropertyBaseBuilder> for PropertyBase {
     fn from(builder: PropertyBaseBuilder) -> Self {
         builder.build()
@@ -18120,8 +18941,8 @@ impl RangePropertyBase {
     }
 
     /// Creates a [`RangePropertyBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangePropertyBaseBuilder) -> RangePropertyBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangePropertyBase>>(
+        f: impl FnOnce(RangePropertyBaseBuilder) -> B,
     ) -> RangePropertyBase {
         f(Self::builder()).build()
     }
@@ -18362,6 +19183,14 @@ impl RangePropertyBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangePropertyBaseBuilder {
+    type Output = RangePropertyBase;
+
+    fn build(self) -> RangePropertyBase {
+        Self::build(self)
+    }
+}
+
 impl From<RangePropertyBaseBuilder> for RangePropertyBase {
     fn from(builder: RangePropertyBaseBuilder) -> Self {
         builder.build()
@@ -18390,18 +19219,27 @@ pub struct RankFeatureProperty {
 
 impl RankFeatureProperty {
     /// Creates a builder for [`RankFeatureProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RankFeaturePropertyBuilder {
         RankFeaturePropertyBuilder::new()
     }
 
     /// Creates a [`RankFeatureProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankFeaturePropertyBuilder,
-        ) -> RankFeaturePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureProperty>>(
+        f: impl FnOnce(RankFeaturePropertyBuilder) -> B,
     ) -> RankFeatureProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankFeaturePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_feature_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RankFeatureProperty`].
@@ -18573,6 +19411,7 @@ impl<S0> RankFeaturePropertyBuilder<(S0,)> {
 }
 
 impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18583,9 +19422,12 @@ impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RankFeaturePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankFeaturePropertyBuilder<(S0,)> {
     /// Builds a [`RankFeatureProperty`].
-    pub fn build(self) -> RankFeatureProperty {
+    pub fn build(self) -> RankFeatureProperty
+    where
+        S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
+    {
         RankFeatureProperty {
             meta: self.meta,
             properties: self.properties,
@@ -18599,16 +19441,24 @@ impl RankFeaturePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankFeaturePropertyBuilder<(crate::typed::builder::Set,)>> for RankFeatureProperty {
-    fn from(builder: RankFeaturePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankFeaturePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
+{
+    type Output = RankFeatureProperty;
+
+    fn build(self) -> RankFeatureProperty {
+        Self::build(self)
     }
 }
 
-impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RankFeatureProperty { match r#type {} }
+impl<S0> From<RankFeaturePropertyBuilder<(S0,)>> for RankFeatureProperty
+where
+    S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
+{
+    fn from(builder: RankFeaturePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18633,18 +19483,27 @@ pub struct RankFeaturesProperty {
 
 impl RankFeaturesProperty {
     /// Creates a builder for [`RankFeaturesProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RankFeaturesPropertyBuilder {
         RankFeaturesPropertyBuilder::new()
     }
 
     /// Creates a [`RankFeaturesProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankFeaturesPropertyBuilder,
-        ) -> RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeaturesProperty>>(
+        f: impl FnOnce(RankFeaturesPropertyBuilder) -> B,
     ) -> RankFeaturesProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankFeaturesPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_features_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RankFeaturesProperty`].
@@ -18816,6 +19675,7 @@ impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
 }
 
 impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18826,9 +19686,12 @@ impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
     /// Builds a [`RankFeaturesProperty`].
-    pub fn build(self) -> RankFeaturesProperty {
+    pub fn build(self) -> RankFeaturesProperty
+    where
+        S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
+    {
         RankFeaturesProperty {
             meta: self.meta,
             properties: self.properties,
@@ -18842,16 +19705,24 @@ impl RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)>> for RankFeaturesProperty {
-    fn from(builder: RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankFeaturesPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
+{
+    type Output = RankFeaturesProperty;
+
+    fn build(self) -> RankFeaturesProperty {
+        Self::build(self)
     }
 }
 
-impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RankFeaturesProperty { match r#type {} }
+impl<S0> From<RankFeaturesPropertyBuilder<(S0,)>> for RankFeaturesProperty
+where
+    S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
+{
+    fn from(builder: RankFeaturesPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18889,18 +19760,27 @@ pub struct RankVectorProperty {
 
 impl RankVectorProperty {
     /// Creates a builder for [`RankVectorProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RankVectorPropertyBuilder {
         RankVectorPropertyBuilder::new()
     }
 
     /// Creates a [`RankVectorProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankVectorPropertyBuilder,
-        ) -> RankVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankVectorProperty>>(
+        f: impl FnOnce(RankVectorPropertyBuilder) -> B,
     ) -> RankVectorProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankVectorPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_vector_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RankVectorProperty`].
@@ -19086,6 +19966,7 @@ impl<S0> RankVectorPropertyBuilder<(S0,)> {
 }
 
 impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -19096,9 +19977,12 @@ impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RankVectorPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankVectorPropertyBuilder<(S0,)> {
     /// Builds a [`RankVectorProperty`].
-    pub fn build(self) -> RankVectorProperty {
+    pub fn build(self) -> RankVectorProperty
+    where
+        S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
+    {
         RankVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -19113,16 +19997,24 @@ impl RankVectorPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankVectorPropertyBuilder<(crate::typed::builder::Set,)>> for RankVectorProperty {
-    fn from(builder: RankVectorPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankVectorPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
+{
+    type Output = RankVectorProperty;
+
+    fn build(self) -> RankVectorProperty {
+        Self::build(self)
     }
 }
 
-impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RankVectorProperty { match r#type {} }
+impl<S0> From<RankVectorPropertyBuilder<(S0,)>> for RankVectorProperty
+where
+    S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
+{
+    fn from(builder: RankVectorPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19132,16 +20024,27 @@ pub struct RoutingField {
 
 impl RoutingField {
     /// Creates a builder for [`RoutingField`].
+    ///
+    /// Required: `required`.
     pub fn builder() -> RoutingFieldBuilder {
         RoutingFieldBuilder::new()
     }
 
     /// Creates a [`RoutingField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RoutingFieldBuilder) -> RoutingFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `required`.
+    pub fn of<B: crate::typed::builder::Build<Output = RoutingField>>(
+        f: impl FnOnce(RoutingFieldBuilder) -> B,
     ) -> RoutingField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RoutingFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod routing_field_members {
+    pub struct required;
 }
 
 /// Builder for [`RoutingField`].
@@ -19170,6 +20073,7 @@ impl<S0> RoutingFieldBuilder<(S0,)> {
 }
 
 impl RoutingFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn required(self, value: bool) -> RoutingFieldBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.required = Some(value);
@@ -19177,25 +20081,36 @@ impl RoutingFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RoutingFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RoutingFieldBuilder<(S0,)> {
     /// Builds a [`RoutingField`].
-    pub fn build(self) -> RoutingField {
+    pub fn build(self) -> RoutingField
+    where
+        S0: crate::typed::builder::IsSet<routing_field_members::required>,
+    {
         RoutingField {
             required: self.required.unwrap(),
         }
     }
 }
 
-impl From<RoutingFieldBuilder<(crate::typed::builder::Set,)>> for RoutingField {
-    fn from(builder: RoutingFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RoutingFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<routing_field_members::required>,
+{
+    type Output = RoutingField;
+
+    fn build(self) -> RoutingField {
+        Self::build(self)
     }
 }
 
-impl RoutingFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `required` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, required: crate::typed::builder::MissingRequiredField) -> RoutingField { match required {} }
+impl<S0> From<RoutingFieldBuilder<(S0,)>> for RoutingField
+where
+    S0: crate::typed::builder::IsSet<routing_field_members::required>,
+{
+    fn from(builder: RoutingFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19229,16 +20144,27 @@ pub struct RuntimeField {
 
 impl RuntimeField {
     /// Creates a builder for [`RuntimeField`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RuntimeFieldBuilder {
         RuntimeFieldBuilder::new()
     }
 
     /// Creates a [`RuntimeField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RuntimeFieldBuilder) -> RuntimeFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RuntimeField>>(
+        f: impl FnOnce(RuntimeFieldBuilder) -> B,
     ) -> RuntimeField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RuntimeFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod runtime_field_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RuntimeField`].
@@ -19320,12 +20246,10 @@ impl<S0> RuntimeFieldBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = CompositeSubField>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CompositeSubFieldBuilder,
-        ) -> CompositeSubFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompositeSubFieldBuilder) -> B,
     ) -> Self {
         self.add_fields(key, f(CompositeSubFieldBuilder::new()).build())
     }
@@ -19351,11 +20275,11 @@ impl<S0> RuntimeFieldBuilder<(S0,)> {
     }
 
     /// Adds an element to [`fetch_fields`](Self::fetch_fields), with a builder.
-    pub fn add_fetch_fields_with(
+    pub fn add_fetch_fields_with<
+        B: crate::typed::builder::Build<Output = RuntimeFieldFetchFields>,
+    >(
         self,
-        f: impl FnOnce(
-            RuntimeFieldFetchFieldsBuilder,
-        ) -> RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RuntimeFieldFetchFieldsBuilder) -> B,
     ) -> Self {
         self.add_fetch_fields(f(RuntimeFieldFetchFieldsBuilder::new()).build())
     }
@@ -19421,9 +20345,9 @@ impl<S0> RuntimeFieldBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -19441,7 +20365,7 @@ impl<S0> RuntimeFieldBuilder<(S0,)> {
 }
 
 impl RuntimeFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field type, which can be: `boolean`, `composite`, `date`, `double`, `geo_point`, `ip`,`keyword`, `long`, or `lookup`.
+    /// **Required.** Field type, which can be: `boolean`, `composite`, `date`, `double`, `geo_point`, `ip`,`keyword`, `long`, or `lookup`.
     pub fn r#type(
         self,
         value: impl Into<RuntimeFieldType>,
@@ -19452,9 +20376,12 @@ impl RuntimeFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RuntimeFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RuntimeFieldBuilder<(S0,)> {
     /// Builds a [`RuntimeField`].
-    pub fn build(self) -> RuntimeField {
+    pub fn build(self) -> RuntimeField
+    where
+        S0: crate::typed::builder::IsSet<runtime_field_members::r#type>,
+    {
         RuntimeField {
             fields: self.fields,
             fetch_fields: self.fetch_fields,
@@ -19469,16 +20396,24 @@ impl RuntimeFieldBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RuntimeFieldBuilder<(crate::typed::builder::Set,)>> for RuntimeField {
-    fn from(builder: RuntimeFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RuntimeFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<runtime_field_members::r#type>,
+{
+    type Output = RuntimeField;
+
+    fn build(self) -> RuntimeField {
+        Self::build(self)
     }
 }
 
-impl RuntimeFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RuntimeField { match r#type {} }
+impl<S0> From<RuntimeFieldBuilder<(S0,)>> for RuntimeField
+where
+    S0: crate::typed::builder::IsSet<runtime_field_members::r#type>,
+{
+    fn from(builder: RuntimeFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19490,18 +20425,27 @@ pub struct RuntimeFieldFetchFields {
 
 impl RuntimeFieldFetchFields {
     /// Creates a builder for [`RuntimeFieldFetchFields`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> RuntimeFieldFetchFieldsBuilder {
         RuntimeFieldFetchFieldsBuilder::new()
     }
 
     /// Creates a [`RuntimeFieldFetchFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RuntimeFieldFetchFieldsBuilder,
-        ) -> RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = RuntimeFieldFetchFields>>(
+        f: impl FnOnce(RuntimeFieldFetchFieldsBuilder) -> B,
     ) -> RuntimeFieldFetchFields {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RuntimeFieldFetchFieldsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod runtime_field_fetch_fields_members {
+    pub struct field;
 }
 
 /// Builder for [`RuntimeFieldFetchFields`].
@@ -19544,6 +20488,7 @@ impl<S0> RuntimeFieldFetchFieldsBuilder<(S0,)> {
 }
 
 impl RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -19554,9 +20499,12 @@ impl RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RuntimeFieldFetchFieldsBuilder<(S0,)> {
     /// Builds a [`RuntimeFieldFetchFields`].
-    pub fn build(self) -> RuntimeFieldFetchFields {
+    pub fn build(self) -> RuntimeFieldFetchFields
+    where
+        S0: crate::typed::builder::IsSet<runtime_field_fetch_fields_members::field>,
+    {
         RuntimeFieldFetchFields {
             field: self.field.unwrap(),
             format: self.format,
@@ -19564,18 +20512,24 @@ impl RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)>>
-    for RuntimeFieldFetchFields
+impl<S0> crate::typed::builder::Build for RuntimeFieldFetchFieldsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<runtime_field_fetch_fields_members::field>,
 {
-    fn from(builder: RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RuntimeFieldFetchFields;
+
+    fn build(self) -> RuntimeFieldFetchFields {
+        Self::build(self)
     }
 }
 
-impl RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RuntimeFieldFetchFields { match field {} }
+impl<S0> From<RuntimeFieldFetchFieldsBuilder<(S0,)>> for RuntimeFieldFetchFields
+where
+    S0: crate::typed::builder::IsSet<runtime_field_fetch_fields_members::field>,
+{
+    fn from(builder: RuntimeFieldFetchFieldsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19652,18 +20606,27 @@ pub struct ScaledFloatNumberProperty {
 
 impl ScaledFloatNumberProperty {
     /// Creates a builder for [`ScaledFloatNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ScaledFloatNumberPropertyBuilder {
         ScaledFloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ScaledFloatNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScaledFloatNumberPropertyBuilder,
-        ) -> ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScaledFloatNumberProperty>>(
+        f: impl FnOnce(ScaledFloatNumberPropertyBuilder) -> B,
     ) -> ScaledFloatNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScaledFloatNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod scaled_float_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ScaledFloatNumberProperty`].
@@ -19958,9 +20921,9 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -20013,6 +20976,7 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
 }
 
 impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20023,9 +20987,12 @@ impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
     /// Builds a [`ScaledFloatNumberProperty`].
-    pub fn build(self) -> ScaledFloatNumberProperty {
+    pub fn build(self) -> ScaledFloatNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
+    {
         ScaledFloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -20051,18 +21018,24 @@ impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>>
-    for ScaledFloatNumberProperty
+impl<S0> crate::typed::builder::Build for ScaledFloatNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
 {
-    fn from(builder: ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ScaledFloatNumberProperty;
+
+    fn build(self) -> ScaledFloatNumberProperty {
+        Self::build(self)
     }
 }
 
-impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ScaledFloatNumberProperty { match r#type {} }
+impl<S0> From<ScaledFloatNumberPropertyBuilder<(S0,)>> for ScaledFloatNumberProperty
+where
+    S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
+{
+    fn from(builder: ScaledFloatNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20126,18 +21099,27 @@ impl From<&str> for SearchAsYouTypePropertySimilarity {
 
 impl SearchAsYouTypeProperty {
     /// Creates a builder for [`SearchAsYouTypeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SearchAsYouTypePropertyBuilder {
         SearchAsYouTypePropertyBuilder::new()
     }
 
     /// Creates a [`SearchAsYouTypeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchAsYouTypePropertyBuilder,
-        ) -> SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchAsYouTypeProperty>>(
+        f: impl FnOnce(SearchAsYouTypePropertyBuilder) -> B,
     ) -> SearchAsYouTypeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchAsYouTypePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_as_you_type_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SearchAsYouTypeProperty`].
@@ -20449,6 +21431,7 @@ impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
 }
 
 impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20459,9 +21442,12 @@ impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
     /// Builds a [`SearchAsYouTypeProperty`].
-    pub fn build(self) -> SearchAsYouTypeProperty {
+    pub fn build(self) -> SearchAsYouTypeProperty
+    where
+        S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
+    {
         SearchAsYouTypeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -20485,18 +21471,24 @@ impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)>>
-    for SearchAsYouTypeProperty
+impl<S0> crate::typed::builder::Build for SearchAsYouTypePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
 {
-    fn from(builder: SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SearchAsYouTypeProperty;
+
+    fn build(self) -> SearchAsYouTypeProperty {
+        Self::build(self)
     }
 }
 
-impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SearchAsYouTypeProperty { match r#type {} }
+impl<S0> From<SearchAsYouTypePropertyBuilder<(S0,)>> for SearchAsYouTypeProperty
+where
+    S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
+{
+    fn from(builder: SearchAsYouTypePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20514,8 +21506,8 @@ impl SemanticTextIndexOptions {
     }
 
     /// Creates a [`SemanticTextIndexOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SemanticTextIndexOptionsBuilder) -> SemanticTextIndexOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SemanticTextIndexOptions>>(
+        f: impl FnOnce(SemanticTextIndexOptionsBuilder) -> B,
     ) -> SemanticTextIndexOptions {
         f(Self::builder()).build()
     }
@@ -20550,11 +21542,9 @@ impl SemanticTextIndexOptionsBuilder {
     }
 
     /// Sets [`dense_vector`](Self::dense_vector) with a builder.
-    pub fn dense_vector_with(
+    pub fn dense_vector_with<B: crate::typed::builder::Build<Output = DenseVectorIndexOptions>>(
         self,
-        f: impl FnOnce(
-            DenseVectorIndexOptionsBuilder,
-        ) -> DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DenseVectorIndexOptionsBuilder) -> B,
     ) -> Self {
         self.dense_vector(f(DenseVectorIndexOptionsBuilder::new()).build())
     }
@@ -20571,9 +21561,11 @@ impl SemanticTextIndexOptionsBuilder {
     }
 
     /// Sets [`sparse_vector`](Self::sparse_vector) with a builder.
-    pub fn sparse_vector_with(
+    pub fn sparse_vector_with<
+        B: crate::typed::builder::Build<Output = SparseVectorIndexOptions>,
+    >(
         self,
-        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> SparseVectorIndexOptionsBuilder,
+        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> B,
     ) -> Self {
         self.sparse_vector(f(SparseVectorIndexOptionsBuilder::new()).build())
     }
@@ -20586,6 +21578,14 @@ impl SemanticTextIndexOptionsBuilder {
             dense_vector: self.dense_vector,
             sparse_vector: self.sparse_vector,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SemanticTextIndexOptionsBuilder {
+    type Output = SemanticTextIndexOptions;
+
+    fn build(self) -> SemanticTextIndexOptions {
+        Self::build(self)
     }
 }
 
@@ -20642,18 +21642,27 @@ impl From<ChunkingSettings> for SemanticTextPropertyChunkingSettings {
 
 impl SemanticTextProperty {
     /// Creates a builder for [`SemanticTextProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SemanticTextPropertyBuilder {
         SemanticTextPropertyBuilder::new()
     }
 
     /// Creates a [`SemanticTextProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SemanticTextPropertyBuilder,
-        ) -> SemanticTextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SemanticTextProperty>>(
+        f: impl FnOnce(SemanticTextPropertyBuilder) -> B,
     ) -> SemanticTextProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SemanticTextPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod semantic_text_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SemanticTextProperty`].
@@ -20761,9 +21770,11 @@ impl<S0> SemanticTextPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`index_options`](Self::index_options) with a builder.
-    pub fn index_options_with(
+    pub fn index_options_with<
+        B: crate::typed::builder::Build<Output = SemanticTextIndexOptions>,
+    >(
         self,
-        f: impl FnOnce(SemanticTextIndexOptionsBuilder) -> SemanticTextIndexOptionsBuilder,
+        f: impl FnOnce(SemanticTextIndexOptionsBuilder) -> B,
     ) -> Self {
         self.index_options(f(SemanticTextIndexOptionsBuilder::new()).build())
     }
@@ -20821,6 +21832,7 @@ impl<S0> SemanticTextPropertyBuilder<(S0,)> {
 }
 
 impl SemanticTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20831,9 +21843,12 @@ impl SemanticTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SemanticTextPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SemanticTextPropertyBuilder<(S0,)> {
     /// Builds a [`SemanticTextProperty`].
-    pub fn build(self) -> SemanticTextProperty {
+    pub fn build(self) -> SemanticTextProperty
+    where
+        S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
+    {
         SemanticTextProperty {
             r#type: self.r#type.unwrap(),
             meta: self.meta,
@@ -20846,16 +21861,24 @@ impl SemanticTextPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SemanticTextPropertyBuilder<(crate::typed::builder::Set,)>> for SemanticTextProperty {
-    fn from(builder: SemanticTextPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SemanticTextPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
+{
+    type Output = SemanticTextProperty;
+
+    fn build(self) -> SemanticTextProperty {
+        Self::build(self)
     }
 }
 
-impl SemanticTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SemanticTextProperty { match r#type {} }
+impl<S0> From<SemanticTextPropertyBuilder<(S0,)>> for SemanticTextProperty
+where
+    S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
+{
+    fn from(builder: SemanticTextPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The `shape` data type facilitates the indexing of and searching with arbitrary `x, y` cartesian shapes such as
@@ -20894,16 +21917,27 @@ pub struct ShapeProperty {
 
 impl ShapeProperty {
     /// Creates a builder for [`ShapeProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ShapePropertyBuilder {
         ShapePropertyBuilder::new()
     }
 
     /// Creates a [`ShapeProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ShapePropertyBuilder) -> ShapePropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShapeProperty>>(
+        f: impl FnOnce(ShapePropertyBuilder) -> B,
     ) -> ShapeProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShapePropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shape_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ShapeProperty`].
@@ -21159,6 +22193,7 @@ impl<S0> ShapePropertyBuilder<(S0,)> {
 }
 
 impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -21169,9 +22204,12 @@ impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ShapePropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShapePropertyBuilder<(S0,)> {
     /// Builds a [`ShapeProperty`].
-    pub fn build(self) -> ShapeProperty {
+    pub fn build(self) -> ShapeProperty
+    where
+        S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
+    {
         ShapeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -21191,16 +22229,24 @@ impl ShapePropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ShapePropertyBuilder<(crate::typed::builder::Set,)>> for ShapeProperty {
-    fn from(builder: ShapePropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShapePropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
+{
+    type Output = ShapeProperty;
+
+    fn build(self) -> ShapeProperty {
+        Self::build(self)
     }
 }
 
-impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ShapeProperty { match r#type {} }
+impl<S0> From<ShapePropertyBuilder<(S0,)>> for ShapeProperty
+where
+    S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
+{
+    fn from(builder: ShapePropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21249,18 +22295,27 @@ pub struct ShortNumberProperty {
 
 impl ShortNumberProperty {
     /// Creates a builder for [`ShortNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ShortNumberPropertyBuilder {
         ShortNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ShortNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShortNumberPropertyBuilder,
-        ) -> ShortNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShortNumberProperty>>(
+        f: impl FnOnce(ShortNumberPropertyBuilder) -> B,
     ) -> ShortNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShortNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod short_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ShortNumberProperty`].
@@ -21552,9 +22607,9 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -21596,6 +22651,7 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
 }
 
 impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -21606,9 +22662,12 @@ impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ShortNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShortNumberPropertyBuilder<(S0,)> {
     /// Builds a [`ShortNumberProperty`].
-    pub fn build(self) -> ShortNumberProperty {
+    pub fn build(self) -> ShortNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
+    {
         ShortNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -21633,16 +22692,24 @@ impl ShortNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ShortNumberPropertyBuilder<(crate::typed::builder::Set,)>> for ShortNumberProperty {
-    fn from(builder: ShortNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShortNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
+{
+    type Output = ShortNumberProperty;
+
+    fn build(self) -> ShortNumberProperty {
+        Self::build(self)
     }
 }
 
-impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ShortNumberProperty { match r#type {} }
+impl<S0> From<ShortNumberPropertyBuilder<(S0,)>> for ShortNumberProperty
+where
+    S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
+{
+    fn from(builder: ShortNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21652,16 +22719,27 @@ pub struct SizeField {
 
 impl SizeField {
     /// Creates a builder for [`SizeField`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> SizeFieldBuilder {
         SizeFieldBuilder::new()
     }
 
     /// Creates a [`SizeField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SizeFieldBuilder) -> SizeFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = SizeField>>(
+        f: impl FnOnce(SizeFieldBuilder) -> B,
     ) -> SizeField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SizeFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod size_field_members {
+    pub struct enabled;
 }
 
 /// Builder for [`SizeField`].
@@ -21690,6 +22768,7 @@ impl<S0> SizeFieldBuilder<(S0,)> {
 }
 
 impl SizeFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> SizeFieldBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -21697,25 +22776,36 @@ impl SizeFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SizeFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SizeFieldBuilder<(S0,)> {
     /// Builds a [`SizeField`].
-    pub fn build(self) -> SizeField {
+    pub fn build(self) -> SizeField
+    where
+        S0: crate::typed::builder::IsSet<size_field_members::enabled>,
+    {
         SizeField {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<SizeFieldBuilder<(crate::typed::builder::Set,)>> for SizeField {
-    fn from(builder: SizeFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SizeFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<size_field_members::enabled>,
+{
+    type Output = SizeField;
+
+    fn build(self) -> SizeField {
+        Self::build(self)
     }
 }
 
-impl SizeFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> SizeField { match enabled {} }
+impl<S0> From<SizeFieldBuilder<(S0,)>> for SizeField
+where
+    S0: crate::typed::builder::IsSet<size_field_members::enabled>,
+{
+    fn from(builder: SizeFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21737,7 +22827,9 @@ impl SourceField {
     }
 
     /// Creates a [`SourceField`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SourceFieldBuilder) -> SourceFieldBuilder) -> SourceField {
+    pub fn of<B: crate::typed::builder::Build<Output = SourceField>>(
+        f: impl FnOnce(SourceFieldBuilder) -> B,
+    ) -> SourceField {
         f(Self::builder()).build()
     }
 }
@@ -21836,6 +22928,14 @@ impl SourceFieldBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SourceFieldBuilder {
+    type Output = SourceField;
+
+    fn build(self) -> SourceField {
+        Self::build(self)
+    }
+}
+
 impl From<SourceFieldBuilder> for SourceField {
     fn from(builder: SourceFieldBuilder) -> Self {
         builder.build()
@@ -21878,8 +22978,8 @@ impl SparseVectorIndexOptions {
     }
 
     /// Creates a [`SparseVectorIndexOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> SparseVectorIndexOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SparseVectorIndexOptions>>(
+        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> B,
     ) -> SparseVectorIndexOptions {
         f(Self::builder()).build()
     }
@@ -21938,11 +23038,11 @@ impl SparseVectorIndexOptionsBuilder {
     }
 
     /// Sets [`pruning_config`](Self::pruning_config) with a builder.
-    pub fn pruning_config_with(
+    pub fn pruning_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TokenPruningConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TokenPruningConfigBuilder,
-        ) -> crate::typed::_types::TokenPruningConfigBuilder,
+        f: impl FnOnce(crate::typed::_types::TokenPruningConfigBuilder) -> B,
     ) -> Self {
         self.pruning_config(f(crate::typed::_types::TokenPruningConfigBuilder::new()).build())
     }
@@ -21955,6 +23055,14 @@ impl SparseVectorIndexOptionsBuilder {
             prune: self.prune,
             pruning_config: self.pruning_config,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SparseVectorIndexOptionsBuilder {
+    type Output = SparseVectorIndexOptions;
+
+    fn build(self) -> SparseVectorIndexOptions {
+        Self::build(self)
     }
 }
 
@@ -21990,18 +23098,27 @@ pub struct SparseVectorProperty {
 
 impl SparseVectorProperty {
     /// Creates a builder for [`SparseVectorProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SparseVectorPropertyBuilder {
         SparseVectorPropertyBuilder::new()
     }
 
     /// Creates a [`SparseVectorProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SparseVectorPropertyBuilder,
-        ) -> SparseVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SparseVectorProperty>>(
+        f: impl FnOnce(SparseVectorPropertyBuilder) -> B,
     ) -> SparseVectorProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SparseVectorPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sparse_vector_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SparseVectorProperty`].
@@ -22188,15 +23305,18 @@ impl<S0> SparseVectorPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`index_options`](Self::index_options) with a builder.
-    pub fn index_options_with(
+    pub fn index_options_with<
+        B: crate::typed::builder::Build<Output = SparseVectorIndexOptions>,
+    >(
         self,
-        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> SparseVectorIndexOptionsBuilder,
+        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> B,
     ) -> Self {
         self.index_options(f(SparseVectorIndexOptionsBuilder::new()).build())
     }
 }
 
 impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -22207,9 +23327,12 @@ impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SparseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SparseVectorPropertyBuilder<(S0,)> {
     /// Builds a [`SparseVectorProperty`].
-    pub fn build(self) -> SparseVectorProperty {
+    pub fn build(self) -> SparseVectorProperty
+    where
+        S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
+    {
         SparseVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -22224,16 +23347,24 @@ impl SparseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SparseVectorPropertyBuilder<(crate::typed::builder::Set,)>> for SparseVectorProperty {
-    fn from(builder: SparseVectorPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SparseVectorPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
+{
+    type Output = SparseVectorProperty;
+
+    fn build(self) -> SparseVectorProperty {
+        Self::build(self)
     }
 }
 
-impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SparseVectorProperty { match r#type {} }
+impl<S0> From<SparseVectorPropertyBuilder<(S0,)>> for SparseVectorProperty
+where
+    S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
+{
+    fn from(builder: SparseVectorPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -22283,21 +23414,28 @@ impl From<&str> for SuggestContextPrecision {
 
 impl SuggestContext {
     /// Creates a builder for [`SuggestContext`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> SuggestContextBuilder {
         SuggestContextBuilder::new()
     }
 
     /// Creates a [`SuggestContext`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SuggestContextBuilder,
-        ) -> SuggestContextBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SuggestContext>>(
+        f: impl FnOnce(SuggestContextBuilder) -> B,
     ) -> SuggestContext {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SuggestContextBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod suggest_context_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`SuggestContext`].
@@ -22358,6 +23496,7 @@ impl<S0, S1> SuggestContextBuilder<(S0, S1)> {
 }
 
 impl<S1> SuggestContextBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -22369,6 +23508,7 @@ impl<S1> SuggestContextBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SuggestContextBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -22379,9 +23519,13 @@ impl<S0> SuggestContextBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SuggestContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SuggestContextBuilder<(S0, S1)> {
     /// Builds a [`SuggestContext`].
-    pub fn build(self) -> SuggestContext {
+    pub fn build(self) -> SuggestContext
+    where
+        S0: crate::typed::builder::IsSet<suggest_context_members::name>,
+        S1: crate::typed::builder::IsSet<suggest_context_members::r#type>,
+    {
         SuggestContext {
             name: self.name.unwrap(),
             path: self.path,
@@ -22391,26 +23535,26 @@ impl SuggestContextBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<SuggestContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SuggestContext
+impl<S0, S1> crate::typed::builder::Build for SuggestContextBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<suggest_context_members::name>,
+    S1: crate::typed::builder::IsSet<suggest_context_members::r#type>,
 {
-    fn from(
-        builder: SuggestContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SuggestContext;
+
+    fn build(self) -> SuggestContext {
+        Self::build(self)
     }
 }
 
-impl<S1> SuggestContextBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> SuggestContext { match name {} }
-}
-
-impl SuggestContextBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SuggestContext { match r#type {} }
+impl<S0, S1> From<SuggestContextBuilder<(S0, S1)>> for SuggestContext
+where
+    S0: crate::typed::builder::IsSet<suggest_context_members::name>,
+    S1: crate::typed::builder::IsSet<suggest_context_members::r#type>,
+{
+    fn from(builder: SuggestContextBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -22464,8 +23608,8 @@ impl TextIndexPrefixes {
     }
 
     /// Creates a [`TextIndexPrefixes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TextIndexPrefixesBuilder) -> TextIndexPrefixesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TextIndexPrefixes>>(
+        f: impl FnOnce(TextIndexPrefixesBuilder) -> B,
     ) -> TextIndexPrefixes {
         f(Self::builder()).build()
     }
@@ -22518,6 +23662,14 @@ impl TextIndexPrefixesBuilder {
             max_chars: self.max_chars,
             min_chars: self.min_chars,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TextIndexPrefixesBuilder {
+    type Output = TextIndexPrefixes;
+
+    fn build(self) -> TextIndexPrefixes {
+        Self::build(self)
     }
 }
 
@@ -22613,16 +23765,27 @@ impl From<&str> for TextPropertySimilarity {
 
 impl TextProperty {
     /// Creates a builder for [`TextProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TextPropertyBuilder {
         TextPropertyBuilder::new()
     }
 
     /// Creates a [`TextProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TextPropertyBuilder) -> TextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TextProperty>>(
+        f: impl FnOnce(TextPropertyBuilder) -> B,
     ) -> TextProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TextPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod text_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TextProperty`].
@@ -22913,15 +24076,13 @@ impl<S0> TextPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`fielddata_frequency_filter`](Self::fielddata_frequency_filter) with a builder.
-    pub fn fielddata_frequency_filter_with(
+    pub fn fielddata_frequency_filter_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::_types::FielddataFrequencyFilter,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::FielddataFrequencyFilterBuilder,
-        ) -> crate::typed::indices::_types::FielddataFrequencyFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::FielddataFrequencyFilterBuilder) -> B,
     ) -> Self {
         self.fielddata_frequency_filter(
             f(crate::typed::indices::_types::FielddataFrequencyFilterBuilder::new()).build(),
@@ -23040,6 +24201,7 @@ impl<S0> TextPropertyBuilder<(S0,)> {
 }
 
 impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -23050,9 +24212,12 @@ impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TextPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TextPropertyBuilder<(S0,)> {
     /// Builds a [`TextProperty`].
-    pub fn build(self) -> TextProperty {
+    pub fn build(self) -> TextProperty
+    where
+        S0: crate::typed::builder::IsSet<text_property_members::r#type>,
+    {
         TextProperty {
             meta: self.meta,
             properties: self.properties,
@@ -23082,16 +24247,24 @@ impl TextPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TextPropertyBuilder<(crate::typed::builder::Set,)>> for TextProperty {
-    fn from(builder: TextPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TextPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<text_property_members::r#type>,
+{
+    type Output = TextProperty;
+
+    fn build(self) -> TextProperty {
+        Self::build(self)
     }
 }
 
-impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TextProperty { match r#type {} }
+impl<S0> From<TextPropertyBuilder<(S0,)>> for TextProperty
+where
+    S0: crate::typed::builder::IsSet<text_property_members::r#type>,
+{
+    fn from(builder: TextPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -23144,18 +24317,27 @@ pub struct TokenCountProperty {
 
 impl TokenCountProperty {
     /// Creates a builder for [`TokenCountProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TokenCountPropertyBuilder {
         TokenCountPropertyBuilder::new()
     }
 
     /// Creates a [`TokenCountProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TokenCountPropertyBuilder,
-        ) -> TokenCountPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TokenCountProperty>>(
+        f: impl FnOnce(TokenCountPropertyBuilder) -> B,
     ) -> TokenCountProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TokenCountPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod token_count_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TokenCountProperty`].
@@ -23425,6 +24607,7 @@ impl<S0> TokenCountPropertyBuilder<(S0,)> {
 }
 
 impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -23435,9 +24618,12 @@ impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TokenCountPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TokenCountPropertyBuilder<(S0,)> {
     /// Builds a [`TokenCountProperty`].
-    pub fn build(self) -> TokenCountProperty {
+    pub fn build(self) -> TokenCountProperty
+    where
+        S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
+    {
         TokenCountProperty {
             meta: self.meta,
             properties: self.properties,
@@ -23458,16 +24644,24 @@ impl TokenCountPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TokenCountPropertyBuilder<(crate::typed::builder::Set,)>> for TokenCountProperty {
-    fn from(builder: TokenCountPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TokenCountPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
+{
+    type Output = TokenCountProperty;
+
+    fn build(self) -> TokenCountProperty {
+        Self::build(self)
     }
 }
 
-impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TokenCountProperty { match r#type {} }
+impl<S0> From<TokenCountPropertyBuilder<(S0,)>> for TokenCountProperty
+where
+    S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
+{
+    fn from(builder: TokenCountPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23523,7 +24717,9 @@ impl TypeMapping {
     }
 
     /// Creates a [`TypeMapping`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TypeMappingBuilder) -> TypeMappingBuilder) -> TypeMapping {
+    pub fn of<B: crate::typed::builder::Build<Output = TypeMapping>>(
+        f: impl FnOnce(TypeMappingBuilder) -> B,
+    ) -> TypeMapping {
         f(Self::builder()).build()
     }
 }
@@ -23587,22 +24783,9 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`all_field`](Self::all_field) with a builder.
-    pub fn all_field_with(
+    pub fn all_field_with<B: crate::typed::builder::Build<Output = AllField>>(
         self,
-        f: impl FnOnce(
-            AllFieldBuilder,
-        ) -> AllFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AllFieldBuilder) -> B,
     ) -> Self {
         self.all_field(f(AllFieldBuilder::new()).build())
     }
@@ -23688,9 +24871,9 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`field_names`](Self::field_names) with a builder.
-    pub fn field_names_with(
+    pub fn field_names_with<B: crate::typed::builder::Build<Output = FieldNamesField>>(
         self,
-        f: impl FnOnce(FieldNamesFieldBuilder) -> FieldNamesFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FieldNamesFieldBuilder) -> B,
     ) -> Self {
         self.field_names(f(FieldNamesFieldBuilder::new()).build())
     }
@@ -23707,9 +24890,9 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`index_field`](Self::index_field) with a builder.
-    pub fn index_field_with(
+    pub fn index_field_with<B: crate::typed::builder::Build<Output = IndexField>>(
         self,
-        f: impl FnOnce(IndexFieldBuilder) -> IndexFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IndexFieldBuilder) -> B,
     ) -> Self {
         self.index_field(f(IndexFieldBuilder::new()).build())
     }
@@ -23785,9 +24968,9 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(
+    pub fn routing_with<B: crate::typed::builder::Build<Output = RoutingField>>(
         self,
-        f: impl FnOnce(RoutingFieldBuilder) -> RoutingFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RoutingFieldBuilder) -> B,
     ) -> Self {
         self.routing(f(RoutingFieldBuilder::new()).build())
     }
@@ -23804,9 +24987,9 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`size`](Self::size) with a builder.
-    pub fn size_with(
+    pub fn size_with<B: crate::typed::builder::Build<Output = SizeField>>(
         self,
-        f: impl FnOnce(SizeFieldBuilder) -> SizeFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SizeFieldBuilder) -> B,
     ) -> Self {
         self.size(f(SizeFieldBuilder::new()).build())
     }
@@ -23823,7 +25006,10 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(self, f: impl FnOnce(SourceFieldBuilder) -> SourceFieldBuilder) -> Self {
+    pub fn source_with<B: crate::typed::builder::Build<Output = SourceField>>(
+        self,
+        f: impl FnOnce(SourceFieldBuilder) -> B,
+    ) -> Self {
         self.source(f(SourceFieldBuilder::new()).build())
     }
 
@@ -23850,10 +25036,10 @@ impl TypeMappingBuilder {
     }
 
     /// Adds an entry to [`runtime`](Self::runtime), with a builder.
-    pub fn add_runtime_with(
+    pub fn add_runtime_with<B: crate::typed::builder::Build<Output = RuntimeField>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(RuntimeFieldBuilder) -> RuntimeFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime(key, f(RuntimeFieldBuilder::new()).build())
     }
@@ -23892,11 +25078,11 @@ impl TypeMappingBuilder {
     }
 
     /// Sets [`data_stream_timestamp`](Self::data_stream_timestamp) with a builder.
-    pub fn data_stream_timestamp_with(
+    pub fn data_stream_timestamp_with<
+        B: crate::typed::builder::Build<Output = DataStreamTimestamp>,
+    >(
         self,
-        f: impl FnOnce(
-            DataStreamTimestampBuilder,
-        ) -> DataStreamTimestampBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataStreamTimestampBuilder) -> B,
     ) -> Self {
         self.data_stream_timestamp(f(DataStreamTimestampBuilder::new()).build())
     }
@@ -23924,6 +25110,14 @@ impl TypeMappingBuilder {
             subobjects: self.subobjects,
             data_stream_timestamp: self.data_stream_timestamp,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TypeMappingBuilder {
+    type Output = TypeMapping;
+
+    fn build(self) -> TypeMapping {
+        Self::build(self)
     }
 }
 
@@ -23979,18 +25173,27 @@ pub struct UnsignedLongNumberProperty {
 
 impl UnsignedLongNumberProperty {
     /// Creates a builder for [`UnsignedLongNumberProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> UnsignedLongNumberPropertyBuilder {
         UnsignedLongNumberPropertyBuilder::new()
     }
 
     /// Creates a [`UnsignedLongNumberProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnsignedLongNumberPropertyBuilder,
-        ) -> UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnsignedLongNumberProperty>>(
+        f: impl FnOnce(UnsignedLongNumberPropertyBuilder) -> B,
     ) -> UnsignedLongNumberProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnsignedLongNumberPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unsigned_long_number_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`UnsignedLongNumberProperty`].
@@ -24282,9 +25485,9 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -24326,6 +25529,7 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
 }
 
 impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -24336,9 +25540,12 @@ impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
     /// Builds a [`UnsignedLongNumberProperty`].
-    pub fn build(self) -> UnsignedLongNumberProperty {
+    pub fn build(self) -> UnsignedLongNumberProperty
+    where
+        S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
+    {
         UnsignedLongNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -24363,18 +25570,24 @@ impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)>>
-    for UnsignedLongNumberProperty
+impl<S0> crate::typed::builder::Build for UnsignedLongNumberPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
 {
-    fn from(builder: UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = UnsignedLongNumberProperty;
+
+    fn build(self) -> UnsignedLongNumberProperty {
+        Self::build(self)
     }
 }
 
-impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> UnsignedLongNumberProperty { match r#type {} }
+impl<S0> From<UnsignedLongNumberPropertyBuilder<(S0,)>> for UnsignedLongNumberProperty
+where
+    S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
+{
+    fn from(builder: UnsignedLongNumberPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24403,16 +25616,27 @@ pub struct VersionProperty {
 
 impl VersionProperty {
     /// Creates a builder for [`VersionProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> VersionPropertyBuilder {
         VersionPropertyBuilder::new()
     }
 
     /// Creates a [`VersionProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(VersionPropertyBuilder) -> VersionPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = VersionProperty>>(
+        f: impl FnOnce(VersionPropertyBuilder) -> B,
     ) -> VersionProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VersionPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod version_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`VersionProperty`].
@@ -24612,6 +25836,7 @@ impl<S0> VersionPropertyBuilder<(S0,)> {
 }
 
 impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -24622,9 +25847,12 @@ impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VersionPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VersionPropertyBuilder<(S0,)> {
     /// Builds a [`VersionProperty`].
-    pub fn build(self) -> VersionProperty {
+    pub fn build(self) -> VersionProperty
+    where
+        S0: crate::typed::builder::IsSet<version_property_members::r#type>,
+    {
         VersionProperty {
             meta: self.meta,
             properties: self.properties,
@@ -24640,16 +25868,24 @@ impl VersionPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<VersionPropertyBuilder<(crate::typed::builder::Set,)>> for VersionProperty {
-    fn from(builder: VersionPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for VersionPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<version_property_members::r#type>,
+{
+    type Output = VersionProperty;
+
+    fn build(self) -> VersionProperty {
+        Self::build(self)
     }
 }
 
-impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> VersionProperty { match r#type {} }
+impl<S0> From<VersionPropertyBuilder<(S0,)>> for VersionProperty
+where
+    S0: crate::typed::builder::IsSet<version_property_members::r#type>,
+{
+    fn from(builder: VersionPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24680,18 +25916,27 @@ pub struct WildcardProperty {
 
 impl WildcardProperty {
     /// Creates a builder for [`WildcardProperty`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> WildcardPropertyBuilder {
         WildcardPropertyBuilder::new()
     }
 
     /// Creates a [`WildcardProperty`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WildcardPropertyBuilder,
-        ) -> WildcardPropertyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = WildcardProperty>>(
+        f: impl FnOnce(WildcardPropertyBuilder) -> B,
     ) -> WildcardProperty {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WildcardPropertyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod wildcard_property_members {
+    pub struct r#type;
 }
 
 /// Builder for [`WildcardProperty`].
@@ -24905,6 +26150,7 @@ impl<S0> WildcardPropertyBuilder<(S0,)> {
 }
 
 impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -24915,9 +26161,12 @@ impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WildcardPropertyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WildcardPropertyBuilder<(S0,)> {
     /// Builds a [`WildcardProperty`].
-    pub fn build(self) -> WildcardProperty {
+    pub fn build(self) -> WildcardProperty
+    where
+        S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
+    {
         WildcardProperty {
             meta: self.meta,
             properties: self.properties,
@@ -24934,14 +26183,22 @@ impl WildcardPropertyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WildcardPropertyBuilder<(crate::typed::builder::Set,)>> for WildcardProperty {
-    fn from(builder: WildcardPropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WildcardPropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
+{
+    type Output = WildcardProperty;
+
+    fn build(self) -> WildcardProperty {
+        Self::build(self)
     }
 }
 
-impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> WildcardProperty { match r#type {} }
+impl<S0> From<WildcardPropertyBuilder<(S0,)>> for WildcardProperty
+where
+    S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
+{
+    fn from(builder: WildcardPropertyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

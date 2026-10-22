@@ -16,16 +16,27 @@ pub struct AnalyzeDetail {
 
 impl AnalyzeDetail {
     /// Creates a builder for [`AnalyzeDetail`].
+    ///
+    /// Required: `custom_analyzer`.
     pub fn builder() -> AnalyzeDetailBuilder {
         AnalyzeDetailBuilder::new()
     }
 
     /// Creates a [`AnalyzeDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AnalyzeDetailBuilder) -> AnalyzeDetailBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `custom_analyzer`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalyzeDetail>>(
+        f: impl FnOnce(AnalyzeDetailBuilder) -> B,
     ) -> AnalyzeDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalyzeDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analyze_detail_members {
+    pub struct custom_analyzer;
 }
 
 /// Builder for [`AnalyzeDetail`].
@@ -76,14 +87,9 @@ impl<S0> AnalyzeDetailBuilder<(S0,)> {
     }
 
     /// Sets [`analyzer`](Self::analyzer) with a builder.
-    pub fn analyzer_with(
+    pub fn analyzer_with<B: crate::typed::builder::Build<Output = AnalyzerDetail>>(
         self,
-        f: impl FnOnce(
-            AnalyzerDetailBuilder,
-        ) -> AnalyzerDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AnalyzerDetailBuilder) -> B,
     ) -> Self {
         self.analyzer(f(AnalyzerDetailBuilder::new()).build())
     }
@@ -108,14 +114,9 @@ impl<S0> AnalyzeDetailBuilder<(S0,)> {
     }
 
     /// Adds an element to [`charfilters`](Self::charfilters), with a builder.
-    pub fn add_charfilters_with(
+    pub fn add_charfilters_with<B: crate::typed::builder::Build<Output = CharFilterDetail>>(
         self,
-        f: impl FnOnce(
-            CharFilterDetailBuilder,
-        ) -> CharFilterDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CharFilterDetailBuilder) -> B,
     ) -> Self {
         self.add_charfilters(f(CharFilterDetailBuilder::new()).build())
     }
@@ -140,12 +141,9 @@ impl<S0> AnalyzeDetailBuilder<(S0,)> {
     }
 
     /// Adds an element to [`tokenfilters`](Self::tokenfilters), with a builder.
-    pub fn add_tokenfilters_with(
+    pub fn add_tokenfilters_with<B: crate::typed::builder::Build<Output = TokenDetail>>(
         self,
-        f: impl FnOnce(
-            TokenDetailBuilder,
-        )
-            -> TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TokenDetailBuilder) -> B,
     ) -> Self {
         self.add_tokenfilters(f(TokenDetailBuilder::new()).build())
     }
@@ -162,18 +160,16 @@ impl<S0> AnalyzeDetailBuilder<(S0,)> {
     }
 
     /// Sets [`tokenizer`](Self::tokenizer) with a builder.
-    pub fn tokenizer_with(
+    pub fn tokenizer_with<B: crate::typed::builder::Build<Output = TokenDetail>>(
         self,
-        f: impl FnOnce(
-            TokenDetailBuilder,
-        )
-            -> TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TokenDetailBuilder) -> B,
     ) -> Self {
         self.tokenizer(f(TokenDetailBuilder::new()).build())
     }
 }
 
 impl AnalyzeDetailBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn custom_analyzer(
         self,
         value: bool,
@@ -184,9 +180,12 @@ impl AnalyzeDetailBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AnalyzeDetailBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnalyzeDetailBuilder<(S0,)> {
     /// Builds a [`AnalyzeDetail`].
-    pub fn build(self) -> AnalyzeDetail {
+    pub fn build(self) -> AnalyzeDetail
+    where
+        S0: crate::typed::builder::IsSet<analyze_detail_members::custom_analyzer>,
+    {
         AnalyzeDetail {
             analyzer: self.analyzer,
             charfilters: self.charfilters,
@@ -197,16 +196,24 @@ impl AnalyzeDetailBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AnalyzeDetailBuilder<(crate::typed::builder::Set,)>> for AnalyzeDetail {
-    fn from(builder: AnalyzeDetailBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnalyzeDetailBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<analyze_detail_members::custom_analyzer>,
+{
+    type Output = AnalyzeDetail;
+
+    fn build(self) -> AnalyzeDetail {
+        Self::build(self)
     }
 }
 
-impl AnalyzeDetailBuilder<(crate::typed::builder::NotSet,)> {
-    /// `custom_analyzer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, custom_analyzer: crate::typed::builder::MissingRequiredField) -> AnalyzeDetail { match custom_analyzer {} }
+impl<S0> From<AnalyzeDetailBuilder<(S0,)>> for AnalyzeDetail
+where
+    S0: crate::typed::builder::IsSet<analyze_detail_members::custom_analyzer>,
+{
+    fn from(builder: AnalyzeDetailBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -226,24 +233,31 @@ pub struct AnalyzeToken {
 
 impl AnalyzeToken {
     /// Creates a builder for [`AnalyzeToken`].
+    ///
+    /// Required: `end_offset`, `position`, `start_offset`, `token`, `type`.
     pub fn builder() -> AnalyzeTokenBuilder {
         AnalyzeTokenBuilder::new()
     }
 
     /// Creates a [`AnalyzeToken`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalyzeTokenBuilder,
-        ) -> AnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `end_offset`, `position`, `start_offset`, `token`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalyzeToken>>(
+        f: impl FnOnce(AnalyzeTokenBuilder) -> B,
     ) -> AnalyzeToken {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalyzeTokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analyze_token_members {
+    pub struct end_offset;
+    pub struct position;
+    pub struct start_offset;
+    pub struct token;
+    pub struct r#type;
 }
 
 /// Builder for [`AnalyzeToken`].
@@ -314,6 +328,7 @@ impl<S0, S1, S2, S3, S4> AnalyzeTokenBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> AnalyzeTokenBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn end_offset(
         self,
         value: i64,
@@ -325,6 +340,7 @@ impl<S1, S2, S3, S4> AnalyzeTokenBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3, S4> AnalyzeTokenBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn position(
         self,
         value: i64,
@@ -336,6 +352,7 @@ impl<S0, S2, S3, S4> AnalyzeTokenBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3, S4> AnalyzeTokenBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn start_offset(
         self,
         value: i64,
@@ -347,6 +364,7 @@ impl<S0, S1, S3, S4> AnalyzeTokenBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2, S4> AnalyzeTokenBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn token(
         self,
         value: impl Into<String>,
@@ -358,6 +376,7 @@ impl<S0, S1, S2, S4> AnalyzeTokenBuilder<(S0, S1, S2, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2, S3> AnalyzeTokenBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -368,17 +387,16 @@ impl<S0, S1, S2, S3> AnalyzeTokenBuilder<(S0, S1, S2, S3, crate::typed::builder:
     }
 }
 
-impl
-    AnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AnalyzeTokenBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AnalyzeToken`].
-    pub fn build(self) -> AnalyzeToken {
+    pub fn build(self) -> AnalyzeToken
+    where
+        S0: crate::typed::builder::IsSet<analyze_token_members::end_offset>,
+        S1: crate::typed::builder::IsSet<analyze_token_members::position>,
+        S2: crate::typed::builder::IsSet<analyze_token_members::start_offset>,
+        S3: crate::typed::builder::IsSet<analyze_token_members::token>,
+        S4: crate::typed::builder::IsSet<analyze_token_members::r#type>,
+    {
         AnalyzeToken {
             end_offset: self.end_offset.unwrap(),
             position: self.position.unwrap(),
@@ -390,90 +408,32 @@ impl
     }
 }
 
-impl
-    From<
-        AnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AnalyzeToken
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for AnalyzeTokenBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<analyze_token_members::end_offset>,
+    S1: crate::typed::builder::IsSet<analyze_token_members::position>,
+    S2: crate::typed::builder::IsSet<analyze_token_members::start_offset>,
+    S3: crate::typed::builder::IsSet<analyze_token_members::token>,
+    S4: crate::typed::builder::IsSet<analyze_token_members::r#type>,
 {
-    fn from(
-        builder: AnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AnalyzeToken;
+
+    fn build(self) -> AnalyzeToken {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> AnalyzeTokenBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `end_offset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_offset: crate::typed::builder::MissingRequiredField) -> AnalyzeToken { match end_offset {} }
-}
-
-impl<S2, S3, S4>
-    AnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<AnalyzeTokenBuilder<(S0, S1, S2, S3, S4)>> for AnalyzeToken
+where
+    S0: crate::typed::builder::IsSet<analyze_token_members::end_offset>,
+    S1: crate::typed::builder::IsSet<analyze_token_members::position>,
+    S2: crate::typed::builder::IsSet<analyze_token_members::start_offset>,
+    S3: crate::typed::builder::IsSet<analyze_token_members::token>,
+    S4: crate::typed::builder::IsSet<analyze_token_members::r#type>,
 {
-    /// `position` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, position: crate::typed::builder::MissingRequiredField) -> AnalyzeToken { match position {} }
-}
-
-impl<S3, S4>
-    AnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `start_offset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_offset: crate::typed::builder::MissingRequiredField) -> AnalyzeToken { match start_offset {} }
-}
-
-impl<S4>
-    AnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `token` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, token: crate::typed::builder::MissingRequiredField) -> AnalyzeToken { match token {} }
-}
-
-impl
-    AnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> AnalyzeToken { match r#type {} }
+    fn from(builder: AnalyzeTokenBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -484,21 +444,28 @@ pub struct AnalyzerDetail {
 
 impl AnalyzerDetail {
     /// Creates a builder for [`AnalyzerDetail`].
+    ///
+    /// Required: `name`, `tokens`.
     pub fn builder() -> AnalyzerDetailBuilder {
         AnalyzerDetailBuilder::new()
     }
 
     /// Creates a [`AnalyzerDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalyzerDetailBuilder,
-        ) -> AnalyzerDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalyzerDetail>>(
+        f: impl FnOnce(AnalyzerDetailBuilder) -> B,
     ) -> AnalyzerDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalyzerDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analyzer_detail_members {
+    pub struct name;
+    pub struct tokens;
 }
 
 /// Builder for [`AnalyzerDetail`].
@@ -531,6 +498,7 @@ impl<S0, S1> AnalyzerDetailBuilder<(S0, S1)> {
 }
 
 impl<S1> AnalyzerDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -542,6 +510,7 @@ impl<S1> AnalyzerDetailBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AnalyzerDetailBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tokens(
         self,
         value: impl Into<Vec<ExplainAnalyzeToken>>,
@@ -565,20 +534,9 @@ impl<S0> AnalyzerDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`tokens`](Self::tokens), with a builder.
-    pub fn add_tokens_with(
+    pub fn add_tokens_with<B: crate::typed::builder::Build<Output = ExplainAnalyzeToken>>(
         self,
-        f: impl FnOnce(
-            ExplainAnalyzeTokenBuilder,
-        ) -> ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplainAnalyzeTokenBuilder) -> B,
     ) -> AnalyzerDetailBuilder<(S0, crate::typed::builder::Set)> {
         self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
     }
@@ -594,28 +552,21 @@ impl<S0> AnalyzerDetailBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`tokens`](Self::tokens), with a builder.
-    pub fn add_tokens_with(
+    pub fn add_tokens_with<B: crate::typed::builder::Build<Output = ExplainAnalyzeToken>>(
         self,
-        f: impl FnOnce(
-            ExplainAnalyzeTokenBuilder,
-        ) -> ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplainAnalyzeTokenBuilder) -> B,
     ) -> Self {
         self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
     }
 }
 
-impl AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AnalyzerDetailBuilder<(S0, S1)> {
     /// Builds a [`AnalyzerDetail`].
-    pub fn build(self) -> AnalyzerDetail {
+    pub fn build(self) -> AnalyzerDetail
+    where
+        S0: crate::typed::builder::IsSet<analyzer_detail_members::name>,
+        S1: crate::typed::builder::IsSet<analyzer_detail_members::tokens>,
+    {
         AnalyzerDetail {
             name: self.name.unwrap(),
             tokens: self.tokens.unwrap(),
@@ -623,26 +574,26 @@ impl AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AnalyzerDetail
+impl<S0, S1> crate::typed::builder::Build for AnalyzerDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<analyzer_detail_members::name>,
+    S1: crate::typed::builder::IsSet<analyzer_detail_members::tokens>,
 {
-    fn from(
-        builder: AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = AnalyzerDetail;
+
+    fn build(self) -> AnalyzerDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> AnalyzerDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> AnalyzerDetail { match name {} }
-}
-
-impl AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokens: crate::typed::builder::MissingRequiredField) -> AnalyzerDetail { match tokens {} }
+impl<S0, S1> From<AnalyzerDetailBuilder<(S0, S1)>> for AnalyzerDetail
+where
+    S0: crate::typed::builder::IsSet<analyzer_detail_members::name>,
+    S1: crate::typed::builder::IsSet<analyzer_detail_members::tokens>,
+{
+    fn from(builder: AnalyzerDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -653,21 +604,28 @@ pub struct CharFilterDetail {
 
 impl CharFilterDetail {
     /// Creates a builder for [`CharFilterDetail`].
+    ///
+    /// Required: `filtered_text`, `name`.
     pub fn builder() -> CharFilterDetailBuilder {
         CharFilterDetailBuilder::new()
     }
 
     /// Creates a [`CharFilterDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CharFilterDetailBuilder,
-        ) -> CharFilterDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `filtered_text`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = CharFilterDetail>>(
+        f: impl FnOnce(CharFilterDetailBuilder) -> B,
     ) -> CharFilterDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CharFilterDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod char_filter_detail_members {
+    pub struct filtered_text;
+    pub struct name;
 }
 
 /// Builder for [`CharFilterDetail`].
@@ -701,6 +659,7 @@ impl<S0, S1> CharFilterDetailBuilder<(S0, S1)> {
 }
 
 impl<S1> CharFilterDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn filtered_text(
         self,
         value: impl Into<Vec<String>>,
@@ -735,6 +694,7 @@ impl<S1> CharFilterDetailBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> CharFilterDetailBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -745,9 +705,13 @@ impl<S0> CharFilterDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CharFilterDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CharFilterDetailBuilder<(S0, S1)> {
     /// Builds a [`CharFilterDetail`].
-    pub fn build(self) -> CharFilterDetail {
+    pub fn build(self) -> CharFilterDetail
+    where
+        S0: crate::typed::builder::IsSet<char_filter_detail_members::filtered_text>,
+        S1: crate::typed::builder::IsSet<char_filter_detail_members::name>,
+    {
         CharFilterDetail {
             filtered_text: self.filtered_text.unwrap(),
             name: self.name.unwrap(),
@@ -755,26 +719,26 @@ impl CharFilterDetailBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<CharFilterDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CharFilterDetail
+impl<S0, S1> crate::typed::builder::Build for CharFilterDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<char_filter_detail_members::filtered_text>,
+    S1: crate::typed::builder::IsSet<char_filter_detail_members::name>,
 {
-    fn from(
-        builder: CharFilterDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CharFilterDetail;
+
+    fn build(self) -> CharFilterDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> CharFilterDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `filtered_text` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filtered_text: crate::typed::builder::MissingRequiredField) -> CharFilterDetail { match filtered_text {} }
-}
-
-impl CharFilterDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> CharFilterDetail { match name {} }
+impl<S0, S1> From<CharFilterDetailBuilder<(S0, S1)>> for CharFilterDetail
+where
+    S0: crate::typed::builder::IsSet<char_filter_detail_members::filtered_text>,
+    S1: crate::typed::builder::IsSet<char_filter_detail_members::name>,
+{
+    fn from(builder: CharFilterDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -798,27 +762,34 @@ pub struct ExplainAnalyzeToken {
 
 impl ExplainAnalyzeToken {
     /// Creates a builder for [`ExplainAnalyzeToken`].
+    ///
+    /// Required: `bytes`, `end_offset`, `position`, `position_length`, `start_offset`, `term_frequency`, `token`, `type`.
     pub fn builder() -> ExplainAnalyzeTokenBuilder {
         ExplainAnalyzeTokenBuilder::new()
     }
 
     /// Creates a [`ExplainAnalyzeToken`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExplainAnalyzeTokenBuilder,
-        ) -> ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bytes`, `end_offset`, `position`, `position_length`, `start_offset`, `term_frequency`, `token`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExplainAnalyzeToken>>(
+        f: impl FnOnce(ExplainAnalyzeTokenBuilder) -> B,
     ) -> ExplainAnalyzeToken {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExplainAnalyzeTokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod explain_analyze_token_members {
+    pub struct bytes;
+    pub struct end_offset;
+    pub struct position;
+    pub struct position_length;
+    pub struct start_offset;
+    pub struct term_frequency;
+    pub struct token;
+    pub struct r#type;
 }
 
 /// Builder for [`ExplainAnalyzeToken`].
@@ -928,6 +899,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3,
 impl<S1, S2, S3, S4, S5, S6, S7>
     ExplainAnalyzeTokenBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn bytes(
         self,
         value: impl Into<String>,
@@ -941,6 +913,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ExplainAnalyzeTokenBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn end_offset(
         self,
         value: i64,
@@ -954,6 +927,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ExplainAnalyzeTokenBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn position(
         self,
         value: i64,
@@ -967,6 +941,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ExplainAnalyzeTokenBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn position_length(
         self,
         value: i64,
@@ -980,6 +955,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn start_offset(
         self,
         value: i64,
@@ -993,6 +969,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn term_frequency(
         self,
         value: i64,
@@ -1006,6 +983,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn token(
         self,
         value: impl Into<String>,
@@ -1019,6 +997,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1029,20 +1008,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`ExplainAnalyzeToken`].
-    pub fn build(self) -> ExplainAnalyzeToken {
+    pub fn build(self) -> ExplainAnalyzeToken
+    where
+        S0: crate::typed::builder::IsSet<explain_analyze_token_members::bytes>,
+        S1: crate::typed::builder::IsSet<explain_analyze_token_members::end_offset>,
+        S2: crate::typed::builder::IsSet<explain_analyze_token_members::position>,
+        S3: crate::typed::builder::IsSet<explain_analyze_token_members::position_length>,
+        S4: crate::typed::builder::IsSet<explain_analyze_token_members::start_offset>,
+        S5: crate::typed::builder::IsSet<explain_analyze_token_members::term_frequency>,
+        S6: crate::typed::builder::IsSet<explain_analyze_token_members::token>,
+        S7: crate::typed::builder::IsSet<explain_analyze_token_members::r#type>,
+    {
         ExplainAnalyzeToken {
             bytes: self.bytes.unwrap(),
             end_offset: self.end_offset.unwrap(),
@@ -1058,161 +1036,40 @@ impl
     }
 }
 
-impl
-    From<
-        ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ExplainAnalyzeToken
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<explain_analyze_token_members::bytes>,
+    S1: crate::typed::builder::IsSet<explain_analyze_token_members::end_offset>,
+    S2: crate::typed::builder::IsSet<explain_analyze_token_members::position>,
+    S3: crate::typed::builder::IsSet<explain_analyze_token_members::position_length>,
+    S4: crate::typed::builder::IsSet<explain_analyze_token_members::start_offset>,
+    S5: crate::typed::builder::IsSet<explain_analyze_token_members::term_frequency>,
+    S6: crate::typed::builder::IsSet<explain_analyze_token_members::token>,
+    S7: crate::typed::builder::IsSet<explain_analyze_token_members::r#type>,
 {
-    fn from(
-        builder: ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ExplainAnalyzeToken;
+
+    fn build(self) -> ExplainAnalyzeToken {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ExplainAnalyzeTokenBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for ExplainAnalyzeToken
+where
+    S0: crate::typed::builder::IsSet<explain_analyze_token_members::bytes>,
+    S1: crate::typed::builder::IsSet<explain_analyze_token_members::end_offset>,
+    S2: crate::typed::builder::IsSet<explain_analyze_token_members::position>,
+    S3: crate::typed::builder::IsSet<explain_analyze_token_members::position_length>,
+    S4: crate::typed::builder::IsSet<explain_analyze_token_members::start_offset>,
+    S5: crate::typed::builder::IsSet<explain_analyze_token_members::term_frequency>,
+    S6: crate::typed::builder::IsSet<explain_analyze_token_members::token>,
+    S7: crate::typed::builder::IsSet<explain_analyze_token_members::r#type>,
 {
-    /// `bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bytes: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match bytes {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `end_offset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_offset: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match end_offset {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `position` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, position: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match position {} }
-}
-
-impl<S4, S5, S6, S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `position_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, position_length: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match position_length {} }
-}
-
-impl<S5, S6, S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `start_offset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_offset: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match start_offset {} }
-}
-
-impl<S6, S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `term_frequency` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term_frequency: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match term_frequency {} }
-}
-
-impl<S7>
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `token` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, token: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match token {} }
-}
-
-impl
-    ExplainAnalyzeTokenBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ExplainAnalyzeToken { match r#type {} }
+    fn from(builder: ExplainAnalyzeTokenBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.analyze`](crate::typed::indices::IndicesClient::analyze).
@@ -1283,7 +1140,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1602,6 +1461,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -1781,19 +1648,28 @@ pub struct TokenDetail {
 
 impl TokenDetail {
     /// Creates a builder for [`TokenDetail`].
+    ///
+    /// Required: `name`, `tokens`.
     pub fn builder() -> TokenDetailBuilder {
         TokenDetailBuilder::new()
     }
 
     /// Creates a [`TokenDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TokenDetailBuilder,
-        )
-            -> TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = TokenDetail>>(
+        f: impl FnOnce(TokenDetailBuilder) -> B,
     ) -> TokenDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TokenDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod token_detail_members {
+    pub struct name;
+    pub struct tokens;
 }
 
 /// Builder for [`TokenDetail`].
@@ -1825,6 +1701,7 @@ impl<S0, S1> TokenDetailBuilder<(S0, S1)> {
 }
 
 impl<S1> TokenDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -1836,6 +1713,7 @@ impl<S1> TokenDetailBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TokenDetailBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tokens(
         self,
         value: impl Into<Vec<ExplainAnalyzeToken>>,
@@ -1859,20 +1737,9 @@ impl<S0> TokenDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`tokens`](Self::tokens), with a builder.
-    pub fn add_tokens_with(
+    pub fn add_tokens_with<B: crate::typed::builder::Build<Output = ExplainAnalyzeToken>>(
         self,
-        f: impl FnOnce(
-            ExplainAnalyzeTokenBuilder,
-        ) -> ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplainAnalyzeTokenBuilder) -> B,
     ) -> TokenDetailBuilder<(S0, crate::typed::builder::Set)> {
         self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
     }
@@ -1888,28 +1755,21 @@ impl<S0> TokenDetailBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`tokens`](Self::tokens), with a builder.
-    pub fn add_tokens_with(
+    pub fn add_tokens_with<B: crate::typed::builder::Build<Output = ExplainAnalyzeToken>>(
         self,
-        f: impl FnOnce(
-            ExplainAnalyzeTokenBuilder,
-        ) -> ExplainAnalyzeTokenBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplainAnalyzeTokenBuilder) -> B,
     ) -> Self {
         self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
     }
 }
 
-impl TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TokenDetailBuilder<(S0, S1)> {
     /// Builds a [`TokenDetail`].
-    pub fn build(self) -> TokenDetail {
+    pub fn build(self) -> TokenDetail
+    where
+        S0: crate::typed::builder::IsSet<token_detail_members::name>,
+        S1: crate::typed::builder::IsSet<token_detail_members::tokens>,
+    {
         TokenDetail {
             name: self.name.unwrap(),
             tokens: self.tokens.unwrap(),
@@ -1917,24 +1777,24 @@ impl TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TokenDetail
+impl<S0, S1> crate::typed::builder::Build for TokenDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<token_detail_members::name>,
+    S1: crate::typed::builder::IsSet<token_detail_members::tokens>,
 {
-    fn from(
-        builder: TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TokenDetail;
+
+    fn build(self) -> TokenDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> TokenDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> TokenDetail { match name {} }
-}
-
-impl TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokens: crate::typed::builder::MissingRequiredField) -> TokenDetail { match tokens {} }
+impl<S0, S1> From<TokenDetailBuilder<(S0, S1)>> for TokenDetail
+where
+    S0: crate::typed::builder::IsSet<token_detail_members::name>,
+    S1: crate::typed::builder::IsSet<token_detail_members::tokens>,
+{
+    fn from(builder: TokenDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

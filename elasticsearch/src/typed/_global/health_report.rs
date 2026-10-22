@@ -13,19 +13,28 @@ pub struct BaseIndicator {
 
 impl BaseIndicator {
     /// Creates a builder for [`BaseIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> BaseIndicatorBuilder {
         BaseIndicatorBuilder::new()
     }
 
     /// Creates a [`BaseIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BaseIndicatorBuilder,
-        )
-            -> BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = BaseIndicator>>(
+        f: impl FnOnce(BaseIndicatorBuilder) -> B,
     ) -> BaseIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BaseIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod base_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`BaseIndicator`].
@@ -82,16 +91,9 @@ impl<S0, S1> BaseIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -116,23 +118,16 @@ impl<S0, S1> BaseIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
 }
 
 impl<S1> BaseIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -144,6 +139,7 @@ impl<S1> BaseIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> BaseIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -154,9 +150,13 @@ impl<S0> BaseIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> BaseIndicatorBuilder<(S0, S1)> {
     /// Builds a [`BaseIndicator`].
-    pub fn build(self) -> BaseIndicator {
+    pub fn build(self) -> BaseIndicator
+    where
+        S0: crate::typed::builder::IsSet<base_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<base_indicator_members::symptom>,
+    {
         BaseIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -166,26 +166,26 @@ impl BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for BaseIndicator
+impl<S0, S1> crate::typed::builder::Build for BaseIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<base_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<base_indicator_members::symptom>,
 {
-    fn from(
-        builder: BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = BaseIndicator;
+
+    fn build(self) -> BaseIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> BaseIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> BaseIndicator { match status {} }
-}
-
-impl BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> BaseIndicator { match symptom {} }
+impl<S0, S1> From<BaseIndicatorBuilder<(S0, S1)>> for BaseIndicator
+where
+    S0: crate::typed::builder::IsSet<base_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<base_indicator_members::symptom>,
+{
+    fn from(builder: BaseIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -198,21 +198,28 @@ pub struct DataStreamLifecycleDetails {
 
 impl DataStreamLifecycleDetails {
     /// Creates a builder for [`DataStreamLifecycleDetails`].
+    ///
+    /// Required: `stagnating_backing_indices_count`, `total_backing_indices_in_error`.
     pub fn builder() -> DataStreamLifecycleDetailsBuilder {
         DataStreamLifecycleDetailsBuilder::new()
     }
 
     /// Creates a [`DataStreamLifecycleDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamLifecycleDetailsBuilder,
-        ) -> DataStreamLifecycleDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `stagnating_backing_indices_count`, `total_backing_indices_in_error`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamLifecycleDetails>>(
+        f: impl FnOnce(DataStreamLifecycleDetailsBuilder) -> B,
     ) -> DataStreamLifecycleDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamLifecycleDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_lifecycle_details_members {
+    pub struct stagnating_backing_indices_count;
+    pub struct total_backing_indices_in_error;
 }
 
 /// Builder for [`DataStreamLifecycleDetails`].
@@ -281,21 +288,18 @@ impl<S0, S1> DataStreamLifecycleDetailsBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`stagnating_backing_indices`](Self::stagnating_backing_indices), with a builder.
-    pub fn add_stagnating_backing_indices_with(
+    pub fn add_stagnating_backing_indices_with<
+        B: crate::typed::builder::Build<Output = StagnatingBackingIndices>,
+    >(
         self,
-        f: impl FnOnce(
-            StagnatingBackingIndicesBuilder,
-        ) -> StagnatingBackingIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(StagnatingBackingIndicesBuilder) -> B,
     ) -> Self {
         self.add_stagnating_backing_indices(f(StagnatingBackingIndicesBuilder::new()).build())
     }
 }
 
 impl<S1> DataStreamLifecycleDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn stagnating_backing_indices_count(
         self,
         value: i32,
@@ -307,6 +311,7 @@ impl<S1> DataStreamLifecycleDetailsBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> DataStreamLifecycleDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_backing_indices_in_error(
         self,
         value: i32,
@@ -317,9 +322,17 @@ impl<S0> DataStreamLifecycleDetailsBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl DataStreamLifecycleDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataStreamLifecycleDetailsBuilder<(S0, S1)> {
     /// Builds a [`DataStreamLifecycleDetails`].
-    pub fn build(self) -> DataStreamLifecycleDetails {
+    pub fn build(self) -> DataStreamLifecycleDetails
+    where
+        S0: crate::typed::builder::IsSet<
+            data_stream_lifecycle_details_members::stagnating_backing_indices_count,
+        >,
+        S1: crate::typed::builder::IsSet<
+            data_stream_lifecycle_details_members::total_backing_indices_in_error,
+        >,
+    {
         DataStreamLifecycleDetails {
             stagnating_backing_indices_count: self.stagnating_backing_indices_count.unwrap(),
             total_backing_indices_in_error: self.total_backing_indices_in_error.unwrap(),
@@ -328,33 +341,34 @@ impl DataStreamLifecycleDetailsBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        DataStreamLifecycleDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for DataStreamLifecycleDetails
+impl<S0, S1> crate::typed::builder::Build for DataStreamLifecycleDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        data_stream_lifecycle_details_members::stagnating_backing_indices_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        data_stream_lifecycle_details_members::total_backing_indices_in_error,
+    >,
 {
-    fn from(
-        builder: DataStreamLifecycleDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamLifecycleDetails;
+
+    fn build(self) -> DataStreamLifecycleDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> DataStreamLifecycleDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `stagnating_backing_indices_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stagnating_backing_indices_count: crate::typed::builder::MissingRequiredField) -> DataStreamLifecycleDetails { match stagnating_backing_indices_count {} }
-}
-
-impl
-    DataStreamLifecycleDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<DataStreamLifecycleDetailsBuilder<(S0, S1)>> for DataStreamLifecycleDetails
+where
+    S0: crate::typed::builder::IsSet<
+        data_stream_lifecycle_details_members::stagnating_backing_indices_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        data_stream_lifecycle_details_members::total_backing_indices_in_error,
+    >,
 {
-    /// `total_backing_indices_in_error` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_backing_indices_in_error: crate::typed::builder::MissingRequiredField) -> DataStreamLifecycleDetails { match total_backing_indices_in_error {} }
+    fn from(builder: DataStreamLifecycleDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// DATA_STREAM_LIFECYCLE
@@ -372,21 +386,28 @@ pub struct DataStreamLifecycleIndicator {
 
 impl DataStreamLifecycleIndicator {
     /// Creates a builder for [`DataStreamLifecycleIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> DataStreamLifecycleIndicatorBuilder {
         DataStreamLifecycleIndicatorBuilder::new()
     }
 
     /// Creates a [`DataStreamLifecycleIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamLifecycleIndicatorBuilder,
-        ) -> DataStreamLifecycleIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamLifecycleIndicator>>(
+        f: impl FnOnce(DataStreamLifecycleIndicatorBuilder) -> B,
     ) -> DataStreamLifecycleIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamLifecycleIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_lifecycle_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`DataStreamLifecycleIndicator`].
@@ -452,16 +473,9 @@ impl<S0, S1> DataStreamLifecycleIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -486,17 +500,9 @@ impl<S0, S1> DataStreamLifecycleIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -513,20 +519,16 @@ impl<S0, S1> DataStreamLifecycleIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = DataStreamLifecycleDetails>>(
         self,
-        f: impl FnOnce(
-            DataStreamLifecycleDetailsBuilder,
-        ) -> DataStreamLifecycleDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamLifecycleDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(DataStreamLifecycleDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -538,6 +540,7 @@ impl<S1> DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> DataStreamLifecycleIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -548,9 +551,13 @@ impl<S0> DataStreamLifecycleIndicatorBuilder<(S0, crate::typed::builder::NotSet)
     }
 }
 
-impl DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataStreamLifecycleIndicatorBuilder<(S0, S1)> {
     /// Builds a [`DataStreamLifecycleIndicator`].
-    pub fn build(self) -> DataStreamLifecycleIndicator {
+    pub fn build(self) -> DataStreamLifecycleIndicator
+    where
+        S0: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::symptom>,
+    {
         DataStreamLifecycleIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -561,36 +568,26 @@ impl DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        DataStreamLifecycleIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataStreamLifecycleIndicator
+impl<S0, S1> crate::typed::builder::Build for DataStreamLifecycleIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::symptom>,
 {
-    fn from(
-        builder: DataStreamLifecycleIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamLifecycleIndicator;
+
+    fn build(self) -> DataStreamLifecycleIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> DataStreamLifecycleIndicator { match status {} }
-}
-
-impl
-    DataStreamLifecycleIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<DataStreamLifecycleIndicatorBuilder<(S0, S1)>> for DataStreamLifecycleIndicator
+where
+    S0: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<data_stream_lifecycle_indicator_members::symptom>,
 {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> DataStreamLifecycleIndicator { match symptom {} }
+    fn from(builder: DataStreamLifecycleIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -604,24 +601,31 @@ pub struct Diagnosis {
 
 impl Diagnosis {
     /// Creates a builder for [`Diagnosis`].
+    ///
+    /// Required: `id`, `action`, `affected_resources`, `cause`, `help_url`.
     pub fn builder() -> DiagnosisBuilder {
         DiagnosisBuilder::new()
     }
 
     /// Creates a [`Diagnosis`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `action`, `affected_resources`, `cause`, `help_url`.
+    pub fn of<B: crate::typed::builder::Build<Output = Diagnosis>>(
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Diagnosis {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiagnosisBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod diagnosis_members {
+    pub struct id;
+    pub struct action;
+    pub struct affected_resources;
+    pub struct cause;
+    pub struct help_url;
 }
 
 /// Builder for [`Diagnosis`].
@@ -678,6 +682,7 @@ impl<S0, S1, S2, S3, S4> DiagnosisBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> DiagnosisBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<String>,
@@ -689,6 +694,7 @@ impl<S1, S2, S3, S4> DiagnosisBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3, S4> DiagnosisBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn action(
         self,
         value: impl Into<String>,
@@ -700,6 +706,7 @@ impl<S0, S2, S3, S4> DiagnosisBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3, S4> DiagnosisBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn affected_resources(
         self,
         value: impl Into<DiagnosisAffectedResources>,
@@ -710,15 +717,18 @@ impl<S0, S1, S3, S4> DiagnosisBuilder<(S0, S1, crate::typed::builder::NotSet, S3
     }
 
     /// Sets [`affected_resources`](Self::affected_resources) with a builder.
-    pub fn affected_resources_with(
+    pub fn affected_resources_with<
+        B: crate::typed::builder::Build<Output = DiagnosisAffectedResources>,
+    >(
         self,
-        f: impl FnOnce(DiagnosisAffectedResourcesBuilder) -> DiagnosisAffectedResourcesBuilder,
+        f: impl FnOnce(DiagnosisAffectedResourcesBuilder) -> B,
     ) -> DiagnosisBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.affected_resources(f(DiagnosisAffectedResourcesBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4> DiagnosisBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn cause(
         self,
         value: impl Into<String>,
@@ -730,6 +740,7 @@ impl<S0, S1, S2, S4> DiagnosisBuilder<(S0, S1, S2, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S2, S3> DiagnosisBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn help_url(
         self,
         value: impl Into<String>,
@@ -740,17 +751,16 @@ impl<S0, S1, S2, S3> DiagnosisBuilder<(S0, S1, S2, S3, crate::typed::builder::No
     }
 }
 
-impl
-    DiagnosisBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DiagnosisBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`Diagnosis`].
-    pub fn build(self) -> Diagnosis {
+    pub fn build(self) -> Diagnosis
+    where
+        S0: crate::typed::builder::IsSet<diagnosis_members::id>,
+        S1: crate::typed::builder::IsSet<diagnosis_members::action>,
+        S2: crate::typed::builder::IsSet<diagnosis_members::affected_resources>,
+        S3: crate::typed::builder::IsSet<diagnosis_members::cause>,
+        S4: crate::typed::builder::IsSet<diagnosis_members::help_url>,
+    {
         Diagnosis {
             id: self.id.unwrap(),
             action: self.action.unwrap(),
@@ -761,90 +771,32 @@ impl
     }
 }
 
-impl
-    From<
-        DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Diagnosis
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for DiagnosisBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<diagnosis_members::id>,
+    S1: crate::typed::builder::IsSet<diagnosis_members::action>,
+    S2: crate::typed::builder::IsSet<diagnosis_members::affected_resources>,
+    S3: crate::typed::builder::IsSet<diagnosis_members::cause>,
+    S4: crate::typed::builder::IsSet<diagnosis_members::help_url>,
 {
-    fn from(
-        builder: DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Diagnosis;
+
+    fn build(self) -> Diagnosis {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DiagnosisBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Diagnosis { match id {} }
-}
-
-impl<S2, S3, S4>
-    DiagnosisBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DiagnosisBuilder<(S0, S1, S2, S3, S4)>> for Diagnosis
+where
+    S0: crate::typed::builder::IsSet<diagnosis_members::id>,
+    S1: crate::typed::builder::IsSet<diagnosis_members::action>,
+    S2: crate::typed::builder::IsSet<diagnosis_members::affected_resources>,
+    S3: crate::typed::builder::IsSet<diagnosis_members::cause>,
+    S4: crate::typed::builder::IsSet<diagnosis_members::help_url>,
 {
-    /// `action` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, action: crate::typed::builder::MissingRequiredField) -> Diagnosis { match action {} }
-}
-
-impl<S3, S4>
-    DiagnosisBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `affected_resources` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, affected_resources: crate::typed::builder::MissingRequiredField) -> Diagnosis { match affected_resources {} }
-}
-
-impl<S4>
-    DiagnosisBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `cause` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cause: crate::typed::builder::MissingRequiredField) -> Diagnosis { match cause {} }
-}
-
-impl
-    DiagnosisBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `help_url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, help_url: crate::typed::builder::MissingRequiredField) -> Diagnosis { match help_url {} }
+    fn from(builder: DiagnosisBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -868,8 +820,8 @@ impl DiagnosisAffectedResources {
     }
 
     /// Creates a [`DiagnosisAffectedResources`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DiagnosisAffectedResourcesBuilder) -> DiagnosisAffectedResourcesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DiagnosisAffectedResources>>(
+        f: impl FnOnce(DiagnosisAffectedResourcesBuilder) -> B,
     ) -> DiagnosisAffectedResources {
         f(Self::builder()).build()
     }
@@ -929,12 +881,9 @@ impl DiagnosisAffectedResourcesBuilder {
     }
 
     /// Adds an element to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = IndicatorNode>>(
         self,
-        f: impl FnOnce(
-            IndicatorNodeBuilder,
-        )
-            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(IndicatorNodeBuilder) -> B,
     ) -> Self {
         self.add_nodes(f(IndicatorNodeBuilder::new()).build())
     }
@@ -1010,6 +959,14 @@ impl DiagnosisAffectedResourcesBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DiagnosisAffectedResourcesBuilder {
+    type Output = DiagnosisAffectedResources;
+
+    fn build(self) -> DiagnosisAffectedResources {
+        Self::build(self)
+    }
+}
+
 impl From<DiagnosisAffectedResourcesBuilder> for DiagnosisAffectedResources {
     fn from(builder: DiagnosisAffectedResourcesBuilder) -> Self {
         builder.build()
@@ -1031,19 +988,28 @@ pub struct DiskIndicator {
 
 impl DiskIndicator {
     /// Creates a builder for [`DiskIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> DiskIndicatorBuilder {
         DiskIndicatorBuilder::new()
     }
 
     /// Creates a [`DiskIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiskIndicatorBuilder,
-        )
-            -> DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = DiskIndicator>>(
+        f: impl FnOnce(DiskIndicatorBuilder) -> B,
     ) -> DiskIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiskIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod disk_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`DiskIndicator`].
@@ -1103,16 +1069,9 @@ impl<S0, S1> DiskIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -1137,17 +1096,9 @@ impl<S0, S1> DiskIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -1164,23 +1115,16 @@ impl<S0, S1> DiskIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = DiskIndicatorDetails>>(
         self,
-        f: impl FnOnce(
-            DiskIndicatorDetailsBuilder,
-        ) -> DiskIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiskIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(DiskIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> DiskIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -1192,6 +1136,7 @@ impl<S1> DiskIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DiskIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -1202,9 +1147,13 @@ impl<S0> DiskIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DiskIndicatorBuilder<(S0, S1)> {
     /// Builds a [`DiskIndicator`].
-    pub fn build(self) -> DiskIndicator {
+    pub fn build(self) -> DiskIndicator
+    where
+        S0: crate::typed::builder::IsSet<disk_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<disk_indicator_members::symptom>,
+    {
         DiskIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -1215,26 +1164,26 @@ impl DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DiskIndicator
+impl<S0, S1> crate::typed::builder::Build for DiskIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<disk_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<disk_indicator_members::symptom>,
 {
-    fn from(
-        builder: DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DiskIndicator;
+
+    fn build(self) -> DiskIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> DiskIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> DiskIndicator { match status {} }
-}
-
-impl DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> DiskIndicator { match symptom {} }
+impl<S0, S1> From<DiskIndicatorBuilder<(S0, S1)>> for DiskIndicator
+where
+    S0: crate::typed::builder::IsSet<disk_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<disk_indicator_members::symptom>,
+{
+    fn from(builder: DiskIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1248,24 +1197,31 @@ pub struct DiskIndicatorDetails {
 
 impl DiskIndicatorDetails {
     /// Creates a builder for [`DiskIndicatorDetails`].
+    ///
+    /// Required: `indices_with_readonly_block`, `nodes_with_enough_disk_space`, `nodes_over_high_watermark`, `nodes_over_flood_stage_watermark`, `nodes_with_unknown_disk_status`.
     pub fn builder() -> DiskIndicatorDetailsBuilder {
         DiskIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`DiskIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiskIndicatorDetailsBuilder,
-        ) -> DiskIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `indices_with_readonly_block`, `nodes_with_enough_disk_space`, `nodes_over_high_watermark`, `nodes_over_flood_stage_watermark`, `nodes_with_unknown_disk_status`.
+    pub fn of<B: crate::typed::builder::Build<Output = DiskIndicatorDetails>>(
+        f: impl FnOnce(DiskIndicatorDetailsBuilder) -> B,
     ) -> DiskIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiskIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod disk_indicator_details_members {
+    pub struct indices_with_readonly_block;
+    pub struct nodes_with_enough_disk_space;
+    pub struct nodes_over_high_watermark;
+    pub struct nodes_over_flood_stage_watermark;
+    pub struct nodes_with_unknown_disk_status;
 }
 
 /// Builder for [`DiskIndicatorDetails`].
@@ -1322,6 +1278,7 @@ impl<S0, S1, S2, S3, S4> DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> DiskIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn indices_with_readonly_block(
         self,
         value: i64,
@@ -1333,6 +1290,7 @@ impl<S1, S2, S3, S4> DiskIndicatorDetailsBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> DiskIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn nodes_with_enough_disk_space(
         self,
         value: i64,
@@ -1344,6 +1302,7 @@ impl<S0, S2, S3, S4> DiskIndicatorDetailsBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> DiskIndicatorDetailsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn nodes_over_high_watermark(
         self,
         value: i64,
@@ -1355,6 +1314,7 @@ impl<S0, S1, S3, S4> DiskIndicatorDetailsBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> DiskIndicatorDetailsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn nodes_over_flood_stage_watermark(
         self,
         value: i64,
@@ -1366,6 +1326,7 @@ impl<S0, S1, S2, S4> DiskIndicatorDetailsBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn nodes_with_unknown_disk_status(
         self,
         value: i64,
@@ -1376,17 +1337,24 @@ impl<S0, S1, S2, S3> DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    DiskIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`DiskIndicatorDetails`].
-    pub fn build(self) -> DiskIndicatorDetails {
+    pub fn build(self) -> DiskIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<
+            disk_indicator_details_members::indices_with_readonly_block,
+        >,
+        S1: crate::typed::builder::IsSet<
+            disk_indicator_details_members::nodes_with_enough_disk_space,
+        >,
+        S2: crate::typed::builder::IsSet<disk_indicator_details_members::nodes_over_high_watermark>,
+        S3: crate::typed::builder::IsSet<
+            disk_indicator_details_members::nodes_over_flood_stage_watermark,
+        >,
+        S4: crate::typed::builder::IsSet<
+            disk_indicator_details_members::nodes_with_unknown_disk_status,
+        >,
+    {
         DiskIndicatorDetails {
             indices_with_readonly_block: self.indices_with_readonly_block.unwrap(),
             nodes_with_enough_disk_space: self.nodes_with_enough_disk_space.unwrap(),
@@ -1397,90 +1365,42 @@ impl
     }
 }
 
-impl
-    From<
-        DiskIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DiskIndicatorDetails
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<disk_indicator_details_members::indices_with_readonly_block>,
+    S1: crate::typed::builder::IsSet<disk_indicator_details_members::nodes_with_enough_disk_space>,
+    S2: crate::typed::builder::IsSet<disk_indicator_details_members::nodes_over_high_watermark>,
+    S3: crate::typed::builder::IsSet<
+        disk_indicator_details_members::nodes_over_flood_stage_watermark,
+    >,
+    S4: crate::typed::builder::IsSet<
+        disk_indicator_details_members::nodes_with_unknown_disk_status,
+    >,
 {
-    fn from(
-        builder: DiskIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DiskIndicatorDetails;
+
+    fn build(self) -> DiskIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> DiskIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `indices_with_readonly_block` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices_with_readonly_block: crate::typed::builder::MissingRequiredField) -> DiskIndicatorDetails { match indices_with_readonly_block {} }
-}
-
-impl<S2, S3, S4>
-    DiskIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, S4)>>
+    for DiskIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<disk_indicator_details_members::indices_with_readonly_block>,
+    S1: crate::typed::builder::IsSet<disk_indicator_details_members::nodes_with_enough_disk_space>,
+    S2: crate::typed::builder::IsSet<disk_indicator_details_members::nodes_over_high_watermark>,
+    S3: crate::typed::builder::IsSet<
+        disk_indicator_details_members::nodes_over_flood_stage_watermark,
+    >,
+    S4: crate::typed::builder::IsSet<
+        disk_indicator_details_members::nodes_with_unknown_disk_status,
+    >,
 {
-    /// `nodes_with_enough_disk_space` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes_with_enough_disk_space: crate::typed::builder::MissingRequiredField) -> DiskIndicatorDetails { match nodes_with_enough_disk_space {} }
-}
-
-impl<S3, S4>
-    DiskIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `nodes_over_high_watermark` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes_over_high_watermark: crate::typed::builder::MissingRequiredField) -> DiskIndicatorDetails { match nodes_over_high_watermark {} }
-}
-
-impl<S4>
-    DiskIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `nodes_over_flood_stage_watermark` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes_over_flood_stage_watermark: crate::typed::builder::MissingRequiredField) -> DiskIndicatorDetails { match nodes_over_flood_stage_watermark {} }
-}
-
-impl
-    DiskIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `nodes_with_unknown_disk_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes_with_unknown_disk_status: crate::typed::builder::MissingRequiredField) -> DiskIndicatorDetails { match nodes_with_unknown_disk_status {} }
+    fn from(builder: DiskIndicatorDetailsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1493,21 +1413,28 @@ pub struct DlmFrozenTransitionOverdueIndex {
 
 impl DlmFrozenTransitionOverdueIndex {
     /// Creates a builder for [`DlmFrozenTransitionOverdueIndex`].
+    ///
+    /// Required: `index_name`, `transition_state`.
     pub fn builder() -> DlmFrozenTransitionOverdueIndexBuilder {
         DlmFrozenTransitionOverdueIndexBuilder::new()
     }
 
     /// Creates a [`DlmFrozenTransitionOverdueIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DlmFrozenTransitionOverdueIndexBuilder,
-        ) -> DlmFrozenTransitionOverdueIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_name`, `transition_state`.
+    pub fn of<B: crate::typed::builder::Build<Output = DlmFrozenTransitionOverdueIndex>>(
+        f: impl FnOnce(DlmFrozenTransitionOverdueIndexBuilder) -> B,
     ) -> DlmFrozenTransitionOverdueIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DlmFrozenTransitionOverdueIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dlm_frozen_transition_overdue_index_members {
+    pub struct index_name;
+    pub struct transition_state;
 }
 
 /// Builder for [`DlmFrozenTransitionOverdueIndex`].
@@ -1546,7 +1473,7 @@ impl<S0, S1> DlmFrozenTransitionOverdueIndexBuilder<(S0, S1)> {
 }
 
 impl<S1> DlmFrozenTransitionOverdueIndexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the overdue index.
+    /// **Required.** The name of the overdue index.
     pub fn index_name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1558,7 +1485,7 @@ impl<S1> DlmFrozenTransitionOverdueIndexBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0> DlmFrozenTransitionOverdueIndexBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The transition state of the overdue index.
+    /// **Required.** The transition state of the overdue index.
     pub fn transition_state(
         self,
         value: impl Into<DlmFrozenTransitionState>,
@@ -1569,11 +1496,15 @@ impl<S0> DlmFrozenTransitionOverdueIndexBuilder<(S0, crate::typed::builder::NotS
     }
 }
 
-impl
-    DlmFrozenTransitionOverdueIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> DlmFrozenTransitionOverdueIndexBuilder<(S0, S1)> {
     /// Builds a [`DlmFrozenTransitionOverdueIndex`].
-    pub fn build(self) -> DlmFrozenTransitionOverdueIndex {
+    pub fn build(self) -> DlmFrozenTransitionOverdueIndex
+    where
+        S0: crate::typed::builder::IsSet<dlm_frozen_transition_overdue_index_members::index_name>,
+        S1: crate::typed::builder::IsSet<
+            dlm_frozen_transition_overdue_index_members::transition_state,
+        >,
+    {
         DlmFrozenTransitionOverdueIndex {
             index_name: self.index_name.unwrap(),
             transition_state: self.transition_state.unwrap(),
@@ -1581,39 +1512,27 @@ impl
     }
 }
 
-impl
-    From<
-        DlmFrozenTransitionOverdueIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DlmFrozenTransitionOverdueIndex
+impl<S0, S1> crate::typed::builder::Build for DlmFrozenTransitionOverdueIndexBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dlm_frozen_transition_overdue_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<dlm_frozen_transition_overdue_index_members::transition_state>,
 {
-    fn from(
-        builder: DlmFrozenTransitionOverdueIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DlmFrozenTransitionOverdueIndex;
+
+    fn build(self) -> DlmFrozenTransitionOverdueIndex {
+        Self::build(self)
     }
 }
 
-impl<S1> DlmFrozenTransitionOverdueIndexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_name: crate::typed::builder::MissingRequiredField) -> DlmFrozenTransitionOverdueIndex { match index_name {} }
-}
-
-impl
-    DlmFrozenTransitionOverdueIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DlmFrozenTransitionOverdueIndexBuilder<(S0, S1)>>
+    for DlmFrozenTransitionOverdueIndex
+where
+    S0: crate::typed::builder::IsSet<dlm_frozen_transition_overdue_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<dlm_frozen_transition_overdue_index_members::transition_state>,
 {
-    /// `transition_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transition_state: crate::typed::builder::MissingRequiredField) -> DlmFrozenTransitionOverdueIndex { match transition_state {} }
+    fn from(builder: DlmFrozenTransitionOverdueIndexBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1647,21 +1566,28 @@ pub struct DlmFrozenTransitionsIndicator {
 
 impl DlmFrozenTransitionsIndicator {
     /// Creates a builder for [`DlmFrozenTransitionsIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> DlmFrozenTransitionsIndicatorBuilder {
         DlmFrozenTransitionsIndicatorBuilder::new()
     }
 
     /// Creates a [`DlmFrozenTransitionsIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DlmFrozenTransitionsIndicatorBuilder,
-        ) -> DlmFrozenTransitionsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = DlmFrozenTransitionsIndicator>>(
+        f: impl FnOnce(DlmFrozenTransitionsIndicatorBuilder) -> B,
     ) -> DlmFrozenTransitionsIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DlmFrozenTransitionsIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dlm_frozen_transitions_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`DlmFrozenTransitionsIndicator`].
@@ -1727,16 +1653,9 @@ impl<S0, S1> DlmFrozenTransitionsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -1761,17 +1680,9 @@ impl<S0, S1> DlmFrozenTransitionsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -1788,17 +1699,18 @@ impl<S0, S1> DlmFrozenTransitionsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<
+        B: crate::typed::builder::Build<Output = DlmFrozenTransitionsIndicatorDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            DlmFrozenTransitionsIndicatorDetailsBuilder,
-        ) -> DlmFrozenTransitionsIndicatorDetailsBuilder,
+        f: impl FnOnce(DlmFrozenTransitionsIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(DlmFrozenTransitionsIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> DlmFrozenTransitionsIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -1810,6 +1722,7 @@ impl<S1> DlmFrozenTransitionsIndicatorBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0> DlmFrozenTransitionsIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -1820,11 +1733,13 @@ impl<S0> DlmFrozenTransitionsIndicatorBuilder<(S0, crate::typed::builder::NotSet
     }
 }
 
-impl
-    DlmFrozenTransitionsIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> DlmFrozenTransitionsIndicatorBuilder<(S0, S1)> {
     /// Builds a [`DlmFrozenTransitionsIndicator`].
-    pub fn build(self) -> DlmFrozenTransitionsIndicator {
+    pub fn build(self) -> DlmFrozenTransitionsIndicator
+    where
+        S0: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::symptom>,
+    {
         DlmFrozenTransitionsIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -1835,39 +1750,26 @@ impl
     }
 }
 
-impl
-    From<
-        DlmFrozenTransitionsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DlmFrozenTransitionsIndicator
+impl<S0, S1> crate::typed::builder::Build for DlmFrozenTransitionsIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::symptom>,
 {
-    fn from(
-        builder: DlmFrozenTransitionsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DlmFrozenTransitionsIndicator;
+
+    fn build(self) -> DlmFrozenTransitionsIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> DlmFrozenTransitionsIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> DlmFrozenTransitionsIndicator { match status {} }
-}
-
-impl
-    DlmFrozenTransitionsIndicatorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DlmFrozenTransitionsIndicatorBuilder<(S0, S1)>> for DlmFrozenTransitionsIndicator
+where
+    S0: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<dlm_frozen_transitions_indicator_members::symptom>,
 {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> DlmFrozenTransitionsIndicator { match symptom {} }
+    fn from(builder: DlmFrozenTransitionsIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// An index is overdue when it has passed its `frozen_after` age by more than the configured threshold and has not yet completed its transition to the frozen tier.
@@ -1908,10 +1810,8 @@ impl DlmFrozenTransitionsIndicatorDetails {
     }
 
     /// Creates a [`DlmFrozenTransitionsIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DlmFrozenTransitionsIndicatorDetailsBuilder,
-        ) -> DlmFrozenTransitionsIndicatorDetailsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DlmFrozenTransitionsIndicatorDetails>>(
+        f: impl FnOnce(DlmFrozenTransitionsIndicatorDetailsBuilder) -> B,
     ) -> DlmFrozenTransitionsIndicatorDetails {
         f(Self::builder()).build()
     }
@@ -2055,14 +1955,11 @@ impl DlmFrozenTransitionsIndicatorDetailsBuilder {
     }
 
     /// Adds an element to [`overdue_indices_sample`](Self::overdue_indices_sample), with a builder.
-    pub fn add_overdue_indices_sample_with(
+    pub fn add_overdue_indices_sample_with<
+        B: crate::typed::builder::Build<Output = DlmFrozenTransitionOverdueIndex>,
+    >(
         self,
-        f: impl FnOnce(
-            DlmFrozenTransitionOverdueIndexBuilder,
-        ) -> DlmFrozenTransitionOverdueIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DlmFrozenTransitionOverdueIndexBuilder) -> B,
     ) -> Self {
         self.add_overdue_indices_sample(f(DlmFrozenTransitionOverdueIndexBuilder::new()).build())
     }
@@ -2096,6 +1993,14 @@ impl DlmFrozenTransitionsIndicatorDetailsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DlmFrozenTransitionsIndicatorDetailsBuilder {
+    type Output = DlmFrozenTransitionsIndicatorDetails;
+
+    fn build(self) -> DlmFrozenTransitionsIndicatorDetails {
+        Self::build(self)
+    }
+}
+
 impl From<DlmFrozenTransitionsIndicatorDetailsBuilder> for DlmFrozenTransitionsIndicatorDetails {
     fn from(builder: DlmFrozenTransitionsIndicatorDetailsBuilder) -> Self {
         builder.build()
@@ -2117,21 +2022,28 @@ pub struct FileSettingsIndicator {
 
 impl FileSettingsIndicator {
     /// Creates a builder for [`FileSettingsIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> FileSettingsIndicatorBuilder {
         FileSettingsIndicatorBuilder::new()
     }
 
     /// Creates a [`FileSettingsIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FileSettingsIndicatorBuilder,
-        ) -> FileSettingsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = FileSettingsIndicator>>(
+        f: impl FnOnce(FileSettingsIndicatorBuilder) -> B,
     ) -> FileSettingsIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FileSettingsIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod file_settings_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`FileSettingsIndicator`].
@@ -2192,16 +2104,9 @@ impl<S0, S1> FileSettingsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -2226,17 +2131,9 @@ impl<S0, S1> FileSettingsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -2253,20 +2150,16 @@ impl<S0, S1> FileSettingsIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = FileSettingsIndicatorDetails>>(
         self,
-        f: impl FnOnce(
-            FileSettingsIndicatorDetailsBuilder,
-        ) -> FileSettingsIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FileSettingsIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(FileSettingsIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> FileSettingsIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -2278,6 +2171,7 @@ impl<S1> FileSettingsIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FileSettingsIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -2288,9 +2182,13 @@ impl<S0> FileSettingsIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FileSettingsIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FileSettingsIndicatorBuilder<(S0, S1)> {
     /// Builds a [`FileSettingsIndicator`].
-    pub fn build(self) -> FileSettingsIndicator {
+    pub fn build(self) -> FileSettingsIndicator
+    where
+        S0: crate::typed::builder::IsSet<file_settings_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<file_settings_indicator_members::symptom>,
+    {
         FileSettingsIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -2301,29 +2199,26 @@ impl FileSettingsIndicatorBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<FileSettingsIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FileSettingsIndicator
+impl<S0, S1> crate::typed::builder::Build for FileSettingsIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<file_settings_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<file_settings_indicator_members::symptom>,
 {
-    fn from(
-        builder: FileSettingsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FileSettingsIndicator;
+
+    fn build(self) -> FileSettingsIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> FileSettingsIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> FileSettingsIndicator { match status {} }
-}
-
-impl FileSettingsIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> FileSettingsIndicator { match symptom {} }
+impl<S0, S1> From<FileSettingsIndicatorBuilder<(S0, S1)>> for FileSettingsIndicator
+where
+    S0: crate::typed::builder::IsSet<file_settings_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<file_settings_indicator_members::symptom>,
+{
+    fn from(builder: FileSettingsIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2334,21 +2229,28 @@ pub struct FileSettingsIndicatorDetails {
 
 impl FileSettingsIndicatorDetails {
     /// Creates a builder for [`FileSettingsIndicatorDetails`].
+    ///
+    /// Required: `failure_streak`, `most_recent_failure`.
     pub fn builder() -> FileSettingsIndicatorDetailsBuilder {
         FileSettingsIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`FileSettingsIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FileSettingsIndicatorDetailsBuilder,
-        ) -> FileSettingsIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `failure_streak`, `most_recent_failure`.
+    pub fn of<B: crate::typed::builder::Build<Output = FileSettingsIndicatorDetails>>(
+        f: impl FnOnce(FileSettingsIndicatorDetailsBuilder) -> B,
     ) -> FileSettingsIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FileSettingsIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod file_settings_indicator_details_members {
+    pub struct failure_streak;
+    pub struct most_recent_failure;
 }
 
 /// Builder for [`FileSettingsIndicatorDetails`].
@@ -2387,6 +2289,7 @@ impl<S0, S1> FileSettingsIndicatorDetailsBuilder<(S0, S1)> {
 }
 
 impl<S1> FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn failure_streak(
         self,
         value: i64,
@@ -2398,6 +2301,7 @@ impl<S1> FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> FileSettingsIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn most_recent_failure(
         self,
         value: impl Into<String>,
@@ -2408,9 +2312,15 @@ impl<S0> FileSettingsIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)
     }
 }
 
-impl FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FileSettingsIndicatorDetailsBuilder<(S0, S1)> {
     /// Builds a [`FileSettingsIndicatorDetails`].
-    pub fn build(self) -> FileSettingsIndicatorDetails {
+    pub fn build(self) -> FileSettingsIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<file_settings_indicator_details_members::failure_streak>,
+        S1: crate::typed::builder::IsSet<
+            file_settings_indicator_details_members::most_recent_failure,
+        >,
+    {
         FileSettingsIndicatorDetails {
             failure_streak: self.failure_streak.unwrap(),
             most_recent_failure: self.most_recent_failure.unwrap(),
@@ -2418,36 +2328,26 @@ impl FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        FileSettingsIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FileSettingsIndicatorDetails
+impl<S0, S1> crate::typed::builder::Build for FileSettingsIndicatorDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<file_settings_indicator_details_members::failure_streak>,
+    S1: crate::typed::builder::IsSet<file_settings_indicator_details_members::most_recent_failure>,
 {
-    fn from(
-        builder: FileSettingsIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FileSettingsIndicatorDetails;
+
+    fn build(self) -> FileSettingsIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `failure_streak` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failure_streak: crate::typed::builder::MissingRequiredField) -> FileSettingsIndicatorDetails { match failure_streak {} }
-}
-
-impl
-    FileSettingsIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<FileSettingsIndicatorDetailsBuilder<(S0, S1)>> for FileSettingsIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<file_settings_indicator_details_members::failure_streak>,
+    S1: crate::typed::builder::IsSet<file_settings_indicator_details_members::most_recent_failure>,
 {
-    /// `most_recent_failure` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, most_recent_failure: crate::typed::builder::MissingRequiredField) -> FileSettingsIndicatorDetails { match most_recent_failure {} }
+    fn from(builder: FileSettingsIndicatorDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// ILM
@@ -2465,19 +2365,28 @@ pub struct IlmIndicator {
 
 impl IlmIndicator {
     /// Creates a builder for [`IlmIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> IlmIndicatorBuilder {
         IlmIndicatorBuilder::new()
     }
 
     /// Creates a [`IlmIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IlmIndicatorBuilder,
-        )
-            -> IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = IlmIndicator>>(
+        f: impl FnOnce(IlmIndicatorBuilder) -> B,
     ) -> IlmIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IlmIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ilm_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`IlmIndicator`].
@@ -2536,16 +2445,9 @@ impl<S0, S1> IlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -2570,17 +2472,9 @@ impl<S0, S1> IlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -2597,21 +2491,16 @@ impl<S0, S1> IlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = IlmIndicatorDetails>>(
         self,
-        f: impl FnOnce(
-            IlmIndicatorDetailsBuilder,
-        ) -> IlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IlmIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(IlmIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> IlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -2623,6 +2512,7 @@ impl<S1> IlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IlmIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -2633,9 +2523,13 @@ impl<S0> IlmIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IlmIndicatorBuilder<(S0, S1)> {
     /// Builds a [`IlmIndicator`].
-    pub fn build(self) -> IlmIndicator {
+    pub fn build(self) -> IlmIndicator
+    where
+        S0: crate::typed::builder::IsSet<ilm_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<ilm_indicator_members::symptom>,
+    {
         IlmIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -2646,26 +2540,26 @@ impl IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IlmIndicator
+impl<S0, S1> crate::typed::builder::Build for IlmIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<ilm_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<ilm_indicator_members::symptom>,
 {
-    fn from(
-        builder: IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IlmIndicator;
+
+    fn build(self) -> IlmIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> IlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> IlmIndicator { match status {} }
-}
-
-impl IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> IlmIndicator { match symptom {} }
+impl<S0, S1> From<IlmIndicatorBuilder<(S0, S1)>> for IlmIndicator
+where
+    S0: crate::typed::builder::IsSet<ilm_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<ilm_indicator_members::symptom>,
+{
+    fn from(builder: IlmIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2677,22 +2571,29 @@ pub struct IlmIndicatorDetails {
 
 impl IlmIndicatorDetails {
     /// Creates a builder for [`IlmIndicatorDetails`].
+    ///
+    /// Required: `ilm_status`, `policies`, `stagnating_indices`.
     pub fn builder() -> IlmIndicatorDetailsBuilder {
         IlmIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`IlmIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IlmIndicatorDetailsBuilder,
-        ) -> IlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `ilm_status`, `policies`, `stagnating_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = IlmIndicatorDetails>>(
+        f: impl FnOnce(IlmIndicatorDetailsBuilder) -> B,
     ) -> IlmIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IlmIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ilm_indicator_details_members {
+    pub struct ilm_status;
+    pub struct policies;
+    pub struct stagnating_indices;
 }
 
 /// Builder for [`IlmIndicatorDetails`].
@@ -2739,6 +2640,7 @@ impl<S0, S1, S2> IlmIndicatorDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> IlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn ilm_status(
         self,
         value: impl Into<crate::typed::_types::LifecycleOperationMode>,
@@ -2750,6 +2652,7 @@ impl<S1, S2> IlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> IlmIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn policies(
         self,
         value: i64,
@@ -2761,6 +2664,7 @@ impl<S0, S2> IlmIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> IlmIndicatorDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stagnating_indices(
         self,
         value: i32,
@@ -2771,15 +2675,14 @@ impl<S0, S1> IlmIndicatorDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    IlmIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> IlmIndicatorDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`IlmIndicatorDetails`].
-    pub fn build(self) -> IlmIndicatorDetails {
+    pub fn build(self) -> IlmIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<ilm_indicator_details_members::ilm_status>,
+        S1: crate::typed::builder::IsSet<ilm_indicator_details_members::policies>,
+        S2: crate::typed::builder::IsSet<ilm_indicator_details_members::stagnating_indices>,
+    {
         IlmIndicatorDetails {
             ilm_status: self.ilm_status.unwrap(),
             policies: self.policies.unwrap(),
@@ -2788,54 +2691,28 @@ impl
     }
 }
 
-impl
-    From<
-        IlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IlmIndicatorDetails
+impl<S0, S1, S2> crate::typed::builder::Build for IlmIndicatorDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<ilm_indicator_details_members::ilm_status>,
+    S1: crate::typed::builder::IsSet<ilm_indicator_details_members::policies>,
+    S2: crate::typed::builder::IsSet<ilm_indicator_details_members::stagnating_indices>,
 {
-    fn from(
-        builder: IlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IlmIndicatorDetails;
+
+    fn build(self) -> IlmIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> IlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `ilm_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ilm_status: crate::typed::builder::MissingRequiredField) -> IlmIndicatorDetails { match ilm_status {} }
-}
-
-impl<S2>
-    IlmIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<IlmIndicatorDetailsBuilder<(S0, S1, S2)>> for IlmIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<ilm_indicator_details_members::ilm_status>,
+    S1: crate::typed::builder::IsSet<ilm_indicator_details_members::policies>,
+    S2: crate::typed::builder::IsSet<ilm_indicator_details_members::stagnating_indices>,
 {
-    /// `policies` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policies: crate::typed::builder::MissingRequiredField) -> IlmIndicatorDetails { match policies {} }
-}
-
-impl
-    IlmIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `stagnating_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stagnating_indices: crate::typed::builder::MissingRequiredField) -> IlmIndicatorDetails { match stagnating_indices {} }
+    fn from(builder: IlmIndicatorDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2848,23 +2725,30 @@ pub struct Impact {
 
 impl Impact {
     /// Creates a builder for [`Impact`].
+    ///
+    /// Required: `description`, `id`, `impact_areas`, `severity`.
     pub fn builder() -> ImpactBuilder {
         ImpactBuilder::new()
     }
 
     /// Creates a [`Impact`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `description`, `id`, `impact_areas`, `severity`.
+    pub fn of<B: crate::typed::builder::Build<Output = Impact>>(
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Impact {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ImpactBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod impact_members {
+    pub struct description;
+    pub struct id;
+    pub struct impact_areas;
+    pub struct severity;
 }
 
 /// Builder for [`Impact`].
@@ -2916,6 +2800,7 @@ impl<S0, S1, S2, S3> ImpactBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ImpactBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -2927,6 +2812,7 @@ impl<S1, S2, S3> ImpactBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> ImpactBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<String>,
@@ -2938,6 +2824,7 @@ impl<S0, S2, S3> ImpactBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
 }
 
 impl<S0, S1, S3> ImpactBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn impact_areas(
         self,
         value: impl Into<Vec<ImpactArea>>,
@@ -2972,6 +2859,7 @@ impl<S0, S1, S3> ImpactBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
 }
 
 impl<S0, S1, S2> ImpactBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn severity(self, value: i32) -> ImpactBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.severity = Some(value);
@@ -2979,16 +2867,15 @@ impl<S0, S1, S2> ImpactBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    ImpactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ImpactBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Impact`].
-    pub fn build(self) -> Impact {
+    pub fn build(self) -> Impact
+    where
+        S0: crate::typed::builder::IsSet<impact_members::description>,
+        S1: crate::typed::builder::IsSet<impact_members::id>,
+        S2: crate::typed::builder::IsSet<impact_members::impact_areas>,
+        S3: crate::typed::builder::IsSet<impact_members::severity>,
+    {
         Impact {
             description: self.description.unwrap(),
             id: self.id.unwrap(),
@@ -2998,71 +2885,30 @@ impl
     }
 }
 
-impl
-    From<
-        ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Impact
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ImpactBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<impact_members::description>,
+    S1: crate::typed::builder::IsSet<impact_members::id>,
+    S2: crate::typed::builder::IsSet<impact_members::impact_areas>,
+    S3: crate::typed::builder::IsSet<impact_members::severity>,
 {
-    fn from(
-        builder: ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Impact;
+
+    fn build(self) -> Impact {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ImpactBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> Impact { match description {} }
-}
-
-impl<S2, S3>
-    ImpactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ImpactBuilder<(S0, S1, S2, S3)>> for Impact
+where
+    S0: crate::typed::builder::IsSet<impact_members::description>,
+    S1: crate::typed::builder::IsSet<impact_members::id>,
+    S2: crate::typed::builder::IsSet<impact_members::impact_areas>,
+    S3: crate::typed::builder::IsSet<impact_members::severity>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Impact { match id {} }
-}
-
-impl<S3>
-    ImpactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `impact_areas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, impact_areas: crate::typed::builder::MissingRequiredField) -> Impact { match impact_areas {} }
-}
-
-impl
-    ImpactBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `severity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, severity: crate::typed::builder::MissingRequiredField) -> Impact { match severity {} }
+    fn from(builder: ImpactBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3137,19 +2983,28 @@ impl From<&str> for IndicatorNodeNodeId {
 
 impl IndicatorNode {
     /// Creates a builder for [`IndicatorNode`].
+    ///
+    /// Required: `name`, `node_id`.
     pub fn builder() -> IndicatorNodeBuilder {
         IndicatorNodeBuilder::new()
     }
 
     /// Creates a [`IndicatorNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicatorNodeBuilder,
-        )
-            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `node_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicatorNode>>(
+        f: impl FnOnce(IndicatorNodeBuilder) -> B,
     ) -> IndicatorNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicatorNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indicator_node_members {
+    pub struct name;
+    pub struct node_id;
 }
 
 /// Builder for [`IndicatorNode`].
@@ -3182,6 +3037,7 @@ impl<S0, S1> IndicatorNodeBuilder<(S0, S1)> {
 }
 
 impl<S1> IndicatorNodeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<IndicatorNodeName>,
@@ -3193,6 +3049,7 @@ impl<S1> IndicatorNodeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndicatorNodeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<IndicatorNodeNodeId>,
@@ -3203,9 +3060,13 @@ impl<S0> IndicatorNodeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndicatorNodeBuilder<(S0, S1)> {
     /// Builds a [`IndicatorNode`].
-    pub fn build(self) -> IndicatorNode {
+    pub fn build(self) -> IndicatorNode
+    where
+        S0: crate::typed::builder::IsSet<indicator_node_members::name>,
+        S1: crate::typed::builder::IsSet<indicator_node_members::node_id>,
+    {
         IndicatorNode {
             name: self.name.unwrap(),
             node_id: self.node_id.unwrap(),
@@ -3213,26 +3074,26 @@ impl IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndicatorNode
+impl<S0, S1> crate::typed::builder::Build for IndicatorNodeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<indicator_node_members::name>,
+    S1: crate::typed::builder::IsSet<indicator_node_members::node_id>,
 {
-    fn from(
-        builder: IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IndicatorNode;
+
+    fn build(self) -> IndicatorNode {
+        Self::build(self)
     }
 }
 
-impl<S1> IndicatorNodeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> IndicatorNode { match name {} }
-}
-
-impl IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> IndicatorNode { match node_id {} }
+impl<S0, S1> From<IndicatorNodeBuilder<(S0, S1)>> for IndicatorNode
+where
+    S0: crate::typed::builder::IsSet<indicator_node_members::name>,
+    S1: crate::typed::builder::IsSet<indicator_node_members::node_id>,
+{
+    fn from(builder: IndicatorNodeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3269,7 +3130,9 @@ impl Indicators {
     }
 
     /// Creates a [`Indicators`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndicatorsBuilder) -> IndicatorsBuilder) -> Indicators {
+    pub fn of<B: crate::typed::builder::Build<Output = Indicators>>(
+        f: impl FnOnce(IndicatorsBuilder) -> B,
+    ) -> Indicators {
         f(Self::builder()).build()
     }
 }
@@ -3321,14 +3184,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`master_is_stable`](Self::master_is_stable) with a builder.
-    pub fn master_is_stable_with(
+    pub fn master_is_stable_with<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            MasterIsStableIndicatorBuilder,
-        ) -> MasterIsStableIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MasterIsStableIndicatorBuilder) -> B,
     ) -> Self {
         self.master_is_stable(f(MasterIsStableIndicatorBuilder::new()).build())
     }
@@ -3345,14 +3205,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`shards_availability`](Self::shards_availability) with a builder.
-    pub fn shards_availability_with(
+    pub fn shards_availability_with<
+        B: crate::typed::builder::Build<Output = ShardsAvailabilityIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsAvailabilityIndicatorBuilder,
-        ) -> ShardsAvailabilityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsAvailabilityIndicatorBuilder) -> B,
     ) -> Self {
         self.shards_availability(f(ShardsAvailabilityIndicatorBuilder::new()).build())
     }
@@ -3369,12 +3226,9 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`disk`](Self::disk) with a builder.
-    pub fn disk_with(
+    pub fn disk_with<B: crate::typed::builder::Build<Output = DiskIndicator>>(
         self,
-        f: impl FnOnce(
-            DiskIndicatorBuilder,
-        )
-            -> DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(DiskIndicatorBuilder) -> B,
     ) -> Self {
         self.disk(f(DiskIndicatorBuilder::new()).build())
     }
@@ -3394,14 +3248,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`repository_integrity`](Self::repository_integrity) with a builder.
-    pub fn repository_integrity_with(
+    pub fn repository_integrity_with<
+        B: crate::typed::builder::Build<Output = RepositoryIntegrityIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            RepositoryIntegrityIndicatorBuilder,
-        ) -> RepositoryIntegrityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RepositoryIntegrityIndicatorBuilder) -> B,
     ) -> Self {
         self.repository_integrity(f(RepositoryIntegrityIndicatorBuilder::new()).build())
     }
@@ -3421,14 +3272,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`data_stream_lifecycle`](Self::data_stream_lifecycle) with a builder.
-    pub fn data_stream_lifecycle_with(
+    pub fn data_stream_lifecycle_with<
+        B: crate::typed::builder::Build<Output = DataStreamLifecycleIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            DataStreamLifecycleIndicatorBuilder,
-        ) -> DataStreamLifecycleIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamLifecycleIndicatorBuilder) -> B,
     ) -> Self {
         self.data_stream_lifecycle(f(DataStreamLifecycleIndicatorBuilder::new()).build())
     }
@@ -3445,12 +3293,9 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`ilm`](Self::ilm) with a builder.
-    pub fn ilm_with(
+    pub fn ilm_with<B: crate::typed::builder::Build<Output = IlmIndicator>>(
         self,
-        f: impl FnOnce(
-            IlmIndicatorBuilder,
-        )
-            -> IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(IlmIndicatorBuilder) -> B,
     ) -> Self {
         self.ilm(f(IlmIndicatorBuilder::new()).build())
     }
@@ -3467,12 +3312,9 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`slm`](Self::slm) with a builder.
-    pub fn slm_with(
+    pub fn slm_with<B: crate::typed::builder::Build<Output = SlmIndicator>>(
         self,
-        f: impl FnOnce(
-            SlmIndicatorBuilder,
-        )
-            -> SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SlmIndicatorBuilder) -> B,
     ) -> Self {
         self.slm(f(SlmIndicatorBuilder::new()).build())
     }
@@ -3489,14 +3331,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`shards_capacity`](Self::shards_capacity) with a builder.
-    pub fn shards_capacity_with(
+    pub fn shards_capacity_with<
+        B: crate::typed::builder::Build<Output = ShardsCapacityIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsCapacityIndicatorBuilder,
-        ) -> ShardsCapacityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsCapacityIndicatorBuilder) -> B,
     ) -> Self {
         self.shards_capacity(f(ShardsCapacityIndicatorBuilder::new()).build())
     }
@@ -3513,14 +3352,9 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`file_settings`](Self::file_settings) with a builder.
-    pub fn file_settings_with(
+    pub fn file_settings_with<B: crate::typed::builder::Build<Output = FileSettingsIndicator>>(
         self,
-        f: impl FnOnce(
-            FileSettingsIndicatorBuilder,
-        ) -> FileSettingsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FileSettingsIndicatorBuilder) -> B,
     ) -> Self {
         self.file_settings(f(FileSettingsIndicatorBuilder::new()).build())
     }
@@ -3543,14 +3377,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`project_encryption_key`](Self::project_encryption_key) with a builder.
-    pub fn project_encryption_key_with(
+    pub fn project_encryption_key_with<
+        B: crate::typed::builder::Build<Output = ProjectEncryptionKeyIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            ProjectEncryptionKeyIndicatorBuilder,
-        ) -> ProjectEncryptionKeyIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ProjectEncryptionKeyIndicatorBuilder) -> B,
     ) -> Self {
         self.project_encryption_key(f(ProjectEncryptionKeyIndicatorBuilder::new()).build())
     }
@@ -3574,14 +3405,11 @@ impl IndicatorsBuilder {
     }
 
     /// Sets [`dlm_frozen_transitions`](Self::dlm_frozen_transitions) with a builder.
-    pub fn dlm_frozen_transitions_with(
+    pub fn dlm_frozen_transitions_with<
+        B: crate::typed::builder::Build<Output = DlmFrozenTransitionsIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            DlmFrozenTransitionsIndicatorBuilder,
-        ) -> DlmFrozenTransitionsIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DlmFrozenTransitionsIndicatorBuilder) -> B,
     ) -> Self {
         self.dlm_frozen_transitions(f(DlmFrozenTransitionsIndicatorBuilder::new()).build())
     }
@@ -3606,6 +3434,14 @@ impl IndicatorsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndicatorsBuilder {
+    type Output = Indicators;
+
+    fn build(self) -> Indicators {
+        Self::build(self)
+    }
+}
+
 impl From<IndicatorsBuilder> for Indicators {
     fn from(builder: IndicatorsBuilder) -> Self {
         builder.build()
@@ -3627,21 +3463,28 @@ pub struct MasterIsStableIndicator {
 
 impl MasterIsStableIndicator {
     /// Creates a builder for [`MasterIsStableIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> MasterIsStableIndicatorBuilder {
         MasterIsStableIndicatorBuilder::new()
     }
 
     /// Creates a [`MasterIsStableIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MasterIsStableIndicatorBuilder,
-        ) -> MasterIsStableIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = MasterIsStableIndicator>>(
+        f: impl FnOnce(MasterIsStableIndicatorBuilder) -> B,
     ) -> MasterIsStableIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MasterIsStableIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod master_is_stable_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`MasterIsStableIndicator`].
@@ -3704,16 +3547,9 @@ impl<S0, S1> MasterIsStableIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -3738,17 +3574,9 @@ impl<S0, S1> MasterIsStableIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -3765,20 +3593,18 @@ impl<S0, S1> MasterIsStableIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicatorDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            MasterIsStableIndicatorDetailsBuilder,
-        ) -> MasterIsStableIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MasterIsStableIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(MasterIsStableIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> MasterIsStableIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -3790,6 +3616,7 @@ impl<S1> MasterIsStableIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MasterIsStableIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -3800,9 +3627,13 @@ impl<S0> MasterIsStableIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl MasterIsStableIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MasterIsStableIndicatorBuilder<(S0, S1)> {
     /// Builds a [`MasterIsStableIndicator`].
-    pub fn build(self) -> MasterIsStableIndicator {
+    pub fn build(self) -> MasterIsStableIndicator
+    where
+        S0: crate::typed::builder::IsSet<master_is_stable_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<master_is_stable_indicator_members::symptom>,
+    {
         MasterIsStableIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -3813,29 +3644,26 @@ impl MasterIsStableIndicatorBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<MasterIsStableIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MasterIsStableIndicator
+impl<S0, S1> crate::typed::builder::Build for MasterIsStableIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<master_is_stable_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<master_is_stable_indicator_members::symptom>,
 {
-    fn from(
-        builder: MasterIsStableIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MasterIsStableIndicator;
+
+    fn build(self) -> MasterIsStableIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> MasterIsStableIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicator { match status {} }
-}
-
-impl MasterIsStableIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicator { match symptom {} }
+impl<S0, S1> From<MasterIsStableIndicatorBuilder<(S0, S1)>> for MasterIsStableIndicator
+where
+    S0: crate::typed::builder::IsSet<master_is_stable_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<master_is_stable_indicator_members::symptom>,
+{
+    fn from(builder: MasterIsStableIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3848,21 +3676,30 @@ pub struct MasterIsStableIndicatorClusterFormationNode {
 
 impl MasterIsStableIndicatorClusterFormationNode {
     /// Creates a builder for [`MasterIsStableIndicatorClusterFormationNode`].
+    ///
+    /// Required: `node_id`, `cluster_formation_message`.
     pub fn builder() -> MasterIsStableIndicatorClusterFormationNodeBuilder {
         MasterIsStableIndicatorClusterFormationNodeBuilder::new()
     }
 
     /// Creates a [`MasterIsStableIndicatorClusterFormationNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MasterIsStableIndicatorClusterFormationNodeBuilder,
-        ) -> MasterIsStableIndicatorClusterFormationNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node_id`, `cluster_formation_message`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicatorClusterFormationNode>,
+    >(
+        f: impl FnOnce(MasterIsStableIndicatorClusterFormationNodeBuilder) -> B,
     ) -> MasterIsStableIndicatorClusterFormationNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MasterIsStableIndicatorClusterFormationNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod master_is_stable_indicator_cluster_formation_node_members {
+    pub struct node_id;
+    pub struct cluster_formation_message;
 }
 
 /// Builder for [`MasterIsStableIndicatorClusterFormationNode`].
@@ -3915,6 +3752,7 @@ impl<S0, S1> MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, S1)> {
 }
 
 impl<S1> MasterIsStableIndicatorClusterFormationNodeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<String>,
@@ -3926,6 +3764,7 @@ impl<S1> MasterIsStableIndicatorClusterFormationNodeBuilder<(crate::typed::build
 }
 
 impl<S0> MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn cluster_formation_message(
         self,
         value: impl Into<String>,
@@ -3936,14 +3775,17 @@ impl<S0> MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, crate::typed::b
     }
 }
 
-impl
-    MasterIsStableIndicatorClusterFormationNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, S1)> {
     /// Builds a [`MasterIsStableIndicatorClusterFormationNode`].
-    pub fn build(self) -> MasterIsStableIndicatorClusterFormationNode {
+    pub fn build(self) -> MasterIsStableIndicatorClusterFormationNode
+    where
+        S0: crate::typed::builder::IsSet<
+            master_is_stable_indicator_cluster_formation_node_members::node_id,
+        >,
+        S1: crate::typed::builder::IsSet<
+            master_is_stable_indicator_cluster_formation_node_members::cluster_formation_message,
+        >,
+    {
         MasterIsStableIndicatorClusterFormationNode {
             name: self.name,
             node_id: self.node_id.unwrap(),
@@ -3952,39 +3794,36 @@ impl
     }
 }
 
-impl
-    From<
-        MasterIsStableIndicatorClusterFormationNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MasterIsStableIndicatorClusterFormationNode
+impl<S0, S1> crate::typed::builder::Build
+    for MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        master_is_stable_indicator_cluster_formation_node_members::node_id,
+    >,
+    S1: crate::typed::builder::IsSet<
+        master_is_stable_indicator_cluster_formation_node_members::cluster_formation_message,
+    >,
 {
-    fn from(
-        builder: MasterIsStableIndicatorClusterFormationNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MasterIsStableIndicatorClusterFormationNode;
+
+    fn build(self) -> MasterIsStableIndicatorClusterFormationNode {
+        Self::build(self)
     }
 }
 
-impl<S1> MasterIsStableIndicatorClusterFormationNodeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorClusterFormationNode { match node_id {} }
-}
-
-impl
-    MasterIsStableIndicatorClusterFormationNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, S1)>>
+    for MasterIsStableIndicatorClusterFormationNode
+where
+    S0: crate::typed::builder::IsSet<
+        master_is_stable_indicator_cluster_formation_node_members::node_id,
+    >,
+    S1: crate::typed::builder::IsSet<
+        master_is_stable_indicator_cluster_formation_node_members::cluster_formation_message,
+    >,
 {
-    /// `cluster_formation_message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_formation_message: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorClusterFormationNode { match cluster_formation_message {} }
+    fn from(builder: MasterIsStableIndicatorClusterFormationNodeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3999,21 +3838,28 @@ pub struct MasterIsStableIndicatorDetails {
 
 impl MasterIsStableIndicatorDetails {
     /// Creates a builder for [`MasterIsStableIndicatorDetails`].
+    ///
+    /// Required: `current_master`, `recent_masters`.
     pub fn builder() -> MasterIsStableIndicatorDetailsBuilder {
         MasterIsStableIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`MasterIsStableIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MasterIsStableIndicatorDetailsBuilder,
-        ) -> MasterIsStableIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `current_master`, `recent_masters`.
+    pub fn of<B: crate::typed::builder::Build<Output = MasterIsStableIndicatorDetails>>(
+        f: impl FnOnce(MasterIsStableIndicatorDetailsBuilder) -> B,
     ) -> MasterIsStableIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MasterIsStableIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod master_is_stable_indicator_details_members {
+    pub struct current_master;
+    pub struct recent_masters;
 }
 
 /// Builder for [`MasterIsStableIndicatorDetails`].
@@ -4074,14 +3920,11 @@ impl<S0, S1> MasterIsStableIndicatorDetailsBuilder<(S0, S1)> {
     }
 
     /// Sets [`exception_fetching_history`](Self::exception_fetching_history) with a builder.
-    pub fn exception_fetching_history_with(
+    pub fn exception_fetching_history_with<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicatorExceptionFetchingHistory>,
+    >(
         self,
-        f: impl FnOnce(
-            MasterIsStableIndicatorExceptionFetchingHistoryBuilder,
-        ) -> MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MasterIsStableIndicatorExceptionFetchingHistoryBuilder) -> B,
     ) -> Self {
         self.exception_fetching_history(
             f(MasterIsStableIndicatorExceptionFetchingHistoryBuilder::new()).build(),
@@ -4117,14 +3960,11 @@ impl<S0, S1> MasterIsStableIndicatorDetailsBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`cluster_formation`](Self::cluster_formation), with a builder.
-    pub fn add_cluster_formation_with(
+    pub fn add_cluster_formation_with<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicatorClusterFormationNode>,
+    >(
         self,
-        f: impl FnOnce(
-            MasterIsStableIndicatorClusterFormationNodeBuilder,
-        ) -> MasterIsStableIndicatorClusterFormationNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MasterIsStableIndicatorClusterFormationNodeBuilder) -> B,
     ) -> Self {
         self.add_cluster_formation(
             f(MasterIsStableIndicatorClusterFormationNodeBuilder::new()).build(),
@@ -4133,6 +3973,7 @@ impl<S0, S1> MasterIsStableIndicatorDetailsBuilder<(S0, S1)> {
 }
 
 impl<S1> MasterIsStableIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn current_master(
         self,
         value: impl Into<IndicatorNode>,
@@ -4143,18 +3984,16 @@ impl<S1> MasterIsStableIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S
     }
 
     /// Sets [`current_master`](Self::current_master) with a builder.
-    pub fn current_master_with(
+    pub fn current_master_with<B: crate::typed::builder::Build<Output = IndicatorNode>>(
         self,
-        f: impl FnOnce(
-            IndicatorNodeBuilder,
-        )
-            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(IndicatorNodeBuilder) -> B,
     ) -> MasterIsStableIndicatorDetailsBuilder<(crate::typed::builder::Set, S1)> {
         self.current_master(f(IndicatorNodeBuilder::new()).build())
     }
 }
 
 impl<S0> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn recent_masters(
         self,
         value: impl Into<Vec<IndicatorNode>>,
@@ -4178,12 +4017,9 @@ impl<S0> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Adds an element to [`recent_masters`](Self::recent_masters), with a builder.
-    pub fn add_recent_masters_with(
+    pub fn add_recent_masters_with<B: crate::typed::builder::Build<Output = IndicatorNode>>(
         self,
-        f: impl FnOnce(
-            IndicatorNodeBuilder,
-        )
-            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(IndicatorNodeBuilder) -> B,
     ) -> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_recent_masters(f(IndicatorNodeBuilder::new()).build())
     }
@@ -4199,22 +4035,25 @@ impl<S0> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)>
     }
 
     /// Adds an element to [`recent_masters`](Self::recent_masters), with a builder.
-    pub fn add_recent_masters_with(
+    pub fn add_recent_masters_with<B: crate::typed::builder::Build<Output = IndicatorNode>>(
         self,
-        f: impl FnOnce(
-            IndicatorNodeBuilder,
-        )
-            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(IndicatorNodeBuilder) -> B,
     ) -> Self {
         self.add_recent_masters(f(IndicatorNodeBuilder::new()).build())
     }
 }
 
-impl
-    MasterIsStableIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> MasterIsStableIndicatorDetailsBuilder<(S0, S1)> {
     /// Builds a [`MasterIsStableIndicatorDetails`].
-    pub fn build(self) -> MasterIsStableIndicatorDetails {
+    pub fn build(self) -> MasterIsStableIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<
+            master_is_stable_indicator_details_members::current_master,
+        >,
+        S1: crate::typed::builder::IsSet<
+            master_is_stable_indicator_details_members::recent_masters,
+        >,
+    {
         MasterIsStableIndicatorDetails {
             current_master: self.current_master.unwrap(),
             recent_masters: self.recent_masters.unwrap(),
@@ -4224,39 +4063,27 @@ impl
     }
 }
 
-impl
-    From<
-        MasterIsStableIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MasterIsStableIndicatorDetails
+impl<S0, S1> crate::typed::builder::Build for MasterIsStableIndicatorDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<master_is_stable_indicator_details_members::current_master>,
+    S1: crate::typed::builder::IsSet<master_is_stable_indicator_details_members::recent_masters>,
 {
-    fn from(
-        builder: MasterIsStableIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MasterIsStableIndicatorDetails;
+
+    fn build(self) -> MasterIsStableIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> MasterIsStableIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `current_master` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_master: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorDetails { match current_master {} }
-}
-
-impl
-    MasterIsStableIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<MasterIsStableIndicatorDetailsBuilder<(S0, S1)>>
+    for MasterIsStableIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<master_is_stable_indicator_details_members::current_master>,
+    S1: crate::typed::builder::IsSet<master_is_stable_indicator_details_members::recent_masters>,
 {
-    /// `recent_masters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recent_masters: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorDetails { match recent_masters {} }
+    fn from(builder: MasterIsStableIndicatorDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4267,21 +4094,30 @@ pub struct MasterIsStableIndicatorExceptionFetchingHistory {
 
 impl MasterIsStableIndicatorExceptionFetchingHistory {
     /// Creates a builder for [`MasterIsStableIndicatorExceptionFetchingHistory`].
+    ///
+    /// Required: `message`, `stack_trace`.
     pub fn builder() -> MasterIsStableIndicatorExceptionFetchingHistoryBuilder {
         MasterIsStableIndicatorExceptionFetchingHistoryBuilder::new()
     }
 
     /// Creates a [`MasterIsStableIndicatorExceptionFetchingHistory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MasterIsStableIndicatorExceptionFetchingHistoryBuilder,
-        ) -> MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `message`, `stack_trace`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MasterIsStableIndicatorExceptionFetchingHistory>,
+    >(
+        f: impl FnOnce(MasterIsStableIndicatorExceptionFetchingHistoryBuilder) -> B,
     ) -> MasterIsStableIndicatorExceptionFetchingHistory {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MasterIsStableIndicatorExceptionFetchingHistoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod master_is_stable_indicator_exception_fetching_history_members {
+    pub struct message;
+    pub struct stack_trace;
 }
 
 /// Builder for [`MasterIsStableIndicatorExceptionFetchingHistory`].
@@ -4322,6 +4158,7 @@ impl<S0, S1> MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, S1)> {
 impl<S1>
     MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(crate::typed::builder::NotSet, S1)>
 {
+    /// **Required.**
     pub fn message(
         self,
         value: impl Into<String>,
@@ -4336,6 +4173,7 @@ impl<S1>
 impl<S0>
     MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn stack_trace(
         self,
         value: impl Into<String>,
@@ -4347,14 +4185,17 @@ impl<S0>
     }
 }
 
-impl
-    MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, S1)> {
     /// Builds a [`MasterIsStableIndicatorExceptionFetchingHistory`].
-    pub fn build(self) -> MasterIsStableIndicatorExceptionFetchingHistory {
+    pub fn build(self) -> MasterIsStableIndicatorExceptionFetchingHistory
+    where
+        S0: crate::typed::builder::IsSet<
+            master_is_stable_indicator_exception_fetching_history_members::message,
+        >,
+        S1: crate::typed::builder::IsSet<
+            master_is_stable_indicator_exception_fetching_history_members::stack_trace,
+        >,
+    {
         MasterIsStableIndicatorExceptionFetchingHistory {
             message: self.message.unwrap(),
             stack_trace: self.stack_trace.unwrap(),
@@ -4362,41 +4203,36 @@ impl
     }
 }
 
-impl
-    From<
-        MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MasterIsStableIndicatorExceptionFetchingHistory
+impl<S0, S1> crate::typed::builder::Build
+    for MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        master_is_stable_indicator_exception_fetching_history_members::message,
+    >,
+    S1: crate::typed::builder::IsSet<
+        master_is_stable_indicator_exception_fetching_history_members::stack_trace,
+    >,
 {
-    fn from(
-        builder: MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MasterIsStableIndicatorExceptionFetchingHistory;
+
+    fn build(self) -> MasterIsStableIndicatorExceptionFetchingHistory {
+        Self::build(self)
     }
 }
 
-impl<S1>
-    MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(crate::typed::builder::NotSet, S1)>
+impl<S0, S1> From<MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, S1)>>
+    for MasterIsStableIndicatorExceptionFetchingHistory
+where
+    S0: crate::typed::builder::IsSet<
+        master_is_stable_indicator_exception_fetching_history_members::message,
+    >,
+    S1: crate::typed::builder::IsSet<
+        master_is_stable_indicator_exception_fetching_history_members::stack_trace,
+    >,
 {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorExceptionFetchingHistory { match message {} }
-}
-
-impl
-    MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `stack_trace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stack_trace: crate::typed::builder::MissingRequiredField) -> MasterIsStableIndicatorExceptionFetchingHistory { match stack_trace {} }
+    fn from(builder: MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4416,22 +4252,29 @@ pub struct ProjectEncryptionKeyDetails {
 
 impl ProjectEncryptionKeyDetails {
     /// Creates a builder for [`ProjectEncryptionKeyDetails`].
+    ///
+    /// Required: `active_password_id`, `encryption_required`, `state`.
     pub fn builder() -> ProjectEncryptionKeyDetailsBuilder {
         ProjectEncryptionKeyDetailsBuilder::new()
     }
 
     /// Creates a [`ProjectEncryptionKeyDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ProjectEncryptionKeyDetailsBuilder,
-        ) -> ProjectEncryptionKeyDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `active_password_id`, `encryption_required`, `state`.
+    pub fn of<B: crate::typed::builder::Build<Output = ProjectEncryptionKeyDetails>>(
+        f: impl FnOnce(ProjectEncryptionKeyDetailsBuilder) -> B,
     ) -> ProjectEncryptionKeyDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ProjectEncryptionKeyDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod project_encryption_key_details_members {
+    pub struct active_password_id;
+    pub struct encryption_required;
+    pub struct state;
 }
 
 /// Builder for [`ProjectEncryptionKeyDetails`].
@@ -4520,6 +4363,7 @@ impl<S0, S1, S2> ProjectEncryptionKeyDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ProjectEncryptionKeyDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn active_password_id(
         self,
         value: impl Into<String>,
@@ -4531,7 +4375,7 @@ impl<S1, S2> ProjectEncryptionKeyDetailsBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2> ProjectEncryptionKeyDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Whether callers must refuse to store secrets when the service is not ready.
+    /// **Required.** Whether callers must refuse to store secrets when the service is not ready.
     /// If `false`, callers may fall back to storing secrets in plaintext (with a warning).
     pub fn encryption_required(
         self,
@@ -4544,6 +4388,7 @@ impl<S0, S2> ProjectEncryptionKeyDetailsBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1> ProjectEncryptionKeyDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn state(
         self,
         value: impl Into<String>,
@@ -4554,15 +4399,18 @@ impl<S0, S1> ProjectEncryptionKeyDetailsBuilder<(S0, S1, crate::typed::builder::
     }
 }
 
-impl
-    ProjectEncryptionKeyDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ProjectEncryptionKeyDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`ProjectEncryptionKeyDetails`].
-    pub fn build(self) -> ProjectEncryptionKeyDetails {
+    pub fn build(self) -> ProjectEncryptionKeyDetails
+    where
+        S0: crate::typed::builder::IsSet<
+            project_encryption_key_details_members::active_password_id,
+        >,
+        S1: crate::typed::builder::IsSet<
+            project_encryption_key_details_members::encryption_required,
+        >,
+        S2: crate::typed::builder::IsSet<project_encryption_key_details_members::state>,
+    {
         ProjectEncryptionKeyDetails {
             active_key_id: self.active_key_id,
             active_password_id: self.active_password_id.unwrap(),
@@ -4574,54 +4422,29 @@ impl
     }
 }
 
-impl
-    From<
-        ProjectEncryptionKeyDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ProjectEncryptionKeyDetails
+impl<S0, S1, S2> crate::typed::builder::Build for ProjectEncryptionKeyDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<project_encryption_key_details_members::active_password_id>,
+    S1: crate::typed::builder::IsSet<project_encryption_key_details_members::encryption_required>,
+    S2: crate::typed::builder::IsSet<project_encryption_key_details_members::state>,
 {
-    fn from(
-        builder: ProjectEncryptionKeyDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ProjectEncryptionKeyDetails;
+
+    fn build(self) -> ProjectEncryptionKeyDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ProjectEncryptionKeyDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `active_password_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_password_id: crate::typed::builder::MissingRequiredField) -> ProjectEncryptionKeyDetails { match active_password_id {} }
-}
-
-impl<S2>
-    ProjectEncryptionKeyDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ProjectEncryptionKeyDetailsBuilder<(S0, S1, S2)>>
+    for ProjectEncryptionKeyDetails
+where
+    S0: crate::typed::builder::IsSet<project_encryption_key_details_members::active_password_id>,
+    S1: crate::typed::builder::IsSet<project_encryption_key_details_members::encryption_required>,
+    S2: crate::typed::builder::IsSet<project_encryption_key_details_members::state>,
 {
-    /// `encryption_required` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, encryption_required: crate::typed::builder::MissingRequiredField) -> ProjectEncryptionKeyDetails { match encryption_required {} }
-}
-
-impl
-    ProjectEncryptionKeyDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> ProjectEncryptionKeyDetails { match state {} }
+    fn from(builder: ProjectEncryptionKeyDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// PROJECT_ENCRYPTION_KEY
@@ -4639,21 +4462,28 @@ pub struct ProjectEncryptionKeyIndicator {
 
 impl ProjectEncryptionKeyIndicator {
     /// Creates a builder for [`ProjectEncryptionKeyIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> ProjectEncryptionKeyIndicatorBuilder {
         ProjectEncryptionKeyIndicatorBuilder::new()
     }
 
     /// Creates a [`ProjectEncryptionKeyIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ProjectEncryptionKeyIndicatorBuilder,
-        ) -> ProjectEncryptionKeyIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = ProjectEncryptionKeyIndicator>>(
+        f: impl FnOnce(ProjectEncryptionKeyIndicatorBuilder) -> B,
     ) -> ProjectEncryptionKeyIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ProjectEncryptionKeyIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod project_encryption_key_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`ProjectEncryptionKeyIndicator`].
@@ -4719,16 +4549,9 @@ impl<S0, S1> ProjectEncryptionKeyIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -4753,17 +4576,9 @@ impl<S0, S1> ProjectEncryptionKeyIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -4780,21 +4595,16 @@ impl<S0, S1> ProjectEncryptionKeyIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = ProjectEncryptionKeyDetails>>(
         self,
-        f: impl FnOnce(
-            ProjectEncryptionKeyDetailsBuilder,
-        ) -> ProjectEncryptionKeyDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ProjectEncryptionKeyDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(ProjectEncryptionKeyDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> ProjectEncryptionKeyIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -4806,6 +4616,7 @@ impl<S1> ProjectEncryptionKeyIndicatorBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0> ProjectEncryptionKeyIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -4816,11 +4627,13 @@ impl<S0> ProjectEncryptionKeyIndicatorBuilder<(S0, crate::typed::builder::NotSet
     }
 }
 
-impl
-    ProjectEncryptionKeyIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> ProjectEncryptionKeyIndicatorBuilder<(S0, S1)> {
     /// Builds a [`ProjectEncryptionKeyIndicator`].
-    pub fn build(self) -> ProjectEncryptionKeyIndicator {
+    pub fn build(self) -> ProjectEncryptionKeyIndicator
+    where
+        S0: crate::typed::builder::IsSet<project_encryption_key_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<project_encryption_key_indicator_members::symptom>,
+    {
         ProjectEncryptionKeyIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -4831,39 +4644,26 @@ impl
     }
 }
 
-impl
-    From<
-        ProjectEncryptionKeyIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ProjectEncryptionKeyIndicator
+impl<S0, S1> crate::typed::builder::Build for ProjectEncryptionKeyIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<project_encryption_key_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<project_encryption_key_indicator_members::symptom>,
 {
-    fn from(
-        builder: ProjectEncryptionKeyIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ProjectEncryptionKeyIndicator;
+
+    fn build(self) -> ProjectEncryptionKeyIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> ProjectEncryptionKeyIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ProjectEncryptionKeyIndicator { match status {} }
-}
-
-impl
-    ProjectEncryptionKeyIndicatorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<ProjectEncryptionKeyIndicatorBuilder<(S0, S1)>> for ProjectEncryptionKeyIndicator
+where
+    S0: crate::typed::builder::IsSet<project_encryption_key_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<project_encryption_key_indicator_members::symptom>,
 {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> ProjectEncryptionKeyIndicator { match symptom {} }
+    fn from(builder: ProjectEncryptionKeyIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// REPOSITORY_INTEGRITY
@@ -4881,21 +4681,28 @@ pub struct RepositoryIntegrityIndicator {
 
 impl RepositoryIntegrityIndicator {
     /// Creates a builder for [`RepositoryIntegrityIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> RepositoryIntegrityIndicatorBuilder {
         RepositoryIntegrityIndicatorBuilder::new()
     }
 
     /// Creates a [`RepositoryIntegrityIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RepositoryIntegrityIndicatorBuilder,
-        ) -> RepositoryIntegrityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = RepositoryIntegrityIndicator>>(
+        f: impl FnOnce(RepositoryIntegrityIndicatorBuilder) -> B,
     ) -> RepositoryIntegrityIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RepositoryIntegrityIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod repository_integrity_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`RepositoryIntegrityIndicator`].
@@ -4961,16 +4768,9 @@ impl<S0, S1> RepositoryIntegrityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -4995,17 +4795,9 @@ impl<S0, S1> RepositoryIntegrityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -5022,17 +4814,18 @@ impl<S0, S1> RepositoryIntegrityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<
+        B: crate::typed::builder::Build<Output = RepositoryIntegrityIndicatorDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            RepositoryIntegrityIndicatorDetailsBuilder,
-        ) -> RepositoryIntegrityIndicatorDetailsBuilder,
+        f: impl FnOnce(RepositoryIntegrityIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(RepositoryIntegrityIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -5044,6 +4837,7 @@ impl<S1> RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> RepositoryIntegrityIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -5054,9 +4848,13 @@ impl<S0> RepositoryIntegrityIndicatorBuilder<(S0, crate::typed::builder::NotSet)
     }
 }
 
-impl RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RepositoryIntegrityIndicatorBuilder<(S0, S1)> {
     /// Builds a [`RepositoryIntegrityIndicator`].
-    pub fn build(self) -> RepositoryIntegrityIndicator {
+    pub fn build(self) -> RepositoryIntegrityIndicator
+    where
+        S0: crate::typed::builder::IsSet<repository_integrity_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<repository_integrity_indicator_members::symptom>,
+    {
         RepositoryIntegrityIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -5067,36 +4865,26 @@ impl RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        RepositoryIntegrityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RepositoryIntegrityIndicator
+impl<S0, S1> crate::typed::builder::Build for RepositoryIntegrityIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<repository_integrity_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<repository_integrity_indicator_members::symptom>,
 {
-    fn from(
-        builder: RepositoryIntegrityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RepositoryIntegrityIndicator;
+
+    fn build(self) -> RepositoryIntegrityIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> RepositoryIntegrityIndicator { match status {} }
-}
-
-impl
-    RepositoryIntegrityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<RepositoryIntegrityIndicatorBuilder<(S0, S1)>> for RepositoryIntegrityIndicator
+where
+    S0: crate::typed::builder::IsSet<repository_integrity_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<repository_integrity_indicator_members::symptom>,
 {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> RepositoryIntegrityIndicator { match symptom {} }
+    fn from(builder: RepositoryIntegrityIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5116,10 +4904,8 @@ impl RepositoryIntegrityIndicatorDetails {
     }
 
     /// Creates a [`RepositoryIntegrityIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RepositoryIntegrityIndicatorDetailsBuilder,
-        ) -> RepositoryIntegrityIndicatorDetailsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RepositoryIntegrityIndicatorDetails>>(
+        f: impl FnOnce(RepositoryIntegrityIndicatorDetailsBuilder) -> B,
     ) -> RepositoryIntegrityIndicatorDetails {
         f(Self::builder()).build()
     }
@@ -5197,6 +4983,14 @@ impl RepositoryIntegrityIndicatorDetailsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RepositoryIntegrityIndicatorDetailsBuilder {
+    type Output = RepositoryIntegrityIndicatorDetails;
+
+    fn build(self) -> RepositoryIntegrityIndicatorDetails {
+        Self::build(self)
+    }
+}
+
 impl From<RepositoryIntegrityIndicatorDetailsBuilder> for RepositoryIntegrityIndicatorDetails {
     fn from(builder: RepositoryIntegrityIndicatorDetailsBuilder) -> Self {
         builder.build()
@@ -5260,7 +5054,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -5415,6 +5211,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -5575,21 +5379,28 @@ pub struct ShardsAvailabilityIndicator {
 
 impl ShardsAvailabilityIndicator {
     /// Creates a builder for [`ShardsAvailabilityIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> ShardsAvailabilityIndicatorBuilder {
         ShardsAvailabilityIndicatorBuilder::new()
     }
 
     /// Creates a [`ShardsAvailabilityIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsAvailabilityIndicatorBuilder,
-        ) -> ShardsAvailabilityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsAvailabilityIndicator>>(
+        f: impl FnOnce(ShardsAvailabilityIndicatorBuilder) -> B,
     ) -> ShardsAvailabilityIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsAvailabilityIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_availability_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`ShardsAvailabilityIndicator`].
@@ -5655,16 +5466,9 @@ impl<S0, S1> ShardsAvailabilityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -5689,17 +5493,9 @@ impl<S0, S1> ShardsAvailabilityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -5716,28 +5512,18 @@ impl<S0, S1> ShardsAvailabilityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<
+        B: crate::typed::builder::Build<Output = ShardsAvailabilityIndicatorDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsAvailabilityIndicatorDetailsBuilder,
-        ) -> ShardsAvailabilityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsAvailabilityIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(ShardsAvailabilityIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -5749,6 +5535,7 @@ impl<S1> ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::NotSet, S1)>
 }
 
 impl<S0> ShardsAvailabilityIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -5759,9 +5546,13 @@ impl<S0> ShardsAvailabilityIndicatorBuilder<(S0, crate::typed::builder::NotSet)>
     }
 }
 
-impl ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ShardsAvailabilityIndicatorBuilder<(S0, S1)> {
     /// Builds a [`ShardsAvailabilityIndicator`].
-    pub fn build(self) -> ShardsAvailabilityIndicator {
+    pub fn build(self) -> ShardsAvailabilityIndicator
+    where
+        S0: crate::typed::builder::IsSet<shards_availability_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<shards_availability_indicator_members::symptom>,
+    {
         ShardsAvailabilityIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -5772,36 +5563,26 @@ impl ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::Set, crate::type
     }
 }
 
-impl
-    From<
-        ShardsAvailabilityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsAvailabilityIndicator
+impl<S0, S1> crate::typed::builder::Build for ShardsAvailabilityIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shards_availability_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<shards_availability_indicator_members::symptom>,
 {
-    fn from(
-        builder: ShardsAvailabilityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsAvailabilityIndicator;
+
+    fn build(self) -> ShardsAvailabilityIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicator { match status {} }
-}
-
-impl
-    ShardsAvailabilityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<ShardsAvailabilityIndicatorBuilder<(S0, S1)>> for ShardsAvailabilityIndicator
+where
+    S0: crate::typed::builder::IsSet<shards_availability_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<shards_availability_indicator_members::symptom>,
 {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicator { match symptom {} }
+    fn from(builder: ShardsAvailabilityIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5820,29 +5601,36 @@ pub struct ShardsAvailabilityIndicatorDetails {
 
 impl ShardsAvailabilityIndicatorDetails {
     /// Creates a builder for [`ShardsAvailabilityIndicatorDetails`].
+    ///
+    /// Required: `creating_primaries`, `creating_replicas`, `initializing_primaries`, `initializing_replicas`, `restarting_primaries`, `restarting_replicas`, `started_primaries`, `started_replicas`, `unassigned_primaries`, `unassigned_replicas`.
     pub fn builder() -> ShardsAvailabilityIndicatorDetailsBuilder {
         ShardsAvailabilityIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`ShardsAvailabilityIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsAvailabilityIndicatorDetailsBuilder,
-        ) -> ShardsAvailabilityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `creating_primaries`, `creating_replicas`, `initializing_primaries`, `initializing_replicas`, `restarting_primaries`, `restarting_replicas`, `started_primaries`, `started_replicas`, `unassigned_primaries`, `unassigned_replicas`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsAvailabilityIndicatorDetails>>(
+        f: impl FnOnce(ShardsAvailabilityIndicatorDetailsBuilder) -> B,
     ) -> ShardsAvailabilityIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsAvailabilityIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_availability_indicator_details_members {
+    pub struct creating_primaries;
+    pub struct creating_replicas;
+    pub struct initializing_primaries;
+    pub struct initializing_replicas;
+    pub struct restarting_primaries;
+    pub struct restarting_replicas;
+    pub struct started_primaries;
+    pub struct started_replicas;
+    pub struct unassigned_primaries;
+    pub struct unassigned_replicas;
 }
 
 /// Builder for [`ShardsAvailabilityIndicatorDetails`].
@@ -5939,6 +5727,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn creating_primaries(
         self,
         value: i64,
@@ -5974,6 +5763,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn creating_replicas(
         self,
         value: i64,
@@ -6009,6 +5799,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn initializing_primaries(
         self,
         value: i64,
@@ -6044,6 +5835,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn initializing_replicas(
         self,
         value: i64,
@@ -6079,6 +5871,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn restarting_primaries(
         self,
         value: i64,
@@ -6114,6 +5907,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn restarting_replicas(
         self,
         value: i64,
@@ -6149,6 +5943,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn started_primaries(
         self,
         value: i64,
@@ -6184,6 +5979,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn started_replicas(
         self,
         value: i64,
@@ -6219,6 +6015,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
+    /// **Required.**
     pub fn unassigned_primaries(
         self,
         value: i64,
@@ -6254,6 +6051,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn unassigned_replicas(
         self,
         value: i64,
@@ -6275,22 +6073,43 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 }
 
-impl
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    ShardsAvailabilityIndicatorDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`ShardsAvailabilityIndicatorDetails`].
-    pub fn build(self) -> ShardsAvailabilityIndicatorDetails {
+    pub fn build(self) -> ShardsAvailabilityIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::creating_primaries,
+        >,
+        S1: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::creating_replicas,
+        >,
+        S2: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::initializing_primaries,
+        >,
+        S3: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::initializing_replicas,
+        >,
+        S4: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::restarting_primaries,
+        >,
+        S5: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::restarting_replicas,
+        >,
+        S6: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::started_primaries,
+        >,
+        S7: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::started_replicas,
+        >,
+        S8: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::unassigned_primaries,
+        >,
+        S9: crate::typed::builder::IsSet<
+            shards_availability_indicator_details_members::unassigned_replicas,
+        >,
+    {
         ShardsAvailabilityIndicatorDetails {
             creating_primaries: self.creating_primaries.unwrap(),
             creating_replicas: self.creating_replicas.unwrap(),
@@ -6306,228 +6125,98 @@ impl
     }
 }
 
-impl
-    From<
-        ShardsAvailabilityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsAvailabilityIndicatorDetails
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for ShardsAvailabilityIndicatorDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::creating_primaries,
+    >,
+    S1: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::creating_replicas,
+    >,
+    S2: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::initializing_primaries,
+    >,
+    S3: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::initializing_replicas,
+    >,
+    S4: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::restarting_primaries,
+    >,
+    S5: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::restarting_replicas,
+    >,
+    S6: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::started_primaries,
+    >,
+    S7: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::started_replicas,
+    >,
+    S8: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::unassigned_primaries,
+    >,
+    S9: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::unassigned_replicas,
+    >,
+{
+    type Output = ShardsAvailabilityIndicatorDetails;
+
+    fn build(self) -> ShardsAvailabilityIndicatorDetails {
+        Self::build(self)
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<ShardsAvailabilityIndicatorDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>>
+    for ShardsAvailabilityIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::creating_primaries,
+    >,
+    S1: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::creating_replicas,
+    >,
+    S2: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::initializing_primaries,
+    >,
+    S3: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::initializing_replicas,
+    >,
+    S4: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::restarting_primaries,
+    >,
+    S5: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::restarting_replicas,
+    >,
+    S6: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::started_primaries,
+    >,
+    S7: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::started_replicas,
+    >,
+    S8: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::unassigned_primaries,
+    >,
+    S9: crate::typed::builder::IsSet<
+        shards_availability_indicator_details_members::unassigned_replicas,
+    >,
 {
     fn from(
         builder: ShardsAvailabilityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
         )>,
     ) -> Self {
         builder.build()
     }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `creating_primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, creating_primaries: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match creating_primaries {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `creating_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, creating_replicas: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match creating_replicas {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `initializing_primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing_primaries: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match initializing_primaries {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `initializing_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing_replicas: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match initializing_replicas {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `restarting_primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, restarting_primaries: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match restarting_primaries {} }
-}
-
-impl<S6, S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `restarting_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, restarting_replicas: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match restarting_replicas {} }
-}
-
-impl<S7, S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `started_primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, started_primaries: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match started_primaries {} }
-}
-
-impl<S8, S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `started_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, started_replicas: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match started_replicas {} }
-}
-
-impl<S9>
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `unassigned_primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_primaries: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match unassigned_primaries {} }
-}
-
-impl
-    ShardsAvailabilityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `unassigned_replicas` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unassigned_replicas: crate::typed::builder::MissingRequiredField) -> ShardsAvailabilityIndicatorDetails { match unassigned_replicas {} }
 }
 
 /// SHARDS_CAPACITY
@@ -6545,21 +6234,28 @@ pub struct ShardsCapacityIndicator {
 
 impl ShardsCapacityIndicator {
     /// Creates a builder for [`ShardsCapacityIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> ShardsCapacityIndicatorBuilder {
         ShardsCapacityIndicatorBuilder::new()
     }
 
     /// Creates a [`ShardsCapacityIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsCapacityIndicatorBuilder,
-        ) -> ShardsCapacityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsCapacityIndicator>>(
+        f: impl FnOnce(ShardsCapacityIndicatorBuilder) -> B,
     ) -> ShardsCapacityIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsCapacityIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_capacity_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`ShardsCapacityIndicator`].
@@ -6622,16 +6318,9 @@ impl<S0, S1> ShardsCapacityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -6656,17 +6345,9 @@ impl<S0, S1> ShardsCapacityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -6683,20 +6364,18 @@ impl<S0, S1> ShardsCapacityIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<
+        B: crate::typed::builder::Build<Output = ShardsCapacityIndicatorDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsCapacityIndicatorDetailsBuilder,
-        ) -> ShardsCapacityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsCapacityIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(ShardsCapacityIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> ShardsCapacityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -6708,6 +6387,7 @@ impl<S1> ShardsCapacityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ShardsCapacityIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -6718,9 +6398,13 @@ impl<S0> ShardsCapacityIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ShardsCapacityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ShardsCapacityIndicatorBuilder<(S0, S1)> {
     /// Builds a [`ShardsCapacityIndicator`].
-    pub fn build(self) -> ShardsCapacityIndicator {
+    pub fn build(self) -> ShardsCapacityIndicator
+    where
+        S0: crate::typed::builder::IsSet<shards_capacity_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<shards_capacity_indicator_members::symptom>,
+    {
         ShardsCapacityIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -6731,29 +6415,26 @@ impl ShardsCapacityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<ShardsCapacityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ShardsCapacityIndicator
+impl<S0, S1> crate::typed::builder::Build for ShardsCapacityIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shards_capacity_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<shards_capacity_indicator_members::symptom>,
 {
-    fn from(
-        builder: ShardsCapacityIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsCapacityIndicator;
+
+    fn build(self) -> ShardsCapacityIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardsCapacityIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ShardsCapacityIndicator { match status {} }
-}
-
-impl ShardsCapacityIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> ShardsCapacityIndicator { match symptom {} }
+impl<S0, S1> From<ShardsCapacityIndicatorBuilder<(S0, S1)>> for ShardsCapacityIndicator
+where
+    S0: crate::typed::builder::IsSet<shards_capacity_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<shards_capacity_indicator_members::symptom>,
+{
+    fn from(builder: ShardsCapacityIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6764,21 +6445,28 @@ pub struct ShardsCapacityIndicatorDetails {
 
 impl ShardsCapacityIndicatorDetails {
     /// Creates a builder for [`ShardsCapacityIndicatorDetails`].
+    ///
+    /// Required: `data`, `frozen`.
     pub fn builder() -> ShardsCapacityIndicatorDetailsBuilder {
         ShardsCapacityIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`ShardsCapacityIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsCapacityIndicatorDetailsBuilder,
-        ) -> ShardsCapacityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `data`, `frozen`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsCapacityIndicatorDetails>>(
+        f: impl FnOnce(ShardsCapacityIndicatorDetailsBuilder) -> B,
     ) -> ShardsCapacityIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsCapacityIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_capacity_indicator_details_members {
+    pub struct data;
+    pub struct frozen;
 }
 
 /// Builder for [`ShardsCapacityIndicatorDetails`].
@@ -6817,6 +6505,7 @@ impl<S0, S1> ShardsCapacityIndicatorDetailsBuilder<(S0, S1)> {
 }
 
 impl<S1> ShardsCapacityIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn data(
         self,
         value: impl Into<ShardsCapacityIndicatorTierDetail>,
@@ -6827,18 +6516,18 @@ impl<S1> ShardsCapacityIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S
     }
 
     /// Sets [`data`](Self::data) with a builder.
-    pub fn data_with(
+    pub fn data_with<
+        B: crate::typed::builder::Build<Output = ShardsCapacityIndicatorTierDetail>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsCapacityIndicatorTierDetailBuilder,
-        )
-            -> ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardsCapacityIndicatorTierDetailBuilder) -> B,
     ) -> ShardsCapacityIndicatorDetailsBuilder<(crate::typed::builder::Set, S1)> {
         self.data(f(ShardsCapacityIndicatorTierDetailBuilder::new()).build())
     }
 }
 
 impl<S0> ShardsCapacityIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn frozen(
         self,
         value: impl Into<ShardsCapacityIndicatorTierDetail>,
@@ -6849,22 +6538,23 @@ impl<S0> ShardsCapacityIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Sets [`frozen`](Self::frozen) with a builder.
-    pub fn frozen_with(
+    pub fn frozen_with<
+        B: crate::typed::builder::Build<Output = ShardsCapacityIndicatorTierDetail>,
+    >(
         self,
-        f: impl FnOnce(
-            ShardsCapacityIndicatorTierDetailBuilder,
-        )
-            -> ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ShardsCapacityIndicatorTierDetailBuilder) -> B,
     ) -> ShardsCapacityIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)> {
         self.frozen(f(ShardsCapacityIndicatorTierDetailBuilder::new()).build())
     }
 }
 
-impl
-    ShardsCapacityIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> ShardsCapacityIndicatorDetailsBuilder<(S0, S1)> {
     /// Builds a [`ShardsCapacityIndicatorDetails`].
-    pub fn build(self) -> ShardsCapacityIndicatorDetails {
+    pub fn build(self) -> ShardsCapacityIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::data>,
+        S1: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::frozen>,
+    {
         ShardsCapacityIndicatorDetails {
             data: self.data.unwrap(),
             frozen: self.frozen.unwrap(),
@@ -6872,39 +6562,27 @@ impl
     }
 }
 
-impl
-    From<
-        ShardsCapacityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsCapacityIndicatorDetails
+impl<S0, S1> crate::typed::builder::Build for ShardsCapacityIndicatorDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::data>,
+    S1: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::frozen>,
 {
-    fn from(
-        builder: ShardsCapacityIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsCapacityIndicatorDetails;
+
+    fn build(self) -> ShardsCapacityIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardsCapacityIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `data` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data: crate::typed::builder::MissingRequiredField) -> ShardsCapacityIndicatorDetails { match data {} }
-}
-
-impl
-    ShardsCapacityIndicatorDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<ShardsCapacityIndicatorDetailsBuilder<(S0, S1)>>
+    for ShardsCapacityIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::data>,
+    S1: crate::typed::builder::IsSet<shards_capacity_indicator_details_members::frozen>,
 {
-    /// `frozen` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, frozen: crate::typed::builder::MissingRequiredField) -> ShardsCapacityIndicatorDetails { match frozen {} }
+    fn from(builder: ShardsCapacityIndicatorDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6916,19 +6594,27 @@ pub struct ShardsCapacityIndicatorTierDetail {
 
 impl ShardsCapacityIndicatorTierDetail {
     /// Creates a builder for [`ShardsCapacityIndicatorTierDetail`].
+    ///
+    /// Required: `max_shards_in_cluster`.
     pub fn builder() -> ShardsCapacityIndicatorTierDetailBuilder {
         ShardsCapacityIndicatorTierDetailBuilder::new()
     }
 
     /// Creates a [`ShardsCapacityIndicatorTierDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsCapacityIndicatorTierDetailBuilder,
-        )
-            -> ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `max_shards_in_cluster`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsCapacityIndicatorTierDetail>>(
+        f: impl FnOnce(ShardsCapacityIndicatorTierDetailBuilder) -> B,
     ) -> ShardsCapacityIndicatorTierDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsCapacityIndicatorTierDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_capacity_indicator_tier_detail_members {
+    pub struct max_shards_in_cluster;
 }
 
 /// Builder for [`ShardsCapacityIndicatorTierDetail`].
@@ -6971,6 +6657,7 @@ impl<S0> ShardsCapacityIndicatorTierDetailBuilder<(S0,)> {
 }
 
 impl ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn max_shards_in_cluster(
         self,
         value: i32,
@@ -6981,9 +6668,14 @@ impl ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShardsCapacityIndicatorTierDetailBuilder<(S0,)> {
     /// Builds a [`ShardsCapacityIndicatorTierDetail`].
-    pub fn build(self) -> ShardsCapacityIndicatorTierDetail {
+    pub fn build(self) -> ShardsCapacityIndicatorTierDetail
+    where
+        S0: crate::typed::builder::IsSet<
+            shards_capacity_indicator_tier_detail_members::max_shards_in_cluster,
+        >,
+    {
         ShardsCapacityIndicatorTierDetail {
             max_shards_in_cluster: self.max_shards_in_cluster.unwrap(),
             current_used_shards: self.current_used_shards,
@@ -6991,20 +6683,28 @@ impl ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>>
-    for ShardsCapacityIndicatorTierDetail
+impl<S0> crate::typed::builder::Build for ShardsCapacityIndicatorTierDetailBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        shards_capacity_indicator_tier_detail_members::max_shards_in_cluster,
+    >,
 {
-    fn from(
-        builder: ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsCapacityIndicatorTierDetail;
+
+    fn build(self) -> ShardsCapacityIndicatorTierDetail {
+        Self::build(self)
     }
 }
 
-impl ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::NotSet,)> {
-    /// `max_shards_in_cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_shards_in_cluster: crate::typed::builder::MissingRequiredField) -> ShardsCapacityIndicatorTierDetail { match max_shards_in_cluster {} }
+impl<S0> From<ShardsCapacityIndicatorTierDetailBuilder<(S0,)>> for ShardsCapacityIndicatorTierDetail
+where
+    S0: crate::typed::builder::IsSet<
+        shards_capacity_indicator_tier_detail_members::max_shards_in_cluster,
+    >,
+{
+    fn from(builder: ShardsCapacityIndicatorTierDetailBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// SLM
@@ -7022,19 +6722,28 @@ pub struct SlmIndicator {
 
 impl SlmIndicator {
     /// Creates a builder for [`SlmIndicator`].
+    ///
+    /// Required: `status`, `symptom`.
     pub fn builder() -> SlmIndicatorBuilder {
         SlmIndicatorBuilder::new()
     }
 
     /// Creates a [`SlmIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SlmIndicatorBuilder,
-        )
-            -> SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `status`, `symptom`.
+    pub fn of<B: crate::typed::builder::Build<Output = SlmIndicator>>(
+        f: impl FnOnce(SlmIndicatorBuilder) -> B,
     ) -> SlmIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SlmIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod slm_indicator_members {
+    pub struct status;
+    pub struct symptom;
 }
 
 /// Builder for [`SlmIndicator`].
@@ -7093,16 +6802,9 @@ impl<S0, S1> SlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`impacts`](Self::impacts), with a builder.
-    pub fn add_impacts_with(
+    pub fn add_impacts_with<B: crate::typed::builder::Build<Output = Impact>>(
         self,
-        f: impl FnOnce(
-            ImpactBuilder,
-        ) -> ImpactBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ImpactBuilder) -> B,
     ) -> Self {
         self.add_impacts(f(ImpactBuilder::new()).build())
     }
@@ -7127,17 +6829,9 @@ impl<S0, S1> SlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`diagnosis`](Self::diagnosis), with a builder.
-    pub fn add_diagnosis_with(
+    pub fn add_diagnosis_with<B: crate::typed::builder::Build<Output = Diagnosis>>(
         self,
-        f: impl FnOnce(
-            DiagnosisBuilder,
-        ) -> DiagnosisBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiagnosisBuilder) -> B,
     ) -> Self {
         self.add_diagnosis(f(DiagnosisBuilder::new()).build())
     }
@@ -7154,20 +6848,16 @@ impl<S0, S1> SlmIndicatorBuilder<(S0, S1)> {
     }
 
     /// Sets [`details`](Self::details) with a builder.
-    pub fn details_with(
+    pub fn details_with<B: crate::typed::builder::Build<Output = SlmIndicatorDetails>>(
         self,
-        f: impl FnOnce(
-            SlmIndicatorDetailsBuilder,
-        ) -> SlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SlmIndicatorDetailsBuilder) -> B,
     ) -> Self {
         self.details(f(SlmIndicatorDetailsBuilder::new()).build())
     }
 }
 
 impl<S1> SlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<IndicatorHealthStatus>,
@@ -7179,6 +6869,7 @@ impl<S1> SlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SlmIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn symptom(
         self,
         value: impl Into<String>,
@@ -7189,9 +6880,13 @@ impl<S0> SlmIndicatorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SlmIndicatorBuilder<(S0, S1)> {
     /// Builds a [`SlmIndicator`].
-    pub fn build(self) -> SlmIndicator {
+    pub fn build(self) -> SlmIndicator
+    where
+        S0: crate::typed::builder::IsSet<slm_indicator_members::status>,
+        S1: crate::typed::builder::IsSet<slm_indicator_members::symptom>,
+    {
         SlmIndicator {
             status: self.status.unwrap(),
             symptom: self.symptom.unwrap(),
@@ -7202,26 +6897,26 @@ impl SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SlmIndicator
+impl<S0, S1> crate::typed::builder::Build for SlmIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<slm_indicator_members::symptom>,
 {
-    fn from(
-        builder: SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SlmIndicator;
+
+    fn build(self) -> SlmIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1> SlmIndicatorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> SlmIndicator { match status {} }
-}
-
-impl SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `symptom` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, symptom: crate::typed::builder::MissingRequiredField) -> SlmIndicator { match symptom {} }
+impl<S0, S1> From<SlmIndicatorBuilder<(S0, S1)>> for SlmIndicator
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_members::status>,
+    S1: crate::typed::builder::IsSet<slm_indicator_members::symptom>,
+{
+    fn from(builder: SlmIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7234,21 +6929,28 @@ pub struct SlmIndicatorDetails {
 
 impl SlmIndicatorDetails {
     /// Creates a builder for [`SlmIndicatorDetails`].
+    ///
+    /// Required: `slm_status`, `policies`.
     pub fn builder() -> SlmIndicatorDetailsBuilder {
         SlmIndicatorDetailsBuilder::new()
     }
 
     /// Creates a [`SlmIndicatorDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SlmIndicatorDetailsBuilder,
-        ) -> SlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `slm_status`, `policies`.
+    pub fn of<B: crate::typed::builder::Build<Output = SlmIndicatorDetails>>(
+        f: impl FnOnce(SlmIndicatorDetailsBuilder) -> B,
     ) -> SlmIndicatorDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SlmIndicatorDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod slm_indicator_details_members {
+    pub struct slm_status;
+    pub struct policies;
 }
 
 /// Builder for [`SlmIndicatorDetails`].
@@ -7298,17 +7000,18 @@ impl<S0, S1> SlmIndicatorDetailsBuilder<(S0, S1)> {
     }
 
     /// Sets [`unhealthy_policies`](Self::unhealthy_policies) with a builder.
-    pub fn unhealthy_policies_with(
+    pub fn unhealthy_policies_with<
+        B: crate::typed::builder::Build<Output = SlmIndicatorUnhealthyPolicies>,
+    >(
         self,
-        f: impl FnOnce(
-            SlmIndicatorUnhealthyPoliciesBuilder,
-        ) -> SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SlmIndicatorUnhealthyPoliciesBuilder) -> B,
     ) -> Self {
         self.unhealthy_policies(f(SlmIndicatorUnhealthyPoliciesBuilder::new()).build())
     }
 }
 
 impl<S1> SlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn slm_status(
         self,
         value: impl Into<crate::typed::_types::LifecycleOperationMode>,
@@ -7320,6 +7023,7 @@ impl<S1> SlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SlmIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn policies(
         self,
         value: i64,
@@ -7330,9 +7034,13 @@ impl<S0> SlmIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SlmIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SlmIndicatorDetailsBuilder<(S0, S1)> {
     /// Builds a [`SlmIndicatorDetails`].
-    pub fn build(self) -> SlmIndicatorDetails {
+    pub fn build(self) -> SlmIndicatorDetails
+    where
+        S0: crate::typed::builder::IsSet<slm_indicator_details_members::slm_status>,
+        S1: crate::typed::builder::IsSet<slm_indicator_details_members::policies>,
+    {
         SlmIndicatorDetails {
             slm_status: self.slm_status.unwrap(),
             policies: self.policies.unwrap(),
@@ -7341,29 +7049,26 @@ impl SlmIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<SlmIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SlmIndicatorDetails
+impl<S0, S1> crate::typed::builder::Build for SlmIndicatorDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_details_members::slm_status>,
+    S1: crate::typed::builder::IsSet<slm_indicator_details_members::policies>,
 {
-    fn from(
-        builder: SlmIndicatorDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SlmIndicatorDetails;
+
+    fn build(self) -> SlmIndicatorDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> SlmIndicatorDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `slm_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, slm_status: crate::typed::builder::MissingRequiredField) -> SlmIndicatorDetails { match slm_status {} }
-}
-
-impl SlmIndicatorDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `policies` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policies: crate::typed::builder::MissingRequiredField) -> SlmIndicatorDetails { match policies {} }
+impl<S0, S1> From<SlmIndicatorDetailsBuilder<(S0, S1)>> for SlmIndicatorDetails
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_details_members::slm_status>,
+    S1: crate::typed::builder::IsSet<slm_indicator_details_members::policies>,
+{
+    fn from(builder: SlmIndicatorDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7375,18 +7080,27 @@ pub struct SlmIndicatorUnhealthyPolicies {
 
 impl SlmIndicatorUnhealthyPolicies {
     /// Creates a builder for [`SlmIndicatorUnhealthyPolicies`].
+    ///
+    /// Required: `count`.
     pub fn builder() -> SlmIndicatorUnhealthyPoliciesBuilder {
         SlmIndicatorUnhealthyPoliciesBuilder::new()
     }
 
     /// Creates a [`SlmIndicatorUnhealthyPolicies`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SlmIndicatorUnhealthyPoliciesBuilder,
-        ) -> SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SlmIndicatorUnhealthyPolicies>>(
+        f: impl FnOnce(SlmIndicatorUnhealthyPoliciesBuilder) -> B,
     ) -> SlmIndicatorUnhealthyPolicies {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SlmIndicatorUnhealthyPoliciesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod slm_indicator_unhealthy_policies_members {
+    pub struct count;
 }
 
 /// Builder for [`SlmIndicatorUnhealthyPolicies`].
@@ -7447,6 +7161,7 @@ impl<S0> SlmIndicatorUnhealthyPoliciesBuilder<(S0,)> {
 }
 
 impl SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -7457,9 +7172,12 @@ impl SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SlmIndicatorUnhealthyPoliciesBuilder<(S0,)> {
     /// Builds a [`SlmIndicatorUnhealthyPolicies`].
-    pub fn build(self) -> SlmIndicatorUnhealthyPolicies {
+    pub fn build(self) -> SlmIndicatorUnhealthyPolicies
+    where
+        S0: crate::typed::builder::IsSet<slm_indicator_unhealthy_policies_members::count>,
+    {
         SlmIndicatorUnhealthyPolicies {
             count: self.count.unwrap(),
             invocations_since_last_success: self.invocations_since_last_success,
@@ -7467,18 +7185,24 @@ impl SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)>>
-    for SlmIndicatorUnhealthyPolicies
+impl<S0> crate::typed::builder::Build for SlmIndicatorUnhealthyPoliciesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_unhealthy_policies_members::count>,
 {
-    fn from(builder: SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SlmIndicatorUnhealthyPolicies;
+
+    fn build(self) -> SlmIndicatorUnhealthyPolicies {
+        Self::build(self)
     }
 }
 
-impl SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> SlmIndicatorUnhealthyPolicies { match count {} }
+impl<S0> From<SlmIndicatorUnhealthyPoliciesBuilder<(S0,)>> for SlmIndicatorUnhealthyPolicies
+where
+    S0: crate::typed::builder::IsSet<slm_indicator_unhealthy_policies_members::count>,
+{
+    fn from(builder: SlmIndicatorUnhealthyPoliciesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7490,22 +7214,29 @@ pub struct StagnatingBackingIndices {
 
 impl StagnatingBackingIndices {
     /// Creates a builder for [`StagnatingBackingIndices`].
+    ///
+    /// Required: `index_name`, `first_occurrence_timestamp`, `retry_count`.
     pub fn builder() -> StagnatingBackingIndicesBuilder {
         StagnatingBackingIndicesBuilder::new()
     }
 
     /// Creates a [`StagnatingBackingIndices`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StagnatingBackingIndicesBuilder,
-        ) -> StagnatingBackingIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_name`, `first_occurrence_timestamp`, `retry_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = StagnatingBackingIndices>>(
+        f: impl FnOnce(StagnatingBackingIndicesBuilder) -> B,
     ) -> StagnatingBackingIndices {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StagnatingBackingIndicesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stagnating_backing_indices_members {
+    pub struct index_name;
+    pub struct first_occurrence_timestamp;
+    pub struct retry_count;
 }
 
 /// Builder for [`StagnatingBackingIndices`].
@@ -7552,6 +7283,7 @@ impl<S0, S1, S2> StagnatingBackingIndicesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> StagnatingBackingIndicesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index_name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -7563,6 +7295,7 @@ impl<S1, S2> StagnatingBackingIndicesBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2> StagnatingBackingIndicesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn first_occurrence_timestamp(
         self,
         value: i64,
@@ -7574,6 +7307,7 @@ impl<S0, S2> StagnatingBackingIndicesBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1> StagnatingBackingIndicesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn retry_count(
         self,
         value: i32,
@@ -7584,15 +7318,16 @@ impl<S0, S1> StagnatingBackingIndicesBuilder<(S0, S1, crate::typed::builder::Not
     }
 }
 
-impl
-    StagnatingBackingIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> StagnatingBackingIndicesBuilder<(S0, S1, S2)> {
     /// Builds a [`StagnatingBackingIndices`].
-    pub fn build(self) -> StagnatingBackingIndices {
+    pub fn build(self) -> StagnatingBackingIndices
+    where
+        S0: crate::typed::builder::IsSet<stagnating_backing_indices_members::index_name>,
+        S1: crate::typed::builder::IsSet<
+            stagnating_backing_indices_members::first_occurrence_timestamp,
+        >,
+        S2: crate::typed::builder::IsSet<stagnating_backing_indices_members::retry_count>,
+    {
         StagnatingBackingIndices {
             index_name: self.index_name.unwrap(),
             first_occurrence_timestamp: self.first_occurrence_timestamp.unwrap(),
@@ -7601,52 +7336,30 @@ impl
     }
 }
 
-impl
-    From<
-        StagnatingBackingIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StagnatingBackingIndices
+impl<S0, S1, S2> crate::typed::builder::Build for StagnatingBackingIndicesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<stagnating_backing_indices_members::index_name>,
+    S1: crate::typed::builder::IsSet<
+        stagnating_backing_indices_members::first_occurrence_timestamp,
+    >,
+    S2: crate::typed::builder::IsSet<stagnating_backing_indices_members::retry_count>,
 {
-    fn from(
-        builder: StagnatingBackingIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StagnatingBackingIndices;
+
+    fn build(self) -> StagnatingBackingIndices {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> StagnatingBackingIndicesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_name: crate::typed::builder::MissingRequiredField) -> StagnatingBackingIndices { match index_name {} }
-}
-
-impl<S2>
-    StagnatingBackingIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<StagnatingBackingIndicesBuilder<(S0, S1, S2)>> for StagnatingBackingIndices
+where
+    S0: crate::typed::builder::IsSet<stagnating_backing_indices_members::index_name>,
+    S1: crate::typed::builder::IsSet<
+        stagnating_backing_indices_members::first_occurrence_timestamp,
+    >,
+    S2: crate::typed::builder::IsSet<stagnating_backing_indices_members::retry_count>,
 {
-    /// `first_occurrence_timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, first_occurrence_timestamp: crate::typed::builder::MissingRequiredField) -> StagnatingBackingIndices { match first_occurrence_timestamp {} }
-}
-
-impl
-    StagnatingBackingIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `retry_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, retry_count: crate::typed::builder::MissingRequiredField) -> StagnatingBackingIndices { match retry_count {} }
+    fn from(builder: StagnatingBackingIndicesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

@@ -106,7 +106,9 @@ impl DatafeedsRecord {
     }
 
     /// Creates a [`DatafeedsRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DatafeedsRecordBuilder) -> DatafeedsRecordBuilder) -> DatafeedsRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = DatafeedsRecord>>(
+        f: impl FnOnce(DatafeedsRecordBuilder) -> B,
+    ) -> DatafeedsRecord {
         f(Self::builder()).build()
     }
 }
@@ -317,6 +319,14 @@ impl DatafeedsRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DatafeedsRecordBuilder {
+    type Output = DatafeedsRecord;
+
+    fn build(self) -> DatafeedsRecord {
+        Self::build(self)
+    }
+}
+
 impl From<DatafeedsRecordBuilder> for DatafeedsRecord {
     fn from(builder: DatafeedsRecordBuilder) -> Self {
         builder.build()
@@ -379,7 +389,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -542,6 +554,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

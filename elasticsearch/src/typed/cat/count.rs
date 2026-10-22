@@ -38,7 +38,9 @@ impl CountRecord {
     }
 
     /// Creates a [`CountRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CountRecordBuilder) -> CountRecordBuilder) -> CountRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = CountRecord>>(
+        f: impl FnOnce(CountRecordBuilder) -> B,
+    ) -> CountRecord {
         f(Self::builder()).build()
     }
 }
@@ -116,6 +118,14 @@ impl CountRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CountRecordBuilder {
+    type Output = CountRecord;
+
+    fn build(self) -> CountRecord {
+        Self::build(self)
+    }
+}
+
 impl From<CountRecordBuilder> for CountRecord {
     fn from(builder: CountRecordBuilder) -> Self {
         builder.build()
@@ -180,7 +190,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -352,6 +364,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             project_routing: self.project_routing,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

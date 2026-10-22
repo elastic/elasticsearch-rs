@@ -9,21 +9,28 @@ pub struct Acknowledgement {
 
 impl Acknowledgement {
     /// Creates a builder for [`Acknowledgement`].
+    ///
+    /// Required: `license`, `message`.
     pub fn builder() -> AcknowledgementBuilder {
         AcknowledgementBuilder::new()
     }
 
     /// Creates a [`Acknowledgement`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AcknowledgementBuilder,
-        ) -> AcknowledgementBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `license`, `message`.
+    pub fn of<B: crate::typed::builder::Build<Output = Acknowledgement>>(
+        f: impl FnOnce(AcknowledgementBuilder) -> B,
     ) -> Acknowledgement {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AcknowledgementBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod acknowledgement_members {
+    pub struct license;
+    pub struct message;
 }
 
 /// Builder for [`Acknowledgement`].
@@ -57,6 +64,7 @@ impl<S0, S1> AcknowledgementBuilder<(S0, S1)> {
 }
 
 impl<S1> AcknowledgementBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn license(
         self,
         value: impl Into<Vec<String>>,
@@ -91,6 +99,7 @@ impl<S1> AcknowledgementBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> AcknowledgementBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn message(
         self,
         value: impl Into<String>,
@@ -101,9 +110,13 @@ impl<S0> AcknowledgementBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AcknowledgementBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AcknowledgementBuilder<(S0, S1)> {
     /// Builds a [`Acknowledgement`].
-    pub fn build(self) -> Acknowledgement {
+    pub fn build(self) -> Acknowledgement
+    where
+        S0: crate::typed::builder::IsSet<acknowledgement_members::license>,
+        S1: crate::typed::builder::IsSet<acknowledgement_members::message>,
+    {
         Acknowledgement {
             license: self.license.unwrap(),
             message: self.message.unwrap(),
@@ -111,26 +124,26 @@ impl AcknowledgementBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<AcknowledgementBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for Acknowledgement
+impl<S0, S1> crate::typed::builder::Build for AcknowledgementBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<acknowledgement_members::license>,
+    S1: crate::typed::builder::IsSet<acknowledgement_members::message>,
 {
-    fn from(
-        builder: AcknowledgementBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = Acknowledgement;
+
+    fn build(self) -> Acknowledgement {
+        Self::build(self)
     }
 }
 
-impl<S1> AcknowledgementBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `license` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, license: crate::typed::builder::MissingRequiredField) -> Acknowledgement { match license {} }
-}
-
-impl AcknowledgementBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> Acknowledgement { match message {} }
+impl<S0, S1> From<AcknowledgementBuilder<(S0, S1)>> for Acknowledgement
+where
+    S0: crate::typed::builder::IsSet<acknowledgement_members::license>,
+    S1: crate::typed::builder::IsSet<acknowledgement_members::message>,
+{
+    fn from(builder: AcknowledgementBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`license.post`](crate::typed::license::LicenseClient::post).
@@ -182,7 +195,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -326,19 +341,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`license`](Self::license) with a builder.
-    pub fn license_with(
+    pub fn license_with<
+        B: crate::typed::builder::Build<Output = crate::typed::license::_types::License>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::license::_types::LicenseBuilder,
-        ) -> crate::typed::license::_types::LicenseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::license::_types::LicenseBuilder) -> B,
     ) -> Self {
         self.license(f(crate::typed::license::_types::LicenseBuilder::new()).build())
     }
@@ -373,19 +380,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`licenses`](Self::licenses), with a builder.
-    pub fn add_licenses_with(
+    pub fn add_licenses_with<
+        B: crate::typed::builder::Build<Output = crate::typed::license::_types::License>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::license::_types::LicenseBuilder,
-        ) -> crate::typed::license::_types::LicenseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::license::_types::LicenseBuilder) -> B,
     ) -> Self {
         self.add_licenses(f(crate::typed::license::_types::LicenseBuilder::new()).build())
     }
@@ -405,6 +404,14 @@ impl<C> RequestBuilder<(), C> {
             license: self.license,
             licenses: self.licenses,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

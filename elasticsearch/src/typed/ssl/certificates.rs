@@ -45,26 +45,33 @@ impl From<&str> for CertificateInformationAlias {
 
 impl CertificateInformation {
     /// Creates a builder for [`CertificateInformation`].
+    ///
+    /// Required: `alias`, `expiry`, `format`, `has_private_key`, `path`, `serial_number`, `subject_dn`.
     pub fn builder() -> CertificateInformationBuilder {
         CertificateInformationBuilder::new()
     }
 
     /// Creates a [`CertificateInformation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CertificateInformationBuilder,
-        ) -> CertificateInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `alias`, `expiry`, `format`, `has_private_key`, `path`, `serial_number`, `subject_dn`.
+    pub fn of<B: crate::typed::builder::Build<Output = CertificateInformation>>(
+        f: impl FnOnce(CertificateInformationBuilder) -> B,
     ) -> CertificateInformation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CertificateInformationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod certificate_information_members {
+    pub struct alias;
+    pub struct expiry;
+    pub struct format;
+    pub struct has_private_key;
+    pub struct path;
+    pub struct serial_number;
+    pub struct subject_dn;
 }
 
 /// Builder for [`CertificateInformation`].
@@ -148,7 +155,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> CertificateInformationBuilder<(S0, S1, S2, S3, 
 impl<S1, S2, S3, S4, S5, S6>
     CertificateInformationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
-    /// If the path refers to a container file (a jks keystore, or a PKCS#12 file), it is the alias of the certificate.
+    /// **Required.** If the path refers to a container file (a jks keystore, or a PKCS#12 file), it is the alias of the certificate.
     /// Otherwise, it is null.
     pub fn alias(
         self,
@@ -163,7 +170,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     CertificateInformationBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
-    /// The ISO formatted date of the certificate's expiry (not-after) date.
+    /// **Required.** The ISO formatted date of the certificate's expiry (not-after) date.
     pub fn expiry(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -177,7 +184,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     CertificateInformationBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
-    /// The format of the file.
+    /// **Required.** The format of the file.
     /// Valid values include `jks`, `PKCS12`, and `PEM`.
     pub fn format(
         self,
@@ -192,7 +199,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     CertificateInformationBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
-    /// Indicates whether Elasticsearch has access to the private key for this certificate.
+    /// **Required.** Indicates whether Elasticsearch has access to the private key for this certificate.
     pub fn has_private_key(
         self,
         value: bool,
@@ -206,7 +213,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     CertificateInformationBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
-    /// The path to the certificate, as configured in the `elasticsearch.yml` file.
+    /// **Required.** The path to the certificate, as configured in the `elasticsearch.yml` file.
     pub fn path(
         self,
         value: impl Into<String>,
@@ -220,7 +227,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     CertificateInformationBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
-    /// The hexadecimal representation of the certificate's serial number.
+    /// **Required.** The hexadecimal representation of the certificate's serial number.
     pub fn serial_number(
         self,
         value: impl Into<String>,
@@ -234,7 +241,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     CertificateInformationBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
-    /// The Distinguished Name of the certificate's subject.
+    /// **Required.** The Distinguished Name of the certificate's subject.
     pub fn subject_dn(
         self,
         value: impl Into<String>,
@@ -245,19 +252,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> CertificateInformationBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`CertificateInformation`].
-    pub fn build(self) -> CertificateInformation {
+    pub fn build(self) -> CertificateInformation
+    where
+        S0: crate::typed::builder::IsSet<certificate_information_members::alias>,
+        S1: crate::typed::builder::IsSet<certificate_information_members::expiry>,
+        S2: crate::typed::builder::IsSet<certificate_information_members::format>,
+        S3: crate::typed::builder::IsSet<certificate_information_members::has_private_key>,
+        S4: crate::typed::builder::IsSet<certificate_information_members::path>,
+        S5: crate::typed::builder::IsSet<certificate_information_members::serial_number>,
+        S6: crate::typed::builder::IsSet<certificate_information_members::subject_dn>,
+    {
         CertificateInformation {
             alias: self.alias.unwrap(),
             expiry: self.expiry.unwrap(),
@@ -271,136 +277,38 @@ impl
     }
 }
 
-impl
-    From<
-        CertificateInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CertificateInformation
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for CertificateInformationBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<certificate_information_members::alias>,
+    S1: crate::typed::builder::IsSet<certificate_information_members::expiry>,
+    S2: crate::typed::builder::IsSet<certificate_information_members::format>,
+    S3: crate::typed::builder::IsSet<certificate_information_members::has_private_key>,
+    S4: crate::typed::builder::IsSet<certificate_information_members::path>,
+    S5: crate::typed::builder::IsSet<certificate_information_members::serial_number>,
+    S6: crate::typed::builder::IsSet<certificate_information_members::subject_dn>,
 {
-    fn from(
-        builder: CertificateInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CertificateInformation;
+
+    fn build(self) -> CertificateInformation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    CertificateInformationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<CertificateInformationBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for CertificateInformation
+where
+    S0: crate::typed::builder::IsSet<certificate_information_members::alias>,
+    S1: crate::typed::builder::IsSet<certificate_information_members::expiry>,
+    S2: crate::typed::builder::IsSet<certificate_information_members::format>,
+    S3: crate::typed::builder::IsSet<certificate_information_members::has_private_key>,
+    S4: crate::typed::builder::IsSet<certificate_information_members::path>,
+    S5: crate::typed::builder::IsSet<certificate_information_members::serial_number>,
+    S6: crate::typed::builder::IsSet<certificate_information_members::subject_dn>,
 {
-    /// `alias` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, alias: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match alias {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `expiry` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiry: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match expiry {} }
-}
-
-impl<S3, S4, S5, S6>
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `format` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, format: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match format {} }
-}
-
-impl<S4, S5, S6>
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `has_private_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, has_private_key: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match has_private_key {} }
-}
-
-impl<S5, S6>
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match path {} }
-}
-
-impl<S6>
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `serial_number` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, serial_number: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match serial_number {} }
-}
-
-impl
-    CertificateInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `subject_dn` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, subject_dn: crate::typed::builder::MissingRequiredField) -> CertificateInformation { match subject_dn {} }
+    fn from(builder: CertificateInformationBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ssl.certificates`](crate::typed::ssl::SslClient::certificates).
@@ -450,7 +358,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -545,6 +455,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

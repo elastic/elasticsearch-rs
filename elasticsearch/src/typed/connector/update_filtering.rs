@@ -36,16 +36,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `connector_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `connector_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct connector_id;
 }
 
 /// Builder for [`Request`].
@@ -180,14 +191,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`filtering`](Self::filtering), with a builder.
-    pub fn add_filtering_with(
+    pub fn add_filtering_with<
+        B: crate::typed::builder::Build<Output = crate::typed::connector::_types::FilteringConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::connector::_types::FilteringConfigBuilder,
-        ) -> crate::typed::connector::_types::FilteringConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::connector::_types::FilteringConfigBuilder) -> B,
     ) -> Self {
         self.add_filtering(
             f(crate::typed::connector::_types::FilteringConfigBuilder::new()).build(),
@@ -223,18 +231,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`rules`](Self::rules), with a builder.
-    pub fn add_rules_with(
+    pub fn add_rules_with<
+        B: crate::typed::builder::Build<Output = crate::typed::connector::_types::FilteringRule>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::connector::_types::FilteringRuleBuilder,
-        ) -> crate::typed::connector::_types::FilteringRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::connector::_types::FilteringRuleBuilder) -> B,
     ) -> Self {
         self.add_rules(f(crate::typed::connector::_types::FilteringRuleBuilder::new()).build())
     }
@@ -257,13 +258,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`advanced_snippet`](Self::advanced_snippet) with a builder.
-    pub fn advanced_snippet_with(
+    pub fn advanced_snippet_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::connector::_types::FilteringAdvancedSnippet,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::connector::_types::FilteringAdvancedSnippetBuilder,
-        ) -> crate::typed::connector::_types::FilteringAdvancedSnippetBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::connector::_types::FilteringAdvancedSnippetBuilder) -> B,
     ) -> Self {
         self.advanced_snippet(
             f(crate::typed::connector::_types::FilteringAdvancedSnippetBuilder::new()).build(),
@@ -272,7 +273,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The unique identifier of the connector to be updated
+    /// **Required.** The unique identifier of the connector to be updated
     pub fn connector_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -283,9 +284,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_id>,
+    {
         Request {
             connector_id: self.connector_id.unwrap(),
             error_trace: self.error_trace,
@@ -299,23 +303,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::connector_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `connector_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connector_id: crate::typed::builder::MissingRequiredField) -> Request { match connector_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `connector_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, connector_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match connector_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

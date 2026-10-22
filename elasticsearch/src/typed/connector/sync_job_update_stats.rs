@@ -48,26 +48,30 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `connector_sync_job_id`, `deleted_document_count`, `indexed_document_count`, `indexed_document_volume`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `connector_sync_job_id`, `deleted_document_count`, `indexed_document_count`, `indexed_document_volume`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct connector_sync_job_id;
+    pub struct deleted_document_count;
+    pub struct indexed_document_count;
+    pub struct indexed_document_volume;
 }
 
 /// Builder for [`Request`].
@@ -250,7 +254,7 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
 }
 
 impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// The unique identifier of the connector sync job.
+    /// **Required.** The unique identifier of the connector sync job.
     pub fn connector_sync_job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -262,7 +266,7 @@ impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), 
 }
 
 impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), C> {
-    /// The number of documents the sync job deleted.
+    /// **Required.** The number of documents the sync job deleted.
     pub fn deleted_document_count(
         self,
         value: i64,
@@ -274,7 +278,7 @@ impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), 
 }
 
 impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), C> {
-    /// The number of documents the sync job indexed.
+    /// **Required.** The number of documents the sync job indexed.
     pub fn indexed_document_count(
         self,
         value: i64,
@@ -286,7 +290,7 @@ impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), 
 }
 
 impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), C> {
-    /// The total size of the data (in MiB) the sync job indexed.
+    /// **Required.** The total size of the data (in MiB) the sync job indexed.
     pub fn indexed_document_volume(
         self,
         value: i64,
@@ -297,19 +301,15 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), 
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_sync_job_id>,
+        S1: crate::typed::builder::IsSet<request_members::deleted_document_count>,
+        S2: crate::typed::builder::IsSet<request_members::indexed_document_count>,
+        S3: crate::typed::builder::IsSet<request_members::indexed_document_volume>,
+    {
         Request {
             connector_sync_job_id: self.connector_sync_job_id.unwrap(),
             error_trace: self.error_trace,
@@ -326,128 +326,32 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::connector_sync_job_id>,
+    S1: crate::typed::builder::IsSet<request_members::deleted_document_count>,
+    S2: crate::typed::builder::IsSet<request_members::indexed_document_count>,
+    S3: crate::typed::builder::IsSet<request_members::indexed_document_volume>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// `connector_sync_job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connector_sync_job_id: crate::typed::builder::MissingRequiredField) -> Request { match connector_sync_job_id {} }
-}
-impl<S1, S2, S3>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), &crate::Elasticsearch>
-{
-    /// `connector_sync_job_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, connector_sync_job_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match connector_sync_job_id {} }
-}
-
-impl<S2, S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `deleted_document_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted_document_count: crate::typed::builder::MissingRequiredField) -> Request { match deleted_document_count {} }
-}
-impl<S2, S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `deleted_document_count` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, deleted_document_count: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match deleted_document_count {} }
-}
-
-impl<S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `indexed_document_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indexed_document_count: crate::typed::builder::MissingRequiredField) -> Request { match indexed_document_count {} }
-}
-impl<S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `indexed_document_count` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, indexed_document_count: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match indexed_document_count {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `indexed_document_volume` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indexed_document_volume: crate::typed::builder::MissingRequiredField) -> Request { match indexed_document_volume {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `indexed_document_volume` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, indexed_document_volume: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match indexed_document_volume {} }
+impl<S0, S1, S2, S3> RequestBuilder<(S0, S1, S2, S3), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_sync_job_id>,
+        S1: crate::typed::builder::IsSet<request_members::deleted_document_count>,
+        S2: crate::typed::builder::IsSet<request_members::indexed_document_count>,
+        S3: crate::typed::builder::IsSet<request_members::indexed_document_volume>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

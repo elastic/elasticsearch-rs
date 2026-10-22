@@ -65,7 +65,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -237,12 +239,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`role_descriptors`](Self::role_descriptors), with a builder.
-    pub fn add_role_descriptors_with(
+    pub fn add_role_descriptors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::RoleDescriptor>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::security::_types::RoleDescriptorBuilder,
-        ) -> crate::typed::security::_types::RoleDescriptorBuilder,
+        f: impl FnOnce(crate::typed::security::_types::RoleDescriptorBuilder) -> B,
     ) -> Self {
         self.add_role_descriptors(
             key,
@@ -289,6 +291,14 @@ impl<C> RequestBuilder<(), C> {
             role_descriptors: self.role_descriptors,
             metadata: self.metadata,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

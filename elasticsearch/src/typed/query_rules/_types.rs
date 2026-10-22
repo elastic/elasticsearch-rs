@@ -40,23 +40,30 @@ impl From<Vec<QueryRuleCriteria>> for QueryRuleCriteria2 {
 
 impl QueryRule {
     /// Creates a builder for [`QueryRule`].
+    ///
+    /// Required: `rule_id`, `type`, `criteria`, `actions`.
     pub fn builder() -> QueryRuleBuilder {
         QueryRuleBuilder::new()
     }
 
     /// Creates a [`QueryRule`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryRuleBuilder,
-        ) -> QueryRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `rule_id`, `type`, `criteria`, `actions`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRule>>(
+        f: impl FnOnce(QueryRuleBuilder) -> B,
     ) -> QueryRule {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryRuleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_rule_members {
+    pub struct rule_id;
+    pub struct r#type;
+    pub struct criteria;
+    pub struct actions;
 }
 
 /// Builder for [`QueryRule`].
@@ -122,7 +129,7 @@ impl<S0, S1, S2, S3> QueryRuleBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> QueryRuleBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// A unique identifier for the rule.
+    /// **Required.** A unique identifier for the rule.
     pub fn rule_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -134,7 +141,7 @@ impl<S1, S2, S3> QueryRuleBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> QueryRuleBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The type of rule.
+    /// **Required.** The type of rule.
     /// `pinned` will identify and pin specific documents to the top of search results.
     /// `exclude` will exclude specific documents from search results.
     pub fn r#type(
@@ -148,7 +155,7 @@ impl<S0, S2, S3> QueryRuleBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
 }
 
 impl<S0, S1, S3> QueryRuleBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The criteria that must be met for the rule to be applied.
+    /// **Required.** The criteria that must be met for the rule to be applied.
     /// If multiple criteria are specified for a rule, all criteria must be met for the rule to be applied.
     pub fn criteria(
         self,
@@ -161,7 +168,7 @@ impl<S0, S1, S3> QueryRuleBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
 }
 
 impl<S0, S1, S2> QueryRuleBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The actions to take when the rule is matched.
+    /// **Required.** The actions to take when the rule is matched.
     /// The format of this action depends on the rule type.
     pub fn actions(
         self,
@@ -173,24 +180,23 @@ impl<S0, S1, S2> QueryRuleBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`actions`](Self::actions) with a builder.
-    pub fn actions_with(
+    pub fn actions_with<B: crate::typed::builder::Build<Output = QueryRuleActions>>(
         self,
-        f: impl FnOnce(QueryRuleActionsBuilder) -> QueryRuleActionsBuilder,
+        f: impl FnOnce(QueryRuleActionsBuilder) -> B,
     ) -> QueryRuleBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.actions(f(QueryRuleActionsBuilder::new()).build())
     }
 }
 
-impl
-    QueryRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> QueryRuleBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`QueryRule`].
-    pub fn build(self) -> QueryRule {
+    pub fn build(self) -> QueryRule
+    where
+        S0: crate::typed::builder::IsSet<query_rule_members::rule_id>,
+        S1: crate::typed::builder::IsSet<query_rule_members::r#type>,
+        S2: crate::typed::builder::IsSet<query_rule_members::criteria>,
+        S3: crate::typed::builder::IsSet<query_rule_members::actions>,
+    {
         QueryRule {
             rule_id: self.rule_id.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -201,71 +207,30 @@ impl
     }
 }
 
-impl
-    From<
-        QueryRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for QueryRule
+impl<S0, S1, S2, S3> crate::typed::builder::Build for QueryRuleBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<query_rule_members::rule_id>,
+    S1: crate::typed::builder::IsSet<query_rule_members::r#type>,
+    S2: crate::typed::builder::IsSet<query_rule_members::criteria>,
+    S3: crate::typed::builder::IsSet<query_rule_members::actions>,
 {
-    fn from(
-        builder: QueryRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = QueryRule;
+
+    fn build(self) -> QueryRule {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> QueryRuleBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `rule_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_id: crate::typed::builder::MissingRequiredField) -> QueryRule { match rule_id {} }
-}
-
-impl<S2, S3>
-    QueryRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<QueryRuleBuilder<(S0, S1, S2, S3)>> for QueryRule
+where
+    S0: crate::typed::builder::IsSet<query_rule_members::rule_id>,
+    S1: crate::typed::builder::IsSet<query_rule_members::r#type>,
+    S2: crate::typed::builder::IsSet<query_rule_members::criteria>,
+    S3: crate::typed::builder::IsSet<query_rule_members::actions>,
 {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> QueryRule { match r#type {} }
-}
-
-impl<S3>
-    QueryRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `criteria` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, criteria: crate::typed::builder::MissingRequiredField) -> QueryRule { match criteria {} }
-}
-
-impl
-    QueryRuleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `actions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actions: crate::typed::builder::MissingRequiredField) -> QueryRule { match actions {} }
+    fn from(builder: QueryRuleBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -292,8 +257,8 @@ impl QueryRuleActions {
     }
 
     /// Creates a [`QueryRuleActions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(QueryRuleActionsBuilder) -> QueryRuleActionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRuleActions>>(
+        f: impl FnOnce(QueryRuleActionsBuilder) -> B,
     ) -> QueryRuleActions {
         f(Self::builder()).build()
     }
@@ -373,13 +338,11 @@ impl QueryRuleActionsBuilder {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::PinnedDoc>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::PinnedDocBuilder,
-        ) -> crate::typed::_types::query_dsl::PinnedDocBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::PinnedDocBuilder) -> B,
     ) -> Self {
         self.add_docs(f(crate::typed::_types::query_dsl::PinnedDocBuilder::new()).build())
     }
@@ -392,6 +355,14 @@ impl QueryRuleActionsBuilder {
             ids: self.ids,
             docs: self.docs,
         }
+    }
+}
+
+impl crate::typed::builder::Build for QueryRuleActionsBuilder {
+    type Output = QueryRuleActions;
+
+    fn build(self) -> QueryRuleActions {
+        Self::build(self)
     }
 }
 
@@ -430,18 +401,27 @@ pub struct QueryRuleCriteria {
 
 impl QueryRuleCriteria {
     /// Creates a builder for [`QueryRuleCriteria`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> QueryRuleCriteriaBuilder {
         QueryRuleCriteriaBuilder::new()
     }
 
     /// Creates a [`QueryRuleCriteria`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryRuleCriteriaBuilder,
-        ) -> QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRuleCriteria>>(
+        f: impl FnOnce(QueryRuleCriteriaBuilder) -> B,
     ) -> QueryRuleCriteria {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryRuleCriteriaBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_rule_criteria_members {
+    pub struct r#type;
 }
 
 /// Builder for [`QueryRuleCriteria`].
@@ -512,7 +492,7 @@ impl<S0> QueryRuleCriteriaBuilder<(S0,)> {
 }
 
 impl QueryRuleCriteriaBuilder<(crate::typed::builder::NotSet,)> {
-    /// The type of criteria. The following criteria types are supported:
+    /// **Required.** The type of criteria. The following criteria types are supported:
     ///
     /// * `always`: Matches all queries, regardless of input.
     /// * `contains`: Matches that contain this value anywhere in the field meet the criteria defined by the rule. Only applicable for string values.
@@ -534,9 +514,12 @@ impl QueryRuleCriteriaBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)> {
+impl<S0> QueryRuleCriteriaBuilder<(S0,)> {
     /// Builds a [`QueryRuleCriteria`].
-    pub fn build(self) -> QueryRuleCriteria {
+    pub fn build(self) -> QueryRuleCriteria
+    where
+        S0: crate::typed::builder::IsSet<query_rule_criteria_members::r#type>,
+    {
         QueryRuleCriteria {
             r#type: self.r#type.unwrap(),
             metadata: self.metadata,
@@ -545,16 +528,24 @@ impl QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)>> for QueryRuleCriteria {
-    fn from(builder: QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for QueryRuleCriteriaBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<query_rule_criteria_members::r#type>,
+{
+    type Output = QueryRuleCriteria;
+
+    fn build(self) -> QueryRuleCriteria {
+        Self::build(self)
     }
 }
 
-impl QueryRuleCriteriaBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> QueryRuleCriteria { match r#type {} }
+impl<S0> From<QueryRuleCriteriaBuilder<(S0,)>> for QueryRuleCriteria
+where
+    S0: crate::typed::builder::IsSet<query_rule_criteria_members::r#type>,
+{
+    fn from(builder: QueryRuleCriteriaBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -601,19 +592,28 @@ pub struct QueryRuleset {
 
 impl QueryRuleset {
     /// Creates a builder for [`QueryRuleset`].
+    ///
+    /// Required: `ruleset_id`, `rules`.
     pub fn builder() -> QueryRulesetBuilder {
         QueryRulesetBuilder::new()
     }
 
     /// Creates a [`QueryRuleset`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryRulesetBuilder,
-        )
-            -> QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `ruleset_id`, `rules`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRuleset>>(
+        f: impl FnOnce(QueryRulesetBuilder) -> B,
     ) -> QueryRuleset {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryRulesetBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_ruleset_members {
+    pub struct ruleset_id;
+    pub struct rules;
 }
 
 /// Builder for [`QueryRuleset`].
@@ -645,7 +645,7 @@ impl<S0, S1> QueryRulesetBuilder<(S0, S1)> {
 }
 
 impl<S1> QueryRulesetBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A unique identifier for the ruleset.
+    /// **Required.** A unique identifier for the ruleset.
     pub fn ruleset_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -657,7 +657,7 @@ impl<S1> QueryRulesetBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> QueryRulesetBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Rules associated with the query ruleset.
+    /// **Required.** Rules associated with the query ruleset.
     pub fn rules(
         self,
         value: impl Into<Vec<QueryRule>>,
@@ -681,16 +681,9 @@ impl<S0> QueryRulesetBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`rules`](Self::rules), with a builder.
-    pub fn add_rules_with(
+    pub fn add_rules_with<B: crate::typed::builder::Build<Output = QueryRule>>(
         self,
-        f: impl FnOnce(
-            QueryRuleBuilder,
-        ) -> QueryRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(QueryRuleBuilder) -> B,
     ) -> QueryRulesetBuilder<(S0, crate::typed::builder::Set)> {
         self.add_rules(f(QueryRuleBuilder::new()).build())
     }
@@ -706,24 +699,21 @@ impl<S0> QueryRulesetBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`rules`](Self::rules), with a builder.
-    pub fn add_rules_with(
+    pub fn add_rules_with<B: crate::typed::builder::Build<Output = QueryRule>>(
         self,
-        f: impl FnOnce(
-            QueryRuleBuilder,
-        ) -> QueryRuleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(QueryRuleBuilder) -> B,
     ) -> Self {
         self.add_rules(f(QueryRuleBuilder::new()).build())
     }
 }
 
-impl QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> QueryRulesetBuilder<(S0, S1)> {
     /// Builds a [`QueryRuleset`].
-    pub fn build(self) -> QueryRuleset {
+    pub fn build(self) -> QueryRuleset
+    where
+        S0: crate::typed::builder::IsSet<query_ruleset_members::ruleset_id>,
+        S1: crate::typed::builder::IsSet<query_ruleset_members::rules>,
+    {
         QueryRuleset {
             ruleset_id: self.ruleset_id.unwrap(),
             rules: self.rules.unwrap(),
@@ -731,24 +721,24 @@ impl QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for QueryRuleset
+impl<S0, S1> crate::typed::builder::Build for QueryRulesetBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<query_ruleset_members::ruleset_id>,
+    S1: crate::typed::builder::IsSet<query_ruleset_members::rules>,
 {
-    fn from(
-        builder: QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = QueryRuleset;
+
+    fn build(self) -> QueryRuleset {
+        Self::build(self)
     }
 }
 
-impl<S1> QueryRulesetBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `ruleset_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ruleset_id: crate::typed::builder::MissingRequiredField) -> QueryRuleset { match ruleset_id {} }
-}
-
-impl QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `rules` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rules: crate::typed::builder::MissingRequiredField) -> QueryRuleset { match rules {} }
+impl<S0, S1> From<QueryRulesetBuilder<(S0, S1)>> for QueryRuleset
+where
+    S0: crate::typed::builder::IsSet<query_ruleset_members::ruleset_id>,
+    S1: crate::typed::builder::IsSet<query_ruleset_members::rules>,
+{
+    fn from(builder: QueryRulesetBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

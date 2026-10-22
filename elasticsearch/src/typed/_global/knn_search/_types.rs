@@ -15,23 +15,30 @@ pub struct KnnSearchQuery {
 
 impl KnnSearchQuery {
     /// Creates a builder for [`KnnSearchQuery`].
+    ///
+    /// Required: `field`, `query_vector`, `k`, `num_candidates`.
     pub fn builder() -> KnnSearchQueryBuilder {
         KnnSearchQueryBuilder::new()
     }
 
     /// Creates a [`KnnSearchQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KnnSearchQueryBuilder,
-        ) -> KnnSearchQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `query_vector`, `k`, `num_candidates`.
+    pub fn of<B: crate::typed::builder::Build<Output = KnnSearchQuery>>(
+        f: impl FnOnce(KnnSearchQueryBuilder) -> B,
     ) -> KnnSearchQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KnnSearchQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod knn_search_query_members {
+    pub struct field;
+    pub struct query_vector;
+    pub struct k;
+    pub struct num_candidates;
 }
 
 /// Builder for [`KnnSearchQuery`].
@@ -83,7 +90,7 @@ impl<S0, S1, S2, S3> KnnSearchQueryBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> KnnSearchQueryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The name of the vector field to search against
+    /// **Required.** The name of the vector field to search against
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -95,7 +102,7 @@ impl<S1, S2, S3> KnnSearchQueryBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3> KnnSearchQueryBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The query vector
+    /// **Required.** The query vector
     pub fn query_vector(
         self,
         value: impl Into<crate::typed::_types::QueryVector>,
@@ -130,7 +137,7 @@ impl<S0, S2, S3> KnnSearchQueryBuilder<(S0, crate::typed::builder::Set, S2, S3)>
 }
 
 impl<S0, S1, S3> KnnSearchQueryBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The final number of nearest neighbors to return as top hits
+    /// **Required.** The final number of nearest neighbors to return as top hits
     pub fn k(self, value: i32) -> KnnSearchQueryBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         let mut builder = self.with_state();
         builder.k = Some(value);
@@ -139,7 +146,7 @@ impl<S0, S1, S3> KnnSearchQueryBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2> KnnSearchQueryBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The number of nearest neighbor candidates to consider per shard
+    /// **Required.** The number of nearest neighbor candidates to consider per shard
     pub fn num_candidates(
         self,
         value: i32,
@@ -150,16 +157,15 @@ impl<S0, S1, S2> KnnSearchQueryBuilder<(S0, S1, S2, crate::typed::builder::NotSe
     }
 }
 
-impl
-    KnnSearchQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> KnnSearchQueryBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`KnnSearchQuery`].
-    pub fn build(self) -> KnnSearchQuery {
+    pub fn build(self) -> KnnSearchQuery
+    where
+        S0: crate::typed::builder::IsSet<knn_search_query_members::field>,
+        S1: crate::typed::builder::IsSet<knn_search_query_members::query_vector>,
+        S2: crate::typed::builder::IsSet<knn_search_query_members::k>,
+        S3: crate::typed::builder::IsSet<knn_search_query_members::num_candidates>,
+    {
         KnnSearchQuery {
             field: self.field.unwrap(),
             query_vector: self.query_vector.unwrap(),
@@ -169,69 +175,28 @@ impl
     }
 }
 
-impl
-    From<
-        KnnSearchQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for KnnSearchQuery
+impl<S0, S1, S2, S3> crate::typed::builder::Build for KnnSearchQueryBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<knn_search_query_members::field>,
+    S1: crate::typed::builder::IsSet<knn_search_query_members::query_vector>,
+    S2: crate::typed::builder::IsSet<knn_search_query_members::k>,
+    S3: crate::typed::builder::IsSet<knn_search_query_members::num_candidates>,
 {
-    fn from(
-        builder: KnnSearchQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KnnSearchQuery;
+
+    fn build(self) -> KnnSearchQuery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> KnnSearchQueryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> KnnSearchQuery { match field {} }
-}
-
-impl<S2, S3>
-    KnnSearchQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<KnnSearchQueryBuilder<(S0, S1, S2, S3)>> for KnnSearchQuery
+where
+    S0: crate::typed::builder::IsSet<knn_search_query_members::field>,
+    S1: crate::typed::builder::IsSet<knn_search_query_members::query_vector>,
+    S2: crate::typed::builder::IsSet<knn_search_query_members::k>,
+    S3: crate::typed::builder::IsSet<knn_search_query_members::num_candidates>,
 {
-    /// `query_vector` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query_vector: crate::typed::builder::MissingRequiredField) -> KnnSearchQuery { match query_vector {} }
-}
-
-impl<S3>
-    KnnSearchQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `k` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, k: crate::typed::builder::MissingRequiredField) -> KnnSearchQuery { match k {} }
-}
-
-impl
-    KnnSearchQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `num_candidates` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_candidates: crate::typed::builder::MissingRequiredField) -> KnnSearchQuery { match num_candidates {} }
+    fn from(builder: KnnSearchQueryBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

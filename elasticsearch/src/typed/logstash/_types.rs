@@ -23,25 +23,32 @@ pub struct Pipeline {
 
 impl Pipeline {
     /// Creates a builder for [`Pipeline`].
+    ///
+    /// Required: `description`, `last_modified`, `pipeline`, `pipeline_metadata`, `pipeline_settings`, `username`.
     pub fn builder() -> PipelineBuilder {
         PipelineBuilder::new()
     }
 
     /// Creates a [`Pipeline`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PipelineBuilder,
-        ) -> PipelineBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `description`, `last_modified`, `pipeline`, `pipeline_metadata`, `pipeline_settings`, `username`.
+    pub fn of<B: crate::typed::builder::Build<Output = Pipeline>>(
+        f: impl FnOnce(PipelineBuilder) -> B,
     ) -> Pipeline {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PipelineBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pipeline_members {
+    pub struct description;
+    pub struct last_modified;
+    pub struct pipeline;
+    pub struct pipeline_metadata;
+    pub struct pipeline_settings;
+    pub struct username;
 }
 
 /// Builder for [`Pipeline`].
@@ -103,7 +110,7 @@ impl<S0, S1, S2, S3, S4, S5> PipelineBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> PipelineBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// A description of the pipeline.
+    /// **Required.** A description of the pipeline.
     /// This description is not used by Elasticsearch or Logstash.
     pub fn description(
         self,
@@ -116,7 +123,7 @@ impl<S1, S2, S3, S4, S5> PipelineBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3, S4, S5> PipelineBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// The date the pipeline was last updated.
+    /// **Required.** The date the pipeline was last updated.
     /// It must be in the `yyyy-MM-dd'T'HH:mm:ss.SSSZZ` strict_date_time format.
     pub fn last_modified(
         self,
@@ -129,7 +136,7 @@ impl<S0, S2, S3, S4, S5> PipelineBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3, S4, S5> PipelineBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// The configuration for the pipeline.
+    /// **Required.** The configuration for the pipeline.
     pub fn pipeline(
         self,
         value: impl Into<String>,
@@ -141,7 +148,7 @@ impl<S0, S1, S3, S4, S5> PipelineBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2, S4, S5> PipelineBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// Optional metadata about the pipeline, which can have any contents.
+    /// **Required.** Optional metadata about the pipeline, which can have any contents.
     /// This metadata is not generated or used by Elasticsearch or Logstash.
     pub fn pipeline_metadata(
         self,
@@ -153,21 +160,16 @@ impl<S0, S1, S2, S4, S5> PipelineBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 
     /// Sets [`pipeline_metadata`](Self::pipeline_metadata) with a builder.
-    pub fn pipeline_metadata_with(
+    pub fn pipeline_metadata_with<B: crate::typed::builder::Build<Output = PipelineMetadata>>(
         self,
-        f: impl FnOnce(
-            PipelineMetadataBuilder,
-        ) -> PipelineMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PipelineMetadataBuilder) -> B,
     ) -> PipelineBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
         self.pipeline_metadata(f(PipelineMetadataBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3, S5> PipelineBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// Settings for the pipeline.
+    /// **Required.** Settings for the pipeline.
     /// It supports only flat keys in dot notation.
     pub fn pipeline_settings(
         self,
@@ -179,25 +181,16 @@ impl<S0, S1, S2, S3, S5> PipelineBuilder<(S0, S1, S2, S3, crate::typed::builder:
     }
 
     /// Sets [`pipeline_settings`](Self::pipeline_settings) with a builder.
-    pub fn pipeline_settings_with(
+    pub fn pipeline_settings_with<B: crate::typed::builder::Build<Output = PipelineSettings>>(
         self,
-        f: impl FnOnce(
-            PipelineSettingsBuilder,
-        ) -> PipelineSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PipelineSettingsBuilder) -> B,
     ) -> PipelineBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5)> {
         self.pipeline_settings(f(PipelineSettingsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3, S4> PipelineBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// The user who last updated the pipeline.
+    /// **Required.** The user who last updated the pipeline.
     pub fn username(
         self,
         value: impl Into<String>,
@@ -208,18 +201,17 @@ impl<S0, S1, S2, S3, S4> PipelineBuilder<(S0, S1, S2, S3, S4, crate::typed::buil
     }
 }
 
-impl
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> PipelineBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`Pipeline`].
-    pub fn build(self) -> Pipeline {
+    pub fn build(self) -> Pipeline
+    where
+        S0: crate::typed::builder::IsSet<pipeline_members::description>,
+        S1: crate::typed::builder::IsSet<pipeline_members::last_modified>,
+        S2: crate::typed::builder::IsSet<pipeline_members::pipeline>,
+        S3: crate::typed::builder::IsSet<pipeline_members::pipeline_metadata>,
+        S4: crate::typed::builder::IsSet<pipeline_members::pipeline_settings>,
+        S5: crate::typed::builder::IsSet<pipeline_members::username>,
+    {
         Pipeline {
             description: self.description.unwrap(),
             last_modified: self.last_modified.unwrap(),
@@ -231,111 +223,35 @@ impl
     }
 }
 
-impl
-    From<
-        PipelineBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Pipeline
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for PipelineBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<pipeline_members::description>,
+    S1: crate::typed::builder::IsSet<pipeline_members::last_modified>,
+    S2: crate::typed::builder::IsSet<pipeline_members::pipeline>,
+    S3: crate::typed::builder::IsSet<pipeline_members::pipeline_metadata>,
+    S4: crate::typed::builder::IsSet<pipeline_members::pipeline_settings>,
+    S5: crate::typed::builder::IsSet<pipeline_members::username>,
 {
-    fn from(
-        builder: PipelineBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Pipeline;
+
+    fn build(self) -> Pipeline {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> PipelineBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> Pipeline { match description {} }
-}
-
-impl<S2, S3, S4, S5>
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<PipelineBuilder<(S0, S1, S2, S3, S4, S5)>> for Pipeline
+where
+    S0: crate::typed::builder::IsSet<pipeline_members::description>,
+    S1: crate::typed::builder::IsSet<pipeline_members::last_modified>,
+    S2: crate::typed::builder::IsSet<pipeline_members::pipeline>,
+    S3: crate::typed::builder::IsSet<pipeline_members::pipeline_metadata>,
+    S4: crate::typed::builder::IsSet<pipeline_members::pipeline_settings>,
+    S5: crate::typed::builder::IsSet<pipeline_members::username>,
 {
-    /// `last_modified` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, last_modified: crate::typed::builder::MissingRequiredField) -> Pipeline { match last_modified {} }
-}
-
-impl<S3, S4, S5>
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `pipeline` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline: crate::typed::builder::MissingRequiredField) -> Pipeline { match pipeline {} }
-}
-
-impl<S4, S5>
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `pipeline_metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_metadata: crate::typed::builder::MissingRequiredField) -> Pipeline { match pipeline_metadata {} }
-}
-
-impl<S5>
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `pipeline_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_settings: crate::typed::builder::MissingRequiredField) -> Pipeline { match pipeline_settings {} }
-}
-
-impl
-    PipelineBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `username` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, username: crate::typed::builder::MissingRequiredField) -> Pipeline { match username {} }
+    fn from(builder: PipelineBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -346,21 +262,28 @@ pub struct PipelineMetadata {
 
 impl PipelineMetadata {
     /// Creates a builder for [`PipelineMetadata`].
+    ///
+    /// Required: `type`, `version`.
     pub fn builder() -> PipelineMetadataBuilder {
         PipelineMetadataBuilder::new()
     }
 
     /// Creates a [`PipelineMetadata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PipelineMetadataBuilder,
-        ) -> PipelineMetadataBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineMetadata>>(
+        f: impl FnOnce(PipelineMetadataBuilder) -> B,
     ) -> PipelineMetadata {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PipelineMetadataBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pipeline_metadata_members {
+    pub struct r#type;
+    pub struct version;
 }
 
 /// Builder for [`PipelineMetadata`].
@@ -394,6 +317,7 @@ impl<S0, S1> PipelineMetadataBuilder<(S0, S1)> {
 }
 
 impl<S1> PipelineMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -405,6 +329,7 @@ impl<S1> PipelineMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PipelineMetadataBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<String>,
@@ -415,9 +340,13 @@ impl<S0> PipelineMetadataBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl PipelineMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PipelineMetadataBuilder<(S0, S1)> {
     /// Builds a [`PipelineMetadata`].
-    pub fn build(self) -> PipelineMetadata {
+    pub fn build(self) -> PipelineMetadata
+    where
+        S0: crate::typed::builder::IsSet<pipeline_metadata_members::r#type>,
+        S1: crate::typed::builder::IsSet<pipeline_metadata_members::version>,
+    {
         PipelineMetadata {
             r#type: self.r#type.unwrap(),
             version: self.version.unwrap(),
@@ -425,26 +354,26 @@ impl PipelineMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<PipelineMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PipelineMetadata
+impl<S0, S1> crate::typed::builder::Build for PipelineMetadataBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<pipeline_metadata_members::r#type>,
+    S1: crate::typed::builder::IsSet<pipeline_metadata_members::version>,
 {
-    fn from(
-        builder: PipelineMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = PipelineMetadata;
+
+    fn build(self) -> PipelineMetadata {
+        Self::build(self)
     }
 }
 
-impl<S1> PipelineMetadataBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PipelineMetadata { match r#type {} }
-}
-
-impl PipelineMetadataBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> PipelineMetadata { match version {} }
+impl<S0, S1> From<PipelineMetadataBuilder<(S0, S1)>> for PipelineMetadata
+where
+    S0: crate::typed::builder::IsSet<pipeline_metadata_members::r#type>,
+    S1: crate::typed::builder::IsSet<pipeline_metadata_members::version>,
+{
+    fn from(builder: PipelineMetadataBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -471,25 +400,32 @@ pub struct PipelineSettings {
 
 impl PipelineSettings {
     /// Creates a builder for [`PipelineSettings`].
+    ///
+    /// Required: `pipeline_workers`, `pipeline_batch_size`, `pipeline_batch_delay`, `queue_type`, `queue_max_bytes`, `queue_checkpoint_writes`.
     pub fn builder() -> PipelineSettingsBuilder {
         PipelineSettingsBuilder::new()
     }
 
     /// Creates a [`PipelineSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PipelineSettingsBuilder,
-        ) -> PipelineSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `pipeline_workers`, `pipeline_batch_size`, `pipeline_batch_delay`, `queue_type`, `queue_max_bytes`, `queue_checkpoint_writes`.
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineSettings>>(
+        f: impl FnOnce(PipelineSettingsBuilder) -> B,
     ) -> PipelineSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PipelineSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pipeline_settings_members {
+    pub struct pipeline_workers;
+    pub struct pipeline_batch_size;
+    pub struct pipeline_batch_delay;
+    pub struct queue_type;
+    pub struct queue_max_bytes;
+    pub struct queue_checkpoint_writes;
 }
 
 /// Builder for [`PipelineSettings`].
@@ -553,7 +489,7 @@ impl<S0, S1, S2, S3, S4, S5> PipelineSettingsBuilder<(S0, S1, S2, S3, S4, S5)> {
 impl<S1, S2, S3, S4, S5>
     PipelineSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
-    /// The number of workers that will, in parallel, execute the filter and output stages of the pipeline.
+    /// **Required.** The number of workers that will, in parallel, execute the filter and output stages of the pipeline.
     pub fn pipeline_workers(
         self,
         value: i32,
@@ -567,7 +503,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     PipelineSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
-    /// The maximum number of events an individual worker thread will collect from inputs before attempting to execute its filters and outputs.
+    /// **Required.** The maximum number of events an individual worker thread will collect from inputs before attempting to execute its filters and outputs.
     pub fn pipeline_batch_size(
         self,
         value: i32,
@@ -581,7 +517,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     PipelineSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
-    /// When creating pipeline event batches, how long in milliseconds to wait for each event before dispatching an undersized batch to pipeline workers.
+    /// **Required.** When creating pipeline event batches, how long in milliseconds to wait for each event before dispatching an undersized batch to pipeline workers.
     pub fn pipeline_batch_delay(
         self,
         value: i32,
@@ -595,7 +531,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     PipelineSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
-    /// The internal queuing model to use for event buffering.
+    /// **Required.** The internal queuing model to use for event buffering.
     pub fn queue_type(
         self,
         value: impl Into<String>,
@@ -609,7 +545,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     PipelineSettingsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
-    /// The total capacity of the queue (`queue.type: persisted`) in number of bytes.
+    /// **Required.** The total capacity of the queue (`queue.type: persisted`) in number of bytes.
     pub fn queue_max_bytes(
         self,
         value: impl Into<String>,
@@ -623,7 +559,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     PipelineSettingsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
-    /// The maximum number of written events before forcing a checkpoint when persistent queues are enabled (`queue.type: persisted`).
+    /// **Required.** The maximum number of written events before forcing a checkpoint when persistent queues are enabled (`queue.type: persisted`).
     pub fn queue_checkpoint_writes(
         self,
         value: i32,
@@ -634,18 +570,17 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> PipelineSettingsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`PipelineSettings`].
-    pub fn build(self) -> PipelineSettings {
+    pub fn build(self) -> PipelineSettings
+    where
+        S0: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_workers>,
+        S1: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_size>,
+        S2: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_delay>,
+        S3: crate::typed::builder::IsSet<pipeline_settings_members::queue_type>,
+        S4: crate::typed::builder::IsSet<pipeline_settings_members::queue_max_bytes>,
+        S5: crate::typed::builder::IsSet<pipeline_settings_members::queue_checkpoint_writes>,
+    {
         PipelineSettings {
             pipeline_workers: self.pipeline_workers.unwrap(),
             pipeline_batch_size: self.pipeline_batch_size.unwrap(),
@@ -657,111 +592,34 @@ impl
     }
 }
 
-impl
-    From<
-        PipelineSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for PipelineSettings
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for PipelineSettingsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_workers>,
+    S1: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_size>,
+    S2: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_delay>,
+    S3: crate::typed::builder::IsSet<pipeline_settings_members::queue_type>,
+    S4: crate::typed::builder::IsSet<pipeline_settings_members::queue_max_bytes>,
+    S5: crate::typed::builder::IsSet<pipeline_settings_members::queue_checkpoint_writes>,
 {
-    fn from(
-        builder: PipelineSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PipelineSettings;
+
+    fn build(self) -> PipelineSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    PipelineSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<PipelineSettingsBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for PipelineSettings
+where
+    S0: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_workers>,
+    S1: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_size>,
+    S2: crate::typed::builder::IsSet<pipeline_settings_members::pipeline_batch_delay>,
+    S3: crate::typed::builder::IsSet<pipeline_settings_members::queue_type>,
+    S4: crate::typed::builder::IsSet<pipeline_settings_members::queue_max_bytes>,
+    S5: crate::typed::builder::IsSet<pipeline_settings_members::queue_checkpoint_writes>,
 {
-    /// `pipeline_workers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_workers: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match pipeline_workers {} }
-}
-
-impl<S2, S3, S4, S5>
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `pipeline_batch_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_batch_size: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match pipeline_batch_size {} }
-}
-
-impl<S3, S4, S5>
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `pipeline_batch_delay` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline_batch_delay: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match pipeline_batch_delay {} }
-}
-
-impl<S4, S5>
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `queue_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queue_type: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match queue_type {} }
-}
-
-impl<S5>
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `queue_max_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queue_max_bytes: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match queue_max_bytes {} }
-}
-
-impl
-    PipelineSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `queue_checkpoint_writes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queue_checkpoint_writes: crate::typed::builder::MissingRequiredField) -> PipelineSettings { match queue_checkpoint_writes {} }
+    fn from(builder: PipelineSettingsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }

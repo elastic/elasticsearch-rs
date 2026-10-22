@@ -32,16 +32,27 @@ pub struct Destination {
 
 impl Destination {
     /// Creates a builder for [`Destination`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> DestinationBuilder {
         DestinationBuilder::new()
     }
 
     /// Creates a [`Destination`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DestinationBuilder) -> DestinationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Destination>>(
+        f: impl FnOnce(DestinationBuilder) -> B,
     ) -> Destination {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DestinationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod destination_members {
+    pub struct index;
 }
 
 /// Builder for [`Destination`].
@@ -153,7 +164,7 @@ impl<S0> DestinationBuilder<(S0,)> {
 }
 
 impl DestinationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the data stream, index, or index alias you are copying to.
+    /// **Required.** The name of the data stream, index, or index alias you are copying to.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -164,9 +175,12 @@ impl DestinationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DestinationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DestinationBuilder<(S0,)> {
     /// Builds a [`Destination`].
-    pub fn build(self) -> Destination {
+    pub fn build(self) -> Destination
+    where
+        S0: crate::typed::builder::IsSet<destination_members::index>,
+    {
         Destination {
             index: self.index.unwrap(),
             op_type: self.op_type,
@@ -178,16 +192,24 @@ impl DestinationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DestinationBuilder<(crate::typed::builder::Set,)>> for Destination {
-    fn from(builder: DestinationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DestinationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<destination_members::index>,
+{
+    type Output = Destination;
+
+    fn build(self) -> Destination {
+        Self::build(self)
     }
 }
 
-impl DestinationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Destination { match index {} }
+impl<S0> From<DestinationBuilder<(S0,)>> for Destination
+where
+    S0: crate::typed::builder::IsSet<destination_members::index>,
+{
+    fn from(builder: DestinationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -218,16 +240,27 @@ pub struct RemoteSource {
 
 impl RemoteSource {
     /// Creates a builder for [`RemoteSource`].
+    ///
+    /// Required: `host`.
     pub fn builder() -> RemoteSourceBuilder {
         RemoteSourceBuilder::new()
     }
 
     /// Creates a [`RemoteSource`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RemoteSourceBuilder) -> RemoteSourceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `host`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoteSource>>(
+        f: impl FnOnce(RemoteSourceBuilder) -> B,
     ) -> RemoteSource {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoteSourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remote_source_members {
+    pub struct host;
 }
 
 /// Builder for [`RemoteSource`].
@@ -355,7 +388,7 @@ impl<S0> RemoteSourceBuilder<(S0,)> {
 }
 
 impl RemoteSourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// The URL for the remote instance of Elasticsearch that you want to index from.
+    /// **Required.** The URL for the remote instance of Elasticsearch that you want to index from.
     /// This information is required when you're indexing from remote.
     pub fn host(
         self,
@@ -367,9 +400,12 @@ impl RemoteSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RemoteSourceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RemoteSourceBuilder<(S0,)> {
     /// Builds a [`RemoteSource`].
-    pub fn build(self) -> RemoteSource {
+    pub fn build(self) -> RemoteSource
+    where
+        S0: crate::typed::builder::IsSet<remote_source_members::host>,
+    {
         RemoteSource {
             connect_timeout: self.connect_timeout,
             headers: self.headers,
@@ -382,16 +418,24 @@ impl RemoteSourceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RemoteSourceBuilder<(crate::typed::builder::Set,)>> for RemoteSource {
-    fn from(builder: RemoteSourceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RemoteSourceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<remote_source_members::host>,
+{
+    type Output = RemoteSource;
+
+    fn build(self) -> RemoteSource {
+        Self::build(self)
     }
 }
 
-impl RemoteSourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> RemoteSource { match host {} }
+impl<S0> From<RemoteSourceBuilder<(S0,)>> for RemoteSource
+where
+    S0: crate::typed::builder::IsSet<remote_source_members::host>,
+{
+    fn from(builder: RemoteSourceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`reindex`](crate::typed::Client::reindex).
@@ -527,19 +571,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `dest`, `source`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `dest`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct dest;
+    pub struct source;
 }
 
 /// Builder for [`Request`].
@@ -860,16 +913,16 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The destination you are copying to.
+    /// **Required.** The destination you are copying to.
     pub fn dest(
         self,
         value: impl Into<Destination>,
@@ -880,16 +933,16 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<B: crate::typed::builder::Build<Output = Destination>>(
         self,
-        f: impl FnOnce(DestinationBuilder) -> DestinationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DestinationBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
         self.dest(f(DestinationBuilder::new()).build())
     }
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The source you are copying from.
+    /// **Required.** The source you are copying from.
     pub fn source(
         self,
         value: impl Into<Source>,
@@ -900,17 +953,21 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<B: crate::typed::builder::Build<Output = Source>>(
         self,
-        f: impl FnOnce(SourceBuilder) -> SourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SourceBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.source(f(SourceBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::dest>,
+        S1: crate::typed::builder::IsSet<request_members::source>,
+    {
         Request {
             refresh: self.refresh,
             requests_per_second: self.requests_per_second,
@@ -934,41 +991,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::dest>,
+    S1: crate::typed::builder::IsSet<request_members::source>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `dest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dest: crate::typed::builder::MissingRequiredField) -> Request { match dest {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `dest` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, dest: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match dest {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> Request { match source {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `source` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, source: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match source {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::dest>,
+        S1: crate::typed::builder::IsSet<request_members::source>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -1218,16 +1262,27 @@ pub struct Source {
 
 impl Source {
     /// Creates a builder for [`Source`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> SourceBuilder {
         SourceBuilder::new()
     }
 
     /// Creates a [`Source`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SourceBuilder) -> SourceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Source>>(
+        f: impl FnOnce(SourceBuilder) -> B,
     ) -> Source {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_members {
+    pub struct index;
 }
 
 /// Builder for [`Source`].
@@ -1297,13 +1352,11 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1321,9 +1374,9 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Sets [`remote`](Self::remote) with a builder.
-    pub fn remote_with(
+    pub fn remote_with<B: crate::typed::builder::Build<Output = RemoteSource>>(
         self,
-        f: impl FnOnce(RemoteSourceBuilder) -> RemoteSourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RemoteSourceBuilder) -> B,
     ) -> Self {
         self.remote(f(RemoteSourceBuilder::new()).build())
     }
@@ -1379,14 +1432,11 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Sets [`slice`](Self::slice) with a builder.
-    pub fn slice_with(
+    pub fn slice_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::SlicedScroll>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::SlicedScrollBuilder,
-        ) -> crate::typed::_types::SlicedScrollBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::SlicedScrollBuilder) -> B,
     ) -> Self {
         self.slice(f(crate::typed::_types::SlicedScrollBuilder::new()).build())
     }
@@ -1457,14 +1507,12 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -1474,7 +1522,7 @@ impl<S0> SourceBuilder<(S0,)> {
 }
 
 impl SourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the data stream, index, or alias you are copying from.
+    /// **Required.** The name of the data stream, index, or alias you are copying from.
     /// It accepts a comma-separated list to reindex from multiple sources.
     pub fn index(
         self,
@@ -1486,9 +1534,12 @@ impl SourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SourceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SourceBuilder<(S0,)> {
     /// Builds a [`Source`].
-    pub fn build(self) -> Source {
+    pub fn build(self) -> Source
+    where
+        S0: crate::typed::builder::IsSet<source_members::index>,
+    {
         Source {
             index: self.index.unwrap(),
             query: self.query,
@@ -1503,14 +1554,22 @@ impl SourceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SourceBuilder<(crate::typed::builder::Set,)>> for Source {
-    fn from(builder: SourceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SourceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<source_members::index>,
+{
+    type Output = Source;
+
+    fn build(self) -> Source {
+        Self::build(self)
     }
 }
 
-impl SourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Source { match index {} }
+impl<S0> From<SourceBuilder<(S0,)>> for Source
+where
+    S0: crate::typed::builder::IsSet<source_members::index>,
+{
+    fn from(builder: SourceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

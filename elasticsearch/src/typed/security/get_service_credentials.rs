@@ -12,21 +12,28 @@ pub struct NodesCredentials {
 
 impl NodesCredentials {
     /// Creates a builder for [`NodesCredentials`].
+    ///
+    /// Required: `nodes`, `file_tokens`.
     pub fn builder() -> NodesCredentialsBuilder {
         NodesCredentialsBuilder::new()
     }
 
     /// Creates a [`NodesCredentials`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodesCredentialsBuilder,
-        ) -> NodesCredentialsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `nodes`, `file_tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodesCredentials>>(
+        f: impl FnOnce(NodesCredentialsBuilder) -> B,
     ) -> NodesCredentials {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodesCredentialsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nodes_credentials_members {
+    pub struct nodes;
+    pub struct file_tokens;
 }
 
 /// Builder for [`NodesCredentials`].
@@ -60,7 +67,7 @@ impl<S0, S1> NodesCredentialsBuilder<(S0, S1)> {
 }
 
 impl<S1> NodesCredentialsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// General status showing how nodes respond to the above collection request
+    /// **Required.** General status showing how nodes respond to the above collection request
     pub fn nodes(
         self,
         value: impl Into<crate::typed::_types::NodeStatistics>,
@@ -71,22 +78,18 @@ impl<S1> NodesCredentialsBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`nodes`](Self::nodes) with a builder.
-    pub fn nodes_with(
+    pub fn nodes_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeStatisticsBuilder,
-        ) -> crate::typed::_types::NodeStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeStatisticsBuilder) -> B,
     ) -> NodesCredentialsBuilder<(crate::typed::builder::Set, S1)> {
         self.nodes(f(crate::typed::_types::NodeStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0> NodesCredentialsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// File-backed tokens collected from all nodes
+    /// **Required.** File-backed tokens collected from all nodes
     pub fn file_tokens(
         self,
         value: impl Into<indexmap::IndexMap<String, NodesCredentialsFileToken>>,
@@ -111,12 +114,12 @@ impl<S0> NodesCredentialsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`file_tokens`](Self::file_tokens), with a builder.
-    pub fn add_file_tokens_with(
+    pub fn add_file_tokens_with<
+        B: crate::typed::builder::Build<Output = NodesCredentialsFileToken>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodesCredentialsFileTokenBuilder,
-        ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodesCredentialsFileTokenBuilder) -> B,
     ) -> NodesCredentialsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_file_tokens(key, f(NodesCredentialsFileTokenBuilder::new()).build())
     }
@@ -136,20 +139,24 @@ impl<S0> NodesCredentialsBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`file_tokens`](Self::file_tokens), with a builder.
-    pub fn add_file_tokens_with(
+    pub fn add_file_tokens_with<
+        B: crate::typed::builder::Build<Output = NodesCredentialsFileToken>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodesCredentialsFileTokenBuilder,
-        ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodesCredentialsFileTokenBuilder) -> B,
     ) -> Self {
         self.add_file_tokens(key, f(NodesCredentialsFileTokenBuilder::new()).build())
     }
 }
 
-impl NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NodesCredentialsBuilder<(S0, S1)> {
     /// Builds a [`NodesCredentials`].
-    pub fn build(self) -> NodesCredentials {
+    pub fn build(self) -> NodesCredentials
+    where
+        S0: crate::typed::builder::IsSet<nodes_credentials_members::nodes>,
+        S1: crate::typed::builder::IsSet<nodes_credentials_members::file_tokens>,
+    {
         NodesCredentials {
             nodes: self.nodes.unwrap(),
             file_tokens: self.file_tokens.unwrap(),
@@ -157,26 +164,26 @@ impl NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NodesCredentials
+impl<S0, S1> crate::typed::builder::Build for NodesCredentialsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<nodes_credentials_members::nodes>,
+    S1: crate::typed::builder::IsSet<nodes_credentials_members::file_tokens>,
 {
-    fn from(
-        builder: NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodesCredentials;
+
+    fn build(self) -> NodesCredentials {
+        Self::build(self)
     }
 }
 
-impl<S1> NodesCredentialsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> NodesCredentials { match nodes {} }
-}
-
-impl NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `file_tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, file_tokens: crate::typed::builder::MissingRequiredField) -> NodesCredentials { match file_tokens {} }
+impl<S0, S1> From<NodesCredentialsBuilder<(S0, S1)>> for NodesCredentials
+where
+    S0: crate::typed::builder::IsSet<nodes_credentials_members::nodes>,
+    S1: crate::typed::builder::IsSet<nodes_credentials_members::file_tokens>,
+{
+    fn from(builder: NodesCredentialsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -186,18 +193,27 @@ pub struct NodesCredentialsFileToken {
 
 impl NodesCredentialsFileToken {
     /// Creates a builder for [`NodesCredentialsFileToken`].
+    ///
+    /// Required: `nodes`.
     pub fn builder() -> NodesCredentialsFileTokenBuilder {
         NodesCredentialsFileTokenBuilder::new()
     }
 
     /// Creates a [`NodesCredentialsFileToken`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodesCredentialsFileTokenBuilder,
-        ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `nodes`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodesCredentialsFileToken>>(
+        f: impl FnOnce(NodesCredentialsFileTokenBuilder) -> B,
     ) -> NodesCredentialsFileToken {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodesCredentialsFileTokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nodes_credentials_file_token_members {
+    pub struct nodes;
 }
 
 /// Builder for [`NodesCredentialsFileToken`].
@@ -226,6 +242,7 @@ impl<S0> NodesCredentialsFileTokenBuilder<(S0,)> {
 }
 
 impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn nodes(
         self,
         value: impl Into<Vec<String>>,
@@ -259,27 +276,36 @@ impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodesCredentialsFileTokenBuilder<(S0,)> {
     /// Builds a [`NodesCredentialsFileToken`].
-    pub fn build(self) -> NodesCredentialsFileToken {
+    pub fn build(self) -> NodesCredentialsFileToken
+    where
+        S0: crate::typed::builder::IsSet<nodes_credentials_file_token_members::nodes>,
+    {
         NodesCredentialsFileToken {
             nodes: self.nodes.unwrap(),
         }
     }
 }
 
-impl From<NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>>
-    for NodesCredentialsFileToken
+impl<S0> crate::typed::builder::Build for NodesCredentialsFileTokenBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nodes_credentials_file_token_members::nodes>,
 {
-    fn from(builder: NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodesCredentialsFileToken;
+
+    fn build(self) -> NodesCredentialsFileToken {
+        Self::build(self)
     }
 }
 
-impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::NotSet,)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> NodesCredentialsFileToken { match nodes {} }
+impl<S0> From<NodesCredentialsFileTokenBuilder<(S0,)>> for NodesCredentialsFileToken
+where
+    S0: crate::typed::builder::IsSet<nodes_credentials_file_token_members::nodes>,
+{
+    fn from(builder: NodesCredentialsFileTokenBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.get_service_credentials`](crate::typed::security::SecurityClient::get_service_credentials).
@@ -319,19 +345,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `namespace`, `service`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `namespace`, `service`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct namespace;
+    pub struct service;
 }
 
 /// Builder for [`Request`].
@@ -436,7 +471,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the namespace.
+    /// **Required.** The name of the namespace.
     pub fn namespace(
         self,
         value: impl Into<crate::typed::_types::Namespace>,
@@ -448,7 +483,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The service name.
+    /// **Required.** The service name.
     pub fn service(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -459,9 +494,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+    {
         Request {
             namespace: self.namespace.unwrap(),
             service: self.service.unwrap(),
@@ -473,41 +512,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::namespace>,
+    S1: crate::typed::builder::IsSet<request_members::service>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `namespace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, namespace: crate::typed::builder::MissingRequiredField) -> Request { match namespace {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `namespace` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, namespace: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match namespace {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> Request { match service {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `service` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, service: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match service {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

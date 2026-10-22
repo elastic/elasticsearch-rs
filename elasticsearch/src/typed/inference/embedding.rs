@@ -33,19 +33,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `inference_id`, `embedding`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `inference_id`, `embedding`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct inference_id;
+    pub struct embedding;
 }
 
 /// Builder for [`Request`].
@@ -165,7 +174,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -177,7 +186,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn embedding(
         self,
         value: impl Into<crate::typed::inference::_types::RequestEmbedding>,
@@ -188,21 +197,23 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`embedding`](Self::embedding) with a builder.
-    pub fn embedding_with(
+    pub fn embedding_with<
+        B: crate::typed::builder::Build<Output = crate::typed::inference::_types::RequestEmbedding>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::inference::_types::RequestEmbeddingBuilder,
-        ) -> crate::typed::inference::_types::RequestEmbeddingBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::inference::_types::RequestEmbeddingBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.embedding(f(crate::typed::inference::_types::RequestEmbeddingBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::inference_id>,
+        S1: crate::typed::builder::IsSet<request_members::embedding>,
+    {
         Request {
             inference_id: self.inference_id.unwrap(),
             timeout: self.timeout,
@@ -215,41 +226,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::inference_id>,
+    S1: crate::typed::builder::IsSet<request_members::embedding>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> Request { match inference_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `inference_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, inference_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match inference_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `embedding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, embedding: crate::typed::builder::MissingRequiredField) -> Request { match embedding {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `embedding` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, embedding: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match embedding {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::inference_id>,
+        S1: crate::typed::builder::IsSet<request_members::embedding>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

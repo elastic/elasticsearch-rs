@@ -32,22 +32,29 @@ pub struct AsyncEsqlResult {
 
 impl AsyncEsqlResult {
     /// Creates a builder for [`AsyncEsqlResult`].
+    ///
+    /// Required: `columns`, `values`, `is_running`.
     pub fn builder() -> AsyncEsqlResultBuilder {
         AsyncEsqlResultBuilder::new()
     }
 
     /// Creates a [`AsyncEsqlResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsyncEsqlResultBuilder,
-        ) -> AsyncEsqlResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `columns`, `values`, `is_running`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsyncEsqlResult>>(
+        f: impl FnOnce(AsyncEsqlResultBuilder) -> B,
     ) -> AsyncEsqlResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsyncEsqlResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod async_esql_result_members {
+    pub struct columns;
+    pub struct values;
+    pub struct is_running;
 }
 
 /// Builder for [`AsyncEsqlResult`].
@@ -155,14 +162,9 @@ impl<S0, S1, S2> AsyncEsqlResultBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`all_columns`](Self::all_columns), with a builder.
-    pub fn add_all_columns_with(
+    pub fn add_all_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> Self {
         self.add_all_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
@@ -181,19 +183,9 @@ impl<S0, S1, S2> AsyncEsqlResultBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<B: crate::typed::builder::Build<Output = EsqlClusterInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlClusterInfoBuilder,
-        ) -> EsqlClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlClusterInfoBuilder) -> B,
     ) -> Self {
         self.clusters(f(EsqlClusterInfoBuilder::new()).build())
     }
@@ -227,6 +219,7 @@ impl<S0, S1, S2> AsyncEsqlResultBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn columns(
         self,
         value: impl Into<Vec<EsqlColumnInfo>>,
@@ -250,14 +243,9 @@ impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Adds an element to [`columns`](Self::columns), with a builder.
-    pub fn add_columns_with(
+    pub fn add_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> AsyncEsqlResultBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
@@ -273,20 +261,16 @@ impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::Set, S1, S2)> {
     }
 
     /// Adds an element to [`columns`](Self::columns), with a builder.
-    pub fn add_columns_with(
+    pub fn add_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> Self {
         self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
 }
 
 impl<S0, S2> AsyncEsqlResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Vec<Vec<crate::typed::_types::FieldValue>>>,
@@ -321,7 +305,7 @@ impl<S0, S2> AsyncEsqlResultBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> AsyncEsqlResultBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Indicates whether the async query is still running or has completed.
+    /// **Required.** Indicates whether the async query is still running or has completed.
     ///
     /// Also available in the `X-Elasticsearch-Async-Is-Running` HTTP header.
     pub fn is_running(
@@ -334,15 +318,14 @@ impl<S0, S1> AsyncEsqlResultBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    AsyncEsqlResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AsyncEsqlResultBuilder<(S0, S1, S2)> {
     /// Builds a [`AsyncEsqlResult`].
-    pub fn build(self) -> AsyncEsqlResult {
+    pub fn build(self) -> AsyncEsqlResult
+    where
+        S0: crate::typed::builder::IsSet<async_esql_result_members::columns>,
+        S1: crate::typed::builder::IsSet<async_esql_result_members::values>,
+        S2: crate::typed::builder::IsSet<async_esql_result_members::is_running>,
+    {
         AsyncEsqlResult {
             took: self.took,
             is_partial: self.is_partial,
@@ -357,54 +340,28 @@ impl
     }
 }
 
-impl
-    From<
-        AsyncEsqlResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AsyncEsqlResult
+impl<S0, S1, S2> crate::typed::builder::Build for AsyncEsqlResultBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<async_esql_result_members::columns>,
+    S1: crate::typed::builder::IsSet<async_esql_result_members::values>,
+    S2: crate::typed::builder::IsSet<async_esql_result_members::is_running>,
 {
-    fn from(
-        builder: AsyncEsqlResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AsyncEsqlResult;
+
+    fn build(self) -> AsyncEsqlResult {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `columns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, columns: crate::typed::builder::MissingRequiredField) -> AsyncEsqlResult { match columns {} }
-}
-
-impl<S2>
-    AsyncEsqlResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AsyncEsqlResultBuilder<(S0, S1, S2)>> for AsyncEsqlResult
+where
+    S0: crate::typed::builder::IsSet<async_esql_result_members::columns>,
+    S1: crate::typed::builder::IsSet<async_esql_result_members::values>,
+    S2: crate::typed::builder::IsSet<async_esql_result_members::is_running>,
 {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> AsyncEsqlResult { match values {} }
-}
-
-impl
-    AsyncEsqlResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `is_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_running: crate::typed::builder::MissingRequiredField) -> AsyncEsqlResult { match is_running {} }
+    fn from(builder: AsyncEsqlResultBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A named ES|QL query parameter supplied in its classified form.
@@ -430,15 +387,17 @@ impl From<SingleOrMultiValue> for ClassifiedNamedParameter {
 
 impl ClassifiedNamedParameter {
     /// Creates a builder for [`ClassifiedNamedParameter`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ClassifiedNamedParameterBuilder {
         ClassifiedNamedParameterBuilder::new()
     }
 
     /// Creates a [`ClassifiedNamedParameter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClassifiedNamedParameterBuilder,
-        ) -> ClassifiedNamedParameterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ClassifiedNamedParameter>>(
+        f: impl FnOnce(ClassifiedNamedParameterBuilder) -> B,
     ) -> ClassifiedNamedParameter {
         f(Self::builder()).build()
     }
@@ -501,25 +460,34 @@ impl ClassifiedNamedParameterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClassifiedNamedParameterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClassifiedNamedParameterBuilder<(S0,)> {
     /// Builds a [`ClassifiedNamedParameter`].
-    pub fn build(self) -> ClassifiedNamedParameter {
+    pub fn build(self) -> ClassifiedNamedParameter
+    where
+        S0: crate::typed::builder::IsVariantSet<ClassifiedNamedParameter>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ClassifiedNamedParameterBuilder<(crate::typed::builder::Set,)>>
-    for ClassifiedNamedParameter
+impl<S0> crate::typed::builder::Build for ClassifiedNamedParameterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ClassifiedNamedParameter>,
 {
-    fn from(builder: ClassifiedNamedParameterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ClassifiedNamedParameter;
+
+    fn build(self) -> ClassifiedNamedParameter {
+        Self::build(self)
     }
 }
 
-impl ClassifiedNamedParameterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> ClassifiedNamedParameter { match variant {} }
+impl<S0> From<ClassifiedNamedParameterBuilder<(S0,)>> for ClassifiedNamedParameter
+where
+    S0: crate::typed::builder::IsVariantSet<ClassifiedNamedParameter>,
+{
+    fn from(builder: ClassifiedNamedParameterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A per-column declaration inside a dataset mapping's `properties`.
@@ -538,18 +506,27 @@ pub struct DatasetFieldMapping {
 
 impl DatasetFieldMapping {
     /// Creates a builder for [`DatasetFieldMapping`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DatasetFieldMappingBuilder {
         DatasetFieldMappingBuilder::new()
     }
 
     /// Creates a [`DatasetFieldMapping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatasetFieldMappingBuilder,
-        ) -> DatasetFieldMappingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatasetFieldMapping>>(
+        f: impl FnOnce(DatasetFieldMappingBuilder) -> B,
     ) -> DatasetFieldMapping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatasetFieldMappingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataset_field_mapping_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DatasetFieldMapping`].
@@ -609,7 +586,7 @@ impl<S0> DatasetFieldMappingBuilder<(S0,)> {
 }
 
 impl DatasetFieldMappingBuilder<(crate::typed::builder::NotSet,)> {
-    /// The declared column type.
+    /// **Required.** The declared column type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -620,9 +597,12 @@ impl DatasetFieldMappingBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DatasetFieldMappingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DatasetFieldMappingBuilder<(S0,)> {
     /// Builds a [`DatasetFieldMapping`].
-    pub fn build(self) -> DatasetFieldMapping {
+    pub fn build(self) -> DatasetFieldMapping
+    where
+        S0: crate::typed::builder::IsSet<dataset_field_mapping_members::r#type>,
+    {
         DatasetFieldMapping {
             r#type: self.r#type.unwrap(),
             path: self.path,
@@ -631,16 +611,24 @@ impl DatasetFieldMappingBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DatasetFieldMappingBuilder<(crate::typed::builder::Set,)>> for DatasetFieldMapping {
-    fn from(builder: DatasetFieldMappingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DatasetFieldMappingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataset_field_mapping_members::r#type>,
+{
+    type Output = DatasetFieldMapping;
+
+    fn build(self) -> DatasetFieldMapping {
+        Self::build(self)
     }
 }
 
-impl DatasetFieldMappingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DatasetFieldMapping { match r#type {} }
+impl<S0> From<DatasetFieldMappingBuilder<(S0,)>> for DatasetFieldMapping
+where
+    S0: crate::typed::builder::IsSet<dataset_field_mapping_members::r#type>,
+{
+    fn from(builder: DatasetFieldMappingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A user-declared mapping (the `mappings` block) attached to a dataset.
@@ -666,7 +654,9 @@ impl DatasetMapping {
     }
 
     /// Creates a [`DatasetMapping`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DatasetMappingBuilder) -> DatasetMappingBuilder) -> DatasetMapping {
+    pub fn of<B: crate::typed::builder::Build<Output = DatasetMapping>>(
+        f: impl FnOnce(DatasetMappingBuilder) -> B,
+    ) -> DatasetMapping {
         f(Self::builder()).build()
     }
 }
@@ -734,12 +724,10 @@ impl DatasetMappingBuilder {
     }
 
     /// Adds an entry to [`properties`](Self::properties), with a builder.
-    pub fn add_properties_with(
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = DatasetFieldMapping>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            DatasetFieldMappingBuilder,
-        ) -> DatasetFieldMappingBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DatasetFieldMappingBuilder) -> B,
     ) -> Self {
         self.add_properties(key, f(DatasetFieldMappingBuilder::new()).build())
     }
@@ -757,9 +745,9 @@ impl DatasetMappingBuilder {
     }
 
     /// Sets [`id`](Self::id) with a builder.
-    pub fn id_with(
+    pub fn id_with<B: crate::typed::builder::Build<Output = IdPath>>(
         self,
-        f: impl FnOnce(IdPathBuilder) -> IdPathBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IdPathBuilder) -> B,
     ) -> Self {
         self.id(f(IdPathBuilder::new()).build())
     }
@@ -773,6 +761,14 @@ impl DatasetMappingBuilder {
             properties: self.properties,
             id: self.id,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DatasetMappingBuilder {
+    type Output = DatasetMapping;
+
+    fn build(self) -> DatasetMapping {
+        Self::build(self)
     }
 }
 
@@ -807,22 +803,29 @@ pub struct ESQLDataSource {
 
 impl ESQLDataSource {
     /// Creates a builder for [`ESQLDataSource`].
+    ///
+    /// Required: `name`, `type`, `settings`.
     pub fn builder() -> ESQLDataSourceBuilder {
         ESQLDataSourceBuilder::new()
     }
 
     /// Creates a [`ESQLDataSource`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ESQLDataSourceBuilder,
-        ) -> ESQLDataSourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = ESQLDataSource>>(
+        f: impl FnOnce(ESQLDataSourceBuilder) -> B,
     ) -> ESQLDataSource {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ESQLDataSourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_data_source_members {
+    pub struct name;
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`ESQLDataSource`].
@@ -884,7 +887,7 @@ impl<S0, S1, S2> ESQLDataSourceBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ESQLDataSourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The data source name.
+    /// **Required.** The data source name.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -896,7 +899,7 @@ impl<S1, S2> ESQLDataSourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ESQLDataSourceBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The data source type. Currently, `s3` is supported.
+    /// **Required.** The data source type. Currently, `s3` is supported.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -908,7 +911,7 @@ impl<S0, S2> ESQLDataSourceBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> ESQLDataSourceBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Type-specific connection and authentication settings.
+    /// **Required.** Type-specific connection and authentication settings.
     pub fn settings(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -947,15 +950,14 @@ impl<S0, S1> ESQLDataSourceBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    ESQLDataSourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ESQLDataSourceBuilder<(S0, S1, S2)> {
     /// Builds a [`ESQLDataSource`].
-    pub fn build(self) -> ESQLDataSource {
+    pub fn build(self) -> ESQLDataSource
+    where
+        S0: crate::typed::builder::IsSet<esql_data_source_members::name>,
+        S1: crate::typed::builder::IsSet<esql_data_source_members::r#type>,
+        S2: crate::typed::builder::IsSet<esql_data_source_members::settings>,
+    {
         ESQLDataSource {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -965,54 +967,28 @@ impl
     }
 }
 
-impl
-    From<
-        ESQLDataSourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ESQLDataSource
+impl<S0, S1, S2> crate::typed::builder::Build for ESQLDataSourceBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<esql_data_source_members::name>,
+    S1: crate::typed::builder::IsSet<esql_data_source_members::r#type>,
+    S2: crate::typed::builder::IsSet<esql_data_source_members::settings>,
 {
-    fn from(
-        builder: ESQLDataSourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ESQLDataSource;
+
+    fn build(self) -> ESQLDataSource {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ESQLDataSourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ESQLDataSource { match name {} }
-}
-
-impl<S2>
-    ESQLDataSourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ESQLDataSourceBuilder<(S0, S1, S2)>> for ESQLDataSource
+where
+    S0: crate::typed::builder::IsSet<esql_data_source_members::name>,
+    S1: crate::typed::builder::IsSet<esql_data_source_members::r#type>,
+    S2: crate::typed::builder::IsSet<esql_data_source_members::settings>,
 {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ESQLDataSource { match r#type {} }
-}
-
-impl
-    ESQLDataSourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> ESQLDataSource { match settings {} }
+    fn from(builder: ESQLDataSourceBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Represents a dataset definition stored in cluster state. A dataset is a named reference
@@ -1043,22 +1019,29 @@ pub struct ESQLDataset {
 
 impl ESQLDataset {
     /// Creates a builder for [`ESQLDataset`].
+    ///
+    /// Required: `name`, `data_source`, `resource`.
     pub fn builder() -> ESQLDatasetBuilder {
         ESQLDatasetBuilder::new()
     }
 
     /// Creates a [`ESQLDataset`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ESQLDatasetBuilder,
-        ) -> ESQLDatasetBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `data_source`, `resource`.
+    pub fn of<B: crate::typed::builder::Build<Output = ESQLDataset>>(
+        f: impl FnOnce(ESQLDatasetBuilder) -> B,
     ) -> ESQLDataset {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ESQLDatasetBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_dataset_members {
+    pub struct name;
+    pub struct data_source;
+    pub struct resource;
 }
 
 /// Builder for [`ESQLDataset`].
@@ -1169,16 +1152,16 @@ impl<S0, S1, S2> ESQLDatasetBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<B: crate::typed::builder::Build<Output = DatasetMapping>>(
         self,
-        f: impl FnOnce(DatasetMappingBuilder) -> DatasetMappingBuilder,
+        f: impl FnOnce(DatasetMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(DatasetMappingBuilder::new()).build())
     }
 }
 
 impl<S1, S2> ESQLDatasetBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The dataset name.
+    /// **Required.** The dataset name.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1190,7 +1173,7 @@ impl<S1, S2> ESQLDatasetBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ESQLDatasetBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The name of the referenced data source.
+    /// **Required.** The name of the referenced data source.
     pub fn data_source(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1202,7 +1185,7 @@ impl<S0, S2> ESQLDatasetBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> ESQLDatasetBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The URI that identifies the data to read, resolved against the referenced data source.
+    /// **Required.** The URI that identifies the data to read, resolved against the referenced data source.
     /// It can include glob patterns, for example a recursive pattern that matches
     /// Parquet files under `s3://logs-bucket/access`.
     pub fn resource(
@@ -1215,15 +1198,14 @@ impl<S0, S1> ESQLDatasetBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    ESQLDatasetBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ESQLDatasetBuilder<(S0, S1, S2)> {
     /// Builds a [`ESQLDataset`].
-    pub fn build(self) -> ESQLDataset {
+    pub fn build(self) -> ESQLDataset
+    where
+        S0: crate::typed::builder::IsSet<esql_dataset_members::name>,
+        S1: crate::typed::builder::IsSet<esql_dataset_members::data_source>,
+        S2: crate::typed::builder::IsSet<esql_dataset_members::resource>,
+    {
         ESQLDataset {
             name: self.name.unwrap(),
             data_source: self.data_source.unwrap(),
@@ -1235,54 +1217,28 @@ impl
     }
 }
 
-impl
-    From<
-        ESQLDatasetBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ESQLDataset
+impl<S0, S1, S2> crate::typed::builder::Build for ESQLDatasetBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<esql_dataset_members::name>,
+    S1: crate::typed::builder::IsSet<esql_dataset_members::data_source>,
+    S2: crate::typed::builder::IsSet<esql_dataset_members::resource>,
 {
-    fn from(
-        builder: ESQLDatasetBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ESQLDataset;
+
+    fn build(self) -> ESQLDataset {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ESQLDatasetBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ESQLDataset { match name {} }
-}
-
-impl<S2>
-    ESQLDatasetBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ESQLDatasetBuilder<(S0, S1, S2)>> for ESQLDataset
+where
+    S0: crate::typed::builder::IsSet<esql_dataset_members::name>,
+    S1: crate::typed::builder::IsSet<esql_dataset_members::data_source>,
+    S2: crate::typed::builder::IsSet<esql_dataset_members::resource>,
 {
-    /// `data_source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_source: crate::typed::builder::MissingRequiredField) -> ESQLDataset { match data_source {} }
-}
-
-impl
-    ESQLDatasetBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `resource` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resource: crate::typed::builder::MissingRequiredField) -> ESQLDataset { match resource {} }
+    fn from(builder: ESQLDatasetBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1318,19 +1274,28 @@ pub struct ESQLView {
 
 impl ESQLView {
     /// Creates a builder for [`ESQLView`].
+    ///
+    /// Required: `name`, `query`.
     pub fn builder() -> ESQLViewBuilder {
         ESQLViewBuilder::new()
     }
 
     /// Creates a [`ESQLView`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ESQLViewBuilder,
-        )
-            -> ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = ESQLView>>(
+        f: impl FnOnce(ESQLViewBuilder) -> B,
     ) -> ESQLView {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ESQLViewBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_view_members {
+    pub struct name;
+    pub struct query;
 }
 
 /// Builder for [`ESQLView`].
@@ -1377,7 +1342,7 @@ impl<S0, S1> ESQLViewBuilder<(S0, S1)> {
 }
 
 impl<S1> ESQLViewBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the ES|QL view
+    /// **Required.** The name of the ES|QL view
     pub fn name(
         self,
         value: impl Into<String>,
@@ -1389,7 +1354,7 @@ impl<S1> ESQLViewBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ESQLViewBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The ES|QL query
+    /// **Required.** The ES|QL query
     pub fn query(
         self,
         value: impl Into<String>,
@@ -1400,9 +1365,13 @@ impl<S0> ESQLViewBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ESQLViewBuilder<(S0, S1)> {
     /// Builds a [`ESQLView`].
-    pub fn build(self) -> ESQLView {
+    pub fn build(self) -> ESQLView
+    where
+        S0: crate::typed::builder::IsSet<esql_view_members::name>,
+        S1: crate::typed::builder::IsSet<esql_view_members::query>,
+    {
         ESQLView {
             name: self.name.unwrap(),
             query: self.query.unwrap(),
@@ -1411,24 +1380,26 @@ impl ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for ESQLView {
-    fn from(
-        builder: ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for ESQLViewBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<esql_view_members::name>,
+    S1: crate::typed::builder::IsSet<esql_view_members::query>,
+{
+    type Output = ESQLView;
+
+    fn build(self) -> ESQLView {
+        Self::build(self)
     }
 }
 
-impl<S1> ESQLViewBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ESQLView { match name {} }
-}
-
-impl ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> ESQLView { match query {} }
+impl<S0, S1> From<ESQLViewBuilder<(S0, S1)>> for ESQLView
+where
+    S0: crate::typed::builder::IsSet<esql_view_members::name>,
+    S1: crate::typed::builder::IsSet<esql_view_members::query>,
+{
+    fn from(builder: ESQLViewBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The `approximation` query setting.
@@ -1471,8 +1442,8 @@ impl EsqlApproximationSettings {
     }
 
     /// Creates a [`EsqlApproximationSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EsqlApproximationSettingsBuilder) -> EsqlApproximationSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlApproximationSettings>>(
+        f: impl FnOnce(EsqlApproximationSettingsBuilder) -> B,
     ) -> EsqlApproximationSettings {
         f(Self::builder()).build()
     }
@@ -1532,6 +1503,14 @@ impl EsqlApproximationSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for EsqlApproximationSettingsBuilder {
+    type Output = EsqlApproximationSettings;
+
+    fn build(self) -> EsqlApproximationSettings {
+        Self::build(self)
+    }
+}
+
 impl From<EsqlApproximationSettingsBuilder> for EsqlApproximationSettings {
     fn from(builder: EsqlApproximationSettingsBuilder) -> Self {
         builder.build()
@@ -1552,21 +1531,28 @@ pub struct EsqlClusterDetails {
 
 impl EsqlClusterDetails {
     /// Creates a builder for [`EsqlClusterDetails`].
+    ///
+    /// Required: `status`, `indices`.
     pub fn builder() -> EsqlClusterDetailsBuilder {
         EsqlClusterDetailsBuilder::new()
     }
 
     /// Creates a [`EsqlClusterDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EsqlClusterDetailsBuilder,
-        ) -> EsqlClusterDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `status`, `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlClusterDetails>>(
+        f: impl FnOnce(EsqlClusterDetailsBuilder) -> B,
     ) -> EsqlClusterDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlClusterDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_cluster_details_members {
+    pub struct status;
+    pub struct indices;
 }
 
 /// Builder for [`EsqlClusterDetails`].
@@ -1633,9 +1619,9 @@ impl<S0, S1> EsqlClusterDetailsBuilder<(S0, S1)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<B: crate::typed::builder::Build<Output = EsqlShardInfo>>(
         self,
-        f: impl FnOnce(EsqlShardInfoBuilder) -> EsqlShardInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(EsqlShardInfoBuilder) -> B,
     ) -> Self {
         self.shards(f(EsqlShardInfoBuilder::new()).build())
     }
@@ -1660,21 +1646,16 @@ impl<S0, S1> EsqlClusterDetailsBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`failures`](Self::failures), with a builder.
-    pub fn add_failures_with(
+    pub fn add_failures_with<B: crate::typed::builder::Build<Output = EsqlShardFailure>>(
         self,
-        f: impl FnOnce(
-            EsqlShardFailureBuilder,
-        ) -> EsqlShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlShardFailureBuilder) -> B,
     ) -> Self {
         self.add_failures(f(EsqlShardFailureBuilder::new()).build())
     }
 }
 
 impl<S1> EsqlClusterDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<EsqlClusterStatus>,
@@ -1686,6 +1667,7 @@ impl<S1> EsqlClusterDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> EsqlClusterDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<String>,
@@ -1696,9 +1678,13 @@ impl<S0> EsqlClusterDetailsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl EsqlClusterDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EsqlClusterDetailsBuilder<(S0, S1)> {
     /// Builds a [`EsqlClusterDetails`].
-    pub fn build(self) -> EsqlClusterDetails {
+    pub fn build(self) -> EsqlClusterDetails
+    where
+        S0: crate::typed::builder::IsSet<esql_cluster_details_members::status>,
+        S1: crate::typed::builder::IsSet<esql_cluster_details_members::indices>,
+    {
         EsqlClusterDetails {
             status: self.status.unwrap(),
             indices: self.indices.unwrap(),
@@ -1709,29 +1695,26 @@ impl EsqlClusterDetailsBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<EsqlClusterDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for EsqlClusterDetails
+impl<S0, S1> crate::typed::builder::Build for EsqlClusterDetailsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<esql_cluster_details_members::status>,
+    S1: crate::typed::builder::IsSet<esql_cluster_details_members::indices>,
 {
-    fn from(
-        builder: EsqlClusterDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EsqlClusterDetails;
+
+    fn build(self) -> EsqlClusterDetails {
+        Self::build(self)
     }
 }
 
-impl<S1> EsqlClusterDetailsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> EsqlClusterDetails { match status {} }
-}
-
-impl EsqlClusterDetailsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> EsqlClusterDetails { match indices {} }
+impl<S0, S1> From<EsqlClusterDetailsBuilder<(S0, S1)>> for EsqlClusterDetails
+where
+    S0: crate::typed::builder::IsSet<esql_cluster_details_members::status>,
+    S1: crate::typed::builder::IsSet<esql_cluster_details_members::indices>,
+{
+    fn from(builder: EsqlClusterDetailsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1747,26 +1730,33 @@ pub struct EsqlClusterInfo {
 
 impl EsqlClusterInfo {
     /// Creates a builder for [`EsqlClusterInfo`].
+    ///
+    /// Required: `total`, `successful`, `running`, `skipped`, `partial`, `failed`, `details`.
     pub fn builder() -> EsqlClusterInfoBuilder {
         EsqlClusterInfoBuilder::new()
     }
 
     /// Creates a [`EsqlClusterInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EsqlClusterInfoBuilder,
-        ) -> EsqlClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `successful`, `running`, `skipped`, `partial`, `failed`, `details`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlClusterInfo>>(
+        f: impl FnOnce(EsqlClusterInfoBuilder) -> B,
     ) -> EsqlClusterInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlClusterInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_cluster_info_members {
+    pub struct total;
+    pub struct successful;
+    pub struct running;
+    pub struct skipped;
+    pub struct partial;
+    pub struct failed;
+    pub struct details;
 }
 
 /// Builder for [`EsqlClusterInfo`].
@@ -1835,6 +1825,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5,
 impl<S1, S2, S3, S4, S5, S6>
     EsqlClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn total(
         self,
         value: i32,
@@ -1848,6 +1839,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     EsqlClusterInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn successful(
         self,
         value: i32,
@@ -1861,6 +1853,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     EsqlClusterInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn running(
         self,
         value: i32,
@@ -1874,6 +1867,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     EsqlClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn skipped(
         self,
         value: i32,
@@ -1887,6 +1881,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     EsqlClusterInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn partial(
         self,
         value: i32,
@@ -1900,6 +1895,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn failed(
         self,
         value: i32,
@@ -1913,6 +1909,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn details(
         self,
         value: impl Into<indexmap::IndexMap<String, EsqlClusterDetails>>,
@@ -1937,15 +1934,10 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = EsqlClusterDetails>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            EsqlClusterDetailsBuilder,
-        ) -> EsqlClusterDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlClusterDetailsBuilder) -> B,
     ) -> EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)> {
         self.add_details(key, f(EsqlClusterDetailsBuilder::new()).build())
     }
@@ -1967,33 +1959,27 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = EsqlClusterDetails>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            EsqlClusterDetailsBuilder,
-        ) -> EsqlClusterDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlClusterDetailsBuilder) -> B,
     ) -> Self {
         self.add_details(key, f(EsqlClusterDetailsBuilder::new()).build())
     }
 }
 
-impl
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`EsqlClusterInfo`].
-    pub fn build(self) -> EsqlClusterInfo {
+    pub fn build(self) -> EsqlClusterInfo
+    where
+        S0: crate::typed::builder::IsSet<esql_cluster_info_members::total>,
+        S1: crate::typed::builder::IsSet<esql_cluster_info_members::successful>,
+        S2: crate::typed::builder::IsSet<esql_cluster_info_members::running>,
+        S3: crate::typed::builder::IsSet<esql_cluster_info_members::skipped>,
+        S4: crate::typed::builder::IsSet<esql_cluster_info_members::partial>,
+        S5: crate::typed::builder::IsSet<esql_cluster_info_members::failed>,
+        S6: crate::typed::builder::IsSet<esql_cluster_info_members::details>,
+    {
         EsqlClusterInfo {
             total: self.total.unwrap(),
             successful: self.successful.unwrap(),
@@ -2006,136 +1992,38 @@ impl
     }
 }
 
-impl
-    From<
-        EsqlClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for EsqlClusterInfo
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<esql_cluster_info_members::total>,
+    S1: crate::typed::builder::IsSet<esql_cluster_info_members::successful>,
+    S2: crate::typed::builder::IsSet<esql_cluster_info_members::running>,
+    S3: crate::typed::builder::IsSet<esql_cluster_info_members::skipped>,
+    S4: crate::typed::builder::IsSet<esql_cluster_info_members::partial>,
+    S5: crate::typed::builder::IsSet<esql_cluster_info_members::failed>,
+    S6: crate::typed::builder::IsSet<esql_cluster_info_members::details>,
 {
-    fn from(
-        builder: EsqlClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EsqlClusterInfo;
+
+    fn build(self) -> EsqlClusterInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    EsqlClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for EsqlClusterInfo
+where
+    S0: crate::typed::builder::IsSet<esql_cluster_info_members::total>,
+    S1: crate::typed::builder::IsSet<esql_cluster_info_members::successful>,
+    S2: crate::typed::builder::IsSet<esql_cluster_info_members::running>,
+    S3: crate::typed::builder::IsSet<esql_cluster_info_members::skipped>,
+    S4: crate::typed::builder::IsSet<esql_cluster_info_members::partial>,
+    S5: crate::typed::builder::IsSet<esql_cluster_info_members::failed>,
+    S6: crate::typed::builder::IsSet<esql_cluster_info_members::details>,
 {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match total {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `successful` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, successful: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match successful {} }
-}
-
-impl<S3, S4, S5, S6>
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match running {} }
-}
-
-impl<S4, S5, S6>
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `skipped` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skipped: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match skipped {} }
-}
-
-impl<S5, S6>
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `partial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, partial: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match partial {} }
-}
-
-impl<S6>
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `failed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match failed {} }
-}
-
-impl
-    EsqlClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, details: crate::typed::builder::MissingRequiredField) -> EsqlClusterInfo { match details {} }
+    fn from(builder: EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2160,21 +2048,28 @@ pub struct EsqlColumnInfo {
 
 impl EsqlColumnInfo {
     /// Creates a builder for [`EsqlColumnInfo`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> EsqlColumnInfoBuilder {
         EsqlColumnInfoBuilder::new()
     }
 
     /// Creates a [`EsqlColumnInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> EsqlColumnInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlColumnInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_column_info_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`EsqlColumnInfo`].
@@ -2207,6 +2102,7 @@ impl<S0, S1> EsqlColumnInfoBuilder<(S0, S1)> {
 }
 
 impl<S1> EsqlColumnInfoBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -2218,6 +2114,7 @@ impl<S1> EsqlColumnInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> EsqlColumnInfoBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2228,9 +2125,13 @@ impl<S0> EsqlColumnInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl EsqlColumnInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EsqlColumnInfoBuilder<(S0, S1)> {
     /// Builds a [`EsqlColumnInfo`].
-    pub fn build(self) -> EsqlColumnInfo {
+    pub fn build(self) -> EsqlColumnInfo
+    where
+        S0: crate::typed::builder::IsSet<esql_column_info_members::name>,
+        S1: crate::typed::builder::IsSet<esql_column_info_members::r#type>,
+    {
         EsqlColumnInfo {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -2238,26 +2139,26 @@ impl EsqlColumnInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<EsqlColumnInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for EsqlColumnInfo
+impl<S0, S1> crate::typed::builder::Build for EsqlColumnInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<esql_column_info_members::name>,
+    S1: crate::typed::builder::IsSet<esql_column_info_members::r#type>,
 {
-    fn from(
-        builder: EsqlColumnInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = EsqlColumnInfo;
+
+    fn build(self) -> EsqlColumnInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> EsqlColumnInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> EsqlColumnInfo { match name {} }
-}
-
-impl EsqlColumnInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EsqlColumnInfo { match r#type {} }
+impl<S0, S1> From<EsqlColumnInfoBuilder<(S0, S1)>> for EsqlColumnInfo
+where
+    S0: crate::typed::builder::IsSet<esql_column_info_members::name>,
+    S1: crate::typed::builder::IsSet<esql_column_info_members::r#type>,
+{
+    fn from(builder: EsqlColumnInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2312,8 +2213,8 @@ impl EsqlQuerySettings {
     }
 
     /// Creates a [`EsqlQuerySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EsqlQuerySettingsBuilder) -> EsqlQuerySettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlQuerySettings>>(
+        f: impl FnOnce(EsqlQuerySettingsBuilder) -> B,
     ) -> EsqlQuerySettings {
         f(Self::builder()).build()
     }
@@ -2418,6 +2319,14 @@ impl EsqlQuerySettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for EsqlQuerySettingsBuilder {
+    type Output = EsqlQuerySettings;
+
+    fn build(self) -> EsqlQuerySettings {
+        Self::build(self)
+    }
+}
+
 impl From<EsqlQuerySettingsBuilder> for EsqlQuerySettings {
     fn from(builder: EsqlQuerySettingsBuilder) -> Self {
         builder.build()
@@ -2446,19 +2355,28 @@ pub struct EsqlResult {
 
 impl EsqlResult {
     /// Creates a builder for [`EsqlResult`].
+    ///
+    /// Required: `columns`, `values`.
     pub fn builder() -> EsqlResultBuilder {
         EsqlResultBuilder::new()
     }
 
     /// Creates a [`EsqlResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EsqlResultBuilder,
-        )
-            -> EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `columns`, `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlResult>>(
+        f: impl FnOnce(EsqlResultBuilder) -> B,
     ) -> EsqlResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_result_members {
+    pub struct columns;
+    pub struct values;
 }
 
 /// Builder for [`EsqlResult`].
@@ -2548,14 +2466,9 @@ impl<S0, S1> EsqlResultBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`all_columns`](Self::all_columns), with a builder.
-    pub fn add_all_columns_with(
+    pub fn add_all_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> Self {
         self.add_all_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
@@ -2574,19 +2487,9 @@ impl<S0, S1> EsqlResultBuilder<(S0, S1)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<B: crate::typed::builder::Build<Output = EsqlClusterInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlClusterInfoBuilder,
-        ) -> EsqlClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlClusterInfoBuilder) -> B,
     ) -> Self {
         self.clusters(f(EsqlClusterInfoBuilder::new()).build())
     }
@@ -2606,6 +2509,7 @@ impl<S0, S1> EsqlResultBuilder<(S0, S1)> {
 }
 
 impl<S1> EsqlResultBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn columns(
         self,
         value: impl Into<Vec<EsqlColumnInfo>>,
@@ -2629,14 +2533,9 @@ impl<S1> EsqlResultBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Adds an element to [`columns`](Self::columns), with a builder.
-    pub fn add_columns_with(
+    pub fn add_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> EsqlResultBuilder<(crate::typed::builder::Set, S1)> {
         self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
@@ -2652,20 +2551,16 @@ impl<S1> EsqlResultBuilder<(crate::typed::builder::Set, S1)> {
     }
 
     /// Adds an element to [`columns`](Self::columns), with a builder.
-    pub fn add_columns_with(
+    pub fn add_columns_with<B: crate::typed::builder::Build<Output = EsqlColumnInfo>>(
         self,
-        f: impl FnOnce(
-            EsqlColumnInfoBuilder,
-        ) -> EsqlColumnInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EsqlColumnInfoBuilder) -> B,
     ) -> Self {
         self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
     }
 }
 
 impl<S0> EsqlResultBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Vec<Vec<crate::typed::_types::FieldValue>>>,
@@ -2699,9 +2594,13 @@ impl<S0> EsqlResultBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EsqlResultBuilder<(S0, S1)> {
     /// Builds a [`EsqlResult`].
-    pub fn build(self) -> EsqlResult {
+    pub fn build(self) -> EsqlResult
+    where
+        S0: crate::typed::builder::IsSet<esql_result_members::columns>,
+        S1: crate::typed::builder::IsSet<esql_result_members::values>,
+    {
         EsqlResult {
             took: self.took,
             is_partial: self.is_partial,
@@ -2714,26 +2613,26 @@ impl EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for EsqlResult
+impl<S0, S1> crate::typed::builder::Build for EsqlResultBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<esql_result_members::columns>,
+    S1: crate::typed::builder::IsSet<esql_result_members::values>,
 {
-    fn from(
-        builder: EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = EsqlResult;
+
+    fn build(self) -> EsqlResult {
+        Self::build(self)
     }
 }
 
-impl<S1> EsqlResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `columns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, columns: crate::typed::builder::MissingRequiredField) -> EsqlResult { match columns {} }
-}
-
-impl EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> EsqlResult { match values {} }
+impl<S0, S1> From<EsqlResultBuilder<(S0, S1)>> for EsqlResult
+where
+    S0: crate::typed::builder::IsSet<esql_result_members::columns>,
+    S1: crate::typed::builder::IsSet<esql_result_members::values>,
+{
+    fn from(builder: EsqlResultBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2766,22 +2665,29 @@ impl From<&str> for EsqlShardFailureIndex {
 
 impl EsqlShardFailure {
     /// Creates a builder for [`EsqlShardFailure`].
+    ///
+    /// Required: `shard`, `index`, `reason`.
     pub fn builder() -> EsqlShardFailureBuilder {
         EsqlShardFailureBuilder::new()
     }
 
     /// Creates a [`EsqlShardFailure`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EsqlShardFailureBuilder,
-        ) -> EsqlShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `shard`, `index`, `reason`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlShardFailure>>(
+        f: impl FnOnce(EsqlShardFailureBuilder) -> B,
     ) -> EsqlShardFailure {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlShardFailureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_shard_failure_members {
+    pub struct shard;
+    pub struct index;
+    pub struct reason;
 }
 
 /// Builder for [`EsqlShardFailure`].
@@ -2842,6 +2748,7 @@ impl<S0, S1, S2> EsqlShardFailureBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> EsqlShardFailureBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn shard(
         self,
         value: i32,
@@ -2853,6 +2760,7 @@ impl<S1, S2> EsqlShardFailureBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> EsqlShardFailureBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<EsqlShardFailureIndex>,
@@ -2864,6 +2772,7 @@ impl<S0, S2> EsqlShardFailureBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> EsqlShardFailureBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<crate::typed::_types::ErrorCause>,
@@ -2874,26 +2783,24 @@ impl<S0, S1> EsqlShardFailureBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`reason`](Self::reason) with a builder.
-    pub fn reason_with(
+    pub fn reason_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> EsqlShardFailureBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.reason(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
-impl
-    EsqlShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> EsqlShardFailureBuilder<(S0, S1, S2)> {
     /// Builds a [`EsqlShardFailure`].
-    pub fn build(self) -> EsqlShardFailure {
+    pub fn build(self) -> EsqlShardFailure
+    where
+        S0: crate::typed::builder::IsSet<esql_shard_failure_members::shard>,
+        S1: crate::typed::builder::IsSet<esql_shard_failure_members::index>,
+        S2: crate::typed::builder::IsSet<esql_shard_failure_members::reason>,
+    {
         EsqlShardFailure {
             shard: self.shard.unwrap(),
             index: self.index.unwrap(),
@@ -2903,54 +2810,28 @@ impl
     }
 }
 
-impl
-    From<
-        EsqlShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for EsqlShardFailure
+impl<S0, S1, S2> crate::typed::builder::Build for EsqlShardFailureBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<esql_shard_failure_members::shard>,
+    S1: crate::typed::builder::IsSet<esql_shard_failure_members::index>,
+    S2: crate::typed::builder::IsSet<esql_shard_failure_members::reason>,
 {
-    fn from(
-        builder: EsqlShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EsqlShardFailure;
+
+    fn build(self) -> EsqlShardFailure {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> EsqlShardFailureBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard: crate::typed::builder::MissingRequiredField) -> EsqlShardFailure { match shard {} }
-}
-
-impl<S2>
-    EsqlShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<EsqlShardFailureBuilder<(S0, S1, S2)>> for EsqlShardFailure
+where
+    S0: crate::typed::builder::IsSet<esql_shard_failure_members::shard>,
+    S1: crate::typed::builder::IsSet<esql_shard_failure_members::index>,
+    S2: crate::typed::builder::IsSet<esql_shard_failure_members::reason>,
 {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> EsqlShardFailure { match index {} }
-}
-
-impl
-    EsqlShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> EsqlShardFailure { match reason {} }
+    fn from(builder: EsqlShardFailureBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2966,16 +2847,27 @@ pub struct EsqlShardInfo {
 
 impl EsqlShardInfo {
     /// Creates a builder for [`EsqlShardInfo`].
+    ///
+    /// Required: `total`.
     pub fn builder() -> EsqlShardInfoBuilder {
         EsqlShardInfoBuilder::new()
     }
 
     /// Creates a [`EsqlShardInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EsqlShardInfoBuilder) -> EsqlShardInfoBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = EsqlShardInfo>>(
+        f: impl FnOnce(EsqlShardInfoBuilder) -> B,
     ) -> EsqlShardInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EsqlShardInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod esql_shard_info_members {
+    pub struct total;
 }
 
 /// Builder for [`EsqlShardInfo`].
@@ -3046,6 +2938,7 @@ impl<S0> EsqlShardInfoBuilder<(S0,)> {
 }
 
 impl EsqlShardInfoBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn total(self, value: i32) -> EsqlShardInfoBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.total = Some(value);
@@ -3053,9 +2946,12 @@ impl EsqlShardInfoBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EsqlShardInfoBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EsqlShardInfoBuilder<(S0,)> {
     /// Builds a [`EsqlShardInfo`].
-    pub fn build(self) -> EsqlShardInfo {
+    pub fn build(self) -> EsqlShardInfo
+    where
+        S0: crate::typed::builder::IsSet<esql_shard_info_members::total>,
+    {
         EsqlShardInfo {
             total: self.total.unwrap(),
             successful: self.successful,
@@ -3065,16 +2961,24 @@ impl EsqlShardInfoBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EsqlShardInfoBuilder<(crate::typed::builder::Set,)>> for EsqlShardInfo {
-    fn from(builder: EsqlShardInfoBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EsqlShardInfoBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<esql_shard_info_members::total>,
+{
+    type Output = EsqlShardInfo;
+
+    fn build(self) -> EsqlShardInfo {
+        Self::build(self)
     }
 }
 
-impl EsqlShardInfoBuilder<(crate::typed::builder::NotSet,)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> EsqlShardInfo { match total {} }
+impl<S0> From<EsqlShardInfoBuilder<(S0,)>> for EsqlShardInfo
+where
+    S0: crate::typed::builder::IsSet<esql_shard_info_members::total>,
+{
+    fn from(builder: EsqlShardInfoBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The `_id` meta-field of a dataset mapping.
@@ -3086,16 +2990,27 @@ pub struct IdPath {
 
 impl IdPath {
     /// Creates a builder for [`IdPath`].
+    ///
+    /// Required: `path`.
     pub fn builder() -> IdPathBuilder {
         IdPathBuilder::new()
     }
 
     /// Creates a [`IdPath`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IdPathBuilder) -> IdPathBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `path`.
+    pub fn of<B: crate::typed::builder::Build<Output = IdPath>>(
+        f: impl FnOnce(IdPathBuilder) -> B,
     ) -> IdPath {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IdPathBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod id_path_members {
+    pub struct path;
 }
 
 /// Builder for [`IdPath`].
@@ -3124,7 +3039,7 @@ impl<S0> IdPathBuilder<(S0,)> {
 }
 
 impl IdPathBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the column that provides the document identity.
+    /// **Required.** The name of the column that provides the document identity.
     pub fn path(self, value: impl Into<String>) -> IdPathBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.path = Some(value.into());
@@ -3132,25 +3047,36 @@ impl IdPathBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IdPathBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IdPathBuilder<(S0,)> {
     /// Builds a [`IdPath`].
-    pub fn build(self) -> IdPath {
+    pub fn build(self) -> IdPath
+    where
+        S0: crate::typed::builder::IsSet<id_path_members::path>,
+    {
         IdPath {
             path: self.path.unwrap(),
         }
     }
 }
 
-impl From<IdPathBuilder<(crate::typed::builder::Set,)>> for IdPath {
-    fn from(builder: IdPathBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IdPathBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<id_path_members::path>,
+{
+    type Output = IdPath;
+
+    fn build(self) -> IdPath {
+        Self::build(self)
     }
 }
 
-impl IdPathBuilder<(crate::typed::builder::NotSet,)> {
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> IdPath { match path {} }
+impl<S0> From<IdPathBuilder<(S0,)>> for IdPath
+where
+    S0: crate::typed::builder::IsSet<id_path_members::path>,
+{
+    fn from(builder: IdPathBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The value of a named ES|QL query parameter.
@@ -3210,15 +3136,17 @@ pub enum TableValuesContainer {
 
 impl TableValuesContainer {
     /// Creates a builder for [`TableValuesContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> TableValuesContainerBuilder {
         TableValuesContainerBuilder::new()
     }
 
     /// Creates a [`TableValuesContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TableValuesContainerBuilder,
-        ) -> TableValuesContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = TableValuesContainer>>(
+        f: impl FnOnce(TableValuesContainerBuilder) -> B,
     ) -> TableValuesContainer {
         f(Self::builder()).build()
     }
@@ -3287,23 +3215,34 @@ impl TableValuesContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TableValuesContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TableValuesContainerBuilder<(S0,)> {
     /// Builds a [`TableValuesContainer`].
-    pub fn build(self) -> TableValuesContainer {
+    pub fn build(self) -> TableValuesContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<TableValuesContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<TableValuesContainerBuilder<(crate::typed::builder::Set,)>> for TableValuesContainer {
-    fn from(builder: TableValuesContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TableValuesContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<TableValuesContainer>,
+{
+    type Output = TableValuesContainer;
+
+    fn build(self) -> TableValuesContainer {
+        Self::build(self)
     }
 }
 
-impl TableValuesContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> TableValuesContainer { match variant {} }
+impl<S0> From<TableValuesContainerBuilder<(S0,)>> for TableValuesContainer
+where
+    S0: crate::typed::builder::IsVariantSet<TableValuesContainer>,
+{
+    fn from(builder: TableValuesContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

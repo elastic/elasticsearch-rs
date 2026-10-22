@@ -51,7 +51,9 @@ impl Actions {
     }
 
     /// Creates a [`Actions`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ActionsBuilder) -> ActionsBuilder) -> Actions {
+    pub fn of<B: crate::typed::builder::Build<Output = Actions>>(
+        f: impl FnOnce(ActionsBuilder) -> B,
+    ) -> Actions {
         f(Self::builder()).build()
     }
 }
@@ -108,9 +110,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`allocate`](Self::allocate) with a builder.
-    pub fn allocate_with(
+    pub fn allocate_with<B: crate::typed::builder::Build<Output = AllocateAction>>(
         self,
-        f: impl FnOnce(AllocateActionBuilder) -> AllocateActionBuilder,
+        f: impl FnOnce(AllocateActionBuilder) -> B,
     ) -> Self {
         self.allocate(f(AllocateActionBuilder::new()).build())
     }
@@ -128,7 +130,10 @@ impl ActionsBuilder {
     }
 
     /// Sets [`delete`](Self::delete) with a builder.
-    pub fn delete_with(self, f: impl FnOnce(DeleteActionBuilder) -> DeleteActionBuilder) -> Self {
+    pub fn delete_with<B: crate::typed::builder::Build<Output = DeleteAction>>(
+        self,
+        f: impl FnOnce(DeleteActionBuilder) -> B,
+    ) -> Self {
         self.delete(f(DeleteActionBuilder::new()).build())
     }
 
@@ -145,11 +150,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`downsample`](Self::downsample) with a builder.
-    pub fn downsample_with(
+    pub fn downsample_with<B: crate::typed::builder::Build<Output = DownsampleAction>>(
         self,
-        f: impl FnOnce(
-            DownsampleActionBuilder,
-        ) -> DownsampleActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DownsampleActionBuilder) -> B,
     ) -> Self {
         self.downsample(f(DownsampleActionBuilder::new()).build())
     }
@@ -167,11 +170,11 @@ impl ActionsBuilder {
     }
 
     /// Sets [`freeze`](Self::freeze) with a builder.
-    pub fn freeze_with(
+    pub fn freeze_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> Self {
         self.freeze(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
@@ -189,11 +192,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`forcemerge`](Self::forcemerge) with a builder.
-    pub fn forcemerge_with(
+    pub fn forcemerge_with<B: crate::typed::builder::Build<Output = ForceMergeAction>>(
         self,
-        f: impl FnOnce(
-            ForceMergeActionBuilder,
-        ) -> ForceMergeActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ForceMergeActionBuilder) -> B,
     ) -> Self {
         self.forcemerge(f(ForceMergeActionBuilder::new()).build())
     }
@@ -211,9 +212,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`migrate`](Self::migrate) with a builder.
-    pub fn migrate_with(
+    pub fn migrate_with<B: crate::typed::builder::Build<Output = MigrateAction>>(
         self,
-        f: impl FnOnce(MigrateActionBuilder) -> MigrateActionBuilder,
+        f: impl FnOnce(MigrateActionBuilder) -> B,
     ) -> Self {
         self.migrate(f(MigrateActionBuilder::new()).build())
     }
@@ -231,11 +232,11 @@ impl ActionsBuilder {
     }
 
     /// Sets [`readonly`](Self::readonly) with a builder.
-    pub fn readonly_with(
+    pub fn readonly_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> Self {
         self.readonly(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
@@ -253,9 +254,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`rollover`](Self::rollover) with a builder.
-    pub fn rollover_with(
+    pub fn rollover_with<B: crate::typed::builder::Build<Output = RolloverAction>>(
         self,
-        f: impl FnOnce(RolloverActionBuilder) -> RolloverActionBuilder,
+        f: impl FnOnce(RolloverActionBuilder) -> B,
     ) -> Self {
         self.rollover(f(RolloverActionBuilder::new()).build())
     }
@@ -273,9 +274,9 @@ impl ActionsBuilder {
     }
 
     /// Sets [`set_priority`](Self::set_priority) with a builder.
-    pub fn set_priority_with(
+    pub fn set_priority_with<B: crate::typed::builder::Build<Output = SetPriorityAction>>(
         self,
-        f: impl FnOnce(SetPriorityActionBuilder) -> SetPriorityActionBuilder,
+        f: impl FnOnce(SetPriorityActionBuilder) -> B,
     ) -> Self {
         self.set_priority(f(SetPriorityActionBuilder::new()).build())
     }
@@ -293,11 +294,11 @@ impl ActionsBuilder {
     }
 
     /// Sets [`searchable_snapshot`](Self::searchable_snapshot) with a builder.
-    pub fn searchable_snapshot_with(
+    pub fn searchable_snapshot_with<
+        B: crate::typed::builder::Build<Output = SearchableSnapshotAction>,
+    >(
         self,
-        f: impl FnOnce(
-            SearchableSnapshotActionBuilder,
-        ) -> SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SearchableSnapshotActionBuilder) -> B,
     ) -> Self {
         self.searchable_snapshot(f(SearchableSnapshotActionBuilder::new()).build())
     }
@@ -315,7 +316,10 @@ impl ActionsBuilder {
     }
 
     /// Sets [`shrink`](Self::shrink) with a builder.
-    pub fn shrink_with(self, f: impl FnOnce(ShrinkActionBuilder) -> ShrinkActionBuilder) -> Self {
+    pub fn shrink_with<B: crate::typed::builder::Build<Output = ShrinkAction>>(
+        self,
+        f: impl FnOnce(ShrinkActionBuilder) -> B,
+    ) -> Self {
         self.shrink(f(ShrinkActionBuilder::new()).build())
     }
 
@@ -332,11 +336,11 @@ impl ActionsBuilder {
     }
 
     /// Sets [`unfollow`](Self::unfollow) with a builder.
-    pub fn unfollow_with(
+    pub fn unfollow_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> Self {
         self.unfollow(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
@@ -354,11 +358,11 @@ impl ActionsBuilder {
     }
 
     /// Sets [`wait_for_snapshot`](Self::wait_for_snapshot) with a builder.
-    pub fn wait_for_snapshot_with(
+    pub fn wait_for_snapshot_with<
+        B: crate::typed::builder::Build<Output = WaitForSnapshotAction>,
+    >(
         self,
-        f: impl FnOnce(
-            WaitForSnapshotActionBuilder,
-        ) -> WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WaitForSnapshotActionBuilder) -> B,
     ) -> Self {
         self.wait_for_snapshot(f(WaitForSnapshotActionBuilder::new()).build())
     }
@@ -382,6 +386,14 @@ impl ActionsBuilder {
             unfollow: self.unfollow,
             wait_for_snapshot: self.wait_for_snapshot,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ActionsBuilder {
+    type Output = Actions;
+
+    fn build(self) -> Actions {
+        Self::build(self)
     }
 }
 
@@ -412,7 +424,9 @@ impl AllocateAction {
     }
 
     /// Creates a [`AllocateAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AllocateActionBuilder) -> AllocateActionBuilder) -> AllocateAction {
+    pub fn of<B: crate::typed::builder::Build<Output = AllocateAction>>(
+        f: impl FnOnce(AllocateActionBuilder) -> B,
+    ) -> AllocateAction {
         f(Self::builder()).build()
     }
 }
@@ -533,6 +547,14 @@ impl AllocateActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AllocateActionBuilder {
+    type Output = AllocateAction;
+
+    fn build(self) -> AllocateAction {
+        Self::build(self)
+    }
+}
+
 impl From<AllocateActionBuilder> for AllocateAction {
     fn from(builder: AllocateActionBuilder) -> Self {
         builder.build()
@@ -552,7 +574,9 @@ impl DeleteAction {
     }
 
     /// Creates a [`DeleteAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DeleteActionBuilder) -> DeleteActionBuilder) -> DeleteAction {
+    pub fn of<B: crate::typed::builder::Build<Output = DeleteAction>>(
+        f: impl FnOnce(DeleteActionBuilder) -> B,
+    ) -> DeleteAction {
         f(Self::builder()).build()
     }
 }
@@ -593,6 +617,14 @@ impl DeleteActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DeleteActionBuilder {
+    type Output = DeleteAction;
+
+    fn build(self) -> DeleteAction {
+        Self::build(self)
+    }
+}
+
 impl From<DeleteActionBuilder> for DeleteAction {
     fn from(builder: DeleteActionBuilder) -> Self {
         builder.build()
@@ -608,18 +640,27 @@ pub struct DownsampleAction {
 
 impl DownsampleAction {
     /// Creates a builder for [`DownsampleAction`].
+    ///
+    /// Required: `fixed_interval`.
     pub fn builder() -> DownsampleActionBuilder {
         DownsampleActionBuilder::new()
     }
 
     /// Creates a [`DownsampleAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DownsampleActionBuilder,
-        ) -> DownsampleActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `fixed_interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = DownsampleAction>>(
+        f: impl FnOnce(DownsampleActionBuilder) -> B,
     ) -> DownsampleAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DownsampleActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod downsample_action_members {
+    pub struct fixed_interval;
 }
 
 /// Builder for [`DownsampleAction`].
@@ -662,6 +703,7 @@ impl<S0> DownsampleActionBuilder<(S0,)> {
 }
 
 impl DownsampleActionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn fixed_interval(
         self,
         value: impl Into<crate::typed::_types::DurationLarge>,
@@ -672,9 +714,12 @@ impl DownsampleActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DownsampleActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DownsampleActionBuilder<(S0,)> {
     /// Builds a [`DownsampleAction`].
-    pub fn build(self) -> DownsampleAction {
+    pub fn build(self) -> DownsampleAction
+    where
+        S0: crate::typed::builder::IsSet<downsample_action_members::fixed_interval>,
+    {
         DownsampleAction {
             fixed_interval: self.fixed_interval.unwrap(),
             wait_timeout: self.wait_timeout,
@@ -682,16 +727,24 @@ impl DownsampleActionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DownsampleActionBuilder<(crate::typed::builder::Set,)>> for DownsampleAction {
-    fn from(builder: DownsampleActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DownsampleActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<downsample_action_members::fixed_interval>,
+{
+    type Output = DownsampleAction;
+
+    fn build(self) -> DownsampleAction {
+        Self::build(self)
     }
 }
 
-impl DownsampleActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `fixed_interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fixed_interval: crate::typed::builder::MissingRequiredField) -> DownsampleAction { match fixed_interval {} }
+impl<S0> From<DownsampleActionBuilder<(S0,)>> for DownsampleAction
+where
+    S0: crate::typed::builder::IsSet<downsample_action_members::fixed_interval>,
+{
+    fn from(builder: DownsampleActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -703,18 +756,27 @@ pub struct ForceMergeAction {
 
 impl ForceMergeAction {
     /// Creates a builder for [`ForceMergeAction`].
+    ///
+    /// Required: `max_num_segments`.
     pub fn builder() -> ForceMergeActionBuilder {
         ForceMergeActionBuilder::new()
     }
 
     /// Creates a [`ForceMergeAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ForceMergeActionBuilder,
-        ) -> ForceMergeActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `max_num_segments`.
+    pub fn of<B: crate::typed::builder::Build<Output = ForceMergeAction>>(
+        f: impl FnOnce(ForceMergeActionBuilder) -> B,
     ) -> ForceMergeAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ForceMergeActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod force_merge_action_members {
+    pub struct max_num_segments;
 }
 
 /// Builder for [`ForceMergeAction`].
@@ -757,6 +819,7 @@ impl<S0> ForceMergeActionBuilder<(S0,)> {
 }
 
 impl ForceMergeActionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn max_num_segments(
         self,
         value: i32,
@@ -767,9 +830,12 @@ impl ForceMergeActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ForceMergeActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ForceMergeActionBuilder<(S0,)> {
     /// Builds a [`ForceMergeAction`].
-    pub fn build(self) -> ForceMergeAction {
+    pub fn build(self) -> ForceMergeAction
+    where
+        S0: crate::typed::builder::IsSet<force_merge_action_members::max_num_segments>,
+    {
         ForceMergeAction {
             max_num_segments: self.max_num_segments.unwrap(),
             index_codec: self.index_codec,
@@ -777,16 +843,24 @@ impl ForceMergeActionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ForceMergeActionBuilder<(crate::typed::builder::Set,)>> for ForceMergeAction {
-    fn from(builder: ForceMergeActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ForceMergeActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<force_merge_action_members::max_num_segments>,
+{
+    type Output = ForceMergeAction;
+
+    fn build(self) -> ForceMergeAction {
+        Self::build(self)
     }
 }
 
-impl ForceMergeActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `max_num_segments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_num_segments: crate::typed::builder::MissingRequiredField) -> ForceMergeAction { match max_num_segments {} }
+impl<S0> From<ForceMergeActionBuilder<(S0,)>> for ForceMergeAction
+where
+    S0: crate::typed::builder::IsSet<force_merge_action_members::max_num_segments>,
+{
+    fn from(builder: ForceMergeActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -802,7 +876,9 @@ impl MigrateAction {
     }
 
     /// Creates a [`MigrateAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MigrateActionBuilder) -> MigrateActionBuilder) -> MigrateAction {
+    pub fn of<B: crate::typed::builder::Build<Output = MigrateAction>>(
+        f: impl FnOnce(MigrateActionBuilder) -> B,
+    ) -> MigrateAction {
         f(Self::builder()).build()
     }
 }
@@ -841,6 +917,14 @@ impl MigrateActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MigrateActionBuilder {
+    type Output = MigrateAction;
+
+    fn build(self) -> MigrateAction {
+        Self::build(self)
+    }
+}
+
 impl From<MigrateActionBuilder> for MigrateAction {
     fn from(builder: MigrateActionBuilder) -> Self {
         builder.build()
@@ -862,7 +946,9 @@ impl Phase {
     }
 
     /// Creates a [`Phase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Phase {
+    pub fn of<B: crate::typed::builder::Build<Output = Phase>>(
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Phase {
         f(Self::builder()).build()
     }
 }
@@ -896,7 +982,10 @@ impl PhaseBuilder {
     }
 
     /// Sets [`actions`](Self::actions) with a builder.
-    pub fn actions_with(self, f: impl FnOnce(ActionsBuilder) -> ActionsBuilder) -> Self {
+    pub fn actions_with<B: crate::typed::builder::Build<Output = Actions>>(
+        self,
+        f: impl FnOnce(ActionsBuilder) -> B,
+    ) -> Self {
         self.actions(f(ActionsBuilder::new()).build())
     }
 
@@ -919,6 +1008,14 @@ impl PhaseBuilder {
             actions: self.actions,
             min_age: self.min_age,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PhaseBuilder {
+    type Output = Phase;
+
+    fn build(self) -> Phase {
+        Self::build(self)
     }
 }
 
@@ -949,7 +1046,9 @@ impl Phases {
     }
 
     /// Creates a [`Phases`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PhasesBuilder) -> PhasesBuilder) -> Phases {
+    pub fn of<B: crate::typed::builder::Build<Output = Phases>>(
+        f: impl FnOnce(PhasesBuilder) -> B,
+    ) -> Phases {
         f(Self::builder()).build()
     }
 }
@@ -989,7 +1088,10 @@ impl PhasesBuilder {
     }
 
     /// Sets [`cold`](Self::cold) with a builder.
-    pub fn cold_with(self, f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Self {
+    pub fn cold_with<B: crate::typed::builder::Build<Output = Phase>>(
+        self,
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Self {
         self.cold(f(PhaseBuilder::new()).build())
     }
 
@@ -1005,7 +1107,10 @@ impl PhasesBuilder {
     }
 
     /// Sets [`delete`](Self::delete) with a builder.
-    pub fn delete_with(self, f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Self {
+    pub fn delete_with<B: crate::typed::builder::Build<Output = Phase>>(
+        self,
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Self {
         self.delete(f(PhaseBuilder::new()).build())
     }
 
@@ -1021,7 +1126,10 @@ impl PhasesBuilder {
     }
 
     /// Sets [`frozen`](Self::frozen) with a builder.
-    pub fn frozen_with(self, f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Self {
+    pub fn frozen_with<B: crate::typed::builder::Build<Output = Phase>>(
+        self,
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Self {
         self.frozen(f(PhaseBuilder::new()).build())
     }
 
@@ -1037,7 +1145,10 @@ impl PhasesBuilder {
     }
 
     /// Sets [`hot`](Self::hot) with a builder.
-    pub fn hot_with(self, f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Self {
+    pub fn hot_with<B: crate::typed::builder::Build<Output = Phase>>(
+        self,
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Self {
         self.hot(f(PhaseBuilder::new()).build())
     }
 
@@ -1053,7 +1164,10 @@ impl PhasesBuilder {
     }
 
     /// Sets [`warm`](Self::warm) with a builder.
-    pub fn warm_with(self, f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Self {
+    pub fn warm_with<B: crate::typed::builder::Build<Output = Phase>>(
+        self,
+        f: impl FnOnce(PhaseBuilder) -> B,
+    ) -> Self {
         self.warm(f(PhaseBuilder::new()).build())
     }
 }
@@ -1068,6 +1182,14 @@ impl PhasesBuilder {
             hot: self.hot,
             warm: self.warm,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PhasesBuilder {
+    type Output = Phases;
+
+    fn build(self) -> Phases {
+        Self::build(self)
     }
 }
 
@@ -1087,16 +1209,27 @@ pub struct Policy {
 
 impl Policy {
     /// Creates a builder for [`Policy`].
+    ///
+    /// Required: `phases`.
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
     }
 
     /// Creates a [`Policy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PolicyBuilder) -> PolicyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `phases`.
+    pub fn of<B: crate::typed::builder::Build<Output = Policy>>(
+        f: impl FnOnce(PolicyBuilder) -> B,
     ) -> Policy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PolicyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod policy_members {
+    pub struct phases;
 }
 
 /// Builder for [`Policy`].
@@ -1148,6 +1281,7 @@ impl<S0> PolicyBuilder<(S0,)> {
 }
 
 impl PolicyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn phases(self, value: impl Into<Phases>) -> PolicyBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.phases = Some(value.into());
@@ -1155,17 +1289,20 @@ impl PolicyBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`phases`](Self::phases) with a builder.
-    pub fn phases_with(
+    pub fn phases_with<B: crate::typed::builder::Build<Output = Phases>>(
         self,
-        f: impl FnOnce(PhasesBuilder) -> PhasesBuilder,
+        f: impl FnOnce(PhasesBuilder) -> B,
     ) -> PolicyBuilder<(crate::typed::builder::Set,)> {
         self.phases(f(PhasesBuilder::new()).build())
     }
 }
 
-impl PolicyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PolicyBuilder<(S0,)> {
     /// Builds a [`Policy`].
-    pub fn build(self) -> Policy {
+    pub fn build(self) -> Policy
+    where
+        S0: crate::typed::builder::IsSet<policy_members::phases>,
+    {
         Policy {
             phases: self.phases.unwrap(),
             meta: self.meta,
@@ -1173,16 +1310,24 @@ impl PolicyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PolicyBuilder<(crate::typed::builder::Set,)>> for Policy {
-    fn from(builder: PolicyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PolicyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<policy_members::phases>,
+{
+    type Output = Policy;
+
+    fn build(self) -> Policy {
+        Self::build(self)
     }
 }
 
-impl PolicyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `phases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, phases: crate::typed::builder::MissingRequiredField) -> Policy { match phases {} }
+impl<S0> From<PolicyBuilder<(S0,)>> for Policy
+where
+    S0: crate::typed::builder::IsSet<policy_members::phases>,
+{
+    fn from(builder: PolicyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1217,7 +1362,9 @@ impl RolloverAction {
     }
 
     /// Creates a [`RolloverAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RolloverActionBuilder) -> RolloverActionBuilder) -> RolloverAction {
+    pub fn of<B: crate::typed::builder::Build<Output = RolloverAction>>(
+        f: impl FnOnce(RolloverActionBuilder) -> B,
+    ) -> RolloverAction {
         f(Self::builder()).build()
     }
 }
@@ -1397,6 +1544,14 @@ impl RolloverActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RolloverActionBuilder {
+    type Output = RolloverAction;
+
+    fn build(self) -> RolloverAction {
+        Self::build(self)
+    }
+}
+
 impl From<RolloverActionBuilder> for RolloverAction {
     fn from(builder: RolloverActionBuilder) -> Self {
         builder.build()
@@ -1412,18 +1567,27 @@ pub struct SearchableSnapshotAction {
 
 impl SearchableSnapshotAction {
     /// Creates a builder for [`SearchableSnapshotAction`].
+    ///
+    /// Required: `snapshot_repository`.
     pub fn builder() -> SearchableSnapshotActionBuilder {
         SearchableSnapshotActionBuilder::new()
     }
 
     /// Creates a [`SearchableSnapshotAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchableSnapshotActionBuilder,
-        ) -> SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `snapshot_repository`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchableSnapshotAction>>(
+        f: impl FnOnce(SearchableSnapshotActionBuilder) -> B,
     ) -> SearchableSnapshotAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchableSnapshotActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod searchable_snapshot_action_members {
+    pub struct snapshot_repository;
 }
 
 /// Builder for [`SearchableSnapshotAction`].
@@ -1466,6 +1630,7 @@ impl<S0> SearchableSnapshotActionBuilder<(S0,)> {
 }
 
 impl SearchableSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn snapshot_repository(
         self,
         value: impl Into<String>,
@@ -1476,9 +1641,12 @@ impl SearchableSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SearchableSnapshotActionBuilder<(S0,)> {
     /// Builds a [`SearchableSnapshotAction`].
-    pub fn build(self) -> SearchableSnapshotAction {
+    pub fn build(self) -> SearchableSnapshotAction
+    where
+        S0: crate::typed::builder::IsSet<searchable_snapshot_action_members::snapshot_repository>,
+    {
         SearchableSnapshotAction {
             snapshot_repository: self.snapshot_repository.unwrap(),
             force_merge_index: self.force_merge_index,
@@ -1486,18 +1654,24 @@ impl SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)>>
-    for SearchableSnapshotAction
+impl<S0> crate::typed::builder::Build for SearchableSnapshotActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<searchable_snapshot_action_members::snapshot_repository>,
 {
-    fn from(builder: SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SearchableSnapshotAction;
+
+    fn build(self) -> SearchableSnapshotAction {
+        Self::build(self)
     }
 }
 
-impl SearchableSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `snapshot_repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_repository: crate::typed::builder::MissingRequiredField) -> SearchableSnapshotAction { match snapshot_repository {} }
+impl<S0> From<SearchableSnapshotActionBuilder<(S0,)>> for SearchableSnapshotAction
+where
+    S0: crate::typed::builder::IsSet<searchable_snapshot_action_members::snapshot_repository>,
+{
+    fn from(builder: SearchableSnapshotActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1513,8 +1687,8 @@ impl SetPriorityAction {
     }
 
     /// Creates a [`SetPriorityAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SetPriorityActionBuilder) -> SetPriorityActionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SetPriorityAction>>(
+        f: impl FnOnce(SetPriorityActionBuilder) -> B,
     ) -> SetPriorityAction {
         f(Self::builder()).build()
     }
@@ -1554,6 +1728,14 @@ impl SetPriorityActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SetPriorityActionBuilder {
+    type Output = SetPriorityAction;
+
+    fn build(self) -> SetPriorityAction {
+        Self::build(self)
+    }
+}
+
 impl From<SetPriorityActionBuilder> for SetPriorityAction {
     fn from(builder: SetPriorityActionBuilder) -> Self {
         builder.build()
@@ -1577,7 +1759,9 @@ impl ShrinkAction {
     }
 
     /// Creates a [`ShrinkAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ShrinkActionBuilder) -> ShrinkActionBuilder) -> ShrinkAction {
+    pub fn of<B: crate::typed::builder::Build<Output = ShrinkAction>>(
+        f: impl FnOnce(ShrinkActionBuilder) -> B,
+    ) -> ShrinkAction {
         f(Self::builder()).build()
     }
 }
@@ -1652,6 +1836,14 @@ impl ShrinkActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ShrinkActionBuilder {
+    type Output = ShrinkAction;
+
+    fn build(self) -> ShrinkAction {
+        Self::build(self)
+    }
+}
+
 impl From<ShrinkActionBuilder> for ShrinkAction {
     fn from(builder: ShrinkActionBuilder) -> Self {
         builder.build()
@@ -1665,18 +1857,27 @@ pub struct WaitForSnapshotAction {
 
 impl WaitForSnapshotAction {
     /// Creates a builder for [`WaitForSnapshotAction`].
+    ///
+    /// Required: `policy`.
     pub fn builder() -> WaitForSnapshotActionBuilder {
         WaitForSnapshotActionBuilder::new()
     }
 
     /// Creates a [`WaitForSnapshotAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WaitForSnapshotActionBuilder,
-        ) -> WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `policy`.
+    pub fn of<B: crate::typed::builder::Build<Output = WaitForSnapshotAction>>(
+        f: impl FnOnce(WaitForSnapshotActionBuilder) -> B,
     ) -> WaitForSnapshotAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WaitForSnapshotActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod wait_for_snapshot_action_members {
+    pub struct policy;
 }
 
 /// Builder for [`WaitForSnapshotAction`].
@@ -1705,6 +1906,7 @@ impl<S0> WaitForSnapshotActionBuilder<(S0,)> {
 }
 
 impl WaitForSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<String>,
@@ -1715,23 +1917,34 @@ impl WaitForSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WaitForSnapshotActionBuilder<(S0,)> {
     /// Builds a [`WaitForSnapshotAction`].
-    pub fn build(self) -> WaitForSnapshotAction {
+    pub fn build(self) -> WaitForSnapshotAction
+    where
+        S0: crate::typed::builder::IsSet<wait_for_snapshot_action_members::policy>,
+    {
         WaitForSnapshotAction {
             policy: self.policy.unwrap(),
         }
     }
 }
 
-impl From<WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)>> for WaitForSnapshotAction {
-    fn from(builder: WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WaitForSnapshotActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<wait_for_snapshot_action_members::policy>,
+{
+    type Output = WaitForSnapshotAction;
+
+    fn build(self) -> WaitForSnapshotAction {
+        Self::build(self)
     }
 }
 
-impl WaitForSnapshotActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> WaitForSnapshotAction { match policy {} }
+impl<S0> From<WaitForSnapshotActionBuilder<(S0,)>> for WaitForSnapshotAction
+where
+    S0: crate::typed::builder::IsSet<wait_for_snapshot_action_members::policy>,
+{
+    fn from(builder: WaitForSnapshotActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

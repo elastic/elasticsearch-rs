@@ -12,22 +12,29 @@ pub struct MultiGetError {
 
 impl MultiGetError {
     /// Creates a builder for [`MultiGetError`].
+    ///
+    /// Required: `error`, `id`, `index`.
     pub fn builder() -> MultiGetErrorBuilder {
         MultiGetErrorBuilder::new()
     }
 
     /// Creates a [`MultiGetError`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiGetErrorBuilder,
-        ) -> MultiGetErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `error`, `id`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiGetError>>(
+        f: impl FnOnce(MultiGetErrorBuilder) -> B,
     ) -> MultiGetError {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiGetErrorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_get_error_members {
+    pub struct error;
+    pub struct id;
+    pub struct index;
 }
 
 /// Builder for [`MultiGetError`].
@@ -74,6 +81,7 @@ impl<S0, S1, S2> MultiGetErrorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> MultiGetErrorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn error(
         self,
         value: impl Into<crate::typed::_types::ErrorCause>,
@@ -84,18 +92,18 @@ impl<S1, S2> MultiGetErrorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> MultiGetErrorBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl<S0, S2> MultiGetErrorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -107,6 +115,7 @@ impl<S0, S2> MultiGetErrorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> MultiGetErrorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -117,15 +126,14 @@ impl<S0, S1> MultiGetErrorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    MultiGetErrorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> MultiGetErrorBuilder<(S0, S1, S2)> {
     /// Builds a [`MultiGetError`].
-    pub fn build(self) -> MultiGetError {
+    pub fn build(self) -> MultiGetError
+    where
+        S0: crate::typed::builder::IsSet<multi_get_error_members::error>,
+        S1: crate::typed::builder::IsSet<multi_get_error_members::id>,
+        S2: crate::typed::builder::IsSet<multi_get_error_members::index>,
+    {
         MultiGetError {
             error: self.error.unwrap(),
             id: self.id.unwrap(),
@@ -134,54 +142,28 @@ impl
     }
 }
 
-impl
-    From<
-        MultiGetErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MultiGetError
+impl<S0, S1, S2> crate::typed::builder::Build for MultiGetErrorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<multi_get_error_members::error>,
+    S1: crate::typed::builder::IsSet<multi_get_error_members::id>,
+    S2: crate::typed::builder::IsSet<multi_get_error_members::index>,
 {
-    fn from(
-        builder: MultiGetErrorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiGetError;
+
+    fn build(self) -> MultiGetError {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> MultiGetErrorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `error` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, error: crate::typed::builder::MissingRequiredField) -> MultiGetError { match error {} }
-}
-
-impl<S2>
-    MultiGetErrorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<MultiGetErrorBuilder<(S0, S1, S2)>> for MultiGetError
+where
+    S0: crate::typed::builder::IsSet<multi_get_error_members::error>,
+    S1: crate::typed::builder::IsSet<multi_get_error_members::id>,
+    S2: crate::typed::builder::IsSet<multi_get_error_members::index>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> MultiGetError { match id {} }
-}
-
-impl
-    MultiGetErrorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> MultiGetError { match index {} }
+    fn from(builder: MultiGetErrorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -209,16 +191,27 @@ pub struct Operation {
 
 impl Operation {
     /// Creates a builder for [`Operation`].
+    ///
+    /// Required: `id`.
     pub fn builder() -> OperationBuilder {
         OperationBuilder::new()
     }
 
     /// Creates a [`Operation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(OperationBuilder) -> OperationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Operation>>(
+        f: impl FnOnce(OperationBuilder) -> B,
     ) -> Operation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OperationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod operation_members {
+    pub struct id;
 }
 
 /// Builder for [`Operation`].
@@ -341,7 +334,7 @@ impl<S0> OperationBuilder<(S0,)> {
 }
 
 impl OperationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The unique document ID.
+    /// **Required.** The unique document ID.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -352,9 +345,12 @@ impl OperationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl OperationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> OperationBuilder<(S0,)> {
     /// Builds a [`Operation`].
-    pub fn build(self) -> Operation {
+    pub fn build(self) -> Operation
+    where
+        S0: crate::typed::builder::IsSet<operation_members::id>,
+    {
         Operation {
             id: self.id.unwrap(),
             index: self.index,
@@ -367,16 +363,24 @@ impl OperationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<OperationBuilder<(crate::typed::builder::Set,)>> for Operation {
-    fn from(builder: OperationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for OperationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<operation_members::id>,
+{
+    type Output = Operation;
+
+    fn build(self) -> Operation {
+        Self::build(self)
     }
 }
 
-impl OperationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Operation { match id {} }
+impl<S0> From<OperationBuilder<(S0,)>> for Operation
+where
+    S0: crate::typed::builder::IsSet<operation_members::id>,
+{
+    fn from(builder: OperationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`mget`](crate::typed::Client::mget).
@@ -460,7 +464,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -738,9 +744,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(
+    pub fn add_docs_with<B: crate::typed::builder::Build<Output = Operation>>(
         self,
-        f: impl FnOnce(OperationBuilder) -> OperationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(OperationBuilder) -> B,
     ) -> Self {
         self.add_docs(f(OperationBuilder::new()).build())
     }
@@ -780,6 +786,14 @@ impl<C> RequestBuilder<(), C> {
             docs: self.docs,
             ids: self.ids,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

@@ -52,7 +52,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -234,6 +236,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -499,8 +509,8 @@ impl ThreadPoolRecord {
     }
 
     /// Creates a [`ThreadPoolRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ThreadPoolRecordBuilder) -> ThreadPoolRecordBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ThreadPoolRecord>>(
+        f: impl FnOnce(ThreadPoolRecordBuilder) -> B,
     ) -> ThreadPoolRecord {
         f(Self::builder()).build()
     }
@@ -826,6 +836,14 @@ impl ThreadPoolRecordBuilder {
             size: self.size,
             keep_alive: self.keep_alive,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ThreadPoolRecordBuilder {
+    type Output = ThreadPoolRecord;
+
+    fn build(self) -> ThreadPoolRecord {
+        Self::build(self)
     }
 }
 

@@ -73,23 +73,30 @@ pub struct MultiSearchItem {
 
 impl MultiSearchItem {
     /// Creates a builder for [`MultiSearchItem`].
+    ///
+    /// Required: `took`, `timed_out`, `shards`, `hits`.
     pub fn builder() -> MultiSearchItemBuilder {
         MultiSearchItemBuilder::new()
     }
 
     /// Creates a [`MultiSearchItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiSearchItemBuilder,
-        ) -> MultiSearchItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `took`, `timed_out`, `shards`, `hits`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiSearchItem>>(
+        f: impl FnOnce(MultiSearchItemBuilder) -> B,
     ) -> MultiSearchItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiSearchItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_search_item_members {
+    pub struct took;
+    pub struct timed_out;
+    pub struct shards;
+    pub struct hits;
 }
 
 /// Builder for [`MultiSearchItem`].
@@ -236,18 +243,11 @@ impl<S0, S1, S2, S3> MultiSearchItemBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ClusterStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ClusterStatisticsBuilder,
-        ) -> crate::typed::_types::ClusterStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ClusterStatisticsBuilder) -> B,
     ) -> Self {
         self.clusters(f(crate::typed::_types::ClusterStatisticsBuilder::new()).build())
     }
@@ -321,13 +321,11 @@ impl<S0, S1, S2, S3> MultiSearchItemBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`profile`](Self::profile) with a builder.
-    pub fn profile_with(
+    pub fn profile_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Profile>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::ProfileBuilder,
-        ) -> crate::typed::_global::search::_types::ProfileBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::ProfileBuilder) -> B,
     ) -> Self {
         self.profile(f(crate::typed::_global::search::_types::ProfileBuilder::new()).build())
     }
@@ -426,7 +424,7 @@ impl<S0, S1, S2, S3> MultiSearchItemBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> MultiSearchItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The number of milliseconds it took Elasticsearch to run the request.
+    /// **Required.** The number of milliseconds it took Elasticsearch to run the request.
     /// This value is calculated by measuring the time elapsed between receipt of a request on the coordinating node and the time at which the coordinating node is ready to send the response.
     /// It includes:
     ///
@@ -450,7 +448,7 @@ impl<S1, S2, S3> MultiSearchItemBuilder<(crate::typed::builder::NotSet, S1, S2, 
 }
 
 impl<S0, S2, S3> MultiSearchItemBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// If `true`, the request timed out before completion; returned results may be partial or empty.
+    /// **Required.** If `true`, the request timed out before completion; returned results may be partial or empty.
     pub fn timed_out(
         self,
         value: bool,
@@ -462,7 +460,7 @@ impl<S0, S2, S3> MultiSearchItemBuilder<(S0, crate::typed::builder::NotSet, S2, 
 }
 
 impl<S0, S1, S3> MultiSearchItemBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// A count of shards used for the request.
+    /// **Required.** A count of shards used for the request.
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -473,22 +471,18 @@ impl<S0, S1, S3> MultiSearchItemBuilder<(S0, S1, crate::typed::builder::NotSet, 
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> MultiSearchItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> MultiSearchItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The returned documents and metadata.
+    /// **Required.** The returned documents and metadata.
     pub fn hits(
         self,
         value: impl Into<crate::typed::_global::search::_types::HitsMetadata>,
@@ -499,28 +493,25 @@ impl<S0, S1, S2> MultiSearchItemBuilder<(S0, S1, S2, crate::typed::builder::NotS
     }
 
     /// Sets [`hits`](Self::hits) with a builder.
-    pub fn hits_with(
+    pub fn hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::HitsMetadata>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::HitsMetadataBuilder,
-        ) -> crate::typed::_global::search::_types::HitsMetadataBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::HitsMetadataBuilder) -> B,
     ) -> MultiSearchItemBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.hits(f(crate::typed::_global::search::_types::HitsMetadataBuilder::new()).build())
     }
 }
 
-impl
-    MultiSearchItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> MultiSearchItemBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`MultiSearchItem`].
-    pub fn build(self) -> MultiSearchItem {
+    pub fn build(self) -> MultiSearchItem
+    where
+        S0: crate::typed::builder::IsSet<multi_search_item_members::took>,
+        S1: crate::typed::builder::IsSet<multi_search_item_members::timed_out>,
+        S2: crate::typed::builder::IsSet<multi_search_item_members::shards>,
+        S3: crate::typed::builder::IsSet<multi_search_item_members::hits>,
+    {
         MultiSearchItem {
             took: self.took.unwrap(),
             timed_out: self.timed_out.unwrap(),
@@ -541,71 +532,30 @@ impl
     }
 }
 
-impl
-    From<
-        MultiSearchItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MultiSearchItem
+impl<S0, S1, S2, S3> crate::typed::builder::Build for MultiSearchItemBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<multi_search_item_members::took>,
+    S1: crate::typed::builder::IsSet<multi_search_item_members::timed_out>,
+    S2: crate::typed::builder::IsSet<multi_search_item_members::shards>,
+    S3: crate::typed::builder::IsSet<multi_search_item_members::hits>,
 {
-    fn from(
-        builder: MultiSearchItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiSearchItem;
+
+    fn build(self) -> MultiSearchItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> MultiSearchItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> MultiSearchItem { match took {} }
-}
-
-impl<S2, S3>
-    MultiSearchItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<MultiSearchItemBuilder<(S0, S1, S2, S3)>> for MultiSearchItem
+where
+    S0: crate::typed::builder::IsSet<multi_search_item_members::took>,
+    S1: crate::typed::builder::IsSet<multi_search_item_members::timed_out>,
+    S2: crate::typed::builder::IsSet<multi_search_item_members::shards>,
+    S3: crate::typed::builder::IsSet<multi_search_item_members::hits>,
 {
-    /// `timed_out` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timed_out: crate::typed::builder::MissingRequiredField) -> MultiSearchItem { match timed_out {} }
-}
-
-impl<S3>
-    MultiSearchItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> MultiSearchItem { match shards {} }
-}
-
-impl
-    MultiSearchItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> MultiSearchItem { match hits {} }
+    fn from(builder: MultiSearchItemBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -616,21 +566,28 @@ pub struct MultiSearchResult {
 
 impl MultiSearchResult {
     /// Creates a builder for [`MultiSearchResult`].
+    ///
+    /// Required: `took`, `responses`.
     pub fn builder() -> MultiSearchResultBuilder {
         MultiSearchResultBuilder::new()
     }
 
     /// Creates a [`MultiSearchResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiSearchResultBuilder,
-        ) -> MultiSearchResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `took`, `responses`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiSearchResult>>(
+        f: impl FnOnce(MultiSearchResultBuilder) -> B,
     ) -> MultiSearchResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiSearchResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_search_result_members {
+    pub struct took;
+    pub struct responses;
 }
 
 /// Builder for [`MultiSearchResult`].
@@ -664,6 +621,7 @@ impl<S0, S1> MultiSearchResultBuilder<(S0, S1)> {
 }
 
 impl<S1> MultiSearchResultBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn took(self, value: i64) -> MultiSearchResultBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.took = Some(value);
@@ -672,6 +630,7 @@ impl<S1> MultiSearchResultBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MultiSearchResultBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn responses(
         self,
         value: impl Into<Vec<ResponseItem>>,
@@ -705,9 +664,13 @@ impl<S0> MultiSearchResultBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MultiSearchResultBuilder<(S0, S1)> {
     /// Builds a [`MultiSearchResult`].
-    pub fn build(self) -> MultiSearchResult {
+    pub fn build(self) -> MultiSearchResult
+    where
+        S0: crate::typed::builder::IsSet<multi_search_result_members::took>,
+        S1: crate::typed::builder::IsSet<multi_search_result_members::responses>,
+    {
         MultiSearchResult {
             took: self.took.unwrap(),
             responses: self.responses.unwrap(),
@@ -715,26 +678,26 @@ impl MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MultiSearchResult
+impl<S0, S1> crate::typed::builder::Build for MultiSearchResultBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<multi_search_result_members::took>,
+    S1: crate::typed::builder::IsSet<multi_search_result_members::responses>,
 {
-    fn from(
-        builder: MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiSearchResult;
+
+    fn build(self) -> MultiSearchResult {
+        Self::build(self)
     }
 }
 
-impl<S1> MultiSearchResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> MultiSearchResult { match took {} }
-}
-
-impl MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `responses` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, responses: crate::typed::builder::MissingRequiredField) -> MultiSearchResult { match responses {} }
+impl<S0, S1> From<MultiSearchResultBuilder<(S0, S1)>> for MultiSearchResult
+where
+    S0: crate::typed::builder::IsSet<multi_search_result_members::took>,
+    S1: crate::typed::builder::IsSet<multi_search_result_members::responses>,
+{
+    fn from(builder: MultiSearchResultBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Contains parameters used to limit or change the subsequent search body request.
@@ -789,8 +752,8 @@ impl MultisearchHeader {
     }
 
     /// Creates a [`MultisearchHeader`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MultisearchHeaderBuilder) -> MultisearchHeaderBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MultisearchHeader>>(
+        f: impl FnOnce(MultisearchHeaderBuilder) -> B,
     ) -> MultisearchHeader {
         f(Self::builder()).build()
     }
@@ -1026,6 +989,14 @@ impl MultisearchHeaderBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MultisearchHeaderBuilder {
+    type Output = MultisearchHeader;
+
+    fn build(self) -> MultisearchHeader {
+        Self::build(self)
+    }
+}
+
 impl From<MultisearchHeaderBuilder> for MultisearchHeader {
     fn from(builder: MultisearchHeaderBuilder) -> Self {
         builder.build()
@@ -1134,16 +1105,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `searches`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `searches`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct searches;
 }
 
 /// Builder for [`Request`].
@@ -1533,7 +1515,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn searches(
         self,
         value: impl Into<Vec<RequestItem>>,
@@ -1567,9 +1549,12 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::searches>,
+    {
         Request {
             index: self.index,
             allow_no_indices: self.allow_no_indices,
@@ -1597,23 +1582,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::searches>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `searches` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, searches: crate::typed::builder::MissingRequiredField) -> Request { match searches {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `searches` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, searches: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match searches {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::searches>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

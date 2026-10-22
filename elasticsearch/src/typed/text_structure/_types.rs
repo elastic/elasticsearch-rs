@@ -30,22 +30,29 @@ pub struct FieldStat {
 
 impl FieldStat {
     /// Creates a builder for [`FieldStat`].
+    ///
+    /// Required: `count`, `cardinality`, `top_hits`.
     pub fn builder() -> FieldStatBuilder {
         FieldStatBuilder::new()
     }
 
     /// Creates a [`FieldStat`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldStatBuilder,
-        ) -> FieldStatBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `cardinality`, `top_hits`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldStat>>(
+        f: impl FnOnce(FieldStatBuilder) -> B,
     ) -> FieldStat {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldStatBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_stat_members {
+    pub struct count;
+    pub struct cardinality;
+    pub struct top_hits;
 }
 
 /// Builder for [`FieldStat`].
@@ -176,6 +183,7 @@ impl<S0, S1, S2> FieldStatBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FieldStatBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn count(self, value: i32) -> FieldStatBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -184,6 +192,7 @@ impl<S1, S2> FieldStatBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FieldStatBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn cardinality(self, value: i32) -> FieldStatBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.cardinality = Some(value);
@@ -192,6 +201,7 @@ impl<S0, S2> FieldStatBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> FieldStatBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn top_hits(
         self,
         value: impl Into<Vec<TopHit>>,
@@ -215,12 +225,9 @@ impl<S0, S1> FieldStatBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`top_hits`](Self::top_hits), with a builder.
-    pub fn add_top_hits_with(
+    pub fn add_top_hits_with<B: crate::typed::builder::Build<Output = TopHit>>(
         self,
-        f: impl FnOnce(
-            TopHitBuilder,
-        )
-            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TopHitBuilder) -> B,
     ) -> FieldStatBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.add_top_hits(f(TopHitBuilder::new()).build())
     }
@@ -236,26 +243,22 @@ impl<S0, S1> FieldStatBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`top_hits`](Self::top_hits), with a builder.
-    pub fn add_top_hits_with(
+    pub fn add_top_hits_with<B: crate::typed::builder::Build<Output = TopHit>>(
         self,
-        f: impl FnOnce(
-            TopHitBuilder,
-        )
-            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TopHitBuilder) -> B,
     ) -> Self {
         self.add_top_hits(f(TopHitBuilder::new()).build())
     }
 }
 
-impl
-    FieldStatBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FieldStatBuilder<(S0, S1, S2)> {
     /// Builds a [`FieldStat`].
-    pub fn build(self) -> FieldStat {
+    pub fn build(self) -> FieldStat
+    where
+        S0: crate::typed::builder::IsSet<field_stat_members::count>,
+        S1: crate::typed::builder::IsSet<field_stat_members::cardinality>,
+        S2: crate::typed::builder::IsSet<field_stat_members::top_hits>,
+    {
         FieldStat {
             count: self.count.unwrap(),
             cardinality: self.cardinality.unwrap(),
@@ -270,54 +273,28 @@ impl
     }
 }
 
-impl
-    From<
-        FieldStatBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldStat
+impl<S0, S1, S2> crate::typed::builder::Build for FieldStatBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<field_stat_members::count>,
+    S1: crate::typed::builder::IsSet<field_stat_members::cardinality>,
+    S2: crate::typed::builder::IsSet<field_stat_members::top_hits>,
 {
-    fn from(
-        builder: FieldStatBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldStat;
+
+    fn build(self) -> FieldStat {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FieldStatBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> FieldStat { match count {} }
-}
-
-impl<S2>
-    FieldStatBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FieldStatBuilder<(S0, S1, S2)>> for FieldStat
+where
+    S0: crate::typed::builder::IsSet<field_stat_members::count>,
+    S1: crate::typed::builder::IsSet<field_stat_members::cardinality>,
+    S2: crate::typed::builder::IsSet<field_stat_members::top_hits>,
 {
-    /// `cardinality` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cardinality: crate::typed::builder::MissingRequiredField) -> FieldStat { match cardinality {} }
-}
-
-impl
-    FieldStatBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `top_hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, top_hits: crate::typed::builder::MissingRequiredField) -> FieldStat { match top_hits {} }
+    fn from(builder: FieldStatBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -340,19 +317,28 @@ pub struct TopHit {
 
 impl TopHit {
     /// Creates a builder for [`TopHit`].
+    ///
+    /// Required: `count`, `value`.
     pub fn builder() -> TopHitBuilder {
         TopHitBuilder::new()
     }
 
     /// Creates a [`TopHit`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TopHitBuilder,
-        )
-            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `count`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopHit>>(
+        f: impl FnOnce(TopHitBuilder) -> B,
     ) -> TopHit {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopHitBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_hit_members {
+    pub struct count;
+    pub struct value;
 }
 
 /// Builder for [`TopHit`].
@@ -384,6 +370,7 @@ impl<S0, S1> TopHitBuilder<(S0, S1)> {
 }
 
 impl<S1> TopHitBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn count(self, value: i64) -> TopHitBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -392,6 +379,7 @@ impl<S1> TopHitBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TopHitBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<serde_json::Value>,
@@ -402,9 +390,13 @@ impl<S0> TopHitBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TopHitBuilder<(S0, S1)> {
     /// Builds a [`TopHit`].
-    pub fn build(self) -> TopHit {
+    pub fn build(self) -> TopHit
+    where
+        S0: crate::typed::builder::IsSet<top_hit_members::count>,
+        S1: crate::typed::builder::IsSet<top_hit_members::value>,
+    {
         TopHit {
             count: self.count.unwrap(),
             value: self.value.unwrap(),
@@ -412,22 +404,24 @@ impl TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for TopHit {
-    fn from(
-        builder: TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for TopHitBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<top_hit_members::count>,
+    S1: crate::typed::builder::IsSet<top_hit_members::value>,
+{
+    type Output = TopHit;
+
+    fn build(self) -> TopHit {
+        Self::build(self)
     }
 }
 
-impl<S1> TopHitBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> TopHit { match count {} }
-}
-
-impl TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> TopHit { match value {} }
+impl<S0, S1> From<TopHitBuilder<(S0, S1)>> for TopHit
+where
+    S0: crate::typed::builder::IsSet<top_hit_members::count>,
+    S1: crate::typed::builder::IsSet<top_hit_members::value>,
+{
+    fn from(builder: TopHitBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

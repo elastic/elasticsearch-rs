@@ -51,19 +51,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `namespace`, `service`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `namespace`, `service`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct namespace;
+    pub struct service;
 }
 
 /// Builder for [`Request`].
@@ -205,7 +214,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the namespace, which is a top-level grouping of service accounts.
+    /// **Required.** The name of the namespace, which is a top-level grouping of service accounts.
     pub fn namespace(
         self,
         value: impl Into<crate::typed::_types::Namespace>,
@@ -217,7 +226,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The name of the service.
+    /// **Required.** The name of the service.
     pub fn service(
         self,
         value: impl Into<crate::typed::_types::Service>,
@@ -228,9 +237,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+    {
         Request {
             namespace: self.namespace.unwrap(),
             service: self.service.unwrap(),
@@ -244,41 +257,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::namespace>,
+    S1: crate::typed::builder::IsSet<request_members::service>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `namespace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, namespace: crate::typed::builder::MissingRequiredField) -> Request { match namespace {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `namespace` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, namespace: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match namespace {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> Request { match service {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `service` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, service: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match service {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::namespace>,
+        S1: crate::typed::builder::IsSet<request_members::service>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -399,19 +399,28 @@ pub struct Token {
 
 impl Token {
     /// Creates a builder for [`Token`].
+    ///
+    /// Required: `name`, `value`.
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
     }
 
     /// Creates a [`Token`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TokenBuilder,
-        )
-            -> TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = Token>>(
+        f: impl FnOnce(TokenBuilder) -> B,
     ) -> Token {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod token_members {
+    pub struct name;
+    pub struct value;
 }
 
 /// Builder for [`Token`].
@@ -443,6 +452,7 @@ impl<S0, S1> TokenBuilder<(S0, S1)> {
 }
 
 impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -454,6 +464,7 @@ impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TokenBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(self, value: impl Into<String>) -> TokenBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.value = Some(value.into());
@@ -461,9 +472,13 @@ impl<S0> TokenBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TokenBuilder<(S0, S1)> {
     /// Builds a [`Token`].
-    pub fn build(self) -> Token {
+    pub fn build(self) -> Token
+    where
+        S0: crate::typed::builder::IsSet<token_members::name>,
+        S1: crate::typed::builder::IsSet<token_members::value>,
+    {
         Token {
             name: self.name.unwrap(),
             value: self.value.unwrap(),
@@ -471,22 +486,24 @@ impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Token {
-    fn from(
-        builder: TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for TokenBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<token_members::name>,
+    S1: crate::typed::builder::IsSet<token_members::value>,
+{
+    type Output = Token;
+
+    fn build(self) -> Token {
+        Self::build(self)
     }
 }
 
-impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Token { match name {} }
-}
-
-impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> Token { match value {} }
+impl<S0, S1> From<TokenBuilder<(S0, S1)>> for Token
+where
+    S0: crate::typed::builder::IsSet<token_members::name>,
+    S1: crate::typed::builder::IsSet<token_members::value>,
+{
+    fn from(builder: TokenBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

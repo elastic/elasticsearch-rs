@@ -41,22 +41,29 @@ pub struct GetResult {
 
 impl GetResult {
     /// Creates a builder for [`GetResult`].
+    ///
+    /// Required: `index`, `found`, `id`.
     pub fn builder() -> GetResultBuilder {
         GetResultBuilder::new()
     }
 
     /// Creates a [`GetResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GetResultBuilder,
-        ) -> GetResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `found`, `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = GetResult>>(
+        f: impl FnOnce(GetResultBuilder) -> B,
     ) -> GetResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GetResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod get_result_members {
+    pub struct index;
+    pub struct found;
+    pub struct id;
 }
 
 /// Builder for [`GetResult`].
@@ -235,7 +242,7 @@ impl<S0, S1, S2> GetResultBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> GetResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The name of the index the document belongs to.
+    /// **Required.** The name of the index the document belongs to.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -247,7 +254,7 @@ impl<S1, S2> GetResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> GetResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Indicates whether the document exists.
+    /// **Required.** Indicates whether the document exists.
     pub fn found(self, value: bool) -> GetResultBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.found = Some(value);
@@ -256,7 +263,7 @@ impl<S0, S2> GetResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> GetResultBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The unique identifier for the document.
+    /// **Required.** The unique identifier for the document.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -267,15 +274,14 @@ impl<S0, S1> GetResultBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    GetResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> GetResultBuilder<(S0, S1, S2)> {
     /// Builds a [`GetResult`].
-    pub fn build(self) -> GetResult {
+    pub fn build(self) -> GetResult
+    where
+        S0: crate::typed::builder::IsSet<get_result_members::index>,
+        S1: crate::typed::builder::IsSet<get_result_members::found>,
+        S2: crate::typed::builder::IsSet<get_result_members::id>,
+    {
         GetResult {
             index: self.index.unwrap(),
             fields: self.fields,
@@ -291,54 +297,28 @@ impl
     }
 }
 
-impl
-    From<
-        GetResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GetResult
+impl<S0, S1, S2> crate::typed::builder::Build for GetResultBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<get_result_members::index>,
+    S1: crate::typed::builder::IsSet<get_result_members::found>,
+    S2: crate::typed::builder::IsSet<get_result_members::id>,
 {
-    fn from(
-        builder: GetResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GetResult;
+
+    fn build(self) -> GetResult {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> GetResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> GetResult { match index {} }
-}
-
-impl<S2>
-    GetResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<GetResultBuilder<(S0, S1, S2)>> for GetResult
+where
+    S0: crate::typed::builder::IsSet<get_result_members::index>,
+    S1: crate::typed::builder::IsSet<get_result_members::found>,
+    S2: crate::typed::builder::IsSet<get_result_members::id>,
 {
-    /// `found` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, found: crate::typed::builder::MissingRequiredField) -> GetResult { match found {} }
-}
-
-impl
-    GetResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> GetResult { match id {} }
+    fn from(builder: GetResultBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`get`](crate::typed::Client::get).
@@ -476,19 +456,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `id`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -816,7 +805,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A unique document identifier.
+    /// **Required.** A unique document identifier.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -828,7 +817,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The name of the index that contains the document.
+    /// **Required.** The name of the index that contains the document.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -839,9 +828,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -866,41 +859,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

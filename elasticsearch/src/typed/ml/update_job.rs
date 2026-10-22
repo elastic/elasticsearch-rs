@@ -91,16 +91,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `job_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `job_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct job_id;
 }
 
 /// Builder for [`Request`].
@@ -281,13 +292,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`analysis_limits`](Self::analysis_limits) with a builder.
-    pub fn analysis_limits_with(
+    pub fn analysis_limits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::AnalysisMemoryLimit>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AnalysisMemoryLimitBuilder,
-        ) -> crate::typed::ml::_types::AnalysisMemoryLimitBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::AnalysisMemoryLimitBuilder) -> B,
     ) -> Self {
         self.analysis_limits(f(crate::typed::ml::_types::AnalysisMemoryLimitBuilder::new()).build())
     }
@@ -400,11 +409,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`model_plot_config`](Self::model_plot_config) with a builder.
-    pub fn model_plot_config_with(
+    pub fn model_plot_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::ModelPlotConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::ModelPlotConfigBuilder,
-        ) -> crate::typed::ml::_types::ModelPlotConfigBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::ModelPlotConfigBuilder) -> B,
     ) -> Self {
         self.model_plot_config(f(crate::typed::ml::_types::ModelPlotConfigBuilder::new()).build())
     }
@@ -536,12 +545,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`detectors`](Self::detectors), with a builder.
-    pub fn add_detectors_with(
+    pub fn add_detectors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DetectorUpdate>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DetectorUpdateBuilder,
-        )
-            -> crate::typed::ml::_types::DetectorUpdateBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ml::_types::DetectorUpdateBuilder) -> B,
     ) -> Self {
         self.add_detectors(f(crate::typed::ml::_types::DetectorUpdateBuilder::new()).build())
     }
@@ -565,11 +573,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`per_partition_categorization`](Self::per_partition_categorization) with a builder.
-    pub fn per_partition_categorization_with(
+    pub fn per_partition_categorization_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::PerPartitionCategorization>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::PerPartitionCategorizationBuilder,
-        ) -> crate::typed::ml::_types::PerPartitionCategorizationBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::PerPartitionCategorizationBuilder) -> B,
     ) -> Self {
         self.per_partition_categorization(
             f(crate::typed::ml::_types::PerPartitionCategorizationBuilder::new()).build(),
@@ -578,7 +586,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Identifier for the job.
+    /// **Required.** Identifier for the job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -589,9 +597,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+    {
         Request {
             job_id: self.job_id.unwrap(),
             error_trace: self.error_trace,
@@ -618,23 +629,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::job_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Request { match job_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `job_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, job_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match job_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

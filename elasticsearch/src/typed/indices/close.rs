@@ -10,18 +10,27 @@ pub struct CloseIndexResult {
 
 impl CloseIndexResult {
     /// Creates a builder for [`CloseIndexResult`].
+    ///
+    /// Required: `closed`.
     pub fn builder() -> CloseIndexResultBuilder {
         CloseIndexResultBuilder::new()
     }
 
     /// Creates a [`CloseIndexResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CloseIndexResultBuilder,
-        ) -> CloseIndexResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `closed`.
+    pub fn of<B: crate::typed::builder::Build<Output = CloseIndexResult>>(
+        f: impl FnOnce(CloseIndexResultBuilder) -> B,
     ) -> CloseIndexResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CloseIndexResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod close_index_result_members {
+    pub struct closed;
 }
 
 /// Builder for [`CloseIndexResult`].
@@ -81,18 +90,17 @@ impl<S0> CloseIndexResultBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = CloseShardResult>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CloseShardResultBuilder,
-        ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CloseShardResultBuilder) -> B,
     ) -> Self {
         self.add_shards(key, f(CloseShardResultBuilder::new()).build())
     }
 }
 
 impl CloseIndexResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn closed(self, value: bool) -> CloseIndexResultBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.closed = Some(value);
@@ -100,9 +108,12 @@ impl CloseIndexResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CloseIndexResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CloseIndexResultBuilder<(S0,)> {
     /// Builds a [`CloseIndexResult`].
-    pub fn build(self) -> CloseIndexResult {
+    pub fn build(self) -> CloseIndexResult
+    where
+        S0: crate::typed::builder::IsSet<close_index_result_members::closed>,
+    {
         CloseIndexResult {
             closed: self.closed.unwrap(),
             shards: self.shards,
@@ -110,16 +121,24 @@ impl CloseIndexResultBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CloseIndexResultBuilder<(crate::typed::builder::Set,)>> for CloseIndexResult {
-    fn from(builder: CloseIndexResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CloseIndexResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<close_index_result_members::closed>,
+{
+    type Output = CloseIndexResult;
+
+    fn build(self) -> CloseIndexResult {
+        Self::build(self)
     }
 }
 
-impl CloseIndexResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `closed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, closed: crate::typed::builder::MissingRequiredField) -> CloseIndexResult { match closed {} }
+impl<S0> From<CloseIndexResultBuilder<(S0,)>> for CloseIndexResult
+where
+    S0: crate::typed::builder::IsSet<close_index_result_members::closed>,
+{
+    fn from(builder: CloseIndexResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -129,18 +148,27 @@ pub struct CloseShardResult {
 
 impl CloseShardResult {
     /// Creates a builder for [`CloseShardResult`].
+    ///
+    /// Required: `failures`.
     pub fn builder() -> CloseShardResultBuilder {
         CloseShardResultBuilder::new()
     }
 
     /// Creates a [`CloseShardResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CloseShardResultBuilder,
-        ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `failures`.
+    pub fn of<B: crate::typed::builder::Build<Output = CloseShardResult>>(
+        f: impl FnOnce(CloseShardResultBuilder) -> B,
     ) -> CloseShardResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CloseShardResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod close_shard_result_members {
+    pub struct failures;
 }
 
 /// Builder for [`CloseShardResult`].
@@ -169,6 +197,7 @@ impl<S0> CloseShardResultBuilder<(S0,)> {
 }
 
 impl CloseShardResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn failures(
         self,
         value: impl Into<Vec<crate::typed::_types::ShardFailure>>,
@@ -192,12 +221,11 @@ impl CloseShardResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`failures`](Self::failures), with a builder.
-    pub fn add_failures_with(
+    pub fn add_failures_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardFailure>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardFailureBuilder,
-        )
-            -> crate::typed::_types::ShardFailureBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ShardFailureBuilder) -> B,
     ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)> {
         self.add_failures(f(crate::typed::_types::ShardFailureBuilder::new()).build())
     }
@@ -213,36 +241,46 @@ impl CloseShardResultBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`failures`](Self::failures), with a builder.
-    pub fn add_failures_with(
+    pub fn add_failures_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardFailure>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardFailureBuilder,
-        )
-            -> crate::typed::_types::ShardFailureBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ShardFailureBuilder) -> B,
     ) -> Self {
         self.add_failures(f(crate::typed::_types::ShardFailureBuilder::new()).build())
     }
 }
 
-impl CloseShardResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CloseShardResultBuilder<(S0,)> {
     /// Builds a [`CloseShardResult`].
-    pub fn build(self) -> CloseShardResult {
+    pub fn build(self) -> CloseShardResult
+    where
+        S0: crate::typed::builder::IsSet<close_shard_result_members::failures>,
+    {
         CloseShardResult {
             failures: self.failures.unwrap(),
         }
     }
 }
 
-impl From<CloseShardResultBuilder<(crate::typed::builder::Set,)>> for CloseShardResult {
-    fn from(builder: CloseShardResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CloseShardResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<close_shard_result_members::failures>,
+{
+    type Output = CloseShardResult;
+
+    fn build(self) -> CloseShardResult {
+        Self::build(self)
     }
 }
 
-impl CloseShardResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failures: crate::typed::builder::MissingRequiredField) -> CloseShardResult { match failures {} }
+impl<S0> From<CloseShardResultBuilder<(S0,)>> for CloseShardResult
+where
+    S0: crate::typed::builder::IsSet<close_shard_result_members::failures>,
+{
+    fn from(builder: CloseShardResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.close`](crate::typed::indices::IndicesClient::close).
@@ -315,16 +353,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -537,7 +586,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list or wildcard expression of index names used to limit the request.
+    /// **Required.** Comma-separated list or wildcard expression of index names used to limit the request.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -548,9 +597,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -567,23 +619,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

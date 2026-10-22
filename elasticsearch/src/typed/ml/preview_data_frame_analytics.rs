@@ -15,21 +15,28 @@ pub struct DataframePreviewConfig {
 
 impl DataframePreviewConfig {
     /// Creates a builder for [`DataframePreviewConfig`].
+    ///
+    /// Required: `source`, `analysis`.
     pub fn builder() -> DataframePreviewConfigBuilder {
         DataframePreviewConfigBuilder::new()
     }
 
     /// Creates a [`DataframePreviewConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframePreviewConfigBuilder,
-        ) -> DataframePreviewConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `source`, `analysis`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframePreviewConfig>>(
+        f: impl FnOnce(DataframePreviewConfigBuilder) -> B,
     ) -> DataframePreviewConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframePreviewConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_preview_config_members {
+    pub struct source;
+    pub struct analysis;
 }
 
 /// Builder for [`DataframePreviewConfig`].
@@ -110,11 +117,13 @@ impl<S0, S1> DataframePreviewConfigBuilder<(S0, S1)> {
     }
 
     /// Sets [`analyzed_fields`](Self::analyzed_fields) with a builder.
-    pub fn analyzed_fields_with(
+    pub fn analyzed_fields_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeAnalysisAnalyzedFields,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> Self {
         self.analyzed_fields(
             f(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder::new()).build(),
@@ -123,6 +132,7 @@ impl<S0, S1> DataframePreviewConfigBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframePreviewConfigBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn source(
         self,
         value: impl Into<crate::typed::ml::_types::DataframeAnalyticsSource>,
@@ -133,19 +143,18 @@ impl<S1> DataframePreviewConfigBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalyticsSource>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalyticsSourceBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalyticsSourceBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder) -> B,
     ) -> DataframePreviewConfigBuilder<(crate::typed::builder::Set, S1)> {
         self.source(f(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder::new()).build())
     }
 }
 
 impl<S0> DataframePreviewConfigBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn analysis(
         self,
         value: impl Into<crate::typed::ml::_types::DataframeAnalysisContainer>,
@@ -156,21 +165,23 @@ impl<S0> DataframePreviewConfigBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalysisContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisContainerBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisContainerBuilder) -> B,
     ) -> DataframePreviewConfigBuilder<(S0, crate::typed::builder::Set)> {
         self.analysis(f(crate::typed::ml::_types::DataframeAnalysisContainerBuilder::new()).build())
     }
 }
 
-impl DataframePreviewConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataframePreviewConfigBuilder<(S0, S1)> {
     /// Builds a [`DataframePreviewConfig`].
-    pub fn build(self) -> DataframePreviewConfig {
+    pub fn build(self) -> DataframePreviewConfig
+    where
+        S0: crate::typed::builder::IsSet<dataframe_preview_config_members::source>,
+        S1: crate::typed::builder::IsSet<dataframe_preview_config_members::analysis>,
+    {
         DataframePreviewConfig {
             source: self.source.unwrap(),
             analysis: self.analysis.unwrap(),
@@ -181,29 +192,26 @@ impl DataframePreviewConfigBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<DataframePreviewConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DataframePreviewConfig
+impl<S0, S1> crate::typed::builder::Build for DataframePreviewConfigBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_preview_config_members::source>,
+    S1: crate::typed::builder::IsSet<dataframe_preview_config_members::analysis>,
 {
-    fn from(
-        builder: DataframePreviewConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframePreviewConfig;
+
+    fn build(self) -> DataframePreviewConfig {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframePreviewConfigBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> DataframePreviewConfig { match source {} }
-}
-
-impl DataframePreviewConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `analysis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis: crate::typed::builder::MissingRequiredField) -> DataframePreviewConfig { match analysis {} }
+impl<S0, S1> From<DataframePreviewConfigBuilder<(S0, S1)>> for DataframePreviewConfig
+where
+    S0: crate::typed::builder::IsSet<dataframe_preview_config_members::source>,
+    S1: crate::typed::builder::IsSet<dataframe_preview_config_members::analysis>,
+{
+    fn from(builder: DataframePreviewConfigBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ml.preview_data_frame_analytics`](crate::typed::ml::MlClient::preview_data_frame_analytics).
@@ -245,7 +253,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -361,14 +371,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(
+    pub fn config_with<B: crate::typed::builder::Build<Output = DataframePreviewConfig>>(
         self,
-        f: impl FnOnce(
-            DataframePreviewConfigBuilder,
-        ) -> DataframePreviewConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframePreviewConfigBuilder) -> B,
     ) -> Self {
         self.config(f(DataframePreviewConfigBuilder::new()).build())
     }
@@ -385,6 +390,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             config: self.config,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

@@ -103,16 +103,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `alias`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `alias`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct alias;
 }
 
 /// Builder for [`Request`].
@@ -367,12 +378,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::Alias>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasBuilder,
-        ) -> crate::typed::indices::_types::AliasBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -397,9 +408,9 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`conditions`](Self::conditions) with a builder.
-    pub fn conditions_with(
+    pub fn conditions_with<B: crate::typed::builder::Build<Output = RolloverConditions>>(
         self,
-        f: impl FnOnce(RolloverConditionsBuilder) -> RolloverConditionsBuilder,
+        f: impl FnOnce(RolloverConditionsBuilder) -> B,
     ) -> Self {
         self.conditions(f(RolloverConditionsBuilder::new()).build())
     }
@@ -424,11 +435,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -466,7 +477,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Name of the data stream or index alias to roll over.
+    /// **Required.** Name of the data stream or index alias to roll over.
     pub fn alias(
         self,
         value: impl Into<crate::typed::_types::IndexAlias>,
@@ -477,9 +488,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::alias>,
+    {
         Request {
             alias: self.alias.unwrap(),
             new_index: self.new_index,
@@ -500,23 +514,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::alias>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `alias` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, alias: crate::typed::builder::MissingRequiredField) -> Request { match alias {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `alias` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, alias: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match alias {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::alias>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -717,8 +734,8 @@ impl RolloverConditions {
     }
 
     /// Creates a [`RolloverConditions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RolloverConditionsBuilder) -> RolloverConditionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RolloverConditions>>(
+        f: impl FnOnce(RolloverConditionsBuilder) -> B,
     ) -> RolloverConditions {
         f(Self::builder()).build()
     }
@@ -972,6 +989,14 @@ impl RolloverConditionsBuilder {
             max_primary_shard_docs: self.max_primary_shard_docs,
             min_primary_shard_docs: self.min_primary_shard_docs,
         }
+    }
+}
+
+impl crate::typed::builder::Build for RolloverConditionsBuilder {
+    type Output = RolloverConditions;
+
+    fn build(self) -> RolloverConditions {
+        Self::build(self)
     }
 }
 

@@ -37,7 +37,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -132,6 +134,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -248,19 +258,28 @@ pub struct Token {
 
 impl Token {
     /// Creates a builder for [`Token`].
+    ///
+    /// Required: `name`, `value`.
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
     }
 
     /// Creates a [`Token`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TokenBuilder,
-        )
-            -> TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = Token>>(
+        f: impl FnOnce(TokenBuilder) -> B,
     ) -> Token {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod token_members {
+    pub struct name;
+    pub struct value;
 }
 
 /// Builder for [`Token`].
@@ -292,7 +311,7 @@ impl<S0, S1> TokenBuilder<(S0, S1)> {
 }
 
 impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the bearer token for the `elastic/kibana` service account.
+    /// **Required.** The name of the bearer token for the `elastic/kibana` service account.
     pub fn name(self, value: impl Into<String>) -> TokenBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.name = Some(value.into());
@@ -301,7 +320,7 @@ impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TokenBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The value of the bearer token for the `elastic/kibana` service account.
+    /// **Required.** The value of the bearer token for the `elastic/kibana` service account.
     /// Use this value to authenticate the service account with Elasticsearch.
     pub fn value(self, value: impl Into<String>) -> TokenBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
@@ -310,9 +329,13 @@ impl<S0> TokenBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TokenBuilder<(S0, S1)> {
     /// Builds a [`Token`].
-    pub fn build(self) -> Token {
+    pub fn build(self) -> Token
+    where
+        S0: crate::typed::builder::IsSet<token_members::name>,
+        S1: crate::typed::builder::IsSet<token_members::value>,
+    {
         Token {
             name: self.name.unwrap(),
             value: self.value.unwrap(),
@@ -320,22 +343,24 @@ impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Token {
-    fn from(
-        builder: TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for TokenBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<token_members::name>,
+    S1: crate::typed::builder::IsSet<token_members::value>,
+{
+    type Output = Token;
+
+    fn build(self) -> Token {
+        Self::build(self)
     }
 }
 
-impl<S1> TokenBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Token { match name {} }
-}
-
-impl TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> Token { match value {} }
+impl<S0, S1> From<TokenBuilder<(S0, S1)>> for Token
+where
+    S0: crate::typed::builder::IsSet<token_members::name>,
+    S1: crate::typed::builder::IsSet<token_members::value>,
+{
+    fn from(builder: TokenBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

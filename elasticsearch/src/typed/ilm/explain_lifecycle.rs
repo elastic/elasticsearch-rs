@@ -73,22 +73,29 @@ pub struct LifecycleExplainManaged {
 
 impl LifecycleExplainManaged {
     /// Creates a builder for [`LifecycleExplainManaged`].
+    ///
+    /// Required: `index`, `managed`, `skip`.
     pub fn builder() -> LifecycleExplainManagedBuilder {
         LifecycleExplainManagedBuilder::new()
     }
 
     /// Creates a [`LifecycleExplainManaged`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LifecycleExplainManagedBuilder,
-        ) -> LifecycleExplainManagedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `managed`, `skip`.
+    pub fn of<B: crate::typed::builder::Build<Output = LifecycleExplainManaged>>(
+        f: impl FnOnce(LifecycleExplainManagedBuilder) -> B,
     ) -> LifecycleExplainManaged {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LifecycleExplainManagedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lifecycle_explain_managed_members {
+    pub struct index;
+    pub struct managed;
+    pub struct skip;
 }
 
 /// Builder for [`LifecycleExplainManaged`].
@@ -562,15 +569,11 @@ impl<S0, S1, S2> LifecycleExplainManagedBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`phase_execution`](Self::phase_execution) with a builder.
-    pub fn phase_execution_with(
+    pub fn phase_execution_with<
+        B: crate::typed::builder::Build<Output = LifecycleExplainPhaseExecution>,
+    >(
         self,
-        f: impl FnOnce(
-            LifecycleExplainPhaseExecutionBuilder,
-        ) -> LifecycleExplainPhaseExecutionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(LifecycleExplainPhaseExecutionBuilder) -> B,
     ) -> Self {
         self.phase_execution(f(LifecycleExplainPhaseExecutionBuilder::new()).build())
     }
@@ -594,6 +597,7 @@ impl<S0, S1, S2> LifecycleExplainManagedBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> LifecycleExplainManagedBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -605,6 +609,7 @@ impl<S1, S2> LifecycleExplainManagedBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2> LifecycleExplainManagedBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn managed(
         self,
         value: bool,
@@ -616,6 +621,7 @@ impl<S0, S2> LifecycleExplainManagedBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1> LifecycleExplainManagedBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn skip(
         self,
         value: bool,
@@ -626,15 +632,14 @@ impl<S0, S1> LifecycleExplainManagedBuilder<(S0, S1, crate::typed::builder::NotS
     }
 }
 
-impl
-    LifecycleExplainManagedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> LifecycleExplainManagedBuilder<(S0, S1, S2)> {
     /// Builds a [`LifecycleExplainManaged`].
-    pub fn build(self) -> LifecycleExplainManaged {
+    pub fn build(self) -> LifecycleExplainManaged
+    where
+        S0: crate::typed::builder::IsSet<lifecycle_explain_managed_members::index>,
+        S1: crate::typed::builder::IsSet<lifecycle_explain_managed_members::managed>,
+        S2: crate::typed::builder::IsSet<lifecycle_explain_managed_members::skip>,
+    {
         LifecycleExplainManaged {
             action: self.action,
             action_time: self.action_time,
@@ -669,54 +674,28 @@ impl
     }
 }
 
-impl
-    From<
-        LifecycleExplainManagedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for LifecycleExplainManaged
+impl<S0, S1, S2> crate::typed::builder::Build for LifecycleExplainManagedBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_managed_members::index>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_managed_members::managed>,
+    S2: crate::typed::builder::IsSet<lifecycle_explain_managed_members::skip>,
 {
-    fn from(
-        builder: LifecycleExplainManagedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LifecycleExplainManaged;
+
+    fn build(self) -> LifecycleExplainManaged {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> LifecycleExplainManagedBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> LifecycleExplainManaged { match index {} }
-}
-
-impl<S2>
-    LifecycleExplainManagedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<LifecycleExplainManagedBuilder<(S0, S1, S2)>> for LifecycleExplainManaged
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_managed_members::index>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_managed_members::managed>,
+    S2: crate::typed::builder::IsSet<lifecycle_explain_managed_members::skip>,
 {
-    /// `managed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, managed: crate::typed::builder::MissingRequiredField) -> LifecycleExplainManaged { match managed {} }
-}
-
-impl
-    LifecycleExplainManagedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `skip` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skip: crate::typed::builder::MissingRequiredField) -> LifecycleExplainManaged { match skip {} }
+    fn from(builder: LifecycleExplainManagedBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -730,22 +709,29 @@ pub struct LifecycleExplainPhaseExecution {
 
 impl LifecycleExplainPhaseExecution {
     /// Creates a builder for [`LifecycleExplainPhaseExecution`].
+    ///
+    /// Required: `policy`, `version`, `modified_date_in_millis`.
     pub fn builder() -> LifecycleExplainPhaseExecutionBuilder {
         LifecycleExplainPhaseExecutionBuilder::new()
     }
 
     /// Creates a [`LifecycleExplainPhaseExecution`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LifecycleExplainPhaseExecutionBuilder,
-        ) -> LifecycleExplainPhaseExecutionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `policy`, `version`, `modified_date_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = LifecycleExplainPhaseExecution>>(
+        f: impl FnOnce(LifecycleExplainPhaseExecutionBuilder) -> B,
     ) -> LifecycleExplainPhaseExecution {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LifecycleExplainPhaseExecutionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lifecycle_explain_phase_execution_members {
+    pub struct policy;
+    pub struct version;
+    pub struct modified_date_in_millis;
 }
 
 /// Builder for [`LifecycleExplainPhaseExecution`].
@@ -808,17 +794,18 @@ impl<S0, S1, S2> LifecycleExplainPhaseExecutionBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`phase_definition`](Self::phase_definition) with a builder.
-    pub fn phase_definition_with(
+    pub fn phase_definition_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ilm::_types::Phase>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ilm::_types::PhaseBuilder,
-        ) -> crate::typed::ilm::_types::PhaseBuilder,
+        f: impl FnOnce(crate::typed::ilm::_types::PhaseBuilder) -> B,
     ) -> Self {
         self.phase_definition(f(crate::typed::ilm::_types::PhaseBuilder::new()).build())
     }
 }
 
 impl<S1, S2> LifecycleExplainPhaseExecutionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -830,6 +817,7 @@ impl<S1, S2> LifecycleExplainPhaseExecutionBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0, S2> LifecycleExplainPhaseExecutionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -841,6 +829,7 @@ impl<S0, S2> LifecycleExplainPhaseExecutionBuilder<(S0, crate::typed::builder::N
 }
 
 impl<S0, S1> LifecycleExplainPhaseExecutionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn modified_date_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -851,15 +840,16 @@ impl<S0, S1> LifecycleExplainPhaseExecutionBuilder<(S0, S1, crate::typed::builde
     }
 }
 
-impl
-    LifecycleExplainPhaseExecutionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> LifecycleExplainPhaseExecutionBuilder<(S0, S1, S2)> {
     /// Builds a [`LifecycleExplainPhaseExecution`].
-    pub fn build(self) -> LifecycleExplainPhaseExecution {
+    pub fn build(self) -> LifecycleExplainPhaseExecution
+    where
+        S0: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::policy>,
+        S1: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::version>,
+        S2: crate::typed::builder::IsSet<
+            lifecycle_explain_phase_execution_members::modified_date_in_millis,
+        >,
+    {
         LifecycleExplainPhaseExecution {
             phase_definition: self.phase_definition,
             policy: self.policy.unwrap(),
@@ -869,54 +859,34 @@ impl
     }
 }
 
-impl
-    From<
-        LifecycleExplainPhaseExecutionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for LifecycleExplainPhaseExecution
+impl<S0, S1, S2> crate::typed::builder::Build
+    for LifecycleExplainPhaseExecutionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::policy>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::version>,
+    S2: crate::typed::builder::IsSet<
+        lifecycle_explain_phase_execution_members::modified_date_in_millis,
+    >,
 {
-    fn from(
-        builder: LifecycleExplainPhaseExecutionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LifecycleExplainPhaseExecution;
+
+    fn build(self) -> LifecycleExplainPhaseExecution {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> LifecycleExplainPhaseExecutionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> LifecycleExplainPhaseExecution { match policy {} }
-}
-
-impl<S2>
-    LifecycleExplainPhaseExecutionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<LifecycleExplainPhaseExecutionBuilder<(S0, S1, S2)>>
+    for LifecycleExplainPhaseExecution
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::policy>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_phase_execution_members::version>,
+    S2: crate::typed::builder::IsSet<
+        lifecycle_explain_phase_execution_members::modified_date_in_millis,
+    >,
 {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> LifecycleExplainPhaseExecution { match version {} }
-}
-
-impl
-    LifecycleExplainPhaseExecutionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `modified_date_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, modified_date_in_millis: crate::typed::builder::MissingRequiredField) -> LifecycleExplainPhaseExecution { match modified_date_in_millis {} }
+    fn from(builder: LifecycleExplainPhaseExecutionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -927,21 +897,28 @@ pub struct LifecycleExplainUnmanaged {
 
 impl LifecycleExplainUnmanaged {
     /// Creates a builder for [`LifecycleExplainUnmanaged`].
+    ///
+    /// Required: `index`, `managed`.
     pub fn builder() -> LifecycleExplainUnmanagedBuilder {
         LifecycleExplainUnmanagedBuilder::new()
     }
 
     /// Creates a [`LifecycleExplainUnmanaged`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LifecycleExplainUnmanagedBuilder,
-        ) -> LifecycleExplainUnmanagedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `managed`.
+    pub fn of<B: crate::typed::builder::Build<Output = LifecycleExplainUnmanaged>>(
+        f: impl FnOnce(LifecycleExplainUnmanagedBuilder) -> B,
     ) -> LifecycleExplainUnmanaged {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LifecycleExplainUnmanagedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lifecycle_explain_unmanaged_members {
+    pub struct index;
+    pub struct managed;
 }
 
 /// Builder for [`LifecycleExplainUnmanaged`].
@@ -977,6 +954,7 @@ impl<S0, S1> LifecycleExplainUnmanagedBuilder<(S0, S1)> {
 }
 
 impl<S1> LifecycleExplainUnmanagedBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -988,6 +966,7 @@ impl<S1> LifecycleExplainUnmanagedBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LifecycleExplainUnmanagedBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn managed(
         self,
         value: bool,
@@ -998,9 +977,13 @@ impl<S0> LifecycleExplainUnmanagedBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LifecycleExplainUnmanagedBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LifecycleExplainUnmanagedBuilder<(S0, S1)> {
     /// Builds a [`LifecycleExplainUnmanaged`].
-    pub fn build(self) -> LifecycleExplainUnmanaged {
+    pub fn build(self) -> LifecycleExplainUnmanaged
+    where
+        S0: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::index>,
+        S1: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::managed>,
+    {
         LifecycleExplainUnmanaged {
             index: self.index.unwrap(),
             managed: self.managed.unwrap(),
@@ -1008,30 +991,26 @@ impl LifecycleExplainUnmanagedBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<LifecycleExplainUnmanagedBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LifecycleExplainUnmanaged
+impl<S0, S1> crate::typed::builder::Build for LifecycleExplainUnmanagedBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::index>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::managed>,
 {
-    fn from(
-        builder: LifecycleExplainUnmanagedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LifecycleExplainUnmanaged;
+
+    fn build(self) -> LifecycleExplainUnmanaged {
+        Self::build(self)
     }
 }
 
-impl<S1> LifecycleExplainUnmanagedBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> LifecycleExplainUnmanaged { match index {} }
-}
-
-impl LifecycleExplainUnmanagedBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `managed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, managed: crate::typed::builder::MissingRequiredField) -> LifecycleExplainUnmanaged { match managed {} }
+impl<S0, S1> From<LifecycleExplainUnmanagedBuilder<(S0, S1)>> for LifecycleExplainUnmanaged
+where
+    S0: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::index>,
+    S1: crate::typed::builder::IsSet<lifecycle_explain_unmanaged_members::managed>,
+{
+    fn from(builder: LifecycleExplainUnmanagedBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ilm.explain_lifecycle`](crate::typed::ilm::IlmClient::explain_lifecycle).
@@ -1074,16 +1053,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -1227,7 +1217,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list of data streams, indices, and aliases to target. Supports wildcards (`*`).
+    /// **Required.** Comma-separated list of data streams, indices, and aliases to target. Supports wildcards (`*`).
     /// To target all data streams and indices, use `*` or `_all`.
     pub fn index(
         self,
@@ -1239,9 +1229,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             only_errors: self.only_errors,
@@ -1255,23 +1248,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -15,22 +15,29 @@ pub struct DocumentRating {
 
 impl DocumentRating {
     /// Creates a builder for [`DocumentRating`].
+    ///
+    /// Required: `id`, `index`, `rating`.
     pub fn builder() -> DocumentRatingBuilder {
         DocumentRatingBuilder::new()
     }
 
     /// Creates a [`DocumentRating`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DocumentRatingBuilder,
-        ) -> DocumentRatingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `rating`.
+    pub fn of<B: crate::typed::builder::Build<Output = DocumentRating>>(
+        f: impl FnOnce(DocumentRatingBuilder) -> B,
     ) -> DocumentRating {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DocumentRatingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod document_rating_members {
+    pub struct id;
+    pub struct index;
+    pub struct rating;
 }
 
 /// Builder for [`DocumentRating`].
@@ -77,7 +84,7 @@ impl<S0, S1, S2> DocumentRatingBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DocumentRatingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The document ID.
+    /// **Required.** The document ID.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -89,7 +96,7 @@ impl<S1, S2> DocumentRatingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> DocumentRatingBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The document’s index. For data streams, this should be the document’s backing index.
+    /// **Required.** The document’s index. For data streams, this should be the document’s backing index.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -101,7 +108,7 @@ impl<S0, S2> DocumentRatingBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> DocumentRatingBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The document’s relevance with regard to this search request.
+    /// **Required.** The document’s relevance with regard to this search request.
     pub fn rating(self, value: i32) -> DocumentRatingBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.rating = Some(value);
@@ -109,15 +116,14 @@ impl<S0, S1> DocumentRatingBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    DocumentRatingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DocumentRatingBuilder<(S0, S1, S2)> {
     /// Builds a [`DocumentRating`].
-    pub fn build(self) -> DocumentRating {
+    pub fn build(self) -> DocumentRating
+    where
+        S0: crate::typed::builder::IsSet<document_rating_members::id>,
+        S1: crate::typed::builder::IsSet<document_rating_members::index>,
+        S2: crate::typed::builder::IsSet<document_rating_members::rating>,
+    {
         DocumentRating {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -126,54 +132,28 @@ impl
     }
 }
 
-impl
-    From<
-        DocumentRatingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DocumentRating
+impl<S0, S1, S2> crate::typed::builder::Build for DocumentRatingBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<document_rating_members::id>,
+    S1: crate::typed::builder::IsSet<document_rating_members::index>,
+    S2: crate::typed::builder::IsSet<document_rating_members::rating>,
 {
-    fn from(
-        builder: DocumentRatingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DocumentRating;
+
+    fn build(self) -> DocumentRating {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DocumentRatingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DocumentRating { match id {} }
-}
-
-impl<S2>
-    DocumentRatingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DocumentRatingBuilder<(S0, S1, S2)>> for DocumentRating
+where
+    S0: crate::typed::builder::IsSet<document_rating_members::id>,
+    S1: crate::typed::builder::IsSet<document_rating_members::index>,
+    S2: crate::typed::builder::IsSet<document_rating_members::rating>,
 {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> DocumentRating { match index {} }
-}
-
-impl
-    DocumentRatingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `rating` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rating: crate::typed::builder::MissingRequiredField) -> DocumentRating { match rating {} }
+    fn from(builder: DocumentRatingBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -188,22 +168,29 @@ pub struct RankEvalHit {
 
 impl RankEvalHit {
     /// Creates a builder for [`RankEvalHit`].
+    ///
+    /// Required: `id`, `index`, `score`.
     pub fn builder() -> RankEvalHitBuilder {
         RankEvalHitBuilder::new()
     }
 
     /// Creates a [`RankEvalHit`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalHitBuilder,
-        ) -> RankEvalHitBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `score`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalHit>>(
+        f: impl FnOnce(RankEvalHitBuilder) -> B,
     ) -> RankEvalHit {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalHitBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_hit_members {
+    pub struct id;
+    pub struct index;
+    pub struct score;
 }
 
 /// Builder for [`RankEvalHit`].
@@ -250,6 +237,7 @@ impl<S0, S1, S2> RankEvalHitBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RankEvalHitBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -261,6 +249,7 @@ impl<S1, S2> RankEvalHitBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RankEvalHitBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -272,6 +261,7 @@ impl<S0, S2> RankEvalHitBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RankEvalHitBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -282,15 +272,14 @@ impl<S0, S1> RankEvalHitBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RankEvalHitBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RankEvalHitBuilder<(S0, S1, S2)> {
     /// Builds a [`RankEvalHit`].
-    pub fn build(self) -> RankEvalHit {
+    pub fn build(self) -> RankEvalHit
+    where
+        S0: crate::typed::builder::IsSet<rank_eval_hit_members::id>,
+        S1: crate::typed::builder::IsSet<rank_eval_hit_members::index>,
+        S2: crate::typed::builder::IsSet<rank_eval_hit_members::score>,
+    {
         RankEvalHit {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -299,54 +288,28 @@ impl
     }
 }
 
-impl
-    From<
-        RankEvalHitBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RankEvalHit
+impl<S0, S1, S2> crate::typed::builder::Build for RankEvalHitBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<rank_eval_hit_members::id>,
+    S1: crate::typed::builder::IsSet<rank_eval_hit_members::index>,
+    S2: crate::typed::builder::IsSet<rank_eval_hit_members::score>,
 {
-    fn from(
-        builder: RankEvalHitBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RankEvalHit;
+
+    fn build(self) -> RankEvalHit {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RankEvalHitBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> RankEvalHit { match id {} }
-}
-
-impl<S2>
-    RankEvalHitBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RankEvalHitBuilder<(S0, S1, S2)>> for RankEvalHit
+where
+    S0: crate::typed::builder::IsSet<rank_eval_hit_members::id>,
+    S1: crate::typed::builder::IsSet<rank_eval_hit_members::index>,
+    S2: crate::typed::builder::IsSet<rank_eval_hit_members::score>,
 {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> RankEvalHit { match index {} }
-}
-
-impl
-    RankEvalHitBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, score: crate::typed::builder::MissingRequiredField) -> RankEvalHit { match score {} }
+    fn from(builder: RankEvalHitBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -377,16 +340,27 @@ impl From<f64> for RankEvalHitItemRating {
 
 impl RankEvalHitItem {
     /// Creates a builder for [`RankEvalHitItem`].
+    ///
+    /// Required: `hit`.
     pub fn builder() -> RankEvalHitItemBuilder {
         RankEvalHitItemBuilder::new()
     }
 
     /// Creates a [`RankEvalHitItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `hit`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalHitItem>>(
+        f: impl FnOnce(RankEvalHitItemBuilder) -> B,
     ) -> RankEvalHitItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalHitItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_hit_item_members {
+    pub struct hit;
 }
 
 /// Builder for [`RankEvalHitItem`].
@@ -429,6 +403,7 @@ impl<S0> RankEvalHitItemBuilder<(S0,)> {
 }
 
 impl RankEvalHitItemBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn hit(
         self,
         value: impl Into<RankEvalHit>,
@@ -439,23 +414,20 @@ impl RankEvalHitItemBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`hit`](Self::hit) with a builder.
-    pub fn hit_with(
+    pub fn hit_with<B: crate::typed::builder::Build<Output = RankEvalHit>>(
         self,
-        f: impl FnOnce(
-            RankEvalHitBuilder,
-        ) -> RankEvalHitBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankEvalHitBuilder) -> B,
     ) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)> {
         self.hit(f(RankEvalHitBuilder::new()).build())
     }
 }
 
-impl RankEvalHitItemBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankEvalHitItemBuilder<(S0,)> {
     /// Builds a [`RankEvalHitItem`].
-    pub fn build(self) -> RankEvalHitItem {
+    pub fn build(self) -> RankEvalHitItem
+    where
+        S0: crate::typed::builder::IsSet<rank_eval_hit_item_members::hit>,
+    {
         RankEvalHitItem {
             hit: self.hit.unwrap(),
             rating: self.rating,
@@ -463,16 +435,24 @@ impl RankEvalHitItemBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankEvalHitItemBuilder<(crate::typed::builder::Set,)>> for RankEvalHitItem {
-    fn from(builder: RankEvalHitItemBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankEvalHitItemBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_eval_hit_item_members::hit>,
+{
+    type Output = RankEvalHitItem;
+
+    fn build(self) -> RankEvalHitItem {
+        Self::build(self)
     }
 }
 
-impl RankEvalHitItemBuilder<(crate::typed::builder::NotSet,)> {
-    /// `hit` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hit: crate::typed::builder::MissingRequiredField) -> RankEvalHitItem { match hit {} }
+impl<S0> From<RankEvalHitItemBuilder<(S0,)>> for RankEvalHitItem
+where
+    S0: crate::typed::builder::IsSet<rank_eval_hit_item_members::hit>,
+{
+    fn from(builder: RankEvalHitItemBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -496,7 +476,9 @@ impl RankEvalMetric {
     }
 
     /// Creates a [`RankEvalMetric`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RankEvalMetricBuilder) -> RankEvalMetricBuilder) -> RankEvalMetric {
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetric>>(
+        f: impl FnOnce(RankEvalMetricBuilder) -> B,
+    ) -> RankEvalMetric {
         f(Self::builder()).build()
     }
 }
@@ -536,9 +518,9 @@ impl RankEvalMetricBuilder {
     }
 
     /// Sets [`precision`](Self::precision) with a builder.
-    pub fn precision_with(
+    pub fn precision_with<B: crate::typed::builder::Build<Output = RankEvalMetricPrecision>>(
         self,
-        f: impl FnOnce(RankEvalMetricPrecisionBuilder) -> RankEvalMetricPrecisionBuilder,
+        f: impl FnOnce(RankEvalMetricPrecisionBuilder) -> B,
     ) -> Self {
         self.precision(f(RankEvalMetricPrecisionBuilder::new()).build())
     }
@@ -555,9 +537,9 @@ impl RankEvalMetricBuilder {
     }
 
     /// Sets [`recall`](Self::recall) with a builder.
-    pub fn recall_with(
+    pub fn recall_with<B: crate::typed::builder::Build<Output = RankEvalMetricRecall>>(
         self,
-        f: impl FnOnce(RankEvalMetricRecallBuilder) -> RankEvalMetricRecallBuilder,
+        f: impl FnOnce(RankEvalMetricRecallBuilder) -> B,
     ) -> Self {
         self.recall(f(RankEvalMetricRecallBuilder::new()).build())
     }
@@ -580,11 +562,11 @@ impl RankEvalMetricBuilder {
     }
 
     /// Sets [`mean_reciprocal_rank`](Self::mean_reciprocal_rank) with a builder.
-    pub fn mean_reciprocal_rank_with(
+    pub fn mean_reciprocal_rank_with<
+        B: crate::typed::builder::Build<Output = RankEvalMetricMeanReciprocalRank>,
+    >(
         self,
-        f: impl FnOnce(
-            RankEvalMetricMeanReciprocalRankBuilder,
-        ) -> RankEvalMetricMeanReciprocalRankBuilder,
+        f: impl FnOnce(RankEvalMetricMeanReciprocalRankBuilder) -> B,
     ) -> Self {
         self.mean_reciprocal_rank(f(RankEvalMetricMeanReciprocalRankBuilder::new()).build())
     }
@@ -601,11 +583,11 @@ impl RankEvalMetricBuilder {
     }
 
     /// Sets [`dcg`](Self::dcg) with a builder.
-    pub fn dcg_with(
+    pub fn dcg_with<
+        B: crate::typed::builder::Build<Output = RankEvalMetricDiscountedCumulativeGain>,
+    >(
         self,
-        f: impl FnOnce(
-            RankEvalMetricDiscountedCumulativeGainBuilder,
-        ) -> RankEvalMetricDiscountedCumulativeGainBuilder,
+        f: impl FnOnce(RankEvalMetricDiscountedCumulativeGainBuilder) -> B,
     ) -> Self {
         self.dcg(f(RankEvalMetricDiscountedCumulativeGainBuilder::new()).build())
     }
@@ -628,12 +610,11 @@ impl RankEvalMetricBuilder {
     }
 
     /// Sets [`expected_reciprocal_rank`](Self::expected_reciprocal_rank) with a builder.
-    pub fn expected_reciprocal_rank_with(
+    pub fn expected_reciprocal_rank_with<
+        B: crate::typed::builder::Build<Output = RankEvalMetricExpectedReciprocalRank>,
+    >(
         self,
-        f: impl FnOnce(
-            RankEvalMetricExpectedReciprocalRankBuilder,
-        )
-            -> RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankEvalMetricExpectedReciprocalRankBuilder) -> B,
     ) -> Self {
         self.expected_reciprocal_rank(f(RankEvalMetricExpectedReciprocalRankBuilder::new()).build())
     }
@@ -649,6 +630,14 @@ impl RankEvalMetricBuilder {
             dcg: self.dcg,
             expected_reciprocal_rank: self.expected_reciprocal_rank,
         }
+    }
+}
+
+impl crate::typed::builder::Build for RankEvalMetricBuilder {
+    type Output = RankEvalMetric;
+
+    fn build(self) -> RankEvalMetric {
+        Self::build(self)
     }
 }
 
@@ -672,8 +661,8 @@ impl RankEvalMetricBase {
     }
 
     /// Creates a [`RankEvalMetricBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalMetricBaseBuilder) -> RankEvalMetricBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricBase>>(
+        f: impl FnOnce(RankEvalMetricBaseBuilder) -> B,
     ) -> RankEvalMetricBase {
         f(Self::builder()).build()
     }
@@ -712,6 +701,14 @@ impl RankEvalMetricBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricBaseBuilder {
+    type Output = RankEvalMetricBase;
+
+    fn build(self) -> RankEvalMetricBase {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricBaseBuilder> for RankEvalMetricBase {
     fn from(builder: RankEvalMetricBaseBuilder) -> Self {
         builder.build()
@@ -734,24 +731,31 @@ pub struct RankEvalMetricDetail {
 
 impl RankEvalMetricDetail {
     /// Creates a builder for [`RankEvalMetricDetail`].
+    ///
+    /// Required: `metric_score`, `took`, `unrated_docs`, `hits`, `metric_details`.
     pub fn builder() -> RankEvalMetricDetailBuilder {
         RankEvalMetricDetailBuilder::new()
     }
 
     /// Creates a [`RankEvalMetricDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalMetricDetailBuilder,
-        ) -> RankEvalMetricDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `metric_score`, `took`, `unrated_docs`, `hits`, `metric_details`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricDetail>>(
+        f: impl FnOnce(RankEvalMetricDetailBuilder) -> B,
     ) -> RankEvalMetricDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalMetricDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_metric_detail_members {
+    pub struct metric_score;
+    pub struct took;
+    pub struct unrated_docs;
+    pub struct hits;
+    pub struct metric_details;
 }
 
 /// Builder for [`RankEvalMetricDetail`].
@@ -809,7 +813,7 @@ impl<S0, S1, S2, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> RankEvalMetricDetailBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// The metric_score in the details section shows the contribution of this query to the global quality metric score
+    /// **Required.** The metric_score in the details section shows the contribution of this query to the global quality metric score
     pub fn metric_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -821,7 +825,7 @@ impl<S1, S2, S3, S4> RankEvalMetricDetailBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> RankEvalMetricDetailBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The time in milliseconds it took to execute the search request for this query
+    /// **Required.** The time in milliseconds it took to execute the search request for this query
     pub fn took(
         self,
         value: i64,
@@ -833,7 +837,7 @@ impl<S0, S2, S3, S4> RankEvalMetricDetailBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// The unrated_docs section contains an _index and _id entry for each document in the search result for this query that didn’t have a ratings value. This can be used to ask the user to supply ratings for these documents
+    /// **Required.** The unrated_docs section contains an _index and _id entry for each document in the search result for this query that didn’t have a ratings value. This can be used to ask the user to supply ratings for these documents
     pub fn unrated_docs(
         self,
         value: impl Into<Vec<UnratedDocument>>,
@@ -857,14 +861,9 @@ impl<S0, S1, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder:
     }
 
     /// Adds an element to [`unrated_docs`](Self::unrated_docs), with a builder.
-    pub fn add_unrated_docs_with(
+    pub fn add_unrated_docs_with<B: crate::typed::builder::Build<Output = UnratedDocument>>(
         self,
-        f: impl FnOnce(
-            UnratedDocumentBuilder,
-        ) -> UnratedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UnratedDocumentBuilder) -> B,
     ) -> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.add_unrated_docs(f(UnratedDocumentBuilder::new()).build())
     }
@@ -880,21 +879,16 @@ impl<S0, S1, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder:
     }
 
     /// Adds an element to [`unrated_docs`](Self::unrated_docs), with a builder.
-    pub fn add_unrated_docs_with(
+    pub fn add_unrated_docs_with<B: crate::typed::builder::Build<Output = UnratedDocument>>(
         self,
-        f: impl FnOnce(
-            UnratedDocumentBuilder,
-        ) -> UnratedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UnratedDocumentBuilder) -> B,
     ) -> Self {
         self.add_unrated_docs(f(UnratedDocumentBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// The hits section shows a grouping of the search results with their supplied ratings
+    /// **Required.** The hits section shows a grouping of the search results with their supplied ratings
     pub fn hits(
         self,
         value: impl Into<Vec<RankEvalHitItem>>,
@@ -918,9 +912,9 @@ impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::buil
     }
 
     /// Adds an element to [`hits`](Self::hits), with a builder.
-    pub fn add_hits_with(
+    pub fn add_hits_with<B: crate::typed::builder::Build<Output = RankEvalHitItem>>(
         self,
-        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankEvalHitItemBuilder) -> B,
     ) -> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.add_hits(f(RankEvalHitItemBuilder::new()).build())
     }
@@ -936,16 +930,16 @@ impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::buil
     }
 
     /// Adds an element to [`hits`](Self::hits), with a builder.
-    pub fn add_hits_with(
+    pub fn add_hits_with<B: crate::typed::builder::Build<Output = RankEvalHitItem>>(
         self,
-        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankEvalHitItemBuilder) -> B,
     ) -> Self {
         self.add_hits(f(RankEvalHitItemBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S3> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The metric_details give additional information about the calculated quality metric (e.g. how many of the retrieved documents were relevant). The content varies for each metric but allows for better interpretation of the results
+    /// **Required.** The metric_details give additional information about the calculated quality metric (e.g. how many of the retrieved documents were relevant). The content varies for each metric but allows for better interpretation of the results
     pub fn metric_details(
         self,
         value: impl Into<indexmap::IndexMap<String, indexmap::IndexMap<String, serde_json::Value>>>,
@@ -984,17 +978,16 @@ impl<S0, S1, S2, S3> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    RankEvalMetricDetailBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`RankEvalMetricDetail`].
-    pub fn build(self) -> RankEvalMetricDetail {
+    pub fn build(self) -> RankEvalMetricDetail
+    where
+        S0: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_score>,
+        S1: crate::typed::builder::IsSet<rank_eval_metric_detail_members::took>,
+        S2: crate::typed::builder::IsSet<rank_eval_metric_detail_members::unrated_docs>,
+        S3: crate::typed::builder::IsSet<rank_eval_metric_detail_members::hits>,
+        S4: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_details>,
+    {
         RankEvalMetricDetail {
             metric_score: self.metric_score.unwrap(),
             took: self.took.unwrap(),
@@ -1005,90 +998,34 @@ impl
     }
 }
 
-impl
-    From<
-        RankEvalMetricDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RankEvalMetricDetail
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for RankEvalMetricDetailBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_score>,
+    S1: crate::typed::builder::IsSet<rank_eval_metric_detail_members::took>,
+    S2: crate::typed::builder::IsSet<rank_eval_metric_detail_members::unrated_docs>,
+    S3: crate::typed::builder::IsSet<rank_eval_metric_detail_members::hits>,
+    S4: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_details>,
 {
-    fn from(
-        builder: RankEvalMetricDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RankEvalMetricDetail;
+
+    fn build(self) -> RankEvalMetricDetail {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> RankEvalMetricDetailBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `metric_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metric_score: crate::typed::builder::MissingRequiredField) -> RankEvalMetricDetail { match metric_score {} }
-}
-
-impl<S2, S3, S4>
-    RankEvalMetricDetailBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<RankEvalMetricDetailBuilder<(S0, S1, S2, S3, S4)>>
+    for RankEvalMetricDetail
+where
+    S0: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_score>,
+    S1: crate::typed::builder::IsSet<rank_eval_metric_detail_members::took>,
+    S2: crate::typed::builder::IsSet<rank_eval_metric_detail_members::unrated_docs>,
+    S3: crate::typed::builder::IsSet<rank_eval_metric_detail_members::hits>,
+    S4: crate::typed::builder::IsSet<rank_eval_metric_detail_members::metric_details>,
 {
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> RankEvalMetricDetail { match took {} }
-}
-
-impl<S3, S4>
-    RankEvalMetricDetailBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `unrated_docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unrated_docs: crate::typed::builder::MissingRequiredField) -> RankEvalMetricDetail { match unrated_docs {} }
-}
-
-impl<S4>
-    RankEvalMetricDetailBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> RankEvalMetricDetail { match hits {} }
-}
-
-impl
-    RankEvalMetricDetailBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `metric_details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metric_details: crate::typed::builder::MissingRequiredField) -> RankEvalMetricDetail { match metric_details {} }
+    fn from(builder: RankEvalMetricDetailBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Discounted cumulative gain (DCG)
@@ -1109,10 +1046,8 @@ impl RankEvalMetricDiscountedCumulativeGain {
     }
 
     /// Creates a [`RankEvalMetricDiscountedCumulativeGain`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalMetricDiscountedCumulativeGainBuilder,
-        ) -> RankEvalMetricDiscountedCumulativeGainBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricDiscountedCumulativeGain>>(
+        f: impl FnOnce(RankEvalMetricDiscountedCumulativeGainBuilder) -> B,
     ) -> RankEvalMetricDiscountedCumulativeGain {
         f(Self::builder()).build()
     }
@@ -1170,6 +1105,14 @@ impl RankEvalMetricDiscountedCumulativeGainBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricDiscountedCumulativeGainBuilder {
+    type Output = RankEvalMetricDiscountedCumulativeGain;
+
+    fn build(self) -> RankEvalMetricDiscountedCumulativeGain {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricDiscountedCumulativeGainBuilder>
     for RankEvalMetricDiscountedCumulativeGain
 {
@@ -1190,19 +1133,27 @@ pub struct RankEvalMetricExpectedReciprocalRank {
 
 impl RankEvalMetricExpectedReciprocalRank {
     /// Creates a builder for [`RankEvalMetricExpectedReciprocalRank`].
+    ///
+    /// Required: `maximum_relevance`.
     pub fn builder() -> RankEvalMetricExpectedReciprocalRankBuilder {
         RankEvalMetricExpectedReciprocalRankBuilder::new()
     }
 
     /// Creates a [`RankEvalMetricExpectedReciprocalRank`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalMetricExpectedReciprocalRankBuilder,
-        )
-            -> RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `maximum_relevance`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricExpectedReciprocalRank>>(
+        f: impl FnOnce(RankEvalMetricExpectedReciprocalRankBuilder) -> B,
     ) -> RankEvalMetricExpectedReciprocalRank {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalMetricExpectedReciprocalRankBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_metric_expected_reciprocal_rank_members {
+    pub struct maximum_relevance;
 }
 
 /// Builder for [`RankEvalMetricExpectedReciprocalRank`].
@@ -1246,7 +1197,7 @@ impl<S0> RankEvalMetricExpectedReciprocalRankBuilder<(S0,)> {
 }
 
 impl RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::NotSet,)> {
-    /// The highest relevance grade used in the user-supplied relevance judgments.
+    /// **Required.** The highest relevance grade used in the user-supplied relevance judgments.
     pub fn maximum_relevance(
         self,
         value: i32,
@@ -1257,9 +1208,14 @@ impl RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::NotSet,
     }
 }
 
-impl RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankEvalMetricExpectedReciprocalRankBuilder<(S0,)> {
     /// Builds a [`RankEvalMetricExpectedReciprocalRank`].
-    pub fn build(self) -> RankEvalMetricExpectedReciprocalRank {
+    pub fn build(self) -> RankEvalMetricExpectedReciprocalRank
+    where
+        S0: crate::typed::builder::IsSet<
+            rank_eval_metric_expected_reciprocal_rank_members::maximum_relevance,
+        >,
+    {
         RankEvalMetricExpectedReciprocalRank {
             k: self.k,
             maximum_relevance: self.maximum_relevance.unwrap(),
@@ -1267,20 +1223,29 @@ impl RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)> 
     }
 }
 
-impl From<RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)>>
-    for RankEvalMetricExpectedReciprocalRank
+impl<S0> crate::typed::builder::Build for RankEvalMetricExpectedReciprocalRankBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        rank_eval_metric_expected_reciprocal_rank_members::maximum_relevance,
+    >,
 {
-    fn from(
-        builder: RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = RankEvalMetricExpectedReciprocalRank;
+
+    fn build(self) -> RankEvalMetricExpectedReciprocalRank {
+        Self::build(self)
     }
 }
 
-impl RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::NotSet,)> {
-    /// `maximum_relevance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, maximum_relevance: crate::typed::builder::MissingRequiredField) -> RankEvalMetricExpectedReciprocalRank { match maximum_relevance {} }
+impl<S0> From<RankEvalMetricExpectedReciprocalRankBuilder<(S0,)>>
+    for RankEvalMetricExpectedReciprocalRank
+where
+    S0: crate::typed::builder::IsSet<
+        rank_eval_metric_expected_reciprocal_rank_members::maximum_relevance,
+    >,
+{
+    fn from(builder: RankEvalMetricExpectedReciprocalRankBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Mean Reciprocal Rank
@@ -1301,10 +1266,8 @@ impl RankEvalMetricMeanReciprocalRank {
     }
 
     /// Creates a [`RankEvalMetricMeanReciprocalRank`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalMetricMeanReciprocalRankBuilder,
-        ) -> RankEvalMetricMeanReciprocalRankBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricMeanReciprocalRank>>(
+        f: impl FnOnce(RankEvalMetricMeanReciprocalRankBuilder) -> B,
     ) -> RankEvalMetricMeanReciprocalRank {
         f(Self::builder()).build()
     }
@@ -1362,6 +1325,14 @@ impl RankEvalMetricMeanReciprocalRankBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricMeanReciprocalRankBuilder {
+    type Output = RankEvalMetricMeanReciprocalRank;
+
+    fn build(self) -> RankEvalMetricMeanReciprocalRank {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricMeanReciprocalRankBuilder> for RankEvalMetricMeanReciprocalRank {
     fn from(builder: RankEvalMetricMeanReciprocalRankBuilder) -> Self {
         builder.build()
@@ -1389,8 +1360,8 @@ impl RankEvalMetricPrecision {
     }
 
     /// Creates a [`RankEvalMetricPrecision`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalMetricPrecisionBuilder) -> RankEvalMetricPrecisionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricPrecision>>(
+        f: impl FnOnce(RankEvalMetricPrecisionBuilder) -> B,
     ) -> RankEvalMetricPrecision {
         f(Self::builder()).build()
     }
@@ -1463,6 +1434,14 @@ impl RankEvalMetricPrecisionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricPrecisionBuilder {
+    type Output = RankEvalMetricPrecision;
+
+    fn build(self) -> RankEvalMetricPrecision {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricPrecisionBuilder> for RankEvalMetricPrecision {
     fn from(builder: RankEvalMetricPrecisionBuilder) -> Self {
         builder.build()
@@ -1486,8 +1465,8 @@ impl RankEvalMetricRatingTreshold {
     }
 
     /// Creates a [`RankEvalMetricRatingTreshold`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalMetricRatingTresholdBuilder) -> RankEvalMetricRatingTresholdBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricRatingTreshold>>(
+        f: impl FnOnce(RankEvalMetricRatingTresholdBuilder) -> B,
     ) -> RankEvalMetricRatingTreshold {
         f(Self::builder()).build()
     }
@@ -1545,6 +1524,14 @@ impl RankEvalMetricRatingTresholdBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricRatingTresholdBuilder {
+    type Output = RankEvalMetricRatingTreshold;
+
+    fn build(self) -> RankEvalMetricRatingTreshold {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricRatingTresholdBuilder> for RankEvalMetricRatingTreshold {
     fn from(builder: RankEvalMetricRatingTresholdBuilder) -> Self {
         builder.build()
@@ -1569,8 +1556,8 @@ impl RankEvalMetricRecall {
     }
 
     /// Creates a [`RankEvalMetricRecall`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalMetricRecallBuilder) -> RankEvalMetricRecallBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalMetricRecall>>(
+        f: impl FnOnce(RankEvalMetricRecallBuilder) -> B,
     ) -> RankEvalMetricRecall {
         f(Self::builder()).build()
     }
@@ -1628,6 +1615,14 @@ impl RankEvalMetricRecallBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankEvalMetricRecallBuilder {
+    type Output = RankEvalMetricRecall;
+
+    fn build(self) -> RankEvalMetricRecall {
+        Self::build(self)
+    }
+}
+
 impl From<RankEvalMetricRecallBuilder> for RankEvalMetricRecall {
     fn from(builder: RankEvalMetricRecallBuilder) -> Self {
         builder.build()
@@ -1643,16 +1638,27 @@ pub struct RankEvalQuery {
 
 impl RankEvalQuery {
     /// Creates a builder for [`RankEvalQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> RankEvalQueryBuilder {
         RankEvalQueryBuilder::new()
     }
 
     /// Creates a [`RankEvalQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankEvalQueryBuilder) -> RankEvalQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalQuery>>(
+        f: impl FnOnce(RankEvalQueryBuilder) -> B,
     ) -> RankEvalQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_query_members {
+    pub struct query;
 }
 
 /// Builder for [`RankEvalQuery`].
@@ -1695,6 +1701,7 @@ impl<S0> RankEvalQueryBuilder<(S0,)> {
 }
 
 impl RankEvalQueryBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<crate::typed::_types::query_dsl::QueryContainer>,
@@ -1705,21 +1712,22 @@ impl RankEvalQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> RankEvalQueryBuilder<(crate::typed::builder::Set,)> {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
-impl RankEvalQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankEvalQueryBuilder<(S0,)> {
     /// Builds a [`RankEvalQuery`].
-    pub fn build(self) -> RankEvalQuery {
+    pub fn build(self) -> RankEvalQuery
+    where
+        S0: crate::typed::builder::IsSet<rank_eval_query_members::query>,
+    {
         RankEvalQuery {
             query: self.query.unwrap(),
             size: self.size,
@@ -1727,16 +1735,24 @@ impl RankEvalQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankEvalQueryBuilder<(crate::typed::builder::Set,)>> for RankEvalQuery {
-    fn from(builder: RankEvalQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankEvalQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_eval_query_members::query>,
+{
+    type Output = RankEvalQuery;
+
+    fn build(self) -> RankEvalQuery {
+        Self::build(self)
     }
 }
 
-impl RankEvalQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> RankEvalQuery { match query {} }
+impl<S0> From<RankEvalQueryBuilder<(S0,)>> for RankEvalQuery
+where
+    S0: crate::typed::builder::IsSet<rank_eval_query_members::query>,
+{
+    fn from(builder: RankEvalQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1758,21 +1774,28 @@ pub struct RankEvalRequestItem {
 
 impl RankEvalRequestItem {
     /// Creates a builder for [`RankEvalRequestItem`].
+    ///
+    /// Required: `id`, `ratings`.
     pub fn builder() -> RankEvalRequestItemBuilder {
         RankEvalRequestItemBuilder::new()
     }
 
     /// Creates a [`RankEvalRequestItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankEvalRequestItemBuilder,
-        ) -> RankEvalRequestItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `ratings`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankEvalRequestItem>>(
+        f: impl FnOnce(RankEvalRequestItemBuilder) -> B,
     ) -> RankEvalRequestItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankEvalRequestItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_eval_request_item_members {
+    pub struct id;
+    pub struct ratings;
 }
 
 /// Builder for [`RankEvalRequestItem`].
@@ -1826,9 +1849,9 @@ impl<S0, S1> RankEvalRequestItemBuilder<(S0, S1)> {
     }
 
     /// Sets [`request`](Self::request) with a builder.
-    pub fn request_with(
+    pub fn request_with<B: crate::typed::builder::Build<Output = RankEvalQuery>>(
         self,
-        f: impl FnOnce(RankEvalQueryBuilder) -> RankEvalQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankEvalQueryBuilder) -> B,
     ) -> Self {
         self.request(f(RankEvalQueryBuilder::new()).build())
     }
@@ -1877,7 +1900,7 @@ impl<S0, S1> RankEvalRequestItemBuilder<(S0, S1)> {
 }
 
 impl<S1> RankEvalRequestItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The search request’s ID, used to group result details later.
+    /// **Required.** The search request’s ID, used to group result details later.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -1889,7 +1912,7 @@ impl<S1> RankEvalRequestItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RankEvalRequestItemBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// List of document ratings
+    /// **Required.** List of document ratings
     pub fn ratings(
         self,
         value: impl Into<Vec<DocumentRating>>,
@@ -1913,15 +1936,9 @@ impl<S0> RankEvalRequestItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`ratings`](Self::ratings), with a builder.
-    pub fn add_ratings_with(
+    pub fn add_ratings_with<B: crate::typed::builder::Build<Output = DocumentRating>>(
         self,
-        f: impl FnOnce(
-            DocumentRatingBuilder,
-        ) -> DocumentRatingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DocumentRatingBuilder) -> B,
     ) -> RankEvalRequestItemBuilder<(S0, crate::typed::builder::Set)> {
         self.add_ratings(f(DocumentRatingBuilder::new()).build())
     }
@@ -1937,23 +1954,21 @@ impl<S0> RankEvalRequestItemBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`ratings`](Self::ratings), with a builder.
-    pub fn add_ratings_with(
+    pub fn add_ratings_with<B: crate::typed::builder::Build<Output = DocumentRating>>(
         self,
-        f: impl FnOnce(
-            DocumentRatingBuilder,
-        ) -> DocumentRatingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DocumentRatingBuilder) -> B,
     ) -> Self {
         self.add_ratings(f(DocumentRatingBuilder::new()).build())
     }
 }
 
-impl RankEvalRequestItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RankEvalRequestItemBuilder<(S0, S1)> {
     /// Builds a [`RankEvalRequestItem`].
-    pub fn build(self) -> RankEvalRequestItem {
+    pub fn build(self) -> RankEvalRequestItem
+    where
+        S0: crate::typed::builder::IsSet<rank_eval_request_item_members::id>,
+        S1: crate::typed::builder::IsSet<rank_eval_request_item_members::ratings>,
+    {
         RankEvalRequestItem {
             id: self.id.unwrap(),
             request: self.request,
@@ -1964,29 +1979,26 @@ impl RankEvalRequestItemBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<RankEvalRequestItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RankEvalRequestItem
+impl<S0, S1> crate::typed::builder::Build for RankEvalRequestItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<rank_eval_request_item_members::id>,
+    S1: crate::typed::builder::IsSet<rank_eval_request_item_members::ratings>,
 {
-    fn from(
-        builder: RankEvalRequestItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RankEvalRequestItem;
+
+    fn build(self) -> RankEvalRequestItem {
+        Self::build(self)
     }
 }
 
-impl<S1> RankEvalRequestItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> RankEvalRequestItem { match id {} }
-}
-
-impl RankEvalRequestItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `ratings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ratings: crate::typed::builder::MissingRequiredField) -> RankEvalRequestItem { match ratings {} }
+impl<S0, S1> From<RankEvalRequestItemBuilder<(S0, S1)>> for RankEvalRequestItem
+where
+    S0: crate::typed::builder::IsSet<rank_eval_request_item_members::id>,
+    S1: crate::typed::builder::IsSet<rank_eval_request_item_members::ratings>,
+{
+    fn from(builder: RankEvalRequestItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`rank_eval`](crate::typed::Client::rank_eval).
@@ -2040,16 +2052,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `requests`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `requests`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct requests;
 }
 
 /// Builder for [`Request`].
@@ -2252,16 +2275,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`metric`](Self::metric) with a builder.
-    pub fn metric_with(
+    pub fn metric_with<B: crate::typed::builder::Build<Output = RankEvalMetric>>(
         self,
-        f: impl FnOnce(RankEvalMetricBuilder) -> RankEvalMetricBuilder,
+        f: impl FnOnce(RankEvalMetricBuilder) -> B,
     ) -> Self {
         self.metric(f(RankEvalMetricBuilder::new()).build())
     }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A set of typical search requests, together with their provided ratings.
+    /// **Required.** A set of typical search requests, together with their provided ratings.
     pub fn requests(
         self,
         value: impl Into<Vec<RankEvalRequestItem>>,
@@ -2285,14 +2308,9 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Adds an element to [`requests`](Self::requests), with a builder.
-    pub fn add_requests_with(
+    pub fn add_requests_with<B: crate::typed::builder::Build<Output = RankEvalRequestItem>>(
         self,
-        f: impl FnOnce(
-            RankEvalRequestItemBuilder,
-        ) -> RankEvalRequestItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankEvalRequestItemBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.add_requests(f(RankEvalRequestItemBuilder::new()).build())
     }
@@ -2308,22 +2326,20 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 
     /// Adds an element to [`requests`](Self::requests), with a builder.
-    pub fn add_requests_with(
+    pub fn add_requests_with<B: crate::typed::builder::Build<Output = RankEvalRequestItem>>(
         self,
-        f: impl FnOnce(
-            RankEvalRequestItemBuilder,
-        ) -> RankEvalRequestItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankEvalRequestItemBuilder) -> B,
     ) -> Self {
         self.add_requests(f(RankEvalRequestItemBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::requests>,
+    {
         Request {
             index: self.index,
             allow_no_indices: self.allow_no_indices,
@@ -2340,23 +2356,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::requests>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, requests: crate::typed::builder::MissingRequiredField) -> Request { match requests {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `requests` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, requests: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match requests {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::requests>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -2504,21 +2523,28 @@ pub struct UnratedDocument {
 
 impl UnratedDocument {
     /// Creates a builder for [`UnratedDocument`].
+    ///
+    /// Required: `id`, `index`.
     pub fn builder() -> UnratedDocumentBuilder {
         UnratedDocumentBuilder::new()
     }
 
     /// Creates a [`UnratedDocument`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnratedDocumentBuilder,
-        ) -> UnratedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnratedDocument>>(
+        f: impl FnOnce(UnratedDocumentBuilder) -> B,
     ) -> UnratedDocument {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnratedDocumentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unrated_document_members {
+    pub struct id;
+    pub struct index;
 }
 
 /// Builder for [`UnratedDocument`].
@@ -2552,6 +2578,7 @@ impl<S0, S1> UnratedDocumentBuilder<(S0, S1)> {
 }
 
 impl<S1> UnratedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -2563,6 +2590,7 @@ impl<S1> UnratedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> UnratedDocumentBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -2573,9 +2601,13 @@ impl<S0> UnratedDocumentBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl UnratedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> UnratedDocumentBuilder<(S0, S1)> {
     /// Builds a [`UnratedDocument`].
-    pub fn build(self) -> UnratedDocument {
+    pub fn build(self) -> UnratedDocument
+    where
+        S0: crate::typed::builder::IsSet<unrated_document_members::id>,
+        S1: crate::typed::builder::IsSet<unrated_document_members::index>,
+    {
         UnratedDocument {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -2583,24 +2615,24 @@ impl UnratedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<UnratedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for UnratedDocument
+impl<S0, S1> crate::typed::builder::Build for UnratedDocumentBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<unrated_document_members::id>,
+    S1: crate::typed::builder::IsSet<unrated_document_members::index>,
 {
-    fn from(
-        builder: UnratedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = UnratedDocument;
+
+    fn build(self) -> UnratedDocument {
+        Self::build(self)
     }
 }
 
-impl<S1> UnratedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> UnratedDocument { match id {} }
-}
-
-impl UnratedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> UnratedDocument { match index {} }
+impl<S0, S1> From<UnratedDocumentBuilder<(S0, S1)>> for UnratedDocument
+where
+    S0: crate::typed::builder::IsSet<unrated_document_members::id>,
+    S1: crate::typed::builder::IsSet<unrated_document_members::index>,
+{
+    fn from(builder: UnratedDocumentBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

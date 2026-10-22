@@ -9,19 +9,28 @@ pub struct Context {
 
 impl Context {
     /// Creates a builder for [`Context`].
+    ///
+    /// Required: `methods`, `name`.
     pub fn builder() -> ContextBuilder {
         ContextBuilder::new()
     }
 
     /// Creates a [`Context`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ContextBuilder,
-        )
-            -> ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `methods`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Context>>(
+        f: impl FnOnce(ContextBuilder) -> B,
     ) -> Context {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ContextBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod context_members {
+    pub struct methods;
+    pub struct name;
 }
 
 /// Builder for [`Context`].
@@ -53,6 +62,7 @@ impl<S0, S1> ContextBuilder<(S0, S1)> {
 }
 
 impl<S1> ContextBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn methods(
         self,
         value: impl Into<Vec<ContextMethod>>,
@@ -76,15 +86,9 @@ impl<S1> ContextBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Adds an element to [`methods`](Self::methods), with a builder.
-    pub fn add_methods_with(
+    pub fn add_methods_with<B: crate::typed::builder::Build<Output = ContextMethod>>(
         self,
-        f: impl FnOnce(
-            ContextMethodBuilder,
-        ) -> ContextMethodBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ContextMethodBuilder) -> B,
     ) -> ContextBuilder<(crate::typed::builder::Set, S1)> {
         self.add_methods(f(ContextMethodBuilder::new()).build())
     }
@@ -100,21 +104,16 @@ impl<S1> ContextBuilder<(crate::typed::builder::Set, S1)> {
     }
 
     /// Adds an element to [`methods`](Self::methods), with a builder.
-    pub fn add_methods_with(
+    pub fn add_methods_with<B: crate::typed::builder::Build<Output = ContextMethod>>(
         self,
-        f: impl FnOnce(
-            ContextMethodBuilder,
-        ) -> ContextMethodBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ContextMethodBuilder) -> B,
     ) -> Self {
         self.add_methods(f(ContextMethodBuilder::new()).build())
     }
 }
 
 impl<S0> ContextBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -125,9 +124,13 @@ impl<S0> ContextBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ContextBuilder<(S0, S1)> {
     /// Builds a [`Context`].
-    pub fn build(self) -> Context {
+    pub fn build(self) -> Context
+    where
+        S0: crate::typed::builder::IsSet<context_members::methods>,
+        S1: crate::typed::builder::IsSet<context_members::name>,
+    {
         Context {
             methods: self.methods.unwrap(),
             name: self.name.unwrap(),
@@ -135,24 +138,26 @@ impl ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Context {
-    fn from(
-        builder: ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for ContextBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<context_members::methods>,
+    S1: crate::typed::builder::IsSet<context_members::name>,
+{
+    type Output = Context;
+
+    fn build(self) -> Context {
+        Self::build(self)
     }
 }
 
-impl<S1> ContextBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `methods` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, methods: crate::typed::builder::MissingRequiredField) -> Context { match methods {} }
-}
-
-impl ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Context { match name {} }
+impl<S0, S1> From<ContextBuilder<(S0, S1)>> for Context
+where
+    S0: crate::typed::builder::IsSet<context_members::methods>,
+    S1: crate::typed::builder::IsSet<context_members::name>,
+{
+    fn from(builder: ContextBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -164,22 +169,29 @@ pub struct ContextMethod {
 
 impl ContextMethod {
     /// Creates a builder for [`ContextMethod`].
+    ///
+    /// Required: `name`, `return_type`, `params`.
     pub fn builder() -> ContextMethodBuilder {
         ContextMethodBuilder::new()
     }
 
     /// Creates a [`ContextMethod`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ContextMethodBuilder,
-        ) -> ContextMethodBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `return_type`, `params`.
+    pub fn of<B: crate::typed::builder::Build<Output = ContextMethod>>(
+        f: impl FnOnce(ContextMethodBuilder) -> B,
     ) -> ContextMethod {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ContextMethodBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod context_method_members {
+    pub struct name;
+    pub struct return_type;
+    pub struct params;
 }
 
 /// Builder for [`ContextMethod`].
@@ -226,6 +238,7 @@ impl<S0, S1, S2> ContextMethodBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ContextMethodBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -237,6 +250,7 @@ impl<S1, S2> ContextMethodBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ContextMethodBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn return_type(
         self,
         value: impl Into<String>,
@@ -248,6 +262,7 @@ impl<S0, S2> ContextMethodBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> ContextMethodBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn params(
         self,
         value: impl Into<Vec<ContextMethodParam>>,
@@ -271,14 +286,9 @@ impl<S0, S1> ContextMethodBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`params`](Self::params), with a builder.
-    pub fn add_params_with(
+    pub fn add_params_with<B: crate::typed::builder::Build<Output = ContextMethodParam>>(
         self,
-        f: impl FnOnce(
-            ContextMethodParamBuilder,
-        ) -> ContextMethodParamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ContextMethodParamBuilder) -> B,
     ) -> ContextMethodBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.add_params(f(ContextMethodParamBuilder::new()).build())
     }
@@ -294,28 +304,22 @@ impl<S0, S1> ContextMethodBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`params`](Self::params), with a builder.
-    pub fn add_params_with(
+    pub fn add_params_with<B: crate::typed::builder::Build<Output = ContextMethodParam>>(
         self,
-        f: impl FnOnce(
-            ContextMethodParamBuilder,
-        ) -> ContextMethodParamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ContextMethodParamBuilder) -> B,
     ) -> Self {
         self.add_params(f(ContextMethodParamBuilder::new()).build())
     }
 }
 
-impl
-    ContextMethodBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ContextMethodBuilder<(S0, S1, S2)> {
     /// Builds a [`ContextMethod`].
-    pub fn build(self) -> ContextMethod {
+    pub fn build(self) -> ContextMethod
+    where
+        S0: crate::typed::builder::IsSet<context_method_members::name>,
+        S1: crate::typed::builder::IsSet<context_method_members::return_type>,
+        S2: crate::typed::builder::IsSet<context_method_members::params>,
+    {
         ContextMethod {
             name: self.name.unwrap(),
             return_type: self.return_type.unwrap(),
@@ -324,54 +328,28 @@ impl
     }
 }
 
-impl
-    From<
-        ContextMethodBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ContextMethod
+impl<S0, S1, S2> crate::typed::builder::Build for ContextMethodBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<context_method_members::name>,
+    S1: crate::typed::builder::IsSet<context_method_members::return_type>,
+    S2: crate::typed::builder::IsSet<context_method_members::params>,
 {
-    fn from(
-        builder: ContextMethodBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ContextMethod;
+
+    fn build(self) -> ContextMethod {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ContextMethodBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ContextMethod { match name {} }
-}
-
-impl<S2>
-    ContextMethodBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ContextMethodBuilder<(S0, S1, S2)>> for ContextMethod
+where
+    S0: crate::typed::builder::IsSet<context_method_members::name>,
+    S1: crate::typed::builder::IsSet<context_method_members::return_type>,
+    S2: crate::typed::builder::IsSet<context_method_members::params>,
 {
-    /// `return_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, return_type: crate::typed::builder::MissingRequiredField) -> ContextMethod { match return_type {} }
-}
-
-impl
-    ContextMethodBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `params` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, params: crate::typed::builder::MissingRequiredField) -> ContextMethod { match params {} }
+    fn from(builder: ContextMethodBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -382,21 +360,28 @@ pub struct ContextMethodParam {
 
 impl ContextMethodParam {
     /// Creates a builder for [`ContextMethodParam`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> ContextMethodParamBuilder {
         ContextMethodParamBuilder::new()
     }
 
     /// Creates a [`ContextMethodParam`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ContextMethodParamBuilder,
-        ) -> ContextMethodParamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ContextMethodParam>>(
+        f: impl FnOnce(ContextMethodParamBuilder) -> B,
     ) -> ContextMethodParam {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ContextMethodParamBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod context_method_param_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`ContextMethodParam`].
@@ -430,6 +415,7 @@ impl<S0, S1> ContextMethodParamBuilder<(S0, S1)> {
 }
 
 impl<S1> ContextMethodParamBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -441,6 +427,7 @@ impl<S1> ContextMethodParamBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ContextMethodParamBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -451,9 +438,13 @@ impl<S0> ContextMethodParamBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ContextMethodParamBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ContextMethodParamBuilder<(S0, S1)> {
     /// Builds a [`ContextMethodParam`].
-    pub fn build(self) -> ContextMethodParam {
+    pub fn build(self) -> ContextMethodParam
+    where
+        S0: crate::typed::builder::IsSet<context_method_param_members::name>,
+        S1: crate::typed::builder::IsSet<context_method_param_members::r#type>,
+    {
         ContextMethodParam {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -461,29 +452,26 @@ impl ContextMethodParamBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<ContextMethodParamBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ContextMethodParam
+impl<S0, S1> crate::typed::builder::Build for ContextMethodParamBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<context_method_param_members::name>,
+    S1: crate::typed::builder::IsSet<context_method_param_members::r#type>,
 {
-    fn from(
-        builder: ContextMethodParamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ContextMethodParam;
+
+    fn build(self) -> ContextMethodParam {
+        Self::build(self)
     }
 }
 
-impl<S1> ContextMethodParamBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ContextMethodParam { match name {} }
-}
-
-impl ContextMethodParamBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ContextMethodParam { match r#type {} }
+impl<S0, S1> From<ContextMethodParamBuilder<(S0, S1)>> for ContextMethodParam
+where
+    S0: crate::typed::builder::IsSet<context_method_param_members::name>,
+    S1: crate::typed::builder::IsSet<context_method_param_members::r#type>,
+{
+    fn from(builder: ContextMethodParamBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`get_script_context`](crate::typed::Client::get_script_context).
@@ -519,7 +507,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -614,6 +604,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

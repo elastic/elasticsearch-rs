@@ -52,7 +52,9 @@ impl Operation {
     }
 
     /// Creates a [`Operation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(OperationBuilder) -> OperationBuilder) -> Operation {
+    pub fn of<B: crate::typed::builder::Build<Output = Operation>>(
+        f: impl FnOnce(OperationBuilder) -> B,
+    ) -> Operation {
         f(Self::builder()).build()
     }
 }
@@ -173,11 +175,11 @@ impl OperationBuilder {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::termvectors::Filter>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::termvectors::FilterBuilder,
-        ) -> crate::typed::_global::termvectors::FilterBuilder,
+        f: impl FnOnce(crate::typed::_global::termvectors::FilterBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_global::termvectors::FilterBuilder::new()).build())
     }
@@ -288,6 +290,14 @@ impl OperationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for OperationBuilder {
+    type Output = Operation;
+
+    fn build(self) -> Operation {
+        Self::build(self)
+    }
+}
+
 impl From<OperationBuilder> for Operation {
     fn from(builder: OperationBuilder) -> Self {
         builder.build()
@@ -373,7 +383,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -692,7 +704,10 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`docs`](Self::docs), with a builder.
-    pub fn add_docs_with(self, f: impl FnOnce(OperationBuilder) -> OperationBuilder) -> Self {
+    pub fn add_docs_with<B: crate::typed::builder::Build<Output = Operation>>(
+        self,
+        f: impl FnOnce(OperationBuilder) -> B,
+    ) -> Self {
         self.add_docs(f(OperationBuilder::new()).build())
     }
 
@@ -742,6 +757,14 @@ impl<C> RequestBuilder<(), C> {
             docs: self.docs,
             ids2: self.ids2,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -931,18 +954,27 @@ pub struct TermVectorsResult {
 
 impl TermVectorsResult {
     /// Creates a builder for [`TermVectorsResult`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> TermVectorsResultBuilder {
         TermVectorsResultBuilder::new()
     }
 
     /// Creates a [`TermVectorsResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermVectorsResultBuilder,
-        ) -> TermVectorsResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermVectorsResult>>(
+        f: impl FnOnce(TermVectorsResultBuilder) -> B,
     ) -> TermVectorsResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermVectorsResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod term_vectors_result_members {
+    pub struct index;
 }
 
 /// Builder for [`TermVectorsResult`].
@@ -1076,14 +1108,12 @@ impl<S0> TermVectorsResultBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`term_vectors`](Self::term_vectors), with a builder.
-    pub fn add_term_vectors_with(
+    pub fn add_term_vectors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::termvectors::TermVector>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_global::termvectors::TermVectorBuilder,
-        ) -> crate::typed::_global::termvectors::TermVectorBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::termvectors::TermVectorBuilder) -> B,
     ) -> Self {
         self.add_term_vectors(
             key,
@@ -1103,18 +1133,18 @@ impl<S0> TermVectorsResultBuilder<(S0,)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl TermVectorsResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1125,9 +1155,12 @@ impl TermVectorsResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermVectorsResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermVectorsResultBuilder<(S0,)> {
     /// Builds a [`TermVectorsResult`].
-    pub fn build(self) -> TermVectorsResult {
+    pub fn build(self) -> TermVectorsResult
+    where
+        S0: crate::typed::builder::IsSet<term_vectors_result_members::index>,
+    {
         TermVectorsResult {
             id: self.id,
             index: self.index.unwrap(),
@@ -1140,14 +1173,22 @@ impl TermVectorsResultBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermVectorsResultBuilder<(crate::typed::builder::Set,)>> for TermVectorsResult {
-    fn from(builder: TermVectorsResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermVectorsResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<term_vectors_result_members::index>,
+{
+    type Output = TermVectorsResult;
+
+    fn build(self) -> TermVectorsResult {
+        Self::build(self)
     }
 }
 
-impl TermVectorsResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> TermVectorsResult { match index {} }
+impl<S0> From<TermVectorsResultBuilder<(S0,)>> for TermVectorsResult
+where
+    S0: crate::typed::builder::IsSet<term_vectors_result_members::index>,
+{
+    fn from(builder: TermVectorsResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

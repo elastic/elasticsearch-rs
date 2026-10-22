@@ -9,19 +9,28 @@ pub struct Feature {
 
 impl Feature {
     /// Creates a builder for [`Feature`].
+    ///
+    /// Required: `name`, `description`.
     pub fn builder() -> FeatureBuilder {
         FeatureBuilder::new()
     }
 
     /// Creates a [`Feature`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `description`.
+    pub fn of<B: crate::typed::builder::Build<Output = Feature>>(
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> Feature {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FeatureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod feature_members {
+    pub struct name;
+    pub struct description;
 }
 
 /// Builder for [`Feature`].
@@ -53,6 +62,7 @@ impl<S0, S1> FeatureBuilder<(S0, S1)> {
 }
 
 impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -64,6 +74,7 @@ impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FeatureBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -74,9 +85,13 @@ impl<S0> FeatureBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FeatureBuilder<(S0, S1)> {
     /// Builds a [`Feature`].
-    pub fn build(self) -> Feature {
+    pub fn build(self) -> Feature
+    where
+        S0: crate::typed::builder::IsSet<feature_members::name>,
+        S1: crate::typed::builder::IsSet<feature_members::description>,
+    {
         Feature {
             name: self.name.unwrap(),
             description: self.description.unwrap(),
@@ -84,22 +99,24 @@ impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Feature {
-    fn from(
-        builder: FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for FeatureBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<feature_members::name>,
+    S1: crate::typed::builder::IsSet<feature_members::description>,
+{
+    type Output = Feature;
+
+    fn build(self) -> Feature {
+        Self::build(self)
     }
 }
 
-impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Feature { match name {} }
-}
-
-impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> Feature { match description {} }
+impl<S0, S1> From<FeatureBuilder<(S0, S1)>> for Feature
+where
+    S0: crate::typed::builder::IsSet<feature_members::name>,
+    S1: crate::typed::builder::IsSet<feature_members::description>,
+{
+    fn from(builder: FeatureBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

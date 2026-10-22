@@ -36,26 +36,30 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `system_id`, `system_api_version`, `interval`, `operations`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `system_id`, `system_api_version`, `interval`, `operations`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct system_id;
+    pub struct system_api_version;
+    pub struct interval;
+    pub struct operations;
 }
 
 /// Builder for [`Request`].
@@ -181,7 +185,7 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
 }
 
 impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// Identifier of the monitored system
+    /// **Required.** Identifier of the monitored system
     pub fn system_id(
         self,
         value: impl Into<String>,
@@ -193,6 +197,7 @@ impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), 
 }
 
 impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), C> {
+    /// **Required.**
     pub fn system_api_version(
         self,
         value: impl Into<String>,
@@ -204,7 +209,7 @@ impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), 
 }
 
 impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), C> {
-    /// Collection interval (e.g., '10s' or '10000ms') of the payload
+    /// **Required.** Collection interval (e.g., '10s' or '10000ms') of the payload
     pub fn interval(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -216,7 +221,7 @@ impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), 
 }
 
 impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn operations(
         self,
         value: impl Into<Vec<RequestOperations>>,
@@ -250,19 +255,15 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::Set), C> 
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::system_id>,
+        S1: crate::typed::builder::IsSet<request_members::system_api_version>,
+        S2: crate::typed::builder::IsSet<request_members::interval>,
+        S3: crate::typed::builder::IsSet<request_members::operations>,
+    {
         Request {
             system_id: self.system_id.unwrap(),
             system_api_version: self.system_api_version.unwrap(),
@@ -276,128 +277,32 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::system_id>,
+    S1: crate::typed::builder::IsSet<request_members::system_api_version>,
+    S2: crate::typed::builder::IsSet<request_members::interval>,
+    S3: crate::typed::builder::IsSet<request_members::operations>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// `system_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, system_id: crate::typed::builder::MissingRequiredField) -> Request { match system_id {} }
-}
-impl<S1, S2, S3>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), &crate::Elasticsearch>
-{
-    /// `system_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, system_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match system_id {} }
-}
-
-impl<S2, S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `system_api_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, system_api_version: crate::typed::builder::MissingRequiredField) -> Request { match system_api_version {} }
-}
-impl<S2, S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `system_api_version` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, system_api_version: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match system_api_version {} }
-}
-
-impl<S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> Request { match interval {} }
-}
-impl<S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `interval` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, interval: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match interval {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `operations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, operations: crate::typed::builder::MissingRequiredField) -> Request { match operations {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `operations` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, operations: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match operations {} }
+impl<S0, S1, S2, S3> RequestBuilder<(S0, S1, S2, S3), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::system_id>,
+        S1: crate::typed::builder::IsSet<request_members::system_api_version>,
+        S2: crate::typed::builder::IsSet<request_members::interval>,
+        S3: crate::typed::builder::IsSet<request_members::operations>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -72,16 +72,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -300,13 +311,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`role_templates`](Self::role_templates), with a builder.
-    pub fn add_role_templates_with(
+    pub fn add_role_templates_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::RoleTemplate>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RoleTemplateBuilder,
-        ) -> crate::typed::security::_types::RoleTemplateBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RoleTemplateBuilder) -> B,
     ) -> Self {
         self.add_role_templates(
             f(crate::typed::security::_types::RoleTemplateBuilder::new()).build(),
@@ -333,13 +342,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`rules`](Self::rules) with a builder.
-    pub fn rules_with(
+    pub fn rules_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::RoleMappingRule>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RoleMappingRuleBuilder,
-        ) -> crate::typed::security::_types::RoleMappingRuleBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RoleMappingRuleBuilder) -> B,
     ) -> Self {
         self.rules(f(crate::typed::security::_types::RoleMappingRuleBuilder::new()).build())
     }
@@ -365,7 +372,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The distinct name that identifies the role mapping.
+    /// **Required.** The distinct name that identifies the role mapping.
     /// The name is used solely as an identifier to facilitate interaction via the API; it does not affect the behavior of the mapping in any way.
     pub fn name(
         self,
@@ -377,9 +384,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             refresh: self.refresh,
@@ -397,23 +407,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

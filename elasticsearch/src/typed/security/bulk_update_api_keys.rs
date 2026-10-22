@@ -62,16 +62,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `ids`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `ids`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct ids;
 }
 
 /// Builder for [`Request`].
@@ -255,12 +266,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`role_descriptors`](Self::role_descriptors), with a builder.
-    pub fn add_role_descriptors_with(
+    pub fn add_role_descriptors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::RoleDescriptor>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::security::_types::RoleDescriptorBuilder,
-        ) -> crate::typed::security::_types::RoleDescriptorBuilder,
+        f: impl FnOnce(crate::typed::security::_types::RoleDescriptorBuilder) -> B,
     ) -> Self {
         self.add_role_descriptors(
             key,
@@ -270,7 +281,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The API key identifiers.
+    /// **Required.** The API key identifiers.
     pub fn ids(
         self,
         value: impl Into<RequestIds>,
@@ -281,9 +292,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::ids>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -297,23 +311,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::ids>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ids: crate::typed::builder::MissingRequiredField) -> Request { match ids {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `ids` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, ids: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match ids {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::ids>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

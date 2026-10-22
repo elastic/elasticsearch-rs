@@ -64,16 +64,27 @@ impl From<Vec<serde_json::Value>> for AppendProcessorValue {
 
 impl AppendProcessor {
     /// Creates a builder for [`AppendProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> AppendProcessorBuilder {
         AppendProcessorBuilder::new()
     }
 
     /// Creates a [`AppendProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AppendProcessorBuilder) -> AppendProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = AppendProcessor>>(
+        f: impl FnOnce(AppendProcessorBuilder) -> B,
     ) -> AppendProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AppendProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod append_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`AppendProcessor`].
@@ -156,9 +167,9 @@ impl<S0> AppendProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -196,11 +207,9 @@ impl<S0> AppendProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -283,7 +292,7 @@ impl<S0> AppendProcessorBuilder<(S0,)> {
 }
 
 impl AppendProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to be appended to.
+    /// **Required.** The field to be appended to.
     /// Supports template snippets.
     pub fn field(
         self,
@@ -295,9 +304,12 @@ impl AppendProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AppendProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AppendProcessorBuilder<(S0,)> {
     /// Builds a [`AppendProcessor`].
-    pub fn build(self) -> AppendProcessor {
+    pub fn build(self) -> AppendProcessor
+    where
+        S0: crate::typed::builder::IsSet<append_processor_members::field>,
+    {
         AppendProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -314,16 +326,24 @@ impl AppendProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AppendProcessorBuilder<(crate::typed::builder::Set,)>> for AppendProcessor {
-    fn from(builder: AppendProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AppendProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<append_processor_members::field>,
+{
+    type Output = AppendProcessor;
+
+    fn build(self) -> AppendProcessor {
+        Self::build(self)
     }
 }
 
-impl AppendProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> AppendProcessor { match field {} }
+impl<S0> From<AppendProcessorBuilder<(S0,)>> for AppendProcessor
+where
+    S0: crate::typed::builder::IsSet<append_processor_members::field>,
+{
+    fn from(builder: AppendProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -381,18 +401,27 @@ pub struct AttachmentProcessor {
 
 impl AttachmentProcessor {
     /// Creates a builder for [`AttachmentProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> AttachmentProcessorBuilder {
         AttachmentProcessorBuilder::new()
     }
 
     /// Creates a [`AttachmentProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AttachmentProcessorBuilder,
-        ) -> AttachmentProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = AttachmentProcessor>>(
+        f: impl FnOnce(AttachmentProcessorBuilder) -> B,
     ) -> AttachmentProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AttachmentProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod attachment_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`AttachmentProcessor`].
@@ -484,9 +513,9 @@ impl<S0> AttachmentProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -524,11 +553,9 @@ impl<S0> AttachmentProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -658,7 +685,7 @@ impl<S0> AttachmentProcessorBuilder<(S0,)> {
 }
 
 impl AttachmentProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to get the base64 encoded field from.
+    /// **Required.** The field to get the base64 encoded field from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -669,9 +696,12 @@ impl AttachmentProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AttachmentProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AttachmentProcessorBuilder<(S0,)> {
     /// Builds a [`AttachmentProcessor`].
-    pub fn build(self) -> AttachmentProcessor {
+    pub fn build(self) -> AttachmentProcessor
+    where
+        S0: crate::typed::builder::IsSet<attachment_processor_members::field>,
+    {
         AttachmentProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -691,16 +721,24 @@ impl AttachmentProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AttachmentProcessorBuilder<(crate::typed::builder::Set,)>> for AttachmentProcessor {
-    fn from(builder: AttachmentProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AttachmentProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<attachment_processor_members::field>,
+{
+    type Output = AttachmentProcessor;
+
+    fn build(self) -> AttachmentProcessor {
+        Self::build(self)
     }
 }
 
-impl AttachmentProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> AttachmentProcessor { match field {} }
+impl<S0> From<AttachmentProcessorBuilder<(S0,)>> for AttachmentProcessor
+where
+    S0: crate::typed::builder::IsSet<attachment_processor_members::field>,
+{
+    fn from(builder: AttachmentProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -735,16 +773,27 @@ pub struct BytesProcessor {
 
 impl BytesProcessor {
     /// Creates a builder for [`BytesProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> BytesProcessorBuilder {
         BytesProcessorBuilder::new()
     }
 
     /// Creates a [`BytesProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BytesProcessorBuilder) -> BytesProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = BytesProcessor>>(
+        f: impl FnOnce(BytesProcessorBuilder) -> B,
     ) -> BytesProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BytesProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bytes_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`BytesProcessor`].
@@ -818,9 +867,9 @@ impl<S0> BytesProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -858,11 +907,9 @@ impl<S0> BytesProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -907,7 +954,7 @@ impl<S0> BytesProcessorBuilder<(S0,)> {
 }
 
 impl BytesProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to convert.
+    /// **Required.** The field to convert.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -918,9 +965,12 @@ impl BytesProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BytesProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BytesProcessorBuilder<(S0,)> {
     /// Builds a [`BytesProcessor`].
-    pub fn build(self) -> BytesProcessor {
+    pub fn build(self) -> BytesProcessor
+    where
+        S0: crate::typed::builder::IsSet<bytes_processor_members::field>,
+    {
         BytesProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -934,16 +984,24 @@ impl BytesProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BytesProcessorBuilder<(crate::typed::builder::Set,)>> for BytesProcessor {
-    fn from(builder: BytesProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BytesProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bytes_processor_members::field>,
+{
+    type Output = BytesProcessor;
+
+    fn build(self) -> BytesProcessor {
+        Self::build(self)
     }
 }
 
-impl BytesProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> BytesProcessor { match field {} }
+impl<S0> From<BytesProcessorBuilder<(S0,)>> for BytesProcessor
+where
+    S0: crate::typed::builder::IsSet<bytes_processor_members::field>,
+{
+    fn from(builder: BytesProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -984,16 +1042,27 @@ pub struct CefProcessor {
 
 impl CefProcessor {
     /// Creates a builder for [`CefProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> CefProcessorBuilder {
         CefProcessorBuilder::new()
     }
 
     /// Creates a [`CefProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CefProcessorBuilder) -> CefProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = CefProcessor>>(
+        f: impl FnOnce(CefProcessorBuilder) -> B,
     ) -> CefProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CefProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cef_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`CefProcessor`].
@@ -1073,9 +1142,9 @@ impl<S0> CefProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -1113,11 +1182,9 @@ impl<S0> CefProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -1186,7 +1253,7 @@ impl<S0> CefProcessorBuilder<(S0,)> {
 }
 
 impl CefProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field containing the CEF message.
+    /// **Required.** The field containing the CEF message.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -1197,9 +1264,12 @@ impl CefProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CefProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CefProcessorBuilder<(S0,)> {
     /// Builds a [`CefProcessor`].
-    pub fn build(self) -> CefProcessor {
+    pub fn build(self) -> CefProcessor
+    where
+        S0: crate::typed::builder::IsSet<cef_processor_members::field>,
+    {
         CefProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -1215,16 +1285,24 @@ impl CefProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CefProcessorBuilder<(crate::typed::builder::Set,)>> for CefProcessor {
-    fn from(builder: CefProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CefProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cef_processor_members::field>,
+{
+    type Output = CefProcessor;
+
+    fn build(self) -> CefProcessor {
+        Self::build(self)
     }
 }
 
-impl CefProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> CefProcessor { match field {} }
+impl<S0> From<CefProcessorBuilder<(S0,)>> for CefProcessor
+where
+    S0: crate::typed::builder::IsSet<cef_processor_members::field>,
+{
+    fn from(builder: CefProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1263,22 +1341,29 @@ pub struct CircleProcessor {
 
 impl CircleProcessor {
     /// Creates a builder for [`CircleProcessor`].
+    ///
+    /// Required: `error_distance`, `field`, `shape_type`.
     pub fn builder() -> CircleProcessorBuilder {
         CircleProcessorBuilder::new()
     }
 
     /// Creates a [`CircleProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CircleProcessorBuilder,
-        ) -> CircleProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `error_distance`, `field`, `shape_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CircleProcessor>>(
+        f: impl FnOnce(CircleProcessorBuilder) -> B,
     ) -> CircleProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CircleProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod circle_processor_members {
+    pub struct error_distance;
+    pub struct field;
+    pub struct shape_type;
 }
 
 /// Builder for [`CircleProcessor`].
@@ -1370,9 +1455,9 @@ impl<S0, S1, S2> CircleProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -1410,11 +1495,9 @@ impl<S0, S1, S2> CircleProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -1459,7 +1542,7 @@ impl<S0, S1, S2> CircleProcessorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CircleProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The difference between the resulting inscribed distance from center to side and the circle’s radius (measured in meters for `geo_shape`, unit-less for `shape`).
+    /// **Required.** The difference between the resulting inscribed distance from center to side and the circle’s radius (measured in meters for `geo_shape`, unit-less for `shape`).
     pub fn error_distance(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1471,7 +1554,7 @@ impl<S1, S2> CircleProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> CircleProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The field to interpret as a circle. Either a string in WKT format or a map for GeoJSON.
+    /// **Required.** The field to interpret as a circle. Either a string in WKT format or a map for GeoJSON.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -1483,7 +1566,7 @@ impl<S0, S2> CircleProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> CircleProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Which field mapping type is to be used when processing the circle: `geo_shape` or `shape`.
+    /// **Required.** Which field mapping type is to be used when processing the circle: `geo_shape` or `shape`.
     pub fn shape_type(
         self,
         value: impl Into<ShapeType>,
@@ -1494,15 +1577,14 @@ impl<S0, S1> CircleProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    CircleProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CircleProcessorBuilder<(S0, S1, S2)> {
     /// Builds a [`CircleProcessor`].
-    pub fn build(self) -> CircleProcessor {
+    pub fn build(self) -> CircleProcessor
+    where
+        S0: crate::typed::builder::IsSet<circle_processor_members::error_distance>,
+        S1: crate::typed::builder::IsSet<circle_processor_members::field>,
+        S2: crate::typed::builder::IsSet<circle_processor_members::shape_type>,
+    {
         CircleProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -1518,54 +1600,28 @@ impl
     }
 }
 
-impl
-    From<
-        CircleProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CircleProcessor
+impl<S0, S1, S2> crate::typed::builder::Build for CircleProcessorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<circle_processor_members::error_distance>,
+    S1: crate::typed::builder::IsSet<circle_processor_members::field>,
+    S2: crate::typed::builder::IsSet<circle_processor_members::shape_type>,
 {
-    fn from(
-        builder: CircleProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CircleProcessor;
+
+    fn build(self) -> CircleProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CircleProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `error_distance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, error_distance: crate::typed::builder::MissingRequiredField) -> CircleProcessor { match error_distance {} }
-}
-
-impl<S2>
-    CircleProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CircleProcessorBuilder<(S0, S1, S2)>> for CircleProcessor
+where
+    S0: crate::typed::builder::IsSet<circle_processor_members::error_distance>,
+    S1: crate::typed::builder::IsSet<circle_processor_members::field>,
+    S2: crate::typed::builder::IsSet<circle_processor_members::shape_type>,
 {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> CircleProcessor { match field {} }
-}
-
-impl
-    CircleProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shape_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shape_type: crate::typed::builder::MissingRequiredField) -> CircleProcessor { match shape_type {} }
+    fn from(builder: CircleProcessorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1634,8 +1690,8 @@ impl CommunityIDProcessor {
     }
 
     /// Creates a [`CommunityIDProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CommunityIDProcessorBuilder) -> CommunityIDProcessorBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CommunityIDProcessor>>(
+        f: impl FnOnce(CommunityIDProcessorBuilder) -> B,
     ) -> CommunityIDProcessor {
         f(Self::builder()).build()
     }
@@ -1712,9 +1768,9 @@ impl CommunityIDProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -1752,11 +1808,9 @@ impl CommunityIDProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -1936,6 +1990,14 @@ impl CommunityIDProcessorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CommunityIDProcessorBuilder {
+    type Output = CommunityIDProcessor;
+
+    fn build(self) -> CommunityIDProcessor {
+        Self::build(self)
+    }
+}
+
 impl From<CommunityIDProcessorBuilder> for CommunityIDProcessor {
     fn from(builder: CommunityIDProcessorBuilder) -> Self {
         builder.build()
@@ -1976,21 +2038,28 @@ pub struct ConvertProcessor {
 
 impl ConvertProcessor {
     /// Creates a builder for [`ConvertProcessor`].
+    ///
+    /// Required: `field`, `type`.
     pub fn builder() -> ConvertProcessorBuilder {
         ConvertProcessorBuilder::new()
     }
 
     /// Creates a [`ConvertProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConvertProcessorBuilder,
-        ) -> ConvertProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConvertProcessor>>(
+        f: impl FnOnce(ConvertProcessorBuilder) -> B,
     ) -> ConvertProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConvertProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod convert_processor_members {
+    pub struct field;
+    pub struct r#type;
 }
 
 /// Builder for [`ConvertProcessor`].
@@ -2069,9 +2138,9 @@ impl<S0, S1> ConvertProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -2109,11 +2178,9 @@ impl<S0, S1> ConvertProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -2158,7 +2225,7 @@ impl<S0, S1> ConvertProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> ConvertProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field whose value is to be converted.
+    /// **Required.** The field whose value is to be converted.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -2170,7 +2237,7 @@ impl<S1> ConvertProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ConvertProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The type to convert the existing value to.
+    /// **Required.** The type to convert the existing value to.
     pub fn r#type(
         self,
         value: impl Into<ConvertType>,
@@ -2181,9 +2248,13 @@ impl<S0> ConvertProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ConvertProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ConvertProcessorBuilder<(S0, S1)> {
     /// Builds a [`ConvertProcessor`].
-    pub fn build(self) -> ConvertProcessor {
+    pub fn build(self) -> ConvertProcessor
+    where
+        S0: crate::typed::builder::IsSet<convert_processor_members::field>,
+        S1: crate::typed::builder::IsSet<convert_processor_members::r#type>,
+    {
         ConvertProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -2198,26 +2269,26 @@ impl ConvertProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ConvertProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ConvertProcessor
+impl<S0, S1> crate::typed::builder::Build for ConvertProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<convert_processor_members::field>,
+    S1: crate::typed::builder::IsSet<convert_processor_members::r#type>,
 {
-    fn from(
-        builder: ConvertProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ConvertProcessor;
+
+    fn build(self) -> ConvertProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> ConvertProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> ConvertProcessor { match field {} }
-}
-
-impl ConvertProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ConvertProcessor { match r#type {} }
+impl<S0, S1> From<ConvertProcessorBuilder<(S0, S1)>> for ConvertProcessor
+where
+    S0: crate::typed::builder::IsSet<convert_processor_members::field>,
+    S1: crate::typed::builder::IsSet<convert_processor_members::r#type>,
+{
+    fn from(builder: ConvertProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2284,19 +2355,28 @@ pub struct CsvProcessor {
 
 impl CsvProcessor {
     /// Creates a builder for [`CsvProcessor`].
+    ///
+    /// Required: `field`, `target_fields`.
     pub fn builder() -> CsvProcessorBuilder {
         CsvProcessorBuilder::new()
     }
 
     /// Creates a [`CsvProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CsvProcessorBuilder,
-        )
-            -> CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `target_fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = CsvProcessor>>(
+        f: impl FnOnce(CsvProcessorBuilder) -> B,
     ) -> CsvProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CsvProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod csv_processor_members {
+    pub struct field;
+    pub struct target_fields;
 }
 
 /// Builder for [`CsvProcessor`].
@@ -2382,9 +2462,9 @@ impl<S0, S1> CsvProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -2422,11 +2502,9 @@ impl<S0, S1> CsvProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -2508,7 +2586,7 @@ impl<S0, S1> CsvProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> CsvProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to extract data from.
+    /// **Required.** The field to extract data from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -2520,7 +2598,7 @@ impl<S1> CsvProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CsvProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The array of fields to assign extracted values to.
+    /// **Required.** The array of fields to assign extracted values to.
     pub fn target_fields(
         self,
         value: impl Into<crate::typed::_types::Fields>,
@@ -2531,9 +2609,13 @@ impl<S0> CsvProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CsvProcessorBuilder<(S0, S1)> {
     /// Builds a [`CsvProcessor`].
-    pub fn build(self) -> CsvProcessor {
+    pub fn build(self) -> CsvProcessor
+    where
+        S0: crate::typed::builder::IsSet<csv_processor_members::field>,
+        S1: crate::typed::builder::IsSet<csv_processor_members::target_fields>,
+    {
         CsvProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -2551,26 +2633,26 @@ impl CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CsvProcessor
+impl<S0, S1> crate::typed::builder::Build for CsvProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<csv_processor_members::field>,
+    S1: crate::typed::builder::IsSet<csv_processor_members::target_fields>,
 {
-    fn from(
-        builder: CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CsvProcessor;
+
+    fn build(self) -> CsvProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> CsvProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> CsvProcessor { match field {} }
-}
-
-impl CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `target_fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_fields: crate::typed::builder::MissingRequiredField) -> CsvProcessor { match target_fields {} }
+impl<S0, S1> From<CsvProcessorBuilder<(S0, S1)>> for CsvProcessor
+where
+    S0: crate::typed::builder::IsSet<csv_processor_members::field>,
+    S1: crate::typed::builder::IsSet<csv_processor_members::target_fields>,
+{
+    fn from(builder: CsvProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The configuration necessary to identify which IP geolocation provider to use to download a database, as well as any provider-specific configuration necessary for such downloading.
@@ -2607,21 +2689,27 @@ impl From<Ipinfo> for DatabaseConfigurationKind {
 
 impl DatabaseConfiguration {
     /// Creates a builder for [`DatabaseConfiguration`].
+    ///
+    /// Required: a variant, `name`.
     pub fn builder() -> DatabaseConfigurationBuilder {
         DatabaseConfigurationBuilder::new()
     }
 
     /// Creates a [`DatabaseConfiguration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatabaseConfigurationBuilder,
-        ) -> DatabaseConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: a variant, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatabaseConfiguration>>(
+        f: impl FnOnce(DatabaseConfigurationBuilder) -> B,
     ) -> DatabaseConfiguration {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatabaseConfigurationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod database_configuration_members {
+    pub struct name;
 }
 
 /// Builder for [`DatabaseConfiguration`].
@@ -2655,7 +2743,7 @@ impl<S0, S1> DatabaseConfigurationBuilder<(S0, S1)> {
 }
 
 impl<S0> DatabaseConfigurationBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The provider-assigned name of the IP geolocation database to download.
+    /// **Required.** The provider-assigned name of the IP geolocation database to download.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2677,9 +2765,9 @@ impl<S1> DatabaseConfigurationBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`maxmind`](Self::maxmind) with a builder.
-    pub fn maxmind_with(
+    pub fn maxmind_with<B: crate::typed::builder::Build<Output = Maxmind>>(
         self,
-        f: impl FnOnce(MaxmindBuilder) -> MaxmindBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MaxmindBuilder) -> B,
     ) -> DatabaseConfigurationBuilder<(crate::typed::builder::Set, S1)> {
         self.maxmind(f(MaxmindBuilder::new()).build())
     }
@@ -2694,17 +2782,21 @@ impl<S1> DatabaseConfigurationBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`ipinfo`](Self::ipinfo) with a builder.
-    pub fn ipinfo_with(
+    pub fn ipinfo_with<B: crate::typed::builder::Build<Output = Ipinfo>>(
         self,
-        f: impl FnOnce(IpinfoBuilder) -> IpinfoBuilder,
+        f: impl FnOnce(IpinfoBuilder) -> B,
     ) -> DatabaseConfigurationBuilder<(crate::typed::builder::Set, S1)> {
         self.ipinfo(f(IpinfoBuilder::new()).build())
     }
 }
 
-impl DatabaseConfigurationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DatabaseConfigurationBuilder<(S0, S1)> {
     /// Builds a [`DatabaseConfiguration`].
-    pub fn build(self) -> DatabaseConfiguration {
+    pub fn build(self) -> DatabaseConfiguration
+    where
+        S0: crate::typed::builder::IsVariantSet<DatabaseConfiguration>,
+        S1: crate::typed::builder::IsSet<database_configuration_members::name>,
+    {
         DatabaseConfiguration {
             name: self.name.unwrap(),
             kind: self.variant.unwrap(),
@@ -2712,29 +2804,26 @@ impl DatabaseConfigurationBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<DatabaseConfigurationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DatabaseConfiguration
+impl<S0, S1> crate::typed::builder::Build for DatabaseConfigurationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsVariantSet<DatabaseConfiguration>,
+    S1: crate::typed::builder::IsSet<database_configuration_members::name>,
 {
-    fn from(
-        builder: DatabaseConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DatabaseConfiguration;
+
+    fn build(self) -> DatabaseConfiguration {
+        Self::build(self)
     }
 }
 
-impl<S1> DatabaseConfigurationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DatabaseConfiguration { match variant {} }
-}
-
-impl DatabaseConfigurationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DatabaseConfiguration { match name {} }
+impl<S0, S1> From<DatabaseConfigurationBuilder<(S0, S1)>> for DatabaseConfiguration
+where
+    S0: crate::typed::builder::IsVariantSet<DatabaseConfiguration>,
+    S1: crate::typed::builder::IsSet<database_configuration_members::name>,
+{
+    fn from(builder: DatabaseConfigurationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2784,21 +2873,27 @@ impl From<Ipinfo> for DatabaseConfigurationFullKind {
 
 impl DatabaseConfigurationFull {
     /// Creates a builder for [`DatabaseConfigurationFull`].
+    ///
+    /// Required: a variant, `name`.
     pub fn builder() -> DatabaseConfigurationFullBuilder {
         DatabaseConfigurationFullBuilder::new()
     }
 
     /// Creates a [`DatabaseConfigurationFull`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DatabaseConfigurationFullBuilder,
-        ) -> DatabaseConfigurationFullBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: a variant, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DatabaseConfigurationFull>>(
+        f: impl FnOnce(DatabaseConfigurationFullBuilder) -> B,
     ) -> DatabaseConfigurationFull {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatabaseConfigurationFullBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod database_configuration_full_members {
+    pub struct name;
 }
 
 /// Builder for [`DatabaseConfigurationFull`].
@@ -2834,7 +2929,7 @@ impl<S0, S1> DatabaseConfigurationFullBuilder<(S0, S1)> {
 }
 
 impl<S0> DatabaseConfigurationFullBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The provider-assigned name of the IP geolocation database to download.
+    /// **Required.** The provider-assigned name of the IP geolocation database to download.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2856,9 +2951,9 @@ impl<S1> DatabaseConfigurationFullBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`web`](Self::web) with a builder.
-    pub fn web_with(
+    pub fn web_with<B: crate::typed::builder::Build<Output = Web>>(
         self,
-        f: impl FnOnce(WebBuilder) -> WebBuilder,
+        f: impl FnOnce(WebBuilder) -> B,
     ) -> DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, S1)> {
         self.web(f(WebBuilder::new()).build())
     }
@@ -2873,9 +2968,9 @@ impl<S1> DatabaseConfigurationFullBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`local`](Self::local) with a builder.
-    pub fn local_with(
+    pub fn local_with<B: crate::typed::builder::Build<Output = Local>>(
         self,
-        f: impl FnOnce(LocalBuilder) -> LocalBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(LocalBuilder) -> B,
     ) -> DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, S1)> {
         self.local(f(LocalBuilder::new()).build())
     }
@@ -2890,9 +2985,9 @@ impl<S1> DatabaseConfigurationFullBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`maxmind`](Self::maxmind) with a builder.
-    pub fn maxmind_with(
+    pub fn maxmind_with<B: crate::typed::builder::Build<Output = Maxmind>>(
         self,
-        f: impl FnOnce(MaxmindBuilder) -> MaxmindBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MaxmindBuilder) -> B,
     ) -> DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, S1)> {
         self.maxmind(f(MaxmindBuilder::new()).build())
     }
@@ -2907,17 +3002,21 @@ impl<S1> DatabaseConfigurationFullBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`ipinfo`](Self::ipinfo) with a builder.
-    pub fn ipinfo_with(
+    pub fn ipinfo_with<B: crate::typed::builder::Build<Output = Ipinfo>>(
         self,
-        f: impl FnOnce(IpinfoBuilder) -> IpinfoBuilder,
+        f: impl FnOnce(IpinfoBuilder) -> B,
     ) -> DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, S1)> {
         self.ipinfo(f(IpinfoBuilder::new()).build())
     }
 }
 
-impl DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DatabaseConfigurationFullBuilder<(S0, S1)> {
     /// Builds a [`DatabaseConfigurationFull`].
-    pub fn build(self) -> DatabaseConfigurationFull {
+    pub fn build(self) -> DatabaseConfigurationFull
+    where
+        S0: crate::typed::builder::IsVariantSet<DatabaseConfigurationFull>,
+        S1: crate::typed::builder::IsSet<database_configuration_full_members::name>,
+    {
         DatabaseConfigurationFull {
             name: self.name.unwrap(),
             kind: self.variant.unwrap(),
@@ -2925,30 +3024,26 @@ impl DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DatabaseConfigurationFull
+impl<S0, S1> crate::typed::builder::Build for DatabaseConfigurationFullBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsVariantSet<DatabaseConfigurationFull>,
+    S1: crate::typed::builder::IsSet<database_configuration_full_members::name>,
 {
-    fn from(
-        builder: DatabaseConfigurationFullBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DatabaseConfigurationFull;
+
+    fn build(self) -> DatabaseConfigurationFull {
+        Self::build(self)
     }
 }
 
-impl<S1> DatabaseConfigurationFullBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationFull { match variant {} }
-}
-
-impl DatabaseConfigurationFullBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DatabaseConfigurationFull { match name {} }
+impl<S0, S1> From<DatabaseConfigurationFullBuilder<(S0, S1)>> for DatabaseConfigurationFull
+where
+    S0: crate::typed::builder::IsVariantSet<DatabaseConfigurationFull>,
+    S1: crate::typed::builder::IsSet<database_configuration_full_members::name>,
+{
+    fn from(builder: DatabaseConfigurationFullBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2999,21 +3094,28 @@ pub struct DateIndexNameProcessor {
 
 impl DateIndexNameProcessor {
     /// Creates a builder for [`DateIndexNameProcessor`].
+    ///
+    /// Required: `date_rounding`, `field`.
     pub fn builder() -> DateIndexNameProcessorBuilder {
         DateIndexNameProcessorBuilder::new()
     }
 
     /// Creates a [`DateIndexNameProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateIndexNameProcessorBuilder,
-        ) -> DateIndexNameProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `date_rounding`, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateIndexNameProcessor>>(
+        f: impl FnOnce(DateIndexNameProcessorBuilder) -> B,
     ) -> DateIndexNameProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateIndexNameProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_index_name_processor_members {
+    pub struct date_rounding;
+    pub struct field;
 }
 
 /// Builder for [`DateIndexNameProcessor`].
@@ -3101,9 +3203,9 @@ impl<S0, S1> DateIndexNameProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -3141,11 +3243,9 @@ impl<S0, S1> DateIndexNameProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -3237,7 +3337,7 @@ impl<S0, S1> DateIndexNameProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> DateIndexNameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// How to round the date when formatting the date into the index name. Valid values are:
+    /// **Required.** How to round the date when formatting the date into the index name. Valid values are:
     /// `y` (year), `M` (month), `w` (week), `d` (day), `h` (hour), `m` (minute) and `s` (second).
     /// Supports template snippets.
     pub fn date_rounding(
@@ -3251,7 +3351,7 @@ impl<S1> DateIndexNameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DateIndexNameProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The field to get the date or timestamp from.
+    /// **Required.** The field to get the date or timestamp from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3262,9 +3362,13 @@ impl<S0> DateIndexNameProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DateIndexNameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DateIndexNameProcessorBuilder<(S0, S1)> {
     /// Builds a [`DateIndexNameProcessor`].
-    pub fn build(self) -> DateIndexNameProcessor {
+    pub fn build(self) -> DateIndexNameProcessor
+    where
+        S0: crate::typed::builder::IsSet<date_index_name_processor_members::date_rounding>,
+        S1: crate::typed::builder::IsSet<date_index_name_processor_members::field>,
+    {
         DateIndexNameProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -3282,29 +3386,26 @@ impl DateIndexNameProcessorBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<DateIndexNameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DateIndexNameProcessor
+impl<S0, S1> crate::typed::builder::Build for DateIndexNameProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<date_index_name_processor_members::date_rounding>,
+    S1: crate::typed::builder::IsSet<date_index_name_processor_members::field>,
 {
-    fn from(
-        builder: DateIndexNameProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DateIndexNameProcessor;
+
+    fn build(self) -> DateIndexNameProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> DateIndexNameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `date_rounding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, date_rounding: crate::typed::builder::MissingRequiredField) -> DateIndexNameProcessor { match date_rounding {} }
-}
-
-impl DateIndexNameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DateIndexNameProcessor { match field {} }
+impl<S0, S1> From<DateIndexNameProcessorBuilder<(S0, S1)>> for DateIndexNameProcessor
+where
+    S0: crate::typed::builder::IsSet<date_index_name_processor_members::date_rounding>,
+    S1: crate::typed::builder::IsSet<date_index_name_processor_members::field>,
+{
+    fn from(builder: DateIndexNameProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3350,19 +3451,28 @@ pub struct DateProcessor {
 
 impl DateProcessor {
     /// Creates a builder for [`DateProcessor`].
+    ///
+    /// Required: `field`, `formats`.
     pub fn builder() -> DateProcessorBuilder {
         DateProcessorBuilder::new()
     }
 
     /// Creates a [`DateProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateProcessorBuilder,
-        )
-            -> DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `formats`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateProcessor>>(
+        f: impl FnOnce(DateProcessorBuilder) -> B,
     ) -> DateProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_processor_members {
+    pub struct field;
+    pub struct formats;
 }
 
 /// Builder for [`DateProcessor`].
@@ -3446,9 +3556,9 @@ impl<S0, S1> DateProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -3486,11 +3596,9 @@ impl<S0, S1> DateProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -3561,7 +3669,7 @@ impl<S0, S1> DateProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> DateProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to get the date from.
+    /// **Required.** The field to get the date from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3573,7 +3681,7 @@ impl<S1> DateProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DateProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An array of the expected date formats.
+    /// **Required.** An array of the expected date formats.
     /// Can be a java time pattern or one of the following formats: ISO8601, UNIX, UNIX_MS, or TAI64N.
     pub fn formats(
         self,
@@ -3608,9 +3716,13 @@ impl<S0> DateProcessorBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DateProcessorBuilder<(S0, S1)> {
     /// Builds a [`DateProcessor`].
-    pub fn build(self) -> DateProcessor {
+    pub fn build(self) -> DateProcessor
+    where
+        S0: crate::typed::builder::IsSet<date_processor_members::field>,
+        S1: crate::typed::builder::IsSet<date_processor_members::formats>,
+    {
         DateProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -3627,26 +3739,26 @@ impl DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DateProcessor
+impl<S0, S1> crate::typed::builder::Build for DateProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<date_processor_members::field>,
+    S1: crate::typed::builder::IsSet<date_processor_members::formats>,
 {
-    fn from(
-        builder: DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DateProcessor;
+
+    fn build(self) -> DateProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> DateProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DateProcessor { match field {} }
-}
-
-impl DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `formats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, formats: crate::typed::builder::MissingRequiredField) -> DateProcessor { match formats {} }
+impl<S0, S1> From<DateProcessorBuilder<(S0, S1)>> for DateProcessor
+where
+    S0: crate::typed::builder::IsSet<date_processor_members::field>,
+    S1: crate::typed::builder::IsSet<date_processor_members::formats>,
+{
+    fn from(builder: DateProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3682,21 +3794,28 @@ pub struct DissectProcessor {
 
 impl DissectProcessor {
     /// Creates a builder for [`DissectProcessor`].
+    ///
+    /// Required: `field`, `pattern`.
     pub fn builder() -> DissectProcessorBuilder {
         DissectProcessorBuilder::new()
     }
 
     /// Creates a [`DissectProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DissectProcessorBuilder,
-        ) -> DissectProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = DissectProcessor>>(
+        f: impl FnOnce(DissectProcessorBuilder) -> B,
     ) -> DissectProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DissectProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dissect_processor_members {
+    pub struct field;
+    pub struct pattern;
 }
 
 /// Builder for [`DissectProcessor`].
@@ -3775,9 +3894,9 @@ impl<S0, S1> DissectProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -3815,11 +3934,9 @@ impl<S0, S1> DissectProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -3863,7 +3980,7 @@ impl<S0, S1> DissectProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> DissectProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to dissect.
+    /// **Required.** The field to dissect.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3875,7 +3992,7 @@ impl<S1> DissectProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DissectProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The pattern to apply to the field.
+    /// **Required.** The pattern to apply to the field.
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -3886,9 +4003,13 @@ impl<S0> DissectProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DissectProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DissectProcessorBuilder<(S0, S1)> {
     /// Builds a [`DissectProcessor`].
-    pub fn build(self) -> DissectProcessor {
+    pub fn build(self) -> DissectProcessor
+    where
+        S0: crate::typed::builder::IsSet<dissect_processor_members::field>,
+        S1: crate::typed::builder::IsSet<dissect_processor_members::pattern>,
+    {
         DissectProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -3903,26 +4024,26 @@ impl DissectProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<DissectProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DissectProcessor
+impl<S0, S1> crate::typed::builder::Build for DissectProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dissect_processor_members::field>,
+    S1: crate::typed::builder::IsSet<dissect_processor_members::pattern>,
 {
-    fn from(
-        builder: DissectProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DissectProcessor;
+
+    fn build(self) -> DissectProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> DissectProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DissectProcessor { match field {} }
-}
-
-impl DissectProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> DissectProcessor { match pattern {} }
+impl<S0, S1> From<DissectProcessorBuilder<(S0, S1)>> for DissectProcessor
+where
+    S0: crate::typed::builder::IsSet<dissect_processor_members::field>,
+    S1: crate::typed::builder::IsSet<dissect_processor_members::pattern>,
+{
+    fn from(builder: DissectProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3941,16 +4062,27 @@ pub struct Document {
 
 impl Document {
     /// Creates a builder for [`Document`].
+    ///
+    /// Required: `source`.
     pub fn builder() -> DocumentBuilder {
         DocumentBuilder::new()
     }
 
     /// Creates a [`Document`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DocumentBuilder) -> DocumentBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = Document>>(
+        f: impl FnOnce(DocumentBuilder) -> B,
     ) -> Document {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DocumentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod document_members {
+    pub struct source;
 }
 
 /// Builder for [`Document`].
@@ -4010,7 +4142,7 @@ impl<S0> DocumentBuilder<(S0,)> {
 }
 
 impl DocumentBuilder<(crate::typed::builder::NotSet,)> {
-    /// JSON body for the document.
+    /// **Required.** JSON body for the document.
     pub fn source(
         self,
         value: impl Into<serde_json::Value>,
@@ -4021,9 +4153,12 @@ impl DocumentBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DocumentBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DocumentBuilder<(S0,)> {
     /// Builds a [`Document`].
-    pub fn build(self) -> Document {
+    pub fn build(self) -> Document
+    where
+        S0: crate::typed::builder::IsSet<document_members::source>,
+    {
         Document {
             id: self.id,
             index: self.index,
@@ -4032,16 +4167,24 @@ impl DocumentBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DocumentBuilder<(crate::typed::builder::Set,)>> for Document {
-    fn from(builder: DocumentBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DocumentBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<document_members::source>,
+{
+    type Output = Document;
+
+    fn build(self) -> Document {
+        Self::build(self)
     }
 }
 
-impl DocumentBuilder<(crate::typed::builder::NotSet,)> {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> Document { match source {} }
+impl<S0> From<DocumentBuilder<(S0,)>> for Document
+where
+    S0: crate::typed::builder::IsSet<document_members::source>,
+{
+    fn from(builder: DocumentBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The simulated document, with optional metadata.
@@ -4076,23 +4219,30 @@ pub struct DocumentSimulation {
 
 impl DocumentSimulation {
     /// Creates a builder for [`DocumentSimulation`].
+    ///
+    /// Required: `id`, `index`, `ingest`, `source`.
     pub fn builder() -> DocumentSimulationBuilder {
         DocumentSimulationBuilder::new()
     }
 
     /// Creates a [`DocumentSimulation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DocumentSimulationBuilder,
-        ) -> DocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `ingest`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = DocumentSimulation>>(
+        f: impl FnOnce(DocumentSimulationBuilder) -> B,
     ) -> DocumentSimulation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DocumentSimulationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod document_simulation_members {
+    pub struct id;
+    pub struct index;
+    pub struct ingest;
+    pub struct source;
 }
 
 /// Builder for [`DocumentSimulation`].
@@ -4212,7 +4362,7 @@ impl<S0, S1, S2, S3> DocumentSimulationBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DocumentSimulationBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// Unique identifier for the document. This ID must be unique within the `_index`.
+    /// **Required.** Unique identifier for the document. This ID must be unique within the `_index`.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -4224,7 +4374,7 @@ impl<S1, S2, S3> DocumentSimulationBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2, S3> DocumentSimulationBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Name of the index containing the document.
+    /// **Required.** Name of the index containing the document.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -4236,6 +4386,7 @@ impl<S0, S2, S3> DocumentSimulationBuilder<(S0, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S3> DocumentSimulationBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn ingest(
         self,
         value: impl Into<Ingest>,
@@ -4246,16 +4397,16 @@ impl<S0, S1, S3> DocumentSimulationBuilder<(S0, S1, crate::typed::builder::NotSe
     }
 
     /// Sets [`ingest`](Self::ingest) with a builder.
-    pub fn ingest_with(
+    pub fn ingest_with<B: crate::typed::builder::Build<Output = Ingest>>(
         self,
-        f: impl FnOnce(IngestBuilder) -> IngestBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IngestBuilder) -> B,
     ) -> DocumentSimulationBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.ingest(f(IngestBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> DocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// JSON body for the document.
+    /// **Required.** JSON body for the document.
     pub fn source(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -4294,16 +4445,15 @@ impl<S0, S1, S2> DocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::S
     }
 }
 
-impl
-    DocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DocumentSimulationBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DocumentSimulation`].
-    pub fn build(self) -> DocumentSimulation {
+    pub fn build(self) -> DocumentSimulation
+    where
+        S0: crate::typed::builder::IsSet<document_simulation_members::id>,
+        S1: crate::typed::builder::IsSet<document_simulation_members::index>,
+        S2: crate::typed::builder::IsSet<document_simulation_members::ingest>,
+        S3: crate::typed::builder::IsSet<document_simulation_members::source>,
+    {
         DocumentSimulation {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -4317,71 +4467,30 @@ impl
     }
 }
 
-impl
-    From<
-        DocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DocumentSimulation
+impl<S0, S1, S2, S3> crate::typed::builder::Build for DocumentSimulationBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<document_simulation_members::id>,
+    S1: crate::typed::builder::IsSet<document_simulation_members::index>,
+    S2: crate::typed::builder::IsSet<document_simulation_members::ingest>,
+    S3: crate::typed::builder::IsSet<document_simulation_members::source>,
 {
-    fn from(
-        builder: DocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DocumentSimulation;
+
+    fn build(self) -> DocumentSimulation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DocumentSimulationBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> DocumentSimulation { match id {} }
-}
-
-impl<S2, S3>
-    DocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DocumentSimulationBuilder<(S0, S1, S2, S3)>> for DocumentSimulation
+where
+    S0: crate::typed::builder::IsSet<document_simulation_members::id>,
+    S1: crate::typed::builder::IsSet<document_simulation_members::index>,
+    S2: crate::typed::builder::IsSet<document_simulation_members::ingest>,
+    S3: crate::typed::builder::IsSet<document_simulation_members::source>,
 {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> DocumentSimulation { match index {} }
-}
-
-impl<S3>
-    DocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `ingest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ingest: crate::typed::builder::MissingRequiredField) -> DocumentSimulation { match ingest {} }
-}
-
-impl
-    DocumentSimulationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> DocumentSimulation { match source {} }
+    fn from(builder: DocumentSimulationBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4419,18 +4528,27 @@ pub struct DotExpanderProcessor {
 
 impl DotExpanderProcessor {
     /// Creates a builder for [`DotExpanderProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> DotExpanderProcessorBuilder {
         DotExpanderProcessorBuilder::new()
     }
 
     /// Creates a [`DotExpanderProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DotExpanderProcessorBuilder,
-        ) -> DotExpanderProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DotExpanderProcessor>>(
+        f: impl FnOnce(DotExpanderProcessorBuilder) -> B,
     ) -> DotExpanderProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DotExpanderProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dot_expander_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`DotExpanderProcessor`].
@@ -4504,9 +4622,9 @@ impl<S0> DotExpanderProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4544,11 +4662,9 @@ impl<S0> DotExpanderProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -4595,7 +4711,7 @@ impl<S0> DotExpanderProcessorBuilder<(S0,)> {
 }
 
 impl DotExpanderProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to expand into an object field.
+    /// **Required.** The field to expand into an object field.
     /// If set to `*`, all top-level fields will be expanded.
     pub fn field(
         self,
@@ -4607,9 +4723,12 @@ impl DotExpanderProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DotExpanderProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DotExpanderProcessorBuilder<(S0,)> {
     /// Builds a [`DotExpanderProcessor`].
-    pub fn build(self) -> DotExpanderProcessor {
+    pub fn build(self) -> DotExpanderProcessor
+    where
+        S0: crate::typed::builder::IsSet<dot_expander_processor_members::field>,
+    {
         DotExpanderProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -4623,16 +4742,24 @@ impl DotExpanderProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DotExpanderProcessorBuilder<(crate::typed::builder::Set,)>> for DotExpanderProcessor {
-    fn from(builder: DotExpanderProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DotExpanderProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dot_expander_processor_members::field>,
+{
+    type Output = DotExpanderProcessor;
+
+    fn build(self) -> DotExpanderProcessor {
+        Self::build(self)
     }
 }
 
-impl DotExpanderProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DotExpanderProcessor { match field {} }
+impl<S0> From<DotExpanderProcessorBuilder<(S0,)>> for DotExpanderProcessor
+where
+    S0: crate::typed::builder::IsSet<dot_expander_processor_members::field>,
+{
+    fn from(builder: DotExpanderProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4663,7 +4790,9 @@ impl DropProcessor {
     }
 
     /// Creates a [`DropProcessor`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DropProcessorBuilder) -> DropProcessorBuilder) -> DropProcessor {
+    pub fn of<B: crate::typed::builder::Build<Output = DropProcessor>>(
+        f: impl FnOnce(DropProcessorBuilder) -> B,
+    ) -> DropProcessor {
         f(Self::builder()).build()
     }
 }
@@ -4717,9 +4846,9 @@ impl DropProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4757,11 +4886,9 @@ impl DropProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -4790,6 +4917,14 @@ impl DropProcessorBuilder {
             on_failure: self.on_failure,
             tag: self.tag,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DropProcessorBuilder {
+    type Output = DropProcessor;
+
+    fn build(self) -> DropProcessor {
+        Self::build(self)
     }
 }
 
@@ -4846,22 +4981,29 @@ pub struct EnrichProcessor {
 
 impl EnrichProcessor {
     /// Creates a builder for [`EnrichProcessor`].
+    ///
+    /// Required: `field`, `policy_name`, `target_field`.
     pub fn builder() -> EnrichProcessorBuilder {
         EnrichProcessorBuilder::new()
     }
 
     /// Creates a [`EnrichProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EnrichProcessorBuilder,
-        ) -> EnrichProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `policy_name`, `target_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = EnrichProcessor>>(
+        f: impl FnOnce(EnrichProcessorBuilder) -> B,
     ) -> EnrichProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EnrichProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod enrich_processor_members {
+    pub struct field;
+    pub struct policy_name;
+    pub struct target_field;
 }
 
 /// Builder for [`EnrichProcessor`].
@@ -4959,9 +5101,9 @@ impl<S0, S1, S2> EnrichProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4999,11 +5141,9 @@ impl<S0, S1, S2> EnrichProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -5081,7 +5221,7 @@ impl<S0, S1, S2> EnrichProcessorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> EnrichProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The field in the input document that matches the policies match_field used to retrieve the enrichment data.
+    /// **Required.** The field in the input document that matches the policies match_field used to retrieve the enrichment data.
     /// Supports template snippets.
     pub fn field(
         self,
@@ -5094,7 +5234,7 @@ impl<S1, S2> EnrichProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> EnrichProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The name of the enrich policy to use.
+    /// **Required.** The name of the enrich policy to use.
     pub fn policy_name(
         self,
         value: impl Into<String>,
@@ -5106,7 +5246,7 @@ impl<S0, S2> EnrichProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> EnrichProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Field added to incoming documents to contain enrich data. This field contains both the `match_field` and `enrich_fields` specified in the enrich policy.
+    /// **Required.** Field added to incoming documents to contain enrich data. This field contains both the `match_field` and `enrich_fields` specified in the enrich policy.
     /// Supports template snippets.
     pub fn target_field(
         self,
@@ -5118,15 +5258,14 @@ impl<S0, S1> EnrichProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    EnrichProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> EnrichProcessorBuilder<(S0, S1, S2)> {
     /// Builds a [`EnrichProcessor`].
-    pub fn build(self) -> EnrichProcessor {
+    pub fn build(self) -> EnrichProcessor
+    where
+        S0: crate::typed::builder::IsSet<enrich_processor_members::field>,
+        S1: crate::typed::builder::IsSet<enrich_processor_members::policy_name>,
+        S2: crate::typed::builder::IsSet<enrich_processor_members::target_field>,
+    {
         EnrichProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -5144,54 +5283,28 @@ impl
     }
 }
 
-impl
-    From<
-        EnrichProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for EnrichProcessor
+impl<S0, S1, S2> crate::typed::builder::Build for EnrichProcessorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<enrich_processor_members::field>,
+    S1: crate::typed::builder::IsSet<enrich_processor_members::policy_name>,
+    S2: crate::typed::builder::IsSet<enrich_processor_members::target_field>,
 {
-    fn from(
-        builder: EnrichProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EnrichProcessor;
+
+    fn build(self) -> EnrichProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> EnrichProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> EnrichProcessor { match field {} }
-}
-
-impl<S2>
-    EnrichProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<EnrichProcessorBuilder<(S0, S1, S2)>> for EnrichProcessor
+where
+    S0: crate::typed::builder::IsSet<enrich_processor_members::field>,
+    S1: crate::typed::builder::IsSet<enrich_processor_members::policy_name>,
+    S2: crate::typed::builder::IsSet<enrich_processor_members::target_field>,
 {
-    /// `policy_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy_name: crate::typed::builder::MissingRequiredField) -> EnrichProcessor { match policy_name {} }
-}
-
-impl
-    EnrichProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `target_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_field: crate::typed::builder::MissingRequiredField) -> EnrichProcessor { match target_field {} }
+    fn from(builder: EnrichProcessorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5220,16 +5333,27 @@ pub struct FailProcessor {
 
 impl FailProcessor {
     /// Creates a builder for [`FailProcessor`].
+    ///
+    /// Required: `message`.
     pub fn builder() -> FailProcessorBuilder {
         FailProcessorBuilder::new()
     }
 
     /// Creates a [`FailProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FailProcessorBuilder) -> FailProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `message`.
+    pub fn of<B: crate::typed::builder::Build<Output = FailProcessor>>(
+        f: impl FnOnce(FailProcessorBuilder) -> B,
     ) -> FailProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FailProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fail_processor_members {
+    pub struct message;
 }
 
 /// Builder for [`FailProcessor`].
@@ -5297,9 +5421,9 @@ impl<S0> FailProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -5337,11 +5461,9 @@ impl<S0> FailProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -5361,7 +5483,7 @@ impl<S0> FailProcessorBuilder<(S0,)> {
 }
 
 impl FailProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The error message thrown by the processor.
+    /// **Required.** The error message thrown by the processor.
     /// Supports template snippets.
     pub fn message(
         self,
@@ -5373,9 +5495,12 @@ impl FailProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FailProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FailProcessorBuilder<(S0,)> {
     /// Builds a [`FailProcessor`].
-    pub fn build(self) -> FailProcessor {
+    pub fn build(self) -> FailProcessor
+    where
+        S0: crate::typed::builder::IsSet<fail_processor_members::message>,
+    {
         FailProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -5387,16 +5512,24 @@ impl FailProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FailProcessorBuilder<(crate::typed::builder::Set,)>> for FailProcessor {
-    fn from(builder: FailProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FailProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fail_processor_members::message>,
+{
+    type Output = FailProcessor;
+
+    fn build(self) -> FailProcessor {
+        Self::build(self)
     }
 }
 
-impl FailProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> FailProcessor { match message {} }
+impl<S0> From<FailProcessorBuilder<(S0,)>> for FailProcessor
+where
+    S0: crate::typed::builder::IsSet<fail_processor_members::message>,
+{
+    fn from(builder: FailProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5461,18 +5594,27 @@ pub struct FingerprintProcessor {
 
 impl FingerprintProcessor {
     /// Creates a builder for [`FingerprintProcessor`].
+    ///
+    /// Required: `fields`.
     pub fn builder() -> FingerprintProcessorBuilder {
         FingerprintProcessorBuilder::new()
     }
 
     /// Creates a [`FingerprintProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FingerprintProcessorBuilder,
-        ) -> FingerprintProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = FingerprintProcessor>>(
+        f: impl FnOnce(FingerprintProcessorBuilder) -> B,
     ) -> FingerprintProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FingerprintProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fingerprint_processor_members {
+    pub struct fields;
 }
 
 /// Builder for [`FingerprintProcessor`].
@@ -5552,9 +5694,9 @@ impl<S0> FingerprintProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -5592,11 +5734,9 @@ impl<S0> FingerprintProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -5666,7 +5806,7 @@ impl<S0> FingerprintProcessorBuilder<(S0,)> {
 }
 
 impl FingerprintProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// Array of fields to include in the fingerprint. For objects, the processor
+    /// **Required.** Array of fields to include in the fingerprint. For objects, the processor
     /// hashes both the field key and value. For other fields, the processor hashes
     /// only the field value.
     pub fn fields(
@@ -5679,9 +5819,12 @@ impl FingerprintProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FingerprintProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FingerprintProcessorBuilder<(S0,)> {
     /// Builds a [`FingerprintProcessor`].
-    pub fn build(self) -> FingerprintProcessor {
+    pub fn build(self) -> FingerprintProcessor
+    where
+        S0: crate::typed::builder::IsSet<fingerprint_processor_members::fields>,
+    {
         FingerprintProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -5697,16 +5840,24 @@ impl FingerprintProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FingerprintProcessorBuilder<(crate::typed::builder::Set,)>> for FingerprintProcessor {
-    fn from(builder: FingerprintProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FingerprintProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fingerprint_processor_members::fields>,
+{
+    type Output = FingerprintProcessor;
+
+    fn build(self) -> FingerprintProcessor {
+        Self::build(self)
     }
 }
 
-impl FingerprintProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> FingerprintProcessor { match fields {} }
+impl<S0> From<FingerprintProcessorBuilder<(S0,)>> for FingerprintProcessor
+where
+    S0: crate::typed::builder::IsSet<fingerprint_processor_members::fields>,
+{
+    fn from(builder: FingerprintProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5739,21 +5890,28 @@ pub struct ForeachProcessor {
 
 impl ForeachProcessor {
     /// Creates a builder for [`ForeachProcessor`].
+    ///
+    /// Required: `field`, `processor`.
     pub fn builder() -> ForeachProcessorBuilder {
         ForeachProcessorBuilder::new()
     }
 
     /// Creates a [`ForeachProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ForeachProcessorBuilder,
-        ) -> ForeachProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `processor`.
+    pub fn of<B: crate::typed::builder::Build<Output = ForeachProcessor>>(
+        f: impl FnOnce(ForeachProcessorBuilder) -> B,
     ) -> ForeachProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ForeachProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod foreach_processor_members {
+    pub struct field;
+    pub struct processor;
 }
 
 /// Builder for [`ForeachProcessor`].
@@ -5829,9 +5987,9 @@ impl<S0, S1> ForeachProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -5869,11 +6027,9 @@ impl<S0, S1> ForeachProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -5905,7 +6061,7 @@ impl<S0, S1> ForeachProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> ForeachProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Field containing array or object values.
+    /// **Required.** Field containing array or object values.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -5917,7 +6073,7 @@ impl<S1> ForeachProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ForeachProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Ingest processor to run on each element.
+    /// **Required.** Ingest processor to run on each element.
     pub fn processor(
         self,
         value: impl Into<ProcessorContainer>,
@@ -5928,19 +6084,21 @@ impl<S0> ForeachProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`processor`](Self::processor) with a builder.
-    pub fn processor_with(
+    pub fn processor_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> ForeachProcessorBuilder<(S0, crate::typed::builder::Set)> {
         self.processor(f(ProcessorContainerBuilder::new()).build())
     }
 }
 
-impl ForeachProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ForeachProcessorBuilder<(S0, S1)> {
     /// Builds a [`ForeachProcessor`].
-    pub fn build(self) -> ForeachProcessor {
+    pub fn build(self) -> ForeachProcessor
+    where
+        S0: crate::typed::builder::IsSet<foreach_processor_members::field>,
+        S1: crate::typed::builder::IsSet<foreach_processor_members::processor>,
+    {
         ForeachProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -5954,26 +6112,26 @@ impl ForeachProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ForeachProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ForeachProcessor
+impl<S0, S1> crate::typed::builder::Build for ForeachProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<foreach_processor_members::field>,
+    S1: crate::typed::builder::IsSet<foreach_processor_members::processor>,
 {
-    fn from(
-        builder: ForeachProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ForeachProcessor;
+
+    fn build(self) -> ForeachProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> ForeachProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> ForeachProcessor { match field {} }
-}
-
-impl ForeachProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `processor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processor: crate::typed::builder::MissingRequiredField) -> ForeachProcessor { match processor {} }
+impl<S0, S1> From<ForeachProcessorBuilder<(S0, S1)>> for ForeachProcessor
+where
+    S0: crate::typed::builder::IsSet<foreach_processor_members::field>,
+    S1: crate::typed::builder::IsSet<foreach_processor_members::processor>,
+{
+    fn from(builder: ForeachProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6025,21 +6183,28 @@ pub struct GeoGridProcessor {
 
 impl GeoGridProcessor {
     /// Creates a builder for [`GeoGridProcessor`].
+    ///
+    /// Required: `field`, `tile_type`.
     pub fn builder() -> GeoGridProcessorBuilder {
         GeoGridProcessorBuilder::new()
     }
 
     /// Creates a [`GeoGridProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoGridProcessorBuilder,
-        ) -> GeoGridProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `tile_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoGridProcessor>>(
+        f: impl FnOnce(GeoGridProcessorBuilder) -> B,
     ) -> GeoGridProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoGridProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_grid_processor_members {
+    pub struct field;
+    pub struct tile_type;
 }
 
 /// Builder for [`GeoGridProcessor`].
@@ -6133,9 +6298,9 @@ impl<S0, S1> GeoGridProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -6173,11 +6338,9 @@ impl<S0, S1> GeoGridProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -6281,7 +6444,7 @@ impl<S0, S1> GeoGridProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> GeoGridProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to interpret as a geo-tile.=
+    /// **Required.** The field to interpret as a geo-tile.=
     /// The field format is determined by the `tile_type`.
     pub fn field(
         self,
@@ -6294,7 +6457,7 @@ impl<S1> GeoGridProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GeoGridProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Three tile formats are understood: geohash, geotile and geohex.
+    /// **Required.** Three tile formats are understood: geohash, geotile and geohex.
     pub fn tile_type(
         self,
         value: impl Into<GeoGridTileType>,
@@ -6305,9 +6468,13 @@ impl<S0> GeoGridProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl GeoGridProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GeoGridProcessorBuilder<(S0, S1)> {
     /// Builds a [`GeoGridProcessor`].
-    pub fn build(self) -> GeoGridProcessor {
+    pub fn build(self) -> GeoGridProcessor
+    where
+        S0: crate::typed::builder::IsSet<geo_grid_processor_members::field>,
+        S1: crate::typed::builder::IsSet<geo_grid_processor_members::tile_type>,
+    {
         GeoGridProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -6327,26 +6494,26 @@ impl GeoGridProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<GeoGridProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GeoGridProcessor
+impl<S0, S1> crate::typed::builder::Build for GeoGridProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<geo_grid_processor_members::field>,
+    S1: crate::typed::builder::IsSet<geo_grid_processor_members::tile_type>,
 {
-    fn from(
-        builder: GeoGridProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoGridProcessor;
+
+    fn build(self) -> GeoGridProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> GeoGridProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeoGridProcessor { match field {} }
-}
-
-impl GeoGridProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tile_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tile_type: crate::typed::builder::MissingRequiredField) -> GeoGridProcessor { match tile_type {} }
+impl<S0, S1> From<GeoGridProcessorBuilder<(S0, S1)>> for GeoGridProcessor
+where
+    S0: crate::typed::builder::IsSet<geo_grid_processor_members::field>,
+    S1: crate::typed::builder::IsSet<geo_grid_processor_members::tile_type>,
+{
+    fn from(builder: GeoGridProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -6411,16 +6578,27 @@ pub struct GeoIpProcessor {
 
 impl GeoIpProcessor {
     /// Creates a builder for [`GeoIpProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> GeoIpProcessorBuilder {
         GeoIpProcessorBuilder::new()
     }
 
     /// Creates a [`GeoIpProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoIpProcessorBuilder) -> GeoIpProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoIpProcessor>>(
+        f: impl FnOnce(GeoIpProcessorBuilder) -> B,
     ) -> GeoIpProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoIpProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_ip_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`GeoIpProcessor`].
@@ -6506,9 +6684,9 @@ impl<S0> GeoIpProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -6546,11 +6724,9 @@ impl<S0> GeoIpProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -6651,7 +6827,7 @@ impl<S0> GeoIpProcessorBuilder<(S0,)> {
 }
 
 impl GeoIpProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to get the ip address from for the geographical lookup.
+    /// **Required.** The field to get the ip address from for the geographical lookup.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -6662,9 +6838,12 @@ impl GeoIpProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoIpProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoIpProcessorBuilder<(S0,)> {
     /// Builds a [`GeoIpProcessor`].
-    pub fn build(self) -> GeoIpProcessor {
+    pub fn build(self) -> GeoIpProcessor
+    where
+        S0: crate::typed::builder::IsSet<geo_ip_processor_members::field>,
+    {
         GeoIpProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -6682,16 +6861,24 @@ impl GeoIpProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoIpProcessorBuilder<(crate::typed::builder::Set,)>> for GeoIpProcessor {
-    fn from(builder: GeoIpProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoIpProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_ip_processor_members::field>,
+{
+    type Output = GeoIpProcessor;
+
+    fn build(self) -> GeoIpProcessor {
+        Self::build(self)
     }
 }
 
-impl GeoIpProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeoIpProcessor { match field {} }
+impl<S0> From<GeoIpProcessorBuilder<(S0,)>> for GeoIpProcessor
+where
+    S0: crate::typed::builder::IsSet<geo_ip_processor_members::field>,
+{
+    fn from(builder: GeoIpProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6739,19 +6926,28 @@ pub struct GrokProcessor {
 
 impl GrokProcessor {
     /// Creates a builder for [`GrokProcessor`].
+    ///
+    /// Required: `field`, `patterns`.
     pub fn builder() -> GrokProcessorBuilder {
         GrokProcessorBuilder::new()
     }
 
     /// Creates a [`GrokProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GrokProcessorBuilder,
-        )
-            -> GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `patterns`.
+    pub fn of<B: crate::typed::builder::Build<Output = GrokProcessor>>(
+        f: impl FnOnce(GrokProcessorBuilder) -> B,
     ) -> GrokProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GrokProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod grok_processor_members {
+    pub struct field;
+    pub struct patterns;
 }
 
 /// Builder for [`GrokProcessor`].
@@ -6838,9 +7034,9 @@ impl<S0, S1> GrokProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -6878,11 +7074,9 @@ impl<S0, S1> GrokProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -6982,7 +7176,7 @@ impl<S0, S1> GrokProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> GrokProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to use for grok expression parsing.
+    /// **Required.** The field to use for grok expression parsing.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -6994,7 +7188,7 @@ impl<S1> GrokProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GrokProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An ordered list of grok expression to match and extract named captures with.
+    /// **Required.** An ordered list of grok expression to match and extract named captures with.
     /// Returns on the first expression in the list that matches.
     pub fn patterns(
         self,
@@ -7029,9 +7223,13 @@ impl<S0> GrokProcessorBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GrokProcessorBuilder<(S0, S1)> {
     /// Builds a [`GrokProcessor`].
-    pub fn build(self) -> GrokProcessor {
+    pub fn build(self) -> GrokProcessor
+    where
+        S0: crate::typed::builder::IsSet<grok_processor_members::field>,
+        S1: crate::typed::builder::IsSet<grok_processor_members::patterns>,
+    {
         GrokProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -7049,26 +7247,26 @@ impl GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GrokProcessor
+impl<S0, S1> crate::typed::builder::Build for GrokProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<grok_processor_members::field>,
+    S1: crate::typed::builder::IsSet<grok_processor_members::patterns>,
 {
-    fn from(
-        builder: GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GrokProcessor;
+
+    fn build(self) -> GrokProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> GrokProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GrokProcessor { match field {} }
-}
-
-impl GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, patterns: crate::typed::builder::MissingRequiredField) -> GrokProcessor { match patterns {} }
+impl<S0, S1> From<GrokProcessorBuilder<(S0, S1)>> for GrokProcessor
+where
+    S0: crate::typed::builder::IsSet<grok_processor_members::field>,
+    S1: crate::typed::builder::IsSet<grok_processor_members::patterns>,
+{
+    fn from(builder: GrokProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7107,22 +7305,29 @@ pub struct GsubProcessor {
 
 impl GsubProcessor {
     /// Creates a builder for [`GsubProcessor`].
+    ///
+    /// Required: `field`, `pattern`, `replacement`.
     pub fn builder() -> GsubProcessorBuilder {
         GsubProcessorBuilder::new()
     }
 
     /// Creates a [`GsubProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GsubProcessorBuilder,
-        ) -> GsubProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `pattern`, `replacement`.
+    pub fn of<B: crate::typed::builder::Build<Output = GsubProcessor>>(
+        f: impl FnOnce(GsubProcessorBuilder) -> B,
     ) -> GsubProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GsubProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod gsub_processor_members {
+    pub struct field;
+    pub struct pattern;
+    pub struct replacement;
 }
 
 /// Builder for [`GsubProcessor`].
@@ -7214,9 +7419,9 @@ impl<S0, S1, S2> GsubProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -7254,11 +7459,9 @@ impl<S0, S1, S2> GsubProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -7303,7 +7506,7 @@ impl<S0, S1, S2> GsubProcessorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> GsubProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The field to apply the replacement to.
+    /// **Required.** The field to apply the replacement to.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -7315,7 +7518,7 @@ impl<S1, S2> GsubProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> GsubProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The pattern to be replaced.
+    /// **Required.** The pattern to be replaced.
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -7327,7 +7530,7 @@ impl<S0, S2> GsubProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> GsubProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The string to replace the matching patterns with.
+    /// **Required.** The string to replace the matching patterns with.
     pub fn replacement(
         self,
         value: impl Into<String>,
@@ -7338,15 +7541,14 @@ impl<S0, S1> GsubProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    GsubProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> GsubProcessorBuilder<(S0, S1, S2)> {
     /// Builds a [`GsubProcessor`].
-    pub fn build(self) -> GsubProcessor {
+    pub fn build(self) -> GsubProcessor
+    where
+        S0: crate::typed::builder::IsSet<gsub_processor_members::field>,
+        S1: crate::typed::builder::IsSet<gsub_processor_members::pattern>,
+        S2: crate::typed::builder::IsSet<gsub_processor_members::replacement>,
+    {
         GsubProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -7362,54 +7564,28 @@ impl
     }
 }
 
-impl
-    From<
-        GsubProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GsubProcessor
+impl<S0, S1, S2> crate::typed::builder::Build for GsubProcessorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<gsub_processor_members::field>,
+    S1: crate::typed::builder::IsSet<gsub_processor_members::pattern>,
+    S2: crate::typed::builder::IsSet<gsub_processor_members::replacement>,
 {
-    fn from(
-        builder: GsubProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GsubProcessor;
+
+    fn build(self) -> GsubProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> GsubProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GsubProcessor { match field {} }
-}
-
-impl<S2>
-    GsubProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<GsubProcessorBuilder<(S0, S1, S2)>> for GsubProcessor
+where
+    S0: crate::typed::builder::IsSet<gsub_processor_members::field>,
+    S1: crate::typed::builder::IsSet<gsub_processor_members::pattern>,
+    S2: crate::typed::builder::IsSet<gsub_processor_members::replacement>,
 {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> GsubProcessor { match pattern {} }
-}
-
-impl
-    GsubProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `replacement` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, replacement: crate::typed::builder::MissingRequiredField) -> GsubProcessor { match replacement {} }
+    fn from(builder: GsubProcessorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7444,18 +7620,27 @@ pub struct HtmlStripProcessor {
 
 impl HtmlStripProcessor {
     /// Creates a builder for [`HtmlStripProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> HtmlStripProcessorBuilder {
         HtmlStripProcessorBuilder::new()
     }
 
     /// Creates a [`HtmlStripProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HtmlStripProcessorBuilder,
-        ) -> HtmlStripProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = HtmlStripProcessor>>(
+        f: impl FnOnce(HtmlStripProcessorBuilder) -> B,
     ) -> HtmlStripProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HtmlStripProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod html_strip_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`HtmlStripProcessor`].
@@ -7529,9 +7714,9 @@ impl<S0> HtmlStripProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -7569,11 +7754,9 @@ impl<S0> HtmlStripProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -7618,7 +7801,7 @@ impl<S0> HtmlStripProcessorBuilder<(S0,)> {
 }
 
 impl HtmlStripProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The string-valued field to remove HTML tags from.
+    /// **Required.** The string-valued field to remove HTML tags from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -7629,9 +7812,12 @@ impl HtmlStripProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HtmlStripProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HtmlStripProcessorBuilder<(S0,)> {
     /// Builds a [`HtmlStripProcessor`].
-    pub fn build(self) -> HtmlStripProcessor {
+    pub fn build(self) -> HtmlStripProcessor
+    where
+        S0: crate::typed::builder::IsSet<html_strip_processor_members::field>,
+    {
         HtmlStripProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -7645,16 +7831,24 @@ impl HtmlStripProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HtmlStripProcessorBuilder<(crate::typed::builder::Set,)>> for HtmlStripProcessor {
-    fn from(builder: HtmlStripProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HtmlStripProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<html_strip_processor_members::field>,
+{
+    type Output = HtmlStripProcessor;
+
+    fn build(self) -> HtmlStripProcessor {
+        Self::build(self)
     }
 }
 
-impl HtmlStripProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> HtmlStripProcessor { match field {} }
+impl<S0> From<HtmlStripProcessorBuilder<(S0,)>> for HtmlStripProcessor
+where
+    S0: crate::typed::builder::IsSet<html_strip_processor_members::field>,
+{
+    fn from(builder: HtmlStripProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7693,13 +7887,17 @@ impl From<InferenceConfigClassificationBuilder> for InferenceConfig {
 
 impl InferenceConfig {
     /// Creates a builder for [`InferenceConfig`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> InferenceConfigBuilder {
         InferenceConfigBuilder::new()
     }
 
     /// Creates a [`InferenceConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceConfigBuilder) -> InferenceConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfig>>(
+        f: impl FnOnce(InferenceConfigBuilder) -> B,
     ) -> InferenceConfig {
         f(Self::builder()).build()
     }
@@ -7742,9 +7940,9 @@ impl InferenceConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<B: crate::typed::builder::Build<Output = InferenceConfigRegression>>(
         self,
-        f: impl FnOnce(InferenceConfigRegressionBuilder) -> InferenceConfigRegressionBuilder,
+        f: impl FnOnce(InferenceConfigRegressionBuilder) -> B,
     ) -> InferenceConfigBuilder<(crate::typed::builder::Set,)> {
         self.regression(f(InferenceConfigRegressionBuilder::new()).build())
     }
@@ -7760,31 +7958,44 @@ impl InferenceConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<Output = InferenceConfigClassification>,
+    >(
         self,
-        f: impl FnOnce(InferenceConfigClassificationBuilder) -> InferenceConfigClassificationBuilder,
+        f: impl FnOnce(InferenceConfigClassificationBuilder) -> B,
     ) -> InferenceConfigBuilder<(crate::typed::builder::Set,)> {
         self.classification(f(InferenceConfigClassificationBuilder::new()).build())
     }
 }
 
-impl InferenceConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceConfigBuilder<(S0,)> {
     /// Builds a [`InferenceConfig`].
-    pub fn build(self) -> InferenceConfig {
+    pub fn build(self) -> InferenceConfig
+    where
+        S0: crate::typed::builder::IsVariantSet<InferenceConfig>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<InferenceConfigBuilder<(crate::typed::builder::Set,)>> for InferenceConfig {
-    fn from(builder: InferenceConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for InferenceConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfig>,
+{
+    type Output = InferenceConfig;
+
+    fn build(self) -> InferenceConfig {
+        Self::build(self)
     }
 }
 
-impl InferenceConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> InferenceConfig { match variant {} }
+impl<S0> From<InferenceConfigBuilder<(S0,)>> for InferenceConfig
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfig>,
+{
+    fn from(builder: InferenceConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7814,8 +8025,8 @@ impl InferenceConfigClassification {
     }
 
     /// Creates a [`InferenceConfigClassification`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceConfigClassificationBuilder) -> InferenceConfigClassificationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfigClassification>>(
+        f: impl FnOnce(InferenceConfigClassificationBuilder) -> B,
     ) -> InferenceConfigClassification {
         f(Self::builder()).build()
     }
@@ -7925,6 +8136,14 @@ impl InferenceConfigClassificationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for InferenceConfigClassificationBuilder {
+    type Output = InferenceConfigClassification;
+
+    fn build(self) -> InferenceConfigClassification {
+        Self::build(self)
+    }
+}
+
 impl From<InferenceConfigClassificationBuilder> for InferenceConfigClassification {
     fn from(builder: InferenceConfigClassificationBuilder) -> Self {
         builder.build()
@@ -7948,8 +8167,8 @@ impl InferenceConfigRegression {
     }
 
     /// Creates a [`InferenceConfigRegression`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceConfigRegressionBuilder) -> InferenceConfigRegressionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfigRegression>>(
+        f: impl FnOnce(InferenceConfigRegressionBuilder) -> B,
     ) -> InferenceConfigRegression {
         f(Self::builder()).build()
     }
@@ -8004,6 +8223,14 @@ impl InferenceConfigRegressionBuilder {
             results_field: self.results_field,
             num_top_feature_importance_values: self.num_top_feature_importance_values,
         }
+    }
+}
+
+impl crate::typed::builder::Build for InferenceConfigRegressionBuilder {
+    type Output = InferenceConfigRegression;
+
+    fn build(self) -> InferenceConfigRegression {
+        Self::build(self)
     }
 }
 
@@ -8076,18 +8303,27 @@ impl From<Vec<InputConfig>> for InferenceProcessorInputOutput {
 
 impl InferenceProcessor {
     /// Creates a builder for [`InferenceProcessor`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> InferenceProcessorBuilder {
         InferenceProcessorBuilder::new()
     }
 
     /// Creates a [`InferenceProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceProcessorBuilder,
-        ) -> InferenceProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceProcessor>>(
+        f: impl FnOnce(InferenceProcessorBuilder) -> B,
     ) -> InferenceProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_processor_members {
+    pub struct model_id;
 }
 
 /// Builder for [`InferenceProcessor`].
@@ -8170,9 +8406,9 @@ impl<S0> InferenceProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -8210,11 +8446,9 @@ impl<S0> InferenceProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -8288,9 +8522,9 @@ impl<S0> InferenceProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`inference_config`](Self::inference_config) with a builder.
-    pub fn inference_config_with(
+    pub fn inference_config_with<B: crate::typed::builder::Build<Output = InferenceConfig>>(
         self,
-        f: impl FnOnce(InferenceConfigBuilder) -> InferenceConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceConfigBuilder) -> B,
     ) -> Self {
         self.inference_config(f(InferenceConfigBuilder::new()).build())
     }
@@ -8324,7 +8558,7 @@ impl<S0> InferenceProcessorBuilder<(S0,)> {
 }
 
 impl InferenceProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The ID or alias for the trained model, or the ID of the deployment.
+    /// **Required.** The ID or alias for the trained model, or the ID of the deployment.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -8335,9 +8569,12 @@ impl InferenceProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InferenceProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceProcessorBuilder<(S0,)> {
     /// Builds a [`InferenceProcessor`].
-    pub fn build(self) -> InferenceProcessor {
+    pub fn build(self) -> InferenceProcessor
+    where
+        S0: crate::typed::builder::IsSet<inference_processor_members::model_id>,
+    {
         InferenceProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -8354,16 +8591,24 @@ impl InferenceProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<InferenceProcessorBuilder<(crate::typed::builder::Set,)>> for InferenceProcessor {
-    fn from(builder: InferenceProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for InferenceProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<inference_processor_members::model_id>,
+{
+    type Output = InferenceProcessor;
+
+    fn build(self) -> InferenceProcessor {
+        Self::build(self)
     }
 }
 
-impl InferenceProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> InferenceProcessor { match model_id {} }
+impl<S0> From<InferenceProcessorBuilder<(S0,)>> for InferenceProcessor
+where
+    S0: crate::typed::builder::IsSet<inference_processor_members::model_id>,
+{
+    fn from(builder: InferenceProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8377,16 +8622,27 @@ pub struct Ingest {
 
 impl Ingest {
     /// Creates a builder for [`Ingest`].
+    ///
+    /// Required: `timestamp`.
     pub fn builder() -> IngestBuilder {
         IngestBuilder::new()
     }
 
     /// Creates a [`Ingest`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IngestBuilder) -> IngestBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `timestamp`.
+    pub fn of<B: crate::typed::builder::Build<Output = Ingest>>(
+        f: impl FnOnce(IngestBuilder) -> B,
     ) -> Ingest {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IngestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ingest_members {
+    pub struct timestamp;
 }
 
 /// Builder for [`Ingest`].
@@ -8431,9 +8687,9 @@ impl<S0> IngestBuilder<(S0,)> {
     }
 
     /// Sets [`redact`](Self::redact) with a builder.
-    pub fn redact_with(
+    pub fn redact_with<B: crate::typed::builder::Build<Output = Redact>>(
         self,
-        f: impl FnOnce(RedactBuilder) -> RedactBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RedactBuilder) -> B,
     ) -> Self {
         self.redact(f(RedactBuilder::new()).build())
     }
@@ -8451,6 +8707,7 @@ impl<S0> IngestBuilder<(S0,)> {
 }
 
 impl IngestBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -8461,9 +8718,12 @@ impl IngestBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IngestBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IngestBuilder<(S0,)> {
     /// Builds a [`Ingest`].
-    pub fn build(self) -> Ingest {
+    pub fn build(self) -> Ingest
+    where
+        S0: crate::typed::builder::IsSet<ingest_members::timestamp>,
+    {
         Ingest {
             redact: self.redact,
             timestamp: self.timestamp.unwrap(),
@@ -8472,16 +8732,24 @@ impl IngestBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IngestBuilder<(crate::typed::builder::Set,)>> for Ingest {
-    fn from(builder: IngestBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IngestBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ingest_members::timestamp>,
+{
+    type Output = Ingest;
+
+    fn build(self) -> Ingest {
+        Self::build(self)
     }
 }
 
-impl IngestBuilder<(crate::typed::builder::NotSet,)> {
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> Ingest { match timestamp {} }
+impl<S0> From<IngestBuilder<(S0,)>> for Ingest
+where
+    S0: crate::typed::builder::IsSet<ingest_members::timestamp>,
+{
+    fn from(builder: IngestBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8492,19 +8760,28 @@ pub struct InputConfig {
 
 impl InputConfig {
     /// Creates a builder for [`InputConfig`].
+    ///
+    /// Required: `input_field`, `output_field`.
     pub fn builder() -> InputConfigBuilder {
         InputConfigBuilder::new()
     }
 
     /// Creates a [`InputConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InputConfigBuilder,
-        )
-            -> InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `input_field`, `output_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = InputConfig>>(
+        f: impl FnOnce(InputConfigBuilder) -> B,
     ) -> InputConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InputConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod input_config_members {
+    pub struct input_field;
+    pub struct output_field;
 }
 
 /// Builder for [`InputConfig`].
@@ -8536,6 +8813,7 @@ impl<S0, S1> InputConfigBuilder<(S0, S1)> {
 }
 
 impl<S1> InputConfigBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn input_field(
         self,
         value: impl Into<String>,
@@ -8547,6 +8825,7 @@ impl<S1> InputConfigBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InputConfigBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn output_field(
         self,
         value: impl Into<String>,
@@ -8557,9 +8836,13 @@ impl<S0> InputConfigBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InputConfigBuilder<(S0, S1)> {
     /// Builds a [`InputConfig`].
-    pub fn build(self) -> InputConfig {
+    pub fn build(self) -> InputConfig
+    where
+        S0: crate::typed::builder::IsSet<input_config_members::input_field>,
+        S1: crate::typed::builder::IsSet<input_config_members::output_field>,
+    {
         InputConfig {
             input_field: self.input_field.unwrap(),
             output_field: self.output_field.unwrap(),
@@ -8567,26 +8850,26 @@ impl InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for InputConfig
+impl<S0, S1> crate::typed::builder::Build for InputConfigBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<input_config_members::input_field>,
+    S1: crate::typed::builder::IsSet<input_config_members::output_field>,
 {
-    fn from(
-        builder: InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = InputConfig;
+
+    fn build(self) -> InputConfig {
+        Self::build(self)
     }
 }
 
-impl<S1> InputConfigBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `input_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_field: crate::typed::builder::MissingRequiredField) -> InputConfig { match input_field {} }
-}
-
-impl InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `output_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, output_field: crate::typed::builder::MissingRequiredField) -> InputConfig { match output_field {} }
+impl<S0, S1> From<InputConfigBuilder<(S0, S1)>> for InputConfig
+where
+    S0: crate::typed::builder::IsSet<input_config_members::input_field>,
+    S1: crate::typed::builder::IsSet<input_config_members::output_field>,
+{
+    fn from(builder: InputConfigBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8633,18 +8916,27 @@ pub struct IpLocationProcessor {
 
 impl IpLocationProcessor {
     /// Creates a builder for [`IpLocationProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> IpLocationProcessorBuilder {
         IpLocationProcessorBuilder::new()
     }
 
     /// Creates a [`IpLocationProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IpLocationProcessorBuilder,
-        ) -> IpLocationProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpLocationProcessor>>(
+        f: impl FnOnce(IpLocationProcessorBuilder) -> B,
     ) -> IpLocationProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpLocationProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_location_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`IpLocationProcessor`].
@@ -8730,9 +9022,9 @@ impl<S0> IpLocationProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -8770,11 +9062,9 @@ impl<S0> IpLocationProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -8875,7 +9165,7 @@ impl<S0> IpLocationProcessorBuilder<(S0,)> {
 }
 
 impl IpLocationProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to get the ip address from for the geographical lookup.
+    /// **Required.** The field to get the ip address from for the geographical lookup.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -8886,9 +9176,12 @@ impl IpLocationProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpLocationProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpLocationProcessorBuilder<(S0,)> {
     /// Builds a [`IpLocationProcessor`].
-    pub fn build(self) -> IpLocationProcessor {
+    pub fn build(self) -> IpLocationProcessor
+    where
+        S0: crate::typed::builder::IsSet<ip_location_processor_members::field>,
+    {
         IpLocationProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -8906,16 +9199,24 @@ impl IpLocationProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpLocationProcessorBuilder<(crate::typed::builder::Set,)>> for IpLocationProcessor {
-    fn from(builder: IpLocationProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpLocationProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_location_processor_members::field>,
+{
+    type Output = IpLocationProcessor;
+
+    fn build(self) -> IpLocationProcessor {
+        Self::build(self)
     }
 }
 
-impl IpLocationProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> IpLocationProcessor { match field {} }
+impl<S0> From<IpLocationProcessorBuilder<(S0,)>> for IpLocationProcessor
+where
+    S0: crate::typed::builder::IsSet<ip_location_processor_members::field>,
+{
+    fn from(builder: IpLocationProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8928,7 +9229,9 @@ impl Ipinfo {
     }
 
     /// Creates a [`Ipinfo`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IpinfoBuilder) -> IpinfoBuilder) -> Ipinfo {
+    pub fn of<B: crate::typed::builder::Build<Output = Ipinfo>>(
+        f: impl FnOnce(IpinfoBuilder) -> B,
+    ) -> Ipinfo {
         f(Self::builder()).build()
     }
 }
@@ -8949,6 +9252,14 @@ impl IpinfoBuilder {
     /// Builds a [`Ipinfo`].
     pub fn build(self) -> Ipinfo {
         Ipinfo {}
+    }
+}
+
+impl crate::typed::builder::Build for IpinfoBuilder {
+    type Output = Ipinfo;
+
+    fn build(self) -> Ipinfo {
+        Self::build(self)
     }
 }
 
@@ -8989,19 +9300,28 @@ pub struct JoinProcessor {
 
 impl JoinProcessor {
     /// Creates a builder for [`JoinProcessor`].
+    ///
+    /// Required: `field`, `separator`.
     pub fn builder() -> JoinProcessorBuilder {
         JoinProcessorBuilder::new()
     }
 
     /// Creates a [`JoinProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JoinProcessorBuilder,
-        )
-            -> JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `separator`.
+    pub fn of<B: crate::typed::builder::Build<Output = JoinProcessor>>(
+        f: impl FnOnce(JoinProcessorBuilder) -> B,
     ) -> JoinProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JoinProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod join_processor_members {
+    pub struct field;
+    pub struct separator;
 }
 
 /// Builder for [`JoinProcessor`].
@@ -9076,9 +9396,9 @@ impl<S0, S1> JoinProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -9116,11 +9436,9 @@ impl<S0, S1> JoinProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -9153,7 +9471,7 @@ impl<S0, S1> JoinProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> JoinProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Field containing array values to join.
+    /// **Required.** Field containing array values to join.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -9165,7 +9483,7 @@ impl<S1> JoinProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> JoinProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The separator character.
+    /// **Required.** The separator character.
     pub fn separator(
         self,
         value: impl Into<String>,
@@ -9176,9 +9494,13 @@ impl<S0> JoinProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> JoinProcessorBuilder<(S0, S1)> {
     /// Builds a [`JoinProcessor`].
-    pub fn build(self) -> JoinProcessor {
+    pub fn build(self) -> JoinProcessor
+    where
+        S0: crate::typed::builder::IsSet<join_processor_members::field>,
+        S1: crate::typed::builder::IsSet<join_processor_members::separator>,
+    {
         JoinProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -9192,26 +9514,26 @@ impl JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for JoinProcessor
+impl<S0, S1> crate::typed::builder::Build for JoinProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<join_processor_members::field>,
+    S1: crate::typed::builder::IsSet<join_processor_members::separator>,
 {
-    fn from(
-        builder: JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = JoinProcessor;
+
+    fn build(self) -> JoinProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> JoinProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> JoinProcessor { match field {} }
-}
-
-impl JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `separator` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, separator: crate::typed::builder::MissingRequiredField) -> JoinProcessor { match separator {} }
+impl<S0, S1> From<JoinProcessorBuilder<(S0, S1)>> for JoinProcessor
+where
+    S0: crate::typed::builder::IsSet<join_processor_members::field>,
+    S1: crate::typed::builder::IsSet<join_processor_members::separator>,
+{
+    fn from(builder: JoinProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9256,16 +9578,27 @@ pub struct JsonProcessor {
 
 impl JsonProcessor {
     /// Creates a builder for [`JsonProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> JsonProcessorBuilder {
         JsonProcessorBuilder::new()
     }
 
     /// Creates a [`JsonProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(JsonProcessorBuilder) -> JsonProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = JsonProcessor>>(
+        f: impl FnOnce(JsonProcessorBuilder) -> B,
     ) -> JsonProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JsonProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod json_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`JsonProcessor`].
@@ -9345,9 +9678,9 @@ impl<S0> JsonProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -9385,11 +9718,9 @@ impl<S0> JsonProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -9468,7 +9799,7 @@ impl<S0> JsonProcessorBuilder<(S0,)> {
 }
 
 impl JsonProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to be parsed.
+    /// **Required.** The field to be parsed.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -9479,9 +9810,12 @@ impl JsonProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl JsonProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> JsonProcessorBuilder<(S0,)> {
     /// Builds a [`JsonProcessor`].
-    pub fn build(self) -> JsonProcessor {
+    pub fn build(self) -> JsonProcessor
+    where
+        S0: crate::typed::builder::IsSet<json_processor_members::field>,
+    {
         JsonProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -9497,16 +9831,24 @@ impl JsonProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<JsonProcessorBuilder<(crate::typed::builder::Set,)>> for JsonProcessor {
-    fn from(builder: JsonProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for JsonProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<json_processor_members::field>,
+{
+    type Output = JsonProcessor;
+
+    fn build(self) -> JsonProcessor {
+        Self::build(self)
     }
 }
 
-impl JsonProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> JsonProcessor { match field {} }
+impl<S0> From<JsonProcessorBuilder<(S0,)>> for JsonProcessor
+where
+    S0: crate::typed::builder::IsSet<json_processor_members::field>,
+{
+    fn from(builder: JsonProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9576,22 +9918,29 @@ pub struct KeyValueProcessor {
 
 impl KeyValueProcessor {
     /// Creates a builder for [`KeyValueProcessor`].
+    ///
+    /// Required: `field`, `field_split`, `value_split`.
     pub fn builder() -> KeyValueProcessorBuilder {
         KeyValueProcessorBuilder::new()
     }
 
     /// Creates a [`KeyValueProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeyValueProcessorBuilder,
-        ) -> KeyValueProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `field_split`, `value_split`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeyValueProcessor>>(
+        f: impl FnOnce(KeyValueProcessorBuilder) -> B,
     ) -> KeyValueProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeyValueProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod key_value_processor_members {
+    pub struct field;
+    pub struct field_split;
+    pub struct value_split;
 }
 
 /// Builder for [`KeyValueProcessor`].
@@ -9701,9 +10050,9 @@ impl<S0, S1, S2> KeyValueProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -9741,11 +10090,9 @@ impl<S0, S1, S2> KeyValueProcessorBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -9880,7 +10227,7 @@ impl<S0, S1, S2> KeyValueProcessorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> KeyValueProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The field to be parsed.
+    /// **Required.** The field to be parsed.
     /// Supports template snippets.
     pub fn field(
         self,
@@ -9893,7 +10240,7 @@ impl<S1, S2> KeyValueProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> KeyValueProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Regex pattern to use for splitting key-value pairs.
+    /// **Required.** Regex pattern to use for splitting key-value pairs.
     pub fn field_split(
         self,
         value: impl Into<String>,
@@ -9905,7 +10252,7 @@ impl<S0, S2> KeyValueProcessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> KeyValueProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Regex pattern to use for splitting the key from the value within a key-value pair.
+    /// **Required.** Regex pattern to use for splitting the key from the value within a key-value pair.
     pub fn value_split(
         self,
         value: impl Into<String>,
@@ -9916,15 +10263,14 @@ impl<S0, S1> KeyValueProcessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    KeyValueProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> KeyValueProcessorBuilder<(S0, S1, S2)> {
     /// Builds a [`KeyValueProcessor`].
-    pub fn build(self) -> KeyValueProcessor {
+    pub fn build(self) -> KeyValueProcessor
+    where
+        S0: crate::typed::builder::IsSet<key_value_processor_members::field>,
+        S1: crate::typed::builder::IsSet<key_value_processor_members::field_split>,
+        S2: crate::typed::builder::IsSet<key_value_processor_members::value_split>,
+    {
         KeyValueProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -9946,54 +10292,28 @@ impl
     }
 }
 
-impl
-    From<
-        KeyValueProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for KeyValueProcessor
+impl<S0, S1, S2> crate::typed::builder::Build for KeyValueProcessorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<key_value_processor_members::field>,
+    S1: crate::typed::builder::IsSet<key_value_processor_members::field_split>,
+    S2: crate::typed::builder::IsSet<key_value_processor_members::value_split>,
 {
-    fn from(
-        builder: KeyValueProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KeyValueProcessor;
+
+    fn build(self) -> KeyValueProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> KeyValueProcessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> KeyValueProcessor { match field {} }
-}
-
-impl<S2>
-    KeyValueProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<KeyValueProcessorBuilder<(S0, S1, S2)>> for KeyValueProcessor
+where
+    S0: crate::typed::builder::IsSet<key_value_processor_members::field>,
+    S1: crate::typed::builder::IsSet<key_value_processor_members::field_split>,
+    S2: crate::typed::builder::IsSet<key_value_processor_members::value_split>,
 {
-    /// `field_split` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field_split: crate::typed::builder::MissingRequiredField) -> KeyValueProcessor { match field_split {} }
-}
-
-impl
-    KeyValueProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value_split` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value_split: crate::typed::builder::MissingRequiredField) -> KeyValueProcessor { match value_split {} }
+    fn from(builder: KeyValueProcessorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10003,16 +10323,27 @@ pub struct Local {
 
 impl Local {
     /// Creates a builder for [`Local`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LocalBuilder {
         LocalBuilder::new()
     }
 
     /// Creates a [`Local`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(LocalBuilder) -> LocalBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Local>>(
+        f: impl FnOnce(LocalBuilder) -> B,
     ) -> Local {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LocalBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod local_members {
+    pub struct r#type;
 }
 
 /// Builder for [`Local`].
@@ -10041,6 +10372,7 @@ impl<S0> LocalBuilder<(S0,)> {
 }
 
 impl LocalBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(self, value: impl Into<String>) -> LocalBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.r#type = Some(value.into());
@@ -10048,25 +10380,36 @@ impl LocalBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LocalBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LocalBuilder<(S0,)> {
     /// Builds a [`Local`].
-    pub fn build(self) -> Local {
+    pub fn build(self) -> Local
+    where
+        S0: crate::typed::builder::IsSet<local_members::r#type>,
+    {
         Local {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<LocalBuilder<(crate::typed::builder::Set,)>> for Local {
-    fn from(builder: LocalBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LocalBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<local_members::r#type>,
+{
+    type Output = Local;
+
+    fn build(self) -> Local {
+        Self::build(self)
     }
 }
 
-impl LocalBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Local { match r#type {} }
+impl<S0> From<LocalBuilder<(S0,)>> for Local
+where
+    S0: crate::typed::builder::IsSet<local_members::r#type>,
+{
+    fn from(builder: LocalBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10101,18 +10444,27 @@ pub struct LowercaseProcessor {
 
 impl LowercaseProcessor {
     /// Creates a builder for [`LowercaseProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> LowercaseProcessorBuilder {
         LowercaseProcessorBuilder::new()
     }
 
     /// Creates a [`LowercaseProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LowercaseProcessorBuilder,
-        ) -> LowercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = LowercaseProcessor>>(
+        f: impl FnOnce(LowercaseProcessorBuilder) -> B,
     ) -> LowercaseProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LowercaseProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lowercase_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`LowercaseProcessor`].
@@ -10186,9 +10538,9 @@ impl<S0> LowercaseProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -10226,11 +10578,9 @@ impl<S0> LowercaseProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -10275,7 +10625,7 @@ impl<S0> LowercaseProcessorBuilder<(S0,)> {
 }
 
 impl LowercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to make lowercase.
+    /// **Required.** The field to make lowercase.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -10286,9 +10636,12 @@ impl LowercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LowercaseProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LowercaseProcessorBuilder<(S0,)> {
     /// Builds a [`LowercaseProcessor`].
-    pub fn build(self) -> LowercaseProcessor {
+    pub fn build(self) -> LowercaseProcessor
+    where
+        S0: crate::typed::builder::IsSet<lowercase_processor_members::field>,
+    {
         LowercaseProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -10302,16 +10655,24 @@ impl LowercaseProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LowercaseProcessorBuilder<(crate::typed::builder::Set,)>> for LowercaseProcessor {
-    fn from(builder: LowercaseProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LowercaseProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<lowercase_processor_members::field>,
+{
+    type Output = LowercaseProcessor;
+
+    fn build(self) -> LowercaseProcessor {
+        Self::build(self)
     }
 }
 
-impl LowercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> LowercaseProcessor { match field {} }
+impl<S0> From<LowercaseProcessorBuilder<(S0,)>> for LowercaseProcessor
+where
+    S0: crate::typed::builder::IsSet<lowercase_processor_members::field>,
+{
+    fn from(builder: LowercaseProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10321,16 +10682,27 @@ pub struct Maxmind {
 
 impl Maxmind {
     /// Creates a builder for [`Maxmind`].
+    ///
+    /// Required: `account_id`.
     pub fn builder() -> MaxmindBuilder {
         MaxmindBuilder::new()
     }
 
     /// Creates a [`Maxmind`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MaxmindBuilder) -> MaxmindBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `account_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Maxmind>>(
+        f: impl FnOnce(MaxmindBuilder) -> B,
     ) -> Maxmind {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MaxmindBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod maxmind_members {
+    pub struct account_id;
 }
 
 /// Builder for [`Maxmind`].
@@ -10359,6 +10731,7 @@ impl<S0> MaxmindBuilder<(S0,)> {
 }
 
 impl MaxmindBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn account_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -10369,25 +10742,36 @@ impl MaxmindBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MaxmindBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MaxmindBuilder<(S0,)> {
     /// Builds a [`Maxmind`].
-    pub fn build(self) -> Maxmind {
+    pub fn build(self) -> Maxmind
+    where
+        S0: crate::typed::builder::IsSet<maxmind_members::account_id>,
+    {
         Maxmind {
             account_id: self.account_id.unwrap(),
         }
     }
 }
 
-impl From<MaxmindBuilder<(crate::typed::builder::Set,)>> for Maxmind {
-    fn from(builder: MaxmindBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MaxmindBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<maxmind_members::account_id>,
+{
+    type Output = Maxmind;
+
+    fn build(self) -> Maxmind {
+        Self::build(self)
     }
 }
 
-impl MaxmindBuilder<(crate::typed::builder::NotSet,)> {
-    /// `account_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, account_id: crate::typed::builder::MissingRequiredField) -> Maxmind { match account_id {} }
+impl<S0> From<MaxmindBuilder<(S0,)>> for Maxmind
+where
+    S0: crate::typed::builder::IsSet<maxmind_members::account_id>,
+{
+    fn from(builder: MaxmindBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10441,8 +10825,8 @@ impl NetworkDirectionProcessor {
     }
 
     /// Creates a [`NetworkDirectionProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NetworkDirectionProcessorBuilder) -> NetworkDirectionProcessorBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NetworkDirectionProcessor>>(
+        f: impl FnOnce(NetworkDirectionProcessorBuilder) -> B,
     ) -> NetworkDirectionProcessor {
         f(Self::builder()).build()
     }
@@ -10509,9 +10893,9 @@ impl NetworkDirectionProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -10549,11 +10933,9 @@ impl NetworkDirectionProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -10682,6 +11064,14 @@ impl NetworkDirectionProcessorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NetworkDirectionProcessorBuilder {
+    type Output = NetworkDirectionProcessor;
+
+    fn build(self) -> NetworkDirectionProcessor {
+        Self::build(self)
+    }
+}
+
 impl From<NetworkDirectionProcessorBuilder> for NetworkDirectionProcessor {
     fn from(builder: NetworkDirectionProcessorBuilder) -> Self {
         builder.build()
@@ -10734,7 +11124,9 @@ impl Pipeline {
     }
 
     /// Creates a [`Pipeline`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PipelineBuilder) -> PipelineBuilder) -> Pipeline {
+    pub fn of<B: crate::typed::builder::Build<Output = Pipeline>>(
+        f: impl FnOnce(PipelineBuilder) -> B,
+    ) -> Pipeline {
         f(Self::builder()).build()
     }
 }
@@ -10807,11 +11199,9 @@ impl PipelineBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -10838,11 +11228,9 @@ impl PipelineBuilder {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_processors(f(ProcessorContainerBuilder::new()).build())
     }
@@ -10984,6 +11372,14 @@ impl PipelineBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PipelineBuilder {
+    type Output = Pipeline;
+
+    fn build(self) -> Pipeline {
+        Self::build(self)
+    }
+}
+
 impl From<PipelineBuilder> for Pipeline {
     fn from(builder: PipelineBuilder) -> Self {
         builder.build()
@@ -11005,16 +11401,27 @@ pub struct PipelineConfig {
 
 impl PipelineConfig {
     /// Creates a builder for [`PipelineConfig`].
+    ///
+    /// Required: `processors`.
     pub fn builder() -> PipelineConfigBuilder {
         PipelineConfigBuilder::new()
     }
 
     /// Creates a [`PipelineConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PipelineConfigBuilder) -> PipelineConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `processors`.
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineConfig>>(
+        f: impl FnOnce(PipelineConfigBuilder) -> B,
     ) -> PipelineConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PipelineConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pipeline_config_members {
+    pub struct processors;
 }
 
 /// Builder for [`PipelineConfig`].
@@ -11073,7 +11480,7 @@ impl<S0> PipelineConfigBuilder<(S0,)> {
 }
 
 impl PipelineConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// Processors used to perform transformations on documents before indexing.
+    /// **Required.** Processors used to perform transformations on documents before indexing.
     /// Processors run sequentially in the order specified.
     pub fn processors(
         self,
@@ -11098,11 +11505,9 @@ impl PipelineConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> PipelineConfigBuilder<(crate::typed::builder::Set,)> {
         self.add_processors(f(ProcessorContainerBuilder::new()).build())
     }
@@ -11118,19 +11523,20 @@ impl PipelineConfigBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_processors(f(ProcessorContainerBuilder::new()).build())
     }
 }
 
-impl PipelineConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PipelineConfigBuilder<(S0,)> {
     /// Builds a [`PipelineConfig`].
-    pub fn build(self) -> PipelineConfig {
+    pub fn build(self) -> PipelineConfig
+    where
+        S0: crate::typed::builder::IsSet<pipeline_config_members::processors>,
+    {
         PipelineConfig {
             description: self.description,
             version: self.version,
@@ -11139,16 +11545,24 @@ impl PipelineConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PipelineConfigBuilder<(crate::typed::builder::Set,)>> for PipelineConfig {
-    fn from(builder: PipelineConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PipelineConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<pipeline_config_members::processors>,
+{
+    type Output = PipelineConfig;
+
+    fn build(self) -> PipelineConfig {
+        Self::build(self)
     }
 }
 
-impl PipelineConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processors: crate::typed::builder::MissingRequiredField) -> PipelineConfig { match processors {} }
+impl<S0> From<PipelineConfigBuilder<(S0,)>> for PipelineConfig
+where
+    S0: crate::typed::builder::IsSet<pipeline_config_members::processors>,
+{
+    fn from(builder: PipelineConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11180,18 +11594,27 @@ pub struct PipelineProcessor {
 
 impl PipelineProcessor {
     /// Creates a builder for [`PipelineProcessor`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> PipelineProcessorBuilder {
         PipelineProcessorBuilder::new()
     }
 
     /// Creates a [`PipelineProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PipelineProcessorBuilder,
-        ) -> PipelineProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineProcessor>>(
+        f: impl FnOnce(PipelineProcessorBuilder) -> B,
     ) -> PipelineProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PipelineProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pipeline_processor_members {
+    pub struct name;
 }
 
 /// Builder for [`PipelineProcessor`].
@@ -11262,9 +11685,9 @@ impl<S0> PipelineProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11302,11 +11725,9 @@ impl<S0> PipelineProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -11338,7 +11759,7 @@ impl<S0> PipelineProcessorBuilder<(S0,)> {
 }
 
 impl PipelineProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the pipeline to execute.
+    /// **Required.** The name of the pipeline to execute.
     /// Supports template snippets.
     pub fn name(
         self,
@@ -11350,9 +11771,12 @@ impl PipelineProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PipelineProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PipelineProcessorBuilder<(S0,)> {
     /// Builds a [`PipelineProcessor`].
-    pub fn build(self) -> PipelineProcessor {
+    pub fn build(self) -> PipelineProcessor
+    where
+        S0: crate::typed::builder::IsSet<pipeline_processor_members::name>,
+    {
         PipelineProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -11365,16 +11789,24 @@ impl PipelineProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PipelineProcessorBuilder<(crate::typed::builder::Set,)>> for PipelineProcessor {
-    fn from(builder: PipelineProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PipelineProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<pipeline_processor_members::name>,
+{
+    type Output = PipelineProcessor;
+
+    fn build(self) -> PipelineProcessor {
+        Self::build(self)
     }
 }
 
-impl PipelineProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> PipelineProcessor { match name {} }
+impl<S0> From<PipelineProcessorBuilder<(S0,)>> for PipelineProcessor
+where
+    S0: crate::typed::builder::IsSet<pipeline_processor_members::name>,
+{
+    fn from(builder: PipelineProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11402,8 +11834,8 @@ impl PipelineProcessorResult {
     }
 
     /// Creates a [`PipelineProcessorResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PipelineProcessorResultBuilder) -> PipelineProcessorResultBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineProcessorResult>>(
+        f: impl FnOnce(PipelineProcessorResultBuilder) -> B,
     ) -> PipelineProcessorResult {
         f(Self::builder()).build()
     }
@@ -11448,16 +11880,9 @@ impl PipelineProcessorResultBuilder {
     }
 
     /// Sets [`doc`](Self::doc) with a builder.
-    pub fn doc_with(
+    pub fn doc_with<B: crate::typed::builder::Build<Output = DocumentSimulation>>(
         self,
-        f: impl FnOnce(
-            DocumentSimulationBuilder,
-        ) -> DocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DocumentSimulationBuilder) -> B,
     ) -> Self {
         self.doc(f(DocumentSimulationBuilder::new()).build())
     }
@@ -11518,12 +11943,11 @@ impl PipelineProcessorResultBuilder {
     }
 
     /// Sets [`ignored_error`](Self::ignored_error) with a builder.
-    pub fn ignored_error_with(
+    pub fn ignored_error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.ignored_error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -11540,12 +11964,11 @@ impl PipelineProcessorResultBuilder {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -11563,6 +11986,14 @@ impl PipelineProcessorResultBuilder {
             ignored_error: self.ignored_error,
             error: self.error,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PipelineProcessorResultBuilder {
+    type Output = PipelineProcessorResult;
+
+    fn build(self) -> PipelineProcessorResult {
+        Self::build(self)
     }
 }
 
@@ -11614,7 +12045,9 @@ impl ProcessorBase {
     }
 
     /// Creates a [`ProcessorBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ProcessorBaseBuilder) -> ProcessorBaseBuilder) -> ProcessorBase {
+    pub fn of<B: crate::typed::builder::Build<Output = ProcessorBase>>(
+        f: impl FnOnce(ProcessorBaseBuilder) -> B,
+    ) -> ProcessorBase {
         f(Self::builder()).build()
     }
 }
@@ -11668,9 +12101,9 @@ impl ProcessorBaseBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11708,11 +12141,9 @@ impl ProcessorBaseBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -11741,6 +12172,14 @@ impl ProcessorBaseBuilder {
             on_failure: self.on_failure,
             tag: self.tag,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ProcessorBaseBuilder {
+    type Output = ProcessorBase;
+
+    fn build(self) -> ProcessorBase {
+        Self::build(self)
     }
 }
 
@@ -12598,15 +13037,17 @@ impl From<UserAgentProcessorBuilder<(crate::typed::builder::Set,)>> for Processo
 
 impl ProcessorContainer {
     /// Creates a builder for [`ProcessorContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ProcessorContainerBuilder {
         ProcessorContainerBuilder::new()
     }
 
     /// Creates a [`ProcessorContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> ProcessorContainer {
         f(Self::builder()).build()
     }
@@ -12652,9 +13093,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`append`](Self::append) with a builder.
-    pub fn append_with(
+    pub fn append_with<B: crate::typed::builder::Build<Output = AppendProcessor>>(
         self,
-        f: impl FnOnce(AppendProcessorBuilder) -> AppendProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AppendProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.append(f(AppendProcessorBuilder::new()).build())
     }
@@ -12670,11 +13111,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`attachment`](Self::attachment) with a builder.
-    pub fn attachment_with(
+    pub fn attachment_with<B: crate::typed::builder::Build<Output = AttachmentProcessor>>(
         self,
-        f: impl FnOnce(
-            AttachmentProcessorBuilder,
-        ) -> AttachmentProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AttachmentProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.attachment(f(AttachmentProcessorBuilder::new()).build())
     }
@@ -12693,9 +13132,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bytes`](Self::bytes) with a builder.
-    pub fn bytes_with(
+    pub fn bytes_with<B: crate::typed::builder::Build<Output = BytesProcessor>>(
         self,
-        f: impl FnOnce(BytesProcessorBuilder) -> BytesProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(BytesProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.bytes(f(BytesProcessorBuilder::new()).build())
     }
@@ -12711,9 +13150,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cef`](Self::cef) with a builder.
-    pub fn cef_with(
+    pub fn cef_with<B: crate::typed::builder::Build<Output = CefProcessor>>(
         self,
-        f: impl FnOnce(CefProcessorBuilder) -> CefProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CefProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.cef(f(CefProcessorBuilder::new()).build())
     }
@@ -12729,15 +13168,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`circle`](Self::circle) with a builder.
-    pub fn circle_with(
+    pub fn circle_with<B: crate::typed::builder::Build<Output = CircleProcessor>>(
         self,
-        f: impl FnOnce(
-            CircleProcessorBuilder,
-        ) -> CircleProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CircleProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.circle(f(CircleProcessorBuilder::new()).build())
     }
@@ -12755,9 +13188,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`community_id`](Self::community_id) with a builder.
-    pub fn community_id_with(
+    pub fn community_id_with<B: crate::typed::builder::Build<Output = CommunityIDProcessor>>(
         self,
-        f: impl FnOnce(CommunityIDProcessorBuilder) -> CommunityIDProcessorBuilder,
+        f: impl FnOnce(CommunityIDProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.community_id(f(CommunityIDProcessorBuilder::new()).build())
     }
@@ -12774,14 +13207,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`convert`](Self::convert) with a builder.
-    pub fn convert_with(
+    pub fn convert_with<B: crate::typed::builder::Build<Output = ConvertProcessor>>(
         self,
-        f: impl FnOnce(
-            ConvertProcessorBuilder,
-        ) -> ConvertProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConvertProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.convert(f(ConvertProcessorBuilder::new()).build())
     }
@@ -12798,12 +13226,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`csv`](Self::csv) with a builder.
-    pub fn csv_with(
+    pub fn csv_with<B: crate::typed::builder::Build<Output = CsvProcessor>>(
         self,
-        f: impl FnOnce(
-            CsvProcessorBuilder,
-        )
-            -> CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(CsvProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.csv(f(CsvProcessorBuilder::new()).build())
     }
@@ -12819,12 +13244,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date`](Self::date) with a builder.
-    pub fn date_with(
+    pub fn date_with<B: crate::typed::builder::Build<Output = DateProcessor>>(
         self,
-        f: impl FnOnce(
-            DateProcessorBuilder,
-        )
-            -> DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(DateProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.date(f(DateProcessorBuilder::new()).build())
     }
@@ -12840,14 +13262,11 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_index_name`](Self::date_index_name) with a builder.
-    pub fn date_index_name_with(
+    pub fn date_index_name_with<
+        B: crate::typed::builder::Build<Output = DateIndexNameProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            DateIndexNameProcessorBuilder,
-        ) -> DateIndexNameProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DateIndexNameProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.date_index_name(f(DateIndexNameProcessorBuilder::new()).build())
     }
@@ -12863,14 +13282,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`dissect`](Self::dissect) with a builder.
-    pub fn dissect_with(
+    pub fn dissect_with<B: crate::typed::builder::Build<Output = DissectProcessor>>(
         self,
-        f: impl FnOnce(
-            DissectProcessorBuilder,
-        ) -> DissectProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DissectProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.dissect(f(DissectProcessorBuilder::new()).build())
     }
@@ -12888,11 +13302,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`dot_expander`](Self::dot_expander) with a builder.
-    pub fn dot_expander_with(
+    pub fn dot_expander_with<B: crate::typed::builder::Build<Output = DotExpanderProcessor>>(
         self,
-        f: impl FnOnce(
-            DotExpanderProcessorBuilder,
-        ) -> DotExpanderProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DotExpanderProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.dot_expander(f(DotExpanderProcessorBuilder::new()).build())
     }
@@ -12909,9 +13321,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`drop`](Self::drop) with a builder.
-    pub fn drop_with(
+    pub fn drop_with<B: crate::typed::builder::Build<Output = DropProcessor>>(
         self,
-        f: impl FnOnce(DropProcessorBuilder) -> DropProcessorBuilder,
+        f: impl FnOnce(DropProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.drop(f(DropProcessorBuilder::new()).build())
     }
@@ -12927,15 +13339,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`enrich`](Self::enrich) with a builder.
-    pub fn enrich_with(
+    pub fn enrich_with<B: crate::typed::builder::Build<Output = EnrichProcessor>>(
         self,
-        f: impl FnOnce(
-            EnrichProcessorBuilder,
-        ) -> EnrichProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(EnrichProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.enrich(f(EnrichProcessorBuilder::new()).build())
     }
@@ -12952,9 +13358,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fail`](Self::fail) with a builder.
-    pub fn fail_with(
+    pub fn fail_with<B: crate::typed::builder::Build<Output = FailProcessor>>(
         self,
-        f: impl FnOnce(FailProcessorBuilder) -> FailProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FailProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.fail(f(FailProcessorBuilder::new()).build())
     }
@@ -12971,11 +13377,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fingerprint`](Self::fingerprint) with a builder.
-    pub fn fingerprint_with(
+    pub fn fingerprint_with<B: crate::typed::builder::Build<Output = FingerprintProcessor>>(
         self,
-        f: impl FnOnce(
-            FingerprintProcessorBuilder,
-        ) -> FingerprintProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FingerprintProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.fingerprint(f(FingerprintProcessorBuilder::new()).build())
     }
@@ -12991,14 +13395,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`foreach`](Self::foreach) with a builder.
-    pub fn foreach_with(
+    pub fn foreach_with<B: crate::typed::builder::Build<Output = ForeachProcessor>>(
         self,
-        f: impl FnOnce(
-            ForeachProcessorBuilder,
-        ) -> ForeachProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ForeachProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.foreach(f(ForeachProcessorBuilder::new()).build())
     }
@@ -13014,11 +13413,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ip_location`](Self::ip_location) with a builder.
-    pub fn ip_location_with(
+    pub fn ip_location_with<B: crate::typed::builder::Build<Output = IpLocationProcessor>>(
         self,
-        f: impl FnOnce(
-            IpLocationProcessorBuilder,
-        ) -> IpLocationProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IpLocationProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.ip_location(f(IpLocationProcessorBuilder::new()).build())
     }
@@ -13035,14 +13432,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_grid`](Self::geo_grid) with a builder.
-    pub fn geo_grid_with(
+    pub fn geo_grid_with<B: crate::typed::builder::Build<Output = GeoGridProcessor>>(
         self,
-        f: impl FnOnce(
-            GeoGridProcessorBuilder,
-        ) -> GeoGridProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(GeoGridProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_grid(f(GeoGridProcessorBuilder::new()).build())
     }
@@ -13058,9 +13450,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geoip`](Self::geoip) with a builder.
-    pub fn geoip_with(
+    pub fn geoip_with<B: crate::typed::builder::Build<Output = GeoIpProcessor>>(
         self,
-        f: impl FnOnce(GeoIpProcessorBuilder) -> GeoIpProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoIpProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.geoip(f(GeoIpProcessorBuilder::new()).build())
     }
@@ -13078,12 +13470,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`grok`](Self::grok) with a builder.
-    pub fn grok_with(
+    pub fn grok_with<B: crate::typed::builder::Build<Output = GrokProcessor>>(
         self,
-        f: impl FnOnce(
-            GrokProcessorBuilder,
-        )
-            -> GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(GrokProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.grok(f(GrokProcessorBuilder::new()).build())
     }
@@ -13101,15 +13490,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`gsub`](Self::gsub) with a builder.
-    pub fn gsub_with(
+    pub fn gsub_with<B: crate::typed::builder::Build<Output = GsubProcessor>>(
         self,
-        f: impl FnOnce(
-            GsubProcessorBuilder,
-        ) -> GsubProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(GsubProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.gsub(f(GsubProcessorBuilder::new()).build())
     }
@@ -13126,11 +13509,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`html_strip`](Self::html_strip) with a builder.
-    pub fn html_strip_with(
+    pub fn html_strip_with<B: crate::typed::builder::Build<Output = HtmlStripProcessor>>(
         self,
-        f: impl FnOnce(
-            HtmlStripProcessorBuilder,
-        ) -> HtmlStripProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(HtmlStripProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.html_strip(f(HtmlStripProcessorBuilder::new()).build())
     }
@@ -13146,11 +13527,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`inference`](Self::inference) with a builder.
-    pub fn inference_with(
+    pub fn inference_with<B: crate::typed::builder::Build<Output = InferenceProcessor>>(
         self,
-        f: impl FnOnce(
-            InferenceProcessorBuilder,
-        ) -> InferenceProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.inference(f(InferenceProcessorBuilder::new()).build())
     }
@@ -13167,12 +13546,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`join`](Self::join) with a builder.
-    pub fn join_with(
+    pub fn join_with<B: crate::typed::builder::Build<Output = JoinProcessor>>(
         self,
-        f: impl FnOnce(
-            JoinProcessorBuilder,
-        )
-            -> JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(JoinProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.join(f(JoinProcessorBuilder::new()).build())
     }
@@ -13188,9 +13564,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`json`](Self::json) with a builder.
-    pub fn json_with(
+    pub fn json_with<B: crate::typed::builder::Build<Output = JsonProcessor>>(
         self,
-        f: impl FnOnce(JsonProcessorBuilder) -> JsonProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(JsonProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.json(f(JsonProcessorBuilder::new()).build())
     }
@@ -13206,15 +13582,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`kv`](Self::kv) with a builder.
-    pub fn kv_with(
+    pub fn kv_with<B: crate::typed::builder::Build<Output = KeyValueProcessor>>(
         self,
-        f: impl FnOnce(
-            KeyValueProcessorBuilder,
-        ) -> KeyValueProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(KeyValueProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.kv(f(KeyValueProcessorBuilder::new()).build())
     }
@@ -13231,11 +13601,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`lowercase`](Self::lowercase) with a builder.
-    pub fn lowercase_with(
+    pub fn lowercase_with<B: crate::typed::builder::Build<Output = LowercaseProcessor>>(
         self,
-        f: impl FnOnce(
-            LowercaseProcessorBuilder,
-        ) -> LowercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(LowercaseProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.lowercase(f(LowercaseProcessorBuilder::new()).build())
     }
@@ -13252,9 +13620,11 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`network_direction`](Self::network_direction) with a builder.
-    pub fn network_direction_with(
+    pub fn network_direction_with<
+        B: crate::typed::builder::Build<Output = NetworkDirectionProcessor>,
+    >(
         self,
-        f: impl FnOnce(NetworkDirectionProcessorBuilder) -> NetworkDirectionProcessorBuilder,
+        f: impl FnOnce(NetworkDirectionProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.network_direction(f(NetworkDirectionProcessorBuilder::new()).build())
     }
@@ -13270,11 +13640,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<B: crate::typed::builder::Build<Output = PipelineProcessor>>(
         self,
-        f: impl FnOnce(
-            PipelineProcessorBuilder,
-        ) -> PipelineProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PipelineProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.pipeline(f(PipelineProcessorBuilder::new()).build())
     }
@@ -13292,14 +13660,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`redact`](Self::redact) with a builder.
-    pub fn redact_with(
+    pub fn redact_with<B: crate::typed::builder::Build<Output = RedactProcessor>>(
         self,
-        f: impl FnOnce(
-            RedactProcessorBuilder,
-        ) -> RedactProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RedactProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.redact(f(RedactProcessorBuilder::new()).build())
     }
@@ -13318,11 +13681,11 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`registered_domain`](Self::registered_domain) with a builder.
-    pub fn registered_domain_with(
+    pub fn registered_domain_with<
+        B: crate::typed::builder::Build<Output = RegisteredDomainProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            RegisteredDomainProcessorBuilder,
-        ) -> RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RegisteredDomainProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.registered_domain(f(RegisteredDomainProcessorBuilder::new()).build())
     }
@@ -13339,9 +13702,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`remove`](Self::remove) with a builder.
-    pub fn remove_with(
+    pub fn remove_with<B: crate::typed::builder::Build<Output = RemoveProcessor>>(
         self,
-        f: impl FnOnce(RemoveProcessorBuilder) -> RemoveProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RemoveProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.remove(f(RemoveProcessorBuilder::new()).build())
     }
@@ -13358,14 +13721,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`rename`](Self::rename) with a builder.
-    pub fn rename_with(
+    pub fn rename_with<B: crate::typed::builder::Build<Output = RenameProcessor>>(
         self,
-        f: impl FnOnce(
-            RenameProcessorBuilder,
-        ) -> RenameProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RenameProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.rename(f(RenameProcessorBuilder::new()).build())
     }
@@ -13383,9 +13741,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`reroute`](Self::reroute) with a builder.
-    pub fn reroute_with(
+    pub fn reroute_with<B: crate::typed::builder::Build<Output = RerouteProcessor>>(
         self,
-        f: impl FnOnce(RerouteProcessorBuilder) -> RerouteProcessorBuilder,
+        f: impl FnOnce(RerouteProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.reroute(f(RerouteProcessorBuilder::new()).build())
     }
@@ -13402,9 +13760,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = ScriptProcessor>>(
         self,
-        f: impl FnOnce(ScriptProcessorBuilder) -> ScriptProcessorBuilder,
+        f: impl FnOnce(ScriptProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.script(f(ScriptProcessorBuilder::new()).build())
     }
@@ -13421,9 +13779,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`set`](Self::set) with a builder.
-    pub fn set_with(
+    pub fn set_with<B: crate::typed::builder::Build<Output = SetProcessor>>(
         self,
-        f: impl FnOnce(SetProcessorBuilder) -> SetProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SetProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.set(f(SetProcessorBuilder::new()).build())
     }
@@ -13439,11 +13797,11 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`set_security_user`](Self::set_security_user) with a builder.
-    pub fn set_security_user_with(
+    pub fn set_security_user_with<
+        B: crate::typed::builder::Build<Output = SetSecurityUserProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            SetSecurityUserProcessorBuilder,
-        ) -> SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SetSecurityUserProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.set_security_user(f(SetSecurityUserProcessorBuilder::new()).build())
     }
@@ -13461,9 +13819,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`sort`](Self::sort) with a builder.
-    pub fn sort_with(
+    pub fn sort_with<B: crate::typed::builder::Build<Output = SortProcessor>>(
         self,
-        f: impl FnOnce(SortProcessorBuilder) -> SortProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SortProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.sort(f(SortProcessorBuilder::new()).build())
     }
@@ -13480,14 +13838,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`split`](Self::split) with a builder.
-    pub fn split_with(
+    pub fn split_with<B: crate::typed::builder::Build<Output = SplitProcessor>>(
         self,
-        f: impl FnOnce(
-            SplitProcessorBuilder,
-        ) -> SplitProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SplitProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.split(f(SplitProcessorBuilder::new()).build())
     }
@@ -13504,9 +13857,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terminate`](Self::terminate) with a builder.
-    pub fn terminate_with(
+    pub fn terminate_with<B: crate::typed::builder::Build<Output = TerminateProcessor>>(
         self,
-        f: impl FnOnce(TerminateProcessorBuilder) -> TerminateProcessorBuilder,
+        f: impl FnOnce(TerminateProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.terminate(f(TerminateProcessorBuilder::new()).build())
     }
@@ -13524,9 +13877,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`trim`](Self::trim) with a builder.
-    pub fn trim_with(
+    pub fn trim_with<B: crate::typed::builder::Build<Output = TrimProcessor>>(
         self,
-        f: impl FnOnce(TrimProcessorBuilder) -> TrimProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrimProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.trim(f(TrimProcessorBuilder::new()).build())
     }
@@ -13543,11 +13896,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`uppercase`](Self::uppercase) with a builder.
-    pub fn uppercase_with(
+    pub fn uppercase_with<B: crate::typed::builder::Build<Output = UppercaseProcessor>>(
         self,
-        f: impl FnOnce(
-            UppercaseProcessorBuilder,
-        ) -> UppercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(UppercaseProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.uppercase(f(UppercaseProcessorBuilder::new()).build())
     }
@@ -13564,11 +13915,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`urldecode`](Self::urldecode) with a builder.
-    pub fn urldecode_with(
+    pub fn urldecode_with<B: crate::typed::builder::Build<Output = UrlDecodeProcessor>>(
         self,
-        f: impl FnOnce(
-            UrlDecodeProcessorBuilder,
-        ) -> UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(UrlDecodeProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.urldecode(f(UrlDecodeProcessorBuilder::new()).build())
     }
@@ -13585,11 +13934,9 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`uri_parts`](Self::uri_parts) with a builder.
-    pub fn uri_parts_with(
+    pub fn uri_parts_with<B: crate::typed::builder::Build<Output = UriPartsProcessor>>(
         self,
-        f: impl FnOnce(
-            UriPartsProcessorBuilder,
-        ) -> UriPartsProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(UriPartsProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.uri_parts(f(UriPartsProcessorBuilder::new()).build())
     }
@@ -13606,33 +13953,42 @@ impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`user_agent`](Self::user_agent) with a builder.
-    pub fn user_agent_with(
+    pub fn user_agent_with<B: crate::typed::builder::Build<Output = UserAgentProcessor>>(
         self,
-        f: impl FnOnce(
-            UserAgentProcessorBuilder,
-        ) -> UserAgentProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(UserAgentProcessorBuilder) -> B,
     ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
         self.user_agent(f(UserAgentProcessorBuilder::new()).build())
     }
 }
 
-impl ProcessorContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ProcessorContainerBuilder<(S0,)> {
     /// Builds a [`ProcessorContainer`].
-    pub fn build(self) -> ProcessorContainer {
+    pub fn build(self) -> ProcessorContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<ProcessorContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ProcessorContainerBuilder<(crate::typed::builder::Set,)>> for ProcessorContainer {
-    fn from(builder: ProcessorContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ProcessorContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ProcessorContainer>,
+{
+    type Output = ProcessorContainer;
+
+    fn build(self) -> ProcessorContainer {
+        Self::build(self)
     }
 }
 
-impl ProcessorContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> ProcessorContainer { match variant {} }
+impl<S0> From<ProcessorContainerBuilder<(S0,)>> for ProcessorContainer
+where
+    S0: crate::typed::builder::IsVariantSet<ProcessorContainer>,
+{
+    fn from(builder: ProcessorContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13644,16 +14000,27 @@ pub struct Redact {
 
 impl Redact {
     /// Creates a builder for [`Redact`].
+    ///
+    /// Required: `is_redacted`.
     pub fn builder() -> RedactBuilder {
         RedactBuilder::new()
     }
 
     /// Creates a [`Redact`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RedactBuilder) -> RedactBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `is_redacted`.
+    pub fn of<B: crate::typed::builder::Build<Output = Redact>>(
+        f: impl FnOnce(RedactBuilder) -> B,
     ) -> Redact {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RedactBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod redact_members {
+    pub struct is_redacted;
 }
 
 /// Builder for [`Redact`].
@@ -13682,7 +14049,7 @@ impl<S0> RedactBuilder<(S0,)> {
 }
 
 impl RedactBuilder<(crate::typed::builder::NotSet,)> {
-    /// indicates if document has been redacted
+    /// **Required.** indicates if document has been redacted
     pub fn is_redacted(self, value: bool) -> RedactBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.is_redacted = Some(value);
@@ -13690,25 +14057,36 @@ impl RedactBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RedactBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RedactBuilder<(S0,)> {
     /// Builds a [`Redact`].
-    pub fn build(self) -> Redact {
+    pub fn build(self) -> Redact
+    where
+        S0: crate::typed::builder::IsSet<redact_members::is_redacted>,
+    {
         Redact {
             is_redacted: self.is_redacted.unwrap(),
         }
     }
 }
 
-impl From<RedactBuilder<(crate::typed::builder::Set,)>> for Redact {
-    fn from(builder: RedactBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RedactBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<redact_members::is_redacted>,
+{
+    type Output = Redact;
+
+    fn build(self) -> Redact {
+        Self::build(self)
     }
 }
 
-impl RedactBuilder<(crate::typed::builder::NotSet,)> {
-    /// `is_redacted` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_redacted: crate::typed::builder::MissingRequiredField) -> Redact { match is_redacted {} }
+impl<S0> From<RedactBuilder<(S0,)>> for Redact
+where
+    S0: crate::typed::builder::IsSet<redact_members::is_redacted>,
+{
+    fn from(builder: RedactBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13755,21 +14133,28 @@ pub struct RedactProcessor {
 
 impl RedactProcessor {
     /// Creates a builder for [`RedactProcessor`].
+    ///
+    /// Required: `field`, `patterns`.
     pub fn builder() -> RedactProcessorBuilder {
         RedactProcessorBuilder::new()
     }
 
     /// Creates a [`RedactProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RedactProcessorBuilder,
-        ) -> RedactProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `patterns`.
+    pub fn of<B: crate::typed::builder::Build<Output = RedactProcessor>>(
+        f: impl FnOnce(RedactProcessorBuilder) -> B,
     ) -> RedactProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RedactProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod redact_processor_members {
+    pub struct field;
+    pub struct patterns;
 }
 
 /// Builder for [`RedactProcessor`].
@@ -13860,9 +14245,9 @@ impl<S0, S1> RedactProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -13900,11 +14285,9 @@ impl<S0, S1> RedactProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -14013,7 +14396,7 @@ impl<S0, S1> RedactProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> RedactProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to be redacted
+    /// **Required.** The field to be redacted
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -14025,7 +14408,7 @@ impl<S1> RedactProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RedactProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A list of grok expressions to match and redact named captures with
+    /// **Required.** A list of grok expressions to match and redact named captures with
     pub fn patterns(
         self,
         value: impl Into<Vec<crate::typed::_types::GrokPattern>>,
@@ -14059,9 +14442,13 @@ impl<S0> RedactProcessorBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl RedactProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RedactProcessorBuilder<(S0, S1)> {
     /// Builds a [`RedactProcessor`].
-    pub fn build(self) -> RedactProcessor {
+    pub fn build(self) -> RedactProcessor
+    where
+        S0: crate::typed::builder::IsSet<redact_processor_members::field>,
+        S1: crate::typed::builder::IsSet<redact_processor_members::patterns>,
+    {
         RedactProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -14080,26 +14467,26 @@ impl RedactProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<RedactProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RedactProcessor
+impl<S0, S1> crate::typed::builder::Build for RedactProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<redact_processor_members::field>,
+    S1: crate::typed::builder::IsSet<redact_processor_members::patterns>,
 {
-    fn from(
-        builder: RedactProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RedactProcessor;
+
+    fn build(self) -> RedactProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> RedactProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RedactProcessor { match field {} }
-}
-
-impl RedactProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, patterns: crate::typed::builder::MissingRequiredField) -> RedactProcessor { match patterns {} }
+impl<S0, S1> From<RedactProcessorBuilder<(S0, S1)>> for RedactProcessor
+where
+    S0: crate::typed::builder::IsSet<redact_processor_members::field>,
+    S1: crate::typed::builder::IsSet<redact_processor_members::patterns>,
+{
+    fn from(builder: RedactProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14135,18 +14522,27 @@ pub struct RegisteredDomainProcessor {
 
 impl RegisteredDomainProcessor {
     /// Creates a builder for [`RegisteredDomainProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> RegisteredDomainProcessorBuilder {
         RegisteredDomainProcessorBuilder::new()
     }
 
     /// Creates a [`RegisteredDomainProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RegisteredDomainProcessorBuilder,
-        ) -> RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = RegisteredDomainProcessor>>(
+        f: impl FnOnce(RegisteredDomainProcessorBuilder) -> B,
     ) -> RegisteredDomainProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RegisteredDomainProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod registered_domain_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`RegisteredDomainProcessor`].
@@ -14220,9 +14616,9 @@ impl<S0> RegisteredDomainProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -14260,11 +14656,9 @@ impl<S0> RegisteredDomainProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -14310,7 +14704,7 @@ impl<S0> RegisteredDomainProcessorBuilder<(S0,)> {
 }
 
 impl RegisteredDomainProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field containing the source FQDN.
+    /// **Required.** Field containing the source FQDN.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -14321,9 +14715,12 @@ impl RegisteredDomainProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RegisteredDomainProcessorBuilder<(S0,)> {
     /// Builds a [`RegisteredDomainProcessor`].
-    pub fn build(self) -> RegisteredDomainProcessor {
+    pub fn build(self) -> RegisteredDomainProcessor
+    where
+        S0: crate::typed::builder::IsSet<registered_domain_processor_members::field>,
+    {
         RegisteredDomainProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -14337,18 +14734,24 @@ impl RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)>>
-    for RegisteredDomainProcessor
+impl<S0> crate::typed::builder::Build for RegisteredDomainProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<registered_domain_processor_members::field>,
 {
-    fn from(builder: RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RegisteredDomainProcessor;
+
+    fn build(self) -> RegisteredDomainProcessor {
+        Self::build(self)
     }
 }
 
-impl RegisteredDomainProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RegisteredDomainProcessor { match field {} }
+impl<S0> From<RegisteredDomainProcessorBuilder<(S0,)>> for RegisteredDomainProcessor
+where
+    S0: crate::typed::builder::IsSet<registered_domain_processor_members::field>,
+{
+    fn from(builder: RegisteredDomainProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14382,16 +14785,27 @@ pub struct RemoveProcessor {
 
 impl RemoveProcessor {
     /// Creates a builder for [`RemoveProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> RemoveProcessorBuilder {
         RemoveProcessorBuilder::new()
     }
 
     /// Creates a [`RemoveProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RemoveProcessorBuilder) -> RemoveProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveProcessor>>(
+        f: impl FnOnce(RemoveProcessorBuilder) -> B,
     ) -> RemoveProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoveProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remove_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`RemoveProcessor`].
@@ -14465,9 +14879,9 @@ impl<S0> RemoveProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -14505,11 +14919,9 @@ impl<S0> RemoveProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -14553,7 +14965,7 @@ impl<S0> RemoveProcessorBuilder<(S0,)> {
 }
 
 impl RemoveProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// Fields to be removed. Supports template snippets.
+    /// **Required.** Fields to be removed. Supports template snippets.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Fields>,
@@ -14564,9 +14976,12 @@ impl RemoveProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RemoveProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RemoveProcessorBuilder<(S0,)> {
     /// Builds a [`RemoveProcessor`].
-    pub fn build(self) -> RemoveProcessor {
+    pub fn build(self) -> RemoveProcessor
+    where
+        S0: crate::typed::builder::IsSet<remove_processor_members::field>,
+    {
         RemoveProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -14580,16 +14995,24 @@ impl RemoveProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RemoveProcessorBuilder<(crate::typed::builder::Set,)>> for RemoveProcessor {
-    fn from(builder: RemoveProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RemoveProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<remove_processor_members::field>,
+{
+    type Output = RemoveProcessor;
+
+    fn build(self) -> RemoveProcessor {
+        Self::build(self)
     }
 }
 
-impl RemoveProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RemoveProcessor { match field {} }
+impl<S0> From<RemoveProcessorBuilder<(S0,)>> for RemoveProcessor
+where
+    S0: crate::typed::builder::IsSet<remove_processor_members::field>,
+{
+    fn from(builder: RemoveProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14624,21 +15047,28 @@ pub struct RenameProcessor {
 
 impl RenameProcessor {
     /// Creates a builder for [`RenameProcessor`].
+    ///
+    /// Required: `field`, `target_field`.
     pub fn builder() -> RenameProcessorBuilder {
         RenameProcessorBuilder::new()
     }
 
     /// Creates a [`RenameProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RenameProcessorBuilder,
-        ) -> RenameProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `target_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = RenameProcessor>>(
+        f: impl FnOnce(RenameProcessorBuilder) -> B,
     ) -> RenameProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RenameProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rename_processor_members {
+    pub struct field;
+    pub struct target_field;
 }
 
 /// Builder for [`RenameProcessor`].
@@ -14714,9 +15144,9 @@ impl<S0, S1> RenameProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -14754,11 +15184,9 @@ impl<S0, S1> RenameProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -14790,7 +15218,7 @@ impl<S0, S1> RenameProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> RenameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to be renamed.
+    /// **Required.** The field to be renamed.
     /// Supports template snippets.
     pub fn field(
         self,
@@ -14803,7 +15231,7 @@ impl<S1> RenameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RenameProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The new name of the field.
+    /// **Required.** The new name of the field.
     /// Supports template snippets.
     pub fn target_field(
         self,
@@ -14815,9 +15243,13 @@ impl<S0> RenameProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RenameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RenameProcessorBuilder<(S0, S1)> {
     /// Builds a [`RenameProcessor`].
-    pub fn build(self) -> RenameProcessor {
+    pub fn build(self) -> RenameProcessor
+    where
+        S0: crate::typed::builder::IsSet<rename_processor_members::field>,
+        S1: crate::typed::builder::IsSet<rename_processor_members::target_field>,
+    {
         RenameProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -14831,26 +15263,26 @@ impl RenameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<RenameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RenameProcessor
+impl<S0, S1> crate::typed::builder::Build for RenameProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<rename_processor_members::field>,
+    S1: crate::typed::builder::IsSet<rename_processor_members::target_field>,
 {
-    fn from(
-        builder: RenameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RenameProcessor;
+
+    fn build(self) -> RenameProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> RenameProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RenameProcessor { match field {} }
-}
-
-impl RenameProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `target_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_field: crate::typed::builder::MissingRequiredField) -> RenameProcessor { match target_field {} }
+impl<S0, S1> From<RenameProcessorBuilder<(S0, S1)>> for RenameProcessor
+where
+    S0: crate::typed::builder::IsSet<rename_processor_members::field>,
+    S1: crate::typed::builder::IsSet<rename_processor_members::target_field>,
+{
+    fn from(builder: RenameProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14955,8 +15387,8 @@ impl RerouteProcessor {
     }
 
     /// Creates a [`RerouteProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RerouteProcessorBuilder) -> RerouteProcessorBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RerouteProcessor>>(
+        f: impl FnOnce(RerouteProcessorBuilder) -> B,
     ) -> RerouteProcessor {
         f(Self::builder()).build()
     }
@@ -15017,9 +15449,9 @@ impl RerouteProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15057,11 +15489,9 @@ impl RerouteProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -15147,6 +15577,14 @@ impl RerouteProcessorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RerouteProcessorBuilder {
+    type Output = RerouteProcessor;
+
+    fn build(self) -> RerouteProcessor {
+        Self::build(self)
+    }
+}
+
 impl From<RerouteProcessorBuilder> for RerouteProcessor {
     fn from(builder: RerouteProcessorBuilder) -> Self {
         builder.build()
@@ -15195,7 +15633,9 @@ impl ScriptProcessor {
     }
 
     /// Creates a [`ScriptProcessor`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ScriptProcessorBuilder) -> ScriptProcessorBuilder) -> ScriptProcessor {
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptProcessor>>(
+        f: impl FnOnce(ScriptProcessorBuilder) -> B,
+    ) -> ScriptProcessor {
         f(Self::builder()).build()
     }
 }
@@ -15257,9 +15697,9 @@ impl ScriptProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15297,11 +15737,9 @@ impl ScriptProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -15405,6 +15843,14 @@ impl ScriptProcessorBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ScriptProcessorBuilder {
+    type Output = ScriptProcessor;
+
+    fn build(self) -> ScriptProcessor {
+        Self::build(self)
+    }
+}
+
 impl From<ScriptProcessorBuilder> for ScriptProcessor {
     fn from(builder: ScriptProcessorBuilder) -> Self {
         builder.build()
@@ -15458,16 +15904,27 @@ pub struct SetProcessor {
 
 impl SetProcessor {
     /// Creates a builder for [`SetProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> SetProcessorBuilder {
         SetProcessorBuilder::new()
     }
 
     /// Creates a [`SetProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SetProcessorBuilder) -> SetProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = SetProcessor>>(
+        f: impl FnOnce(SetProcessorBuilder) -> B,
     ) -> SetProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SetProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod set_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`SetProcessor`].
@@ -15550,9 +16007,9 @@ impl<S0> SetProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15590,11 +16047,9 @@ impl<S0> SetProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -15680,7 +16135,7 @@ impl<S0> SetProcessorBuilder<(S0,)> {
 }
 
 impl SetProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to insert, upsert, or update.
+    /// **Required.** The field to insert, upsert, or update.
     /// Supports template snippets.
     pub fn field(
         self,
@@ -15692,9 +16147,12 @@ impl SetProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SetProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SetProcessorBuilder<(S0,)> {
     /// Builds a [`SetProcessor`].
-    pub fn build(self) -> SetProcessor {
+    pub fn build(self) -> SetProcessor
+    where
+        S0: crate::typed::builder::IsSet<set_processor_members::field>,
+    {
         SetProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -15711,16 +16169,24 @@ impl SetProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SetProcessorBuilder<(crate::typed::builder::Set,)>> for SetProcessor {
-    fn from(builder: SetProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SetProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<set_processor_members::field>,
+{
+    type Output = SetProcessor;
+
+    fn build(self) -> SetProcessor {
+        Self::build(self)
     }
 }
 
-impl SetProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SetProcessor { match field {} }
+impl<S0> From<SetProcessorBuilder<(S0,)>> for SetProcessor
+where
+    S0: crate::typed::builder::IsSet<set_processor_members::field>,
+{
+    fn from(builder: SetProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15751,18 +16217,27 @@ pub struct SetSecurityUserProcessor {
 
 impl SetSecurityUserProcessor {
     /// Creates a builder for [`SetSecurityUserProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> SetSecurityUserProcessorBuilder {
         SetSecurityUserProcessorBuilder::new()
     }
 
     /// Creates a [`SetSecurityUserProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SetSecurityUserProcessorBuilder,
-        ) -> SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = SetSecurityUserProcessor>>(
+        f: impl FnOnce(SetSecurityUserProcessorBuilder) -> B,
     ) -> SetSecurityUserProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SetSecurityUserProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod set_security_user_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`SetSecurityUserProcessor`].
@@ -15833,9 +16308,9 @@ impl<S0> SetSecurityUserProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15873,11 +16348,9 @@ impl<S0> SetSecurityUserProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -15917,7 +16390,7 @@ impl<S0> SetSecurityUserProcessorBuilder<(S0,)> {
 }
 
 impl SetSecurityUserProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to store the user information into.
+    /// **Required.** The field to store the user information into.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -15928,9 +16401,12 @@ impl SetSecurityUserProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SetSecurityUserProcessorBuilder<(S0,)> {
     /// Builds a [`SetSecurityUserProcessor`].
-    pub fn build(self) -> SetSecurityUserProcessor {
+    pub fn build(self) -> SetSecurityUserProcessor
+    where
+        S0: crate::typed::builder::IsSet<set_security_user_processor_members::field>,
+    {
         SetSecurityUserProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -15943,18 +16419,24 @@ impl SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)>>
-    for SetSecurityUserProcessor
+impl<S0> crate::typed::builder::Build for SetSecurityUserProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<set_security_user_processor_members::field>,
 {
-    fn from(builder: SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SetSecurityUserProcessor;
+
+    fn build(self) -> SetSecurityUserProcessor {
+        Self::build(self)
     }
 }
 
-impl SetSecurityUserProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SetSecurityUserProcessor { match field {} }
+impl<S0> From<SetSecurityUserProcessorBuilder<(S0,)>> for SetSecurityUserProcessor
+where
+    S0: crate::typed::builder::IsSet<set_security_user_processor_members::field>,
+{
+    fn from(builder: SetSecurityUserProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -15982,8 +16464,8 @@ impl SimulateDocumentResult {
     }
 
     /// Creates a [`SimulateDocumentResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SimulateDocumentResultBuilder) -> SimulateDocumentResultBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SimulateDocumentResult>>(
+        f: impl FnOnce(SimulateDocumentResultBuilder) -> B,
     ) -> SimulateDocumentResult {
         f(Self::builder()).build()
     }
@@ -16020,16 +16502,9 @@ impl SimulateDocumentResultBuilder {
     }
 
     /// Sets [`doc`](Self::doc) with a builder.
-    pub fn doc_with(
+    pub fn doc_with<B: crate::typed::builder::Build<Output = DocumentSimulation>>(
         self,
-        f: impl FnOnce(
-            DocumentSimulationBuilder,
-        ) -> DocumentSimulationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DocumentSimulationBuilder) -> B,
     ) -> Self {
         self.doc(f(DocumentSimulationBuilder::new()).build())
     }
@@ -16046,12 +16521,11 @@ impl SimulateDocumentResultBuilder {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -16076,9 +16550,11 @@ impl SimulateDocumentResultBuilder {
     }
 
     /// Adds an element to [`processor_results`](Self::processor_results), with a builder.
-    pub fn add_processor_results_with(
+    pub fn add_processor_results_with<
+        B: crate::typed::builder::Build<Output = PipelineProcessorResult>,
+    >(
         self,
-        f: impl FnOnce(PipelineProcessorResultBuilder) -> PipelineProcessorResultBuilder,
+        f: impl FnOnce(PipelineProcessorResultBuilder) -> B,
     ) -> Self {
         self.add_processor_results(f(PipelineProcessorResultBuilder::new()).build())
     }
@@ -16092,6 +16568,14 @@ impl SimulateDocumentResultBuilder {
             error: self.error,
             processor_results: self.processor_results,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SimulateDocumentResultBuilder {
+    type Output = SimulateDocumentResult;
+
+    fn build(self) -> SimulateDocumentResult {
+        Self::build(self)
     }
 }
 
@@ -16134,16 +16618,27 @@ pub struct SortProcessor {
 
 impl SortProcessor {
     /// Creates a builder for [`SortProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> SortProcessorBuilder {
         SortProcessorBuilder::new()
     }
 
     /// Creates a [`SortProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SortProcessorBuilder) -> SortProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = SortProcessor>>(
+        f: impl FnOnce(SortProcessorBuilder) -> B,
     ) -> SortProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SortProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sort_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`SortProcessor`].
@@ -16217,9 +16712,9 @@ impl<S0> SortProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -16257,11 +16752,9 @@ impl<S0> SortProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -16307,7 +16800,7 @@ impl<S0> SortProcessorBuilder<(S0,)> {
 }
 
 impl SortProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to be sorted.
+    /// **Required.** The field to be sorted.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16318,9 +16811,12 @@ impl SortProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SortProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SortProcessorBuilder<(S0,)> {
     /// Builds a [`SortProcessor`].
-    pub fn build(self) -> SortProcessor {
+    pub fn build(self) -> SortProcessor
+    where
+        S0: crate::typed::builder::IsSet<sort_processor_members::field>,
+    {
         SortProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -16334,16 +16830,24 @@ impl SortProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SortProcessorBuilder<(crate::typed::builder::Set,)>> for SortProcessor {
-    fn from(builder: SortProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SortProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sort_processor_members::field>,
+{
+    type Output = SortProcessor;
+
+    fn build(self) -> SortProcessor {
+        Self::build(self)
     }
 }
 
-impl SortProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SortProcessor { match field {} }
+impl<S0> From<SortProcessorBuilder<(S0,)>> for SortProcessor
+where
+    S0: crate::typed::builder::IsSet<sort_processor_members::field>,
+{
+    fn from(builder: SortProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16383,21 +16887,28 @@ pub struct SplitProcessor {
 
 impl SplitProcessor {
     /// Creates a builder for [`SplitProcessor`].
+    ///
+    /// Required: `field`, `separator`.
     pub fn builder() -> SplitProcessorBuilder {
         SplitProcessorBuilder::new()
     }
 
     /// Creates a [`SplitProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SplitProcessorBuilder,
-        ) -> SplitProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `separator`.
+    pub fn of<B: crate::typed::builder::Build<Output = SplitProcessor>>(
+        f: impl FnOnce(SplitProcessorBuilder) -> B,
     ) -> SplitProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SplitProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod split_processor_members {
+    pub struct field;
+    pub struct separator;
 }
 
 /// Builder for [`SplitProcessor`].
@@ -16478,9 +16989,9 @@ impl<S0, S1> SplitProcessorBuilder<(S0, S1)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -16518,11 +17029,9 @@ impl<S0, S1> SplitProcessorBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -16579,7 +17088,7 @@ impl<S0, S1> SplitProcessorBuilder<(S0, S1)> {
 }
 
 impl<S1> SplitProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to split.
+    /// **Required.** The field to split.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -16591,7 +17100,7 @@ impl<S1> SplitProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SplitProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A regex which matches the separator, for example, `,` or `\s+`.
+    /// **Required.** A regex which matches the separator, for example, `,` or `\s+`.
     pub fn separator(
         self,
         value: impl Into<String>,
@@ -16602,9 +17111,13 @@ impl<S0> SplitProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SplitProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SplitProcessorBuilder<(S0, S1)> {
     /// Builds a [`SplitProcessor`].
-    pub fn build(self) -> SplitProcessor {
+    pub fn build(self) -> SplitProcessor
+    where
+        S0: crate::typed::builder::IsSet<split_processor_members::field>,
+        S1: crate::typed::builder::IsSet<split_processor_members::separator>,
+    {
         SplitProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -16620,26 +17133,26 @@ impl SplitProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<SplitProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SplitProcessor
+impl<S0, S1> crate::typed::builder::Build for SplitProcessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<split_processor_members::field>,
+    S1: crate::typed::builder::IsSet<split_processor_members::separator>,
 {
-    fn from(
-        builder: SplitProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SplitProcessor;
+
+    fn build(self) -> SplitProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1> SplitProcessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SplitProcessor { match field {} }
-}
-
-impl SplitProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `separator` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, separator: crate::typed::builder::MissingRequiredField) -> SplitProcessor { match separator {} }
+impl<S0, S1> From<SplitProcessorBuilder<(S0, S1)>> for SplitProcessor
+where
+    S0: crate::typed::builder::IsSet<split_processor_members::field>,
+    S1: crate::typed::builder::IsSet<split_processor_members::separator>,
+{
+    fn from(builder: SplitProcessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16670,8 +17183,8 @@ impl TerminateProcessor {
     }
 
     /// Creates a [`TerminateProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TerminateProcessorBuilder) -> TerminateProcessorBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TerminateProcessor>>(
+        f: impl FnOnce(TerminateProcessorBuilder) -> B,
     ) -> TerminateProcessor {
         f(Self::builder()).build()
     }
@@ -16726,9 +17239,9 @@ impl TerminateProcessorBuilder {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -16766,11 +17279,9 @@ impl TerminateProcessorBuilder {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -16799,6 +17310,14 @@ impl TerminateProcessorBuilder {
             on_failure: self.on_failure,
             tag: self.tag,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TerminateProcessorBuilder {
+    type Output = TerminateProcessor;
+
+    fn build(self) -> TerminateProcessor {
+        Self::build(self)
     }
 }
 
@@ -16840,16 +17359,27 @@ pub struct TrimProcessor {
 
 impl TrimProcessor {
     /// Creates a builder for [`TrimProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> TrimProcessorBuilder {
         TrimProcessorBuilder::new()
     }
 
     /// Creates a [`TrimProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TrimProcessorBuilder) -> TrimProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrimProcessor>>(
+        f: impl FnOnce(TrimProcessorBuilder) -> B,
     ) -> TrimProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrimProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trim_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`TrimProcessor`].
@@ -16923,9 +17453,9 @@ impl<S0> TrimProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -16963,11 +17493,9 @@ impl<S0> TrimProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -17012,7 +17540,7 @@ impl<S0> TrimProcessorBuilder<(S0,)> {
 }
 
 impl TrimProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The string-valued field to trim whitespace from.
+    /// **Required.** The string-valued field to trim whitespace from.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -17023,9 +17551,12 @@ impl TrimProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TrimProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrimProcessorBuilder<(S0,)> {
     /// Builds a [`TrimProcessor`].
-    pub fn build(self) -> TrimProcessor {
+    pub fn build(self) -> TrimProcessor
+    where
+        S0: crate::typed::builder::IsSet<trim_processor_members::field>,
+    {
         TrimProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -17039,16 +17570,24 @@ impl TrimProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TrimProcessorBuilder<(crate::typed::builder::Set,)>> for TrimProcessor {
-    fn from(builder: TrimProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TrimProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trim_processor_members::field>,
+{
+    type Output = TrimProcessor;
+
+    fn build(self) -> TrimProcessor {
+        Self::build(self)
     }
 }
 
-impl TrimProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> TrimProcessor { match field {} }
+impl<S0> From<TrimProcessorBuilder<(S0,)>> for TrimProcessor
+where
+    S0: crate::typed::builder::IsSet<trim_processor_members::field>,
+{
+    fn from(builder: TrimProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17083,18 +17622,27 @@ pub struct UppercaseProcessor {
 
 impl UppercaseProcessor {
     /// Creates a builder for [`UppercaseProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> UppercaseProcessorBuilder {
         UppercaseProcessorBuilder::new()
     }
 
     /// Creates a [`UppercaseProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UppercaseProcessorBuilder,
-        ) -> UppercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = UppercaseProcessor>>(
+        f: impl FnOnce(UppercaseProcessorBuilder) -> B,
     ) -> UppercaseProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UppercaseProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod uppercase_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`UppercaseProcessor`].
@@ -17168,9 +17716,9 @@ impl<S0> UppercaseProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -17208,11 +17756,9 @@ impl<S0> UppercaseProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -17257,7 +17803,7 @@ impl<S0> UppercaseProcessorBuilder<(S0,)> {
 }
 
 impl UppercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to make uppercase.
+    /// **Required.** The field to make uppercase.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -17268,9 +17814,12 @@ impl UppercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UppercaseProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UppercaseProcessorBuilder<(S0,)> {
     /// Builds a [`UppercaseProcessor`].
-    pub fn build(self) -> UppercaseProcessor {
+    pub fn build(self) -> UppercaseProcessor
+    where
+        S0: crate::typed::builder::IsSet<uppercase_processor_members::field>,
+    {
         UppercaseProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -17284,16 +17833,24 @@ impl UppercaseProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UppercaseProcessorBuilder<(crate::typed::builder::Set,)>> for UppercaseProcessor {
-    fn from(builder: UppercaseProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UppercaseProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<uppercase_processor_members::field>,
+{
+    type Output = UppercaseProcessor;
+
+    fn build(self) -> UppercaseProcessor {
+        Self::build(self)
     }
 }
 
-impl UppercaseProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> UppercaseProcessor { match field {} }
+impl<S0> From<UppercaseProcessorBuilder<(S0,)>> for UppercaseProcessor
+where
+    S0: crate::typed::builder::IsSet<uppercase_processor_members::field>,
+{
+    fn from(builder: UppercaseProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17334,18 +17891,27 @@ pub struct UriPartsProcessor {
 
 impl UriPartsProcessor {
     /// Creates a builder for [`UriPartsProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> UriPartsProcessorBuilder {
         UriPartsProcessorBuilder::new()
     }
 
     /// Creates a [`UriPartsProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UriPartsProcessorBuilder,
-        ) -> UriPartsProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = UriPartsProcessor>>(
+        f: impl FnOnce(UriPartsProcessorBuilder) -> B,
     ) -> UriPartsProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UriPartsProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod uri_parts_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`UriPartsProcessor`].
@@ -17425,9 +17991,9 @@ impl<S0> UriPartsProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -17465,11 +18031,9 @@ impl<S0> UriPartsProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -17538,7 +18102,7 @@ impl<S0> UriPartsProcessorBuilder<(S0,)> {
 }
 
 impl UriPartsProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field containing the URI string.
+    /// **Required.** Field containing the URI string.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -17549,9 +18113,12 @@ impl UriPartsProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UriPartsProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UriPartsProcessorBuilder<(S0,)> {
     /// Builds a [`UriPartsProcessor`].
-    pub fn build(self) -> UriPartsProcessor {
+    pub fn build(self) -> UriPartsProcessor
+    where
+        S0: crate::typed::builder::IsSet<uri_parts_processor_members::field>,
+    {
         UriPartsProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -17567,16 +18134,24 @@ impl UriPartsProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UriPartsProcessorBuilder<(crate::typed::builder::Set,)>> for UriPartsProcessor {
-    fn from(builder: UriPartsProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UriPartsProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<uri_parts_processor_members::field>,
+{
+    type Output = UriPartsProcessor;
+
+    fn build(self) -> UriPartsProcessor {
+        Self::build(self)
     }
 }
 
-impl UriPartsProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> UriPartsProcessor { match field {} }
+impl<S0> From<UriPartsProcessorBuilder<(S0,)>> for UriPartsProcessor
+where
+    S0: crate::typed::builder::IsSet<uri_parts_processor_members::field>,
+{
+    fn from(builder: UriPartsProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17611,18 +18186,27 @@ pub struct UrlDecodeProcessor {
 
 impl UrlDecodeProcessor {
     /// Creates a builder for [`UrlDecodeProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> UrlDecodeProcessorBuilder {
         UrlDecodeProcessorBuilder::new()
     }
 
     /// Creates a [`UrlDecodeProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UrlDecodeProcessorBuilder,
-        ) -> UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = UrlDecodeProcessor>>(
+        f: impl FnOnce(UrlDecodeProcessorBuilder) -> B,
     ) -> UrlDecodeProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UrlDecodeProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod url_decode_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`UrlDecodeProcessor`].
@@ -17696,9 +18280,9 @@ impl<S0> UrlDecodeProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -17736,11 +18320,9 @@ impl<S0> UrlDecodeProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -17785,7 +18367,7 @@ impl<S0> UrlDecodeProcessorBuilder<(S0,)> {
 }
 
 impl UrlDecodeProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to decode.
+    /// **Required.** The field to decode.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -17796,9 +18378,12 @@ impl UrlDecodeProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UrlDecodeProcessorBuilder<(S0,)> {
     /// Builds a [`UrlDecodeProcessor`].
-    pub fn build(self) -> UrlDecodeProcessor {
+    pub fn build(self) -> UrlDecodeProcessor
+    where
+        S0: crate::typed::builder::IsSet<url_decode_processor_members::field>,
+    {
         UrlDecodeProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -17812,16 +18397,24 @@ impl UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)>> for UrlDecodeProcessor {
-    fn from(builder: UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UrlDecodeProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<url_decode_processor_members::field>,
+{
+    type Output = UrlDecodeProcessor;
+
+    fn build(self) -> UrlDecodeProcessor {
+        Self::build(self)
     }
 }
 
-impl UrlDecodeProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> UrlDecodeProcessor { match field {} }
+impl<S0> From<UrlDecodeProcessorBuilder<(S0,)>> for UrlDecodeProcessor
+where
+    S0: crate::typed::builder::IsSet<url_decode_processor_members::field>,
+{
+    fn from(builder: UrlDecodeProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17864,18 +18457,27 @@ pub struct UserAgentProcessor {
 
 impl UserAgentProcessor {
     /// Creates a builder for [`UserAgentProcessor`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> UserAgentProcessorBuilder {
         UserAgentProcessorBuilder::new()
     }
 
     /// Creates a [`UserAgentProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UserAgentProcessorBuilder,
-        ) -> UserAgentProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = UserAgentProcessor>>(
+        f: impl FnOnce(UserAgentProcessorBuilder) -> B,
     ) -> UserAgentProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UserAgentProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod user_agent_processor_members {
+    pub struct field;
 }
 
 /// Builder for [`UserAgentProcessor`].
@@ -17958,9 +18560,9 @@ impl<S0> UserAgentProcessorBuilder<(S0,)> {
     }
 
     /// Sets [`if`](Self::if) with a builder.
-    pub fn if_with(
+    pub fn if_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.r#if(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -17998,11 +18600,9 @@ impl<S0> UserAgentProcessorBuilder<(S0,)> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<B: crate::typed::builder::Build<Output = ProcessorContainer>>(
         self,
-        f: impl FnOnce(
-            ProcessorContainerBuilder,
-        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(f(ProcessorContainerBuilder::new()).build())
     }
@@ -18090,7 +18690,7 @@ impl<S0> UserAgentProcessorBuilder<(S0,)> {
 }
 
 impl UserAgentProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field containing the user agent string.
+    /// **Required.** The field containing the user agent string.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -18101,9 +18701,12 @@ impl UserAgentProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UserAgentProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UserAgentProcessorBuilder<(S0,)> {
     /// Builds a [`UserAgentProcessor`].
-    pub fn build(self) -> UserAgentProcessor {
+    pub fn build(self) -> UserAgentProcessor
+    where
+        S0: crate::typed::builder::IsSet<user_agent_processor_members::field>,
+    {
         UserAgentProcessor {
             description: self.description,
             r#if: self.r#if,
@@ -18120,16 +18723,24 @@ impl UserAgentProcessorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UserAgentProcessorBuilder<(crate::typed::builder::Set,)>> for UserAgentProcessor {
-    fn from(builder: UserAgentProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UserAgentProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<user_agent_processor_members::field>,
+{
+    type Output = UserAgentProcessor;
+
+    fn build(self) -> UserAgentProcessor {
+        Self::build(self)
     }
 }
 
-impl UserAgentProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> UserAgentProcessor { match field {} }
+impl<S0> From<UserAgentProcessorBuilder<(S0,)>> for UserAgentProcessor
+where
+    S0: crate::typed::builder::IsSet<user_agent_processor_members::field>,
+{
+    fn from(builder: UserAgentProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18156,7 +18767,9 @@ impl Web {
     }
 
     /// Creates a [`Web`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(WebBuilder) -> WebBuilder) -> Web {
+    pub fn of<B: crate::typed::builder::Build<Output = Web>>(
+        f: impl FnOnce(WebBuilder) -> B,
+    ) -> Web {
         f(Self::builder()).build()
     }
 }
@@ -18177,6 +18790,14 @@ impl WebBuilder {
     /// Builds a [`Web`].
     pub fn build(self) -> Web {
         Web {}
+    }
+}
+
+impl crate::typed::builder::Build for WebBuilder {
+    type Output = Web;
+
+    fn build(self) -> Web {
+        Self::build(self)
     }
 }
 

@@ -84,16 +84,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -316,12 +327,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::Alias>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasBuilder,
-        ) -> crate::typed::indices::_types::AliasBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -361,11 +372,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -405,11 +416,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
@@ -430,7 +441,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The name of the template
+    /// **Required.** The name of the template
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -441,9 +452,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             create: self.create,
@@ -464,23 +478,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

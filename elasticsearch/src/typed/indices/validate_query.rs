@@ -16,18 +16,27 @@ pub struct IndicesValidationExplanation {
 
 impl IndicesValidationExplanation {
     /// Creates a builder for [`IndicesValidationExplanation`].
+    ///
+    /// Required: `valid`.
     pub fn builder() -> IndicesValidationExplanationBuilder {
         IndicesValidationExplanationBuilder::new()
     }
 
     /// Creates a [`IndicesValidationExplanation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesValidationExplanationBuilder,
-        ) -> IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `valid`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesValidationExplanation>>(
+        f: impl FnOnce(IndicesValidationExplanationBuilder) -> B,
     ) -> IndicesValidationExplanation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesValidationExplanationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_validation_explanation_members {
+    pub struct valid;
 }
 
 /// Builder for [`IndicesValidationExplanation`].
@@ -112,6 +121,7 @@ impl<S0> IndicesValidationExplanationBuilder<(S0,)> {
 }
 
 impl IndicesValidationExplanationBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn valid(
         self,
         value: bool,
@@ -122,9 +132,12 @@ impl IndicesValidationExplanationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndicesValidationExplanationBuilder<(S0,)> {
     /// Builds a [`IndicesValidationExplanation`].
-    pub fn build(self) -> IndicesValidationExplanation {
+    pub fn build(self) -> IndicesValidationExplanation
+    where
+        S0: crate::typed::builder::IsSet<indices_validation_explanation_members::valid>,
+    {
         IndicesValidationExplanation {
             error: self.error,
             explanation: self.explanation,
@@ -135,18 +148,24 @@ impl IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)>>
-    for IndicesValidationExplanation
+impl<S0> crate::typed::builder::Build for IndicesValidationExplanationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indices_validation_explanation_members::valid>,
 {
-    fn from(builder: IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = IndicesValidationExplanation;
+
+    fn build(self) -> IndicesValidationExplanation {
+        Self::build(self)
     }
 }
 
-impl IndicesValidationExplanationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `valid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, valid: crate::typed::builder::MissingRequiredField) -> IndicesValidationExplanation { match valid {} }
+impl<S0> From<IndicesValidationExplanationBuilder<(S0,)>> for IndicesValidationExplanation
+where
+    S0: crate::typed::builder::IsSet<indices_validation_explanation_members::valid>,
+{
+    fn from(builder: IndicesValidationExplanationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.validate_query`](crate::typed::indices::IndicesClient::validate_query).
@@ -230,7 +249,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -574,13 +595,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -611,6 +630,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             query: self.query,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

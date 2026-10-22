@@ -51,23 +51,30 @@ pub struct AsyncSearch {
 
 impl AsyncSearch {
     /// Creates a builder for [`AsyncSearch`].
+    ///
+    /// Required: `hits`, `shards`, `timed_out`, `took`.
     pub fn builder() -> AsyncSearchBuilder {
         AsyncSearchBuilder::new()
     }
 
     /// Creates a [`AsyncSearch`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsyncSearchBuilder,
-        ) -> AsyncSearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `hits`, `shards`, `timed_out`, `took`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsyncSearch>>(
+        f: impl FnOnce(AsyncSearchBuilder) -> B,
     ) -> AsyncSearch {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsyncSearchBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod async_search_members {
+    pub struct hits;
+    pub struct shards;
+    pub struct timed_out;
+    pub struct took;
 }
 
 /// Builder for [`AsyncSearch`].
@@ -212,18 +219,11 @@ impl<S0, S1, S2, S3> AsyncSearchBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ClusterStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ClusterStatisticsBuilder,
-        ) -> crate::typed::_types::ClusterStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ClusterStatisticsBuilder) -> B,
     ) -> Self {
         self.clusters(f(crate::typed::_types::ClusterStatisticsBuilder::new()).build())
     }
@@ -299,13 +299,11 @@ impl<S0, S1, S2, S3> AsyncSearchBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`profile`](Self::profile) with a builder.
-    pub fn profile_with(
+    pub fn profile_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Profile>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::ProfileBuilder,
-        ) -> crate::typed::_global::search::_types::ProfileBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::ProfileBuilder) -> B,
     ) -> Self {
         self.profile(f(crate::typed::_global::search::_types::ProfileBuilder::new()).build())
     }
@@ -384,6 +382,7 @@ impl<S0, S1, S2, S3> AsyncSearchBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> AsyncSearchBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn hits(
         self,
         value: impl Into<crate::typed::_global::search::_types::HitsMetadata>,
@@ -394,20 +393,18 @@ impl<S1, S2, S3> AsyncSearchBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
     }
 
     /// Sets [`hits`](Self::hits) with a builder.
-    pub fn hits_with(
+    pub fn hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::HitsMetadata>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::HitsMetadataBuilder,
-        ) -> crate::typed::_global::search::_types::HitsMetadataBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::HitsMetadataBuilder) -> B,
     ) -> AsyncSearchBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.hits(f(crate::typed::_global::search::_types::HitsMetadataBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> AsyncSearchBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Indicates how many shards have run the query.
+    /// **Required.** Indicates how many shards have run the query.
     /// Note that in order for shard results to be included in the search response, they need to be reduced first.
     pub fn shards(
         self,
@@ -419,21 +416,18 @@ impl<S0, S2, S3> AsyncSearchBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> AsyncSearchBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> AsyncSearchBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn timed_out(
         self,
         value: bool,
@@ -445,6 +439,7 @@ impl<S0, S1, S3> AsyncSearchBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 }
 
 impl<S0, S1, S2> AsyncSearchBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn took(self, value: i64) -> AsyncSearchBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.took = Some(value);
@@ -452,16 +447,15 @@ impl<S0, S1, S2> AsyncSearchBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    AsyncSearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AsyncSearchBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AsyncSearch`].
-    pub fn build(self) -> AsyncSearch {
+    pub fn build(self) -> AsyncSearch
+    where
+        S0: crate::typed::builder::IsSet<async_search_members::hits>,
+        S1: crate::typed::builder::IsSet<async_search_members::shards>,
+        S2: crate::typed::builder::IsSet<async_search_members::timed_out>,
+        S3: crate::typed::builder::IsSet<async_search_members::took>,
+    {
         AsyncSearch {
             aggregations: self.aggregations,
             clusters: self.clusters,
@@ -481,71 +475,30 @@ impl
     }
 }
 
-impl
-    From<
-        AsyncSearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AsyncSearch
+impl<S0, S1, S2, S3> crate::typed::builder::Build for AsyncSearchBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<async_search_members::hits>,
+    S1: crate::typed::builder::IsSet<async_search_members::shards>,
+    S2: crate::typed::builder::IsSet<async_search_members::timed_out>,
+    S3: crate::typed::builder::IsSet<async_search_members::took>,
 {
-    fn from(
-        builder: AsyncSearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AsyncSearch;
+
+    fn build(self) -> AsyncSearch {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AsyncSearchBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> AsyncSearch { match hits {} }
-}
-
-impl<S2, S3>
-    AsyncSearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AsyncSearchBuilder<(S0, S1, S2, S3)>> for AsyncSearch
+where
+    S0: crate::typed::builder::IsSet<async_search_members::hits>,
+    S1: crate::typed::builder::IsSet<async_search_members::shards>,
+    S2: crate::typed::builder::IsSet<async_search_members::timed_out>,
+    S3: crate::typed::builder::IsSet<async_search_members::took>,
 {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> AsyncSearch { match shards {} }
-}
-
-impl<S3>
-    AsyncSearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `timed_out` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timed_out: crate::typed::builder::MissingRequiredField) -> AsyncSearch { match timed_out {} }
-}
-
-impl
-    AsyncSearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> AsyncSearch { match took {} }
+    fn from(builder: AsyncSearchBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -580,24 +533,31 @@ pub struct AsyncSearchDocumentResponseBase {
 
 impl AsyncSearchDocumentResponseBase {
     /// Creates a builder for [`AsyncSearchDocumentResponseBase`].
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`, `response`.
     pub fn builder() -> AsyncSearchDocumentResponseBaseBuilder {
         AsyncSearchDocumentResponseBaseBuilder::new()
     }
 
     /// Creates a [`AsyncSearchDocumentResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsyncSearchDocumentResponseBaseBuilder,
-        ) -> AsyncSearchDocumentResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`, `response`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsyncSearchDocumentResponseBase>>(
+        f: impl FnOnce(AsyncSearchDocumentResponseBaseBuilder) -> B,
     ) -> AsyncSearchDocumentResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsyncSearchDocumentResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod async_search_document_response_base_members {
+    pub struct is_partial;
+    pub struct is_running;
+    pub struct expiration_time_in_millis;
+    pub struct start_time_in_millis;
+    pub struct response;
 }
 
 /// Builder for [`AsyncSearchDocumentResponseBase`].
@@ -746,12 +706,11 @@ impl<S0, S1, S2, S3, S4> AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3,
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -760,7 +719,7 @@ impl<S0, S1, S2, S3, S4> AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3,
 impl<S1, S2, S3, S4>
     AsyncSearchDocumentResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
+    /// **Required.** When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
     /// While the query is running, `is_partial` is always set to `true`.
     pub fn is_partial(
         self,
@@ -775,7 +734,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     AsyncSearchDocumentResponseBaseBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// Indicates whether the search is still running or has completed.
+    /// **Required.** Indicates whether the search is still running or has completed.
     ///
     /// > info
     /// > If the search failed after some shards returned their results or the node that is coordinating the async search dies, results may be partial even though `is_running` is `false`.
@@ -792,6 +751,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     AsyncSearchDocumentResponseBaseBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
+    /// **Required.**
     pub fn expiration_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -805,6 +765,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -818,6 +779,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn response(
         self,
         value: impl Into<AsyncSearch>,
@@ -828,32 +790,28 @@ impl<S0, S1, S2, S3>
     }
 
     /// Sets [`response`](Self::response) with a builder.
-    pub fn response_with(
+    pub fn response_with<B: crate::typed::builder::Build<Output = AsyncSearch>>(
         self,
-        f: impl FnOnce(
-            AsyncSearchBuilder,
-        ) -> AsyncSearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AsyncSearchBuilder) -> B,
     ) -> AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.response(f(AsyncSearchBuilder::new()).build())
     }
 }
 
-impl
-    AsyncSearchDocumentResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AsyncSearchDocumentResponseBase`].
-    pub fn build(self) -> AsyncSearchDocumentResponseBase {
+    pub fn build(self) -> AsyncSearchDocumentResponseBase
+    where
+        S0: crate::typed::builder::IsSet<async_search_document_response_base_members::is_partial>,
+        S1: crate::typed::builder::IsSet<async_search_document_response_base_members::is_running>,
+        S2: crate::typed::builder::IsSet<
+            async_search_document_response_base_members::expiration_time_in_millis,
+        >,
+        S3: crate::typed::builder::IsSet<
+            async_search_document_response_base_members::start_time_in_millis,
+        >,
+        S4: crate::typed::builder::IsSet<async_search_document_response_base_members::response>,
+    {
         AsyncSearchDocumentResponseBase {
             id: self.id,
             is_partial: self.is_partial.unwrap(),
@@ -870,92 +828,42 @@ impl
     }
 }
 
-impl
-    From<
-        AsyncSearchDocumentResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AsyncSearchDocumentResponseBase
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<async_search_document_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_document_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<
+        async_search_document_response_base_members::expiration_time_in_millis,
+    >,
+    S3: crate::typed::builder::IsSet<
+        async_search_document_response_base_members::start_time_in_millis,
+    >,
+    S4: crate::typed::builder::IsSet<async_search_document_response_base_members::response>,
 {
-    fn from(
-        builder: AsyncSearchDocumentResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AsyncSearchDocumentResponseBase;
+
+    fn build(self) -> AsyncSearchDocumentResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    AsyncSearchDocumentResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, S4)>>
+    for AsyncSearchDocumentResponseBase
+where
+    S0: crate::typed::builder::IsSet<async_search_document_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_document_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<
+        async_search_document_response_base_members::expiration_time_in_millis,
+    >,
+    S3: crate::typed::builder::IsSet<
+        async_search_document_response_base_members::start_time_in_millis,
+    >,
+    S4: crate::typed::builder::IsSet<async_search_document_response_base_members::response>,
 {
-    /// `is_partial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_partial: crate::typed::builder::MissingRequiredField) -> AsyncSearchDocumentResponseBase { match is_partial {} }
-}
-
-impl<S2, S3, S4>
-    AsyncSearchDocumentResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `is_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_running: crate::typed::builder::MissingRequiredField) -> AsyncSearchDocumentResponseBase { match is_running {} }
-}
-
-impl<S3, S4>
-    AsyncSearchDocumentResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `expiration_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiration_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchDocumentResponseBase { match expiration_time_in_millis {} }
-}
-
-impl<S4>
-    AsyncSearchDocumentResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchDocumentResponseBase { match start_time_in_millis {} }
-}
-
-impl
-    AsyncSearchDocumentResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `response` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, response: crate::typed::builder::MissingRequiredField) -> AsyncSearchDocumentResponseBase { match response {} }
+    fn from(builder: AsyncSearchDocumentResponseBaseBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -989,23 +897,30 @@ pub struct AsyncSearchResponseBase {
 
 impl AsyncSearchResponseBase {
     /// Creates a builder for [`AsyncSearchResponseBase`].
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`.
     pub fn builder() -> AsyncSearchResponseBaseBuilder {
         AsyncSearchResponseBaseBuilder::new()
     }
 
     /// Creates a [`AsyncSearchResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsyncSearchResponseBaseBuilder,
-        ) -> AsyncSearchResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsyncSearchResponseBase>>(
+        f: impl FnOnce(AsyncSearchResponseBaseBuilder) -> B,
     ) -> AsyncSearchResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsyncSearchResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod async_search_response_base_members {
+    pub struct is_partial;
+    pub struct is_running;
+    pub struct expiration_time_in_millis;
+    pub struct start_time_in_millis;
 }
 
 /// Builder for [`AsyncSearchResponseBase`].
@@ -1149,19 +1064,18 @@ impl<S0, S1, S2, S3> AsyncSearchResponseBaseBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> AsyncSearchResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
+    /// **Required.** When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
     /// While the query is running, `is_partial` is always set to `true`.
     pub fn is_partial(
         self,
@@ -1174,7 +1088,7 @@ impl<S1, S2, S3> AsyncSearchResponseBaseBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2, S3> AsyncSearchResponseBaseBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Indicates whether the search is still running or has completed.
+    /// **Required.** Indicates whether the search is still running or has completed.
     ///
     /// > info
     /// > If the search failed after some shards returned their results or the node that is coordinating the async search dies, results may be partial even though `is_running` is `false`.
@@ -1189,6 +1103,7 @@ impl<S0, S2, S3> AsyncSearchResponseBaseBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S3> AsyncSearchResponseBaseBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn expiration_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1200,6 +1115,7 @@ impl<S0, S1, S3> AsyncSearchResponseBaseBuilder<(S0, S1, crate::typed::builder::
 }
 
 impl<S0, S1, S2> AsyncSearchResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1210,16 +1126,17 @@ impl<S0, S1, S2> AsyncSearchResponseBaseBuilder<(S0, S1, S2, crate::typed::build
     }
 }
 
-impl
-    AsyncSearchResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AsyncSearchResponseBaseBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AsyncSearchResponseBase`].
-    pub fn build(self) -> AsyncSearchResponseBase {
+    pub fn build(self) -> AsyncSearchResponseBase
+    where
+        S0: crate::typed::builder::IsSet<async_search_response_base_members::is_partial>,
+        S1: crate::typed::builder::IsSet<async_search_response_base_members::is_running>,
+        S2: crate::typed::builder::IsSet<
+            async_search_response_base_members::expiration_time_in_millis,
+        >,
+        S3: crate::typed::builder::IsSet<async_search_response_base_members::start_time_in_millis>,
+    {
         AsyncSearchResponseBase {
             id: self.id,
             is_partial: self.is_partial.unwrap(),
@@ -1235,71 +1152,32 @@ impl
     }
 }
 
-impl
-    From<
-        AsyncSearchResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AsyncSearchResponseBase
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for AsyncSearchResponseBaseBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<async_search_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<async_search_response_base_members::expiration_time_in_millis>,
+    S3: crate::typed::builder::IsSet<async_search_response_base_members::start_time_in_millis>,
 {
-    fn from(
-        builder: AsyncSearchResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AsyncSearchResponseBase;
+
+    fn build(self) -> AsyncSearchResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AsyncSearchResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `is_partial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_partial: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseBase { match is_partial {} }
-}
-
-impl<S2, S3>
-    AsyncSearchResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AsyncSearchResponseBaseBuilder<(S0, S1, S2, S3)>>
+    for AsyncSearchResponseBase
+where
+    S0: crate::typed::builder::IsSet<async_search_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<async_search_response_base_members::expiration_time_in_millis>,
+    S3: crate::typed::builder::IsSet<async_search_response_base_members::start_time_in_millis>,
 {
-    /// `is_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_running: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseBase { match is_running {} }
-}
-
-impl<S3>
-    AsyncSearchResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `expiration_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiration_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseBase { match expiration_time_in_millis {} }
-}
-
-impl
-    AsyncSearchResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseBase { match start_time_in_millis {} }
+    fn from(builder: AsyncSearchResponseBaseBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1324,23 +1202,30 @@ pub struct AsyncSearchResponseException {
 
 impl AsyncSearchResponseException {
     /// Creates a builder for [`AsyncSearchResponseException`].
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`.
     pub fn builder() -> AsyncSearchResponseExceptionBuilder {
         AsyncSearchResponseExceptionBuilder::new()
     }
 
     /// Creates a [`AsyncSearchResponseException`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsyncSearchResponseExceptionBuilder,
-        ) -> AsyncSearchResponseExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsyncSearchResponseException>>(
+        f: impl FnOnce(AsyncSearchResponseExceptionBuilder) -> B,
     ) -> AsyncSearchResponseException {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsyncSearchResponseExceptionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod async_search_response_exception_members {
+    pub struct is_partial;
+    pub struct is_running;
+    pub struct expiration_time_in_millis;
+    pub struct start_time_in_millis;
 }
 
 /// Builder for [`AsyncSearchResponseException`].
@@ -1470,12 +1355,11 @@ impl<S0, S1, S2, S3> AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -1492,22 +1376,16 @@ impl<S0, S1, S2, S3> AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`response`](Self::response) with a builder.
-    pub fn response_with(
+    pub fn response_with<B: crate::typed::builder::Build<Output = AsyncSearch>>(
         self,
-        f: impl FnOnce(
-            AsyncSearchBuilder,
-        ) -> AsyncSearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AsyncSearchBuilder) -> B,
     ) -> Self {
         self.response(f(AsyncSearchBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> AsyncSearchResponseExceptionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn is_partial(
         self,
         value: bool,
@@ -1519,6 +1397,7 @@ impl<S1, S2, S3> AsyncSearchResponseExceptionBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> AsyncSearchResponseExceptionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn is_running(
         self,
         value: bool,
@@ -1530,6 +1409,7 @@ impl<S0, S2, S3> AsyncSearchResponseExceptionBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> AsyncSearchResponseExceptionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn expiration_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1541,6 +1421,7 @@ impl<S0, S1, S3> AsyncSearchResponseExceptionBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> AsyncSearchResponseExceptionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1551,16 +1432,19 @@ impl<S0, S1, S2> AsyncSearchResponseExceptionBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    AsyncSearchResponseExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AsyncSearchResponseException`].
-    pub fn build(self) -> AsyncSearchResponseException {
+    pub fn build(self) -> AsyncSearchResponseException
+    where
+        S0: crate::typed::builder::IsSet<async_search_response_exception_members::is_partial>,
+        S1: crate::typed::builder::IsSet<async_search_response_exception_members::is_running>,
+        S2: crate::typed::builder::IsSet<
+            async_search_response_exception_members::expiration_time_in_millis,
+        >,
+        S3: crate::typed::builder::IsSet<
+            async_search_response_exception_members::start_time_in_millis,
+        >,
+    {
         AsyncSearchResponseException {
             is_partial: self.is_partial.unwrap(),
             is_running: self.is_running.unwrap(),
@@ -1576,69 +1460,34 @@ impl
     }
 }
 
-impl
-    From<
-        AsyncSearchResponseExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AsyncSearchResponseException
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<async_search_response_exception_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_response_exception_members::is_running>,
+    S2: crate::typed::builder::IsSet<
+        async_search_response_exception_members::expiration_time_in_millis,
+    >,
+    S3: crate::typed::builder::IsSet<async_search_response_exception_members::start_time_in_millis>,
 {
-    fn from(
-        builder: AsyncSearchResponseExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AsyncSearchResponseException;
+
+    fn build(self) -> AsyncSearchResponseException {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AsyncSearchResponseExceptionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `is_partial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_partial: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseException { match is_partial {} }
-}
-
-impl<S2, S3>
-    AsyncSearchResponseExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)>>
+    for AsyncSearchResponseException
+where
+    S0: crate::typed::builder::IsSet<async_search_response_exception_members::is_partial>,
+    S1: crate::typed::builder::IsSet<async_search_response_exception_members::is_running>,
+    S2: crate::typed::builder::IsSet<
+        async_search_response_exception_members::expiration_time_in_millis,
+    >,
+    S3: crate::typed::builder::IsSet<async_search_response_exception_members::start_time_in_millis>,
 {
-    /// `is_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_running: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseException { match is_running {} }
-}
-
-impl<S3>
-    AsyncSearchResponseExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `expiration_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiration_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseException { match expiration_time_in_millis {} }
-}
-
-impl
-    AsyncSearchResponseExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> AsyncSearchResponseException { match start_time_in_millis {} }
+    fn from(builder: AsyncSearchResponseExceptionBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

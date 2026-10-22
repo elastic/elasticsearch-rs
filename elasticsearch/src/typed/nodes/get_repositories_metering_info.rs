@@ -33,16 +33,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `node_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `node_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct node_id;
 }
 
 /// Builder for [`Request`].
@@ -141,7 +152,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list of node IDs or names used to limit returned information.
+    /// **Required.** Comma-separated list of node IDs or names used to limit returned information.
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::NodeIds>,
@@ -152,9 +163,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::node_id>,
+    {
         Request {
             node_id: self.node_id.unwrap(),
             error_trace: self.error_trace,
@@ -165,23 +179,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::node_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> Request { match node_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `node_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, node_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match node_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::node_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -289,19 +306,28 @@ pub struct ResponseBase {
 
 impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
+    ///
+    /// Required: `cluster_name`, `nodes`.
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
     }
 
     /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResponseBaseBuilder,
-        )
-            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `cluster_name`, `nodes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResponseBase>>(
+        f: impl FnOnce(ResponseBaseBuilder) -> B,
     ) -> ResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod response_base_members {
+    pub struct cluster_name;
+    pub struct nodes;
 }
 
 /// Builder for [`ResponseBase`].
@@ -349,22 +375,18 @@ impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     }
 
     /// Sets [`node_stats`](Self::node_stats) with a builder.
-    pub fn node_stats_with(
+    pub fn node_stats_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeStatisticsBuilder,
-        ) -> crate::typed::_types::NodeStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeStatisticsBuilder) -> B,
     ) -> Self {
         self.node_stats(f(crate::typed::_types::NodeStatisticsBuilder::new()).build())
     }
 }
 
 impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Name of the cluster. Based on the `cluster.name` setting.
+    /// **Required.** Name of the cluster. Based on the `cluster.name` setting.
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -376,7 +398,7 @@ impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Contains repositories metering information for the nodes selected by the request.
+    /// **Required.** Contains repositories metering information for the nodes selected by the request.
     pub fn nodes(
         self,
         value: impl Into<
@@ -403,20 +425,14 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::nodes::_types::RepositoryMeteringInformation,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::nodes::_types::RepositoryMeteringInformationBuilder,
-        ) -> crate::typed::nodes::_types::RepositoryMeteringInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::nodes::_types::RepositoryMeteringInformationBuilder) -> B,
     ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
         self.add_nodes(
             key,
@@ -439,20 +455,14 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::nodes::_types::RepositoryMeteringInformation,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::nodes::_types::RepositoryMeteringInformationBuilder,
-        ) -> crate::typed::nodes::_types::RepositoryMeteringInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::nodes::_types::RepositoryMeteringInformationBuilder) -> B,
     ) -> Self {
         self.add_nodes(
             key,
@@ -461,9 +471,13 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     /// Builds a [`ResponseBase`].
-    pub fn build(self) -> ResponseBase {
+    pub fn build(self) -> ResponseBase
+    where
+        S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+        S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+    {
         ResponseBase {
             node_stats: self.node_stats,
             cluster_name: self.cluster_name.unwrap(),
@@ -472,24 +486,24 @@ impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResponseBase
+impl<S0, S1> crate::typed::builder::Build for ResponseBaseBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
 {
-    fn from(
-        builder: ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ResponseBase;
+
+    fn build(self) -> ResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> ResponseBase { match cluster_name {} }
-}
-
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> ResponseBase { match nodes {} }
+impl<S0, S1> From<ResponseBaseBuilder<(S0, S1)>> for ResponseBase
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+{
+    fn from(builder: ResponseBaseBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

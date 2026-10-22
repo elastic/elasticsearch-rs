@@ -57,7 +57,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -210,11 +212,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`datafeed_config`](Self::datafeed_config) with a builder.
-    pub fn datafeed_config_with(
+    pub fn datafeed_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DatafeedConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DatafeedConfigBuilder,
-        ) -> crate::typed::ml::_types::DatafeedConfigBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DatafeedConfigBuilder) -> B,
     ) -> Self {
         self.datafeed_config(f(crate::typed::ml::_types::DatafeedConfigBuilder::new()).build())
     }
@@ -235,14 +237,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`job_config`](Self::job_config) with a builder.
-    pub fn job_config_with(
+    pub fn job_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::JobConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::JobConfigBuilder,
-        ) -> crate::typed::ml::_types::JobConfigBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::JobConfigBuilder) -> B,
     ) -> Self {
         self.job_config(f(crate::typed::ml::_types::JobConfigBuilder::new()).build())
     }
@@ -262,6 +261,14 @@ impl<C> RequestBuilder<(), C> {
             datafeed_config: self.datafeed_config,
             job_config: self.job_config,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

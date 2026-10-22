@@ -2354,7 +2354,9 @@ impl CatRequestBase {
     }
 
     /// Creates a [`CatRequestBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CatRequestBaseBuilder) -> CatRequestBaseBuilder) -> CatRequestBase {
+    pub fn of<B: crate::typed::builder::Build<Output = CatRequestBase>>(
+        f: impl FnOnce(CatRequestBaseBuilder) -> B,
+    ) -> CatRequestBase {
         f(Self::builder()).build()
     }
 }
@@ -2375,6 +2377,14 @@ impl CatRequestBaseBuilder {
     /// Builds a [`CatRequestBase`].
     pub fn build(self) -> CatRequestBase {
         CatRequestBase {}
+    }
+}
+
+impl crate::typed::builder::Build for CatRequestBaseBuilder {
+    type Output = CatRequestBase;
+
+    fn build(self) -> CatRequestBase {
+        Self::build(self)
     }
 }
 

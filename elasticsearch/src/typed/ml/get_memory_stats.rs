@@ -22,22 +22,29 @@ pub struct JvmStats {
 
 impl JvmStats {
     /// Creates a builder for [`JvmStats`].
+    ///
+    /// Required: `heap_max_in_bytes`, `java_inference_in_bytes`, `java_inference_max_in_bytes`.
     pub fn builder() -> JvmStatsBuilder {
         JvmStatsBuilder::new()
     }
 
     /// Creates a [`JvmStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JvmStatsBuilder,
-        ) -> JvmStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `heap_max_in_bytes`, `java_inference_in_bytes`, `java_inference_max_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = JvmStats>>(
+        f: impl FnOnce(JvmStatsBuilder) -> B,
     ) -> JvmStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JvmStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod jvm_stats_members {
+    pub struct heap_max_in_bytes;
+    pub struct java_inference_in_bytes;
+    pub struct java_inference_max_in_bytes;
 }
 
 /// Builder for [`JvmStats`].
@@ -132,7 +139,7 @@ impl<S0, S1, S2> JvmStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> JvmStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Maximum amount of memory, in bytes, available for use by the heap.
+    /// **Required.** Maximum amount of memory, in bytes, available for use by the heap.
     pub fn heap_max_in_bytes(
         self,
         value: i32,
@@ -144,7 +151,7 @@ impl<S1, S2> JvmStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> JvmStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Amount of Java heap, in bytes, currently being used for caching inference models.
+    /// **Required.** Amount of Java heap, in bytes, currently being used for caching inference models.
     pub fn java_inference_in_bytes(
         self,
         value: i32,
@@ -156,7 +163,7 @@ impl<S0, S2> JvmStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> JvmStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Maximum amount of Java heap, in bytes, to be used for caching inference models.
+    /// **Required.** Maximum amount of Java heap, in bytes, to be used for caching inference models.
     pub fn java_inference_max_in_bytes(
         self,
         value: i32,
@@ -167,15 +174,14 @@ impl<S0, S1> JvmStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    JvmStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> JvmStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`JvmStats`].
-    pub fn build(self) -> JvmStats {
+    pub fn build(self) -> JvmStats
+    where
+        S0: crate::typed::builder::IsSet<jvm_stats_members::heap_max_in_bytes>,
+        S1: crate::typed::builder::IsSet<jvm_stats_members::java_inference_in_bytes>,
+        S2: crate::typed::builder::IsSet<jvm_stats_members::java_inference_max_in_bytes>,
+    {
         JvmStats {
             heap_max: self.heap_max,
             heap_max_in_bytes: self.heap_max_in_bytes.unwrap(),
@@ -187,54 +193,28 @@ impl
     }
 }
 
-impl
-    From<
-        JvmStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for JvmStats
+impl<S0, S1, S2> crate::typed::builder::Build for JvmStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<jvm_stats_members::heap_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<jvm_stats_members::java_inference_in_bytes>,
+    S2: crate::typed::builder::IsSet<jvm_stats_members::java_inference_max_in_bytes>,
 {
-    fn from(
-        builder: JvmStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JvmStats;
+
+    fn build(self) -> JvmStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> JvmStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `heap_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, heap_max_in_bytes: crate::typed::builder::MissingRequiredField) -> JvmStats { match heap_max_in_bytes {} }
-}
-
-impl<S2>
-    JvmStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<JvmStatsBuilder<(S0, S1, S2)>> for JvmStats
+where
+    S0: crate::typed::builder::IsSet<jvm_stats_members::heap_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<jvm_stats_members::java_inference_in_bytes>,
+    S2: crate::typed::builder::IsSet<jvm_stats_members::java_inference_max_in_bytes>,
 {
-    /// `java_inference_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, java_inference_in_bytes: crate::typed::builder::MissingRequiredField) -> JvmStats { match java_inference_in_bytes {} }
-}
-
-impl
-    JvmStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `java_inference_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, java_inference_max_in_bytes: crate::typed::builder::MissingRequiredField) -> JvmStats { match java_inference_max_in_bytes {} }
+    fn from(builder: JvmStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -268,24 +248,31 @@ pub struct MemMlStats {
 
 impl MemMlStats {
     /// Creates a builder for [`MemMlStats`].
+    ///
+    /// Required: `anomaly_detectors_in_bytes`, `data_frame_analytics_in_bytes`, `max_in_bytes`, `native_code_overhead_in_bytes`, `native_inference_in_bytes`.
     pub fn builder() -> MemMlStatsBuilder {
         MemMlStatsBuilder::new()
     }
 
     /// Creates a [`MemMlStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MemMlStatsBuilder,
-        ) -> MemMlStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `anomaly_detectors_in_bytes`, `data_frame_analytics_in_bytes`, `max_in_bytes`, `native_code_overhead_in_bytes`, `native_inference_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = MemMlStats>>(
+        f: impl FnOnce(MemMlStatsBuilder) -> B,
     ) -> MemMlStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MemMlStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod mem_ml_stats_members {
+    pub struct anomaly_detectors_in_bytes;
+    pub struct data_frame_analytics_in_bytes;
+    pub struct max_in_bytes;
+    pub struct native_code_overhead_in_bytes;
+    pub struct native_inference_in_bytes;
 }
 
 /// Builder for [`MemMlStats`].
@@ -432,7 +419,7 @@ impl<S0, S1, S2, S3, S4> MemMlStatsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> MemMlStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// Amount of native memory, in bytes, set aside for anomaly detection jobs.
+    /// **Required.** Amount of native memory, in bytes, set aside for anomaly detection jobs.
     pub fn anomaly_detectors_in_bytes(
         self,
         value: i32,
@@ -444,7 +431,7 @@ impl<S1, S2, S3, S4> MemMlStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3, S4> MemMlStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// Amount of native memory, in bytes, set aside for data frame analytics jobs.
+    /// **Required.** Amount of native memory, in bytes, set aside for data frame analytics jobs.
     pub fn data_frame_analytics_in_bytes(
         self,
         value: i32,
@@ -456,7 +443,7 @@ impl<S0, S2, S3, S4> MemMlStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3, S4> MemMlStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// Maximum amount of native memory (separate to the JVM heap), in bytes, that may be used by machine learning native processes.
+    /// **Required.** Maximum amount of native memory (separate to the JVM heap), in bytes, that may be used by machine learning native processes.
     pub fn max_in_bytes(
         self,
         value: i32,
@@ -468,7 +455,7 @@ impl<S0, S1, S3, S4> MemMlStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2, S4> MemMlStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// Amount of native memory, in bytes, set aside for loading machine learning native code shared libraries.
+    /// **Required.** Amount of native memory, in bytes, set aside for loading machine learning native code shared libraries.
     pub fn native_code_overhead_in_bytes(
         self,
         value: i32,
@@ -480,7 +467,7 @@ impl<S0, S1, S2, S4> MemMlStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S3> MemMlStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// Amount of native memory, in bytes, set aside for trained models that have a PyTorch model_type.
+    /// **Required.** Amount of native memory, in bytes, set aside for trained models that have a PyTorch model_type.
     pub fn native_inference_in_bytes(
         self,
         value: i32,
@@ -491,17 +478,16 @@ impl<S0, S1, S2, S3> MemMlStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::N
     }
 }
 
-impl
-    MemMlStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> MemMlStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`MemMlStats`].
-    pub fn build(self) -> MemMlStats {
+    pub fn build(self) -> MemMlStats
+    where
+        S0: crate::typed::builder::IsSet<mem_ml_stats_members::anomaly_detectors_in_bytes>,
+        S1: crate::typed::builder::IsSet<mem_ml_stats_members::data_frame_analytics_in_bytes>,
+        S2: crate::typed::builder::IsSet<mem_ml_stats_members::max_in_bytes>,
+        S3: crate::typed::builder::IsSet<mem_ml_stats_members::native_code_overhead_in_bytes>,
+        S4: crate::typed::builder::IsSet<mem_ml_stats_members::native_inference_in_bytes>,
+    {
         MemMlStats {
             anomaly_detectors: self.anomaly_detectors,
             anomaly_detectors_in_bytes: self.anomaly_detectors_in_bytes.unwrap(),
@@ -517,90 +503,32 @@ impl
     }
 }
 
-impl
-    From<
-        MemMlStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MemMlStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for MemMlStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<mem_ml_stats_members::anomaly_detectors_in_bytes>,
+    S1: crate::typed::builder::IsSet<mem_ml_stats_members::data_frame_analytics_in_bytes>,
+    S2: crate::typed::builder::IsSet<mem_ml_stats_members::max_in_bytes>,
+    S3: crate::typed::builder::IsSet<mem_ml_stats_members::native_code_overhead_in_bytes>,
+    S4: crate::typed::builder::IsSet<mem_ml_stats_members::native_inference_in_bytes>,
 {
-    fn from(
-        builder: MemMlStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MemMlStats;
+
+    fn build(self) -> MemMlStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> MemMlStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `anomaly_detectors_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, anomaly_detectors_in_bytes: crate::typed::builder::MissingRequiredField) -> MemMlStats { match anomaly_detectors_in_bytes {} }
-}
-
-impl<S2, S3, S4>
-    MemMlStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<MemMlStatsBuilder<(S0, S1, S2, S3, S4)>> for MemMlStats
+where
+    S0: crate::typed::builder::IsSet<mem_ml_stats_members::anomaly_detectors_in_bytes>,
+    S1: crate::typed::builder::IsSet<mem_ml_stats_members::data_frame_analytics_in_bytes>,
+    S2: crate::typed::builder::IsSet<mem_ml_stats_members::max_in_bytes>,
+    S3: crate::typed::builder::IsSet<mem_ml_stats_members::native_code_overhead_in_bytes>,
+    S4: crate::typed::builder::IsSet<mem_ml_stats_members::native_inference_in_bytes>,
 {
-    /// `data_frame_analytics_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_frame_analytics_in_bytes: crate::typed::builder::MissingRequiredField) -> MemMlStats { match data_frame_analytics_in_bytes {} }
-}
-
-impl<S3, S4>
-    MemMlStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_in_bytes: crate::typed::builder::MissingRequiredField) -> MemMlStats { match max_in_bytes {} }
-}
-
-impl<S4>
-    MemMlStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `native_code_overhead_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, native_code_overhead_in_bytes: crate::typed::builder::MissingRequiredField) -> MemMlStats { match native_code_overhead_in_bytes {} }
-}
-
-impl
-    MemMlStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `native_inference_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, native_inference_in_bytes: crate::typed::builder::MissingRequiredField) -> MemMlStats { match native_inference_in_bytes {} }
+    fn from(builder: MemMlStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -623,22 +551,29 @@ pub struct MemStats {
 
 impl MemStats {
     /// Creates a builder for [`MemStats`].
+    ///
+    /// Required: `adjusted_total_in_bytes`, `total_in_bytes`, `ml`.
     pub fn builder() -> MemStatsBuilder {
         MemStatsBuilder::new()
     }
 
     /// Creates a [`MemStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MemStatsBuilder,
-        ) -> MemStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `adjusted_total_in_bytes`, `total_in_bytes`, `ml`.
+    pub fn of<B: crate::typed::builder::Build<Output = MemStats>>(
+        f: impl FnOnce(MemStatsBuilder) -> B,
     ) -> MemStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MemStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod mem_stats_members {
+    pub struct adjusted_total_in_bytes;
+    pub struct total_in_bytes;
+    pub struct ml;
 }
 
 /// Builder for [`MemStats`].
@@ -716,7 +651,7 @@ impl<S0, S1, S2> MemStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> MemStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// If the amount of physical memory has been overridden using the `es.total_memory_bytes` system property
+    /// **Required.** If the amount of physical memory has been overridden using the `es.total_memory_bytes` system property
     /// then this reports the overridden value in bytes. Otherwise it reports the same value as `total_in_bytes`.
     pub fn adjusted_total_in_bytes(
         self,
@@ -729,7 +664,7 @@ impl<S1, S2> MemStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> MemStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Total amount of physical memory in bytes.
+    /// **Required.** Total amount of physical memory in bytes.
     pub fn total_in_bytes(
         self,
         value: i32,
@@ -741,7 +676,7 @@ impl<S0, S2> MemStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> MemStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Contains statistics about machine learning use of native memory on the node.
+    /// **Required.** Contains statistics about machine learning use of native memory on the node.
     pub fn ml(
         self,
         value: impl Into<MemMlStats>,
@@ -752,31 +687,22 @@ impl<S0, S1> MemStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`ml`](Self::ml) with a builder.
-    pub fn ml_with(
+    pub fn ml_with<B: crate::typed::builder::Build<Output = MemMlStats>>(
         self,
-        f: impl FnOnce(
-            MemMlStatsBuilder,
-        ) -> MemMlStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MemMlStatsBuilder) -> B,
     ) -> MemStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.ml(f(MemMlStatsBuilder::new()).build())
     }
 }
 
-impl
-    MemStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> MemStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`MemStats`].
-    pub fn build(self) -> MemStats {
+    pub fn build(self) -> MemStats
+    where
+        S0: crate::typed::builder::IsSet<mem_stats_members::adjusted_total_in_bytes>,
+        S1: crate::typed::builder::IsSet<mem_stats_members::total_in_bytes>,
+        S2: crate::typed::builder::IsSet<mem_stats_members::ml>,
+    {
         MemStats {
             adjusted_total: self.adjusted_total,
             adjusted_total_in_bytes: self.adjusted_total_in_bytes.unwrap(),
@@ -787,54 +713,28 @@ impl
     }
 }
 
-impl
-    From<
-        MemStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MemStats
+impl<S0, S1, S2> crate::typed::builder::Build for MemStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<mem_stats_members::adjusted_total_in_bytes>,
+    S1: crate::typed::builder::IsSet<mem_stats_members::total_in_bytes>,
+    S2: crate::typed::builder::IsSet<mem_stats_members::ml>,
 {
-    fn from(
-        builder: MemStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MemStats;
+
+    fn build(self) -> MemStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> MemStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `adjusted_total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, adjusted_total_in_bytes: crate::typed::builder::MissingRequiredField) -> MemStats { match adjusted_total_in_bytes {} }
-}
-
-impl<S2>
-    MemStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<MemStatsBuilder<(S0, S1, S2)>> for MemStats
+where
+    S0: crate::typed::builder::IsSet<mem_stats_members::adjusted_total_in_bytes>,
+    S1: crate::typed::builder::IsSet<mem_stats_members::total_in_bytes>,
+    S2: crate::typed::builder::IsSet<mem_stats_members::ml>,
 {
-    /// `total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_in_bytes: crate::typed::builder::MissingRequiredField) -> MemStats { match total_in_bytes {} }
-}
-
-impl
-    MemStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `ml` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ml: crate::typed::builder::MissingRequiredField) -> MemStats { match ml {} }
+    fn from(builder: MemStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -855,26 +755,33 @@ pub struct Memory {
 
 impl Memory {
     /// Creates a builder for [`Memory`].
+    ///
+    /// Required: `attributes`, `jvm`, `mem`, `name`, `roles`, `transport_address`, `ephemeral_id`.
     pub fn builder() -> MemoryBuilder {
         MemoryBuilder::new()
     }
 
     /// Creates a [`Memory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MemoryBuilder,
-        ) -> MemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `jvm`, `mem`, `name`, `roles`, `transport_address`, `ephemeral_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Memory>>(
+        f: impl FnOnce(MemoryBuilder) -> B,
     ) -> Memory {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MemoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod memory_members {
+    pub struct attributes;
+    pub struct jvm;
+    pub struct mem;
+    pub struct name;
+    pub struct roles;
+    pub struct transport_address;
+    pub struct ephemeral_id;
 }
 
 /// Builder for [`Memory`].
@@ -943,6 +850,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> MemoryBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
 impl<S1, S2, S3, S4, S5, S6>
     MemoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -980,7 +888,7 @@ impl<S1, S2, S3, S4, S5, S6> MemoryBuilder<(crate::typed::builder::Set, S1, S2, 
 impl<S0, S2, S3, S4, S5, S6>
     MemoryBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
-    /// Contains Java Virtual Machine (JVM) statistics for the node.
+    /// **Required.** Contains Java Virtual Machine (JVM) statistics for the node.
     pub fn jvm(
         self,
         value: impl Into<JvmStats>,
@@ -991,15 +899,9 @@ impl<S0, S2, S3, S4, S5, S6>
     }
 
     /// Sets [`jvm`](Self::jvm) with a builder.
-    pub fn jvm_with(
+    pub fn jvm_with<B: crate::typed::builder::Build<Output = JvmStats>>(
         self,
-        f: impl FnOnce(
-            JvmStatsBuilder,
-        ) -> JvmStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(JvmStatsBuilder) -> B,
     ) -> MemoryBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6)> {
         self.jvm(f(JvmStatsBuilder::new()).build())
     }
@@ -1008,7 +910,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     MemoryBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
-    /// Contains statistics about memory usage for the node.
+    /// **Required.** Contains statistics about memory usage for the node.
     pub fn mem(
         self,
         value: impl Into<MemStats>,
@@ -1019,15 +921,9 @@ impl<S0, S1, S3, S4, S5, S6>
     }
 
     /// Sets [`mem`](Self::mem) with a builder.
-    pub fn mem_with(
+    pub fn mem_with<B: crate::typed::builder::Build<Output = MemStats>>(
         self,
-        f: impl FnOnce(
-            MemStatsBuilder,
-        ) -> MemStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MemStatsBuilder) -> B,
     ) -> MemoryBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6)> {
         self.mem(f(MemStatsBuilder::new()).build())
     }
@@ -1036,7 +932,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     MemoryBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
-    /// Human-readable identifier for the node. Based on the Node name setting setting.
+    /// **Required.** Human-readable identifier for the node. Based on the Node name setting setting.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1050,7 +946,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     MemoryBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
-    /// Roles assigned to the node.
+    /// **Required.** Roles assigned to the node.
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -1087,7 +983,7 @@ impl<S0, S1, S2, S3, S5, S6> MemoryBuilder<(S0, S1, S2, S3, crate::typed::builde
 impl<S0, S1, S2, S3, S4, S6>
     MemoryBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
-    /// The host and port where transport HTTP connections are accepted.
+    /// **Required.** The host and port where transport HTTP connections are accepted.
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -1101,6 +997,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     MemoryBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn ephemeral_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -1111,19 +1008,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> MemoryBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`Memory`].
-    pub fn build(self) -> Memory {
+    pub fn build(self) -> Memory
+    where
+        S0: crate::typed::builder::IsSet<memory_members::attributes>,
+        S1: crate::typed::builder::IsSet<memory_members::jvm>,
+        S2: crate::typed::builder::IsSet<memory_members::mem>,
+        S3: crate::typed::builder::IsSet<memory_members::name>,
+        S4: crate::typed::builder::IsSet<memory_members::roles>,
+        S5: crate::typed::builder::IsSet<memory_members::transport_address>,
+        S6: crate::typed::builder::IsSet<memory_members::ephemeral_id>,
+    {
         Memory {
             attributes: self.attributes.unwrap(),
             jvm: self.jvm.unwrap(),
@@ -1136,136 +1032,37 @@ impl
     }
 }
 
-impl
-    From<
-        MemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Memory
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for MemoryBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<memory_members::attributes>,
+    S1: crate::typed::builder::IsSet<memory_members::jvm>,
+    S2: crate::typed::builder::IsSet<memory_members::mem>,
+    S3: crate::typed::builder::IsSet<memory_members::name>,
+    S4: crate::typed::builder::IsSet<memory_members::roles>,
+    S5: crate::typed::builder::IsSet<memory_members::transport_address>,
+    S6: crate::typed::builder::IsSet<memory_members::ephemeral_id>,
 {
-    fn from(
-        builder: MemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Memory;
+
+    fn build(self) -> Memory {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    MemoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<MemoryBuilder<(S0, S1, S2, S3, S4, S5, S6)>> for Memory
+where
+    S0: crate::typed::builder::IsSet<memory_members::attributes>,
+    S1: crate::typed::builder::IsSet<memory_members::jvm>,
+    S2: crate::typed::builder::IsSet<memory_members::mem>,
+    S3: crate::typed::builder::IsSet<memory_members::name>,
+    S4: crate::typed::builder::IsSet<memory_members::roles>,
+    S5: crate::typed::builder::IsSet<memory_members::transport_address>,
+    S6: crate::typed::builder::IsSet<memory_members::ephemeral_id>,
 {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> Memory { match attributes {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `jvm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, jvm: crate::typed::builder::MissingRequiredField) -> Memory { match jvm {} }
-}
-
-impl<S3, S4, S5, S6>
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `mem` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mem: crate::typed::builder::MissingRequiredField) -> Memory { match mem {} }
-}
-
-impl<S4, S5, S6>
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Memory { match name {} }
-}
-
-impl<S5, S6>
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> Memory { match roles {} }
-}
-
-impl<S6>
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> Memory { match transport_address {} }
-}
-
-impl
-    MemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `ephemeral_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ephemeral_id: crate::typed::builder::MissingRequiredField) -> Memory { match ephemeral_id {} }
+    fn from(builder: MemoryBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ml.get_memory_stats`](crate::typed::ml::MlClient::get_memory_stats).
@@ -1311,7 +1108,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1454,6 +1253,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

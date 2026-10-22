@@ -52,16 +52,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
 }
 
 /// Builder for [`Request`].
@@ -286,13 +297,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`on_failure`](Self::on_failure), with a builder.
-    pub fn add_on_failure_with(
+    pub fn add_on_failure_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::ProcessorContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::ProcessorContainerBuilder,
-        ) -> crate::typed::ingest::_types::ProcessorContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ingest::_types::ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_on_failure(
             f(crate::typed::ingest::_types::ProcessorContainerBuilder::new()).build(),
@@ -329,13 +338,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::ProcessorContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::ProcessorContainerBuilder,
-        ) -> crate::typed::ingest::_types::ProcessorContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ingest::_types::ProcessorContainerBuilder) -> B,
     ) -> Self {
         self.add_processors(
             f(crate::typed::ingest::_types::ProcessorContainerBuilder::new()).build(),
@@ -387,7 +394,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// ID of the ingest pipeline to create or update.
+    /// **Required.** ID of the ingest pipeline to create or update.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -398,9 +405,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+    {
         Request {
             id: self.id.unwrap(),
             master_timeout: self.master_timeout,
@@ -421,23 +431,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

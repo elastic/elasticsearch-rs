@@ -115,25 +115,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `inference_id`, `query`, `input`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `inference_id`, `query`, `input`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct inference_id;
+    pub struct query;
+    pub struct input;
 }
 
 /// Builder for [`Request`].
@@ -321,7 +325,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The unique identifier for the inference endpoint.
+    /// **Required.** The unique identifier for the inference endpoint.
     pub fn inference_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -333,7 +337,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// Query input.
+    /// **Required.** Query input.
     /// The query can be specified as a single string, or as an object.
     /// The object form additionally allows specifying non-text inputs, such as images.
     ///
@@ -371,7 +375,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The documents to rank.
+    /// **Required.** The documents to rank.
     /// The input can be specified as a single string or an array of strings, or as an object or an array of objects.
     /// The object form additionally allows specifying non-text inputs, such as images.
     ///
@@ -429,18 +433,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::inference_id>,
+        S1: crate::typed::builder::IsSet<request_members::query>,
+        S2: crate::typed::builder::IsSet<request_members::input>,
+    {
         Request {
             inference_id: self.inference_id.unwrap(),
             timeout: self.timeout,
@@ -457,90 +457,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::inference_id>,
+    S1: crate::typed::builder::IsSet<request_members::query>,
+    S2: crate::typed::builder::IsSet<request_members::input>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> Request { match inference_id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `inference_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, inference_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match inference_id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> Request { match query {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `query` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, query: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match query {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `input` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input: crate::typed::builder::MissingRequiredField) -> Request { match input {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `input` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, input: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match input {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::inference_id>,
+        S1: crate::typed::builder::IsSet<request_members::query>,
+        S2: crate::typed::builder::IsSet<request_members::input>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -711,21 +651,28 @@ pub struct RerankInputObject {
 
 impl RerankInputObject {
     /// Creates a builder for [`RerankInputObject`].
+    ///
+    /// Required: `type`, `value`.
     pub fn builder() -> RerankInputObjectBuilder {
         RerankInputObjectBuilder::new()
     }
 
     /// Creates a [`RerankInputObject`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RerankInputObjectBuilder,
-        ) -> RerankInputObjectBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = RerankInputObject>>(
+        f: impl FnOnce(RerankInputObjectBuilder) -> B,
     ) -> RerankInputObject {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RerankInputObjectBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rerank_input_object_members {
+    pub struct r#type;
+    pub struct value;
 }
 
 /// Builder for [`RerankInputObject`].
@@ -777,7 +724,7 @@ impl<S0, S1> RerankInputObjectBuilder<(S0, S1)> {
 }
 
 impl<S1> RerankInputObjectBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The type of input. Not all services and models support all input types.
+    /// **Required.** The type of input. Not all services and models support all input types.
     pub fn r#type(
         self,
         value: impl Into<RerankInputType>,
@@ -789,7 +736,7 @@ impl<S1> RerankInputObjectBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RerankInputObjectBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The value of the input. For the `base64` format, this must be a base64-encoded data URI, that is, "data:content/type;base64,...".
+    /// **Required.** The value of the input. For the `base64` format, this must be a base64-encoded data URI, that is, "data:content/type;base64,...".
     /// For the `url` format, this must be a URL that points to the content, that is, "https://example.com/image.jpg".
     pub fn value(
         self,
@@ -801,9 +748,13 @@ impl<S0> RerankInputObjectBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RerankInputObjectBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RerankInputObjectBuilder<(S0, S1)> {
     /// Builds a [`RerankInputObject`].
-    pub fn build(self) -> RerankInputObject {
+    pub fn build(self) -> RerankInputObject
+    where
+        S0: crate::typed::builder::IsSet<rerank_input_object_members::r#type>,
+        S1: crate::typed::builder::IsSet<rerank_input_object_members::value>,
+    {
         RerankInputObject {
             r#type: self.r#type.unwrap(),
             format: self.format,
@@ -812,26 +763,26 @@ impl RerankInputObjectBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<RerankInputObjectBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RerankInputObject
+impl<S0, S1> crate::typed::builder::Build for RerankInputObjectBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<rerank_input_object_members::r#type>,
+    S1: crate::typed::builder::IsSet<rerank_input_object_members::value>,
 {
-    fn from(
-        builder: RerankInputObjectBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RerankInputObject;
+
+    fn build(self) -> RerankInputObject {
+        Self::build(self)
     }
 }
 
-impl<S1> RerankInputObjectBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RerankInputObject { match r#type {} }
-}
-
-impl RerankInputObjectBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> RerankInputObject { match value {} }
+impl<S0, S1> From<RerankInputObjectBuilder<(S0, S1)>> for RerankInputObject
+where
+    S0: crate::typed::builder::IsSet<rerank_input_object_members::r#type>,
+    S1: crate::typed::builder::IsSet<rerank_input_object_members::value>,
+{
+    fn from(builder: RerankInputObjectBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

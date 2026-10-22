@@ -14,22 +14,29 @@ pub struct RecoverySource {
 
 impl RecoverySource {
     /// Creates a builder for [`RecoverySource`].
+    ///
+    /// Required: `complete`, `name`, `type`.
     pub fn builder() -> RecoverySourceBuilder {
         RecoverySourceBuilder::new()
     }
 
     /// Creates a [`RecoverySource`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoverySourceBuilder,
-        ) -> RecoverySourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `complete`, `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoverySource>>(
+        f: impl FnOnce(RecoverySourceBuilder) -> B,
     ) -> RecoverySource {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoverySourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_source_members {
+    pub struct complete;
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`RecoverySource`].
@@ -76,7 +83,7 @@ impl<S0, S1, S2> RecoverySourceBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RecoverySourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Whether the logical source was completely captured in the recovery point.
+    /// **Required.** Whether the logical source was completely captured in the recovery point.
     /// For a data stream, this includes its backing and failure-store indices.
     pub fn complete(
         self,
@@ -89,7 +96,7 @@ impl<S1, S2> RecoverySourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RecoverySourceBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The name of the index or data stream.
+    /// **Required.** The name of the index or data stream.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -101,7 +108,7 @@ impl<S0, S2> RecoverySourceBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RecoverySourceBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The type of logical source.
+    /// **Required.** The type of logical source.
     pub fn r#type(
         self,
         value: impl Into<RecoverySourceType>,
@@ -112,15 +119,14 @@ impl<S0, S1> RecoverySourceBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RecoverySourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RecoverySourceBuilder<(S0, S1, S2)> {
     /// Builds a [`RecoverySource`].
-    pub fn build(self) -> RecoverySource {
+    pub fn build(self) -> RecoverySource
+    where
+        S0: crate::typed::builder::IsSet<recovery_source_members::complete>,
+        S1: crate::typed::builder::IsSet<recovery_source_members::name>,
+        S2: crate::typed::builder::IsSet<recovery_source_members::r#type>,
+    {
         RecoverySource {
             complete: self.complete.unwrap(),
             name: self.name.unwrap(),
@@ -129,54 +135,28 @@ impl
     }
 }
 
-impl
-    From<
-        RecoverySourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RecoverySource
+impl<S0, S1, S2> crate::typed::builder::Build for RecoverySourceBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<recovery_source_members::complete>,
+    S1: crate::typed::builder::IsSet<recovery_source_members::name>,
+    S2: crate::typed::builder::IsSet<recovery_source_members::r#type>,
 {
-    fn from(
-        builder: RecoverySourceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoverySource;
+
+    fn build(self) -> RecoverySource {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RecoverySourceBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `complete` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, complete: crate::typed::builder::MissingRequiredField) -> RecoverySource { match complete {} }
-}
-
-impl<S2>
-    RecoverySourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RecoverySourceBuilder<(S0, S1, S2)>> for RecoverySource
+where
+    S0: crate::typed::builder::IsSet<recovery_source_members::complete>,
+    S1: crate::typed::builder::IsSet<recovery_source_members::name>,
+    S2: crate::typed::builder::IsSet<recovery_source_members::r#type>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> RecoverySource { match name {} }
-}
-
-impl
-    RecoverySourceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RecoverySource { match r#type {} }
+    fn from(builder: RecoverySourceBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -227,19 +207,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `expression`, `recovery_point_end_time`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `expression`, `recovery_point_end_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct expression;
+    pub struct recovery_point_end_time;
 }
 
 /// Builder for [`Request`].
@@ -390,7 +379,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A comma-separated list of source expressions to match. Wildcards and exclusions prefixed with `-` are supported.
+    /// **Required.** A comma-separated list of source expressions to match. Wildcards and exclusions prefixed with `-` are supported.
     pub fn expression(
         self,
         value: impl Into<RequestExpression>,
@@ -402,7 +391,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The exact end time of the recovery point.
+    /// **Required.** The exact end time of the recovery point.
     pub fn recovery_point_end_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -413,9 +402,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::expression>,
+        S1: crate::typed::builder::IsSet<request_members::recovery_point_end_time>,
+    {
         Request {
             expression: self.expression.unwrap(),
             include_incomplete_sources: self.include_incomplete_sources,
@@ -430,41 +423,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::expression>,
+    S1: crate::typed::builder::IsSet<request_members::recovery_point_end_time>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `expression` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expression: crate::typed::builder::MissingRequiredField) -> Request { match expression {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `expression` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, expression: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match expression {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `recovery_point_end_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recovery_point_end_time: crate::typed::builder::MissingRequiredField) -> Request { match recovery_point_end_time {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `recovery_point_end_time` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, recovery_point_end_time: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match recovery_point_end_time {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::expression>,
+        S1: crate::typed::builder::IsSet<request_members::recovery_point_end_time>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

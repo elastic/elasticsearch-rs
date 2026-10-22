@@ -24,18 +24,27 @@ pub struct ExecuteEnrichPolicyStatus {
 
 impl ExecuteEnrichPolicyStatus {
     /// Creates a builder for [`ExecuteEnrichPolicyStatus`].
+    ///
+    /// Required: `phase`.
     pub fn builder() -> ExecuteEnrichPolicyStatusBuilder {
         ExecuteEnrichPolicyStatusBuilder::new()
     }
 
     /// Creates a [`ExecuteEnrichPolicyStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExecuteEnrichPolicyStatusBuilder,
-        ) -> ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `phase`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExecuteEnrichPolicyStatus>>(
+        f: impl FnOnce(ExecuteEnrichPolicyStatusBuilder) -> B,
     ) -> ExecuteEnrichPolicyStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExecuteEnrichPolicyStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod execute_enrich_policy_status_members {
+    pub struct phase;
 }
 
 /// Builder for [`ExecuteEnrichPolicyStatus`].
@@ -78,6 +87,7 @@ impl<S0> ExecuteEnrichPolicyStatusBuilder<(S0,)> {
 }
 
 impl ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn phase(
         self,
         value: impl Into<EnrichPolicyPhase>,
@@ -88,9 +98,12 @@ impl ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ExecuteEnrichPolicyStatusBuilder<(S0,)> {
     /// Builds a [`ExecuteEnrichPolicyStatus`].
-    pub fn build(self) -> ExecuteEnrichPolicyStatus {
+    pub fn build(self) -> ExecuteEnrichPolicyStatus
+    where
+        S0: crate::typed::builder::IsSet<execute_enrich_policy_status_members::phase>,
+    {
         ExecuteEnrichPolicyStatus {
             phase: self.phase.unwrap(),
             step: self.step,
@@ -98,18 +111,24 @@ impl ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)>>
-    for ExecuteEnrichPolicyStatus
+impl<S0> crate::typed::builder::Build for ExecuteEnrichPolicyStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<execute_enrich_policy_status_members::phase>,
 {
-    fn from(builder: ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ExecuteEnrichPolicyStatus;
+
+    fn build(self) -> ExecuteEnrichPolicyStatus {
+        Self::build(self)
     }
 }
 
-impl ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `phase` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, phase: crate::typed::builder::MissingRequiredField) -> ExecuteEnrichPolicyStatus { match phase {} }
+impl<S0> From<ExecuteEnrichPolicyStatusBuilder<(S0,)>> for ExecuteEnrichPolicyStatus
+where
+    S0: crate::typed::builder::IsSet<execute_enrich_policy_status_members::phase>,
+{
+    fn from(builder: ExecuteEnrichPolicyStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`enrich.execute_policy`](crate::typed::enrich::EnrichClient::execute_policy).
@@ -146,16 +165,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -284,7 +314,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Enrich policy to execute.
+    /// **Required.** Enrich policy to execute.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -295,9 +325,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             master_timeout: self.master_timeout,
@@ -310,23 +343,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

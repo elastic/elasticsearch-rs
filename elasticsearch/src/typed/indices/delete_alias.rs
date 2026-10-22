@@ -11,18 +11,27 @@ pub struct IndicesAliasesResponseBody {
 
 impl IndicesAliasesResponseBody {
     /// Creates a builder for [`IndicesAliasesResponseBody`].
+    ///
+    /// Required: `acknowledged`.
     pub fn builder() -> IndicesAliasesResponseBodyBuilder {
         IndicesAliasesResponseBodyBuilder::new()
     }
 
     /// Creates a [`IndicesAliasesResponseBody`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesAliasesResponseBodyBuilder,
-        ) -> IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `acknowledged`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesAliasesResponseBody>>(
+        f: impl FnOnce(IndicesAliasesResponseBodyBuilder) -> B,
     ) -> IndicesAliasesResponseBody {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesAliasesResponseBodyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_aliases_response_body_members {
+    pub struct acknowledged;
 }
 
 /// Builder for [`IndicesAliasesResponseBody`].
@@ -65,7 +74,7 @@ impl<S0> IndicesAliasesResponseBodyBuilder<(S0,)> {
 }
 
 impl IndicesAliasesResponseBodyBuilder<(crate::typed::builder::NotSet,)> {
-    /// For a successful response, this value is always true. On failure, an exception is returned instead.
+    /// **Required.** For a successful response, this value is always true. On failure, an exception is returned instead.
     pub fn acknowledged(
         self,
         value: bool,
@@ -76,9 +85,12 @@ impl IndicesAliasesResponseBodyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndicesAliasesResponseBodyBuilder<(S0,)> {
     /// Builds a [`IndicesAliasesResponseBody`].
-    pub fn build(self) -> IndicesAliasesResponseBody {
+    pub fn build(self) -> IndicesAliasesResponseBody
+    where
+        S0: crate::typed::builder::IsSet<indices_aliases_response_body_members::acknowledged>,
+    {
         IndicesAliasesResponseBody {
             acknowledged: self.acknowledged.unwrap(),
             errors: self.errors,
@@ -86,18 +98,24 @@ impl IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)>>
-    for IndicesAliasesResponseBody
+impl<S0> crate::typed::builder::Build for IndicesAliasesResponseBodyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indices_aliases_response_body_members::acknowledged>,
 {
-    fn from(builder: IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = IndicesAliasesResponseBody;
+
+    fn build(self) -> IndicesAliasesResponseBody {
+        Self::build(self)
     }
 }
 
-impl IndicesAliasesResponseBodyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `acknowledged` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, acknowledged: crate::typed::builder::MissingRequiredField) -> IndicesAliasesResponseBody { match acknowledged {} }
+impl<S0> From<IndicesAliasesResponseBodyBuilder<(S0,)>> for IndicesAliasesResponseBody
+where
+    S0: crate::typed::builder::IsSet<indices_aliases_response_body_members::acknowledged>,
+{
+    fn from(builder: IndicesAliasesResponseBodyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.delete_alias`](crate::typed::indices::IndicesClient::delete_alias).
@@ -140,19 +158,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `index`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -289,7 +316,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// Comma-separated list of data streams or indices used to limit the request.
+    /// **Required.** Comma-separated list of data streams or indices used to limit the request.
     /// Supports wildcards (`*`).
     pub fn index(
         self,
@@ -302,7 +329,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Comma-separated list of aliases to remove.
+    /// **Required.** Comma-separated list of aliases to remove.
     /// Supports wildcards (`*`). To remove all aliases, use `*` or `_all`.
     pub fn name(
         self,
@@ -314,9 +341,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             index: self.index.unwrap(),
             name: self.name.unwrap(),
@@ -330,41 +361,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::name>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

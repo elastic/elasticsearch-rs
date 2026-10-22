@@ -54,13 +54,17 @@ impl From<RemoveIndexActionBuilder> for Action {
 
 impl Action {
     /// Creates a builder for [`Action`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ActionBuilder {
         ActionBuilder::new()
     }
 
     /// Creates a [`Action`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Action>>(
+        f: impl FnOnce(ActionBuilder) -> B,
     ) -> Action {
         f(Self::builder()).build()
     }
@@ -101,9 +105,9 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`add`](Self::add) with a builder.
-    pub fn add_with(
+    pub fn add_with<B: crate::typed::builder::Build<Output = AddAction>>(
         self,
-        f: impl FnOnce(AddActionBuilder) -> AddActionBuilder,
+        f: impl FnOnce(AddActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.add(f(AddActionBuilder::new()).build())
     }
@@ -119,9 +123,9 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`remove`](Self::remove) with a builder.
-    pub fn remove_with(
+    pub fn remove_with<B: crate::typed::builder::Build<Output = RemoveAction>>(
         self,
-        f: impl FnOnce(RemoveActionBuilder) -> RemoveActionBuilder,
+        f: impl FnOnce(RemoveActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.remove(f(RemoveActionBuilder::new()).build())
     }
@@ -138,31 +142,42 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`remove_index`](Self::remove_index) with a builder.
-    pub fn remove_index_with(
+    pub fn remove_index_with<B: crate::typed::builder::Build<Output = RemoveIndexAction>>(
         self,
-        f: impl FnOnce(RemoveIndexActionBuilder) -> RemoveIndexActionBuilder,
+        f: impl FnOnce(RemoveIndexActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.remove_index(f(RemoveIndexActionBuilder::new()).build())
     }
 }
 
-impl ActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ActionBuilder<(S0,)> {
     /// Builds a [`Action`].
-    pub fn build(self) -> Action {
+    pub fn build(self) -> Action
+    where
+        S0: crate::typed::builder::IsVariantSet<Action>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ActionBuilder<(crate::typed::builder::Set,)>> for Action {
-    fn from(builder: ActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Action>,
+{
+    type Output = Action;
+
+    fn build(self) -> Action {
+        Self::build(self)
     }
 }
 
-impl ActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> Action { match variant {} }
+impl<S0> From<ActionBuilder<(S0,)>> for Action
+where
+    S0: crate::typed::builder::IsVariantSet<Action>,
+{
+    fn from(builder: ActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -243,7 +258,9 @@ impl AddAction {
     }
 
     /// Creates a [`AddAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AddActionBuilder) -> AddActionBuilder) -> AddAction {
+    pub fn of<B: crate::typed::builder::Build<Output = AddAction>>(
+        f: impl FnOnce(AddActionBuilder) -> B,
+    ) -> AddAction {
         f(Self::builder()).build()
     }
 }
@@ -328,13 +345,11 @@ impl AddActionBuilder {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -462,6 +477,14 @@ impl AddActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AddActionBuilder {
+    type Output = AddAction;
+
+    fn build(self) -> AddAction {
+        Self::build(self)
+    }
+}
+
 impl From<AddActionBuilder> for AddAction {
     fn from(builder: AddActionBuilder) -> Self {
         builder.build()
@@ -523,7 +546,9 @@ impl RemoveAction {
     }
 
     /// Creates a [`RemoveAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RemoveActionBuilder) -> RemoveActionBuilder) -> RemoveAction {
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveAction>>(
+        f: impl FnOnce(RemoveActionBuilder) -> B,
+    ) -> RemoveAction {
         f(Self::builder()).build()
     }
 }
@@ -629,6 +654,14 @@ impl RemoveActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RemoveActionBuilder {
+    type Output = RemoveAction;
+
+    fn build(self) -> RemoveAction {
+        Self::build(self)
+    }
+}
+
 impl From<RemoveActionBuilder> for RemoveAction {
     fn from(builder: RemoveActionBuilder) -> Self {
         builder.build()
@@ -657,8 +690,8 @@ impl RemoveIndexAction {
     }
 
     /// Creates a [`RemoveIndexAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RemoveIndexActionBuilder) -> RemoveIndexActionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveIndexAction>>(
+        f: impl FnOnce(RemoveIndexActionBuilder) -> B,
     ) -> RemoveIndexAction {
         f(Self::builder()).build()
     }
@@ -733,6 +766,14 @@ impl RemoveIndexActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RemoveIndexActionBuilder {
+    type Output = RemoveIndexAction;
+
+    fn build(self) -> RemoveIndexAction {
+        Self::build(self)
+    }
+}
+
 impl From<RemoveIndexActionBuilder> for RemoveIndexAction {
     fn from(builder: RemoveIndexActionBuilder) -> Self {
         builder.build()
@@ -780,7 +821,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -918,9 +961,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`actions`](Self::actions), with a builder.
-    pub fn add_actions_with(
+    pub fn add_actions_with<B: crate::typed::builder::Build<Output = Action>>(
         self,
-        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ActionBuilder) -> B,
     ) -> Self {
         self.add_actions(f(ActionBuilder::new()).build())
     }
@@ -938,6 +981,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             actions: self.actions,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

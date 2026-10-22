@@ -28,7 +28,9 @@ impl Destination {
     }
 
     /// Creates a [`Destination`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DestinationBuilder) -> DestinationBuilder) -> Destination {
+    pub fn of<B: crate::typed::builder::Build<Output = Destination>>(
+        f: impl FnOnce(DestinationBuilder) -> B,
+    ) -> Destination {
         f(Self::builder()).build()
     }
 }
@@ -92,11 +94,9 @@ impl DestinationBuilder {
     }
 
     /// Adds an element to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = DestinationAlias>>(
         self,
-        f: impl FnOnce(
-            DestinationAliasBuilder,
-        ) -> DestinationAliasBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DestinationAliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(f(DestinationAliasBuilder::new()).build())
     }
@@ -125,6 +125,14 @@ impl DestinationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DestinationBuilder {
+    type Output = Destination;
+
+    fn build(self) -> Destination {
+        Self::build(self)
+    }
+}
+
 impl From<DestinationBuilder> for Destination {
     fn from(builder: DestinationBuilder) -> Self {
         builder.build()
@@ -144,18 +152,27 @@ pub struct DestinationAlias {
 
 impl DestinationAlias {
     /// Creates a builder for [`DestinationAlias`].
+    ///
+    /// Required: `alias`.
     pub fn builder() -> DestinationAliasBuilder {
         DestinationAliasBuilder::new()
     }
 
     /// Creates a [`DestinationAlias`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DestinationAliasBuilder,
-        ) -> DestinationAliasBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `alias`.
+    pub fn of<B: crate::typed::builder::Build<Output = DestinationAlias>>(
+        f: impl FnOnce(DestinationAliasBuilder) -> B,
     ) -> DestinationAlias {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DestinationAliasBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod destination_alias_members {
+    pub struct alias;
 }
 
 /// Builder for [`DestinationAlias`].
@@ -201,7 +218,7 @@ impl<S0> DestinationAliasBuilder<(S0,)> {
 }
 
 impl DestinationAliasBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the alias.
+    /// **Required.** The name of the alias.
     pub fn alias(
         self,
         value: impl Into<crate::typed::_types::IndexAlias>,
@@ -212,9 +229,12 @@ impl DestinationAliasBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DestinationAliasBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DestinationAliasBuilder<(S0,)> {
     /// Builds a [`DestinationAlias`].
-    pub fn build(self) -> DestinationAlias {
+    pub fn build(self) -> DestinationAlias
+    where
+        S0: crate::typed::builder::IsSet<destination_alias_members::alias>,
+    {
         DestinationAlias {
             alias: self.alias.unwrap(),
             move_on_creation: self.move_on_creation,
@@ -222,16 +242,24 @@ impl DestinationAliasBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DestinationAliasBuilder<(crate::typed::builder::Set,)>> for DestinationAlias {
-    fn from(builder: DestinationAliasBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DestinationAliasBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<destination_alias_members::alias>,
+{
+    type Output = DestinationAlias;
+
+    fn build(self) -> DestinationAlias {
+        Self::build(self)
     }
 }
 
-impl DestinationAliasBuilder<(crate::typed::builder::NotSet,)> {
-    /// `alias` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, alias: crate::typed::builder::MissingRequiredField) -> DestinationAlias { match alias {} }
+impl<S0> From<DestinationAliasBuilder<(S0,)>> for DestinationAlias
+where
+    S0: crate::typed::builder::IsSet<destination_alias_members::alias>,
+{
+    fn from(builder: DestinationAliasBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -244,19 +272,28 @@ pub struct Latest {
 
 impl Latest {
     /// Creates a builder for [`Latest`].
+    ///
+    /// Required: `sort`, `unique_key`.
     pub fn builder() -> LatestBuilder {
         LatestBuilder::new()
     }
 
     /// Creates a [`Latest`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LatestBuilder,
-        )
-            -> LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `sort`, `unique_key`.
+    pub fn of<B: crate::typed::builder::Build<Output = Latest>>(
+        f: impl FnOnce(LatestBuilder) -> B,
     ) -> Latest {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LatestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod latest_members {
+    pub struct sort;
+    pub struct unique_key;
 }
 
 /// Builder for [`Latest`].
@@ -288,7 +325,7 @@ impl<S0, S1> LatestBuilder<(S0, S1)> {
 }
 
 impl<S1> LatestBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Specifies the date field that is used to identify the latest documents.
+    /// **Required.** Specifies the date field that is used to identify the latest documents.
     pub fn sort(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -300,7 +337,7 @@ impl<S1> LatestBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LatestBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Specifies an array of one or more fields that are used to group the data.
+    /// **Required.** Specifies an array of one or more fields that are used to group the data.
     pub fn unique_key(
         self,
         value: impl Into<Vec<crate::typed::_types::Field>>,
@@ -334,9 +371,13 @@ impl<S0> LatestBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LatestBuilder<(S0, S1)> {
     /// Builds a [`Latest`].
-    pub fn build(self) -> Latest {
+    pub fn build(self) -> Latest
+    where
+        S0: crate::typed::builder::IsSet<latest_members::sort>,
+        S1: crate::typed::builder::IsSet<latest_members::unique_key>,
+    {
         Latest {
             sort: self.sort.unwrap(),
             unique_key: self.unique_key.unwrap(),
@@ -344,24 +385,26 @@ impl LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Latest {
-    fn from(
-        builder: LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for LatestBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<latest_members::sort>,
+    S1: crate::typed::builder::IsSet<latest_members::unique_key>,
+{
+    type Output = Latest;
+
+    fn build(self) -> Latest {
+        Self::build(self)
     }
 }
 
-impl<S1> LatestBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `sort` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sort: crate::typed::builder::MissingRequiredField) -> Latest { match sort {} }
-}
-
-impl LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `unique_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unique_key: crate::typed::builder::MissingRequiredField) -> Latest { match unique_key {} }
+impl<S0, S1> From<LatestBuilder<(S0, S1)>> for Latest
+where
+    S0: crate::typed::builder::IsSet<latest_members::sort>,
+    S1: crate::typed::builder::IsSet<latest_members::unique_key>,
+{
+    fn from(builder: LatestBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -387,7 +430,9 @@ impl Pivot {
     }
 
     /// Creates a [`Pivot`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PivotBuilder) -> PivotBuilder) -> Pivot {
+    pub fn of<B: crate::typed::builder::Build<Output = Pivot>>(
+        f: impl FnOnce(PivotBuilder) -> B,
+    ) -> Pivot {
         f(Self::builder()).build()
     }
 }
@@ -449,14 +494,14 @@ impl PivotBuilder {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -496,12 +541,10 @@ impl PivotBuilder {
     }
 
     /// Adds an entry to [`group_by`](Self::group_by), with a builder.
-    pub fn add_group_by_with(
+    pub fn add_group_by_with<B: crate::typed::builder::Build<Output = PivotGroupByContainer>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            PivotGroupByContainerBuilder,
-        ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PivotGroupByContainerBuilder) -> B,
     ) -> Self {
         self.add_group_by(key, f(PivotGroupByContainerBuilder::new()).build())
     }
@@ -514,6 +557,14 @@ impl PivotBuilder {
             aggregations: self.aggregations,
             group_by: self.group_by,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PivotBuilder {
+    type Output = Pivot;
+
+    fn build(self) -> Pivot {
+        Self::build(self)
     }
 }
 
@@ -591,15 +642,17 @@ impl From<crate::typed::_types::aggregations::TermsAggregationBuilder> for Pivot
 
 impl PivotGroupByContainer {
     /// Creates a builder for [`PivotGroupByContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> PivotGroupByContainerBuilder {
         PivotGroupByContainerBuilder::new()
     }
 
     /// Creates a [`PivotGroupByContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PivotGroupByContainerBuilder,
-        ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = PivotGroupByContainer>>(
+        f: impl FnOnce(PivotGroupByContainerBuilder) -> B,
     ) -> PivotGroupByContainer {
         f(Self::builder()).build()
     }
@@ -641,11 +694,13 @@ impl PivotGroupByContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_histogram`](Self::date_histogram) with a builder.
-    pub fn date_histogram_with(
+    pub fn date_histogram_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::DateHistogramAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::DateHistogramAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::DateHistogramAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::DateHistogramAggregationBuilder) -> B,
     ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)> {
         self.date_histogram(
             f(crate::typed::_types::aggregations::DateHistogramAggregationBuilder::new()).build(),
@@ -662,11 +717,13 @@ impl PivotGroupByContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geotile_grid`](Self::geotile_grid) with a builder.
-    pub fn geotile_grid_with(
+    pub fn geotile_grid_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::GeoTileGridAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::GeoTileGridAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::GeoTileGridAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::GeoTileGridAggregationBuilder) -> B,
     ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)> {
         self.geotile_grid(
             f(crate::typed::_types::aggregations::GeoTileGridAggregationBuilder::new()).build(),
@@ -683,11 +740,13 @@ impl PivotGroupByContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`histogram`](Self::histogram) with a builder.
-    pub fn histogram_with(
+    pub fn histogram_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::HistogramAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::HistogramAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::HistogramAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::HistogramAggregationBuilder) -> B,
     ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)> {
         self.histogram(
             f(crate::typed::_types::aggregations::HistogramAggregationBuilder::new()).build(),
@@ -704,33 +763,44 @@ impl PivotGroupByContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::TermsAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::TermsAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::TermsAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::TermsAggregationBuilder) -> B,
     ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(crate::typed::_types::aggregations::TermsAggregationBuilder::new()).build())
     }
 }
 
-impl PivotGroupByContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PivotGroupByContainerBuilder<(S0,)> {
     /// Builds a [`PivotGroupByContainer`].
-    pub fn build(self) -> PivotGroupByContainer {
+    pub fn build(self) -> PivotGroupByContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<PivotGroupByContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<PivotGroupByContainerBuilder<(crate::typed::builder::Set,)>> for PivotGroupByContainer {
-    fn from(builder: PivotGroupByContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PivotGroupByContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<PivotGroupByContainer>,
+{
+    type Output = PivotGroupByContainer;
+
+    fn build(self) -> PivotGroupByContainer {
+        Self::build(self)
     }
 }
 
-impl PivotGroupByContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> PivotGroupByContainer { match variant {} }
+impl<S0> From<PivotGroupByContainerBuilder<(S0,)>> for PivotGroupByContainer
+where
+    S0: crate::typed::builder::IsVariantSet<PivotGroupByContainer>,
+{
+    fn from(builder: PivotGroupByContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -744,21 +814,28 @@ pub struct RetentionPolicy {
 
 impl RetentionPolicy {
     /// Creates a builder for [`RetentionPolicy`].
+    ///
+    /// Required: `field`, `max_age`.
     pub fn builder() -> RetentionPolicyBuilder {
         RetentionPolicyBuilder::new()
     }
 
     /// Creates a [`RetentionPolicy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RetentionPolicyBuilder,
-        ) -> RetentionPolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `max_age`.
+    pub fn of<B: crate::typed::builder::Build<Output = RetentionPolicy>>(
+        f: impl FnOnce(RetentionPolicyBuilder) -> B,
     ) -> RetentionPolicy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RetentionPolicyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod retention_policy_members {
+    pub struct field;
+    pub struct max_age;
 }
 
 /// Builder for [`RetentionPolicy`].
@@ -792,7 +869,7 @@ impl<S0, S1> RetentionPolicyBuilder<(S0, S1)> {
 }
 
 impl<S1> RetentionPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The date field that is used to calculate the age of the document.
+    /// **Required.** The date field that is used to calculate the age of the document.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -804,7 +881,7 @@ impl<S1> RetentionPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RetentionPolicyBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Specifies the maximum age of a document in the destination index. Documents that are older than the configured
+    /// **Required.** Specifies the maximum age of a document in the destination index. Documents that are older than the configured
     /// value are removed from the destination index.
     pub fn max_age(
         self,
@@ -816,9 +893,13 @@ impl<S0> RetentionPolicyBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RetentionPolicyBuilder<(S0, S1)> {
     /// Builds a [`RetentionPolicy`].
-    pub fn build(self) -> RetentionPolicy {
+    pub fn build(self) -> RetentionPolicy
+    where
+        S0: crate::typed::builder::IsSet<retention_policy_members::field>,
+        S1: crate::typed::builder::IsSet<retention_policy_members::max_age>,
+    {
         RetentionPolicy {
             field: self.field.unwrap(),
             max_age: self.max_age.unwrap(),
@@ -826,26 +907,26 @@ impl RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RetentionPolicy
+impl<S0, S1> crate::typed::builder::Build for RetentionPolicyBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<retention_policy_members::field>,
+    S1: crate::typed::builder::IsSet<retention_policy_members::max_age>,
 {
-    fn from(
-        builder: RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RetentionPolicy;
+
+    fn build(self) -> RetentionPolicy {
+        Self::build(self)
     }
 }
 
-impl<S1> RetentionPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RetentionPolicy { match field {} }
-}
-
-impl RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `max_age` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_age: crate::typed::builder::MissingRequiredField) -> RetentionPolicy { match max_age {} }
+impl<S0, S1> From<RetentionPolicyBuilder<(S0, S1)>> for RetentionPolicy
+where
+    S0: crate::typed::builder::IsSet<retention_policy_members::field>,
+    S1: crate::typed::builder::IsSet<retention_policy_members::max_age>,
+{
+    fn from(builder: RetentionPolicyBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -873,15 +954,17 @@ impl From<RetentionPolicyBuilder<(crate::typed::builder::Set, crate::typed::buil
 
 impl RetentionPolicyContainer {
     /// Creates a builder for [`RetentionPolicyContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> RetentionPolicyContainerBuilder {
         RetentionPolicyContainerBuilder::new()
     }
 
     /// Creates a [`RetentionPolicyContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RetentionPolicyContainerBuilder,
-        ) -> RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = RetentionPolicyContainer>>(
+        f: impl FnOnce(RetentionPolicyContainerBuilder) -> B,
     ) -> RetentionPolicyContainer {
         f(Self::builder()).build()
     }
@@ -924,38 +1007,42 @@ impl RetentionPolicyContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`time`](Self::time) with a builder.
-    pub fn time_with(
+    pub fn time_with<B: crate::typed::builder::Build<Output = RetentionPolicy>>(
         self,
-        f: impl FnOnce(
-            RetentionPolicyBuilder,
-        ) -> RetentionPolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RetentionPolicyBuilder) -> B,
     ) -> RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)> {
         self.time(f(RetentionPolicyBuilder::new()).build())
     }
 }
 
-impl RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RetentionPolicyContainerBuilder<(S0,)> {
     /// Builds a [`RetentionPolicyContainer`].
-    pub fn build(self) -> RetentionPolicyContainer {
+    pub fn build(self) -> RetentionPolicyContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<RetentionPolicyContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)>>
-    for RetentionPolicyContainer
+impl<S0> crate::typed::builder::Build for RetentionPolicyContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<RetentionPolicyContainer>,
 {
-    fn from(builder: RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RetentionPolicyContainer;
+
+    fn build(self) -> RetentionPolicyContainer {
+        Self::build(self)
     }
 }
 
-impl RetentionPolicyContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> RetentionPolicyContainer { match variant {} }
+impl<S0> From<RetentionPolicyContainerBuilder<(S0,)>> for RetentionPolicyContainer
+where
+    S0: crate::typed::builder::IsVariantSet<RetentionPolicyContainer>,
+{
+    fn from(builder: RetentionPolicyContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The source of the data for the transform.
@@ -1012,7 +1099,9 @@ impl Settings {
     }
 
     /// Creates a [`Settings`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SettingsBuilder) -> SettingsBuilder) -> Settings {
+    pub fn of<B: crate::typed::builder::Build<Output = Settings>>(
+        f: impl FnOnce(SettingsBuilder) -> B,
+    ) -> Settings {
         f(Self::builder()).build()
     }
 }
@@ -1177,6 +1266,14 @@ impl SettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SettingsBuilder {
+    type Output = Settings;
+
+    fn build(self) -> Settings {
+        Self::build(self)
+    }
+}
+
 impl From<SettingsBuilder> for Settings {
     fn from(builder: SettingsBuilder) -> Self {
         builder.build()
@@ -1211,16 +1308,27 @@ pub struct Source {
 
 impl Source {
     /// Creates a builder for [`Source`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> SourceBuilder {
         SourceBuilder::new()
     }
 
     /// Creates a [`Source`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SourceBuilder) -> SourceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Source>>(
+        f: impl FnOnce(SourceBuilder) -> B,
     ) -> Source {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_members {
+    pub struct index;
 }
 
 /// Builder for [`Source`].
@@ -1275,13 +1383,11 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1318,14 +1424,12 @@ impl<S0> SourceBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -1360,7 +1464,7 @@ impl<S0> SourceBuilder<(S0,)> {
 }
 
 impl SourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// The source indices for the transform. It can be a single index, an index pattern (for example, `"my-index-*""`), an
+    /// **Required.** The source indices for the transform. It can be a single index, an index pattern (for example, `"my-index-*""`), an
     /// array of indices (for example, `["my-index-000001", "my-index-000002"]`), or an array of index patterns (for
     /// example, `["my-index-*", "my-other-index-*"]`. For remote indices use the syntax `"remote_name:index_name"`. If
     /// any indices are in remote clusters then the master node and at least one transform node must have the `remote_cluster_client` node role.
@@ -1374,9 +1478,12 @@ impl SourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SourceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SourceBuilder<(S0,)> {
     /// Builds a [`Source`].
-    pub fn build(self) -> Source {
+    pub fn build(self) -> Source
+    where
+        S0: crate::typed::builder::IsSet<source_members::index>,
+    {
         Source {
             index: self.index.unwrap(),
             query: self.query,
@@ -1386,16 +1493,24 @@ impl SourceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SourceBuilder<(crate::typed::builder::Set,)>> for Source {
-    fn from(builder: SourceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SourceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<source_members::index>,
+{
+    type Output = Source;
+
+    fn build(self) -> Source {
+        Self::build(self)
     }
 }
 
-impl SourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Source { match index {} }
+impl<S0> From<SourceBuilder<(S0,)>> for Source
+where
+    S0: crate::typed::builder::IsSet<source_members::index>,
+{
+    fn from(builder: SourceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1419,13 +1534,17 @@ impl From<TimeSyncBuilder<(crate::typed::builder::Set,)>> for SyncContainer {
 
 impl SyncContainer {
     /// Creates a builder for [`SyncContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> SyncContainerBuilder {
         SyncContainerBuilder::new()
     }
 
     /// Creates a [`SyncContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SyncContainerBuilder) -> SyncContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = SyncContainer>>(
+        f: impl FnOnce(SyncContainerBuilder) -> B,
     ) -> SyncContainer {
         f(Self::builder()).build()
     }
@@ -1468,31 +1587,42 @@ impl SyncContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`time`](Self::time) with a builder.
-    pub fn time_with(
+    pub fn time_with<B: crate::typed::builder::Build<Output = TimeSync>>(
         self,
-        f: impl FnOnce(TimeSyncBuilder) -> TimeSyncBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TimeSyncBuilder) -> B,
     ) -> SyncContainerBuilder<(crate::typed::builder::Set,)> {
         self.time(f(TimeSyncBuilder::new()).build())
     }
 }
 
-impl SyncContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SyncContainerBuilder<(S0,)> {
     /// Builds a [`SyncContainer`].
-    pub fn build(self) -> SyncContainer {
+    pub fn build(self) -> SyncContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<SyncContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<SyncContainerBuilder<(crate::typed::builder::Set,)>> for SyncContainer {
-    fn from(builder: SyncContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SyncContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<SyncContainer>,
+{
+    type Output = SyncContainer;
+
+    fn build(self) -> SyncContainer {
+        Self::build(self)
     }
 }
 
-impl SyncContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> SyncContainer { match variant {} }
+impl<S0> From<SyncContainerBuilder<(S0,)>> for SyncContainer
+where
+    S0: crate::typed::builder::IsVariantSet<SyncContainer>,
+{
+    fn from(builder: SyncContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1508,16 +1638,27 @@ pub struct TimeSync {
 
 impl TimeSync {
     /// Creates a builder for [`TimeSync`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> TimeSyncBuilder {
         TimeSyncBuilder::new()
     }
 
     /// Creates a [`TimeSync`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TimeSyncBuilder) -> TimeSyncBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = TimeSync>>(
+        f: impl FnOnce(TimeSyncBuilder) -> B,
     ) -> TimeSync {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TimeSyncBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod time_sync_members {
+    pub struct field;
 }
 
 /// Builder for [`TimeSync`].
@@ -1561,7 +1702,7 @@ impl<S0> TimeSyncBuilder<(S0,)> {
 }
 
 impl TimeSyncBuilder<(crate::typed::builder::NotSet,)> {
-    /// The date field that is used to identify new documents in the source. In general, it’s a good idea to use a field
+    /// **Required.** The date field that is used to identify new documents in the source. In general, it’s a good idea to use a field
     /// that contains the ingest timestamp. If you use a different field, you might need to set the delay such that it
     /// accounts for data transmission delays.
     pub fn field(
@@ -1574,9 +1715,12 @@ impl TimeSyncBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TimeSyncBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TimeSyncBuilder<(S0,)> {
     /// Builds a [`TimeSync`].
-    pub fn build(self) -> TimeSync {
+    pub fn build(self) -> TimeSync
+    where
+        S0: crate::typed::builder::IsSet<time_sync_members::field>,
+    {
         TimeSync {
             delay: self.delay,
             field: self.field.unwrap(),
@@ -1584,14 +1728,22 @@ impl TimeSyncBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TimeSyncBuilder<(crate::typed::builder::Set,)>> for TimeSync {
-    fn from(builder: TimeSyncBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TimeSyncBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<time_sync_members::field>,
+{
+    type Output = TimeSync;
+
+    fn build(self) -> TimeSync {
+        Self::build(self)
     }
 }
 
-impl TimeSyncBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> TimeSync { match field {} }
+impl<S0> From<TimeSyncBuilder<(S0,)>> for TimeSync
+where
+    S0: crate::typed::builder::IsSet<time_sync_members::field>,
+{
+    fn from(builder: TimeSyncBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

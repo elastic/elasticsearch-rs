@@ -43,7 +43,9 @@ impl CreateOperation {
     }
 
     /// Creates a [`CreateOperation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CreateOperationBuilder) -> CreateOperationBuilder) -> CreateOperation {
+    pub fn of<B: crate::typed::builder::Build<Output = CreateOperation>>(
+        f: impl FnOnce(CreateOperationBuilder) -> B,
+    ) -> CreateOperation {
         f(Self::builder()).build()
     }
 }
@@ -239,6 +241,14 @@ impl CreateOperationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CreateOperationBuilder {
+    type Output = CreateOperation;
+
+    fn build(self) -> CreateOperation {
+        Self::build(self)
+    }
+}
+
 impl From<CreateOperationBuilder> for CreateOperation {
     fn from(builder: CreateOperationBuilder) -> Self {
         builder.build()
@@ -273,7 +283,9 @@ impl DeleteOperation {
     }
 
     /// Creates a [`DeleteOperation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DeleteOperationBuilder) -> DeleteOperationBuilder) -> DeleteOperation {
+    pub fn of<B: crate::typed::builder::Build<Output = DeleteOperation>>(
+        f: impl FnOnce(DeleteOperationBuilder) -> B,
+    ) -> DeleteOperation {
         f(Self::builder()).build()
     }
 }
@@ -401,6 +413,14 @@ impl DeleteOperationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DeleteOperationBuilder {
+    type Output = DeleteOperation;
+
+    fn build(self) -> DeleteOperation {
+        Self::build(self)
+    }
+}
+
 impl From<DeleteOperationBuilder> for DeleteOperation {
     fn from(builder: DeleteOperationBuilder) -> Self {
         builder.build()
@@ -461,7 +481,9 @@ impl IndexOperation {
     }
 
     /// Creates a [`IndexOperation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndexOperationBuilder) -> IndexOperationBuilder) -> IndexOperation {
+    pub fn of<B: crate::typed::builder::Build<Output = IndexOperation>>(
+        f: impl FnOnce(IndexOperationBuilder) -> B,
+    ) -> IndexOperation {
         f(Self::builder()).build()
     }
 }
@@ -657,6 +679,14 @@ impl IndexOperationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexOperationBuilder {
+    type Output = IndexOperation;
+
+    fn build(self) -> IndexOperation {
+        Self::build(self)
+    }
+}
+
 impl From<IndexOperationBuilder> for IndexOperation {
     fn from(builder: IndexOperationBuilder) -> Self {
         builder.build()
@@ -691,7 +721,9 @@ impl OperationBase {
     }
 
     /// Creates a [`OperationBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(OperationBaseBuilder) -> OperationBaseBuilder) -> OperationBase {
+    pub fn of<B: crate::typed::builder::Build<Output = OperationBase>>(
+        f: impl FnOnce(OperationBaseBuilder) -> B,
+    ) -> OperationBase {
         f(Self::builder()).build()
     }
 }
@@ -819,6 +851,14 @@ impl OperationBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for OperationBaseBuilder {
+    type Output = OperationBase;
+
+    fn build(self) -> OperationBase {
+        Self::build(self)
+    }
+}
+
 impl From<OperationBaseBuilder> for OperationBase {
     fn from(builder: OperationBaseBuilder) -> Self {
         builder.build()
@@ -898,15 +938,17 @@ impl From<DeleteOperationBuilder> for OperationContainer {
 
 impl OperationContainer {
     /// Creates a builder for [`OperationContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> OperationContainerBuilder {
         OperationContainerBuilder::new()
     }
 
     /// Creates a [`OperationContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OperationContainerBuilder,
-        ) -> OperationContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = OperationContainer>>(
+        f: impl FnOnce(OperationContainerBuilder) -> B,
     ) -> OperationContainer {
         f(Self::builder()).build()
     }
@@ -951,9 +993,9 @@ impl OperationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<B: crate::typed::builder::Build<Output = IndexOperation>>(
         self,
-        f: impl FnOnce(IndexOperationBuilder) -> IndexOperationBuilder,
+        f: impl FnOnce(IndexOperationBuilder) -> B,
     ) -> OperationContainerBuilder<(crate::typed::builder::Set,)> {
         self.index(f(IndexOperationBuilder::new()).build())
     }
@@ -970,9 +1012,9 @@ impl OperationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`create`](Self::create) with a builder.
-    pub fn create_with(
+    pub fn create_with<B: crate::typed::builder::Build<Output = CreateOperation>>(
         self,
-        f: impl FnOnce(CreateOperationBuilder) -> CreateOperationBuilder,
+        f: impl FnOnce(CreateOperationBuilder) -> B,
     ) -> OperationContainerBuilder<(crate::typed::builder::Set,)> {
         self.create(f(CreateOperationBuilder::new()).build())
     }
@@ -989,9 +1031,9 @@ impl OperationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`update`](Self::update) with a builder.
-    pub fn update_with(
+    pub fn update_with<B: crate::typed::builder::Build<Output = UpdateOperation>>(
         self,
-        f: impl FnOnce(UpdateOperationBuilder) -> UpdateOperationBuilder,
+        f: impl FnOnce(UpdateOperationBuilder) -> B,
     ) -> OperationContainerBuilder<(crate::typed::builder::Set,)> {
         self.update(f(UpdateOperationBuilder::new()).build())
     }
@@ -1007,31 +1049,42 @@ impl OperationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`delete`](Self::delete) with a builder.
-    pub fn delete_with(
+    pub fn delete_with<B: crate::typed::builder::Build<Output = DeleteOperation>>(
         self,
-        f: impl FnOnce(DeleteOperationBuilder) -> DeleteOperationBuilder,
+        f: impl FnOnce(DeleteOperationBuilder) -> B,
     ) -> OperationContainerBuilder<(crate::typed::builder::Set,)> {
         self.delete(f(DeleteOperationBuilder::new()).build())
     }
 }
 
-impl OperationContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> OperationContainerBuilder<(S0,)> {
     /// Builds a [`OperationContainer`].
-    pub fn build(self) -> OperationContainer {
+    pub fn build(self) -> OperationContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<OperationContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<OperationContainerBuilder<(crate::typed::builder::Set,)>> for OperationContainer {
-    fn from(builder: OperationContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for OperationContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<OperationContainer>,
+{
+    type Output = OperationContainer;
+
+    fn build(self) -> OperationContainer {
+        Self::build(self)
     }
 }
 
-impl OperationContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> OperationContainer { match variant {} }
+impl<S0> From<OperationContainerBuilder<(S0,)>> for OperationContainer
+where
+    S0: crate::typed::builder::IsVariantSet<OperationContainer>,
+{
+    fn from(builder: OperationContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1230,16 +1283,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `operations`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `operations`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct operations;
 }
 
 /// Builder for [`Request`].
@@ -1577,7 +1641,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn operations(
         self,
         value: impl Into<Vec<RequestOperations>>,
@@ -1611,9 +1675,12 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::operations>,
+    {
         Request {
             index: self.index,
             include_source_on_error: self.include_source_on_error,
@@ -1638,23 +1705,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::operations>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `operations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, operations: crate::typed::builder::MissingRequiredField) -> Request { match operations {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `operations` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, operations: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match operations {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::operations>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -1914,19 +1984,28 @@ impl From<&str> for ResponseItemId {
 
 impl ResponseItem {
     /// Creates a builder for [`ResponseItem`].
+    ///
+    /// Required: `index`, `status`.
     pub fn builder() -> ResponseItemBuilder {
         ResponseItemBuilder::new()
     }
 
     /// Creates a [`ResponseItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResponseItemBuilder,
-        )
-            -> ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `index`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResponseItem>>(
+        f: impl FnOnce(ResponseItemBuilder) -> B,
     ) -> ResponseItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResponseItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod response_item_members {
+    pub struct index;
+    pub struct status;
 }
 
 /// Builder for [`ResponseItem`].
@@ -2023,12 +2102,11 @@ impl<S0, S1> ResponseItemBuilder<(S0, S1)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -2085,15 +2163,11 @@ impl<S0, S1> ResponseItemBuilder<(S0, S1)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> Self {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
@@ -2138,20 +2212,18 @@ impl<S0, S1> ResponseItemBuilder<(S0, S1)> {
     }
 
     /// Sets [`get`](Self::get) with a builder.
-    pub fn get_with(
+    pub fn get_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::InlineGetDictUserDefined>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::InlineGetDictUserDefinedBuilder,
-        ) -> crate::typed::_types::InlineGetDictUserDefinedBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::InlineGetDictUserDefinedBuilder) -> B,
     ) -> Self {
         self.get(f(crate::typed::_types::InlineGetDictUserDefinedBuilder::new()).build())
     }
 }
 
 impl<S1> ResponseItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the index associated with the operation.
+    /// **Required.** The name of the index associated with the operation.
     /// If the operation targeted a data stream, this is the backing index into which the document was written.
     pub fn index(
         self,
@@ -2164,7 +2236,7 @@ impl<S1> ResponseItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResponseItemBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The HTTP status code returned for the operation.
+    /// **Required.** The HTTP status code returned for the operation.
     pub fn status(self, value: i32) -> ResponseItemBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.status = Some(value);
@@ -2172,9 +2244,13 @@ impl<S0> ResponseItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResponseItemBuilder<(S0, S1)> {
     /// Builds a [`ResponseItem`].
-    pub fn build(self) -> ResponseItem {
+    pub fn build(self) -> ResponseItem
+    where
+        S0: crate::typed::builder::IsSet<response_item_members::index>,
+        S1: crate::typed::builder::IsSet<response_item_members::status>,
+    {
         ResponseItem {
             id: self.id,
             index: self.index.unwrap(),
@@ -2192,26 +2268,26 @@ impl ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResponseItem
+impl<S0, S1> crate::typed::builder::Build for ResponseItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<response_item_members::index>,
+    S1: crate::typed::builder::IsSet<response_item_members::status>,
 {
-    fn from(
-        builder: ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ResponseItem;
+
+    fn build(self) -> ResponseItem {
+        Self::build(self)
     }
 }
 
-impl<S1> ResponseItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> ResponseItem { match index {} }
-}
-
-impl ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ResponseItem { match status {} }
+impl<S0, S1> From<ResponseItemBuilder<(S0, S1)>> for ResponseItem
+where
+    S0: crate::typed::builder::IsSet<response_item_members::index>,
+    S1: crate::typed::builder::IsSet<response_item_members::status>,
+{
+    fn from(builder: ResponseItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The source line that must follow an `update` action line.
@@ -2250,7 +2326,9 @@ impl UpdateAction {
     }
 
     /// Creates a [`UpdateAction`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(UpdateActionBuilder) -> UpdateActionBuilder) -> UpdateAction {
+    pub fn of<B: crate::typed::builder::Build<Output = UpdateAction>>(
+        f: impl FnOnce(UpdateActionBuilder) -> B,
+    ) -> UpdateAction {
         f(Self::builder()).build()
     }
 }
@@ -2331,9 +2409,9 @@ impl UpdateActionBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -2398,6 +2476,14 @@ impl UpdateActionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for UpdateActionBuilder {
+    type Output = UpdateAction;
+
+    fn build(self) -> UpdateAction {
+        Self::build(self)
+    }
+}
+
 impl From<UpdateActionBuilder> for UpdateAction {
     fn from(builder: UpdateActionBuilder) -> Self {
         builder.build()
@@ -2438,7 +2524,9 @@ impl UpdateOperation {
     }
 
     /// Creates a [`UpdateOperation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(UpdateOperationBuilder) -> UpdateOperationBuilder) -> UpdateOperation {
+    pub fn of<B: crate::typed::builder::Build<Output = UpdateOperation>>(
+        f: impl FnOnce(UpdateOperationBuilder) -> B,
+    ) -> UpdateOperation {
         f(Self::builder()).build()
     }
 }
@@ -2596,6 +2684,14 @@ impl UpdateOperationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for UpdateOperationBuilder {
+    type Output = UpdateOperation;
+
+    fn build(self) -> UpdateOperation {
+        Self::build(self)
+    }
+}
+
 impl From<UpdateOperationBuilder> for UpdateOperation {
     fn from(builder: UpdateOperationBuilder) -> Self {
         builder.build()
@@ -2644,7 +2740,9 @@ impl WriteOperation {
     }
 
     /// Creates a [`WriteOperation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(WriteOperationBuilder) -> WriteOperationBuilder) -> WriteOperation {
+    pub fn of<B: crate::typed::builder::Build<Output = WriteOperation>>(
+        f: impl FnOnce(WriteOperationBuilder) -> B,
+    ) -> WriteOperation {
         f(Self::builder()).build()
     }
 }
@@ -2837,6 +2935,14 @@ impl WriteOperationBuilder {
             pipeline: self.pipeline,
             require_alias: self.require_alias,
         }
+    }
+}
+
+impl crate::typed::builder::Build for WriteOperationBuilder {
+    type Output = WriteOperation;
+
+    fn build(self) -> WriteOperation {
+        Self::build(self)
     }
 }
 

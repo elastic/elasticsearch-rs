@@ -71,16 +71,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `job_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `job_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct job_id;
 }
 
 /// Builder for [`Request`].
@@ -368,9 +379,9 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`page`](Self::page) with a builder.
-    pub fn page_with(
+    pub fn page_with<B: crate::typed::builder::Build<Output = crate::typed::ml::_types::Page>>(
         self,
-        f: impl FnOnce(crate::typed::ml::_types::PageBuilder) -> crate::typed::ml::_types::PageBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::PageBuilder) -> B,
     ) -> Self {
         self.page(f(crate::typed::ml::_types::PageBuilder::new()).build())
     }
@@ -413,7 +424,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -424,9 +435,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+    {
         Request {
             job_id: self.job_id.unwrap(),
             desc: self.desc,
@@ -452,23 +466,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::job_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Request { match job_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `job_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, job_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match job_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

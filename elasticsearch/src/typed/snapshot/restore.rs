@@ -120,19 +120,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `repository`, `snapshot`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `repository`, `snapshot`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct repository;
+    pub struct snapshot;
 }
 
 /// Builder for [`Request`].
@@ -425,11 +434,11 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 
     /// Sets [`index_settings`](Self::index_settings) with a builder.
-    pub fn index_settings_with(
+    pub fn index_settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.index_settings(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
@@ -496,7 +505,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the repository to restore a snapshot from.
+    /// **Required.** The name of the repository to restore a snapshot from.
     pub fn repository(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -508,7 +517,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The name of the snapshot to restore.
+    /// **Required.** The name of the snapshot to restore.
     pub fn snapshot(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -519,9 +528,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::repository>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot>,
+    {
         Request {
             repository: self.repository.unwrap(),
             snapshot: self.snapshot.unwrap(),
@@ -545,41 +558,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::repository>,
+    S1: crate::typed::builder::IsSet<request_members::snapshot>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> Request { match repository {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `repository` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, repository: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match repository {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `snapshot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot: crate::typed::builder::MissingRequiredField) -> Request { match snapshot {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `snapshot` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, snapshot: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match snapshot {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::repository>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -739,22 +739,29 @@ pub struct SnapshotRestore {
 
 impl SnapshotRestore {
     /// Creates a builder for [`SnapshotRestore`].
+    ///
+    /// Required: `indices`, `snapshot`, `shards`.
     pub fn builder() -> SnapshotRestoreBuilder {
         SnapshotRestoreBuilder::new()
     }
 
     /// Creates a [`SnapshotRestore`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotRestoreBuilder,
-        ) -> SnapshotRestoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `indices`, `snapshot`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotRestore>>(
+        f: impl FnOnce(SnapshotRestoreBuilder) -> B,
     ) -> SnapshotRestore {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotRestoreBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_restore_members {
+    pub struct indices;
+    pub struct snapshot;
+    pub struct shards;
 }
 
 /// Builder for [`SnapshotRestore`].
@@ -801,6 +808,7 @@ impl<S0, S1, S2> SnapshotRestoreBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> SnapshotRestoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<crate::typed::_types::IndexName>>,
@@ -835,6 +843,7 @@ impl<S1, S2> SnapshotRestoreBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> SnapshotRestoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn snapshot(
         self,
         value: impl Into<String>,
@@ -846,6 +855,7 @@ impl<S0, S2> SnapshotRestoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> SnapshotRestoreBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -856,29 +866,24 @@ impl<S0, S1> SnapshotRestoreBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> SnapshotRestoreBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
-impl
-    SnapshotRestoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> SnapshotRestoreBuilder<(S0, S1, S2)> {
     /// Builds a [`SnapshotRestore`].
-    pub fn build(self) -> SnapshotRestore {
+    pub fn build(self) -> SnapshotRestore
+    where
+        S0: crate::typed::builder::IsSet<snapshot_restore_members::indices>,
+        S1: crate::typed::builder::IsSet<snapshot_restore_members::snapshot>,
+        S2: crate::typed::builder::IsSet<snapshot_restore_members::shards>,
+    {
         SnapshotRestore {
             indices: self.indices.unwrap(),
             snapshot: self.snapshot.unwrap(),
@@ -887,52 +892,26 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotRestoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotRestore
+impl<S0, S1, S2> crate::typed::builder::Build for SnapshotRestoreBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_restore_members::indices>,
+    S1: crate::typed::builder::IsSet<snapshot_restore_members::snapshot>,
+    S2: crate::typed::builder::IsSet<snapshot_restore_members::shards>,
 {
-    fn from(
-        builder: SnapshotRestoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotRestore;
+
+    fn build(self) -> SnapshotRestore {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> SnapshotRestoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> SnapshotRestore { match indices {} }
-}
-
-impl<S2>
-    SnapshotRestoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<SnapshotRestoreBuilder<(S0, S1, S2)>> for SnapshotRestore
+where
+    S0: crate::typed::builder::IsSet<snapshot_restore_members::indices>,
+    S1: crate::typed::builder::IsSet<snapshot_restore_members::snapshot>,
+    S2: crate::typed::builder::IsSet<snapshot_restore_members::shards>,
 {
-    /// `snapshot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot: crate::typed::builder::MissingRequiredField) -> SnapshotRestore { match snapshot {} }
-}
-
-impl
-    SnapshotRestoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> SnapshotRestore { match shards {} }
+    fn from(builder: SnapshotRestoreBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

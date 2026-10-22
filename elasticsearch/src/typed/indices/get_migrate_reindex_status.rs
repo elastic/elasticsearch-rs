@@ -31,16 +31,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -139,7 +150,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The index or data stream name.
+    /// **Required.** The index or data stream name.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -150,9 +161,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             error_trace: self.error_trace,
@@ -163,23 +177,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -295,19 +312,28 @@ pub struct StatusError {
 
 impl StatusError {
     /// Creates a builder for [`StatusError`].
+    ///
+    /// Required: `index`, `message`.
     pub fn builder() -> StatusErrorBuilder {
         StatusErrorBuilder::new()
     }
 
     /// Creates a [`StatusError`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatusErrorBuilder,
-        )
-            -> StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `index`, `message`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatusError>>(
+        f: impl FnOnce(StatusErrorBuilder) -> B,
     ) -> StatusError {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatusErrorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod status_error_members {
+    pub struct index;
+    pub struct message;
 }
 
 /// Builder for [`StatusError`].
@@ -339,6 +365,7 @@ impl<S0, S1> StatusErrorBuilder<(S0, S1)> {
 }
 
 impl<S1> StatusErrorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<String>,
@@ -350,6 +377,7 @@ impl<S1> StatusErrorBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> StatusErrorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn message(
         self,
         value: impl Into<String>,
@@ -360,9 +388,13 @@ impl<S0> StatusErrorBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> StatusErrorBuilder<(S0, S1)> {
     /// Builds a [`StatusError`].
-    pub fn build(self) -> StatusError {
+    pub fn build(self) -> StatusError
+    where
+        S0: crate::typed::builder::IsSet<status_error_members::index>,
+        S1: crate::typed::builder::IsSet<status_error_members::message>,
+    {
         StatusError {
             index: self.index.unwrap(),
             message: self.message.unwrap(),
@@ -370,26 +402,26 @@ impl StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for StatusError
+impl<S0, S1> crate::typed::builder::Build for StatusErrorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<status_error_members::index>,
+    S1: crate::typed::builder::IsSet<status_error_members::message>,
 {
-    fn from(
-        builder: StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = StatusError;
+
+    fn build(self) -> StatusError {
+        Self::build(self)
     }
 }
 
-impl<S1> StatusErrorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> StatusError { match index {} }
-}
-
-impl StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> StatusError { match message {} }
+impl<S0, S1> From<StatusErrorBuilder<(S0, S1)>> for StatusError
+where
+    S0: crate::typed::builder::IsSet<status_error_members::index>,
+    S1: crate::typed::builder::IsSet<status_error_members::message>,
+{
+    fn from(builder: StatusErrorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -401,22 +433,29 @@ pub struct StatusInProgress {
 
 impl StatusInProgress {
     /// Creates a builder for [`StatusInProgress`].
+    ///
+    /// Required: `index`, `total_doc_count`, `reindexed_doc_count`.
     pub fn builder() -> StatusInProgressBuilder {
         StatusInProgressBuilder::new()
     }
 
     /// Creates a [`StatusInProgress`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatusInProgressBuilder,
-        ) -> StatusInProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `total_doc_count`, `reindexed_doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatusInProgress>>(
+        f: impl FnOnce(StatusInProgressBuilder) -> B,
     ) -> StatusInProgress {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatusInProgressBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod status_in_progress_members {
+    pub struct index;
+    pub struct total_doc_count;
+    pub struct reindexed_doc_count;
 }
 
 /// Builder for [`StatusInProgress`].
@@ -463,6 +502,7 @@ impl<S0, S1, S2> StatusInProgressBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> StatusInProgressBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<String>,
@@ -474,6 +514,7 @@ impl<S1, S2> StatusInProgressBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> StatusInProgressBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn total_doc_count(
         self,
         value: i64,
@@ -485,6 +526,7 @@ impl<S0, S2> StatusInProgressBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> StatusInProgressBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn reindexed_doc_count(
         self,
         value: i64,
@@ -495,15 +537,14 @@ impl<S0, S1> StatusInProgressBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    StatusInProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> StatusInProgressBuilder<(S0, S1, S2)> {
     /// Builds a [`StatusInProgress`].
-    pub fn build(self) -> StatusInProgress {
+    pub fn build(self) -> StatusInProgress
+    where
+        S0: crate::typed::builder::IsSet<status_in_progress_members::index>,
+        S1: crate::typed::builder::IsSet<status_in_progress_members::total_doc_count>,
+        S2: crate::typed::builder::IsSet<status_in_progress_members::reindexed_doc_count>,
+    {
         StatusInProgress {
             index: self.index.unwrap(),
             total_doc_count: self.total_doc_count.unwrap(),
@@ -512,52 +553,26 @@ impl
     }
 }
 
-impl
-    From<
-        StatusInProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StatusInProgress
+impl<S0, S1, S2> crate::typed::builder::Build for StatusInProgressBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<status_in_progress_members::index>,
+    S1: crate::typed::builder::IsSet<status_in_progress_members::total_doc_count>,
+    S2: crate::typed::builder::IsSet<status_in_progress_members::reindexed_doc_count>,
 {
-    fn from(
-        builder: StatusInProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StatusInProgress;
+
+    fn build(self) -> StatusInProgress {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> StatusInProgressBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> StatusInProgress { match index {} }
-}
-
-impl<S2>
-    StatusInProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<StatusInProgressBuilder<(S0, S1, S2)>> for StatusInProgress
+where
+    S0: crate::typed::builder::IsSet<status_in_progress_members::index>,
+    S1: crate::typed::builder::IsSet<status_in_progress_members::total_doc_count>,
+    S2: crate::typed::builder::IsSet<status_in_progress_members::reindexed_doc_count>,
 {
-    /// `total_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_doc_count: crate::typed::builder::MissingRequiredField) -> StatusInProgress { match total_doc_count {} }
-}
-
-impl
-    StatusInProgressBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `reindexed_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reindexed_doc_count: crate::typed::builder::MissingRequiredField) -> StatusInProgress { match reindexed_doc_count {} }
+    fn from(builder: StatusInProgressBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

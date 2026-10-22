@@ -16,22 +16,29 @@ pub struct Policy {
 
 impl Policy {
     /// Creates a builder for [`Policy`].
+    ///
+    /// Required: `enrich_fields`, `indices`, `match_field`.
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
     }
 
     /// Creates a [`Policy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PolicyBuilder,
-        ) -> PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `enrich_fields`, `indices`, `match_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = Policy>>(
+        f: impl FnOnce(PolicyBuilder) -> B,
     ) -> Policy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PolicyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod policy_members {
+    pub struct enrich_fields;
+    pub struct indices;
+    pub struct match_field;
 }
 
 /// Builder for [`Policy`].
@@ -103,13 +110,11 @@ impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -138,6 +143,7 @@ impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn enrich_fields(
         self,
         value: impl Into<crate::typed::_types::Fields>,
@@ -149,6 +155,7 @@ impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> PolicyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -160,6 +167,7 @@ impl<S0, S2> PolicyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> PolicyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn match_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -170,15 +178,14 @@ impl<S0, S1> PolicyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> PolicyBuilder<(S0, S1, S2)> {
     /// Builds a [`Policy`].
-    pub fn build(self) -> Policy {
+    pub fn build(self) -> Policy
+    where
+        S0: crate::typed::builder::IsSet<policy_members::enrich_fields>,
+        S1: crate::typed::builder::IsSet<policy_members::indices>,
+        S2: crate::typed::builder::IsSet<policy_members::match_field>,
+    {
         Policy {
             enrich_fields: self.enrich_fields.unwrap(),
             indices: self.indices.unwrap(),
@@ -190,54 +197,28 @@ impl
     }
 }
 
-impl
-    From<
-        PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Policy
+impl<S0, S1, S2> crate::typed::builder::Build for PolicyBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<policy_members::enrich_fields>,
+    S1: crate::typed::builder::IsSet<policy_members::indices>,
+    S2: crate::typed::builder::IsSet<policy_members::match_field>,
 {
-    fn from(
-        builder: PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Policy;
+
+    fn build(self) -> Policy {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> PolicyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `enrich_fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enrich_fields: crate::typed::builder::MissingRequiredField) -> Policy { match enrich_fields {} }
-}
-
-impl<S2>
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<PolicyBuilder<(S0, S1, S2)>> for Policy
+where
+    S0: crate::typed::builder::IsSet<policy_members::enrich_fields>,
+    S1: crate::typed::builder::IsSet<policy_members::indices>,
+    S2: crate::typed::builder::IsSet<policy_members::match_field>,
 {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> Policy { match indices {} }
-}
-
-impl
-    PolicyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `match_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, match_field: crate::typed::builder::MissingRequiredField) -> Policy { match match_field {} }
+    fn from(builder: PolicyBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -257,16 +238,27 @@ pub struct Summary {
 
 impl Summary {
     /// Creates a builder for [`Summary`].
+    ///
+    /// Required: `config`.
     pub fn builder() -> SummaryBuilder {
         SummaryBuilder::new()
     }
 
     /// Creates a [`Summary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SummaryBuilder) -> SummaryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `config`.
+    pub fn of<B: crate::typed::builder::Build<Output = Summary>>(
+        f: impl FnOnce(SummaryBuilder) -> B,
     ) -> Summary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod summary_members {
+    pub struct config;
 }
 
 /// Builder for [`Summary`].
@@ -295,6 +287,7 @@ impl<S0> SummaryBuilder<(S0,)> {
 }
 
 impl SummaryBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn config(
         self,
         key: impl Into<String>,
@@ -306,38 +299,43 @@ impl SummaryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(
+    pub fn config_with<B: crate::typed::builder::Build<Output = Policy>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            PolicyBuilder,
-        ) -> PolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PolicyBuilder) -> B,
     ) -> SummaryBuilder<(crate::typed::builder::Set,)> {
         self.config(key, f(PolicyBuilder::new()).build())
     }
 }
 
-impl SummaryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SummaryBuilder<(S0,)> {
     /// Builds a [`Summary`].
-    pub fn build(self) -> Summary {
+    pub fn build(self) -> Summary
+    where
+        S0: crate::typed::builder::IsSet<summary_members::config>,
+    {
         Summary {
             config: self.config.unwrap(),
         }
     }
 }
 
-impl From<SummaryBuilder<(crate::typed::builder::Set,)>> for Summary {
-    fn from(builder: SummaryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SummaryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<summary_members::config>,
+{
+    type Output = Summary;
+
+    fn build(self) -> Summary {
+        Self::build(self)
     }
 }
 
-impl SummaryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, config: crate::typed::builder::MissingRequiredField) -> Summary { match config {} }
+impl<S0> From<SummaryBuilder<(S0,)>> for Summary
+where
+    S0: crate::typed::builder::IsSet<summary_members::config>,
+{
+    fn from(builder: SummaryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

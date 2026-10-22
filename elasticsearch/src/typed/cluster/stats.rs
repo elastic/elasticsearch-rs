@@ -18,16 +18,27 @@ pub struct CCSStats {
 
 impl CCSStats {
     /// Creates a builder for [`CCSStats`].
+    ///
+    /// Required: `search`.
     pub fn builder() -> CCSStatsBuilder {
         CCSStatsBuilder::new()
     }
 
     /// Creates a [`CCSStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CCSStatsBuilder) -> CCSStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `search`.
+    pub fn of<B: crate::typed::builder::Build<Output = CCSStats>>(
+        f: impl FnOnce(CCSStatsBuilder) -> B,
     ) -> CCSStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CCSStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ccs_stats_members {
+    pub struct search;
 }
 
 /// Builder for [`CCSStats`].
@@ -93,25 +104,10 @@ impl<S0> CCSStatsBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`clusters`](Self::clusters), with a builder.
-    pub fn add_clusters_with(
+    pub fn add_clusters_with<B: crate::typed::builder::Build<Output = RemoteClusterInfo>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            RemoteClusterInfoBuilder,
-        ) -> RemoteClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoteClusterInfoBuilder) -> B,
     ) -> Self {
         self.add_clusters(key, f(RemoteClusterInfoBuilder::new()).build())
     }
@@ -129,29 +125,16 @@ impl<S0> CCSStatsBuilder<(S0,)> {
     }
 
     /// Sets [`esql`](Self::esql) with a builder.
-    pub fn esql_with(
+    pub fn esql_with<B: crate::typed::builder::Build<Output = CCSUsageStats>>(
         self,
-        f: impl FnOnce(
-            CCSUsageStatsBuilder,
-        ) -> CCSUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageStatsBuilder) -> B,
     ) -> Self {
         self.esql(f(CCSUsageStatsBuilder::new()).build())
     }
 }
 
 impl CCSStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Information about cross-cluster search usage.
+    /// **Required.** Information about cross-cluster search usage.
     pub fn search(
         self,
         value: impl Into<CCSUsageStats>,
@@ -162,30 +145,20 @@ impl CCSStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`search`](Self::search) with a builder.
-    pub fn search_with(
+    pub fn search_with<B: crate::typed::builder::Build<Output = CCSUsageStats>>(
         self,
-        f: impl FnOnce(
-            CCSUsageStatsBuilder,
-        ) -> CCSUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageStatsBuilder) -> B,
     ) -> CCSStatsBuilder<(crate::typed::builder::Set,)> {
         self.search(f(CCSUsageStatsBuilder::new()).build())
     }
 }
 
-impl CCSStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CCSStatsBuilder<(S0,)> {
     /// Builds a [`CCSStats`].
-    pub fn build(self) -> CCSStats {
+    pub fn build(self) -> CCSStats
+    where
+        S0: crate::typed::builder::IsSet<ccs_stats_members::search>,
+    {
         CCSStats {
             clusters: self.clusters,
             search: self.search.unwrap(),
@@ -194,16 +167,24 @@ impl CCSStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CCSStatsBuilder<(crate::typed::builder::Set,)>> for CCSStats {
-    fn from(builder: CCSStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CCSStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ccs_stats_members::search>,
+{
+    type Output = CCSStats;
+
+    fn build(self) -> CCSStats {
+        Self::build(self)
     }
 }
 
-impl CCSStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `search` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search: crate::typed::builder::MissingRequiredField) -> CCSStats { match search {} }
+impl<S0> From<CCSStatsBuilder<(S0,)>> for CCSStats
+where
+    S0: crate::typed::builder::IsSet<ccs_stats_members::search>,
+{
+    fn from(builder: CCSStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -218,22 +199,29 @@ pub struct CCSUsageClusterStats {
 
 impl CCSUsageClusterStats {
     /// Creates a builder for [`CCSUsageClusterStats`].
+    ///
+    /// Required: `total`, `skipped`, `took`.
     pub fn builder() -> CCSUsageClusterStatsBuilder {
         CCSUsageClusterStatsBuilder::new()
     }
 
     /// Creates a [`CCSUsageClusterStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CCSUsageClusterStatsBuilder,
-        ) -> CCSUsageClusterStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `skipped`, `took`.
+    pub fn of<B: crate::typed::builder::Build<Output = CCSUsageClusterStats>>(
+        f: impl FnOnce(CCSUsageClusterStatsBuilder) -> B,
     ) -> CCSUsageClusterStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CCSUsageClusterStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ccs_usage_cluster_stats_members {
+    pub struct total;
+    pub struct skipped;
+    pub struct took;
 }
 
 /// Builder for [`CCSUsageClusterStats`].
@@ -280,7 +268,7 @@ impl<S0, S1, S2> CCSUsageClusterStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CCSUsageClusterStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The total number of successful (not skipped) cross-cluster search requests that were executed against this cluster. This may include requests where partial results were returned, but not requests in which the cluster has been skipped entirely.
+    /// **Required.** The total number of successful (not skipped) cross-cluster search requests that were executed against this cluster. This may include requests where partial results were returned, but not requests in which the cluster has been skipped entirely.
     pub fn total(
         self,
         value: i32,
@@ -292,7 +280,7 @@ impl<S1, S2> CCSUsageClusterStatsBuilder<(crate::typed::builder::NotSet, S1, S2)
 }
 
 impl<S0, S2> CCSUsageClusterStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The total number of cross-cluster search requests for which this cluster was skipped.
+    /// **Required.** The total number of cross-cluster search requests for which this cluster was skipped.
     pub fn skipped(
         self,
         value: i32,
@@ -304,7 +292,7 @@ impl<S0, S2> CCSUsageClusterStatsBuilder<(S0, crate::typed::builder::NotSet, S2)
 }
 
 impl<S0, S1> CCSUsageClusterStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Statistics about the time taken to execute requests against this cluster.
+    /// **Required.** Statistics about the time taken to execute requests against this cluster.
     pub fn took(
         self,
         value: impl Into<CCSUsageTimeValue>,
@@ -315,29 +303,22 @@ impl<S0, S1> CCSUsageClusterStatsBuilder<(S0, S1, crate::typed::builder::NotSet)
     }
 
     /// Sets [`took`](Self::took) with a builder.
-    pub fn took_with(
+    pub fn took_with<B: crate::typed::builder::Build<Output = CCSUsageTimeValue>>(
         self,
-        f: impl FnOnce(
-            CCSUsageTimeValueBuilder,
-        ) -> CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageTimeValueBuilder) -> B,
     ) -> CCSUsageClusterStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.took(f(CCSUsageTimeValueBuilder::new()).build())
     }
 }
 
-impl
-    CCSUsageClusterStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CCSUsageClusterStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`CCSUsageClusterStats`].
-    pub fn build(self) -> CCSUsageClusterStats {
+    pub fn build(self) -> CCSUsageClusterStats
+    where
+        S0: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::total>,
+        S1: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::skipped>,
+        S2: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::took>,
+    {
         CCSUsageClusterStats {
             total: self.total.unwrap(),
             skipped: self.skipped.unwrap(),
@@ -346,54 +327,28 @@ impl
     }
 }
 
-impl
-    From<
-        CCSUsageClusterStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CCSUsageClusterStats
+impl<S0, S1, S2> crate::typed::builder::Build for CCSUsageClusterStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::total>,
+    S1: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::skipped>,
+    S2: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::took>,
 {
-    fn from(
-        builder: CCSUsageClusterStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CCSUsageClusterStats;
+
+    fn build(self) -> CCSUsageClusterStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CCSUsageClusterStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> CCSUsageClusterStats { match total {} }
-}
-
-impl<S2>
-    CCSUsageClusterStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CCSUsageClusterStatsBuilder<(S0, S1, S2)>> for CCSUsageClusterStats
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::total>,
+    S1: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::skipped>,
+    S2: crate::typed::builder::IsSet<ccs_usage_cluster_stats_members::took>,
 {
-    /// `skipped` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skipped: crate::typed::builder::MissingRequiredField) -> CCSUsageClusterStats { match skipped {} }
-}
-
-impl
-    CCSUsageClusterStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> CCSUsageClusterStats { match took {} }
+    fn from(builder: CCSUsageClusterStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -428,29 +383,36 @@ pub struct CCSUsageStats {
 
 impl CCSUsageStats {
     /// Creates a builder for [`CCSUsageStats`].
+    ///
+    /// Required: `total`, `success`, `skipped`, `took`, `remotes_per_search_max`, `remotes_per_search_avg`, `failure_reasons`, `features`, `clients`, `clusters`.
     pub fn builder() -> CCSUsageStatsBuilder {
         CCSUsageStatsBuilder::new()
     }
 
     /// Creates a [`CCSUsageStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CCSUsageStatsBuilder,
-        ) -> CCSUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `success`, `skipped`, `took`, `remotes_per_search_max`, `remotes_per_search_avg`, `failure_reasons`, `features`, `clients`, `clusters`.
+    pub fn of<B: crate::typed::builder::Build<Output = CCSUsageStats>>(
+        f: impl FnOnce(CCSUsageStatsBuilder) -> B,
     ) -> CCSUsageStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CCSUsageStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ccs_usage_stats_members {
+    pub struct total;
+    pub struct success;
+    pub struct skipped;
+    pub struct took;
+    pub struct remotes_per_search_max;
+    pub struct remotes_per_search_avg;
+    pub struct failure_reasons;
+    pub struct features;
+    pub struct clients;
+    pub struct clusters;
 }
 
 /// Builder for [`CCSUsageStats`].
@@ -551,15 +513,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`took_mrt_true`](Self::took_mrt_true) with a builder.
-    pub fn took_mrt_true_with(
+    pub fn took_mrt_true_with<B: crate::typed::builder::Build<Output = CCSUsageTimeValue>>(
         self,
-        f: impl FnOnce(
-            CCSUsageTimeValueBuilder,
-        ) -> CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageTimeValueBuilder) -> B,
     ) -> Self {
         self.took_mrt_true(f(CCSUsageTimeValueBuilder::new()).build())
     }
@@ -577,15 +533,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`took_mrt_false`](Self::took_mrt_false) with a builder.
-    pub fn took_mrt_false_with(
+    pub fn took_mrt_false_with<B: crate::typed::builder::Build<Output = CCSUsageTimeValue>>(
         self,
-        f: impl FnOnce(
-            CCSUsageTimeValueBuilder,
-        ) -> CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageTimeValueBuilder) -> B,
     ) -> Self {
         self.took_mrt_false(f(CCSUsageTimeValueBuilder::new()).build())
     }
@@ -605,7 +555,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The total number of cross-cluster search requests that have been executed by the cluster.
+    /// **Required.** The total number of cross-cluster search requests that have been executed by the cluster.
     pub fn total(
         self,
         value: i32,
@@ -641,7 +591,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The total number of cross-cluster search requests that have been successfully executed by the cluster.
+    /// **Required.** The total number of cross-cluster search requests that have been successfully executed by the cluster.
     pub fn success(
         self,
         value: i32,
@@ -677,7 +627,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The total number of cross-cluster search requests (successful or failed) that had at least one remote cluster skipped.
+    /// **Required.** The total number of cross-cluster search requests (successful or failed) that had at least one remote cluster skipped.
     pub fn skipped(
         self,
         value: i32,
@@ -713,7 +663,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// Statistics about the time taken to execute cross-cluster search requests.
+    /// **Required.** Statistics about the time taken to execute cross-cluster search requests.
     pub fn took(
         self,
         value: impl Into<CCSUsageTimeValue>,
@@ -735,15 +685,9 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`took`](Self::took) with a builder.
-    pub fn took_with(
+    pub fn took_with<B: crate::typed::builder::Build<Output = CCSUsageTimeValue>>(
         self,
-        f: impl FnOnce(
-            CCSUsageTimeValueBuilder,
-        ) -> CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageTimeValueBuilder) -> B,
     ) -> CCSUsageStatsBuilder<(
         S0,
         S1,
@@ -774,7 +718,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The maximum number of remote clusters that were queried in a single cross-cluster search request.
+    /// **Required.** The maximum number of remote clusters that were queried in a single cross-cluster search request.
     pub fn remotes_per_search_max(
         self,
         value: i32,
@@ -810,7 +754,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9>
         S9,
     )>
 {
-    /// The average number of remote clusters that were queried in a single cross-cluster search request.
+    /// **Required.** The average number of remote clusters that were queried in a single cross-cluster search request.
     pub fn remotes_per_search_avg(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -846,7 +790,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         S9,
     )>
 {
-    /// Statistics about the reasons for cross-cluster search request failures. The keys are the failure reason names and the values are the number of requests that failed for that reason.
+    /// **Required.** Statistics about the reasons for cross-cluster search request failures. The keys are the failure reason names and the values are the number of requests that failed for that reason.
     pub fn failure_reasons(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -930,7 +874,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         S9,
     )>
 {
-    /// The keys are the names of the search feature, and the values are the number of requests that used that feature. Single request can use more than one feature (e.g. both `async` and `wildcard`).
+    /// **Required.** The keys are the names of the search feature, and the values are the number of requests that used that feature. Single request can use more than one feature (e.g. both `async` and `wildcard`).
     pub fn features(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -1014,7 +958,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         S9,
     )>
 {
-    /// Statistics about the clients that executed cross-cluster search requests. The keys are the names of the clients, and the values are the number of requests that were executed by that client. Only known clients (such as `kibana` or `elasticsearch`) are counted.
+    /// **Required.** Statistics about the clients that executed cross-cluster search requests. The keys are the names of the clients, and the values are the number of requests that were executed by that client. Only known clients (such as `kibana` or `elasticsearch`) are counted.
     pub fn clients(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -1098,7 +1042,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Statistics about the clusters that were queried in cross-cluster search requests. The keys are cluster names, and the values are per-cluster telemetry data. This also includes the local cluster itself, which uses the name `(local)`.
+    /// **Required.** Statistics about the clusters that were queried in cross-cluster search requests. The keys are cluster names, and the values are per-cluster telemetry data. This also includes the local cluster itself, which uses the name `(local)`.
     pub fn clusters(
         self,
         value: impl Into<indexmap::IndexMap<String, CCSUsageClusterStats>>,
@@ -1145,16 +1089,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an entry to [`clusters`](Self::clusters), with a builder.
-    pub fn add_clusters_with(
+    pub fn add_clusters_with<B: crate::typed::builder::Build<Output = CCSUsageClusterStats>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CCSUsageClusterStatsBuilder,
-        ) -> CCSUsageClusterStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageClusterStatsBuilder) -> B,
     ) -> CCSUsageStatsBuilder<(
         S0,
         S1,
@@ -1198,37 +1136,32 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an entry to [`clusters`](Self::clusters), with a builder.
-    pub fn add_clusters_with(
+    pub fn add_clusters_with<B: crate::typed::builder::Build<Output = CCSUsageClusterStats>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            CCSUsageClusterStatsBuilder,
-        ) -> CCSUsageClusterStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CCSUsageClusterStatsBuilder) -> B,
     ) -> Self {
         self.add_clusters(key, f(CCSUsageClusterStatsBuilder::new()).build())
     }
 }
 
-impl
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    CCSUsageStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
 {
     /// Builds a [`CCSUsageStats`].
-    pub fn build(self) -> CCSUsageStats {
+    pub fn build(self) -> CCSUsageStats
+    where
+        S0: crate::typed::builder::IsSet<ccs_usage_stats_members::total>,
+        S1: crate::typed::builder::IsSet<ccs_usage_stats_members::success>,
+        S2: crate::typed::builder::IsSet<ccs_usage_stats_members::skipped>,
+        S3: crate::typed::builder::IsSet<ccs_usage_stats_members::took>,
+        S4: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_max>,
+        S5: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_avg>,
+        S6: crate::typed::builder::IsSet<ccs_usage_stats_members::failure_reasons>,
+        S7: crate::typed::builder::IsSet<ccs_usage_stats_members::features>,
+        S8: crate::typed::builder::IsSet<ccs_usage_stats_members::clients>,
+        S9: crate::typed::builder::IsSet<ccs_usage_stats_members::clusters>,
+    {
         CCSUsageStats {
             total: self.total.unwrap(),
             success: self.success.unwrap(),
@@ -1246,228 +1179,44 @@ impl
     }
 }
 
-impl
-    From<
-        CCSUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CCSUsageStats
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9> crate::typed::builder::Build
+    for CCSUsageStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_stats_members::total>,
+    S1: crate::typed::builder::IsSet<ccs_usage_stats_members::success>,
+    S2: crate::typed::builder::IsSet<ccs_usage_stats_members::skipped>,
+    S3: crate::typed::builder::IsSet<ccs_usage_stats_members::took>,
+    S4: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_max>,
+    S5: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_avg>,
+    S6: crate::typed::builder::IsSet<ccs_usage_stats_members::failure_reasons>,
+    S7: crate::typed::builder::IsSet<ccs_usage_stats_members::features>,
+    S8: crate::typed::builder::IsSet<ccs_usage_stats_members::clients>,
+    S9: crate::typed::builder::IsSet<ccs_usage_stats_members::clusters>,
 {
-    fn from(
-        builder: CCSUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CCSUsageStats;
+
+    fn build(self) -> CCSUsageStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    From<CCSUsageStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>> for CCSUsageStats
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_stats_members::total>,
+    S1: crate::typed::builder::IsSet<ccs_usage_stats_members::success>,
+    S2: crate::typed::builder::IsSet<ccs_usage_stats_members::skipped>,
+    S3: crate::typed::builder::IsSet<ccs_usage_stats_members::took>,
+    S4: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_max>,
+    S5: crate::typed::builder::IsSet<ccs_usage_stats_members::remotes_per_search_avg>,
+    S6: crate::typed::builder::IsSet<ccs_usage_stats_members::failure_reasons>,
+    S7: crate::typed::builder::IsSet<ccs_usage_stats_members::features>,
+    S8: crate::typed::builder::IsSet<ccs_usage_stats_members::clients>,
+    S9: crate::typed::builder::IsSet<ccs_usage_stats_members::clusters>,
 {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match total {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `success` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, success: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match success {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `skipped` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skipped: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match skipped {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `took` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, took: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match took {} }
-}
-
-impl<S5, S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `remotes_per_search_max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remotes_per_search_max: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match remotes_per_search_max {} }
-}
-
-impl<S6, S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `remotes_per_search_avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remotes_per_search_avg: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match remotes_per_search_avg {} }
-}
-
-impl<S7, S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-    )>
-{
-    /// `failure_reasons` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failure_reasons: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match failure_reasons {} }
-}
-
-impl<S8, S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-    )>
-{
-    /// `features` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, features: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match features {} }
-}
-
-impl<S9>
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-    )>
-{
-    /// `clients` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clients: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match clients {} }
-}
-
-impl
-    CCSUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `clusters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clusters: crate::typed::builder::MissingRequiredField) -> CCSUsageStats { match clusters {} }
+    fn from(builder: CCSUsageStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1482,22 +1231,29 @@ pub struct CCSUsageTimeValue {
 
 impl CCSUsageTimeValue {
     /// Creates a builder for [`CCSUsageTimeValue`].
+    ///
+    /// Required: `max`, `avg`, `p90`.
     pub fn builder() -> CCSUsageTimeValueBuilder {
         CCSUsageTimeValueBuilder::new()
     }
 
     /// Creates a [`CCSUsageTimeValue`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CCSUsageTimeValueBuilder,
-        ) -> CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `max`, `avg`, `p90`.
+    pub fn of<B: crate::typed::builder::Build<Output = CCSUsageTimeValue>>(
+        f: impl FnOnce(CCSUsageTimeValueBuilder) -> B,
     ) -> CCSUsageTimeValue {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CCSUsageTimeValueBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ccs_usage_time_value_members {
+    pub struct max;
+    pub struct avg;
+    pub struct p90;
 }
 
 /// Builder for [`CCSUsageTimeValue`].
@@ -1544,7 +1300,7 @@ impl<S0, S1, S2> CCSUsageTimeValueBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CCSUsageTimeValueBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The maximum time taken to execute a request, in milliseconds.
+    /// **Required.** The maximum time taken to execute a request, in milliseconds.
     pub fn max(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1556,7 +1312,7 @@ impl<S1, S2> CCSUsageTimeValueBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> CCSUsageTimeValueBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The average time taken to execute a request, in milliseconds.
+    /// **Required.** The average time taken to execute a request, in milliseconds.
     pub fn avg(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1568,7 +1324,7 @@ impl<S0, S2> CCSUsageTimeValueBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> CCSUsageTimeValueBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The 90th percentile of the time taken to execute requests, in milliseconds.
+    /// **Required.** The 90th percentile of the time taken to execute requests, in milliseconds.
     pub fn p90(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1579,15 +1335,14 @@ impl<S0, S1> CCSUsageTimeValueBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    CCSUsageTimeValueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CCSUsageTimeValueBuilder<(S0, S1, S2)> {
     /// Builds a [`CCSUsageTimeValue`].
-    pub fn build(self) -> CCSUsageTimeValue {
+    pub fn build(self) -> CCSUsageTimeValue
+    where
+        S0: crate::typed::builder::IsSet<ccs_usage_time_value_members::max>,
+        S1: crate::typed::builder::IsSet<ccs_usage_time_value_members::avg>,
+        S2: crate::typed::builder::IsSet<ccs_usage_time_value_members::p90>,
+    {
         CCSUsageTimeValue {
             max: self.max.unwrap(),
             avg: self.avg.unwrap(),
@@ -1596,54 +1351,28 @@ impl
     }
 }
 
-impl
-    From<
-        CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CCSUsageTimeValue
+impl<S0, S1, S2> crate::typed::builder::Build for CCSUsageTimeValueBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_time_value_members::max>,
+    S1: crate::typed::builder::IsSet<ccs_usage_time_value_members::avg>,
+    S2: crate::typed::builder::IsSet<ccs_usage_time_value_members::p90>,
 {
-    fn from(
-        builder: CCSUsageTimeValueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CCSUsageTimeValue;
+
+    fn build(self) -> CCSUsageTimeValue {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CCSUsageTimeValueBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> CCSUsageTimeValue { match max {} }
-}
-
-impl<S2>
-    CCSUsageTimeValueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CCSUsageTimeValueBuilder<(S0, S1, S2)>> for CCSUsageTimeValue
+where
+    S0: crate::typed::builder::IsSet<ccs_usage_time_value_members::max>,
+    S1: crate::typed::builder::IsSet<ccs_usage_time_value_members::avg>,
+    S2: crate::typed::builder::IsSet<ccs_usage_time_value_members::p90>,
 {
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> CCSUsageTimeValue { match avg {} }
-}
-
-impl
-    CCSUsageTimeValueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `p90` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p90: crate::typed::builder::MissingRequiredField) -> CCSUsageTimeValue { match p90 {} }
+    fn from(builder: CCSUsageTimeValueBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1672,28 +1401,35 @@ pub struct CharFilterTypes {
 
 impl CharFilterTypes {
     /// Creates a builder for [`CharFilterTypes`].
+    ///
+    /// Required: `analyzer_types`, `built_in_analyzers`, `built_in_char_filters`, `built_in_filters`, `built_in_tokenizers`, `char_filter_types`, `filter_types`, `tokenizer_types`, `synonyms`.
     pub fn builder() -> CharFilterTypesBuilder {
         CharFilterTypesBuilder::new()
     }
 
     /// Creates a [`CharFilterTypes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CharFilterTypesBuilder,
-        ) -> CharFilterTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `analyzer_types`, `built_in_analyzers`, `built_in_char_filters`, `built_in_filters`, `built_in_tokenizers`, `char_filter_types`, `filter_types`, `tokenizer_types`, `synonyms`.
+    pub fn of<B: crate::typed::builder::Build<Output = CharFilterTypes>>(
+        f: impl FnOnce(CharFilterTypesBuilder) -> B,
     ) -> CharFilterTypes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CharFilterTypesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod char_filter_types_members {
+    pub struct analyzer_types;
+    pub struct built_in_analyzers;
+    pub struct built_in_char_filters;
+    pub struct built_in_filters;
+    pub struct built_in_tokenizers;
+    pub struct char_filter_types;
+    pub struct filter_types;
+    pub struct tokenizer_types;
+    pub struct synonyms;
 }
 
 /// Builder for [`CharFilterTypes`].
@@ -1791,9 +1527,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Sets [`multiple_synonym_graph_filters`](Self::multiple_synonym_graph_filters) with a builder.
-    pub fn multiple_synonym_graph_filters_with(
+    pub fn multiple_synonym_graph_filters_with<
+        B: crate::typed::builder::Build<Output = MultipleSynonymGraphFilter>,
+    >(
         self,
-        f: impl FnOnce(MultipleSynonymGraphFilterBuilder) -> MultipleSynonymGraphFilterBuilder,
+        f: impl FnOnce(MultipleSynonymGraphFilterBuilder) -> B,
     ) -> Self {
         self.multiple_synonym_graph_filters(f(MultipleSynonymGraphFilterBuilder::new()).build())
     }
@@ -1812,7 +1550,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about analyzer types used in selected nodes.
+    /// **Required.** Contains statistics about analyzer types used in selected nodes.
     pub fn analyzer_types(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -1836,15 +1574,9 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`analyzer_types`](Self::analyzer_types), with a builder.
-    pub fn add_analyzer_types_with(
+    pub fn add_analyzer_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)> {
         self.add_analyzer_types(f(FieldTypesBuilder::new()).build())
     }
@@ -1862,15 +1594,9 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`analyzer_types`](Self::analyzer_types), with a builder.
-    pub fn add_analyzer_types_with(
+    pub fn add_analyzer_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_analyzer_types(f(FieldTypesBuilder::new()).build())
     }
@@ -1889,7 +1615,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about built-in analyzers used in selected nodes.
+    /// **Required.** Contains statistics about built-in analyzers used in selected nodes.
     pub fn built_in_analyzers(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -1913,15 +1639,9 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers), with a builder.
-    pub fn add_built_in_analyzers_with(
+    pub fn add_built_in_analyzers_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)> {
         self.add_built_in_analyzers(f(FieldTypesBuilder::new()).build())
     }
@@ -1939,15 +1659,9 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers), with a builder.
-    pub fn add_built_in_analyzers_with(
+    pub fn add_built_in_analyzers_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_built_in_analyzers(f(FieldTypesBuilder::new()).build())
     }
@@ -1966,7 +1680,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about built-in character filters used in selected nodes.
+    /// **Required.** Contains statistics about built-in character filters used in selected nodes.
     pub fn built_in_char_filters(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -1990,15 +1704,9 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters), with a builder.
-    pub fn add_built_in_char_filters_with(
+    pub fn add_built_in_char_filters_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7, S8)> {
         self.add_built_in_char_filters(f(FieldTypesBuilder::new()).build())
     }
@@ -2016,15 +1724,9 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters), with a builder.
-    pub fn add_built_in_char_filters_with(
+    pub fn add_built_in_char_filters_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_built_in_char_filters(f(FieldTypesBuilder::new()).build())
     }
@@ -2043,7 +1745,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about built-in token filters used in selected nodes.
+    /// **Required.** Contains statistics about built-in token filters used in selected nodes.
     pub fn built_in_filters(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -2067,15 +1769,9 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_filters`](Self::built_in_filters), with a builder.
-    pub fn add_built_in_filters_with(
+    pub fn add_built_in_filters_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)> {
         self.add_built_in_filters(f(FieldTypesBuilder::new()).build())
     }
@@ -2093,15 +1789,9 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_filters`](Self::built_in_filters), with a builder.
-    pub fn add_built_in_filters_with(
+    pub fn add_built_in_filters_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_built_in_filters(f(FieldTypesBuilder::new()).build())
     }
@@ -2120,7 +1810,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about built-in tokenizers used in selected nodes.
+    /// **Required.** Contains statistics about built-in tokenizers used in selected nodes.
     pub fn built_in_tokenizers(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -2144,15 +1834,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers), with a builder.
-    pub fn add_built_in_tokenizers_with(
+    pub fn add_built_in_tokenizers_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)> {
         self.add_built_in_tokenizers(f(FieldTypesBuilder::new()).build())
     }
@@ -2170,15 +1854,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers), with a builder.
-    pub fn add_built_in_tokenizers_with(
+    pub fn add_built_in_tokenizers_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_built_in_tokenizers(f(FieldTypesBuilder::new()).build())
     }
@@ -2197,7 +1875,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about character filter types used in selected nodes.
+    /// **Required.** Contains statistics about character filter types used in selected nodes.
     pub fn char_filter_types(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -2221,15 +1899,9 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
     }
 
     /// Adds an element to [`char_filter_types`](Self::char_filter_types), with a builder.
-    pub fn add_char_filter_types_with(
+    pub fn add_char_filter_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7, S8)> {
         self.add_char_filter_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2247,15 +1919,9 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
     }
 
     /// Adds an element to [`char_filter_types`](Self::char_filter_types), with a builder.
-    pub fn add_char_filter_types_with(
+    pub fn add_char_filter_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_char_filter_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2274,7 +1940,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
-    /// Contains statistics about token filter types used in selected nodes.
+    /// **Required.** Contains statistics about token filter types used in selected nodes.
     pub fn filter_types(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -2298,15 +1964,9 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
     }
 
     /// Adds an element to [`filter_types`](Self::filter_types), with a builder.
-    pub fn add_filter_types_with(
+    pub fn add_filter_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7, S8)> {
         self.add_filter_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2324,15 +1984,9 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
     }
 
     /// Adds an element to [`filter_types`](Self::filter_types), with a builder.
-    pub fn add_filter_types_with(
+    pub fn add_filter_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_filter_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2351,7 +2005,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
-    /// Contains statistics about tokenizer types used in selected nodes.
+    /// **Required.** Contains statistics about tokenizer types used in selected nodes.
     pub fn tokenizer_types(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -2375,15 +2029,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
     }
 
     /// Adds an element to [`tokenizer_types`](Self::tokenizer_types), with a builder.
-    pub fn add_tokenizer_types_with(
+    pub fn add_tokenizer_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set, S8)> {
         self.add_tokenizer_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2401,15 +2049,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
     }
 
     /// Adds an element to [`tokenizer_types`](Self::tokenizer_types), with a builder.
-    pub fn add_tokenizer_types_with(
+    pub fn add_tokenizer_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_tokenizer_types(f(FieldTypesBuilder::new()).build())
     }
@@ -2428,7 +2070,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Contains statistics about synonyms types used in selected nodes.
+    /// **Required.** Contains statistics about synonyms types used in selected nodes.
     pub fn synonyms(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, SynonymsStats>>,
@@ -2453,13 +2095,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`synonyms`](Self::synonyms), with a builder.
-    pub fn add_synonyms_with(
+    pub fn add_synonyms_with<B: crate::typed::builder::Build<Output = SynonymsStats>>(
         self,
         key: impl Into<crate::typed::_types::Name>,
-        f: impl FnOnce(
-            SynonymsStatsBuilder,
-        )
-            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SynonymsStatsBuilder) -> B,
     ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, crate::typed::builder::Set)> {
         self.add_synonyms(key, f(SynonymsStatsBuilder::new()).build())
     }
@@ -2481,33 +2120,31 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`synonyms`](Self::synonyms), with a builder.
-    pub fn add_synonyms_with(
+    pub fn add_synonyms_with<B: crate::typed::builder::Build<Output = SynonymsStats>>(
         self,
         key: impl Into<crate::typed::_types::Name>,
-        f: impl FnOnce(
-            SynonymsStatsBuilder,
-        )
-            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SynonymsStatsBuilder) -> B,
     ) -> Self {
         self.add_synonyms(key, f(SynonymsStatsBuilder::new()).build())
     }
 }
 
-impl
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`CharFilterTypes`].
-    pub fn build(self) -> CharFilterTypes {
+    pub fn build(self) -> CharFilterTypes
+    where
+        S0: crate::typed::builder::IsSet<char_filter_types_members::analyzer_types>,
+        S1: crate::typed::builder::IsSet<char_filter_types_members::built_in_analyzers>,
+        S2: crate::typed::builder::IsSet<char_filter_types_members::built_in_char_filters>,
+        S3: crate::typed::builder::IsSet<char_filter_types_members::built_in_filters>,
+        S4: crate::typed::builder::IsSet<char_filter_types_members::built_in_tokenizers>,
+        S5: crate::typed::builder::IsSet<char_filter_types_members::char_filter_types>,
+        S6: crate::typed::builder::IsSet<char_filter_types_members::filter_types>,
+        S7: crate::typed::builder::IsSet<char_filter_types_members::tokenizer_types>,
+        S8: crate::typed::builder::IsSet<char_filter_types_members::synonyms>,
+    {
         CharFilterTypes {
             analyzer_types: self.analyzer_types.unwrap(),
             built_in_analyzers: self.built_in_analyzers.unwrap(),
@@ -2523,198 +2160,42 @@ impl
     }
 }
 
-impl
-    From<
-        CharFilterTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CharFilterTypes
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<char_filter_types_members::analyzer_types>,
+    S1: crate::typed::builder::IsSet<char_filter_types_members::built_in_analyzers>,
+    S2: crate::typed::builder::IsSet<char_filter_types_members::built_in_char_filters>,
+    S3: crate::typed::builder::IsSet<char_filter_types_members::built_in_filters>,
+    S4: crate::typed::builder::IsSet<char_filter_types_members::built_in_tokenizers>,
+    S5: crate::typed::builder::IsSet<char_filter_types_members::char_filter_types>,
+    S6: crate::typed::builder::IsSet<char_filter_types_members::filter_types>,
+    S7: crate::typed::builder::IsSet<char_filter_types_members::tokenizer_types>,
+    S8: crate::typed::builder::IsSet<char_filter_types_members::synonyms>,
 {
-    fn from(
-        builder: CharFilterTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CharFilterTypes;
+
+    fn build(self) -> CharFilterTypes {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>> for CharFilterTypes
+where
+    S0: crate::typed::builder::IsSet<char_filter_types_members::analyzer_types>,
+    S1: crate::typed::builder::IsSet<char_filter_types_members::built_in_analyzers>,
+    S2: crate::typed::builder::IsSet<char_filter_types_members::built_in_char_filters>,
+    S3: crate::typed::builder::IsSet<char_filter_types_members::built_in_filters>,
+    S4: crate::typed::builder::IsSet<char_filter_types_members::built_in_tokenizers>,
+    S5: crate::typed::builder::IsSet<char_filter_types_members::char_filter_types>,
+    S6: crate::typed::builder::IsSet<char_filter_types_members::filter_types>,
+    S7: crate::typed::builder::IsSet<char_filter_types_members::tokenizer_types>,
+    S8: crate::typed::builder::IsSet<char_filter_types_members::synonyms>,
 {
-    /// `analyzer_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analyzer_types: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match analyzer_types {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `built_in_analyzers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, built_in_analyzers: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match built_in_analyzers {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `built_in_char_filters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, built_in_char_filters: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match built_in_char_filters {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `built_in_filters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, built_in_filters: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match built_in_filters {} }
-}
-
-impl<S5, S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `built_in_tokenizers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, built_in_tokenizers: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match built_in_tokenizers {} }
-}
-
-impl<S6, S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `char_filter_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, char_filter_types: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match char_filter_types {} }
-}
-
-impl<S7, S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `filter_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filter_types: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match filter_types {} }
-}
-
-impl<S8>
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `tokenizer_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokenizer_types: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match tokenizer_types {} }
-}
-
-impl
-    CharFilterTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `synonyms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, synonyms: crate::typed::builder::MissingRequiredField) -> CharFilterTypes { match synonyms {} }
+    fn from(builder: CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2772,8 +2253,8 @@ impl ClusterFileSystem {
     }
 
     /// Creates a [`ClusterFileSystem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ClusterFileSystemBuilder) -> ClusterFileSystemBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterFileSystem>>(
+        f: impl FnOnce(ClusterFileSystemBuilder) -> B,
     ) -> ClusterFileSystem {
         f(Self::builder()).build()
     }
@@ -3073,6 +2554,14 @@ impl ClusterFileSystemBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ClusterFileSystemBuilder {
+    type Output = ClusterFileSystem;
+
+    fn build(self) -> ClusterFileSystem {
+        Self::build(self)
+    }
+}
+
 impl From<ClusterFileSystemBuilder> for ClusterFileSystem {
     fn from(builder: ClusterFileSystemBuilder) -> Self {
         builder.build()
@@ -3118,30 +2607,37 @@ pub struct ClusterIndices {
 
 impl ClusterIndices {
     /// Creates a builder for [`ClusterIndices`].
+    ///
+    /// Required: `completion`, `count`, `docs`, `fielddata`, `query_cache`, `search`, `segments`, `shards`, `store`, `dense_vector`, `sparse_vector`.
     pub fn builder() -> ClusterIndicesBuilder {
         ClusterIndicesBuilder::new()
     }
 
     /// Creates a [`ClusterIndices`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterIndicesBuilder,
-        ) -> ClusterIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `completion`, `count`, `docs`, `fielddata`, `query_cache`, `search`, `segments`, `shards`, `store`, `dense_vector`, `sparse_vector`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterIndices>>(
+        f: impl FnOnce(ClusterIndicesBuilder) -> B,
     ) -> ClusterIndices {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterIndicesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_indices_members {
+    pub struct completion;
+    pub struct count;
+    pub struct docs;
+    pub struct fielddata;
+    pub struct query_cache;
+    pub struct search;
+    pub struct segments;
+    pub struct shards;
+    pub struct store;
+    pub struct dense_vector;
+    pub struct sparse_vector;
 }
 
 /// Builder for [`ClusterIndices`].
@@ -3250,21 +2746,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<B: crate::typed::builder::Build<Output = CharFilterTypes>>(
         self,
-        f: impl FnOnce(
-            CharFilterTypesBuilder,
-        ) -> CharFilterTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CharFilterTypesBuilder) -> B,
     ) -> Self {
         self.analysis(f(CharFilterTypesBuilder::new()).build())
     }
@@ -3282,15 +2766,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<B: crate::typed::builder::Build<Output = FieldTypesMappings>>(
         self,
-        f: impl FnOnce(
-            FieldTypesMappingsBuilder,
-        ) -> FieldTypesMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesMappingsBuilder) -> B,
     ) -> Self {
         self.mappings(f(FieldTypesMappingsBuilder::new()).build())
     }
@@ -3316,16 +2794,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Adds an element to [`versions`](Self::versions), with a builder.
-    pub fn add_versions_with(
+    pub fn add_versions_with<B: crate::typed::builder::Build<Output = IndicesVersions>>(
         self,
-        f: impl FnOnce(
-            IndicesVersionsBuilder,
-        ) -> IndicesVersionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesVersionsBuilder) -> B,
     ) -> Self {
         self.add_versions(f(IndicesVersionsBuilder::new()).build())
     }
@@ -3346,7 +2817,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about memory used for completion in selected nodes.
+    /// **Required.** Contains statistics about memory used for completion in selected nodes.
     pub fn completion(
         self,
         value: impl Into<crate::typed::_types::CompletionStats>,
@@ -3369,12 +2840,11 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`completion`](Self::completion) with a builder.
-    pub fn completion_with(
+    pub fn completion_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::CompletionStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::CompletionStatsBuilder,
-        )
-            -> crate::typed::_types::CompletionStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::CompletionStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         crate::typed::builder::Set,
         S1,
@@ -3407,7 +2877,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Total number of indices with shards assigned to selected nodes.
+    /// **Required.** Total number of indices with shards assigned to selected nodes.
     pub fn count(
         self,
         value: i64,
@@ -3445,7 +2915,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains counts for documents in selected nodes.
+    /// **Required.** Contains counts for documents in selected nodes.
     pub fn docs(
         self,
         value: impl Into<crate::typed::_types::DocStats>,
@@ -3468,14 +2938,9 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`docs`](Self::docs) with a builder.
-    pub fn docs_with(
+    pub fn docs_with<B: crate::typed::builder::Build<Output = crate::typed::_types::DocStats>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::DocStatsBuilder,
-        ) -> crate::typed::_types::DocStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::DocStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3508,7 +2973,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about the field data cache of selected nodes.
+    /// **Required.** Contains statistics about the field data cache of selected nodes.
     pub fn fielddata(
         self,
         value: impl Into<crate::typed::_types::FielddataStats>,
@@ -3531,14 +2996,11 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`fielddata`](Self::fielddata) with a builder.
-    pub fn fielddata_with(
+    pub fn fielddata_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::FielddataStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::FielddataStatsBuilder,
-        ) -> crate::typed::_types::FielddataStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::FielddataStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3571,7 +3033,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about the query cache of selected nodes.
+    /// **Required.** Contains statistics about the query cache of selected nodes.
     pub fn query_cache(
         self,
         value: impl Into<crate::typed::_types::QueryCacheStats>,
@@ -3594,19 +3056,11 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`query_cache`](Self::query_cache) with a builder.
-    pub fn query_cache_with(
+    pub fn query_cache_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::QueryCacheStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::QueryCacheStatsBuilder,
-        ) -> crate::typed::_types::QueryCacheStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::QueryCacheStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3639,7 +3093,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Holds a snapshot of the search usage statistics.
+    /// **Required.** Holds a snapshot of the search usage statistics.
     /// Used to hold the stats for a single node that's part of a ClusterStatsNodeResponse, as well as to
     /// accumulate stats for the entire cluster and return them as part of the ClusterStatsResponse.
     pub fn search(
@@ -3664,18 +3118,9 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`search`](Self::search) with a builder.
-    pub fn search_with(
+    pub fn search_with<B: crate::typed::builder::Build<Output = SearchUsageStats>>(
         self,
-        f: impl FnOnce(
-            SearchUsageStatsBuilder,
-        ) -> SearchUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SearchUsageStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3708,7 +3153,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about segments in selected nodes.
+    /// **Required.** Contains statistics about segments in selected nodes.
     pub fn segments(
         self,
         value: impl Into<crate::typed::_types::SegmentsStats>,
@@ -3731,25 +3176,11 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
     }
 
     /// Sets [`segments`](Self::segments) with a builder.
-    pub fn segments_with(
+    pub fn segments_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::SegmentsStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::SegmentsStatsBuilder,
-        ) -> crate::typed::_types::SegmentsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::SegmentsStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3782,7 +3213,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about indices with shards assigned to selected nodes.
+    /// **Required.** Contains statistics about indices with shards assigned to selected nodes.
     pub fn shards(
         self,
         value: impl Into<ClusterIndicesShards>,
@@ -3805,9 +3236,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<B: crate::typed::builder::Build<Output = ClusterIndicesShards>>(
         self,
-        f: impl FnOnce(ClusterIndicesShardsBuilder) -> ClusterIndicesShardsBuilder,
+        f: impl FnOnce(ClusterIndicesShardsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3840,7 +3271,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
-    /// Contains statistics about the size of shards assigned to selected nodes.
+    /// **Required.** Contains statistics about the size of shards assigned to selected nodes.
     pub fn store(
         self,
         value: impl Into<crate::typed::_types::StoreStats>,
@@ -3863,14 +3294,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
     }
 
     /// Sets [`store`](Self::store) with a builder.
-    pub fn store_with(
+    pub fn store_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::StoreStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::StoreStatsBuilder,
-        ) -> crate::typed::_types::StoreStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::StoreStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3903,7 +3331,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
-    /// Contains statistics about indexed dense vector
+    /// **Required.** Contains statistics about indexed dense vector
     pub fn dense_vector(
         self,
         value: impl Into<DenseVectorStats>,
@@ -3926,11 +3354,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
     }
 
     /// Sets [`dense_vector`](Self::dense_vector) with a builder.
-    pub fn dense_vector_with(
+    pub fn dense_vector_with<B: crate::typed::builder::Build<Output = DenseVectorStats>>(
         self,
-        f: impl FnOnce(
-            DenseVectorStatsBuilder,
-        ) -> DenseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DenseVectorStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -3963,7 +3389,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Contains statistics about indexed sparse vector
+    /// **Required.** Contains statistics about indexed sparse vector
     pub fn sparse_vector(
         self,
         value: impl Into<SparseVectorStats>,
@@ -3986,11 +3412,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`sparse_vector`](Self::sparse_vector) with a builder.
-    pub fn sparse_vector_with(
+    pub fn sparse_vector_with<B: crate::typed::builder::Build<Output = SparseVectorStats>>(
         self,
-        f: impl FnOnce(
-            SparseVectorStatsBuilder,
-        ) -> SparseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SparseVectorStatsBuilder) -> B,
     ) -> ClusterIndicesBuilder<(
         S0,
         S1,
@@ -4008,23 +3432,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ClusterIndicesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ClusterIndices`].
-    pub fn build(self) -> ClusterIndices {
+    pub fn build(self) -> ClusterIndices
+    where
+        S0: crate::typed::builder::IsSet<cluster_indices_members::completion>,
+        S1: crate::typed::builder::IsSet<cluster_indices_members::count>,
+        S2: crate::typed::builder::IsSet<cluster_indices_members::docs>,
+        S3: crate::typed::builder::IsSet<cluster_indices_members::fielddata>,
+        S4: crate::typed::builder::IsSet<cluster_indices_members::query_cache>,
+        S5: crate::typed::builder::IsSet<cluster_indices_members::search>,
+        S6: crate::typed::builder::IsSet<cluster_indices_members::segments>,
+        S7: crate::typed::builder::IsSet<cluster_indices_members::shards>,
+        S8: crate::typed::builder::IsSet<cluster_indices_members::store>,
+        S9: crate::typed::builder::IsSet<cluster_indices_members::dense_vector>,
+        S10: crate::typed::builder::IsSet<cluster_indices_members::sparse_vector>,
+    {
         ClusterIndices {
             analysis: self.analysis,
             completion: self.completion.unwrap(),
@@ -4044,260 +3469,46 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterIndices
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ClusterIndicesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<cluster_indices_members::completion>,
+    S1: crate::typed::builder::IsSet<cluster_indices_members::count>,
+    S2: crate::typed::builder::IsSet<cluster_indices_members::docs>,
+    S3: crate::typed::builder::IsSet<cluster_indices_members::fielddata>,
+    S4: crate::typed::builder::IsSet<cluster_indices_members::query_cache>,
+    S5: crate::typed::builder::IsSet<cluster_indices_members::search>,
+    S6: crate::typed::builder::IsSet<cluster_indices_members::segments>,
+    S7: crate::typed::builder::IsSet<cluster_indices_members::shards>,
+    S8: crate::typed::builder::IsSet<cluster_indices_members::store>,
+    S9: crate::typed::builder::IsSet<cluster_indices_members::dense_vector>,
+    S10: crate::typed::builder::IsSet<cluster_indices_members::sparse_vector>,
 {
-    fn from(
-        builder: ClusterIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterIndices;
+
+    fn build(self) -> ClusterIndices {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ClusterIndicesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for ClusterIndices
+where
+    S0: crate::typed::builder::IsSet<cluster_indices_members::completion>,
+    S1: crate::typed::builder::IsSet<cluster_indices_members::count>,
+    S2: crate::typed::builder::IsSet<cluster_indices_members::docs>,
+    S3: crate::typed::builder::IsSet<cluster_indices_members::fielddata>,
+    S4: crate::typed::builder::IsSet<cluster_indices_members::query_cache>,
+    S5: crate::typed::builder::IsSet<cluster_indices_members::search>,
+    S6: crate::typed::builder::IsSet<cluster_indices_members::segments>,
+    S7: crate::typed::builder::IsSet<cluster_indices_members::shards>,
+    S8: crate::typed::builder::IsSet<cluster_indices_members::store>,
+    S9: crate::typed::builder::IsSet<cluster_indices_members::dense_vector>,
+    S10: crate::typed::builder::IsSet<cluster_indices_members::sparse_vector>,
 {
-    /// `completion` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, completion: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match completion {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match count {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, docs: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match docs {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `fielddata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fielddata: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match fielddata {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `query_cache` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query_cache: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match query_cache {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `search` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match search {} }
-}
-
-impl<S7, S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `segments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, segments: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match segments {} }
-}
-
-impl<S8, S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match shards {} }
-}
-
-impl<S9, S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `store` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match store {} }
-}
-
-impl<S10>
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `dense_vector` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dense_vector: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match dense_vector {} }
-}
-
-impl
-    ClusterIndicesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sparse_vector` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sparse_vector: crate::typed::builder::MissingRequiredField) -> ClusterIndices { match sparse_vector {} }
+    fn from(builder: ClusterIndicesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Contains statistics about shards assigned to selected nodes.
@@ -4324,8 +3535,8 @@ impl ClusterIndicesShards {
     }
 
     /// Creates a [`ClusterIndicesShards`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ClusterIndicesShardsBuilder) -> ClusterIndicesShardsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterIndicesShards>>(
+        f: impl FnOnce(ClusterIndicesShardsBuilder) -> B,
     ) -> ClusterIndicesShards {
         f(Self::builder()).build()
     }
@@ -4365,15 +3576,9 @@ impl ClusterIndicesShardsBuilder {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<B: crate::typed::builder::Build<Output = ClusterIndicesShardsIndex>>(
         self,
-        f: impl FnOnce(
-            ClusterIndicesShardsIndexBuilder,
-        ) -> ClusterIndicesShardsIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterIndicesShardsIndexBuilder) -> B,
     ) -> Self {
         self.index(f(ClusterIndicesShardsIndexBuilder::new()).build())
     }
@@ -4427,6 +3632,14 @@ impl ClusterIndicesShardsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ClusterIndicesShardsBuilder {
+    type Output = ClusterIndicesShards;
+
+    fn build(self) -> ClusterIndicesShards {
+        Self::build(self)
+    }
+}
+
 impl From<ClusterIndicesShardsBuilder> for ClusterIndicesShards {
     fn from(builder: ClusterIndicesShardsBuilder) -> Self {
         builder.build()
@@ -4445,22 +3658,29 @@ pub struct ClusterIndicesShardsIndex {
 
 impl ClusterIndicesShardsIndex {
     /// Creates a builder for [`ClusterIndicesShardsIndex`].
+    ///
+    /// Required: `primaries`, `replication`, `shards`.
     pub fn builder() -> ClusterIndicesShardsIndexBuilder {
         ClusterIndicesShardsIndexBuilder::new()
     }
 
     /// Creates a [`ClusterIndicesShardsIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterIndicesShardsIndexBuilder,
-        ) -> ClusterIndicesShardsIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `primaries`, `replication`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterIndicesShardsIndex>>(
+        f: impl FnOnce(ClusterIndicesShardsIndexBuilder) -> B,
     ) -> ClusterIndicesShardsIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterIndicesShardsIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_indices_shards_index_members {
+    pub struct primaries;
+    pub struct replication;
+    pub struct shards;
 }
 
 /// Builder for [`ClusterIndicesShardsIndex`].
@@ -4507,7 +3727,7 @@ impl<S0, S1, S2> ClusterIndicesShardsIndexBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ClusterIndicesShardsIndexBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Contains statistics about the number of primary shards assigned to selected nodes.
+    /// **Required.** Contains statistics about the number of primary shards assigned to selected nodes.
     pub fn primaries(
         self,
         value: impl Into<ClusterShardMetrics>,
@@ -4518,22 +3738,16 @@ impl<S1, S2> ClusterIndicesShardsIndexBuilder<(crate::typed::builder::NotSet, S1
     }
 
     /// Sets [`primaries`](Self::primaries) with a builder.
-    pub fn primaries_with(
+    pub fn primaries_with<B: crate::typed::builder::Build<Output = ClusterShardMetrics>>(
         self,
-        f: impl FnOnce(
-            ClusterShardMetricsBuilder,
-        ) -> ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterShardMetricsBuilder) -> B,
     ) -> ClusterIndicesShardsIndexBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.primaries(f(ClusterShardMetricsBuilder::new()).build())
     }
 }
 
 impl<S0, S2> ClusterIndicesShardsIndexBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Contains statistics about the number of replication shards assigned to selected nodes.
+    /// **Required.** Contains statistics about the number of replication shards assigned to selected nodes.
     pub fn replication(
         self,
         value: impl Into<ClusterShardMetrics>,
@@ -4544,22 +3758,16 @@ impl<S0, S2> ClusterIndicesShardsIndexBuilder<(S0, crate::typed::builder::NotSet
     }
 
     /// Sets [`replication`](Self::replication) with a builder.
-    pub fn replication_with(
+    pub fn replication_with<B: crate::typed::builder::Build<Output = ClusterShardMetrics>>(
         self,
-        f: impl FnOnce(
-            ClusterShardMetricsBuilder,
-        ) -> ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterShardMetricsBuilder) -> B,
     ) -> ClusterIndicesShardsIndexBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.replication(f(ClusterShardMetricsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> ClusterIndicesShardsIndexBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Contains statistics about the number of shards assigned to selected nodes.
+    /// **Required.** Contains statistics about the number of shards assigned to selected nodes.
     pub fn shards(
         self,
         value: impl Into<ClusterShardMetrics>,
@@ -4570,29 +3778,22 @@ impl<S0, S1> ClusterIndicesShardsIndexBuilder<(S0, S1, crate::typed::builder::No
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<B: crate::typed::builder::Build<Output = ClusterShardMetrics>>(
         self,
-        f: impl FnOnce(
-            ClusterShardMetricsBuilder,
-        ) -> ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterShardMetricsBuilder) -> B,
     ) -> ClusterIndicesShardsIndexBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.shards(f(ClusterShardMetricsBuilder::new()).build())
     }
 }
 
-impl
-    ClusterIndicesShardsIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ClusterIndicesShardsIndexBuilder<(S0, S1, S2)> {
     /// Builds a [`ClusterIndicesShardsIndex`].
-    pub fn build(self) -> ClusterIndicesShardsIndex {
+    pub fn build(self) -> ClusterIndicesShardsIndex
+    where
+        S0: crate::typed::builder::IsSet<cluster_indices_shards_index_members::primaries>,
+        S1: crate::typed::builder::IsSet<cluster_indices_shards_index_members::replication>,
+        S2: crate::typed::builder::IsSet<cluster_indices_shards_index_members::shards>,
+    {
         ClusterIndicesShardsIndex {
             primaries: self.primaries.unwrap(),
             replication: self.replication.unwrap(),
@@ -4601,54 +3802,28 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterIndicesShardsIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterIndicesShardsIndex
+impl<S0, S1, S2> crate::typed::builder::Build for ClusterIndicesShardsIndexBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<cluster_indices_shards_index_members::primaries>,
+    S1: crate::typed::builder::IsSet<cluster_indices_shards_index_members::replication>,
+    S2: crate::typed::builder::IsSet<cluster_indices_shards_index_members::shards>,
 {
-    fn from(
-        builder: ClusterIndicesShardsIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterIndicesShardsIndex;
+
+    fn build(self) -> ClusterIndicesShardsIndex {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ClusterIndicesShardsIndexBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `primaries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primaries: crate::typed::builder::MissingRequiredField) -> ClusterIndicesShardsIndex { match primaries {} }
-}
-
-impl<S2>
-    ClusterIndicesShardsIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ClusterIndicesShardsIndexBuilder<(S0, S1, S2)>> for ClusterIndicesShardsIndex
+where
+    S0: crate::typed::builder::IsSet<cluster_indices_shards_index_members::primaries>,
+    S1: crate::typed::builder::IsSet<cluster_indices_shards_index_members::replication>,
+    S2: crate::typed::builder::IsSet<cluster_indices_shards_index_members::shards>,
 {
-    /// `replication` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, replication: crate::typed::builder::MissingRequiredField) -> ClusterIndicesShardsIndex { match replication {} }
-}
-
-impl
-    ClusterIndicesShardsIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> ClusterIndicesShardsIndex { match shards {} }
+    fn from(builder: ClusterIndicesShardsIndexBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4659,19 +3834,28 @@ pub struct ClusterIngest {
 
 impl ClusterIngest {
     /// Creates a builder for [`ClusterIngest`].
+    ///
+    /// Required: `number_of_pipelines`, `processor_stats`.
     pub fn builder() -> ClusterIngestBuilder {
         ClusterIngestBuilder::new()
     }
 
     /// Creates a [`ClusterIngest`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterIngestBuilder,
-        )
-            -> ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `number_of_pipelines`, `processor_stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterIngest>>(
+        f: impl FnOnce(ClusterIngestBuilder) -> B,
     ) -> ClusterIngest {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterIngestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_ingest_members {
+    pub struct number_of_pipelines;
+    pub struct processor_stats;
 }
 
 /// Builder for [`ClusterIngest`].
@@ -4704,6 +3888,7 @@ impl<S0, S1> ClusterIngestBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterIngestBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn number_of_pipelines(
         self,
         value: i32,
@@ -4715,6 +3900,7 @@ impl<S1> ClusterIngestBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ClusterIngestBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn processor_stats(
         self,
         value: impl Into<indexmap::IndexMap<String, ClusterProcessor>>,
@@ -4739,17 +3925,10 @@ impl<S0> ClusterIngestBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`processor_stats`](Self::processor_stats), with a builder.
-    pub fn add_processor_stats_with(
+    pub fn add_processor_stats_with<B: crate::typed::builder::Build<Output = ClusterProcessor>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ClusterProcessorBuilder,
-        ) -> ClusterProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterProcessorBuilder) -> B,
     ) -> ClusterIngestBuilder<(S0, crate::typed::builder::Set)> {
         self.add_processor_stats(key, f(ClusterProcessorBuilder::new()).build())
     }
@@ -4769,25 +3948,22 @@ impl<S0> ClusterIngestBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`processor_stats`](Self::processor_stats), with a builder.
-    pub fn add_processor_stats_with(
+    pub fn add_processor_stats_with<B: crate::typed::builder::Build<Output = ClusterProcessor>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ClusterProcessorBuilder,
-        ) -> ClusterProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterProcessorBuilder) -> B,
     ) -> Self {
         self.add_processor_stats(key, f(ClusterProcessorBuilder::new()).build())
     }
 }
 
-impl ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterIngestBuilder<(S0, S1)> {
     /// Builds a [`ClusterIngest`].
-    pub fn build(self) -> ClusterIngest {
+    pub fn build(self) -> ClusterIngest
+    where
+        S0: crate::typed::builder::IsSet<cluster_ingest_members::number_of_pipelines>,
+        S1: crate::typed::builder::IsSet<cluster_ingest_members::processor_stats>,
+    {
         ClusterIngest {
             number_of_pipelines: self.number_of_pipelines.unwrap(),
             processor_stats: self.processor_stats.unwrap(),
@@ -4795,26 +3971,26 @@ impl ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ClusterIngest
+impl<S0, S1> crate::typed::builder::Build for ClusterIngestBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_ingest_members::number_of_pipelines>,
+    S1: crate::typed::builder::IsSet<cluster_ingest_members::processor_stats>,
 {
-    fn from(
-        builder: ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterIngest;
+
+    fn build(self) -> ClusterIngest {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterIngestBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `number_of_pipelines` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_pipelines: crate::typed::builder::MissingRequiredField) -> ClusterIngest { match number_of_pipelines {} }
-}
-
-impl ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `processor_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processor_stats: crate::typed::builder::MissingRequiredField) -> ClusterIngest { match processor_stats {} }
+impl<S0, S1> From<ClusterIngestBuilder<(S0, S1)>> for ClusterIngest
+where
+    S0: crate::typed::builder::IsSet<cluster_ingest_members::number_of_pipelines>,
+    S1: crate::typed::builder::IsSet<cluster_ingest_members::processor_stats>,
+{
+    fn from(builder: ClusterIngestBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4834,23 +4010,30 @@ pub struct ClusterJvm {
 
 impl ClusterJvm {
     /// Creates a builder for [`ClusterJvm`].
+    ///
+    /// Required: `max_uptime_in_millis`, `mem`, `threads`, `versions`.
     pub fn builder() -> ClusterJvmBuilder {
         ClusterJvmBuilder::new()
     }
 
     /// Creates a [`ClusterJvm`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterJvmBuilder,
-        ) -> ClusterJvmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `max_uptime_in_millis`, `mem`, `threads`, `versions`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterJvm>>(
+        f: impl FnOnce(ClusterJvmBuilder) -> B,
     ) -> ClusterJvm {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterJvmBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_jvm_members {
+    pub struct max_uptime_in_millis;
+    pub struct mem;
+    pub struct threads;
+    pub struct versions;
 }
 
 /// Builder for [`ClusterJvm`].
@@ -4917,7 +4100,7 @@ impl<S0, S1, S2, S3> ClusterJvmBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ClusterJvmBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// Uptime duration, in milliseconds, since JVM last started.
+    /// **Required.** Uptime duration, in milliseconds, since JVM last started.
     pub fn max_uptime_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -4929,7 +4112,7 @@ impl<S1, S2, S3> ClusterJvmBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> 
 }
 
 impl<S0, S2, S3> ClusterJvmBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Contains statistics about memory used by selected nodes.
+    /// **Required.** Contains statistics about memory used by selected nodes.
     pub fn mem(
         self,
         value: impl Into<ClusterJvmMemory>,
@@ -4940,21 +4123,16 @@ impl<S0, S2, S3> ClusterJvmBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> 
     }
 
     /// Sets [`mem`](Self::mem) with a builder.
-    pub fn mem_with(
+    pub fn mem_with<B: crate::typed::builder::Build<Output = ClusterJvmMemory>>(
         self,
-        f: impl FnOnce(
-            ClusterJvmMemoryBuilder,
-        ) -> ClusterJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterJvmMemoryBuilder) -> B,
     ) -> ClusterJvmBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.mem(f(ClusterJvmMemoryBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> ClusterJvmBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// Number of active threads in use by JVM across all selected nodes.
+    /// **Required.** Number of active threads in use by JVM across all selected nodes.
     pub fn threads(
         self,
         value: i64,
@@ -4966,7 +4144,7 @@ impl<S0, S1, S3> ClusterJvmBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> 
 }
 
 impl<S0, S1, S2> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// Contains statistics about the JVM versions used by selected nodes.
+    /// **Required.** Contains statistics about the JVM versions used by selected nodes.
     pub fn versions(
         self,
         value: impl Into<Vec<ClusterJvmVersion>>,
@@ -4990,19 +4168,9 @@ impl<S0, S1, S2> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> 
     }
 
     /// Adds an element to [`versions`](Self::versions), with a builder.
-    pub fn add_versions_with(
+    pub fn add_versions_with<B: crate::typed::builder::Build<Output = ClusterJvmVersion>>(
         self,
-        f: impl FnOnce(
-            ClusterJvmVersionBuilder,
-        ) -> ClusterJvmVersionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterJvmVersionBuilder) -> B,
     ) -> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_versions(f(ClusterJvmVersionBuilder::new()).build())
     }
@@ -5018,34 +4186,23 @@ impl<S0, S1, S2> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`versions`](Self::versions), with a builder.
-    pub fn add_versions_with(
+    pub fn add_versions_with<B: crate::typed::builder::Build<Output = ClusterJvmVersion>>(
         self,
-        f: impl FnOnce(
-            ClusterJvmVersionBuilder,
-        ) -> ClusterJvmVersionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterJvmVersionBuilder) -> B,
     ) -> Self {
         self.add_versions(f(ClusterJvmVersionBuilder::new()).build())
     }
 }
 
-impl
-    ClusterJvmBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ClusterJvmBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ClusterJvm`].
-    pub fn build(self) -> ClusterJvm {
+    pub fn build(self) -> ClusterJvm
+    where
+        S0: crate::typed::builder::IsSet<cluster_jvm_members::max_uptime_in_millis>,
+        S1: crate::typed::builder::IsSet<cluster_jvm_members::mem>,
+        S2: crate::typed::builder::IsSet<cluster_jvm_members::threads>,
+        S3: crate::typed::builder::IsSet<cluster_jvm_members::versions>,
+    {
         ClusterJvm {
             max_uptime_in_millis: self.max_uptime_in_millis.unwrap(),
             max_uptime: self.max_uptime,
@@ -5056,71 +4213,30 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterJvmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterJvm
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ClusterJvmBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_members::max_uptime_in_millis>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_members::mem>,
+    S2: crate::typed::builder::IsSet<cluster_jvm_members::threads>,
+    S3: crate::typed::builder::IsSet<cluster_jvm_members::versions>,
 {
-    fn from(
-        builder: ClusterJvmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterJvm;
+
+    fn build(self) -> ClusterJvm {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ClusterJvmBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `max_uptime_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_uptime_in_millis: crate::typed::builder::MissingRequiredField) -> ClusterJvm { match max_uptime_in_millis {} }
-}
-
-impl<S2, S3>
-    ClusterJvmBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ClusterJvmBuilder<(S0, S1, S2, S3)>> for ClusterJvm
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_members::max_uptime_in_millis>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_members::mem>,
+    S2: crate::typed::builder::IsSet<cluster_jvm_members::threads>,
+    S3: crate::typed::builder::IsSet<cluster_jvm_members::versions>,
 {
-    /// `mem` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mem: crate::typed::builder::MissingRequiredField) -> ClusterJvm { match mem {} }
-}
-
-impl<S3>
-    ClusterJvmBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `threads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, threads: crate::typed::builder::MissingRequiredField) -> ClusterJvm { match threads {} }
-}
-
-impl
-    ClusterJvmBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `versions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, versions: crate::typed::builder::MissingRequiredField) -> ClusterJvm { match versions {} }
+    fn from(builder: ClusterJvmBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5139,21 +4255,28 @@ pub struct ClusterJvmMemory {
 
 impl ClusterJvmMemory {
     /// Creates a builder for [`ClusterJvmMemory`].
+    ///
+    /// Required: `heap_max_in_bytes`, `heap_used_in_bytes`.
     pub fn builder() -> ClusterJvmMemoryBuilder {
         ClusterJvmMemoryBuilder::new()
     }
 
     /// Creates a [`ClusterJvmMemory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterJvmMemoryBuilder,
-        ) -> ClusterJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `heap_max_in_bytes`, `heap_used_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterJvmMemory>>(
+        f: impl FnOnce(ClusterJvmMemoryBuilder) -> B,
     ) -> ClusterJvmMemory {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterJvmMemoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_jvm_memory_members {
+    pub struct heap_max_in_bytes;
+    pub struct heap_used_in_bytes;
 }
 
 /// Builder for [`ClusterJvmMemory`].
@@ -5217,7 +4340,7 @@ impl<S0, S1> ClusterJvmMemoryBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterJvmMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Maximum amount of memory, in bytes, available for use by the heap across all selected nodes.
+    /// **Required.** Maximum amount of memory, in bytes, available for use by the heap across all selected nodes.
     pub fn heap_max_in_bytes(
         self,
         value: i64,
@@ -5229,7 +4352,7 @@ impl<S1> ClusterJvmMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ClusterJvmMemoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Memory, in bytes, currently in use by the heap across all selected nodes.
+    /// **Required.** Memory, in bytes, currently in use by the heap across all selected nodes.
     pub fn heap_used_in_bytes(
         self,
         value: i64,
@@ -5240,9 +4363,13 @@ impl<S0> ClusterJvmMemoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ClusterJvmMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterJvmMemoryBuilder<(S0, S1)> {
     /// Builds a [`ClusterJvmMemory`].
-    pub fn build(self) -> ClusterJvmMemory {
+    pub fn build(self) -> ClusterJvmMemory
+    where
+        S0: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_max_in_bytes>,
+        S1: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_used_in_bytes>,
+    {
         ClusterJvmMemory {
             heap_max_in_bytes: self.heap_max_in_bytes.unwrap(),
             heap_max: self.heap_max,
@@ -5252,26 +4379,26 @@ impl ClusterJvmMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ClusterJvmMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ClusterJvmMemory
+impl<S0, S1> crate::typed::builder::Build for ClusterJvmMemoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_used_in_bytes>,
 {
-    fn from(
-        builder: ClusterJvmMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterJvmMemory;
+
+    fn build(self) -> ClusterJvmMemory {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterJvmMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `heap_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, heap_max_in_bytes: crate::typed::builder::MissingRequiredField) -> ClusterJvmMemory { match heap_max_in_bytes {} }
-}
-
-impl ClusterJvmMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `heap_used_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, heap_used_in_bytes: crate::typed::builder::MissingRequiredField) -> ClusterJvmMemory { match heap_used_in_bytes {} }
+impl<S0, S1> From<ClusterJvmMemoryBuilder<(S0, S1)>> for ClusterJvmMemory
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_memory_members::heap_used_in_bytes>,
+{
+    fn from(builder: ClusterJvmMemoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5295,26 +4422,33 @@ pub struct ClusterJvmVersion {
 
 impl ClusterJvmVersion {
     /// Creates a builder for [`ClusterJvmVersion`].
+    ///
+    /// Required: `bundled_jdk`, `count`, `using_bundled_jdk`, `version`, `vm_name`, `vm_vendor`, `vm_version`.
     pub fn builder() -> ClusterJvmVersionBuilder {
         ClusterJvmVersionBuilder::new()
     }
 
     /// Creates a [`ClusterJvmVersion`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterJvmVersionBuilder,
-        ) -> ClusterJvmVersionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bundled_jdk`, `count`, `using_bundled_jdk`, `version`, `vm_name`, `vm_vendor`, `vm_version`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterJvmVersion>>(
+        f: impl FnOnce(ClusterJvmVersionBuilder) -> B,
     ) -> ClusterJvmVersion {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterJvmVersionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_jvm_version_members {
+    pub struct bundled_jdk;
+    pub struct count;
+    pub struct using_bundled_jdk;
+    pub struct version;
+    pub struct vm_name;
+    pub struct vm_vendor;
+    pub struct vm_version;
 }
 
 /// Builder for [`ClusterJvmVersion`].
@@ -5383,7 +4517,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S
 impl<S1, S2, S3, S4, S5, S6>
     ClusterJvmVersionBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
-    /// Always `true`. All distributions come with a bundled Java Development Kit (JDK).
+    /// **Required.** Always `true`. All distributions come with a bundled Java Development Kit (JDK).
     pub fn bundled_jdk(
         self,
         value: bool,
@@ -5397,7 +4531,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     ClusterJvmVersionBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
-    /// Total number of selected nodes using JVM.
+    /// **Required.** Total number of selected nodes using JVM.
     pub fn count(
         self,
         value: i32,
@@ -5411,7 +4545,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     ClusterJvmVersionBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
-    /// If `true`, a bundled JDK is in use by JVM.
+    /// **Required.** If `true`, a bundled JDK is in use by JVM.
     pub fn using_bundled_jdk(
         self,
         value: bool,
@@ -5425,7 +4559,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     ClusterJvmVersionBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
-    /// Version of JVM used by one or more selected nodes.
+    /// **Required.** Version of JVM used by one or more selected nodes.
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -5439,7 +4573,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     ClusterJvmVersionBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
-    /// Name of the JVM.
+    /// **Required.** Name of the JVM.
     pub fn vm_name(
         self,
         value: impl Into<String>,
@@ -5453,7 +4587,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
-    /// Vendor of the JVM.
+    /// **Required.** Vendor of the JVM.
     pub fn vm_vendor(
         self,
         value: impl Into<String>,
@@ -5467,7 +4601,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
-    /// Full version number of JVM.
+    /// **Required.** Full version number of JVM.
     /// The full version number includes a plus sign (+) followed by the build number.
     pub fn vm_version(
         self,
@@ -5479,19 +4613,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`ClusterJvmVersion`].
-    pub fn build(self) -> ClusterJvmVersion {
+    pub fn build(self) -> ClusterJvmVersion
+    where
+        S0: crate::typed::builder::IsSet<cluster_jvm_version_members::bundled_jdk>,
+        S1: crate::typed::builder::IsSet<cluster_jvm_version_members::count>,
+        S2: crate::typed::builder::IsSet<cluster_jvm_version_members::using_bundled_jdk>,
+        S3: crate::typed::builder::IsSet<cluster_jvm_version_members::version>,
+        S4: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_name>,
+        S5: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_vendor>,
+        S6: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_version>,
+    {
         ClusterJvmVersion {
             bundled_jdk: self.bundled_jdk.unwrap(),
             count: self.count.unwrap(),
@@ -5504,136 +4637,38 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterJvmVersionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterJvmVersion
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_version_members::bundled_jdk>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_version_members::count>,
+    S2: crate::typed::builder::IsSet<cluster_jvm_version_members::using_bundled_jdk>,
+    S3: crate::typed::builder::IsSet<cluster_jvm_version_members::version>,
+    S4: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_name>,
+    S5: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_vendor>,
+    S6: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_version>,
 {
-    fn from(
-        builder: ClusterJvmVersionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterJvmVersion;
+
+    fn build(self) -> ClusterJvmVersion {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    ClusterJvmVersionBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for ClusterJvmVersion
+where
+    S0: crate::typed::builder::IsSet<cluster_jvm_version_members::bundled_jdk>,
+    S1: crate::typed::builder::IsSet<cluster_jvm_version_members::count>,
+    S2: crate::typed::builder::IsSet<cluster_jvm_version_members::using_bundled_jdk>,
+    S3: crate::typed::builder::IsSet<cluster_jvm_version_members::version>,
+    S4: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_name>,
+    S5: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_vendor>,
+    S6: crate::typed::builder::IsSet<cluster_jvm_version_members::vm_version>,
 {
-    /// `bundled_jdk` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bundled_jdk: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match bundled_jdk {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match count {} }
-}
-
-impl<S3, S4, S5, S6>
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `using_bundled_jdk` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, using_bundled_jdk: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match using_bundled_jdk {} }
-}
-
-impl<S4, S5, S6>
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match version {} }
-}
-
-impl<S5, S6>
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `vm_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_name: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match vm_name {} }
-}
-
-impl<S6>
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `vm_vendor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_vendor: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match vm_vendor {} }
-}
-
-impl
-    ClusterJvmVersionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `vm_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_version: crate::typed::builder::MissingRequiredField) -> ClusterJvmVersion { match vm_version {} }
+    fn from(builder: ClusterJvmVersionBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5646,21 +4681,28 @@ pub struct ClusterNetworkTypes {
 
 impl ClusterNetworkTypes {
     /// Creates a builder for [`ClusterNetworkTypes`].
+    ///
+    /// Required: `http_types`, `transport_types`.
     pub fn builder() -> ClusterNetworkTypesBuilder {
         ClusterNetworkTypesBuilder::new()
     }
 
     /// Creates a [`ClusterNetworkTypes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterNetworkTypesBuilder,
-        ) -> ClusterNetworkTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `http_types`, `transport_types`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterNetworkTypes>>(
+        f: impl FnOnce(ClusterNetworkTypesBuilder) -> B,
     ) -> ClusterNetworkTypes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterNetworkTypesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_network_types_members {
+    pub struct http_types;
+    pub struct transport_types;
 }
 
 /// Builder for [`ClusterNetworkTypes`].
@@ -5694,7 +4736,7 @@ impl<S0, S1> ClusterNetworkTypesBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterNetworkTypesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Contains statistics about the HTTP network types used by selected nodes.
+    /// **Required.** Contains statistics about the HTTP network types used by selected nodes.
     pub fn http_types(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -5730,7 +4772,7 @@ impl<S1> ClusterNetworkTypesBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Contains statistics about the transport network types used by selected nodes.
+    /// **Required.** Contains statistics about the transport network types used by selected nodes.
     pub fn transport_types(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -5765,9 +4807,13 @@ impl<S0> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl ClusterNetworkTypesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterNetworkTypesBuilder<(S0, S1)> {
     /// Builds a [`ClusterNetworkTypes`].
-    pub fn build(self) -> ClusterNetworkTypes {
+    pub fn build(self) -> ClusterNetworkTypes
+    where
+        S0: crate::typed::builder::IsSet<cluster_network_types_members::http_types>,
+        S1: crate::typed::builder::IsSet<cluster_network_types_members::transport_types>,
+    {
         ClusterNetworkTypes {
             http_types: self.http_types.unwrap(),
             transport_types: self.transport_types.unwrap(),
@@ -5775,29 +4821,26 @@ impl ClusterNetworkTypesBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<ClusterNetworkTypesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ClusterNetworkTypes
+impl<S0, S1> crate::typed::builder::Build for ClusterNetworkTypesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_network_types_members::http_types>,
+    S1: crate::typed::builder::IsSet<cluster_network_types_members::transport_types>,
 {
-    fn from(
-        builder: ClusterNetworkTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterNetworkTypes;
+
+    fn build(self) -> ClusterNetworkTypes {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterNetworkTypesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `http_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, http_types: crate::typed::builder::MissingRequiredField) -> ClusterNetworkTypes { match http_types {} }
-}
-
-impl ClusterNetworkTypesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `transport_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_types: crate::typed::builder::MissingRequiredField) -> ClusterNetworkTypes { match transport_types {} }
+impl<S0, S1> From<ClusterNetworkTypesBuilder<(S0, S1)>> for ClusterNetworkTypes
+where
+    S0: crate::typed::builder::IsSet<cluster_network_types_members::http_types>,
+    S1: crate::typed::builder::IsSet<cluster_network_types_members::transport_types>,
+{
+    fn from(builder: ClusterNetworkTypesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5837,18 +4880,27 @@ pub struct ClusterNodeCount {
 
 impl ClusterNodeCount {
     /// Creates a builder for [`ClusterNodeCount`].
+    ///
+    /// Required: `total`.
     pub fn builder() -> ClusterNodeCountBuilder {
         ClusterNodeCountBuilder::new()
     }
 
     /// Creates a [`ClusterNodeCount`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterNodeCountBuilder,
-        ) -> ClusterNodeCountBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterNodeCount>>(
+        f: impl FnOnce(ClusterNodeCountBuilder) -> B,
     ) -> ClusterNodeCount {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterNodeCountBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_node_count_members {
+    pub struct total;
 }
 
 /// Builder for [`ClusterNodeCount`].
@@ -6087,6 +5139,7 @@ impl<S0> ClusterNodeCountBuilder<(S0,)> {
 }
 
 impl ClusterNodeCountBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn total(self, value: i32) -> ClusterNodeCountBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.total = Some(value);
@@ -6094,9 +5147,12 @@ impl ClusterNodeCountBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClusterNodeCountBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClusterNodeCountBuilder<(S0,)> {
     /// Builds a [`ClusterNodeCount`].
-    pub fn build(self) -> ClusterNodeCount {
+    pub fn build(self) -> ClusterNodeCount
+    where
+        S0: crate::typed::builder::IsSet<cluster_node_count_members::total>,
+    {
         ClusterNodeCount {
             total: self.total.unwrap(),
             coordinating_only: self.coordinating_only,
@@ -6118,16 +5174,24 @@ impl ClusterNodeCountBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ClusterNodeCountBuilder<(crate::typed::builder::Set,)>> for ClusterNodeCount {
-    fn from(builder: ClusterNodeCountBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ClusterNodeCountBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cluster_node_count_members::total>,
+{
+    type Output = ClusterNodeCount;
+
+    fn build(self) -> ClusterNodeCount {
+        Self::build(self)
     }
 }
 
-impl ClusterNodeCountBuilder<(crate::typed::builder::NotSet,)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> ClusterNodeCount { match total {} }
+impl<S0> From<ClusterNodeCountBuilder<(S0,)>> for ClusterNodeCount
+where
+    S0: crate::typed::builder::IsSet<cluster_node_count_members::total>,
+{
+    fn from(builder: ClusterNodeCountBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6159,31 +5223,38 @@ pub struct ClusterNodes {
 
 impl ClusterNodes {
     /// Creates a builder for [`ClusterNodes`].
+    ///
+    /// Required: `count`, `discovery_types`, `fs`, `indexing_pressure`, `ingest`, `jvm`, `network_types`, `os`, `packaging_types`, `plugins`, `process`, `versions`.
     pub fn builder() -> ClusterNodesBuilder {
         ClusterNodesBuilder::new()
     }
 
     /// Creates a [`ClusterNodes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterNodesBuilder,
-        ) -> ClusterNodesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `discovery_types`, `fs`, `indexing_pressure`, `ingest`, `jvm`, `network_types`, `os`, `packaging_types`, `plugins`, `process`, `versions`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterNodes>>(
+        f: impl FnOnce(ClusterNodesBuilder) -> B,
     ) -> ClusterNodes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterNodesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_nodes_members {
+    pub struct count;
+    pub struct discovery_types;
+    pub struct fs;
+    pub struct indexing_pressure;
+    pub struct ingest;
+    pub struct jvm;
+    pub struct network_types;
+    pub struct os;
+    pub struct packaging_types;
+    pub struct plugins;
+    pub struct process;
+    pub struct versions;
 }
 
 /// Builder for [`ClusterNodes`].
@@ -6292,7 +5363,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains counts for nodes selected by the request’s node filters.
+    /// **Required.** Contains counts for nodes selected by the request’s node filters.
     pub fn count(
         self,
         value: impl Into<ClusterNodeCount>,
@@ -6316,11 +5387,9 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`count`](Self::count) with a builder.
-    pub fn count_with(
+    pub fn count_with<B: crate::typed::builder::Build<Output = ClusterNodeCount>>(
         self,
-        f: impl FnOnce(
-            ClusterNodeCountBuilder,
-        ) -> ClusterNodeCountBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ClusterNodeCountBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         crate::typed::builder::Set,
         S1,
@@ -6355,7 +5424,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about the discovery types used by selected nodes.
+    /// **Required.** Contains statistics about the discovery types used by selected nodes.
     pub fn discovery_types(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -6447,7 +5516,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about file stores by selected nodes.
+    /// **Required.** Contains statistics about file stores by selected nodes.
     pub fn fs(
         self,
         value: impl Into<ClusterFileSystem>,
@@ -6471,9 +5540,9 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`fs`](Self::fs) with a builder.
-    pub fn fs_with(
+    pub fn fs_with<B: crate::typed::builder::Build<Output = ClusterFileSystem>>(
         self,
-        f: impl FnOnce(ClusterFileSystemBuilder) -> ClusterFileSystemBuilder,
+        f: impl FnOnce(ClusterFileSystemBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6508,6 +5577,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn indexing_pressure(
         self,
         value: impl Into<IndexingPressure>,
@@ -6531,11 +5601,9 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`indexing_pressure`](Self::indexing_pressure) with a builder.
-    pub fn indexing_pressure_with(
+    pub fn indexing_pressure_with<B: crate::typed::builder::Build<Output = IndexingPressure>>(
         self,
-        f: impl FnOnce(
-            IndexingPressureBuilder,
-        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IndexingPressureBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6570,6 +5638,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn ingest(
         self,
         value: impl Into<ClusterIngest>,
@@ -6593,12 +5662,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`ingest`](Self::ingest) with a builder.
-    pub fn ingest_with(
+    pub fn ingest_with<B: crate::typed::builder::Build<Output = ClusterIngest>>(
         self,
-        f: impl FnOnce(
-            ClusterIngestBuilder,
-        )
-            -> ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(ClusterIngestBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6633,7 +5699,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about the Java Virtual Machines (JVMs) used by selected nodes.
+    /// **Required.** Contains statistics about the Java Virtual Machines (JVMs) used by selected nodes.
     pub fn jvm(
         self,
         value: impl Into<ClusterJvm>,
@@ -6657,16 +5723,9 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`jvm`](Self::jvm) with a builder.
-    pub fn jvm_with(
+    pub fn jvm_with<B: crate::typed::builder::Build<Output = ClusterJvm>>(
         self,
-        f: impl FnOnce(
-            ClusterJvmBuilder,
-        ) -> ClusterJvmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterJvmBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6701,7 +5760,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about the transport and HTTP networks used by selected nodes.
+    /// **Required.** Contains statistics about the transport and HTTP networks used by selected nodes.
     pub fn network_types(
         self,
         value: impl Into<ClusterNetworkTypes>,
@@ -6725,14 +5784,9 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`network_types`](Self::network_types) with a builder.
-    pub fn network_types_with(
+    pub fn network_types_with<B: crate::typed::builder::Build<Output = ClusterNetworkTypes>>(
         self,
-        f: impl FnOnce(
-            ClusterNetworkTypesBuilder,
-        ) -> ClusterNetworkTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterNetworkTypesBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6767,7 +5821,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about the operating systems used by selected nodes.
+    /// **Required.** Contains statistics about the operating systems used by selected nodes.
     pub fn os(
         self,
         value: impl Into<ClusterOperatingSystem>,
@@ -6791,17 +5845,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
     }
 
     /// Sets [`os`](Self::os) with a builder.
-    pub fn os_with(
+    pub fn os_with<B: crate::typed::builder::Build<Output = ClusterOperatingSystem>>(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemBuilder,
-        ) -> ClusterOperatingSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6836,7 +5882,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about Elasticsearch distributions installed on selected nodes.
+    /// **Required.** Contains statistics about Elasticsearch distributions installed on selected nodes.
     pub fn packaging_types(
         self,
         value: impl Into<Vec<NodePackagingType>>,
@@ -6886,15 +5932,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
     }
 
     /// Adds an element to [`packaging_types`](Self::packaging_types), with a builder.
-    pub fn add_packaging_types_with(
+    pub fn add_packaging_types_with<B: crate::typed::builder::Build<Output = NodePackagingType>>(
         self,
-        f: impl FnOnce(
-            NodePackagingTypeBuilder,
-        ) -> NodePackagingTypeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodePackagingTypeBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -6938,15 +5978,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
     }
 
     /// Adds an element to [`packaging_types`](Self::packaging_types), with a builder.
-    pub fn add_packaging_types_with(
+    pub fn add_packaging_types_with<B: crate::typed::builder::Build<Output = NodePackagingType>>(
         self,
-        f: impl FnOnce(
-            NodePackagingTypeBuilder,
-        ) -> NodePackagingTypeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodePackagingTypeBuilder) -> B,
     ) -> Self {
         self.add_packaging_types(f(NodePackagingTypeBuilder::new()).build())
     }
@@ -6968,7 +6002,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
-    /// Contains statistics about installed plugins and modules by selected nodes.
+    /// **Required.** Contains statistics about installed plugins and modules by selected nodes.
     /// If no plugins or modules are installed, this array is empty.
     pub fn plugins(
         self,
@@ -7019,21 +6053,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
     }
 
     /// Adds an element to [`plugins`](Self::plugins), with a builder.
-    pub fn add_plugins_with(
+    pub fn add_plugins_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::PluginStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::PluginStatsBuilder,
-        ) -> crate::typed::_types::PluginStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::PluginStatsBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -7077,21 +6101,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
     }
 
     /// Adds an element to [`plugins`](Self::plugins), with a builder.
-    pub fn add_plugins_with(
+    pub fn add_plugins_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::PluginStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::PluginStatsBuilder,
-        ) -> crate::typed::_types::PluginStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::PluginStatsBuilder) -> B,
     ) -> Self {
         self.add_plugins(f(crate::typed::_types::PluginStatsBuilder::new()).build())
     }
@@ -7113,7 +6127,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
-    /// Contains statistics about processes used by selected nodes.
+    /// **Required.** Contains statistics about processes used by selected nodes.
     pub fn process(
         self,
         value: impl Into<ClusterProcess>,
@@ -7137,14 +6151,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
     }
 
     /// Sets [`process`](Self::process) with a builder.
-    pub fn process_with(
+    pub fn process_with<B: crate::typed::builder::Build<Output = ClusterProcess>>(
         self,
-        f: impl FnOnce(
-            ClusterProcessBuilder,
-        ) -> ClusterProcessBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterProcessBuilder) -> B,
     ) -> ClusterNodesBuilder<(
         S0,
         S1,
@@ -7179,7 +6188,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Array of Elasticsearch versions used on selected nodes.
+    /// **Required.** Array of Elasticsearch versions used on selected nodes.
     pub fn versions(
         self,
         value: impl Into<Vec<crate::typed::_types::VersionString>>,
@@ -7254,24 +6263,25 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    ClusterNodesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`ClusterNodes`].
-    pub fn build(self) -> ClusterNodes {
+    pub fn build(self) -> ClusterNodes
+    where
+        S0: crate::typed::builder::IsSet<cluster_nodes_members::count>,
+        S1: crate::typed::builder::IsSet<cluster_nodes_members::discovery_types>,
+        S2: crate::typed::builder::IsSet<cluster_nodes_members::fs>,
+        S3: crate::typed::builder::IsSet<cluster_nodes_members::indexing_pressure>,
+        S4: crate::typed::builder::IsSet<cluster_nodes_members::ingest>,
+        S5: crate::typed::builder::IsSet<cluster_nodes_members::jvm>,
+        S6: crate::typed::builder::IsSet<cluster_nodes_members::network_types>,
+        S7: crate::typed::builder::IsSet<cluster_nodes_members::os>,
+        S8: crate::typed::builder::IsSet<cluster_nodes_members::packaging_types>,
+        S9: crate::typed::builder::IsSet<cluster_nodes_members::plugins>,
+        S10: crate::typed::builder::IsSet<cluster_nodes_members::process>,
+        S11: crate::typed::builder::IsSet<cluster_nodes_members::versions>,
+    {
         ClusterNodes {
             count: self.count.unwrap(),
             discovery_types: self.discovery_types.unwrap(),
@@ -7289,294 +6299,50 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterNodesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterNodes
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for ClusterNodesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<cluster_nodes_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_nodes_members::discovery_types>,
+    S2: crate::typed::builder::IsSet<cluster_nodes_members::fs>,
+    S3: crate::typed::builder::IsSet<cluster_nodes_members::indexing_pressure>,
+    S4: crate::typed::builder::IsSet<cluster_nodes_members::ingest>,
+    S5: crate::typed::builder::IsSet<cluster_nodes_members::jvm>,
+    S6: crate::typed::builder::IsSet<cluster_nodes_members::network_types>,
+    S7: crate::typed::builder::IsSet<cluster_nodes_members::os>,
+    S8: crate::typed::builder::IsSet<cluster_nodes_members::packaging_types>,
+    S9: crate::typed::builder::IsSet<cluster_nodes_members::plugins>,
+    S10: crate::typed::builder::IsSet<cluster_nodes_members::process>,
+    S11: crate::typed::builder::IsSet<cluster_nodes_members::versions>,
 {
-    fn from(
-        builder: ClusterNodesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterNodes;
+
+    fn build(self) -> ClusterNodes {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<ClusterNodesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>> for ClusterNodes
+where
+    S0: crate::typed::builder::IsSet<cluster_nodes_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_nodes_members::discovery_types>,
+    S2: crate::typed::builder::IsSet<cluster_nodes_members::fs>,
+    S3: crate::typed::builder::IsSet<cluster_nodes_members::indexing_pressure>,
+    S4: crate::typed::builder::IsSet<cluster_nodes_members::ingest>,
+    S5: crate::typed::builder::IsSet<cluster_nodes_members::jvm>,
+    S6: crate::typed::builder::IsSet<cluster_nodes_members::network_types>,
+    S7: crate::typed::builder::IsSet<cluster_nodes_members::os>,
+    S8: crate::typed::builder::IsSet<cluster_nodes_members::packaging_types>,
+    S9: crate::typed::builder::IsSet<cluster_nodes_members::plugins>,
+    S10: crate::typed::builder::IsSet<cluster_nodes_members::process>,
+    S11: crate::typed::builder::IsSet<cluster_nodes_members::versions>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match count {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `discovery_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, discovery_types: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match discovery_types {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `fs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fs: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match fs {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `indexing_pressure` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indexing_pressure: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match indexing_pressure {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `ingest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ingest: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match ingest {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `jvm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, jvm: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match jvm {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `network_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, network_types: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match network_types {} }
-}
-
-impl<S8, S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `os` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, os: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match os {} }
-}
-
-impl<S9, S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `packaging_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, packaging_types: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match packaging_types {} }
-}
-
-impl<S10, S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `plugins` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, plugins: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match plugins {} }
-}
-
-impl<S11>
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `process` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, process: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match process {} }
-}
-
-impl
-    ClusterNodesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `versions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, versions: crate::typed::builder::MissingRequiredField) -> ClusterNodes { match versions {} }
+    fn from(
+        builder: ClusterNodesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7600,24 +6366,31 @@ pub struct ClusterOperatingSystem {
 
 impl ClusterOperatingSystem {
     /// Creates a builder for [`ClusterOperatingSystem`].
+    ///
+    /// Required: `allocated_processors`, `available_processors`, `mem`, `names`, `pretty_names`.
     pub fn builder() -> ClusterOperatingSystemBuilder {
         ClusterOperatingSystemBuilder::new()
     }
 
     /// Creates a [`ClusterOperatingSystem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterOperatingSystemBuilder,
-        ) -> ClusterOperatingSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `allocated_processors`, `available_processors`, `mem`, `names`, `pretty_names`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterOperatingSystem>>(
+        f: impl FnOnce(ClusterOperatingSystemBuilder) -> B,
     ) -> ClusterOperatingSystem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterOperatingSystemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_operating_system_members {
+    pub struct allocated_processors;
+    pub struct available_processors;
+    pub struct mem;
+    pub struct names;
+    pub struct pretty_names;
 }
 
 /// Builder for [`ClusterOperatingSystem`].
@@ -7705,14 +6478,11 @@ impl<S0, S1, S2, S3, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Adds an element to [`architectures`](Self::architectures), with a builder.
-    pub fn add_architectures_with(
+    pub fn add_architectures_with<
+        B: crate::typed::builder::Build<Output = ClusterOperatingSystemArchitecture>,
+    >(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemArchitectureBuilder,
-        ) -> ClusterOperatingSystemArchitectureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemArchitectureBuilder) -> B,
     ) -> Self {
         self.add_architectures(f(ClusterOperatingSystemArchitectureBuilder::new()).build())
     }
@@ -7721,7 +6491,7 @@ impl<S0, S1, S2, S3, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)> {
 impl<S1, S2, S3, S4>
     ClusterOperatingSystemBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// Number of processors used to calculate thread pool size across all selected nodes.
+    /// **Required.** Number of processors used to calculate thread pool size across all selected nodes.
     /// This number can be set with the processors setting of a node and defaults to the number of processors reported by the operating system.
     /// In both cases, this number will never be larger than 32.
     pub fn allocated_processors(
@@ -7737,7 +6507,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     ClusterOperatingSystemBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// Number of processors available to JVM across all selected nodes.
+    /// **Required.** Number of processors available to JVM across all selected nodes.
     pub fn available_processors(
         self,
         value: i32,
@@ -7751,7 +6521,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     ClusterOperatingSystemBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// Contains statistics about memory used by selected nodes.
+    /// **Required.** Contains statistics about memory used by selected nodes.
     pub fn mem(
         self,
         value: impl Into<OperatingSystemMemoryInfo>,
@@ -7762,17 +6532,9 @@ impl<S0, S1, S3, S4>
     }
 
     /// Sets [`mem`](Self::mem) with a builder.
-    pub fn mem_with(
+    pub fn mem_with<B: crate::typed::builder::Build<Output = OperatingSystemMemoryInfo>>(
         self,
-        f: impl FnOnce(
-            OperatingSystemMemoryInfoBuilder,
-        ) -> OperatingSystemMemoryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(OperatingSystemMemoryInfoBuilder) -> B,
     ) -> ClusterOperatingSystemBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.mem(f(OperatingSystemMemoryInfoBuilder::new()).build())
     }
@@ -7781,7 +6543,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// Contains statistics about operating systems used by selected nodes.
+    /// **Required.** Contains statistics about operating systems used by selected nodes.
     pub fn names(
         self,
         value: impl Into<Vec<ClusterOperatingSystemName>>,
@@ -7805,14 +6567,9 @@ impl<S0, S1, S2, S4>
     }
 
     /// Adds an element to [`names`](Self::names), with a builder.
-    pub fn add_names_with(
+    pub fn add_names_with<B: crate::typed::builder::Build<Output = ClusterOperatingSystemName>>(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemNameBuilder,
-        ) -> ClusterOperatingSystemNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemNameBuilder) -> B,
     ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.add_names(f(ClusterOperatingSystemNameBuilder::new()).build())
     }
@@ -7828,14 +6585,9 @@ impl<S0, S1, S2, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::bu
     }
 
     /// Adds an element to [`names`](Self::names), with a builder.
-    pub fn add_names_with(
+    pub fn add_names_with<B: crate::typed::builder::Build<Output = ClusterOperatingSystemName>>(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemNameBuilder,
-        ) -> ClusterOperatingSystemNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemNameBuilder) -> B,
     ) -> Self {
         self.add_names(f(ClusterOperatingSystemNameBuilder::new()).build())
     }
@@ -7844,7 +6596,7 @@ impl<S0, S1, S2, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::bu
 impl<S0, S1, S2, S3>
     ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// Contains statistics about operating systems used by selected nodes.
+    /// **Required.** Contains statistics about operating systems used by selected nodes.
     pub fn pretty_names(
         self,
         value: impl Into<Vec<ClusterOperatingSystemPrettyName>>,
@@ -7868,14 +6620,11 @@ impl<S0, S1, S2, S3>
     }
 
     /// Adds an element to [`pretty_names`](Self::pretty_names), with a builder.
-    pub fn add_pretty_names_with(
+    pub fn add_pretty_names_with<
+        B: crate::typed::builder::Build<Output = ClusterOperatingSystemPrettyName>,
+    >(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemPrettyNameBuilder,
-        ) -> ClusterOperatingSystemPrettyNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemPrettyNameBuilder) -> B,
     ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.add_pretty_names(f(ClusterOperatingSystemPrettyNameBuilder::new()).build())
     }
@@ -7891,30 +6640,26 @@ impl<S0, S1, S2, S3> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed
     }
 
     /// Adds an element to [`pretty_names`](Self::pretty_names), with a builder.
-    pub fn add_pretty_names_with(
+    pub fn add_pretty_names_with<
+        B: crate::typed::builder::Build<Output = ClusterOperatingSystemPrettyName>,
+    >(
         self,
-        f: impl FnOnce(
-            ClusterOperatingSystemPrettyNameBuilder,
-        ) -> ClusterOperatingSystemPrettyNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterOperatingSystemPrettyNameBuilder) -> B,
     ) -> Self {
         self.add_pretty_names(f(ClusterOperatingSystemPrettyNameBuilder::new()).build())
     }
 }
 
-impl
-    ClusterOperatingSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`ClusterOperatingSystem`].
-    pub fn build(self) -> ClusterOperatingSystem {
+    pub fn build(self) -> ClusterOperatingSystem
+    where
+        S0: crate::typed::builder::IsSet<cluster_operating_system_members::allocated_processors>,
+        S1: crate::typed::builder::IsSet<cluster_operating_system_members::available_processors>,
+        S2: crate::typed::builder::IsSet<cluster_operating_system_members::mem>,
+        S3: crate::typed::builder::IsSet<cluster_operating_system_members::names>,
+        S4: crate::typed::builder::IsSet<cluster_operating_system_members::pretty_names>,
+    {
         ClusterOperatingSystem {
             allocated_processors: self.allocated_processors.unwrap(),
             architectures: self.architectures,
@@ -7926,92 +6671,34 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterOperatingSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterOperatingSystem
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_members::allocated_processors>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_members::available_processors>,
+    S2: crate::typed::builder::IsSet<cluster_operating_system_members::mem>,
+    S3: crate::typed::builder::IsSet<cluster_operating_system_members::names>,
+    S4: crate::typed::builder::IsSet<cluster_operating_system_members::pretty_names>,
 {
-    fn from(
-        builder: ClusterOperatingSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterOperatingSystem;
+
+    fn build(self) -> ClusterOperatingSystem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    ClusterOperatingSystemBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)>>
+    for ClusterOperatingSystem
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_members::allocated_processors>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_members::available_processors>,
+    S2: crate::typed::builder::IsSet<cluster_operating_system_members::mem>,
+    S3: crate::typed::builder::IsSet<cluster_operating_system_members::names>,
+    S4: crate::typed::builder::IsSet<cluster_operating_system_members::pretty_names>,
 {
-    /// `allocated_processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allocated_processors: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystem { match allocated_processors {} }
-}
-
-impl<S2, S3, S4>
-    ClusterOperatingSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `available_processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, available_processors: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystem { match available_processors {} }
-}
-
-impl<S3, S4>
-    ClusterOperatingSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `mem` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mem: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystem { match mem {} }
-}
-
-impl<S4>
-    ClusterOperatingSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystem { match names {} }
-}
-
-impl
-    ClusterOperatingSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `pretty_names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pretty_names: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystem { match pretty_names {} }
+    fn from(builder: ClusterOperatingSystemBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8024,21 +6711,28 @@ pub struct ClusterOperatingSystemArchitecture {
 
 impl ClusterOperatingSystemArchitecture {
     /// Creates a builder for [`ClusterOperatingSystemArchitecture`].
+    ///
+    /// Required: `arch`, `count`.
     pub fn builder() -> ClusterOperatingSystemArchitectureBuilder {
         ClusterOperatingSystemArchitectureBuilder::new()
     }
 
     /// Creates a [`ClusterOperatingSystemArchitecture`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterOperatingSystemArchitectureBuilder,
-        ) -> ClusterOperatingSystemArchitectureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `arch`, `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterOperatingSystemArchitecture>>(
+        f: impl FnOnce(ClusterOperatingSystemArchitectureBuilder) -> B,
     ) -> ClusterOperatingSystemArchitecture {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterOperatingSystemArchitectureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_operating_system_architecture_members {
+    pub struct arch;
+    pub struct count;
 }
 
 /// Builder for [`ClusterOperatingSystemArchitecture`].
@@ -8077,7 +6771,7 @@ impl<S0, S1> ClusterOperatingSystemArchitectureBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterOperatingSystemArchitectureBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Name of an architecture used by one or more selected nodes.
+    /// **Required.** Name of an architecture used by one or more selected nodes.
     pub fn arch(
         self,
         value: impl Into<String>,
@@ -8089,7 +6783,7 @@ impl<S1> ClusterOperatingSystemArchitectureBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0> ClusterOperatingSystemArchitectureBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Number of selected nodes using the architecture.
+    /// **Required.** Number of selected nodes using the architecture.
     pub fn count(
         self,
         value: i32,
@@ -8100,14 +6794,13 @@ impl<S0> ClusterOperatingSystemArchitectureBuilder<(S0, crate::typed::builder::N
     }
 }
 
-impl
-    ClusterOperatingSystemArchitectureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> ClusterOperatingSystemArchitectureBuilder<(S0, S1)> {
     /// Builds a [`ClusterOperatingSystemArchitecture`].
-    pub fn build(self) -> ClusterOperatingSystemArchitecture {
+    pub fn build(self) -> ClusterOperatingSystemArchitecture
+    where
+        S0: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::arch>,
+        S1: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::count>,
+    {
         ClusterOperatingSystemArchitecture {
             arch: self.arch.unwrap(),
             count: self.count.unwrap(),
@@ -8115,39 +6808,27 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterOperatingSystemArchitectureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterOperatingSystemArchitecture
+impl<S0, S1> crate::typed::builder::Build for ClusterOperatingSystemArchitectureBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::arch>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::count>,
 {
-    fn from(
-        builder: ClusterOperatingSystemArchitectureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterOperatingSystemArchitecture;
+
+    fn build(self) -> ClusterOperatingSystemArchitecture {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterOperatingSystemArchitectureBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `arch` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, arch: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemArchitecture { match arch {} }
-}
-
-impl
-    ClusterOperatingSystemArchitectureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<ClusterOperatingSystemArchitectureBuilder<(S0, S1)>>
+    for ClusterOperatingSystemArchitecture
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::arch>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_architecture_members::count>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemArchitecture { match count {} }
+    fn from(builder: ClusterOperatingSystemArchitectureBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8160,21 +6841,28 @@ pub struct ClusterOperatingSystemName {
 
 impl ClusterOperatingSystemName {
     /// Creates a builder for [`ClusterOperatingSystemName`].
+    ///
+    /// Required: `count`, `name`.
     pub fn builder() -> ClusterOperatingSystemNameBuilder {
         ClusterOperatingSystemNameBuilder::new()
     }
 
     /// Creates a [`ClusterOperatingSystemName`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterOperatingSystemNameBuilder,
-        ) -> ClusterOperatingSystemNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterOperatingSystemName>>(
+        f: impl FnOnce(ClusterOperatingSystemNameBuilder) -> B,
     ) -> ClusterOperatingSystemName {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterOperatingSystemNameBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_operating_system_name_members {
+    pub struct count;
+    pub struct name;
 }
 
 /// Builder for [`ClusterOperatingSystemName`].
@@ -8213,7 +6901,7 @@ impl<S0, S1> ClusterOperatingSystemNameBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterOperatingSystemNameBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Number of selected nodes using the operating system.
+    /// **Required.** Number of selected nodes using the operating system.
     pub fn count(
         self,
         value: i32,
@@ -8225,7 +6913,7 @@ impl<S1> ClusterOperatingSystemNameBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> ClusterOperatingSystemNameBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Name of an operating system used by one or more selected nodes.
+    /// **Required.** Name of an operating system used by one or more selected nodes.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -8236,9 +6924,13 @@ impl<S0> ClusterOperatingSystemNameBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl ClusterOperatingSystemNameBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterOperatingSystemNameBuilder<(S0, S1)> {
     /// Builds a [`ClusterOperatingSystemName`].
-    pub fn build(self) -> ClusterOperatingSystemName {
+    pub fn build(self) -> ClusterOperatingSystemName
+    where
+        S0: crate::typed::builder::IsSet<cluster_operating_system_name_members::count>,
+        S1: crate::typed::builder::IsSet<cluster_operating_system_name_members::name>,
+    {
         ClusterOperatingSystemName {
             count: self.count.unwrap(),
             name: self.name.unwrap(),
@@ -8246,33 +6938,26 @@ impl ClusterOperatingSystemNameBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        ClusterOperatingSystemNameBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for ClusterOperatingSystemName
+impl<S0, S1> crate::typed::builder::Build for ClusterOperatingSystemNameBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_name_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_name_members::name>,
 {
-    fn from(
-        builder: ClusterOperatingSystemNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterOperatingSystemName;
+
+    fn build(self) -> ClusterOperatingSystemName {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterOperatingSystemNameBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemName { match count {} }
-}
-
-impl
-    ClusterOperatingSystemNameBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<ClusterOperatingSystemNameBuilder<(S0, S1)>> for ClusterOperatingSystemName
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_name_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_name_members::name>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemName { match name {} }
+    fn from(builder: ClusterOperatingSystemNameBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8285,21 +6970,28 @@ pub struct ClusterOperatingSystemPrettyName {
 
 impl ClusterOperatingSystemPrettyName {
     /// Creates a builder for [`ClusterOperatingSystemPrettyName`].
+    ///
+    /// Required: `count`, `pretty_name`.
     pub fn builder() -> ClusterOperatingSystemPrettyNameBuilder {
         ClusterOperatingSystemPrettyNameBuilder::new()
     }
 
     /// Creates a [`ClusterOperatingSystemPrettyName`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterOperatingSystemPrettyNameBuilder,
-        ) -> ClusterOperatingSystemPrettyNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `pretty_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterOperatingSystemPrettyName>>(
+        f: impl FnOnce(ClusterOperatingSystemPrettyNameBuilder) -> B,
     ) -> ClusterOperatingSystemPrettyName {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterOperatingSystemPrettyNameBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_operating_system_pretty_name_members {
+    pub struct count;
+    pub struct pretty_name;
 }
 
 /// Builder for [`ClusterOperatingSystemPrettyName`].
@@ -8338,7 +7030,7 @@ impl<S0, S1> ClusterOperatingSystemPrettyNameBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterOperatingSystemPrettyNameBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Number of selected nodes using the operating system.
+    /// **Required.** Number of selected nodes using the operating system.
     pub fn count(
         self,
         value: i32,
@@ -8350,7 +7042,7 @@ impl<S1> ClusterOperatingSystemPrettyNameBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0> ClusterOperatingSystemPrettyNameBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Human-readable name of an operating system used by one or more selected nodes.
+    /// **Required.** Human-readable name of an operating system used by one or more selected nodes.
     pub fn pretty_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -8361,14 +7053,13 @@ impl<S0> ClusterOperatingSystemPrettyNameBuilder<(S0, crate::typed::builder::Not
     }
 }
 
-impl
-    ClusterOperatingSystemPrettyNameBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> ClusterOperatingSystemPrettyNameBuilder<(S0, S1)> {
     /// Builds a [`ClusterOperatingSystemPrettyName`].
-    pub fn build(self) -> ClusterOperatingSystemPrettyName {
+    pub fn build(self) -> ClusterOperatingSystemPrettyName
+    where
+        S0: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::count>,
+        S1: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::pretty_name>,
+    {
         ClusterOperatingSystemPrettyName {
             count: self.count.unwrap(),
             pretty_name: self.pretty_name.unwrap(),
@@ -8376,39 +7067,27 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterOperatingSystemPrettyNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterOperatingSystemPrettyName
+impl<S0, S1> crate::typed::builder::Build for ClusterOperatingSystemPrettyNameBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::pretty_name>,
 {
-    fn from(
-        builder: ClusterOperatingSystemPrettyNameBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterOperatingSystemPrettyName;
+
+    fn build(self) -> ClusterOperatingSystemPrettyName {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterOperatingSystemPrettyNameBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemPrettyName { match count {} }
-}
-
-impl
-    ClusterOperatingSystemPrettyNameBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<ClusterOperatingSystemPrettyNameBuilder<(S0, S1)>>
+    for ClusterOperatingSystemPrettyName
+where
+    S0: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_operating_system_pretty_name_members::pretty_name>,
 {
-    /// `pretty_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pretty_name: crate::typed::builder::MissingRequiredField) -> ClusterOperatingSystemPrettyName { match pretty_name {} }
+    fn from(builder: ClusterOperatingSystemPrettyNameBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8421,21 +7100,28 @@ pub struct ClusterProcess {
 
 impl ClusterProcess {
     /// Creates a builder for [`ClusterProcess`].
+    ///
+    /// Required: `cpu`, `open_file_descriptors`.
     pub fn builder() -> ClusterProcessBuilder {
         ClusterProcessBuilder::new()
     }
 
     /// Creates a [`ClusterProcess`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterProcessBuilder,
-        ) -> ClusterProcessBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cpu`, `open_file_descriptors`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterProcess>>(
+        f: impl FnOnce(ClusterProcessBuilder) -> B,
     ) -> ClusterProcess {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterProcessBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_process_members {
+    pub struct cpu;
+    pub struct open_file_descriptors;
 }
 
 /// Builder for [`ClusterProcess`].
@@ -8468,7 +7154,7 @@ impl<S0, S1> ClusterProcessBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterProcessBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Contains statistics about CPU used by selected nodes.
+    /// **Required.** Contains statistics about CPU used by selected nodes.
     pub fn cpu(
         self,
         value: impl Into<ClusterProcessCpu>,
@@ -8479,18 +7165,16 @@ impl<S1> ClusterProcessBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`cpu`](Self::cpu) with a builder.
-    pub fn cpu_with(
+    pub fn cpu_with<B: crate::typed::builder::Build<Output = ClusterProcessCpu>>(
         self,
-        f: impl FnOnce(
-            ClusterProcessCpuBuilder,
-        ) -> ClusterProcessCpuBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ClusterProcessCpuBuilder) -> B,
     ) -> ClusterProcessBuilder<(crate::typed::builder::Set, S1)> {
         self.cpu(f(ClusterProcessCpuBuilder::new()).build())
     }
 }
 
 impl<S0> ClusterProcessBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Contains statistics about open file descriptors in selected nodes.
+    /// **Required.** Contains statistics about open file descriptors in selected nodes.
     pub fn open_file_descriptors(
         self,
         value: impl Into<ClusterProcessOpenFileDescriptors>,
@@ -8501,23 +7185,23 @@ impl<S0> ClusterProcessBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`open_file_descriptors`](Self::open_file_descriptors) with a builder.
-    pub fn open_file_descriptors_with(
+    pub fn open_file_descriptors_with<
+        B: crate::typed::builder::Build<Output = ClusterProcessOpenFileDescriptors>,
+    >(
         self,
-        f: impl FnOnce(
-            ClusterProcessOpenFileDescriptorsBuilder,
-        ) -> ClusterProcessOpenFileDescriptorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterProcessOpenFileDescriptorsBuilder) -> B,
     ) -> ClusterProcessBuilder<(S0, crate::typed::builder::Set)> {
         self.open_file_descriptors(f(ClusterProcessOpenFileDescriptorsBuilder::new()).build())
     }
 }
 
-impl ClusterProcessBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterProcessBuilder<(S0, S1)> {
     /// Builds a [`ClusterProcess`].
-    pub fn build(self) -> ClusterProcess {
+    pub fn build(self) -> ClusterProcess
+    where
+        S0: crate::typed::builder::IsSet<cluster_process_members::cpu>,
+        S1: crate::typed::builder::IsSet<cluster_process_members::open_file_descriptors>,
+    {
         ClusterProcess {
             cpu: self.cpu.unwrap(),
             open_file_descriptors: self.open_file_descriptors.unwrap(),
@@ -8525,26 +7209,26 @@ impl ClusterProcessBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<ClusterProcessBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ClusterProcess
+impl<S0, S1> crate::typed::builder::Build for ClusterProcessBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_process_members::cpu>,
+    S1: crate::typed::builder::IsSet<cluster_process_members::open_file_descriptors>,
 {
-    fn from(
-        builder: ClusterProcessBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterProcess;
+
+    fn build(self) -> ClusterProcess {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterProcessBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `cpu` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cpu: crate::typed::builder::MissingRequiredField) -> ClusterProcess { match cpu {} }
-}
-
-impl ClusterProcessBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `open_file_descriptors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, open_file_descriptors: crate::typed::builder::MissingRequiredField) -> ClusterProcess { match open_file_descriptors {} }
+impl<S0, S1> From<ClusterProcessBuilder<(S0, S1)>> for ClusterProcess
+where
+    S0: crate::typed::builder::IsSet<cluster_process_members::cpu>,
+    S1: crate::typed::builder::IsSet<cluster_process_members::open_file_descriptors>,
+{
+    fn from(builder: ClusterProcessBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8556,18 +7240,27 @@ pub struct ClusterProcessCpu {
 
 impl ClusterProcessCpu {
     /// Creates a builder for [`ClusterProcessCpu`].
+    ///
+    /// Required: `percent`.
     pub fn builder() -> ClusterProcessCpuBuilder {
         ClusterProcessCpuBuilder::new()
     }
 
     /// Creates a [`ClusterProcessCpu`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterProcessCpuBuilder,
-        ) -> ClusterProcessCpuBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `percent`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterProcessCpu>>(
+        f: impl FnOnce(ClusterProcessCpuBuilder) -> B,
     ) -> ClusterProcessCpu {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterProcessCpuBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_process_cpu_members {
+    pub struct percent;
 }
 
 /// Builder for [`ClusterProcessCpu`].
@@ -8596,7 +7289,7 @@ impl<S0> ClusterProcessCpuBuilder<(S0,)> {
 }
 
 impl ClusterProcessCpuBuilder<(crate::typed::builder::NotSet,)> {
-    /// Percentage of CPU used across all selected nodes.
+    /// **Required.** Percentage of CPU used across all selected nodes.
     /// Returns `-1` if not supported.
     pub fn percent(self, value: i32) -> ClusterProcessCpuBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
@@ -8605,25 +7298,36 @@ impl ClusterProcessCpuBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClusterProcessCpuBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClusterProcessCpuBuilder<(S0,)> {
     /// Builds a [`ClusterProcessCpu`].
-    pub fn build(self) -> ClusterProcessCpu {
+    pub fn build(self) -> ClusterProcessCpu
+    where
+        S0: crate::typed::builder::IsSet<cluster_process_cpu_members::percent>,
+    {
         ClusterProcessCpu {
             percent: self.percent.unwrap(),
         }
     }
 }
 
-impl From<ClusterProcessCpuBuilder<(crate::typed::builder::Set,)>> for ClusterProcessCpu {
-    fn from(builder: ClusterProcessCpuBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ClusterProcessCpuBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cluster_process_cpu_members::percent>,
+{
+    type Output = ClusterProcessCpu;
+
+    fn build(self) -> ClusterProcessCpu {
+        Self::build(self)
     }
 }
 
-impl ClusterProcessCpuBuilder<(crate::typed::builder::NotSet,)> {
-    /// `percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, percent: crate::typed::builder::MissingRequiredField) -> ClusterProcessCpu { match percent {} }
+impl<S0> From<ClusterProcessCpuBuilder<(S0,)>> for ClusterProcessCpu
+where
+    S0: crate::typed::builder::IsSet<cluster_process_cpu_members::percent>,
+{
+    fn from(builder: ClusterProcessCpuBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8641,22 +7345,29 @@ pub struct ClusterProcessOpenFileDescriptors {
 
 impl ClusterProcessOpenFileDescriptors {
     /// Creates a builder for [`ClusterProcessOpenFileDescriptors`].
+    ///
+    /// Required: `avg`, `max`, `min`.
     pub fn builder() -> ClusterProcessOpenFileDescriptorsBuilder {
         ClusterProcessOpenFileDescriptorsBuilder::new()
     }
 
     /// Creates a [`ClusterProcessOpenFileDescriptors`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterProcessOpenFileDescriptorsBuilder,
-        ) -> ClusterProcessOpenFileDescriptorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `avg`, `max`, `min`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterProcessOpenFileDescriptors>>(
+        f: impl FnOnce(ClusterProcessOpenFileDescriptorsBuilder) -> B,
     ) -> ClusterProcessOpenFileDescriptors {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterProcessOpenFileDescriptorsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_process_open_file_descriptors_members {
+    pub struct avg;
+    pub struct max;
+    pub struct min;
 }
 
 /// Builder for [`ClusterProcessOpenFileDescriptors`].
@@ -8703,7 +7414,7 @@ impl<S0, S1, S2> ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ClusterProcessOpenFileDescriptorsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Average number of concurrently open file descriptors.
+    /// **Required.** Average number of concurrently open file descriptors.
     /// Returns `-1` if not supported.
     pub fn avg(
         self,
@@ -8716,7 +7427,7 @@ impl<S1, S2> ClusterProcessOpenFileDescriptorsBuilder<(crate::typed::builder::No
 }
 
 impl<S0, S2> ClusterProcessOpenFileDescriptorsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Maximum number of concurrently open file descriptors allowed across all selected nodes.
+    /// **Required.** Maximum number of concurrently open file descriptors allowed across all selected nodes.
     /// Returns `-1` if not supported.
     pub fn max(
         self,
@@ -8729,7 +7440,7 @@ impl<S0, S2> ClusterProcessOpenFileDescriptorsBuilder<(S0, crate::typed::builder
 }
 
 impl<S0, S1> ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Minimum number of concurrently open file descriptors across all selected nodes.
+    /// **Required.** Minimum number of concurrently open file descriptors across all selected nodes.
     /// Returns -1 if not supported.
     pub fn min(
         self,
@@ -8741,15 +7452,14 @@ impl<S0, S1> ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, crate::typed::bui
     }
 }
 
-impl
-    ClusterProcessOpenFileDescriptorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, S2)> {
     /// Builds a [`ClusterProcessOpenFileDescriptors`].
-    pub fn build(self) -> ClusterProcessOpenFileDescriptors {
+    pub fn build(self) -> ClusterProcessOpenFileDescriptors
+    where
+        S0: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::avg>,
+        S1: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::max>,
+        S2: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::min>,
+    {
         ClusterProcessOpenFileDescriptors {
             avg: self.avg.unwrap(),
             max: self.max.unwrap(),
@@ -8758,54 +7468,30 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterProcessOpenFileDescriptorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterProcessOpenFileDescriptors
+impl<S0, S1, S2> crate::typed::builder::Build
+    for ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::avg>,
+    S1: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::max>,
+    S2: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::min>,
 {
-    fn from(
-        builder: ClusterProcessOpenFileDescriptorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterProcessOpenFileDescriptors;
+
+    fn build(self) -> ClusterProcessOpenFileDescriptors {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ClusterProcessOpenFileDescriptorsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> ClusterProcessOpenFileDescriptors { match avg {} }
-}
-
-impl<S2>
-    ClusterProcessOpenFileDescriptorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, S2)>>
+    for ClusterProcessOpenFileDescriptors
+where
+    S0: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::avg>,
+    S1: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::max>,
+    S2: crate::typed::builder::IsSet<cluster_process_open_file_descriptors_members::min>,
 {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> ClusterProcessOpenFileDescriptors { match max {} }
-}
-
-impl
-    ClusterProcessOpenFileDescriptorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> ClusterProcessOpenFileDescriptors { match min {} }
+    fn from(builder: ClusterProcessOpenFileDescriptorsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8820,23 +7506,30 @@ pub struct ClusterProcessor {
 
 impl ClusterProcessor {
     /// Creates a builder for [`ClusterProcessor`].
+    ///
+    /// Required: `count`, `current`, `failed`, `time_in_millis`.
     pub fn builder() -> ClusterProcessorBuilder {
         ClusterProcessorBuilder::new()
     }
 
     /// Creates a [`ClusterProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterProcessorBuilder,
-        ) -> ClusterProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `current`, `failed`, `time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterProcessor>>(
+        f: impl FnOnce(ClusterProcessorBuilder) -> B,
     ) -> ClusterProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_processor_members {
+    pub struct count;
+    pub struct current;
+    pub struct failed;
+    pub struct time_in_millis;
 }
 
 /// Builder for [`ClusterProcessor`].
@@ -8902,6 +7595,7 @@ impl<S0, S1, S2, S3> ClusterProcessorBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ClusterProcessorBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -8913,6 +7607,7 @@ impl<S1, S2, S3> ClusterProcessorBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3> ClusterProcessorBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn current(
         self,
         value: i64,
@@ -8924,6 +7619,7 @@ impl<S0, S2, S3> ClusterProcessorBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3> ClusterProcessorBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn failed(
         self,
         value: i64,
@@ -8935,6 +7631,7 @@ impl<S0, S1, S3> ClusterProcessorBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> ClusterProcessorBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -8945,16 +7642,15 @@ impl<S0, S1, S2> ClusterProcessorBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 }
 
-impl
-    ClusterProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ClusterProcessorBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ClusterProcessor`].
-    pub fn build(self) -> ClusterProcessor {
+    pub fn build(self) -> ClusterProcessor
+    where
+        S0: crate::typed::builder::IsSet<cluster_processor_members::count>,
+        S1: crate::typed::builder::IsSet<cluster_processor_members::current>,
+        S2: crate::typed::builder::IsSet<cluster_processor_members::failed>,
+        S3: crate::typed::builder::IsSet<cluster_processor_members::time_in_millis>,
+    {
         ClusterProcessor {
             count: self.count.unwrap(),
             current: self.current.unwrap(),
@@ -8965,71 +7661,30 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterProcessor
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ClusterProcessorBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<cluster_processor_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_processor_members::current>,
+    S2: crate::typed::builder::IsSet<cluster_processor_members::failed>,
+    S3: crate::typed::builder::IsSet<cluster_processor_members::time_in_millis>,
 {
-    fn from(
-        builder: ClusterProcessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterProcessor;
+
+    fn build(self) -> ClusterProcessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ClusterProcessorBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ClusterProcessor { match count {} }
-}
-
-impl<S2, S3>
-    ClusterProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ClusterProcessorBuilder<(S0, S1, S2, S3)>> for ClusterProcessor
+where
+    S0: crate::typed::builder::IsSet<cluster_processor_members::count>,
+    S1: crate::typed::builder::IsSet<cluster_processor_members::current>,
+    S2: crate::typed::builder::IsSet<cluster_processor_members::failed>,
+    S3: crate::typed::builder::IsSet<cluster_processor_members::time_in_millis>,
 {
-    /// `current` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current: crate::typed::builder::MissingRequiredField) -> ClusterProcessor { match current {} }
-}
-
-impl<S3>
-    ClusterProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `failed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed: crate::typed::builder::MissingRequiredField) -> ClusterProcessor { match failed {} }
-}
-
-impl
-    ClusterProcessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_in_millis: crate::typed::builder::MissingRequiredField) -> ClusterProcessor { match time_in_millis {} }
+    fn from(builder: ClusterProcessorBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9044,22 +7699,29 @@ pub struct ClusterShardMetrics {
 
 impl ClusterShardMetrics {
     /// Creates a builder for [`ClusterShardMetrics`].
+    ///
+    /// Required: `avg`, `max`, `min`.
     pub fn builder() -> ClusterShardMetricsBuilder {
         ClusterShardMetricsBuilder::new()
     }
 
     /// Creates a [`ClusterShardMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterShardMetricsBuilder,
-        ) -> ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `avg`, `max`, `min`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterShardMetrics>>(
+        f: impl FnOnce(ClusterShardMetricsBuilder) -> B,
     ) -> ClusterShardMetrics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterShardMetricsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_shard_metrics_members {
+    pub struct avg;
+    pub struct max;
+    pub struct min;
 }
 
 /// Builder for [`ClusterShardMetrics`].
@@ -9106,7 +7768,7 @@ impl<S0, S1, S2> ClusterShardMetricsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ClusterShardMetricsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Mean number of shards in an index, counting only shards assigned to selected nodes.
+    /// **Required.** Mean number of shards in an index, counting only shards assigned to selected nodes.
     pub fn avg(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -9118,7 +7780,7 @@ impl<S1, S2> ClusterShardMetricsBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> ClusterShardMetricsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Maximum number of shards in an index, counting only shards assigned to selected nodes.
+    /// **Required.** Maximum number of shards in an index, counting only shards assigned to selected nodes.
     pub fn max(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -9130,7 +7792,7 @@ impl<S0, S2> ClusterShardMetricsBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> ClusterShardMetricsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Minimum number of shards in an index, counting only shards assigned to selected nodes.
+    /// **Required.** Minimum number of shards in an index, counting only shards assigned to selected nodes.
     pub fn min(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -9141,15 +7803,14 @@ impl<S0, S1> ClusterShardMetricsBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    ClusterShardMetricsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ClusterShardMetricsBuilder<(S0, S1, S2)> {
     /// Builds a [`ClusterShardMetrics`].
-    pub fn build(self) -> ClusterShardMetrics {
+    pub fn build(self) -> ClusterShardMetrics
+    where
+        S0: crate::typed::builder::IsSet<cluster_shard_metrics_members::avg>,
+        S1: crate::typed::builder::IsSet<cluster_shard_metrics_members::max>,
+        S2: crate::typed::builder::IsSet<cluster_shard_metrics_members::min>,
+    {
         ClusterShardMetrics {
             avg: self.avg.unwrap(),
             max: self.max.unwrap(),
@@ -9158,54 +7819,28 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterShardMetrics
+impl<S0, S1, S2> crate::typed::builder::Build for ClusterShardMetricsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<cluster_shard_metrics_members::avg>,
+    S1: crate::typed::builder::IsSet<cluster_shard_metrics_members::max>,
+    S2: crate::typed::builder::IsSet<cluster_shard_metrics_members::min>,
 {
-    fn from(
-        builder: ClusterShardMetricsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterShardMetrics;
+
+    fn build(self) -> ClusterShardMetrics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ClusterShardMetricsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> ClusterShardMetrics { match avg {} }
-}
-
-impl<S2>
-    ClusterShardMetricsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ClusterShardMetricsBuilder<(S0, S1, S2)>> for ClusterShardMetrics
+where
+    S0: crate::typed::builder::IsSet<cluster_shard_metrics_members::avg>,
+    S1: crate::typed::builder::IsSet<cluster_shard_metrics_members::max>,
+    S2: crate::typed::builder::IsSet<cluster_shard_metrics_members::min>,
 {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> ClusterShardMetrics { match max {} }
-}
-
-impl
-    ClusterShardMetricsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> ClusterShardMetrics { match min {} }
+    fn from(builder: ClusterShardMetricsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9216,21 +7851,28 @@ pub struct ClusterSnapshotStats {
 
 impl ClusterSnapshotStats {
     /// Creates a builder for [`ClusterSnapshotStats`].
+    ///
+    /// Required: `current_counts`, `repositories`.
     pub fn builder() -> ClusterSnapshotStatsBuilder {
         ClusterSnapshotStatsBuilder::new()
     }
 
     /// Creates a [`ClusterSnapshotStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterSnapshotStatsBuilder,
-        ) -> ClusterSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `current_counts`, `repositories`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterSnapshotStats>>(
+        f: impl FnOnce(ClusterSnapshotStatsBuilder) -> B,
     ) -> ClusterSnapshotStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterSnapshotStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_snapshot_stats_members {
+    pub struct current_counts;
+    pub struct repositories;
 }
 
 /// Builder for [`ClusterSnapshotStats`].
@@ -9264,6 +7906,7 @@ impl<S0, S1> ClusterSnapshotStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> ClusterSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn current_counts(
         self,
         value: impl Into<SnapshotCurrentCounts>,
@@ -9274,23 +7917,16 @@ impl<S1> ClusterSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`current_counts`](Self::current_counts) with a builder.
-    pub fn current_counts_with(
+    pub fn current_counts_with<B: crate::typed::builder::Build<Output = SnapshotCurrentCounts>>(
         self,
-        f: impl FnOnce(
-            SnapshotCurrentCountsBuilder,
-        ) -> SnapshotCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotCurrentCountsBuilder) -> B,
     ) -> ClusterSnapshotStatsBuilder<(crate::typed::builder::Set, S1)> {
         self.current_counts(f(SnapshotCurrentCountsBuilder::new()).build())
     }
 }
 
 impl<S0> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn repositories(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, PerRepositoryStats>>,
@@ -9315,16 +7951,10 @@ impl<S0> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`repositories`](Self::repositories), with a builder.
-    pub fn add_repositories_with(
+    pub fn add_repositories_with<B: crate::typed::builder::Build<Output = PerRepositoryStats>>(
         self,
         key: impl Into<crate::typed::_types::Name>,
-        f: impl FnOnce(
-            PerRepositoryStatsBuilder,
-        ) -> PerRepositoryStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PerRepositoryStatsBuilder) -> B,
     ) -> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_repositories(key, f(PerRepositoryStatsBuilder::new()).build())
     }
@@ -9344,24 +7974,22 @@ impl<S0> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`repositories`](Self::repositories), with a builder.
-    pub fn add_repositories_with(
+    pub fn add_repositories_with<B: crate::typed::builder::Build<Output = PerRepositoryStats>>(
         self,
         key: impl Into<crate::typed::_types::Name>,
-        f: impl FnOnce(
-            PerRepositoryStatsBuilder,
-        ) -> PerRepositoryStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PerRepositoryStatsBuilder) -> B,
     ) -> Self {
         self.add_repositories(key, f(PerRepositoryStatsBuilder::new()).build())
     }
 }
 
-impl ClusterSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ClusterSnapshotStatsBuilder<(S0, S1)> {
     /// Builds a [`ClusterSnapshotStats`].
-    pub fn build(self) -> ClusterSnapshotStats {
+    pub fn build(self) -> ClusterSnapshotStats
+    where
+        S0: crate::typed::builder::IsSet<cluster_snapshot_stats_members::current_counts>,
+        S1: crate::typed::builder::IsSet<cluster_snapshot_stats_members::repositories>,
+    {
         ClusterSnapshotStats {
             current_counts: self.current_counts.unwrap(),
             repositories: self.repositories.unwrap(),
@@ -9369,29 +7997,26 @@ impl ClusterSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<ClusterSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ClusterSnapshotStats
+impl<S0, S1> crate::typed::builder::Build for ClusterSnapshotStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cluster_snapshot_stats_members::current_counts>,
+    S1: crate::typed::builder::IsSet<cluster_snapshot_stats_members::repositories>,
 {
-    fn from(
-        builder: ClusterSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterSnapshotStats;
+
+    fn build(self) -> ClusterSnapshotStats {
+        Self::build(self)
     }
 }
 
-impl<S1> ClusterSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `current_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_counts: crate::typed::builder::MissingRequiredField) -> ClusterSnapshotStats { match current_counts {} }
-}
-
-impl ClusterSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `repositories` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repositories: crate::typed::builder::MissingRequiredField) -> ClusterSnapshotStats { match repositories {} }
+impl<S0, S1> From<ClusterSnapshotStatsBuilder<(S0, S1)>> for ClusterSnapshotStats
+where
+    S0: crate::typed::builder::IsSet<cluster_snapshot_stats_members::current_counts>,
+    S1: crate::typed::builder::IsSet<cluster_snapshot_stats_members::repositories>,
+{
+    fn from(builder: ClusterSnapshotStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9423,26 +8048,33 @@ pub struct DenseVectorOffHeapStats {
 
 impl DenseVectorOffHeapStats {
     /// Creates a builder for [`DenseVectorOffHeapStats`].
+    ///
+    /// Required: `total_size_bytes`, `total_veb_size_bytes`, `total_vec_size_bytes`, `total_veq_size_bytes`, `total_vex_size_bytes`, `total_cenivf_size_bytes`, `total_clivf_size_bytes`.
     pub fn builder() -> DenseVectorOffHeapStatsBuilder {
         DenseVectorOffHeapStatsBuilder::new()
     }
 
     /// Creates a [`DenseVectorOffHeapStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseVectorOffHeapStatsBuilder,
-        ) -> DenseVectorOffHeapStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total_size_bytes`, `total_veb_size_bytes`, `total_vec_size_bytes`, `total_veq_size_bytes`, `total_vex_size_bytes`, `total_cenivf_size_bytes`, `total_clivf_size_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseVectorOffHeapStats>>(
+        f: impl FnOnce(DenseVectorOffHeapStatsBuilder) -> B,
     ) -> DenseVectorOffHeapStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseVectorOffHeapStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_vector_off_heap_stats_members {
+    pub struct total_size_bytes;
+    pub struct total_veb_size_bytes;
+    pub struct total_vec_size_bytes;
+    pub struct total_veq_size_bytes;
+    pub struct total_vex_size_bytes;
+    pub struct total_cenivf_size_bytes;
+    pub struct total_clivf_size_bytes;
 }
 
 /// Builder for [`DenseVectorOffHeapStats`].
@@ -9644,6 +8276,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3,
 impl<S1, S2, S3, S4, S5, S6>
     DenseVectorOffHeapStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn total_size_bytes(
         self,
         value: i64,
@@ -9657,6 +8290,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     DenseVectorOffHeapStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn total_veb_size_bytes(
         self,
         value: i64,
@@ -9670,6 +8304,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     DenseVectorOffHeapStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn total_vec_size_bytes(
         self,
         value: i64,
@@ -9683,6 +8318,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     DenseVectorOffHeapStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn total_veq_size_bytes(
         self,
         value: i64,
@@ -9696,6 +8332,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn total_vex_size_bytes(
         self,
         value: i64,
@@ -9709,6 +8346,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn total_cenivf_size_bytes(
         self,
         value: i64,
@@ -9722,6 +8360,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn total_clivf_size_bytes(
         self,
         value: i64,
@@ -9732,19 +8371,22 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`DenseVectorOffHeapStats`].
-    pub fn build(self) -> DenseVectorOffHeapStats {
+    pub fn build(self) -> DenseVectorOffHeapStats
+    where
+        S0: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_size_bytes>,
+        S1: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veb_size_bytes>,
+        S2: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vec_size_bytes>,
+        S3: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veq_size_bytes>,
+        S4: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vex_size_bytes>,
+        S5: crate::typed::builder::IsSet<
+            dense_vector_off_heap_stats_members::total_cenivf_size_bytes,
+        >,
+        S6: crate::typed::builder::IsSet<
+            dense_vector_off_heap_stats_members::total_clivf_size_bytes,
+        >,
+    {
         DenseVectorOffHeapStats {
             total_size_bytes: self.total_size_bytes.unwrap(),
             total_size: self.total_size,
@@ -9765,136 +8407,38 @@ impl
     }
 }
 
-impl
-    From<
-        DenseVectorOffHeapStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DenseVectorOffHeapStats
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_size_bytes>,
+    S1: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veb_size_bytes>,
+    S2: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vec_size_bytes>,
+    S3: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veq_size_bytes>,
+    S4: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vex_size_bytes>,
+    S5: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_cenivf_size_bytes>,
+    S6: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_clivf_size_bytes>,
 {
-    fn from(
-        builder: DenseVectorOffHeapStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DenseVectorOffHeapStats;
+
+    fn build(self) -> DenseVectorOffHeapStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    DenseVectorOffHeapStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for DenseVectorOffHeapStats
+where
+    S0: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_size_bytes>,
+    S1: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veb_size_bytes>,
+    S2: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vec_size_bytes>,
+    S3: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_veq_size_bytes>,
+    S4: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_vex_size_bytes>,
+    S5: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_cenivf_size_bytes>,
+    S6: crate::typed::builder::IsSet<dense_vector_off_heap_stats_members::total_clivf_size_bytes>,
 {
-    /// `total_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_size_bytes {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_veb_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_veb_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_veb_size_bytes {} }
-}
-
-impl<S3, S4, S5, S6>
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_vec_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_vec_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_vec_size_bytes {} }
-}
-
-impl<S4, S5, S6>
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_veq_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_veq_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_veq_size_bytes {} }
-}
-
-impl<S5, S6>
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `total_vex_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_vex_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_vex_size_bytes {} }
-}
-
-impl<S6>
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `total_cenivf_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_cenivf_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_cenivf_size_bytes {} }
-}
-
-impl
-    DenseVectorOffHeapStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_clivf_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_clivf_size_bytes: crate::typed::builder::MissingRequiredField) -> DenseVectorOffHeapStats { match total_clivf_size_bytes {} }
+    fn from(builder: DenseVectorOffHeapStatsBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9906,18 +8450,27 @@ pub struct DenseVectorStats {
 
 impl DenseVectorStats {
     /// Creates a builder for [`DenseVectorStats`].
+    ///
+    /// Required: `value_count`.
     pub fn builder() -> DenseVectorStatsBuilder {
         DenseVectorStatsBuilder::new()
     }
 
     /// Creates a [`DenseVectorStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseVectorStatsBuilder,
-        ) -> DenseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseVectorStats>>(
+        f: impl FnOnce(DenseVectorStatsBuilder) -> B,
     ) -> DenseVectorStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseVectorStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_vector_stats_members {
+    pub struct value_count;
 }
 
 /// Builder for [`DenseVectorStats`].
@@ -9959,25 +8512,16 @@ impl<S0> DenseVectorStatsBuilder<(S0,)> {
     }
 
     /// Sets [`off_heap`](Self::off_heap) with a builder.
-    pub fn off_heap_with(
+    pub fn off_heap_with<B: crate::typed::builder::Build<Output = DenseVectorOffHeapStats>>(
         self,
-        f: impl FnOnce(
-            DenseVectorOffHeapStatsBuilder,
-        ) -> DenseVectorOffHeapStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DenseVectorOffHeapStatsBuilder) -> B,
     ) -> Self {
         self.off_heap(f(DenseVectorOffHeapStatsBuilder::new()).build())
     }
 }
 
 impl DenseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value_count(self, value: i64) -> DenseVectorStatsBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.value_count = Some(value);
@@ -9985,9 +8529,12 @@ impl DenseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DenseVectorStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseVectorStatsBuilder<(S0,)> {
     /// Builds a [`DenseVectorStats`].
-    pub fn build(self) -> DenseVectorStats {
+    pub fn build(self) -> DenseVectorStats
+    where
+        S0: crate::typed::builder::IsSet<dense_vector_stats_members::value_count>,
+    {
         DenseVectorStats {
             value_count: self.value_count.unwrap(),
             off_heap: self.off_heap,
@@ -9995,16 +8542,24 @@ impl DenseVectorStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DenseVectorStatsBuilder<(crate::typed::builder::Set,)>> for DenseVectorStats {
-    fn from(builder: DenseVectorStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DenseVectorStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_vector_stats_members::value_count>,
+{
+    type Output = DenseVectorStats;
+
+    fn build(self) -> DenseVectorStats {
+        Self::build(self)
     }
 }
 
-impl DenseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value_count: crate::typed::builder::MissingRequiredField) -> DenseVectorStats { match value_count {} }
+impl<S0> From<DenseVectorStatsBuilder<(S0,)>> for DenseVectorStats
+where
+    S0: crate::typed::builder::IsSet<dense_vector_stats_members::value_count>,
+{
+    fn from(builder: DenseVectorStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10020,8 +8575,8 @@ impl ExtendedRetrieversSearchUsage {
     }
 
     /// Creates a [`ExtendedRetrieversSearchUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedRetrieversSearchUsageBuilder) -> ExtendedRetrieversSearchUsageBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedRetrieversSearchUsage>>(
+        f: impl FnOnce(ExtendedRetrieversSearchUsageBuilder) -> B,
     ) -> ExtendedRetrieversSearchUsage {
         f(Self::builder()).build()
     }
@@ -10060,11 +8615,11 @@ impl ExtendedRetrieversSearchUsageBuilder {
     }
 
     /// Sets [`text_similarity_reranker`](Self::text_similarity_reranker) with a builder.
-    pub fn text_similarity_reranker_with(
+    pub fn text_similarity_reranker_with<
+        B: crate::typed::builder::Build<Output = ExtendedTextSimilarityRetrieverUsage>,
+    >(
         self,
-        f: impl FnOnce(
-            ExtendedTextSimilarityRetrieverUsageBuilder,
-        ) -> ExtendedTextSimilarityRetrieverUsageBuilder,
+        f: impl FnOnce(ExtendedTextSimilarityRetrieverUsageBuilder) -> B,
     ) -> Self {
         self.text_similarity_reranker(f(ExtendedTextSimilarityRetrieverUsageBuilder::new()).build())
     }
@@ -10076,6 +8631,14 @@ impl ExtendedRetrieversSearchUsageBuilder {
         ExtendedRetrieversSearchUsage {
             text_similarity_reranker: self.text_similarity_reranker,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ExtendedRetrieversSearchUsageBuilder {
+    type Output = ExtendedRetrieversSearchUsage;
+
+    fn build(self) -> ExtendedRetrieversSearchUsage {
+        Self::build(self)
     }
 }
 
@@ -10100,8 +8663,8 @@ impl ExtendedSearchUsage {
     }
 
     /// Creates a [`ExtendedSearchUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedSearchUsageBuilder) -> ExtendedSearchUsageBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedSearchUsage>>(
+        f: impl FnOnce(ExtendedSearchUsageBuilder) -> B,
     ) -> ExtendedSearchUsage {
         f(Self::builder()).build()
     }
@@ -10136,9 +8699,11 @@ impl ExtendedSearchUsageBuilder {
     }
 
     /// Sets [`retrievers`](Self::retrievers) with a builder.
-    pub fn retrievers_with(
+    pub fn retrievers_with<
+        B: crate::typed::builder::Build<Output = ExtendedRetrieversSearchUsage>,
+    >(
         self,
-        f: impl FnOnce(ExtendedRetrieversSearchUsageBuilder) -> ExtendedRetrieversSearchUsageBuilder,
+        f: impl FnOnce(ExtendedRetrieversSearchUsageBuilder) -> B,
     ) -> Self {
         self.retrievers(f(ExtendedRetrieversSearchUsageBuilder::new()).build())
     }
@@ -10155,9 +8720,9 @@ impl ExtendedSearchUsageBuilder {
     }
 
     /// Sets [`section`](Self::section) with a builder.
-    pub fn section_with(
+    pub fn section_with<B: crate::typed::builder::Build<Output = ExtendedSectionSearchUsage>>(
         self,
-        f: impl FnOnce(ExtendedSectionSearchUsageBuilder) -> ExtendedSectionSearchUsageBuilder,
+        f: impl FnOnce(ExtendedSectionSearchUsageBuilder) -> B,
     ) -> Self {
         self.section(f(ExtendedSectionSearchUsageBuilder::new()).build())
     }
@@ -10170,6 +8735,14 @@ impl ExtendedSearchUsageBuilder {
             retrievers: self.retrievers,
             section: self.section,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ExtendedSearchUsageBuilder {
+    type Output = ExtendedSearchUsage;
+
+    fn build(self) -> ExtendedSearchUsage {
+        Self::build(self)
     }
 }
 
@@ -10192,8 +8765,8 @@ impl ExtendedSectionSearchUsage {
     }
 
     /// Creates a [`ExtendedSectionSearchUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedSectionSearchUsageBuilder) -> ExtendedSectionSearchUsageBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedSectionSearchUsage>>(
+        f: impl FnOnce(ExtendedSectionSearchUsageBuilder) -> B,
     ) -> ExtendedSectionSearchUsage {
         f(Self::builder()).build()
     }
@@ -10239,6 +8812,14 @@ impl ExtendedSectionSearchUsageBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ExtendedSectionSearchUsageBuilder {
+    type Output = ExtendedSectionSearchUsage;
+
+    fn build(self) -> ExtendedSectionSearchUsage {
+        Self::build(self)
+    }
+}
+
 impl From<ExtendedSectionSearchUsageBuilder> for ExtendedSectionSearchUsage {
     fn from(builder: ExtendedSectionSearchUsageBuilder) -> Self {
         builder.build()
@@ -10258,10 +8839,8 @@ impl ExtendedTextSimilarityRetrieverUsage {
     }
 
     /// Creates a [`ExtendedTextSimilarityRetrieverUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExtendedTextSimilarityRetrieverUsageBuilder,
-        ) -> ExtendedTextSimilarityRetrieverUsageBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedTextSimilarityRetrieverUsage>>(
+        f: impl FnOnce(ExtendedTextSimilarityRetrieverUsageBuilder) -> B,
     ) -> ExtendedTextSimilarityRetrieverUsage {
         f(Self::builder()).build()
     }
@@ -10300,6 +8879,14 @@ impl ExtendedTextSimilarityRetrieverUsageBuilder {
         ExtendedTextSimilarityRetrieverUsage {
             chunk_rescorer: self.chunk_rescorer,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ExtendedTextSimilarityRetrieverUsageBuilder {
+    type Output = ExtendedTextSimilarityRetrieverUsage;
+
+    fn build(self) -> ExtendedTextSimilarityRetrieverUsage {
+        Self::build(self)
     }
 }
 
@@ -10342,22 +8929,29 @@ pub struct FieldTypes {
 
 impl FieldTypes {
     /// Creates a builder for [`FieldTypes`].
+    ///
+    /// Required: `name`, `count`, `index_count`.
     pub fn builder() -> FieldTypesBuilder {
         FieldTypesBuilder::new()
     }
 
     /// Creates a [`FieldTypes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `count`, `index_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldTypes>>(
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> FieldTypes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldTypesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_types_members {
+    pub struct name;
+    pub struct count;
+    pub struct index_count;
 }
 
 /// Builder for [`FieldTypes`].
@@ -10563,7 +9157,7 @@ impl<S0, S1, S2> FieldTypesBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FieldTypesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The name for the field type in selected nodes.
+    /// **Required.** The name for the field type in selected nodes.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -10575,7 +9169,7 @@ impl<S1, S2> FieldTypesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FieldTypesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The number of occurrences of the field type in selected nodes.
+    /// **Required.** The number of occurrences of the field type in selected nodes.
     pub fn count(self, value: i32) -> FieldTypesBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -10584,7 +9178,7 @@ impl<S0, S2> FieldTypesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> FieldTypesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The number of indices containing the field type in selected nodes.
+    /// **Required.** The number of indices containing the field type in selected nodes.
     pub fn index_count(
         self,
         value: i32,
@@ -10595,15 +9189,14 @@ impl<S0, S1> FieldTypesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    FieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FieldTypesBuilder<(S0, S1, S2)> {
     /// Builds a [`FieldTypes`].
-    pub fn build(self) -> FieldTypes {
+    pub fn build(self) -> FieldTypes
+    where
+        S0: crate::typed::builder::IsSet<field_types_members::name>,
+        S1: crate::typed::builder::IsSet<field_types_members::count>,
+        S2: crate::typed::builder::IsSet<field_types_members::index_count>,
+    {
         FieldTypes {
             name: self.name.unwrap(),
             count: self.count.unwrap(),
@@ -10619,54 +9212,28 @@ impl
     }
 }
 
-impl
-    From<
-        FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldTypes
+impl<S0, S1, S2> crate::typed::builder::Build for FieldTypesBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<field_types_members::name>,
+    S1: crate::typed::builder::IsSet<field_types_members::count>,
+    S2: crate::typed::builder::IsSet<field_types_members::index_count>,
 {
-    fn from(
-        builder: FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldTypes;
+
+    fn build(self) -> FieldTypes {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FieldTypesBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> FieldTypes { match name {} }
-}
-
-impl<S2>
-    FieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FieldTypesBuilder<(S0, S1, S2)>> for FieldTypes
+where
+    S0: crate::typed::builder::IsSet<field_types_members::name>,
+    S1: crate::typed::builder::IsSet<field_types_members::count>,
+    S2: crate::typed::builder::IsSet<field_types_members::index_count>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> FieldTypes { match count {} }
-}
-
-impl
-    FieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `index_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_count: crate::typed::builder::MissingRequiredField) -> FieldTypes { match index_count {} }
+    fn from(builder: FieldTypesBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10693,22 +9260,29 @@ pub struct FieldTypesMappings {
 
 impl FieldTypesMappings {
     /// Creates a builder for [`FieldTypesMappings`].
+    ///
+    /// Required: `field_types`, `runtime_field_types`, `source_modes`.
     pub fn builder() -> FieldTypesMappingsBuilder {
         FieldTypesMappingsBuilder::new()
     }
 
     /// Creates a [`FieldTypesMappings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldTypesMappingsBuilder,
-        ) -> FieldTypesMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field_types`, `runtime_field_types`, `source_modes`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldTypesMappings>>(
+        f: impl FnOnce(FieldTypesMappingsBuilder) -> B,
     ) -> FieldTypesMappings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldTypesMappingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_types_mappings_members {
+    pub struct field_types;
+    pub struct runtime_field_types;
+    pub struct source_modes;
 }
 
 /// Builder for [`FieldTypesMappings`].
@@ -10821,7 +9395,7 @@ impl<S0, S1, S2> FieldTypesMappingsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Contains statistics about field data types used in selected nodes.
+    /// **Required.** Contains statistics about field data types used in selected nodes.
     pub fn field_types(
         self,
         value: impl Into<Vec<FieldTypes>>,
@@ -10845,15 +9419,9 @@ impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
     }
 
     /// Adds an element to [`field_types`](Self::field_types), with a builder.
-    pub fn add_field_types_with(
+    pub fn add_field_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> FieldTypesMappingsBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.add_field_types(f(FieldTypesBuilder::new()).build())
     }
@@ -10869,22 +9437,16 @@ impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::Set, S1, S2)> {
     }
 
     /// Adds an element to [`field_types`](Self::field_types), with a builder.
-    pub fn add_field_types_with(
+    pub fn add_field_types_with<B: crate::typed::builder::Build<Output = FieldTypes>>(
         self,
-        f: impl FnOnce(
-            FieldTypesBuilder,
-        ) -> FieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldTypesBuilder) -> B,
     ) -> Self {
         self.add_field_types(f(FieldTypesBuilder::new()).build())
     }
 }
 
 impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Contains statistics about runtime field data types used in selected nodes.
+    /// **Required.** Contains statistics about runtime field data types used in selected nodes.
     pub fn runtime_field_types(
         self,
         value: impl Into<Vec<RuntimeFieldTypes>>,
@@ -10908,26 +9470,11 @@ impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> 
     }
 
     /// Adds an element to [`runtime_field_types`](Self::runtime_field_types), with a builder.
-    pub fn add_runtime_field_types_with(
+    pub fn add_runtime_field_types_with<
+        B: crate::typed::builder::Build<Output = RuntimeFieldTypes>,
+    >(
         self,
-        f: impl FnOnce(
-            RuntimeFieldTypesBuilder,
-        ) -> RuntimeFieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RuntimeFieldTypesBuilder) -> B,
     ) -> FieldTypesMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_runtime_field_types(f(RuntimeFieldTypesBuilder::new()).build())
     }
@@ -10943,33 +9490,18 @@ impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`runtime_field_types`](Self::runtime_field_types), with a builder.
-    pub fn add_runtime_field_types_with(
+    pub fn add_runtime_field_types_with<
+        B: crate::typed::builder::Build<Output = RuntimeFieldTypes>,
+    >(
         self,
-        f: impl FnOnce(
-            RuntimeFieldTypesBuilder,
-        ) -> RuntimeFieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RuntimeFieldTypesBuilder) -> B,
     ) -> Self {
         self.add_runtime_field_types(f(RuntimeFieldTypesBuilder::new()).build())
     }
 }
 
 impl<S0, S1> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Source mode usage count.
+    /// **Required.** Source mode usage count.
     pub fn source_modes(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i32>>,
@@ -11008,15 +9540,14 @@ impl<S0, S1> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    FieldTypesMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FieldTypesMappingsBuilder<(S0, S1, S2)> {
     /// Builds a [`FieldTypesMappings`].
-    pub fn build(self) -> FieldTypesMappings {
+    pub fn build(self) -> FieldTypesMappings
+    where
+        S0: crate::typed::builder::IsSet<field_types_mappings_members::field_types>,
+        S1: crate::typed::builder::IsSet<field_types_mappings_members::runtime_field_types>,
+        S2: crate::typed::builder::IsSet<field_types_mappings_members::source_modes>,
+    {
         FieldTypesMappings {
             field_types: self.field_types.unwrap(),
             runtime_field_types: self.runtime_field_types.unwrap(),
@@ -11029,54 +9560,28 @@ impl
     }
 }
 
-impl
-    From<
-        FieldTypesMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldTypesMappings
+impl<S0, S1, S2> crate::typed::builder::Build for FieldTypesMappingsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<field_types_mappings_members::field_types>,
+    S1: crate::typed::builder::IsSet<field_types_mappings_members::runtime_field_types>,
+    S2: crate::typed::builder::IsSet<field_types_mappings_members::source_modes>,
 {
-    fn from(
-        builder: FieldTypesMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldTypesMappings;
+
+    fn build(self) -> FieldTypesMappings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `field_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field_types: crate::typed::builder::MissingRequiredField) -> FieldTypesMappings { match field_types {} }
-}
-
-impl<S2>
-    FieldTypesMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FieldTypesMappingsBuilder<(S0, S1, S2)>> for FieldTypesMappings
+where
+    S0: crate::typed::builder::IsSet<field_types_mappings_members::field_types>,
+    S1: crate::typed::builder::IsSet<field_types_mappings_members::runtime_field_types>,
+    S2: crate::typed::builder::IsSet<field_types_mappings_members::source_modes>,
 {
-    /// `runtime_field_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, runtime_field_types: crate::typed::builder::MissingRequiredField) -> FieldTypesMappings { match runtime_field_types {} }
-}
-
-impl
-    FieldTypesMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source_modes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source_modes: crate::typed::builder::MissingRequiredField) -> FieldTypesMappings { match source_modes {} }
+    fn from(builder: FieldTypesMappingsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11086,18 +9591,27 @@ pub struct IndexingPressure {
 
 impl IndexingPressure {
     /// Creates a builder for [`IndexingPressure`].
+    ///
+    /// Required: `memory`.
     pub fn builder() -> IndexingPressureBuilder {
         IndexingPressureBuilder::new()
     }
 
     /// Creates a [`IndexingPressure`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexingPressureBuilder,
-        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `memory`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexingPressure>>(
+        f: impl FnOnce(IndexingPressureBuilder) -> B,
     ) -> IndexingPressure {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexingPressureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indexing_pressure_members {
+    pub struct memory;
 }
 
 /// Builder for [`IndexingPressure`].
@@ -11126,6 +9640,7 @@ impl<S0> IndexingPressureBuilder<(S0,)> {
 }
 
 impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn memory(
         self,
         value: impl Into<crate::typed::nodes::_types::IndexingPressureMemory>,
@@ -11136,35 +9651,46 @@ impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`memory`](Self::memory) with a builder.
-    pub fn memory_with(
+    pub fn memory_with<
+        B: crate::typed::builder::Build<Output = crate::typed::nodes::_types::IndexingPressureMemory>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::nodes::_types::IndexingPressureMemoryBuilder,
-        ) -> crate::typed::nodes::_types::IndexingPressureMemoryBuilder,
+        f: impl FnOnce(crate::typed::nodes::_types::IndexingPressureMemoryBuilder) -> B,
     ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)> {
         self.memory(f(crate::typed::nodes::_types::IndexingPressureMemoryBuilder::new()).build())
     }
 }
 
-impl IndexingPressureBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexingPressureBuilder<(S0,)> {
     /// Builds a [`IndexingPressure`].
-    pub fn build(self) -> IndexingPressure {
+    pub fn build(self) -> IndexingPressure
+    where
+        S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+    {
         IndexingPressure {
             memory: self.memory.unwrap(),
         }
     }
 }
 
-impl From<IndexingPressureBuilder<(crate::typed::builder::Set,)>> for IndexingPressure {
-    fn from(builder: IndexingPressureBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexingPressureBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+{
+    type Output = IndexingPressure;
+
+    fn build(self) -> IndexingPressure {
+        Self::build(self)
     }
 }
 
-impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
-    /// `memory` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory: crate::typed::builder::MissingRequiredField) -> IndexingPressure { match memory {} }
+impl<S0> From<IndexingPressureBuilder<(S0,)>> for IndexingPressure
+where
+    S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+{
+    fn from(builder: IndexingPressureBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11179,23 +9705,30 @@ pub struct IndicesVersions {
 
 impl IndicesVersions {
     /// Creates a builder for [`IndicesVersions`].
+    ///
+    /// Required: `index_count`, `primary_shard_count`, `total_primary_bytes`, `version`.
     pub fn builder() -> IndicesVersionsBuilder {
         IndicesVersionsBuilder::new()
     }
 
     /// Creates a [`IndicesVersions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesVersionsBuilder,
-        ) -> IndicesVersionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_count`, `primary_shard_count`, `total_primary_bytes`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesVersions>>(
+        f: impl FnOnce(IndicesVersionsBuilder) -> B,
     ) -> IndicesVersions {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesVersionsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_versions_members {
+    pub struct index_count;
+    pub struct primary_shard_count;
+    pub struct total_primary_bytes;
+    pub struct version;
 }
 
 /// Builder for [`IndicesVersions`].
@@ -11264,6 +9797,7 @@ impl<S0, S1, S2, S3> IndicesVersionsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> IndicesVersionsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn index_count(
         self,
         value: i32,
@@ -11275,6 +9809,7 @@ impl<S1, S2, S3> IndicesVersionsBuilder<(crate::typed::builder::NotSet, S1, S2, 
 }
 
 impl<S0, S2, S3> IndicesVersionsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn primary_shard_count(
         self,
         value: i32,
@@ -11286,6 +9821,7 @@ impl<S0, S2, S3> IndicesVersionsBuilder<(S0, crate::typed::builder::NotSet, S2, 
 }
 
 impl<S0, S1, S3> IndicesVersionsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn total_primary_bytes(
         self,
         value: i64,
@@ -11297,6 +9833,7 @@ impl<S0, S1, S3> IndicesVersionsBuilder<(S0, S1, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S2> IndicesVersionsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -11307,16 +9844,15 @@ impl<S0, S1, S2> IndicesVersionsBuilder<(S0, S1, S2, crate::typed::builder::NotS
     }
 }
 
-impl
-    IndicesVersionsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> IndicesVersionsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`IndicesVersions`].
-    pub fn build(self) -> IndicesVersions {
+    pub fn build(self) -> IndicesVersions
+    where
+        S0: crate::typed::builder::IsSet<indices_versions_members::index_count>,
+        S1: crate::typed::builder::IsSet<indices_versions_members::primary_shard_count>,
+        S2: crate::typed::builder::IsSet<indices_versions_members::total_primary_bytes>,
+        S3: crate::typed::builder::IsSet<indices_versions_members::version>,
+    {
         IndicesVersions {
             index_count: self.index_count.unwrap(),
             primary_shard_count: self.primary_shard_count.unwrap(),
@@ -11327,71 +9863,30 @@ impl
     }
 }
 
-impl
-    From<
-        IndicesVersionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IndicesVersions
+impl<S0, S1, S2, S3> crate::typed::builder::Build for IndicesVersionsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<indices_versions_members::index_count>,
+    S1: crate::typed::builder::IsSet<indices_versions_members::primary_shard_count>,
+    S2: crate::typed::builder::IsSet<indices_versions_members::total_primary_bytes>,
+    S3: crate::typed::builder::IsSet<indices_versions_members::version>,
 {
-    fn from(
-        builder: IndicesVersionsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndicesVersions;
+
+    fn build(self) -> IndicesVersions {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> IndicesVersionsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `index_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_count: crate::typed::builder::MissingRequiredField) -> IndicesVersions { match index_count {} }
-}
-
-impl<S2, S3>
-    IndicesVersionsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<IndicesVersionsBuilder<(S0, S1, S2, S3)>> for IndicesVersions
+where
+    S0: crate::typed::builder::IsSet<indices_versions_members::index_count>,
+    S1: crate::typed::builder::IsSet<indices_versions_members::primary_shard_count>,
+    S2: crate::typed::builder::IsSet<indices_versions_members::total_primary_bytes>,
+    S3: crate::typed::builder::IsSet<indices_versions_members::version>,
 {
-    /// `primary_shard_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primary_shard_count: crate::typed::builder::MissingRequiredField) -> IndicesVersions { match primary_shard_count {} }
-}
-
-impl<S3>
-    IndicesVersionsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `total_primary_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_primary_bytes: crate::typed::builder::MissingRequiredField) -> IndicesVersions { match total_primary_bytes {} }
-}
-
-impl
-    IndicesVersionsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> IndicesVersions { match version {} }
+    fn from(builder: IndicesVersionsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11411,8 +9906,8 @@ impl MultipleSynonymGraphFilter {
     }
 
     /// Creates a [`MultipleSynonymGraphFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MultipleSynonymGraphFilterBuilder) -> MultipleSynonymGraphFilterBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MultipleSynonymGraphFilter>>(
+        f: impl FnOnce(MultipleSynonymGraphFilterBuilder) -> B,
     ) -> MultipleSynonymGraphFilter {
         f(Self::builder()).build()
     }
@@ -11470,6 +9965,14 @@ impl MultipleSynonymGraphFilterBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MultipleSynonymGraphFilterBuilder {
+    type Output = MultipleSynonymGraphFilter;
+
+    fn build(self) -> MultipleSynonymGraphFilter {
+        Self::build(self)
+    }
+}
+
 impl From<MultipleSynonymGraphFilterBuilder> for MultipleSynonymGraphFilter {
     fn from(builder: MultipleSynonymGraphFilterBuilder) -> Self {
         builder.build()
@@ -11488,22 +9991,29 @@ pub struct NodePackagingType {
 
 impl NodePackagingType {
     /// Creates a builder for [`NodePackagingType`].
+    ///
+    /// Required: `count`, `flavor`, `type`.
     pub fn builder() -> NodePackagingTypeBuilder {
         NodePackagingTypeBuilder::new()
     }
 
     /// Creates a [`NodePackagingType`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodePackagingTypeBuilder,
-        ) -> NodePackagingTypeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `flavor`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodePackagingType>>(
+        f: impl FnOnce(NodePackagingTypeBuilder) -> B,
     ) -> NodePackagingType {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodePackagingTypeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_packaging_type_members {
+    pub struct count;
+    pub struct flavor;
+    pub struct r#type;
 }
 
 /// Builder for [`NodePackagingType`].
@@ -11550,7 +10060,7 @@ impl<S0, S1, S2> NodePackagingTypeBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NodePackagingTypeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Number of selected nodes using the distribution flavor and file type.
+    /// **Required.** Number of selected nodes using the distribution flavor and file type.
     pub fn count(
         self,
         value: i32,
@@ -11562,7 +10072,7 @@ impl<S1, S2> NodePackagingTypeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> NodePackagingTypeBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Type of Elasticsearch distribution. This is always `default`.
+    /// **Required.** Type of Elasticsearch distribution. This is always `default`.
     pub fn flavor(
         self,
         value: impl Into<String>,
@@ -11574,7 +10084,7 @@ impl<S0, S2> NodePackagingTypeBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> NodePackagingTypeBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// File type (such as `tar` or `zip`) used for the distribution package.
+    /// **Required.** File type (such as `tar` or `zip`) used for the distribution package.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11585,15 +10095,14 @@ impl<S0, S1> NodePackagingTypeBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    NodePackagingTypeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NodePackagingTypeBuilder<(S0, S1, S2)> {
     /// Builds a [`NodePackagingType`].
-    pub fn build(self) -> NodePackagingType {
+    pub fn build(self) -> NodePackagingType
+    where
+        S0: crate::typed::builder::IsSet<node_packaging_type_members::count>,
+        S1: crate::typed::builder::IsSet<node_packaging_type_members::flavor>,
+        S2: crate::typed::builder::IsSet<node_packaging_type_members::r#type>,
+    {
         NodePackagingType {
             count: self.count.unwrap(),
             flavor: self.flavor.unwrap(),
@@ -11602,54 +10111,28 @@ impl
     }
 }
 
-impl
-    From<
-        NodePackagingTypeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodePackagingType
+impl<S0, S1, S2> crate::typed::builder::Build for NodePackagingTypeBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<node_packaging_type_members::count>,
+    S1: crate::typed::builder::IsSet<node_packaging_type_members::flavor>,
+    S2: crate::typed::builder::IsSet<node_packaging_type_members::r#type>,
 {
-    fn from(
-        builder: NodePackagingTypeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodePackagingType;
+
+    fn build(self) -> NodePackagingType {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NodePackagingTypeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> NodePackagingType { match count {} }
-}
-
-impl<S2>
-    NodePackagingTypeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NodePackagingTypeBuilder<(S0, S1, S2)>> for NodePackagingType
+where
+    S0: crate::typed::builder::IsSet<node_packaging_type_members::count>,
+    S1: crate::typed::builder::IsSet<node_packaging_type_members::flavor>,
+    S2: crate::typed::builder::IsSet<node_packaging_type_members::r#type>,
 {
-    /// `flavor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, flavor: crate::typed::builder::MissingRequiredField) -> NodePackagingType { match flavor {} }
-}
-
-impl
-    NodePackagingTypeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodePackagingType { match r#type {} }
+    fn from(builder: NodePackagingTypeBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11683,24 +10166,31 @@ pub struct OperatingSystemMemoryInfo {
 
 impl OperatingSystemMemoryInfo {
     /// Creates a builder for [`OperatingSystemMemoryInfo`].
+    ///
+    /// Required: `free_in_bytes`, `free_percent`, `total_in_bytes`, `used_in_bytes`, `used_percent`.
     pub fn builder() -> OperatingSystemMemoryInfoBuilder {
         OperatingSystemMemoryInfoBuilder::new()
     }
 
     /// Creates a [`OperatingSystemMemoryInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OperatingSystemMemoryInfoBuilder,
-        ) -> OperatingSystemMemoryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `free_in_bytes`, `free_percent`, `total_in_bytes`, `used_in_bytes`, `used_percent`.
+    pub fn of<B: crate::typed::builder::Build<Output = OperatingSystemMemoryInfo>>(
+        f: impl FnOnce(OperatingSystemMemoryInfoBuilder) -> B,
     ) -> OperatingSystemMemoryInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OperatingSystemMemoryInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod operating_system_memory_info_members {
+    pub struct free_in_bytes;
+    pub struct free_percent;
+    pub struct total_in_bytes;
+    pub struct used_in_bytes;
+    pub struct used_percent;
 }
 
 /// Builder for [`OperatingSystemMemoryInfo`].
@@ -11834,7 +10324,7 @@ impl<S0, S1, S2, S3, S4> OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, S4)> 
 impl<S1, S2, S3, S4>
     OperatingSystemMemoryInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// Amount, in bytes, of free physical memory across all selected nodes.
+    /// **Required.** Amount, in bytes, of free physical memory across all selected nodes.
     pub fn free_in_bytes(
         self,
         value: i64,
@@ -11848,7 +10338,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     OperatingSystemMemoryInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// Percentage of free physical memory across all selected nodes.
+    /// **Required.** Percentage of free physical memory across all selected nodes.
     pub fn free_percent(
         self,
         value: i32,
@@ -11862,7 +10352,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     OperatingSystemMemoryInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// Total amount, in bytes, of physical memory across all selected nodes.
+    /// **Required.** Total amount, in bytes, of physical memory across all selected nodes.
     pub fn total_in_bytes(
         self,
         value: i64,
@@ -11876,7 +10366,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     OperatingSystemMemoryInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// Amount, in bytes, of physical memory in use across all selected nodes.
+    /// **Required.** Amount, in bytes, of physical memory in use across all selected nodes.
     pub fn used_in_bytes(
         self,
         value: i64,
@@ -11890,7 +10380,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// Percentage of physical memory in use across all selected nodes.
+    /// **Required.** Percentage of physical memory in use across all selected nodes.
     pub fn used_percent(
         self,
         value: i32,
@@ -11901,17 +10391,16 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    OperatingSystemMemoryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`OperatingSystemMemoryInfo`].
-    pub fn build(self) -> OperatingSystemMemoryInfo {
+    pub fn build(self) -> OperatingSystemMemoryInfo
+    where
+        S0: crate::typed::builder::IsSet<operating_system_memory_info_members::free_in_bytes>,
+        S1: crate::typed::builder::IsSet<operating_system_memory_info_members::free_percent>,
+        S2: crate::typed::builder::IsSet<operating_system_memory_info_members::total_in_bytes>,
+        S3: crate::typed::builder::IsSet<operating_system_memory_info_members::used_in_bytes>,
+        S4: crate::typed::builder::IsSet<operating_system_memory_info_members::used_percent>,
+    {
         OperatingSystemMemoryInfo {
             adjusted_total_in_bytes: self.adjusted_total_in_bytes,
             adjusted_total: self.adjusted_total,
@@ -11927,92 +10416,34 @@ impl
     }
 }
 
-impl
-    From<
-        OperatingSystemMemoryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for OperatingSystemMemoryInfo
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<operating_system_memory_info_members::free_in_bytes>,
+    S1: crate::typed::builder::IsSet<operating_system_memory_info_members::free_percent>,
+    S2: crate::typed::builder::IsSet<operating_system_memory_info_members::total_in_bytes>,
+    S3: crate::typed::builder::IsSet<operating_system_memory_info_members::used_in_bytes>,
+    S4: crate::typed::builder::IsSet<operating_system_memory_info_members::used_percent>,
 {
-    fn from(
-        builder: OperatingSystemMemoryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = OperatingSystemMemoryInfo;
+
+    fn build(self) -> OperatingSystemMemoryInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    OperatingSystemMemoryInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, S4)>>
+    for OperatingSystemMemoryInfo
+where
+    S0: crate::typed::builder::IsSet<operating_system_memory_info_members::free_in_bytes>,
+    S1: crate::typed::builder::IsSet<operating_system_memory_info_members::free_percent>,
+    S2: crate::typed::builder::IsSet<operating_system_memory_info_members::total_in_bytes>,
+    S3: crate::typed::builder::IsSet<operating_system_memory_info_members::used_in_bytes>,
+    S4: crate::typed::builder::IsSet<operating_system_memory_info_members::used_percent>,
 {
-    /// `free_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, free_in_bytes: crate::typed::builder::MissingRequiredField) -> OperatingSystemMemoryInfo { match free_in_bytes {} }
-}
-
-impl<S2, S3, S4>
-    OperatingSystemMemoryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `free_percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, free_percent: crate::typed::builder::MissingRequiredField) -> OperatingSystemMemoryInfo { match free_percent {} }
-}
-
-impl<S3, S4>
-    OperatingSystemMemoryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_in_bytes: crate::typed::builder::MissingRequiredField) -> OperatingSystemMemoryInfo { match total_in_bytes {} }
-}
-
-impl<S4>
-    OperatingSystemMemoryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `used_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, used_in_bytes: crate::typed::builder::MissingRequiredField) -> OperatingSystemMemoryInfo { match used_in_bytes {} }
-}
-
-impl
-    OperatingSystemMemoryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `used_percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, used_percent: crate::typed::builder::MissingRequiredField) -> OperatingSystemMemoryInfo { match used_percent {} }
+    fn from(builder: OperatingSystemMemoryInfoBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12026,22 +10457,29 @@ pub struct PerRepositoryStats {
 
 impl PerRepositoryStats {
     /// Creates a builder for [`PerRepositoryStats`].
+    ///
+    /// Required: `type`, `oldest_start_time_millis`, `current_counts`.
     pub fn builder() -> PerRepositoryStatsBuilder {
         PerRepositoryStatsBuilder::new()
     }
 
     /// Creates a [`PerRepositoryStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PerRepositoryStatsBuilder,
-        ) -> PerRepositoryStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `oldest_start_time_millis`, `current_counts`.
+    pub fn of<B: crate::typed::builder::Build<Output = PerRepositoryStats>>(
+        f: impl FnOnce(PerRepositoryStatsBuilder) -> B,
     ) -> PerRepositoryStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PerRepositoryStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod per_repository_stats_members {
+    pub struct r#type;
+    pub struct oldest_start_time_millis;
+    pub struct current_counts;
 }
 
 /// Builder for [`PerRepositoryStats`].
@@ -12105,6 +10543,7 @@ impl<S0, S1, S2> PerRepositoryStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> PerRepositoryStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12116,6 +10555,7 @@ impl<S1, S2> PerRepositoryStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> PerRepositoryStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn oldest_start_time_millis(
         self,
         value: impl Into<crate::typed::_types::UnitMillis>,
@@ -12127,6 +10567,7 @@ impl<S0, S2> PerRepositoryStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> 
 }
 
 impl<S0, S1> PerRepositoryStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn current_counts(
         self,
         value: impl Into<RepositoryStatsCurrentCounts>,
@@ -12137,33 +10578,24 @@ impl<S0, S1> PerRepositoryStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`current_counts`](Self::current_counts) with a builder.
-    pub fn current_counts_with(
+    pub fn current_counts_with<
+        B: crate::typed::builder::Build<Output = RepositoryStatsCurrentCounts>,
+    >(
         self,
-        f: impl FnOnce(
-            RepositoryStatsCurrentCountsBuilder,
-        ) -> RepositoryStatsCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RepositoryStatsCurrentCountsBuilder) -> B,
     ) -> PerRepositoryStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.current_counts(f(RepositoryStatsCurrentCountsBuilder::new()).build())
     }
 }
 
-impl
-    PerRepositoryStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> PerRepositoryStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`PerRepositoryStats`].
-    pub fn build(self) -> PerRepositoryStats {
+    pub fn build(self) -> PerRepositoryStats
+    where
+        S0: crate::typed::builder::IsSet<per_repository_stats_members::r#type>,
+        S1: crate::typed::builder::IsSet<per_repository_stats_members::oldest_start_time_millis>,
+        S2: crate::typed::builder::IsSet<per_repository_stats_members::current_counts>,
+    {
         PerRepositoryStats {
             r#type: self.r#type.unwrap(),
             oldest_start_time_millis: self.oldest_start_time_millis.unwrap(),
@@ -12173,54 +10605,28 @@ impl
     }
 }
 
-impl
-    From<
-        PerRepositoryStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for PerRepositoryStats
+impl<S0, S1, S2> crate::typed::builder::Build for PerRepositoryStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<per_repository_stats_members::r#type>,
+    S1: crate::typed::builder::IsSet<per_repository_stats_members::oldest_start_time_millis>,
+    S2: crate::typed::builder::IsSet<per_repository_stats_members::current_counts>,
 {
-    fn from(
-        builder: PerRepositoryStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PerRepositoryStats;
+
+    fn build(self) -> PerRepositoryStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> PerRepositoryStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PerRepositoryStats { match r#type {} }
-}
-
-impl<S2>
-    PerRepositoryStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<PerRepositoryStatsBuilder<(S0, S1, S2)>> for PerRepositoryStats
+where
+    S0: crate::typed::builder::IsSet<per_repository_stats_members::r#type>,
+    S1: crate::typed::builder::IsSet<per_repository_stats_members::oldest_start_time_millis>,
+    S2: crate::typed::builder::IsSet<per_repository_stats_members::current_counts>,
 {
-    /// `oldest_start_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, oldest_start_time_millis: crate::typed::builder::MissingRequiredField) -> PerRepositoryStats { match oldest_start_time_millis {} }
-}
-
-impl
-    PerRepositoryStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `current_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_counts: crate::typed::builder::MissingRequiredField) -> PerRepositoryStats { match current_counts {} }
+    fn from(builder: PerRepositoryStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12263,31 +10669,38 @@ pub struct RemoteClusterInfo {
 
 impl RemoteClusterInfo {
     /// Creates a builder for [`RemoteClusterInfo`].
+    ///
+    /// Required: `cluster_uuid`, `mode`, `skip_unavailable`, `transport_compress`, `status`, `version`, `nodes_count`, `shards_count`, `indices_count`, `indices_total_size_in_bytes`, `max_heap_in_bytes`, `mem_total_in_bytes`.
     pub fn builder() -> RemoteClusterInfoBuilder {
         RemoteClusterInfoBuilder::new()
     }
 
     /// Creates a [`RemoteClusterInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoteClusterInfoBuilder,
-        ) -> RemoteClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster_uuid`, `mode`, `skip_unavailable`, `transport_compress`, `status`, `version`, `nodes_count`, `shards_count`, `indices_count`, `indices_total_size_in_bytes`, `max_heap_in_bytes`, `mem_total_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoteClusterInfo>>(
+        f: impl FnOnce(RemoteClusterInfoBuilder) -> B,
     ) -> RemoteClusterInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoteClusterInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remote_cluster_info_members {
+    pub struct cluster_uuid;
+    pub struct mode;
+    pub struct skip_unavailable;
+    pub struct transport_compress;
+    pub struct status;
+    pub struct version;
+    pub struct nodes_count;
+    pub struct shards_count;
+    pub struct indices_count;
+    pub struct indices_total_size_in_bytes;
+    pub struct max_heap_in_bytes;
+    pub struct mem_total_in_bytes;
 }
 
 /// Builder for [`RemoteClusterInfo`].
@@ -12441,7 +10854,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The UUID of the remote cluster.
+    /// **Required.** The UUID of the remote cluster.
     pub fn cluster_uuid(
         self,
         value: impl Into<String>,
@@ -12481,7 +10894,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The connection mode used to communicate with the remote cluster.
+    /// **Required.** The connection mode used to communicate with the remote cluster.
     pub fn mode(
         self,
         value: impl Into<String>,
@@ -12521,7 +10934,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The `skip_unavailable` setting used for this remote cluster.
+    /// **Required.** The `skip_unavailable` setting used for this remote cluster.
     pub fn skip_unavailable(
         self,
         value: bool,
@@ -12561,7 +10974,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Transport compression setting used for this remote cluster.
+    /// **Required.** Transport compression setting used for this remote cluster.
     pub fn transport_compress(
         self,
         value: impl Into<String>,
@@ -12601,7 +11014,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// Health status of the cluster, based on the state of its primary and replica shards.
+    /// **Required.** Health status of the cluster, based on the state of its primary and replica shards.
     pub fn status(
         self,
         value: impl Into<crate::typed::_types::HealthStatus>,
@@ -12641,7 +11054,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The list of Elasticsearch versions used by the nodes on the remote cluster.
+    /// **Required.** The list of Elasticsearch versions used by the nodes on the remote cluster.
     pub fn version(
         self,
         value: impl Into<Vec<crate::typed::_types::VersionString>>,
@@ -12732,7 +11145,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The total count of nodes in the remote cluster.
+    /// **Required.** The total count of nodes in the remote cluster.
     pub fn nodes_count(
         self,
         value: i32,
@@ -12772,7 +11185,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
-    /// The total number of shards in the remote cluster.
+    /// **Required.** The total number of shards in the remote cluster.
     pub fn shards_count(
         self,
         value: i32,
@@ -12812,7 +11225,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
-    /// The total number of indices in the remote cluster.
+    /// **Required.** The total number of indices in the remote cluster.
     pub fn indices_count(
         self,
         value: i32,
@@ -12852,7 +11265,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
-    /// Total data set size, in bytes, of all shards assigned to selected nodes.
+    /// **Required.** Total data set size, in bytes, of all shards assigned to selected nodes.
     pub fn indices_total_size_in_bytes(
         self,
         value: i64,
@@ -12892,7 +11305,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
-    /// Maximum amount of memory, in bytes, available for use by the heap across the nodes of the remote cluster.
+    /// **Required.** Maximum amount of memory, in bytes, available for use by the heap across the nodes of the remote cluster.
     pub fn max_heap_in_bytes(
         self,
         value: i64,
@@ -12932,7 +11345,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Total amount, in bytes, of physical memory across the nodes of the remote cluster.
+    /// **Required.** Total amount, in bytes, of physical memory across the nodes of the remote cluster.
     pub fn mem_total_in_bytes(
         self,
         value: i64,
@@ -12956,24 +11369,25 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    RemoteClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`RemoteClusterInfo`].
-    pub fn build(self) -> RemoteClusterInfo {
+    pub fn build(self) -> RemoteClusterInfo
+    where
+        S0: crate::typed::builder::IsSet<remote_cluster_info_members::cluster_uuid>,
+        S1: crate::typed::builder::IsSet<remote_cluster_info_members::mode>,
+        S2: crate::typed::builder::IsSet<remote_cluster_info_members::skip_unavailable>,
+        S3: crate::typed::builder::IsSet<remote_cluster_info_members::transport_compress>,
+        S4: crate::typed::builder::IsSet<remote_cluster_info_members::status>,
+        S5: crate::typed::builder::IsSet<remote_cluster_info_members::version>,
+        S6: crate::typed::builder::IsSet<remote_cluster_info_members::nodes_count>,
+        S7: crate::typed::builder::IsSet<remote_cluster_info_members::shards_count>,
+        S8: crate::typed::builder::IsSet<remote_cluster_info_members::indices_count>,
+        S9: crate::typed::builder::IsSet<remote_cluster_info_members::indices_total_size_in_bytes>,
+        S10: crate::typed::builder::IsSet<remote_cluster_info_members::max_heap_in_bytes>,
+        S11: crate::typed::builder::IsSet<remote_cluster_info_members::mem_total_in_bytes>,
+    {
         RemoteClusterInfo {
             cluster_uuid: self.cluster_uuid.unwrap(),
             mode: self.mode.unwrap(),
@@ -12994,294 +11408,51 @@ impl
     }
 }
 
-impl
-    From<
-        RemoteClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RemoteClusterInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for RemoteClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<remote_cluster_info_members::cluster_uuid>,
+    S1: crate::typed::builder::IsSet<remote_cluster_info_members::mode>,
+    S2: crate::typed::builder::IsSet<remote_cluster_info_members::skip_unavailable>,
+    S3: crate::typed::builder::IsSet<remote_cluster_info_members::transport_compress>,
+    S4: crate::typed::builder::IsSet<remote_cluster_info_members::status>,
+    S5: crate::typed::builder::IsSet<remote_cluster_info_members::version>,
+    S6: crate::typed::builder::IsSet<remote_cluster_info_members::nodes_count>,
+    S7: crate::typed::builder::IsSet<remote_cluster_info_members::shards_count>,
+    S8: crate::typed::builder::IsSet<remote_cluster_info_members::indices_count>,
+    S9: crate::typed::builder::IsSet<remote_cluster_info_members::indices_total_size_in_bytes>,
+    S10: crate::typed::builder::IsSet<remote_cluster_info_members::max_heap_in_bytes>,
+    S11: crate::typed::builder::IsSet<remote_cluster_info_members::mem_total_in_bytes>,
 {
-    fn from(
-        builder: RemoteClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RemoteClusterInfo;
+
+    fn build(self) -> RemoteClusterInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<RemoteClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>>
+    for RemoteClusterInfo
+where
+    S0: crate::typed::builder::IsSet<remote_cluster_info_members::cluster_uuid>,
+    S1: crate::typed::builder::IsSet<remote_cluster_info_members::mode>,
+    S2: crate::typed::builder::IsSet<remote_cluster_info_members::skip_unavailable>,
+    S3: crate::typed::builder::IsSet<remote_cluster_info_members::transport_compress>,
+    S4: crate::typed::builder::IsSet<remote_cluster_info_members::status>,
+    S5: crate::typed::builder::IsSet<remote_cluster_info_members::version>,
+    S6: crate::typed::builder::IsSet<remote_cluster_info_members::nodes_count>,
+    S7: crate::typed::builder::IsSet<remote_cluster_info_members::shards_count>,
+    S8: crate::typed::builder::IsSet<remote_cluster_info_members::indices_count>,
+    S9: crate::typed::builder::IsSet<remote_cluster_info_members::indices_total_size_in_bytes>,
+    S10: crate::typed::builder::IsSet<remote_cluster_info_members::max_heap_in_bytes>,
+    S11: crate::typed::builder::IsSet<remote_cluster_info_members::mem_total_in_bytes>,
 {
-    /// `cluster_uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_uuid: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match cluster_uuid {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match mode {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `skip_unavailable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skip_unavailable: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match skip_unavailable {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `transport_compress` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_compress: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match transport_compress {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match status {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match version {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `nodes_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes_count: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match nodes_count {} }
-}
-
-impl<S8, S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `shards_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards_count: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match shards_count {} }
-}
-
-impl<S9, S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `indices_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices_count: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match indices_count {} }
-}
-
-impl<S10, S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `indices_total_size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices_total_size_in_bytes: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match indices_total_size_in_bytes {} }
-}
-
-impl<S11>
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `max_heap_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_heap_in_bytes: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match max_heap_in_bytes {} }
-}
-
-impl
-    RemoteClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `mem_total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mem_total_in_bytes: crate::typed::builder::MissingRequiredField) -> RemoteClusterInfo { match mem_total_in_bytes {} }
+    fn from(
+        builder: RemoteClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13297,26 +11468,33 @@ pub struct RepositoryStatsCurrentCounts {
 
 impl RepositoryStatsCurrentCounts {
     /// Creates a builder for [`RepositoryStatsCurrentCounts`].
+    ///
+    /// Required: `snapshots`, `clones`, `finalizations`, `deletions`, `snapshot_deletions`, `active_deletions`, `shards`.
     pub fn builder() -> RepositoryStatsCurrentCountsBuilder {
         RepositoryStatsCurrentCountsBuilder::new()
     }
 
     /// Creates a [`RepositoryStatsCurrentCounts`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RepositoryStatsCurrentCountsBuilder,
-        ) -> RepositoryStatsCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `snapshots`, `clones`, `finalizations`, `deletions`, `snapshot_deletions`, `active_deletions`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = RepositoryStatsCurrentCounts>>(
+        f: impl FnOnce(RepositoryStatsCurrentCountsBuilder) -> B,
     ) -> RepositoryStatsCurrentCounts {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RepositoryStatsCurrentCountsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod repository_stats_current_counts_members {
+    pub struct snapshots;
+    pub struct clones;
+    pub struct finalizations;
+    pub struct deletions;
+    pub struct snapshot_deletions;
+    pub struct active_deletions;
+    pub struct shards;
 }
 
 /// Builder for [`RepositoryStatsCurrentCounts`].
@@ -13385,6 +11563,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> RepositoryStatsCurrentCountsBuilder<(S0, S1, S2
 impl<S1, S2, S3, S4, S5, S6>
     RepositoryStatsCurrentCountsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn snapshots(
         self,
         value: i32,
@@ -13399,6 +11578,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     RepositoryStatsCurrentCountsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn clones(
         self,
         value: i32,
@@ -13413,6 +11593,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     RepositoryStatsCurrentCountsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn finalizations(
         self,
         value: i32,
@@ -13427,6 +11608,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn deletions(
         self,
         value: i32,
@@ -13441,6 +11623,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn snapshot_deletions(
         self,
         value: i32,
@@ -13455,6 +11638,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn active_deletions(
         self,
         value: i32,
@@ -13469,6 +11653,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<RepositoryStatsShards>,
@@ -13480,35 +11665,29 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<B: crate::typed::builder::Build<Output = RepositoryStatsShards>>(
         self,
-        f: impl FnOnce(
-            RepositoryStatsShardsBuilder,
-        ) -> RepositoryStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RepositoryStatsShardsBuilder) -> B,
     ) -> RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)>
     {
         self.shards(f(RepositoryStatsShardsBuilder::new()).build())
     }
 }
 
-impl
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`RepositoryStatsCurrentCounts`].
-    pub fn build(self) -> RepositoryStatsCurrentCounts {
+    pub fn build(self) -> RepositoryStatsCurrentCounts
+    where
+        S0: crate::typed::builder::IsSet<repository_stats_current_counts_members::snapshots>,
+        S1: crate::typed::builder::IsSet<repository_stats_current_counts_members::clones>,
+        S2: crate::typed::builder::IsSet<repository_stats_current_counts_members::finalizations>,
+        S3: crate::typed::builder::IsSet<repository_stats_current_counts_members::deletions>,
+        S4: crate::typed::builder::IsSet<
+            repository_stats_current_counts_members::snapshot_deletions,
+        >,
+        S5: crate::typed::builder::IsSet<repository_stats_current_counts_members::active_deletions>,
+        S6: crate::typed::builder::IsSet<repository_stats_current_counts_members::shards>,
+    {
         RepositoryStatsCurrentCounts {
             snapshots: self.snapshots.unwrap(),
             clones: self.clones.unwrap(),
@@ -13521,136 +11700,39 @@ impl
     }
 }
 
-impl
-    From<
-        RepositoryStatsCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RepositoryStatsCurrentCounts
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<repository_stats_current_counts_members::snapshots>,
+    S1: crate::typed::builder::IsSet<repository_stats_current_counts_members::clones>,
+    S2: crate::typed::builder::IsSet<repository_stats_current_counts_members::finalizations>,
+    S3: crate::typed::builder::IsSet<repository_stats_current_counts_members::deletions>,
+    S4: crate::typed::builder::IsSet<repository_stats_current_counts_members::snapshot_deletions>,
+    S5: crate::typed::builder::IsSet<repository_stats_current_counts_members::active_deletions>,
+    S6: crate::typed::builder::IsSet<repository_stats_current_counts_members::shards>,
 {
-    fn from(
-        builder: RepositoryStatsCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RepositoryStatsCurrentCounts;
+
+    fn build(self) -> RepositoryStatsCurrentCounts {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    RepositoryStatsCurrentCountsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6>
+    From<RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for RepositoryStatsCurrentCounts
+where
+    S0: crate::typed::builder::IsSet<repository_stats_current_counts_members::snapshots>,
+    S1: crate::typed::builder::IsSet<repository_stats_current_counts_members::clones>,
+    S2: crate::typed::builder::IsSet<repository_stats_current_counts_members::finalizations>,
+    S3: crate::typed::builder::IsSet<repository_stats_current_counts_members::deletions>,
+    S4: crate::typed::builder::IsSet<repository_stats_current_counts_members::snapshot_deletions>,
+    S5: crate::typed::builder::IsSet<repository_stats_current_counts_members::active_deletions>,
+    S6: crate::typed::builder::IsSet<repository_stats_current_counts_members::shards>,
 {
-    /// `snapshots` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match snapshots {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `clones` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clones: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match clones {} }
-}
-
-impl<S3, S4, S5, S6>
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `finalizations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, finalizations: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match finalizations {} }
-}
-
-impl<S4, S5, S6>
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `deletions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deletions: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match deletions {} }
-}
-
-impl<S5, S6>
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `snapshot_deletions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_deletions: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match snapshot_deletions {} }
-}
-
-impl<S6>
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `active_deletions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, active_deletions: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match active_deletions {} }
-}
-
-impl
-    RepositoryStatsCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> RepositoryStatsCurrentCounts { match shards {} }
+    fn from(builder: RepositoryStatsCurrentCountsBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13663,23 +11745,30 @@ pub struct RepositoryStatsShards {
 
 impl RepositoryStatsShards {
     /// Creates a builder for [`RepositoryStatsShards`].
+    ///
+    /// Required: `total`, `complete`, `incomplete`, `states`.
     pub fn builder() -> RepositoryStatsShardsBuilder {
         RepositoryStatsShardsBuilder::new()
     }
 
     /// Creates a [`RepositoryStatsShards`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RepositoryStatsShardsBuilder,
-        ) -> RepositoryStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `complete`, `incomplete`, `states`.
+    pub fn of<B: crate::typed::builder::Build<Output = RepositoryStatsShards>>(
+        f: impl FnOnce(RepositoryStatsShardsBuilder) -> B,
     ) -> RepositoryStatsShards {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RepositoryStatsShardsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod repository_stats_shards_members {
+    pub struct total;
+    pub struct complete;
+    pub struct incomplete;
+    pub struct states;
 }
 
 /// Builder for [`RepositoryStatsShards`].
@@ -13731,6 +11820,7 @@ impl<S0, S1, S2, S3> RepositoryStatsShardsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RepositoryStatsShardsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn total(
         self,
         value: i32,
@@ -13742,6 +11832,7 @@ impl<S1, S2, S3> RepositoryStatsShardsBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3> RepositoryStatsShardsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn complete(
         self,
         value: i32,
@@ -13753,6 +11844,7 @@ impl<S0, S2, S3> RepositoryStatsShardsBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3> RepositoryStatsShardsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn incomplete(
         self,
         value: i32,
@@ -13764,6 +11856,7 @@ impl<S0, S1, S3> RepositoryStatsShardsBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2> RepositoryStatsShardsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn states(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -13798,16 +11891,15 @@ impl<S0, S1, S2> RepositoryStatsShardsBuilder<(S0, S1, S2, crate::typed::builder
     }
 }
 
-impl
-    RepositoryStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RepositoryStatsShardsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RepositoryStatsShards`].
-    pub fn build(self) -> RepositoryStatsShards {
+    pub fn build(self) -> RepositoryStatsShards
+    where
+        S0: crate::typed::builder::IsSet<repository_stats_shards_members::total>,
+        S1: crate::typed::builder::IsSet<repository_stats_shards_members::complete>,
+        S2: crate::typed::builder::IsSet<repository_stats_shards_members::incomplete>,
+        S3: crate::typed::builder::IsSet<repository_stats_shards_members::states>,
+    {
         RepositoryStatsShards {
             total: self.total.unwrap(),
             complete: self.complete.unwrap(),
@@ -13817,71 +11909,30 @@ impl
     }
 }
 
-impl
-    From<
-        RepositoryStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RepositoryStatsShards
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RepositoryStatsShardsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<repository_stats_shards_members::total>,
+    S1: crate::typed::builder::IsSet<repository_stats_shards_members::complete>,
+    S2: crate::typed::builder::IsSet<repository_stats_shards_members::incomplete>,
+    S3: crate::typed::builder::IsSet<repository_stats_shards_members::states>,
 {
-    fn from(
-        builder: RepositoryStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RepositoryStatsShards;
+
+    fn build(self) -> RepositoryStatsShards {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RepositoryStatsShardsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> RepositoryStatsShards { match total {} }
-}
-
-impl<S2, S3>
-    RepositoryStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RepositoryStatsShardsBuilder<(S0, S1, S2, S3)>> for RepositoryStatsShards
+where
+    S0: crate::typed::builder::IsSet<repository_stats_shards_members::total>,
+    S1: crate::typed::builder::IsSet<repository_stats_shards_members::complete>,
+    S2: crate::typed::builder::IsSet<repository_stats_shards_members::incomplete>,
+    S3: crate::typed::builder::IsSet<repository_stats_shards_members::states>,
 {
-    /// `complete` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, complete: crate::typed::builder::MissingRequiredField) -> RepositoryStatsShards { match complete {} }
-}
-
-impl<S3>
-    RepositoryStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `incomplete` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, incomplete: crate::typed::builder::MissingRequiredField) -> RepositoryStatsShards { match incomplete {} }
-}
-
-impl
-    RepositoryStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `states` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, states: crate::typed::builder::MissingRequiredField) -> RepositoryStatsShards { match states {} }
+    fn from(builder: RepositoryStatsShardsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.stats`](crate::typed::cluster::ClusterClient::stats).
@@ -13925,7 +11976,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -14067,6 +12120,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -14212,33 +12273,40 @@ pub struct RuntimeFieldTypes {
 
 impl RuntimeFieldTypes {
     /// Creates a builder for [`RuntimeFieldTypes`].
+    ///
+    /// Required: `chars_max`, `chars_total`, `count`, `doc_max`, `doc_total`, `index_count`, `lang`, `lines_max`, `lines_total`, `name`, `scriptless_count`, `shadowed_count`, `source_max`, `source_total`.
     pub fn builder() -> RuntimeFieldTypesBuilder {
         RuntimeFieldTypesBuilder::new()
     }
 
     /// Creates a [`RuntimeFieldTypes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RuntimeFieldTypesBuilder,
-        ) -> RuntimeFieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `chars_max`, `chars_total`, `count`, `doc_max`, `doc_total`, `index_count`, `lang`, `lines_max`, `lines_total`, `name`, `scriptless_count`, `shadowed_count`, `source_max`, `source_total`.
+    pub fn of<B: crate::typed::builder::Build<Output = RuntimeFieldTypes>>(
+        f: impl FnOnce(RuntimeFieldTypesBuilder) -> B,
     ) -> RuntimeFieldTypes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RuntimeFieldTypesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod runtime_field_types_members {
+    pub struct chars_max;
+    pub struct chars_total;
+    pub struct count;
+    pub struct doc_max;
+    pub struct doc_total;
+    pub struct index_count;
+    pub struct lang;
+    pub struct lines_max;
+    pub struct lines_total;
+    pub struct name;
+    pub struct scriptless_count;
+    pub struct shadowed_count;
+    pub struct source_max;
+    pub struct source_total;
 }
 
 /// Builder for [`RuntimeFieldTypes`].
@@ -14359,7 +12427,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Maximum number of characters for a single runtime field script.
+    /// **Required.** Maximum number of characters for a single runtime field script.
     pub fn chars_max(
         self,
         value: i32,
@@ -14403,7 +12471,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Total number of characters for the scripts that define the current runtime field data type.
+    /// **Required.** Total number of characters for the scripts that define the current runtime field data type.
     pub fn chars_total(
         self,
         value: i32,
@@ -14447,7 +12515,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Number of runtime fields mapped to the field data type in selected nodes.
+    /// **Required.** Number of runtime fields mapped to the field data type in selected nodes.
     pub fn count(
         self,
         value: i32,
@@ -14491,7 +12559,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Maximum number of accesses to doc_values for a single runtime field script
+    /// **Required.** Maximum number of accesses to doc_values for a single runtime field script
     pub fn doc_max(
         self,
         value: i32,
@@ -14535,7 +12603,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Total number of accesses to doc_values for the scripts that define the current runtime field data type.
+    /// **Required.** Total number of accesses to doc_values for the scripts that define the current runtime field data type.
     pub fn doc_total(
         self,
         value: i32,
@@ -14579,7 +12647,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Number of indices containing a mapping of the runtime field data type in selected nodes.
+    /// **Required.** Number of indices containing a mapping of the runtime field data type in selected nodes.
     pub fn index_count(
         self,
         value: i32,
@@ -14623,7 +12691,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Script languages used for the runtime fields scripts.
+    /// **Required.** Script languages used for the runtime fields scripts.
     pub fn lang(
         self,
         value: impl Into<Vec<String>>,
@@ -14722,7 +12790,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Maximum number of lines for a single runtime field script.
+    /// **Required.** Maximum number of lines for a single runtime field script.
     pub fn lines_max(
         self,
         value: i32,
@@ -14766,7 +12834,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Total number of lines for the scripts that define the current runtime field data type.
+    /// **Required.** Total number of lines for the scripts that define the current runtime field data type.
     pub fn lines_total(
         self,
         value: i32,
@@ -14810,7 +12878,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12, S13>
         S13,
     )>
 {
-    /// Field data type used in selected nodes.
+    /// **Required.** Field data type used in selected nodes.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -14854,7 +12922,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11, S12, S13>
         S13,
     )>
 {
-    /// Number of runtime fields that don’t declare a script.
+    /// **Required.** Number of runtime fields that don’t declare a script.
     pub fn scriptless_count(
         self,
         value: i32,
@@ -14898,7 +12966,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S12, S13>
         S13,
     )>
 {
-    /// Number of runtime fields that shadow an indexed field.
+    /// **Required.** Number of runtime fields that shadow an indexed field.
     pub fn shadowed_count(
         self,
         value: i32,
@@ -14942,7 +13010,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S13>
         S13,
     )>
 {
-    /// Maximum number of accesses to _source for a single runtime field script.
+    /// **Required.** Maximum number of accesses to _source for a single runtime field script.
     pub fn source_max(
         self,
         value: i32,
@@ -14986,7 +13054,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Total number of accesses to _source for the scripts that define the current runtime field data type.
+    /// **Required.** Total number of accesses to _source for the scripts that define the current runtime field data type.
     pub fn source_total(
         self,
         value: i32,
@@ -15012,26 +13080,27 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 }
 
-impl
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
+    RuntimeFieldTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13)>
 {
     /// Builds a [`RuntimeFieldTypes`].
-    pub fn build(self) -> RuntimeFieldTypes {
+    pub fn build(self) -> RuntimeFieldTypes
+    where
+        S0: crate::typed::builder::IsSet<runtime_field_types_members::chars_max>,
+        S1: crate::typed::builder::IsSet<runtime_field_types_members::chars_total>,
+        S2: crate::typed::builder::IsSet<runtime_field_types_members::count>,
+        S3: crate::typed::builder::IsSet<runtime_field_types_members::doc_max>,
+        S4: crate::typed::builder::IsSet<runtime_field_types_members::doc_total>,
+        S5: crate::typed::builder::IsSet<runtime_field_types_members::index_count>,
+        S6: crate::typed::builder::IsSet<runtime_field_types_members::lang>,
+        S7: crate::typed::builder::IsSet<runtime_field_types_members::lines_max>,
+        S8: crate::typed::builder::IsSet<runtime_field_types_members::lines_total>,
+        S9: crate::typed::builder::IsSet<runtime_field_types_members::name>,
+        S10: crate::typed::builder::IsSet<runtime_field_types_members::scriptless_count>,
+        S11: crate::typed::builder::IsSet<runtime_field_types_members::shadowed_count>,
+        S12: crate::typed::builder::IsSet<runtime_field_types_members::source_max>,
+        S13: crate::typed::builder::IsSet<runtime_field_types_members::source_total>,
+    {
         RuntimeFieldTypes {
             chars_max: self.chars_max.unwrap(),
             chars_total: self.chars_total.unwrap(),
@@ -15051,368 +13120,70 @@ impl
     }
 }
 
-impl
-    From<
-        RuntimeFieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RuntimeFieldTypes
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13> crate::typed::builder::Build
+    for RuntimeFieldTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13)>
+where
+    S0: crate::typed::builder::IsSet<runtime_field_types_members::chars_max>,
+    S1: crate::typed::builder::IsSet<runtime_field_types_members::chars_total>,
+    S2: crate::typed::builder::IsSet<runtime_field_types_members::count>,
+    S3: crate::typed::builder::IsSet<runtime_field_types_members::doc_max>,
+    S4: crate::typed::builder::IsSet<runtime_field_types_members::doc_total>,
+    S5: crate::typed::builder::IsSet<runtime_field_types_members::index_count>,
+    S6: crate::typed::builder::IsSet<runtime_field_types_members::lang>,
+    S7: crate::typed::builder::IsSet<runtime_field_types_members::lines_max>,
+    S8: crate::typed::builder::IsSet<runtime_field_types_members::lines_total>,
+    S9: crate::typed::builder::IsSet<runtime_field_types_members::name>,
+    S10: crate::typed::builder::IsSet<runtime_field_types_members::scriptless_count>,
+    S11: crate::typed::builder::IsSet<runtime_field_types_members::shadowed_count>,
+    S12: crate::typed::builder::IsSet<runtime_field_types_members::source_max>,
+    S13: crate::typed::builder::IsSet<runtime_field_types_members::source_total>,
+{
+    type Output = RuntimeFieldTypes;
+
+    fn build(self) -> RuntimeFieldTypes {
+        Self::build(self)
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
+    From<RuntimeFieldTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13)>>
+    for RuntimeFieldTypes
+where
+    S0: crate::typed::builder::IsSet<runtime_field_types_members::chars_max>,
+    S1: crate::typed::builder::IsSet<runtime_field_types_members::chars_total>,
+    S2: crate::typed::builder::IsSet<runtime_field_types_members::count>,
+    S3: crate::typed::builder::IsSet<runtime_field_types_members::doc_max>,
+    S4: crate::typed::builder::IsSet<runtime_field_types_members::doc_total>,
+    S5: crate::typed::builder::IsSet<runtime_field_types_members::index_count>,
+    S6: crate::typed::builder::IsSet<runtime_field_types_members::lang>,
+    S7: crate::typed::builder::IsSet<runtime_field_types_members::lines_max>,
+    S8: crate::typed::builder::IsSet<runtime_field_types_members::lines_total>,
+    S9: crate::typed::builder::IsSet<runtime_field_types_members::name>,
+    S10: crate::typed::builder::IsSet<runtime_field_types_members::scriptless_count>,
+    S11: crate::typed::builder::IsSet<runtime_field_types_members::shadowed_count>,
+    S12: crate::typed::builder::IsSet<runtime_field_types_members::source_max>,
+    S13: crate::typed::builder::IsSet<runtime_field_types_members::source_total>,
 {
     fn from(
         builder: RuntimeFieldTypesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
         )>,
     ) -> Self {
         builder.build()
     }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `chars_max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, chars_max: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match chars_max {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `chars_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, chars_total: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match chars_total {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match count {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `doc_max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_max: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match doc_max {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `doc_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_total: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match doc_total {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `index_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_count: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match index_count {} }
-}
-
-impl<S7, S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `lang` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lang: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match lang {} }
-}
-
-impl<S8, S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `lines_max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lines_max: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match lines_max {} }
-}
-
-impl<S9, S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `lines_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lines_total: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match lines_total {} }
-}
-
-impl<S10, S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match name {} }
-}
-
-impl<S11, S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-    )>
-{
-    /// `scriptless_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, scriptless_count: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match scriptless_count {} }
-}
-
-impl<S12, S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-    )>
-{
-    /// `shadowed_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shadowed_count: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match shadowed_count {} }
-}
-
-impl<S13>
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-    )>
-{
-    /// `source_max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source_max: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match source_max {} }
-}
-
-impl
-    RuntimeFieldTypesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source_total: crate::typed::builder::MissingRequiredField) -> RuntimeFieldTypes { match source_total {} }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15427,25 +13198,32 @@ pub struct SearchUsageStats {
 
 impl SearchUsageStats {
     /// Creates a builder for [`SearchUsageStats`].
+    ///
+    /// Required: `total`, `queries`, `rescorers`, `sections`, `retrievers`, `extended`.
     pub fn builder() -> SearchUsageStatsBuilder {
         SearchUsageStatsBuilder::new()
     }
 
     /// Creates a [`SearchUsageStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchUsageStatsBuilder,
-        ) -> SearchUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `queries`, `rescorers`, `sections`, `retrievers`, `extended`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchUsageStats>>(
+        f: impl FnOnce(SearchUsageStatsBuilder) -> B,
     ) -> SearchUsageStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchUsageStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_usage_stats_members {
+    pub struct total;
+    pub struct queries;
+    pub struct rescorers;
+    pub struct sections;
+    pub struct retrievers;
+    pub struct extended;
 }
 
 /// Builder for [`SearchUsageStats`].
@@ -15509,6 +13287,7 @@ impl<S0, S1, S2, S3, S4, S5> SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
 impl<S1, S2, S3, S4, S5>
     SearchUsageStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn total(
         self,
         value: i64,
@@ -15522,6 +13301,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     SearchUsageStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn queries(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
@@ -15559,6 +13339,7 @@ impl<S0, S2, S3, S4, S5> SearchUsageStatsBuilder<(S0, crate::typed::builder::Set
 impl<S0, S1, S3, S4, S5>
     SearchUsageStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn rescorers(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
@@ -15596,6 +13377,7 @@ impl<S0, S1, S3, S4, S5> SearchUsageStatsBuilder<(S0, S1, crate::typed::builder:
 impl<S0, S1, S2, S4, S5>
     SearchUsageStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn sections(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
@@ -15633,6 +13415,7 @@ impl<S0, S1, S2, S4, S5> SearchUsageStatsBuilder<(S0, S1, S2, crate::typed::buil
 impl<S0, S1, S2, S3, S5>
     SearchUsageStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn retrievers(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
@@ -15674,6 +13457,7 @@ impl<S0, S1, S2, S3, S5> SearchUsageStatsBuilder<(S0, S1, S2, S3, crate::typed::
 impl<S0, S1, S2, S3, S4>
     SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn extended(
         self,
         value: impl Into<ExtendedSearchUsage>,
@@ -15684,26 +13468,25 @@ impl<S0, S1, S2, S3, S4>
     }
 
     /// Sets [`extended`](Self::extended) with a builder.
-    pub fn extended_with(
+    pub fn extended_with<B: crate::typed::builder::Build<Output = ExtendedSearchUsage>>(
         self,
-        f: impl FnOnce(ExtendedSearchUsageBuilder) -> ExtendedSearchUsageBuilder,
+        f: impl FnOnce(ExtendedSearchUsageBuilder) -> B,
     ) -> SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.extended(f(ExtendedSearchUsageBuilder::new()).build())
     }
 }
 
-impl
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`SearchUsageStats`].
-    pub fn build(self) -> SearchUsageStats {
+    pub fn build(self) -> SearchUsageStats
+    where
+        S0: crate::typed::builder::IsSet<search_usage_stats_members::total>,
+        S1: crate::typed::builder::IsSet<search_usage_stats_members::queries>,
+        S2: crate::typed::builder::IsSet<search_usage_stats_members::rescorers>,
+        S3: crate::typed::builder::IsSet<search_usage_stats_members::sections>,
+        S4: crate::typed::builder::IsSet<search_usage_stats_members::retrievers>,
+        S5: crate::typed::builder::IsSet<search_usage_stats_members::extended>,
+    {
         SearchUsageStats {
             total: self.total.unwrap(),
             queries: self.queries.unwrap(),
@@ -15715,113 +13498,36 @@ impl
     }
 }
 
-impl
-    From<
-        SearchUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SearchUsageStats
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<search_usage_stats_members::total>,
+    S1: crate::typed::builder::IsSet<search_usage_stats_members::queries>,
+    S2: crate::typed::builder::IsSet<search_usage_stats_members::rescorers>,
+    S3: crate::typed::builder::IsSet<search_usage_stats_members::sections>,
+    S4: crate::typed::builder::IsSet<search_usage_stats_members::retrievers>,
+    S5: crate::typed::builder::IsSet<search_usage_stats_members::extended>,
 {
-    fn from(
-        builder: SearchUsageStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SearchUsageStats;
+
+    fn build(self) -> SearchUsageStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    SearchUsageStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for SearchUsageStats
+where
+    S0: crate::typed::builder::IsSet<search_usage_stats_members::total>,
+    S1: crate::typed::builder::IsSet<search_usage_stats_members::queries>,
+    S2: crate::typed::builder::IsSet<search_usage_stats_members::rescorers>,
+    S3: crate::typed::builder::IsSet<search_usage_stats_members::sections>,
+    S4: crate::typed::builder::IsSet<search_usage_stats_members::retrievers>,
+    S5: crate::typed::builder::IsSet<search_usage_stats_members::extended>,
 {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match total {} }
-}
-
-impl<S2, S3, S4, S5>
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `queries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queries: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match queries {} }
-}
-
-impl<S3, S4, S5>
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `rescorers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rescorers: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match rescorers {} }
-}
-
-impl<S4, S5>
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `sections` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sections: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match sections {} }
-}
-
-impl<S5>
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `retrievers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, retrievers: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match retrievers {} }
-}
-
-impl
-    SearchUsageStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `extended` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, extended: crate::typed::builder::MissingRequiredField) -> SearchUsageStats { match extended {} }
+    fn from(builder: SearchUsageStatsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -15860,24 +13566,31 @@ pub struct SnapshotCurrentCounts {
 
 impl SnapshotCurrentCounts {
     /// Creates a builder for [`SnapshotCurrentCounts`].
+    ///
+    /// Required: `snapshots`, `shard_snapshots`, `snapshot_deletions`, `concurrent_operations`, `cleanups`.
     pub fn builder() -> SnapshotCurrentCountsBuilder {
         SnapshotCurrentCountsBuilder::new()
     }
 
     /// Creates a [`SnapshotCurrentCounts`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotCurrentCountsBuilder,
-        ) -> SnapshotCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `snapshots`, `shard_snapshots`, `snapshot_deletions`, `concurrent_operations`, `cleanups`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotCurrentCounts>>(
+        f: impl FnOnce(SnapshotCurrentCountsBuilder) -> B,
     ) -> SnapshotCurrentCounts {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotCurrentCountsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_current_counts_members {
+    pub struct snapshots;
+    pub struct shard_snapshots;
+    pub struct snapshot_deletions;
+    pub struct concurrent_operations;
+    pub struct cleanups;
 }
 
 /// Builder for [`SnapshotCurrentCounts`].
@@ -15934,7 +13647,7 @@ impl<S0, S1, S2, S3, S4> SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> SnapshotCurrentCountsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// Snapshots currently in progress
+    /// **Required.** Snapshots currently in progress
     pub fn snapshots(
         self,
         value: i32,
@@ -15946,7 +13659,7 @@ impl<S1, S2, S3, S4> SnapshotCurrentCountsBuilder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2, S3, S4> SnapshotCurrentCountsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// Incomplete shard snapshots
+    /// **Required.** Incomplete shard snapshots
     pub fn shard_snapshots(
         self,
         value: i32,
@@ -15958,7 +13671,7 @@ impl<S0, S2, S3, S4> SnapshotCurrentCountsBuilder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1, S3, S4> SnapshotCurrentCountsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// Snapshots deletions in progress
+    /// **Required.** Snapshots deletions in progress
     pub fn snapshot_deletions(
         self,
         value: i32,
@@ -15970,7 +13683,7 @@ impl<S0, S1, S3, S4> SnapshotCurrentCountsBuilder<(S0, S1, crate::typed::builder
 }
 
 impl<S0, S1, S2, S4> SnapshotCurrentCountsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// Sum of snapshots and snapshot_deletions
+    /// **Required.** Sum of snapshots and snapshot_deletions
     pub fn concurrent_operations(
         self,
         value: i32,
@@ -15982,7 +13695,7 @@ impl<S0, S1, S2, S4> SnapshotCurrentCountsBuilder<(S0, S1, S2, crate::typed::bui
 }
 
 impl<S0, S1, S2, S3> SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// Cleanups in progress, not counted in concurrent_operations as they are not concurrent
+    /// **Required.** Cleanups in progress, not counted in concurrent_operations as they are not concurrent
     pub fn cleanups(
         self,
         value: i32,
@@ -15993,17 +13706,16 @@ impl<S0, S1, S2, S3> SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, crate::typed:
     }
 }
 
-impl
-    SnapshotCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`SnapshotCurrentCounts`].
-    pub fn build(self) -> SnapshotCurrentCounts {
+    pub fn build(self) -> SnapshotCurrentCounts
+    where
+        S0: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshots>,
+        S1: crate::typed::builder::IsSet<snapshot_current_counts_members::shard_snapshots>,
+        S2: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshot_deletions>,
+        S3: crate::typed::builder::IsSet<snapshot_current_counts_members::concurrent_operations>,
+        S4: crate::typed::builder::IsSet<snapshot_current_counts_members::cleanups>,
+    {
         SnapshotCurrentCounts {
             snapshots: self.snapshots.unwrap(),
             shard_snapshots: self.shard_snapshots.unwrap(),
@@ -16014,90 +13726,34 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotCurrentCounts
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshots>,
+    S1: crate::typed::builder::IsSet<snapshot_current_counts_members::shard_snapshots>,
+    S2: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshot_deletions>,
+    S3: crate::typed::builder::IsSet<snapshot_current_counts_members::concurrent_operations>,
+    S4: crate::typed::builder::IsSet<snapshot_current_counts_members::cleanups>,
 {
-    fn from(
-        builder: SnapshotCurrentCountsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotCurrentCounts;
+
+    fn build(self) -> SnapshotCurrentCounts {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> SnapshotCurrentCountsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `snapshots` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots: crate::typed::builder::MissingRequiredField) -> SnapshotCurrentCounts { match snapshots {} }
-}
-
-impl<S2, S3, S4>
-    SnapshotCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, S4)>>
+    for SnapshotCurrentCounts
+where
+    S0: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshots>,
+    S1: crate::typed::builder::IsSet<snapshot_current_counts_members::shard_snapshots>,
+    S2: crate::typed::builder::IsSet<snapshot_current_counts_members::snapshot_deletions>,
+    S3: crate::typed::builder::IsSet<snapshot_current_counts_members::concurrent_operations>,
+    S4: crate::typed::builder::IsSet<snapshot_current_counts_members::cleanups>,
 {
-    /// `shard_snapshots` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_snapshots: crate::typed::builder::MissingRequiredField) -> SnapshotCurrentCounts { match shard_snapshots {} }
-}
-
-impl<S3, S4>
-    SnapshotCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `snapshot_deletions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_deletions: crate::typed::builder::MissingRequiredField) -> SnapshotCurrentCounts { match snapshot_deletions {} }
-}
-
-impl<S4>
-    SnapshotCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `concurrent_operations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, concurrent_operations: crate::typed::builder::MissingRequiredField) -> SnapshotCurrentCounts { match concurrent_operations {} }
-}
-
-impl
-    SnapshotCurrentCountsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `cleanups` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cleanups: crate::typed::builder::MissingRequiredField) -> SnapshotCurrentCounts { match cleanups {} }
+    fn from(builder: SnapshotCurrentCountsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -16121,18 +13777,27 @@ pub struct SparseVectorStats {
 
 impl SparseVectorStats {
     /// Creates a builder for [`SparseVectorStats`].
+    ///
+    /// Required: `value_count`.
     pub fn builder() -> SparseVectorStatsBuilder {
         SparseVectorStatsBuilder::new()
     }
 
     /// Creates a [`SparseVectorStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SparseVectorStatsBuilder,
-        ) -> SparseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SparseVectorStats>>(
+        f: impl FnOnce(SparseVectorStatsBuilder) -> B,
     ) -> SparseVectorStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SparseVectorStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sparse_vector_stats_members {
+    pub struct value_count;
 }
 
 /// Builder for [`SparseVectorStats`].
@@ -16161,6 +13826,7 @@ impl<S0> SparseVectorStatsBuilder<(S0,)> {
 }
 
 impl SparseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value_count(
         self,
         value: i64,
@@ -16171,25 +13837,36 @@ impl SparseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SparseVectorStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SparseVectorStatsBuilder<(S0,)> {
     /// Builds a [`SparseVectorStats`].
-    pub fn build(self) -> SparseVectorStats {
+    pub fn build(self) -> SparseVectorStats
+    where
+        S0: crate::typed::builder::IsSet<sparse_vector_stats_members::value_count>,
+    {
         SparseVectorStats {
             value_count: self.value_count.unwrap(),
         }
     }
 }
 
-impl From<SparseVectorStatsBuilder<(crate::typed::builder::Set,)>> for SparseVectorStats {
-    fn from(builder: SparseVectorStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SparseVectorStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sparse_vector_stats_members::value_count>,
+{
+    type Output = SparseVectorStats;
+
+    fn build(self) -> SparseVectorStats {
+        Self::build(self)
     }
 }
 
-impl SparseVectorStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value_count: crate::typed::builder::MissingRequiredField) -> SparseVectorStats { match value_count {} }
+impl<S0> From<SparseVectorStatsBuilder<(S0,)>> for SparseVectorStats
+where
+    S0: crate::typed::builder::IsSet<sparse_vector_stats_members::value_count>,
+{
+    fn from(builder: SparseVectorStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16223,27 +13900,34 @@ pub struct StatsResponseBase {
 
 impl StatsResponseBase {
     /// Creates a builder for [`StatsResponseBase`].
+    ///
+    /// Required: `cluster_name`, `cluster_uuid`, `indices`, `nodes`, `repositories`, `snapshots`, `timestamp`, `ccs`.
     pub fn builder() -> StatsResponseBaseBuilder {
         StatsResponseBaseBuilder::new()
     }
 
     /// Creates a [`StatsResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatsResponseBaseBuilder,
-        ) -> StatsResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster_name`, `cluster_uuid`, `indices`, `nodes`, `repositories`, `snapshots`, `timestamp`, `ccs`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatsResponseBase>>(
+        f: impl FnOnce(StatsResponseBaseBuilder) -> B,
     ) -> StatsResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatsResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stats_response_base_members {
+    pub struct cluster_name;
+    pub struct cluster_uuid;
+    pub struct indices;
+    pub struct nodes;
+    pub struct repositories;
+    pub struct snapshots;
+    pub struct timestamp;
+    pub struct ccs;
 }
 
 /// Builder for [`StatsResponseBase`].
@@ -16337,15 +14021,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> StatsResponseBaseBuilder<(S0, S1, S2, S3, S
     }
 
     /// Sets [`node_stats`](Self::node_stats) with a builder.
-    pub fn node_stats_with(
+    pub fn node_stats_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeStatisticsBuilder,
-        ) -> crate::typed::_types::NodeStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeStatisticsBuilder) -> B,
     ) -> Self {
         self.node_stats(f(crate::typed::_types::NodeStatisticsBuilder::new()).build())
     }
@@ -16366,7 +14046,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> StatsResponseBaseBuilder<(S0, S1, S2, S3, S
 impl<S1, S2, S3, S4, S5, S6, S7>
     StatsResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// Name of the cluster, based on the cluster name setting.
+    /// **Required.** Name of the cluster, based on the cluster name setting.
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -16380,7 +14060,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     StatsResponseBaseBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
-    /// Unique identifier for the cluster.
+    /// **Required.** Unique identifier for the cluster.
     pub fn cluster_uuid(
         self,
         value: impl Into<crate::typed::_types::Uuid>,
@@ -16394,7 +14074,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     StatsResponseBaseBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
-    /// Contains statistics about indices with shards assigned to selected nodes.
+    /// **Required.** Contains statistics about indices with shards assigned to selected nodes.
     pub fn indices(
         self,
         value: impl Into<ClusterIndices>,
@@ -16405,23 +14085,9 @@ impl<S0, S1, S3, S4, S5, S6, S7>
     }
 
     /// Sets [`indices`](Self::indices) with a builder.
-    pub fn indices_with(
+    pub fn indices_with<B: crate::typed::builder::Build<Output = ClusterIndices>>(
         self,
-        f: impl FnOnce(
-            ClusterIndicesBuilder,
-        ) -> ClusterIndicesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterIndicesBuilder) -> B,
     ) -> StatsResponseBaseBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7)> {
         self.indices(f(ClusterIndicesBuilder::new()).build())
     }
@@ -16430,7 +14096,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     StatsResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// Contains statistics about nodes selected by the request’s node filters.
+    /// **Required.** Contains statistics about nodes selected by the request’s node filters.
     pub fn nodes(
         self,
         value: impl Into<ClusterNodes>,
@@ -16441,24 +14107,9 @@ impl<S0, S1, S2, S4, S5, S6, S7>
     }
 
     /// Sets [`nodes`](Self::nodes) with a builder.
-    pub fn nodes_with(
+    pub fn nodes_with<B: crate::typed::builder::Build<Output = ClusterNodes>>(
         self,
-        f: impl FnOnce(
-            ClusterNodesBuilder,
-        ) -> ClusterNodesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterNodesBuilder) -> B,
     ) -> StatsResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)> {
         self.nodes(f(ClusterNodesBuilder::new()).build())
     }
@@ -16467,7 +14118,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     StatsResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// Contains stats on repository feature usage exposed in cluster stats for telemetry.
+    /// **Required.** Contains stats on repository feature usage exposed in cluster stats for telemetry.
     pub fn repositories(
         self,
         value: impl Into<
@@ -16516,7 +14167,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
-    /// Contains stats cluster snapshots.
+    /// **Required.** Contains stats cluster snapshots.
     pub fn snapshots(
         self,
         value: impl Into<ClusterSnapshotStats>,
@@ -16527,14 +14178,9 @@ impl<S0, S1, S2, S3, S4, S6, S7>
     }
 
     /// Sets [`snapshots`](Self::snapshots) with a builder.
-    pub fn snapshots_with(
+    pub fn snapshots_with<B: crate::typed::builder::Build<Output = ClusterSnapshotStats>>(
         self,
-        f: impl FnOnce(
-            ClusterSnapshotStatsBuilder,
-        ) -> ClusterSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ClusterSnapshotStatsBuilder) -> B,
     ) -> StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7)> {
         self.snapshots(f(ClusterSnapshotStatsBuilder::new()).build())
     }
@@ -16543,7 +14189,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
-    /// Unix timestamp, in milliseconds, for the last time the cluster statistics were refreshed.
+    /// **Required.** Unix timestamp, in milliseconds, for the last time the cluster statistics were refreshed.
     pub fn timestamp(
         self,
         value: i64,
@@ -16557,7 +14203,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
-    /// Cross-cluster stats
+    /// **Required.** Cross-cluster stats
     pub fn ccs(
         self,
         value: impl Into<CCSStats>,
@@ -16568,28 +14214,27 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 
     /// Sets [`ccs`](Self::ccs) with a builder.
-    pub fn ccs_with(
+    pub fn ccs_with<B: crate::typed::builder::Build<Output = CCSStats>>(
         self,
-        f: impl FnOnce(CCSStatsBuilder) -> CCSStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CCSStatsBuilder) -> B,
     ) -> StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)> {
         self.ccs(f(CCSStatsBuilder::new()).build())
     }
 }
 
-impl
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`StatsResponseBase`].
-    pub fn build(self) -> StatsResponseBase {
+    pub fn build(self) -> StatsResponseBase
+    where
+        S0: crate::typed::builder::IsSet<stats_response_base_members::cluster_name>,
+        S1: crate::typed::builder::IsSet<stats_response_base_members::cluster_uuid>,
+        S2: crate::typed::builder::IsSet<stats_response_base_members::indices>,
+        S3: crate::typed::builder::IsSet<stats_response_base_members::nodes>,
+        S4: crate::typed::builder::IsSet<stats_response_base_members::repositories>,
+        S5: crate::typed::builder::IsSet<stats_response_base_members::snapshots>,
+        S6: crate::typed::builder::IsSet<stats_response_base_members::timestamp>,
+        S7: crate::typed::builder::IsSet<stats_response_base_members::ccs>,
+    {
         StatsResponseBase {
             node_stats: self.node_stats,
             cluster_name: self.cluster_name.unwrap(),
@@ -16605,161 +14250,40 @@ impl
     }
 }
 
-impl
-    From<
-        StatsResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StatsResponseBase
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<stats_response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<stats_response_base_members::cluster_uuid>,
+    S2: crate::typed::builder::IsSet<stats_response_base_members::indices>,
+    S3: crate::typed::builder::IsSet<stats_response_base_members::nodes>,
+    S4: crate::typed::builder::IsSet<stats_response_base_members::repositories>,
+    S5: crate::typed::builder::IsSet<stats_response_base_members::snapshots>,
+    S6: crate::typed::builder::IsSet<stats_response_base_members::timestamp>,
+    S7: crate::typed::builder::IsSet<stats_response_base_members::ccs>,
 {
-    fn from(
-        builder: StatsResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StatsResponseBase;
+
+    fn build(self) -> StatsResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    StatsResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for StatsResponseBase
+where
+    S0: crate::typed::builder::IsSet<stats_response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<stats_response_base_members::cluster_uuid>,
+    S2: crate::typed::builder::IsSet<stats_response_base_members::indices>,
+    S3: crate::typed::builder::IsSet<stats_response_base_members::nodes>,
+    S4: crate::typed::builder::IsSet<stats_response_base_members::repositories>,
+    S5: crate::typed::builder::IsSet<stats_response_base_members::snapshots>,
+    S6: crate::typed::builder::IsSet<stats_response_base_members::timestamp>,
+    S7: crate::typed::builder::IsSet<stats_response_base_members::ccs>,
 {
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match cluster_name {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `cluster_uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_uuid: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match cluster_uuid {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match indices {} }
-}
-
-impl<S4, S5, S6, S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match nodes {} }
-}
-
-impl<S5, S6, S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `repositories` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repositories: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match repositories {} }
-}
-
-impl<S6, S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `snapshots` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshots: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match snapshots {} }
-}
-
-impl<S7>
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match timestamp {} }
-}
-
-impl
-    StatsResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `ccs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ccs: crate::typed::builder::MissingRequiredField) -> StatsResponseBase { match ccs {} }
+    fn from(builder: StatsResponseBaseBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16770,19 +14294,28 @@ pub struct SynonymsStats {
 
 impl SynonymsStats {
     /// Creates a builder for [`SynonymsStats`].
+    ///
+    /// Required: `count`, `index_count`.
     pub fn builder() -> SynonymsStatsBuilder {
         SynonymsStatsBuilder::new()
     }
 
     /// Creates a [`SynonymsStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymsStatsBuilder,
-        )
-            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `count`, `index_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymsStats>>(
+        f: impl FnOnce(SynonymsStatsBuilder) -> B,
     ) -> SynonymsStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymsStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonyms_stats_members {
+    pub struct count;
+    pub struct index_count;
 }
 
 /// Builder for [`SynonymsStats`].
@@ -16815,6 +14348,7 @@ impl<S0, S1> SynonymsStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> SynonymsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn count(self, value: i32) -> SynonymsStatsBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -16823,6 +14357,7 @@ impl<S1> SynonymsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SynonymsStatsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn index_count(self, value: i32) -> SynonymsStatsBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.index_count = Some(value);
@@ -16830,9 +14365,13 @@ impl<S0> SynonymsStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SynonymsStatsBuilder<(S0, S1)> {
     /// Builds a [`SynonymsStats`].
-    pub fn build(self) -> SynonymsStats {
+    pub fn build(self) -> SynonymsStats
+    where
+        S0: crate::typed::builder::IsSet<synonyms_stats_members::count>,
+        S1: crate::typed::builder::IsSet<synonyms_stats_members::index_count>,
+    {
         SynonymsStats {
             count: self.count.unwrap(),
             index_count: self.index_count.unwrap(),
@@ -16840,24 +14379,24 @@ impl SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SynonymsStats
+impl<S0, S1> crate::typed::builder::Build for SynonymsStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<synonyms_stats_members::count>,
+    S1: crate::typed::builder::IsSet<synonyms_stats_members::index_count>,
 {
-    fn from(
-        builder: SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SynonymsStats;
+
+    fn build(self) -> SynonymsStats {
+        Self::build(self)
     }
 }
 
-impl<S1> SynonymsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> SynonymsStats { match count {} }
-}
-
-impl SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_count: crate::typed::builder::MissingRequiredField) -> SynonymsStats { match index_count {} }
+impl<S0, S1> From<SynonymsStatsBuilder<(S0, S1)>> for SynonymsStats
+where
+    S0: crate::typed::builder::IsSet<synonyms_stats_members::count>,
+    S1: crate::typed::builder::IsSet<synonyms_stats_members::index_count>,
+{
+    fn from(builder: SynonymsStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

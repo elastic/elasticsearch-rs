@@ -38,7 +38,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -166,6 +168,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -281,21 +291,28 @@ pub struct SynonymsSetItem {
 
 impl SynonymsSetItem {
     /// Creates a builder for [`SynonymsSetItem`].
+    ///
+    /// Required: `synonyms_set`, `count`.
     pub fn builder() -> SynonymsSetItemBuilder {
         SynonymsSetItemBuilder::new()
     }
 
     /// Creates a [`SynonymsSetItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymsSetItemBuilder,
-        ) -> SynonymsSetItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `synonyms_set`, `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymsSetItem>>(
+        f: impl FnOnce(SynonymsSetItemBuilder) -> B,
     ) -> SynonymsSetItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymsSetItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonyms_set_item_members {
+    pub struct synonyms_set;
+    pub struct count;
 }
 
 /// Builder for [`SynonymsSetItem`].
@@ -329,7 +346,7 @@ impl<S0, S1> SynonymsSetItemBuilder<(S0, S1)> {
 }
 
 impl<S1> SynonymsSetItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Synonyms set identifier
+    /// **Required.** Synonyms set identifier
     pub fn synonyms_set(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -341,7 +358,7 @@ impl<S1> SynonymsSetItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SynonymsSetItemBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Number of synonym rules that the synonym set contains
+    /// **Required.** Number of synonym rules that the synonym set contains
     pub fn count(self, value: i32) -> SynonymsSetItemBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -349,9 +366,13 @@ impl<S0> SynonymsSetItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SynonymsSetItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SynonymsSetItemBuilder<(S0, S1)> {
     /// Builds a [`SynonymsSetItem`].
-    pub fn build(self) -> SynonymsSetItem {
+    pub fn build(self) -> SynonymsSetItem
+    where
+        S0: crate::typed::builder::IsSet<synonyms_set_item_members::synonyms_set>,
+        S1: crate::typed::builder::IsSet<synonyms_set_item_members::count>,
+    {
         SynonymsSetItem {
             synonyms_set: self.synonyms_set.unwrap(),
             count: self.count.unwrap(),
@@ -359,24 +380,24 @@ impl SynonymsSetItemBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<SynonymsSetItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SynonymsSetItem
+impl<S0, S1> crate::typed::builder::Build for SynonymsSetItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<synonyms_set_item_members::synonyms_set>,
+    S1: crate::typed::builder::IsSet<synonyms_set_item_members::count>,
 {
-    fn from(
-        builder: SynonymsSetItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SynonymsSetItem;
+
+    fn build(self) -> SynonymsSetItem {
+        Self::build(self)
     }
 }
 
-impl<S1> SynonymsSetItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `synonyms_set` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, synonyms_set: crate::typed::builder::MissingRequiredField) -> SynonymsSetItem { match synonyms_set {} }
-}
-
-impl SynonymsSetItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> SynonymsSetItem { match count {} }
+impl<S0, S1> From<SynonymsSetItemBuilder<(S0, S1)>> for SynonymsSetItem
+where
+    S0: crate::typed::builder::IsSet<synonyms_set_item_members::synonyms_set>,
+    S1: crate::typed::builder::IsSet<synonyms_set_item_members::count>,
+{
+    fn from(builder: SynonymsSetItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

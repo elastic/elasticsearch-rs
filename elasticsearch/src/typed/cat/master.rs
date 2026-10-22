@@ -24,7 +24,9 @@ impl MasterRecord {
     }
 
     /// Creates a [`MasterRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MasterRecordBuilder) -> MasterRecordBuilder) -> MasterRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = MasterRecord>>(
+        f: impl FnOnce(MasterRecordBuilder) -> B,
+    ) -> MasterRecord {
         f(Self::builder()).build()
     }
 }
@@ -111,6 +113,14 @@ impl MasterRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MasterRecordBuilder {
+    type Output = MasterRecord;
+
+    fn build(self) -> MasterRecord {
+        Self::build(self)
+    }
+}
+
 impl From<MasterRecordBuilder> for MasterRecord {
     fn from(builder: MasterRecordBuilder) -> Self {
         builder.build()
@@ -165,7 +175,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -325,6 +337,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

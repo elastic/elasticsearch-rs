@@ -53,7 +53,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -247,6 +249,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -587,8 +597,8 @@ impl TransformsRecord {
     }
 
     /// Creates a [`TransformsRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TransformsRecordBuilder) -> TransformsRecordBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TransformsRecord>>(
+        f: impl FnOnce(TransformsRecordBuilder) -> B,
     ) -> TransformsRecord {
         f(Self::builder()).build()
     }
@@ -1145,6 +1155,14 @@ impl TransformsRecordBuilder {
             indexed_documents_exp_avg: self.indexed_documents_exp_avg,
             processed_documents_exp_avg: self.processed_documents_exp_avg,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TransformsRecordBuilder {
+    type Output = TransformsRecord;
+
+    fn build(self) -> TransformsRecord {
+        Self::build(self)
     }
 }
 

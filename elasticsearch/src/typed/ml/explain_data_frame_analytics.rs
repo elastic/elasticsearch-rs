@@ -75,7 +75,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -212,13 +214,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalyticsSource>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalyticsSourceBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalyticsSourceBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder) -> B,
     ) -> Self {
         self.source(f(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder::new()).build())
     }
@@ -243,13 +243,13 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeAnalyticsDestination,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder) -> B,
     ) -> Self {
         self.dest(f(crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder::new()).build())
     }
@@ -275,13 +275,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalysisContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisContainerBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisContainerBuilder) -> B,
     ) -> Self {
         self.analysis(f(crate::typed::ml::_types::DataframeAnalysisContainerBuilder::new()).build())
     }
@@ -352,11 +350,13 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`analyzed_fields`](Self::analyzed_fields) with a builder.
-    pub fn analyzed_fields_with(
+    pub fn analyzed_fields_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeAnalysisAnalyzedFields,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> Self {
         self.analyzed_fields(
             f(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder::new()).build(),
@@ -395,6 +395,14 @@ impl<C> RequestBuilder<(), C> {
             analyzed_fields: self.analyzed_fields,
             allow_lazy_start: self.allow_lazy_start,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

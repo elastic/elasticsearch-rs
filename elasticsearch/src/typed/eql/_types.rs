@@ -21,7 +21,9 @@ impl EqlHits {
     }
 
     /// Creates a [`EqlHits`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(EqlHitsBuilder) -> EqlHitsBuilder) -> EqlHits {
+    pub fn of<B: crate::typed::builder::Build<Output = EqlHits>>(
+        f: impl FnOnce(EqlHitsBuilder) -> B,
+    ) -> EqlHits {
         f(Self::builder()).build()
     }
 }
@@ -64,14 +66,11 @@ impl EqlHitsBuilder {
     }
 
     /// Sets [`total`](Self::total) with a builder.
-    pub fn total_with(
+    pub fn total_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::TotalHits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::TotalHitsBuilder,
-        ) -> crate::typed::_global::search::_types::TotalHitsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::TotalHitsBuilder) -> B,
     ) -> Self {
         self.total(f(crate::typed::_global::search::_types::TotalHitsBuilder::new()).build())
     }
@@ -97,15 +96,9 @@ impl EqlHitsBuilder {
     }
 
     /// Adds an element to [`events`](Self::events), with a builder.
-    pub fn add_events_with(
+    pub fn add_events_with<B: crate::typed::builder::Build<Output = HitsEvent>>(
         self,
-        f: impl FnOnce(
-            HitsEventBuilder,
-        ) -> HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HitsEventBuilder) -> B,
     ) -> Self {
         self.add_events(f(HitsEventBuilder::new()).build())
     }
@@ -131,9 +124,9 @@ impl EqlHitsBuilder {
     }
 
     /// Adds an element to [`sequences`](Self::sequences), with a builder.
-    pub fn add_sequences_with(
+    pub fn add_sequences_with<B: crate::typed::builder::Build<Output = HitsSequence>>(
         self,
-        f: impl FnOnce(HitsSequenceBuilder) -> HitsSequenceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(HitsSequenceBuilder) -> B,
     ) -> Self {
         self.add_sequences(f(HitsSequenceBuilder::new()).build())
     }
@@ -147,6 +140,14 @@ impl EqlHitsBuilder {
             events: self.events,
             sequences: self.sequences,
         }
+    }
+}
+
+impl crate::typed::builder::Build for EqlHitsBuilder {
+    type Output = EqlHits;
+
+    fn build(self) -> EqlHits {
+        Self::build(self)
     }
 }
 
@@ -182,18 +183,27 @@ pub struct EqlSearchResponseBase {
 
 impl EqlSearchResponseBase {
     /// Creates a builder for [`EqlSearchResponseBase`].
+    ///
+    /// Required: `hits`.
     pub fn builder() -> EqlSearchResponseBaseBuilder {
         EqlSearchResponseBaseBuilder::new()
     }
 
     /// Creates a [`EqlSearchResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EqlSearchResponseBaseBuilder,
-        ) -> EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `hits`.
+    pub fn of<B: crate::typed::builder::Build<Output = EqlSearchResponseBase>>(
+        f: impl FnOnce(EqlSearchResponseBaseBuilder) -> B,
     ) -> EqlSearchResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EqlSearchResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod eql_search_response_base_members {
+    pub struct hits;
 }
 
 /// Builder for [`EqlSearchResponseBase`].
@@ -331,19 +341,18 @@ impl<S0> EqlSearchResponseBaseBuilder<(S0,)> {
     }
 
     /// Adds an element to [`shard_failures`](Self::shard_failures), with a builder.
-    pub fn add_shard_failures_with(
+    pub fn add_shard_failures_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardFailure>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardFailureBuilder,
-        )
-            -> crate::typed::_types::ShardFailureBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ShardFailureBuilder) -> B,
     ) -> Self {
         self.add_shard_failures(f(crate::typed::_types::ShardFailureBuilder::new()).build())
     }
 }
 
 impl EqlSearchResponseBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// Contains matching events and sequences. Also contains related metadata.
+    /// **Required.** Contains matching events and sequences. Also contains related metadata.
     pub fn hits(
         self,
         value: impl Into<EqlHits>,
@@ -354,17 +363,20 @@ impl EqlSearchResponseBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`hits`](Self::hits) with a builder.
-    pub fn hits_with(
+    pub fn hits_with<B: crate::typed::builder::Build<Output = EqlHits>>(
         self,
-        f: impl FnOnce(EqlHitsBuilder) -> EqlHitsBuilder,
+        f: impl FnOnce(EqlHitsBuilder) -> B,
     ) -> EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)> {
         self.hits(f(EqlHitsBuilder::new()).build())
     }
 }
 
-impl EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EqlSearchResponseBaseBuilder<(S0,)> {
     /// Builds a [`EqlSearchResponseBase`].
-    pub fn build(self) -> EqlSearchResponseBase {
+    pub fn build(self) -> EqlSearchResponseBase
+    where
+        S0: crate::typed::builder::IsSet<eql_search_response_base_members::hits>,
+    {
         EqlSearchResponseBase {
             id: self.id,
             is_partial: self.is_partial,
@@ -377,16 +389,24 @@ impl EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)>> for EqlSearchResponseBase {
-    fn from(builder: EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EqlSearchResponseBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<eql_search_response_base_members::hits>,
+{
+    type Output = EqlSearchResponseBase;
+
+    fn build(self) -> EqlSearchResponseBase {
+        Self::build(self)
     }
 }
 
-impl EqlSearchResponseBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> EqlSearchResponseBase { match hits {} }
+impl<S0> From<EqlSearchResponseBaseBuilder<(S0,)>> for EqlSearchResponseBase
+where
+    S0: crate::typed::builder::IsSet<eql_search_response_base_members::hits>,
+{
+    fn from(builder: EqlSearchResponseBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -409,22 +429,29 @@ pub struct HitsEvent {
 
 impl HitsEvent {
     /// Creates a builder for [`HitsEvent`].
+    ///
+    /// Required: `index`, `id`, `source`.
     pub fn builder() -> HitsEventBuilder {
         HitsEventBuilder::new()
     }
 
     /// Creates a [`HitsEvent`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HitsEventBuilder,
-        ) -> HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `id`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = HitsEvent>>(
+        f: impl FnOnce(HitsEventBuilder) -> B,
     ) -> HitsEvent {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HitsEventBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hits_event_members {
+    pub struct index;
+    pub struct id;
+    pub struct source;
 }
 
 /// Builder for [`HitsEvent`].
@@ -518,7 +545,7 @@ impl<S0, S1, S2> HitsEventBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> HitsEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Name of the index containing the event.
+    /// **Required.** Name of the index containing the event.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -530,7 +557,7 @@ impl<S1, S2> HitsEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> HitsEventBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Unique identifier for the event. This ID is only unique within the index.
+    /// **Required.** Unique identifier for the event. This ID is only unique within the index.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -542,7 +569,7 @@ impl<S0, S2> HitsEventBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> HitsEventBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Original JSON body passed for the event at index time.
+    /// **Required.** Original JSON body passed for the event at index time.
     pub fn source(
         self,
         value: impl Into<serde_json::Value>,
@@ -553,15 +580,14 @@ impl<S0, S1> HitsEventBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    HitsEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> HitsEventBuilder<(S0, S1, S2)> {
     /// Builds a [`HitsEvent`].
-    pub fn build(self) -> HitsEvent {
+    pub fn build(self) -> HitsEvent
+    where
+        S0: crate::typed::builder::IsSet<hits_event_members::index>,
+        S1: crate::typed::builder::IsSet<hits_event_members::id>,
+        S2: crate::typed::builder::IsSet<hits_event_members::source>,
+    {
         HitsEvent {
             index: self.index.unwrap(),
             id: self.id.unwrap(),
@@ -572,54 +598,28 @@ impl
     }
 }
 
-impl
-    From<
-        HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HitsEvent
+impl<S0, S1, S2> crate::typed::builder::Build for HitsEventBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<hits_event_members::index>,
+    S1: crate::typed::builder::IsSet<hits_event_members::id>,
+    S2: crate::typed::builder::IsSet<hits_event_members::source>,
 {
-    fn from(
-        builder: HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HitsEvent;
+
+    fn build(self) -> HitsEvent {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> HitsEventBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> HitsEvent { match index {} }
-}
-
-impl<S2>
-    HitsEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<HitsEventBuilder<(S0, S1, S2)>> for HitsEvent
+where
+    S0: crate::typed::builder::IsSet<hits_event_members::index>,
+    S1: crate::typed::builder::IsSet<hits_event_members::id>,
+    S2: crate::typed::builder::IsSet<hits_event_members::source>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> HitsEvent { match id {} }
-}
-
-impl
-    HitsEventBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> HitsEvent { match source {} }
+    fn from(builder: HitsEventBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -633,16 +633,27 @@ pub struct HitsSequence {
 
 impl HitsSequence {
     /// Creates a builder for [`HitsSequence`].
+    ///
+    /// Required: `events`.
     pub fn builder() -> HitsSequenceBuilder {
         HitsSequenceBuilder::new()
     }
 
     /// Creates a [`HitsSequence`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HitsSequenceBuilder) -> HitsSequenceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `events`.
+    pub fn of<B: crate::typed::builder::Build<Output = HitsSequence>>(
+        f: impl FnOnce(HitsSequenceBuilder) -> B,
     ) -> HitsSequence {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HitsSequenceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hits_sequence_members {
+    pub struct events;
 }
 
 /// Builder for [`HitsSequence`].
@@ -694,7 +705,7 @@ impl<S0> HitsSequenceBuilder<(S0,)> {
 }
 
 impl HitsSequenceBuilder<(crate::typed::builder::NotSet,)> {
-    /// Contains events matching the query. Each object represents a matching event.
+    /// **Required.** Contains events matching the query. Each object represents a matching event.
     pub fn events(
         self,
         value: impl Into<Vec<HitsEvent>>,
@@ -718,15 +729,9 @@ impl HitsSequenceBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`events`](Self::events), with a builder.
-    pub fn add_events_with(
+    pub fn add_events_with<B: crate::typed::builder::Build<Output = HitsEvent>>(
         self,
-        f: impl FnOnce(
-            HitsEventBuilder,
-        ) -> HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HitsEventBuilder) -> B,
     ) -> HitsSequenceBuilder<(crate::typed::builder::Set,)> {
         self.add_events(f(HitsEventBuilder::new()).build())
     }
@@ -742,23 +747,20 @@ impl HitsSequenceBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`events`](Self::events), with a builder.
-    pub fn add_events_with(
+    pub fn add_events_with<B: crate::typed::builder::Build<Output = HitsEvent>>(
         self,
-        f: impl FnOnce(
-            HitsEventBuilder,
-        ) -> HitsEventBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HitsEventBuilder) -> B,
     ) -> Self {
         self.add_events(f(HitsEventBuilder::new()).build())
     }
 }
 
-impl HitsSequenceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HitsSequenceBuilder<(S0,)> {
     /// Builds a [`HitsSequence`].
-    pub fn build(self) -> HitsSequence {
+    pub fn build(self) -> HitsSequence
+    where
+        S0: crate::typed::builder::IsSet<hits_sequence_members::events>,
+    {
         HitsSequence {
             events: self.events.unwrap(),
             join_keys: self.join_keys,
@@ -766,14 +768,22 @@ impl HitsSequenceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HitsSequenceBuilder<(crate::typed::builder::Set,)>> for HitsSequence {
-    fn from(builder: HitsSequenceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HitsSequenceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hits_sequence_members::events>,
+{
+    type Output = HitsSequence;
+
+    fn build(self) -> HitsSequence {
+        Self::build(self)
     }
 }
 
-impl HitsSequenceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `events` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, events: crate::typed::builder::MissingRequiredField) -> HitsSequence { match events {} }
+impl<S0> From<HitsSequenceBuilder<(S0,)>> for HitsSequence
+where
+    S0: crate::typed::builder::IsSet<hits_sequence_members::events>,
+{
+    fn from(builder: HitsSequenceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

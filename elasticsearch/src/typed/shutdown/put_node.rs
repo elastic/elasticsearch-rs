@@ -75,25 +75,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `node_id`, `type`, `reason`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `node_id`, `type`, `reason`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct node_id;
+    pub struct r#type;
+    pub struct reason;
 }
 
 /// Builder for [`Request`].
@@ -283,7 +287,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The node identifier.
+    /// **Required.** The node identifier.
     /// This parameter is not validated against the cluster's active nodes.
     /// This enables you to register a node for shut down while it is offline.
     /// No error is thrown if you specify an invalid node ID.
@@ -298,7 +302,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// Valid values are restart, remove, or replace.
+    /// **Required.** Valid values are restart, remove, or replace.
     /// Use restart when you need to temporarily shut down a node to perform an upgrade, make configuration changes, or perform other maintenance.
     /// Because the node is expected to rejoin the cluster, data is not migrated off of the node.
     /// Use remove when you need to permanently remove a node from the cluster.
@@ -316,7 +320,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// A human-readable reason that the node is being shut down.
+    /// **Required.** A human-readable reason that the node is being shut down.
     /// This field provides information for other cluster operators; it does not affect the shut down process.
     pub fn reason(
         self,
@@ -328,18 +332,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::node_id>,
+        S1: crate::typed::builder::IsSet<request_members::r#type>,
+        S2: crate::typed::builder::IsSet<request_members::reason>,
+    {
         Request {
             node_id: self.node_id.unwrap(),
             master_timeout: self.master_timeout,
@@ -356,90 +356,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::node_id>,
+    S1: crate::typed::builder::IsSet<request_members::r#type>,
+    S2: crate::typed::builder::IsSet<request_members::reason>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> Request { match node_id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `node_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, node_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match node_id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Request { match r#type {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `type` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, r#type: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match r#type {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> Request { match reason {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `reason` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, reason: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match reason {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::node_id>,
+        S1: crate::typed::builder::IsSet<request_members::r#type>,
+        S2: crate::typed::builder::IsSet<request_members::reason>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

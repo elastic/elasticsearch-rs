@@ -12,24 +12,31 @@ pub struct AnomalyDetectors {
 
 impl AnomalyDetectors {
     /// Creates a builder for [`AnomalyDetectors`].
+    ///
+    /// Required: `categorization_analyzer`, `categorization_examples_limit`, `model_memory_limit`, `model_snapshot_retention_days`, `daily_model_snapshot_retention_after_days`.
     pub fn builder() -> AnomalyDetectorsBuilder {
         AnomalyDetectorsBuilder::new()
     }
 
     /// Creates a [`AnomalyDetectors`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnomalyDetectorsBuilder,
-        ) -> AnomalyDetectorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `categorization_analyzer`, `categorization_examples_limit`, `model_memory_limit`, `model_snapshot_retention_days`, `daily_model_snapshot_retention_after_days`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnomalyDetectors>>(
+        f: impl FnOnce(AnomalyDetectorsBuilder) -> B,
     ) -> AnomalyDetectors {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnomalyDetectorsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod anomaly_detectors_members {
+    pub struct categorization_analyzer;
+    pub struct categorization_examples_limit;
+    pub struct model_memory_limit;
+    pub struct model_snapshot_retention_days;
+    pub struct daily_model_snapshot_retention_after_days;
 }
 
 /// Builder for [`AnomalyDetectors`].
@@ -87,6 +94,7 @@ impl<S0, S1, S2, S3, S4> AnomalyDetectorsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> AnomalyDetectorsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn categorization_analyzer(
         self,
         value: impl Into<crate::typed::ml::_types::CategorizationAnalyzer>,
@@ -98,6 +106,7 @@ impl<S1, S2, S3, S4> AnomalyDetectorsBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3, S4> AnomalyDetectorsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn categorization_examples_limit(
         self,
         value: i32,
@@ -109,6 +118,7 @@ impl<S0, S2, S3, S4> AnomalyDetectorsBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3, S4> AnomalyDetectorsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn model_memory_limit(
         self,
         value: impl Into<String>,
@@ -120,6 +130,7 @@ impl<S0, S1, S3, S4> AnomalyDetectorsBuilder<(S0, S1, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2, S4> AnomalyDetectorsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn model_snapshot_retention_days(
         self,
         value: i32,
@@ -131,6 +142,7 @@ impl<S0, S1, S2, S4> AnomalyDetectorsBuilder<(S0, S1, S2, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S3> AnomalyDetectorsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn daily_model_snapshot_retention_after_days(
         self,
         value: i32,
@@ -141,17 +153,18 @@ impl<S0, S1, S2, S3> AnomalyDetectorsBuilder<(S0, S1, S2, S3, crate::typed::buil
     }
 }
 
-impl
-    AnomalyDetectorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AnomalyDetectorsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AnomalyDetectors`].
-    pub fn build(self) -> AnomalyDetectors {
+    pub fn build(self) -> AnomalyDetectors
+    where
+        S0: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_analyzer>,
+        S1: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_examples_limit>,
+        S2: crate::typed::builder::IsSet<anomaly_detectors_members::model_memory_limit>,
+        S3: crate::typed::builder::IsSet<anomaly_detectors_members::model_snapshot_retention_days>,
+        S4: crate::typed::builder::IsSet<
+            anomaly_detectors_members::daily_model_snapshot_retention_after_days,
+        >,
+    {
         AnomalyDetectors {
             categorization_analyzer: self.categorization_analyzer.unwrap(),
             categorization_examples_limit: self.categorization_examples_limit.unwrap(),
@@ -164,90 +177,37 @@ impl
     }
 }
 
-impl
-    From<
-        AnomalyDetectorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AnomalyDetectors
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for AnomalyDetectorsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_analyzer>,
+    S1: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_examples_limit>,
+    S2: crate::typed::builder::IsSet<anomaly_detectors_members::model_memory_limit>,
+    S3: crate::typed::builder::IsSet<anomaly_detectors_members::model_snapshot_retention_days>,
+    S4: crate::typed::builder::IsSet<
+        anomaly_detectors_members::daily_model_snapshot_retention_after_days,
+    >,
 {
-    fn from(
-        builder: AnomalyDetectorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AnomalyDetectors;
+
+    fn build(self) -> AnomalyDetectors {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> AnomalyDetectorsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `categorization_analyzer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, categorization_analyzer: crate::typed::builder::MissingRequiredField) -> AnomalyDetectors { match categorization_analyzer {} }
-}
-
-impl<S2, S3, S4>
-    AnomalyDetectorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<AnomalyDetectorsBuilder<(S0, S1, S2, S3, S4)>> for AnomalyDetectors
+where
+    S0: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_analyzer>,
+    S1: crate::typed::builder::IsSet<anomaly_detectors_members::categorization_examples_limit>,
+    S2: crate::typed::builder::IsSet<anomaly_detectors_members::model_memory_limit>,
+    S3: crate::typed::builder::IsSet<anomaly_detectors_members::model_snapshot_retention_days>,
+    S4: crate::typed::builder::IsSet<
+        anomaly_detectors_members::daily_model_snapshot_retention_after_days,
+    >,
 {
-    /// `categorization_examples_limit` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, categorization_examples_limit: crate::typed::builder::MissingRequiredField) -> AnomalyDetectors { match categorization_examples_limit {} }
-}
-
-impl<S3, S4>
-    AnomalyDetectorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `model_memory_limit` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_memory_limit: crate::typed::builder::MissingRequiredField) -> AnomalyDetectors { match model_memory_limit {} }
-}
-
-impl<S4>
-    AnomalyDetectorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `model_snapshot_retention_days` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_snapshot_retention_days: crate::typed::builder::MissingRequiredField) -> AnomalyDetectors { match model_snapshot_retention_days {} }
-}
-
-impl
-    AnomalyDetectorsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `daily_model_snapshot_retention_after_days` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, daily_model_snapshot_retention_after_days: crate::typed::builder::MissingRequiredField) -> AnomalyDetectors { match daily_model_snapshot_retention_after_days {} }
+    fn from(builder: AnomalyDetectorsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -257,16 +217,27 @@ pub struct Datafeeds {
 
 impl Datafeeds {
     /// Creates a builder for [`Datafeeds`].
+    ///
+    /// Required: `scroll_size`.
     pub fn builder() -> DatafeedsBuilder {
         DatafeedsBuilder::new()
     }
 
     /// Creates a [`Datafeeds`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DatafeedsBuilder) -> DatafeedsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `scroll_size`.
+    pub fn of<B: crate::typed::builder::Build<Output = Datafeeds>>(
+        f: impl FnOnce(DatafeedsBuilder) -> B,
     ) -> Datafeeds {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DatafeedsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod datafeeds_members {
+    pub struct scroll_size;
 }
 
 /// Builder for [`Datafeeds`].
@@ -295,6 +266,7 @@ impl<S0> DatafeedsBuilder<(S0,)> {
 }
 
 impl DatafeedsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn scroll_size(self, value: i32) -> DatafeedsBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.scroll_size = Some(value);
@@ -302,25 +274,36 @@ impl DatafeedsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DatafeedsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DatafeedsBuilder<(S0,)> {
     /// Builds a [`Datafeeds`].
-    pub fn build(self) -> Datafeeds {
+    pub fn build(self) -> Datafeeds
+    where
+        S0: crate::typed::builder::IsSet<datafeeds_members::scroll_size>,
+    {
         Datafeeds {
             scroll_size: self.scroll_size.unwrap(),
         }
     }
 }
 
-impl From<DatafeedsBuilder<(crate::typed::builder::Set,)>> for Datafeeds {
-    fn from(builder: DatafeedsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DatafeedsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<datafeeds_members::scroll_size>,
+{
+    type Output = Datafeeds;
+
+    fn build(self) -> Datafeeds {
+        Self::build(self)
     }
 }
 
-impl DatafeedsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `scroll_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, scroll_size: crate::typed::builder::MissingRequiredField) -> Datafeeds { match scroll_size {} }
+impl<S0> From<DatafeedsBuilder<(S0,)>> for Datafeeds
+where
+    S0: crate::typed::builder::IsSet<datafeeds_members::scroll_size>,
+{
+    fn from(builder: DatafeedsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -334,22 +317,29 @@ pub struct Defaults {
 
 impl Defaults {
     /// Creates a builder for [`Defaults`].
+    ///
+    /// Required: `anomaly_detectors`, `datafeeds`, `model_platform_variant`.
     pub fn builder() -> DefaultsBuilder {
         DefaultsBuilder::new()
     }
 
     /// Creates a [`Defaults`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DefaultsBuilder,
-        ) -> DefaultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `anomaly_detectors`, `datafeeds`, `model_platform_variant`.
+    pub fn of<B: crate::typed::builder::Build<Output = Defaults>>(
+        f: impl FnOnce(DefaultsBuilder) -> B,
     ) -> Defaults {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DefaultsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod defaults_members {
+    pub struct anomaly_detectors;
+    pub struct datafeeds;
+    pub struct model_platform_variant;
 }
 
 /// Builder for [`Defaults`].
@@ -396,6 +386,7 @@ impl<S0, S1, S2> DefaultsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DefaultsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn anomaly_detectors(
         self,
         value: impl Into<AnomalyDetectors>,
@@ -406,23 +397,16 @@ impl<S1, S2> DefaultsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`anomaly_detectors`](Self::anomaly_detectors) with a builder.
-    pub fn anomaly_detectors_with(
+    pub fn anomaly_detectors_with<B: crate::typed::builder::Build<Output = AnomalyDetectors>>(
         self,
-        f: impl FnOnce(
-            AnomalyDetectorsBuilder,
-        ) -> AnomalyDetectorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AnomalyDetectorsBuilder) -> B,
     ) -> DefaultsBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.anomaly_detectors(f(AnomalyDetectorsBuilder::new()).build())
     }
 }
 
 impl<S0, S2> DefaultsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn datafeeds(
         self,
         value: impl Into<Datafeeds>,
@@ -433,16 +417,16 @@ impl<S0, S2> DefaultsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`datafeeds`](Self::datafeeds) with a builder.
-    pub fn datafeeds_with(
+    pub fn datafeeds_with<B: crate::typed::builder::Build<Output = Datafeeds>>(
         self,
-        f: impl FnOnce(DatafeedsBuilder) -> DatafeedsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DatafeedsBuilder) -> B,
     ) -> DefaultsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.datafeeds(f(DatafeedsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> DefaultsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Returns `linux-x86_64` when all ML nodes are x86, or when no ML nodes exist but the cluster is in Elastic Cloud.
+    /// **Required.** Returns `linux-x86_64` when all ML nodes are x86, or when no ML nodes exist but the cluster is in Elastic Cloud.
     /// Returns `platform_agnostic` otherwise.
     pub fn model_platform_variant(
         self,
@@ -454,15 +438,14 @@ impl<S0, S1> DefaultsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    DefaultsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DefaultsBuilder<(S0, S1, S2)> {
     /// Builds a [`Defaults`].
-    pub fn build(self) -> Defaults {
+    pub fn build(self) -> Defaults
+    where
+        S0: crate::typed::builder::IsSet<defaults_members::anomaly_detectors>,
+        S1: crate::typed::builder::IsSet<defaults_members::datafeeds>,
+        S2: crate::typed::builder::IsSet<defaults_members::model_platform_variant>,
+    {
         Defaults {
             anomaly_detectors: self.anomaly_detectors.unwrap(),
             datafeeds: self.datafeeds.unwrap(),
@@ -471,54 +454,28 @@ impl
     }
 }
 
-impl
-    From<
-        DefaultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Defaults
+impl<S0, S1, S2> crate::typed::builder::Build for DefaultsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<defaults_members::anomaly_detectors>,
+    S1: crate::typed::builder::IsSet<defaults_members::datafeeds>,
+    S2: crate::typed::builder::IsSet<defaults_members::model_platform_variant>,
 {
-    fn from(
-        builder: DefaultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Defaults;
+
+    fn build(self) -> Defaults {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DefaultsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `anomaly_detectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, anomaly_detectors: crate::typed::builder::MissingRequiredField) -> Defaults { match anomaly_detectors {} }
-}
-
-impl<S2>
-    DefaultsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DefaultsBuilder<(S0, S1, S2)>> for Defaults
+where
+    S0: crate::typed::builder::IsSet<defaults_members::anomaly_detectors>,
+    S1: crate::typed::builder::IsSet<defaults_members::datafeeds>,
+    S2: crate::typed::builder::IsSet<defaults_members::model_platform_variant>,
 {
-    /// `datafeeds` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, datafeeds: crate::typed::builder::MissingRequiredField) -> Defaults { match datafeeds {} }
-}
-
-impl
-    DefaultsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `model_platform_variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_platform_variant: crate::typed::builder::MissingRequiredField) -> Defaults { match model_platform_variant {} }
+    fn from(builder: DefaultsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -536,16 +493,27 @@ pub struct Limits {
 
 impl Limits {
     /// Creates a builder for [`Limits`].
+    ///
+    /// Required: `total_ml_memory`.
     pub fn builder() -> LimitsBuilder {
         LimitsBuilder::new()
     }
 
     /// Creates a [`Limits`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(LimitsBuilder) -> LimitsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `total_ml_memory`.
+    pub fn of<B: crate::typed::builder::Build<Output = Limits>>(
+        f: impl FnOnce(LimitsBuilder) -> B,
     ) -> Limits {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LimitsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod limits_members {
+    pub struct total_ml_memory;
 }
 
 /// Builder for [`Limits`].
@@ -642,6 +610,7 @@ impl<S0> LimitsBuilder<(S0,)> {
 }
 
 impl LimitsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn total_ml_memory(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -652,9 +621,12 @@ impl LimitsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LimitsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LimitsBuilder<(S0,)> {
     /// Builds a [`Limits`].
-    pub fn build(self) -> Limits {
+    pub fn build(self) -> Limits
+    where
+        S0: crate::typed::builder::IsSet<limits_members::total_ml_memory>,
+    {
         Limits {
             max_single_ml_node_processors: self.max_single_ml_node_processors,
             total_ml_processors: self.total_ml_processors,
@@ -665,16 +637,24 @@ impl LimitsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LimitsBuilder<(crate::typed::builder::Set,)>> for Limits {
-    fn from(builder: LimitsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LimitsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<limits_members::total_ml_memory>,
+{
+    type Output = Limits;
+
+    fn build(self) -> Limits {
+        Self::build(self)
     }
 }
 
-impl LimitsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `total_ml_memory` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_ml_memory: crate::typed::builder::MissingRequiredField) -> Limits { match total_ml_memory {} }
+impl<S0> From<LimitsBuilder<(S0,)>> for Limits
+where
+    S0: crate::typed::builder::IsSet<limits_members::total_ml_memory>,
+{
+    fn from(builder: LimitsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -693,19 +673,28 @@ pub struct NativeCode {
 
 impl NativeCode {
     /// Creates a builder for [`NativeCode`].
+    ///
+    /// Required: `build_hash`, `version`.
     pub fn builder() -> NativeCodeBuilder {
         NativeCodeBuilder::new()
     }
 
     /// Creates a [`NativeCode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NativeCodeBuilder,
-        )
-            -> NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `build_hash`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = NativeCode>>(
+        f: impl FnOnce(NativeCodeBuilder) -> B,
     ) -> NativeCode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NativeCodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod native_code_members {
+    pub struct build_hash;
+    pub struct version;
 }
 
 /// Builder for [`NativeCode`].
@@ -737,6 +726,7 @@ impl<S0, S1> NativeCodeBuilder<(S0, S1)> {
 }
 
 impl<S1> NativeCodeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn build_hash(
         self,
         value: impl Into<String>,
@@ -748,6 +738,7 @@ impl<S1> NativeCodeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NativeCodeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -758,9 +749,13 @@ impl<S0> NativeCodeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NativeCodeBuilder<(S0, S1)> {
     /// Builds a [`NativeCode`].
-    pub fn build(self) -> NativeCode {
+    pub fn build(self) -> NativeCode
+    where
+        S0: crate::typed::builder::IsSet<native_code_members::build_hash>,
+        S1: crate::typed::builder::IsSet<native_code_members::version>,
+    {
         NativeCode {
             build_hash: self.build_hash.unwrap(),
             version: self.version.unwrap(),
@@ -768,26 +763,26 @@ impl NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NativeCode
+impl<S0, S1> crate::typed::builder::Build for NativeCodeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<native_code_members::build_hash>,
+    S1: crate::typed::builder::IsSet<native_code_members::version>,
 {
-    fn from(
-        builder: NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = NativeCode;
+
+    fn build(self) -> NativeCode {
+        Self::build(self)
     }
 }
 
-impl<S1> NativeCodeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `build_hash` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, build_hash: crate::typed::builder::MissingRequiredField) -> NativeCode { match build_hash {} }
-}
-
-impl NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> NativeCode { match version {} }
+impl<S0, S1> From<NativeCodeBuilder<(S0, S1)>> for NativeCode
+where
+    S0: crate::typed::builder::IsSet<native_code_members::build_hash>,
+    S1: crate::typed::builder::IsSet<native_code_members::version>,
+{
+    fn from(builder: NativeCodeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ml.info`](crate::typed::ml::MlClient::info).
@@ -829,7 +824,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -924,6 +921,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

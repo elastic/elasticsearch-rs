@@ -33,18 +33,27 @@ impl From<&str> for DeprecationIndexingEnabled {
 
 impl DeprecationIndexing {
     /// Creates a builder for [`DeprecationIndexing`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> DeprecationIndexingBuilder {
         DeprecationIndexingBuilder::new()
     }
 
     /// Creates a [`DeprecationIndexing`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DeprecationIndexingBuilder,
-        ) -> DeprecationIndexingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = DeprecationIndexing>>(
+        f: impl FnOnce(DeprecationIndexingBuilder) -> B,
     ) -> DeprecationIndexing {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DeprecationIndexingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod deprecation_indexing_members {
+    pub struct enabled;
 }
 
 /// Builder for [`DeprecationIndexing`].
@@ -73,6 +82,7 @@ impl<S0> DeprecationIndexingBuilder<(S0,)> {
 }
 
 impl DeprecationIndexingBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: impl Into<DeprecationIndexingEnabled>,
@@ -83,25 +93,36 @@ impl DeprecationIndexingBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DeprecationIndexingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DeprecationIndexingBuilder<(S0,)> {
     /// Builds a [`DeprecationIndexing`].
-    pub fn build(self) -> DeprecationIndexing {
+    pub fn build(self) -> DeprecationIndexing
+    where
+        S0: crate::typed::builder::IsSet<deprecation_indexing_members::enabled>,
+    {
         DeprecationIndexing {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<DeprecationIndexingBuilder<(crate::typed::builder::Set,)>> for DeprecationIndexing {
-    fn from(builder: DeprecationIndexingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DeprecationIndexingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<deprecation_indexing_members::enabled>,
+{
+    type Output = DeprecationIndexing;
+
+    fn build(self) -> DeprecationIndexing {
+        Self::build(self)
     }
 }
 
-impl DeprecationIndexingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> DeprecationIndexing { match enabled {} }
+impl<S0> From<DeprecationIndexingBuilder<(S0,)>> for DeprecationIndexing
+where
+    S0: crate::typed::builder::IsSet<deprecation_indexing_members::enabled>,
+{
+    fn from(builder: DeprecationIndexingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -159,32 +180,39 @@ pub struct NodeInfo {
 
 impl NodeInfo {
     /// Creates a builder for [`NodeInfo`].
+    ///
+    /// Required: `attributes`, `build_flavor`, `build_hash`, `build_type`, `component_versions`, `host`, `index_version`, `ip`, `name`, `roles`, `transport_address`, `transport_version`, `version`.
     pub fn builder() -> NodeInfoBuilder {
         NodeInfoBuilder::new()
     }
 
     /// Creates a [`NodeInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoBuilder,
-        ) -> NodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `build_flavor`, `build_hash`, `build_type`, `component_versions`, `host`, `index_version`, `ip`, `name`, `roles`, `transport_address`, `transport_version`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfo>>(
+        f: impl FnOnce(NodeInfoBuilder) -> B,
     ) -> NodeInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_members {
+    pub struct attributes;
+    pub struct build_flavor;
+    pub struct build_hash;
+    pub struct build_type;
+    pub struct component_versions;
+    pub struct host;
+    pub struct index_version;
+    pub struct ip;
+    pub struct name;
+    pub struct roles;
+    pub struct transport_address;
+    pub struct transport_version;
+    pub struct version;
 }
 
 /// Builder for [`NodeInfo`].
@@ -335,15 +363,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`http`](Self::http) with a builder.
-    pub fn http_with(
+    pub fn http_with<B: crate::typed::builder::Build<Output = NodeInfoHttp>>(
         self,
-        f: impl FnOnce(
-            NodeInfoHttpBuilder,
-        ) -> NodeInfoHttpBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoHttpBuilder) -> B,
     ) -> Self {
         self.http(f(NodeInfoHttpBuilder::new()).build())
     }
@@ -360,23 +382,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`jvm`](Self::jvm) with a builder.
-    pub fn jvm_with(
+    pub fn jvm_with<B: crate::typed::builder::Build<Output = NodeJvmInfo>>(
         self,
-        f: impl FnOnce(
-            NodeJvmInfoBuilder,
-        ) -> NodeJvmInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeJvmInfoBuilder) -> B,
     ) -> Self {
         self.jvm(f(NodeJvmInfoBuilder::new()).build())
     }
@@ -393,18 +401,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`os`](Self::os) with a builder.
-    pub fn os_with(
+    pub fn os_with<B: crate::typed::builder::Build<Output = NodeOperatingSystemInfo>>(
         self,
-        f: impl FnOnce(
-            NodeOperatingSystemInfoBuilder,
-        ) -> NodeOperatingSystemInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeOperatingSystemInfoBuilder) -> B,
     ) -> Self {
         self.os(f(NodeOperatingSystemInfoBuilder::new()).build())
     }
@@ -429,21 +428,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Adds an element to [`plugins`](Self::plugins), with a builder.
-    pub fn add_plugins_with(
+    pub fn add_plugins_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::PluginStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::PluginStatsBuilder,
-        ) -> crate::typed::_types::PluginStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::PluginStatsBuilder) -> B,
     ) -> Self {
         self.add_plugins(f(crate::typed::_types::PluginStatsBuilder::new()).build())
     }
@@ -460,15 +449,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`process`](Self::process) with a builder.
-    pub fn process_with(
+    pub fn process_with<B: crate::typed::builder::Build<Output = NodeProcessInfo>>(
         self,
-        f: impl FnOnce(
-            NodeProcessInfoBuilder,
-        ) -> NodeProcessInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeProcessInfoBuilder) -> B,
     ) -> Self {
         self.process(f(NodeProcessInfoBuilder::new()).build())
     }
@@ -485,16 +468,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = NodeInfoSettings>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsBuilder,
-        ) -> NodeInfoSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(NodeInfoSettingsBuilder::new()).build())
     }
@@ -529,15 +505,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Adds an entry to [`thread_pool`](Self::thread_pool), with a builder.
-    pub fn add_thread_pool_with(
+    pub fn add_thread_pool_with<B: crate::typed::builder::Build<Output = NodeThreadPoolInfo>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeThreadPoolInfoBuilder,
-        ) -> NodeThreadPoolInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeThreadPoolInfoBuilder) -> B,
     ) -> Self {
         self.add_thread_pool(key, f(NodeThreadPoolInfoBuilder::new()).build())
     }
@@ -584,15 +555,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`transport`](Self::transport) with a builder.
-    pub fn transport_with(
+    pub fn transport_with<B: crate::typed::builder::Build<Output = NodeInfoTransport>>(
         self,
-        f: impl FnOnce(
-            NodeInfoTransportBuilder,
-        ) -> NodeInfoTransportBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoTransportBuilder) -> B,
     ) -> Self {
         self.transport(f(NodeInfoTransportBuilder::new()).build())
     }
@@ -617,21 +582,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Adds an element to [`modules`](Self::modules), with a builder.
-    pub fn add_modules_with(
+    pub fn add_modules_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::PluginStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::PluginStatsBuilder,
-        ) -> crate::typed::_types::PluginStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::PluginStatsBuilder) -> B,
     ) -> Self {
         self.add_modules(f(crate::typed::_types::PluginStatsBuilder::new()).build())
     }
@@ -648,9 +603,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`ingest`](Self::ingest) with a builder.
-    pub fn ingest_with(
+    pub fn ingest_with<B: crate::typed::builder::Build<Output = NodeInfoIngest>>(
         self,
-        f: impl FnOnce(NodeInfoIngestBuilder) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestBuilder) -> B,
     ) -> Self {
         self.ingest(f(NodeInfoIngestBuilder::new()).build())
     }
@@ -685,12 +640,10 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<B: crate::typed::builder::Build<Output = NodeInfoAggregation>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoAggregationBuilder,
-        ) -> NodeInfoAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoAggregationBuilder) -> B,
     ) -> Self {
         self.add_aggregations(key, f(NodeInfoAggregationBuilder::new()).build())
     }
@@ -707,14 +660,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
     }
 
     /// Sets [`remote_cluster_server`](Self::remote_cluster_server) with a builder.
-    pub fn remote_cluster_server_with(
+    pub fn remote_cluster_server_with<
+        B: crate::typed::builder::Build<Output = RemoveClusterServer>,
+    >(
         self,
-        f: impl FnOnce(
-            RemoveClusterServerBuilder,
-        ) -> RemoveClusterServerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RemoveClusterServerBuilder) -> B,
     ) -> Self {
         self.remote_cluster_server(f(RemoveClusterServerBuilder::new()).build())
     }
@@ -737,6 +687,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -832,6 +783,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn build_flavor(
         self,
         value: impl Into<String>,
@@ -873,7 +825,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
-    /// Short hash of the last git commit in this release.
+    /// **Required.** Short hash of the last git commit in this release.
     pub fn build_hash(
         self,
         value: impl Into<String>,
@@ -915,6 +867,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn build_type(
         self,
         value: impl Into<String>,
@@ -956,6 +909,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn component_versions(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i32>>,
@@ -1055,7 +1009,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
-    /// The node’s host name.
+    /// **Required.** The node’s host name.
     pub fn host(
         self,
         value: impl Into<crate::typed::_types::Host>,
@@ -1097,6 +1051,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn index_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1138,7 +1093,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12>
         S12,
     )>
 {
-    /// The node’s IP address.
+    /// **Required.** The node’s IP address.
     pub fn ip(
         self,
         value: impl Into<crate::typed::_types::Ip>,
@@ -1180,7 +1135,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12>
         S12,
     )>
 {
-    /// The node's name
+    /// **Required.** The node's name
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1222,6 +1177,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<crate::typed::_types::NodeRoles>,
@@ -1316,7 +1272,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11, S12>
         S12,
     )>
 {
-    /// Host and port where transport HTTP connections are accepted.
+    /// **Required.** Host and port where transport HTTP connections are accepted.
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -1358,6 +1314,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S12>
         S12,
     )>
 {
+    /// **Required.**
     pub fn transport_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1399,7 +1356,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Elasticsearch version running on this node.
+    /// **Required.** Elasticsearch version running on this node.
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -1424,25 +1381,26 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 }
 
-impl
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
+    NodeInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12)>
 {
     /// Builds a [`NodeInfo`].
-    pub fn build(self) -> NodeInfo {
+    pub fn build(self) -> NodeInfo
+    where
+        S0: crate::typed::builder::IsSet<node_info_members::attributes>,
+        S1: crate::typed::builder::IsSet<node_info_members::build_flavor>,
+        S2: crate::typed::builder::IsSet<node_info_members::build_hash>,
+        S3: crate::typed::builder::IsSet<node_info_members::build_type>,
+        S4: crate::typed::builder::IsSet<node_info_members::component_versions>,
+        S5: crate::typed::builder::IsSet<node_info_members::host>,
+        S6: crate::typed::builder::IsSet<node_info_members::index_version>,
+        S7: crate::typed::builder::IsSet<node_info_members::ip>,
+        S8: crate::typed::builder::IsSet<node_info_members::name>,
+        S9: crate::typed::builder::IsSet<node_info_members::roles>,
+        S10: crate::typed::builder::IsSet<node_info_members::transport_address>,
+        S11: crate::typed::builder::IsSet<node_info_members::transport_version>,
+        S12: crate::typed::builder::IsSet<node_info_members::version>,
+    {
         NodeInfo {
             attributes: self.attributes.unwrap(),
             build_flavor: self.build_flavor.unwrap(),
@@ -1475,330 +1433,52 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12> crate::typed::builder::Build
+    for NodeInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12)>
+where
+    S0: crate::typed::builder::IsSet<node_info_members::attributes>,
+    S1: crate::typed::builder::IsSet<node_info_members::build_flavor>,
+    S2: crate::typed::builder::IsSet<node_info_members::build_hash>,
+    S3: crate::typed::builder::IsSet<node_info_members::build_type>,
+    S4: crate::typed::builder::IsSet<node_info_members::component_versions>,
+    S5: crate::typed::builder::IsSet<node_info_members::host>,
+    S6: crate::typed::builder::IsSet<node_info_members::index_version>,
+    S7: crate::typed::builder::IsSet<node_info_members::ip>,
+    S8: crate::typed::builder::IsSet<node_info_members::name>,
+    S9: crate::typed::builder::IsSet<node_info_members::roles>,
+    S10: crate::typed::builder::IsSet<node_info_members::transport_address>,
+    S11: crate::typed::builder::IsSet<node_info_members::transport_version>,
+    S12: crate::typed::builder::IsSet<node_info_members::version>,
 {
-    fn from(
-        builder: NodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfo;
+
+    fn build(self) -> NodeInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
+    From<NodeInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12)>> for NodeInfo
+where
+    S0: crate::typed::builder::IsSet<node_info_members::attributes>,
+    S1: crate::typed::builder::IsSet<node_info_members::build_flavor>,
+    S2: crate::typed::builder::IsSet<node_info_members::build_hash>,
+    S3: crate::typed::builder::IsSet<node_info_members::build_type>,
+    S4: crate::typed::builder::IsSet<node_info_members::component_versions>,
+    S5: crate::typed::builder::IsSet<node_info_members::host>,
+    S6: crate::typed::builder::IsSet<node_info_members::index_version>,
+    S7: crate::typed::builder::IsSet<node_info_members::ip>,
+    S8: crate::typed::builder::IsSet<node_info_members::name>,
+    S9: crate::typed::builder::IsSet<node_info_members::roles>,
+    S10: crate::typed::builder::IsSet<node_info_members::transport_address>,
+    S11: crate::typed::builder::IsSet<node_info_members::transport_version>,
+    S12: crate::typed::builder::IsSet<node_info_members::version>,
 {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> NodeInfo { match attributes {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `build_flavor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, build_flavor: crate::typed::builder::MissingRequiredField) -> NodeInfo { match build_flavor {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `build_hash` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, build_hash: crate::typed::builder::MissingRequiredField) -> NodeInfo { match build_hash {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `build_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, build_type: crate::typed::builder::MissingRequiredField) -> NodeInfo { match build_type {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `component_versions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, component_versions: crate::typed::builder::MissingRequiredField) -> NodeInfo { match component_versions {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> NodeInfo { match host {} }
-}
-
-impl<S7, S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_version: crate::typed::builder::MissingRequiredField) -> NodeInfo { match index_version {} }
-}
-
-impl<S8, S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `ip` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ip: crate::typed::builder::MissingRequiredField) -> NodeInfo { match ip {} }
-}
-
-impl<S9, S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> NodeInfo { match name {} }
-}
-
-impl<S10, S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> NodeInfo { match roles {} }
-}
-
-impl<S11, S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> NodeInfo { match transport_address {} }
-}
-
-impl<S12>
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-    )>
-{
-    /// `transport_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_version: crate::typed::builder::MissingRequiredField) -> NodeInfo { match transport_version {} }
-}
-
-impl
-    NodeInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> NodeInfo { match version {} }
+    fn from(
+        builder: NodeInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1808,16 +1488,27 @@ pub struct NodeInfoAction {
 
 impl NodeInfoAction {
     /// Creates a builder for [`NodeInfoAction`].
+    ///
+    /// Required: `destructive_requires_name`.
     pub fn builder() -> NodeInfoActionBuilder {
         NodeInfoActionBuilder::new()
     }
 
     /// Creates a [`NodeInfoAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoActionBuilder) -> NodeInfoActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `destructive_requires_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoAction>>(
+        f: impl FnOnce(NodeInfoActionBuilder) -> B,
     ) -> NodeInfoAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_action_members {
+    pub struct destructive_requires_name;
 }
 
 /// Builder for [`NodeInfoAction`].
@@ -1846,6 +1537,7 @@ impl<S0> NodeInfoActionBuilder<(S0,)> {
 }
 
 impl NodeInfoActionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn destructive_requires_name(
         self,
         value: impl Into<String>,
@@ -1856,25 +1548,36 @@ impl NodeInfoActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoActionBuilder<(S0,)> {
     /// Builds a [`NodeInfoAction`].
-    pub fn build(self) -> NodeInfoAction {
+    pub fn build(self) -> NodeInfoAction
+    where
+        S0: crate::typed::builder::IsSet<node_info_action_members::destructive_requires_name>,
+    {
         NodeInfoAction {
             destructive_requires_name: self.destructive_requires_name.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoActionBuilder<(crate::typed::builder::Set,)>> for NodeInfoAction {
-    fn from(builder: NodeInfoActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_action_members::destructive_requires_name>,
+{
+    type Output = NodeInfoAction;
+
+    fn build(self) -> NodeInfoAction {
+        Self::build(self)
     }
 }
 
-impl NodeInfoActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `destructive_requires_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, destructive_requires_name: crate::typed::builder::MissingRequiredField) -> NodeInfoAction { match destructive_requires_name {} }
+impl<S0> From<NodeInfoActionBuilder<(S0,)>> for NodeInfoAction
+where
+    S0: crate::typed::builder::IsSet<node_info_action_members::destructive_requires_name>,
+{
+    fn from(builder: NodeInfoActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1884,18 +1587,27 @@ pub struct NodeInfoAggregation {
 
 impl NodeInfoAggregation {
     /// Creates a builder for [`NodeInfoAggregation`].
+    ///
+    /// Required: `types`.
     pub fn builder() -> NodeInfoAggregationBuilder {
         NodeInfoAggregationBuilder::new()
     }
 
     /// Creates a [`NodeInfoAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoAggregationBuilder,
-        ) -> NodeInfoAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `types`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoAggregation>>(
+        f: impl FnOnce(NodeInfoAggregationBuilder) -> B,
     ) -> NodeInfoAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_aggregation_members {
+    pub struct types;
 }
 
 /// Builder for [`NodeInfoAggregation`].
@@ -1924,6 +1636,7 @@ impl<S0> NodeInfoAggregationBuilder<(S0,)> {
 }
 
 impl NodeInfoAggregationBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn types(
         self,
         value: impl Into<Vec<String>>,
@@ -1957,25 +1670,36 @@ impl NodeInfoAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl NodeInfoAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoAggregationBuilder<(S0,)> {
     /// Builds a [`NodeInfoAggregation`].
-    pub fn build(self) -> NodeInfoAggregation {
+    pub fn build(self) -> NodeInfoAggregation
+    where
+        S0: crate::typed::builder::IsSet<node_info_aggregation_members::types>,
+    {
         NodeInfoAggregation {
             types: self.types.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoAggregationBuilder<(crate::typed::builder::Set,)>> for NodeInfoAggregation {
-    fn from(builder: NodeInfoAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_aggregation_members::types>,
+{
+    type Output = NodeInfoAggregation;
+
+    fn build(self) -> NodeInfoAggregation {
+        Self::build(self)
     }
 }
 
-impl NodeInfoAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, types: crate::typed::builder::MissingRequiredField) -> NodeInfoAggregation { match types {} }
+impl<S0> From<NodeInfoAggregationBuilder<(S0,)>> for NodeInfoAggregation
+where
+    S0: crate::typed::builder::IsSet<node_info_aggregation_members::types>,
+{
+    fn from(builder: NodeInfoAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1985,18 +1709,27 @@ pub struct NodeInfoBootstrap {
 
 impl NodeInfoBootstrap {
     /// Creates a builder for [`NodeInfoBootstrap`].
+    ///
+    /// Required: `memory_lock`.
     pub fn builder() -> NodeInfoBootstrapBuilder {
         NodeInfoBootstrapBuilder::new()
     }
 
     /// Creates a [`NodeInfoBootstrap`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoBootstrapBuilder,
-        ) -> NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `memory_lock`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoBootstrap>>(
+        f: impl FnOnce(NodeInfoBootstrapBuilder) -> B,
     ) -> NodeInfoBootstrap {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoBootstrapBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_bootstrap_members {
+    pub struct memory_lock;
 }
 
 /// Builder for [`NodeInfoBootstrap`].
@@ -2025,6 +1758,7 @@ impl<S0> NodeInfoBootstrapBuilder<(S0,)> {
 }
 
 impl NodeInfoBootstrapBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn memory_lock(
         self,
         value: impl Into<String>,
@@ -2035,25 +1769,36 @@ impl NodeInfoBootstrapBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoBootstrapBuilder<(S0,)> {
     /// Builds a [`NodeInfoBootstrap`].
-    pub fn build(self) -> NodeInfoBootstrap {
+    pub fn build(self) -> NodeInfoBootstrap
+    where
+        S0: crate::typed::builder::IsSet<node_info_bootstrap_members::memory_lock>,
+    {
         NodeInfoBootstrap {
             memory_lock: self.memory_lock.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)>> for NodeInfoBootstrap {
-    fn from(builder: NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoBootstrapBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_bootstrap_members::memory_lock>,
+{
+    type Output = NodeInfoBootstrap;
+
+    fn build(self) -> NodeInfoBootstrap {
+        Self::build(self)
     }
 }
 
-impl NodeInfoBootstrapBuilder<(crate::typed::builder::NotSet,)> {
-    /// `memory_lock` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory_lock: crate::typed::builder::MissingRequiredField) -> NodeInfoBootstrap { match memory_lock {} }
+impl<S0> From<NodeInfoBootstrapBuilder<(S0,)>> for NodeInfoBootstrap
+where
+    S0: crate::typed::builder::IsSet<node_info_bootstrap_members::memory_lock>,
+{
+    fn from(builder: NodeInfoBootstrapBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2063,16 +1808,27 @@ pub struct NodeInfoClient {
 
 impl NodeInfoClient {
     /// Creates a builder for [`NodeInfoClient`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NodeInfoClientBuilder {
         NodeInfoClientBuilder::new()
     }
 
     /// Creates a [`NodeInfoClient`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoClientBuilder) -> NodeInfoClientBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoClient>>(
+        f: impl FnOnce(NodeInfoClientBuilder) -> B,
     ) -> NodeInfoClient {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoClientBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_client_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NodeInfoClient`].
@@ -2101,6 +1857,7 @@ impl<S0> NodeInfoClientBuilder<(S0,)> {
 }
 
 impl NodeInfoClientBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2111,25 +1868,36 @@ impl NodeInfoClientBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoClientBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoClientBuilder<(S0,)> {
     /// Builds a [`NodeInfoClient`].
-    pub fn build(self) -> NodeInfoClient {
+    pub fn build(self) -> NodeInfoClient
+    where
+        S0: crate::typed::builder::IsSet<node_info_client_members::r#type>,
+    {
         NodeInfoClient {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoClientBuilder<(crate::typed::builder::Set,)>> for NodeInfoClient {
-    fn from(builder: NodeInfoClientBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoClientBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_client_members::r#type>,
+{
+    type Output = NodeInfoClient;
+
+    fn build(self) -> NodeInfoClient {
+        Self::build(self)
     }
 }
 
-impl NodeInfoClientBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeInfoClient { match r#type {} }
+impl<S0> From<NodeInfoClientBuilder<(S0,)>> for NodeInfoClient
+where
+    S0: crate::typed::builder::IsSet<node_info_client_members::r#type>,
+{
+    fn from(builder: NodeInfoClientBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2202,8 +1970,8 @@ impl NodeInfoDiscover {
     }
 
     /// Creates a [`NodeInfoDiscover`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoDiscoverBuilder) -> NodeInfoDiscoverBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoDiscover>>(
+        f: impl FnOnce(NodeInfoDiscoverBuilder) -> B,
     ) -> NodeInfoDiscover {
         f(Self::builder()).build()
     }
@@ -2295,6 +2063,14 @@ impl NodeInfoDiscoverBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoDiscoverBuilder {
+    type Output = NodeInfoDiscover;
+
+    fn build(self) -> NodeInfoDiscover {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoDiscoverBuilder> for NodeInfoDiscover {
     fn from(builder: NodeInfoDiscoverBuilder) -> Self {
         builder.build()
@@ -2312,22 +2088,29 @@ pub struct NodeInfoHttp {
 
 impl NodeInfoHttp {
     /// Creates a builder for [`NodeInfoHttp`].
+    ///
+    /// Required: `bound_address`, `max_content_length_in_bytes`, `publish_address`.
     pub fn builder() -> NodeInfoHttpBuilder {
         NodeInfoHttpBuilder::new()
     }
 
     /// Creates a [`NodeInfoHttp`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoHttpBuilder,
-        ) -> NodeInfoHttpBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bound_address`, `max_content_length_in_bytes`, `publish_address`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoHttp>>(
+        f: impl FnOnce(NodeInfoHttpBuilder) -> B,
     ) -> NodeInfoHttp {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoHttpBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_http_members {
+    pub struct bound_address;
+    pub struct max_content_length_in_bytes;
+    pub struct publish_address;
 }
 
 /// Builder for [`NodeInfoHttp`].
@@ -2391,6 +2174,7 @@ impl<S0, S1, S2> NodeInfoHttpBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NodeInfoHttpBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn bound_address(
         self,
         value: impl Into<Vec<String>>,
@@ -2425,6 +2209,7 @@ impl<S1, S2> NodeInfoHttpBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> NodeInfoHttpBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn max_content_length_in_bytes(
         self,
         value: i64,
@@ -2436,6 +2221,7 @@ impl<S0, S2> NodeInfoHttpBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> NodeInfoHttpBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn publish_address(
         self,
         value: impl Into<String>,
@@ -2446,15 +2232,14 @@ impl<S0, S1> NodeInfoHttpBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    NodeInfoHttpBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NodeInfoHttpBuilder<(S0, S1, S2)> {
     /// Builds a [`NodeInfoHttp`].
-    pub fn build(self) -> NodeInfoHttp {
+    pub fn build(self) -> NodeInfoHttp
+    where
+        S0: crate::typed::builder::IsSet<node_info_http_members::bound_address>,
+        S1: crate::typed::builder::IsSet<node_info_http_members::max_content_length_in_bytes>,
+        S2: crate::typed::builder::IsSet<node_info_http_members::publish_address>,
+    {
         NodeInfoHttp {
             bound_address: self.bound_address.unwrap(),
             max_content_length: self.max_content_length,
@@ -2464,54 +2249,28 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoHttpBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfoHttp
+impl<S0, S1, S2> crate::typed::builder::Build for NodeInfoHttpBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<node_info_http_members::bound_address>,
+    S1: crate::typed::builder::IsSet<node_info_http_members::max_content_length_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_http_members::publish_address>,
 {
-    fn from(
-        builder: NodeInfoHttpBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoHttp;
+
+    fn build(self) -> NodeInfoHttp {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NodeInfoHttpBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `bound_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bound_address: crate::typed::builder::MissingRequiredField) -> NodeInfoHttp { match bound_address {} }
-}
-
-impl<S2>
-    NodeInfoHttpBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NodeInfoHttpBuilder<(S0, S1, S2)>> for NodeInfoHttp
+where
+    S0: crate::typed::builder::IsSet<node_info_http_members::bound_address>,
+    S1: crate::typed::builder::IsSet<node_info_http_members::max_content_length_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_http_members::publish_address>,
 {
-    /// `max_content_length_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_content_length_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoHttp { match max_content_length_in_bytes {} }
-}
-
-impl
-    NodeInfoHttpBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `publish_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, publish_address: crate::typed::builder::MissingRequiredField) -> NodeInfoHttp { match publish_address {} }
+    fn from(builder: NodeInfoHttpBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2521,16 +2280,27 @@ pub struct NodeInfoIngest {
 
 impl NodeInfoIngest {
     /// Creates a builder for [`NodeInfoIngest`].
+    ///
+    /// Required: `processors`.
     pub fn builder() -> NodeInfoIngestBuilder {
         NodeInfoIngestBuilder::new()
     }
 
     /// Creates a [`NodeInfoIngest`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoIngestBuilder) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `processors`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoIngest>>(
+        f: impl FnOnce(NodeInfoIngestBuilder) -> B,
     ) -> NodeInfoIngest {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoIngestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_ingest_members {
+    pub struct processors;
 }
 
 /// Builder for [`NodeInfoIngest`].
@@ -2559,6 +2329,7 @@ impl<S0> NodeInfoIngestBuilder<(S0,)> {
 }
 
 impl NodeInfoIngestBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn processors(
         self,
         value: impl Into<Vec<NodeInfoIngestProcessor>>,
@@ -2582,11 +2353,11 @@ impl NodeInfoIngestBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<
+        B: crate::typed::builder::Build<Output = NodeInfoIngestProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestProcessorBuilder,
-        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestProcessorBuilder) -> B,
     ) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
         self.add_processors(f(NodeInfoIngestProcessorBuilder::new()).build())
     }
@@ -2602,35 +2373,46 @@ impl NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`processors`](Self::processors), with a builder.
-    pub fn add_processors_with(
+    pub fn add_processors_with<
+        B: crate::typed::builder::Build<Output = NodeInfoIngestProcessor>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestProcessorBuilder,
-        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestProcessorBuilder) -> B,
     ) -> Self {
         self.add_processors(f(NodeInfoIngestProcessorBuilder::new()).build())
     }
 }
 
-impl NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoIngestBuilder<(S0,)> {
     /// Builds a [`NodeInfoIngest`].
-    pub fn build(self) -> NodeInfoIngest {
+    pub fn build(self) -> NodeInfoIngest
+    where
+        S0: crate::typed::builder::IsSet<node_info_ingest_members::processors>,
+    {
         NodeInfoIngest {
             processors: self.processors.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoIngestBuilder<(crate::typed::builder::Set,)>> for NodeInfoIngest {
-    fn from(builder: NodeInfoIngestBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoIngestBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_members::processors>,
+{
+    type Output = NodeInfoIngest;
+
+    fn build(self) -> NodeInfoIngest {
+        Self::build(self)
     }
 }
 
-impl NodeInfoIngestBuilder<(crate::typed::builder::NotSet,)> {
-    /// `processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processors: crate::typed::builder::MissingRequiredField) -> NodeInfoIngest { match processors {} }
+impl<S0> From<NodeInfoIngestBuilder<(S0,)>> for NodeInfoIngest
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_members::processors>,
+{
+    fn from(builder: NodeInfoIngestBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2640,18 +2422,27 @@ pub struct NodeInfoIngestDownloader {
 
 impl NodeInfoIngestDownloader {
     /// Creates a builder for [`NodeInfoIngestDownloader`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> NodeInfoIngestDownloaderBuilder {
         NodeInfoIngestDownloaderBuilder::new()
     }
 
     /// Creates a [`NodeInfoIngestDownloader`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoIngestDownloaderBuilder,
-        ) -> NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoIngestDownloader>>(
+        f: impl FnOnce(NodeInfoIngestDownloaderBuilder) -> B,
     ) -> NodeInfoIngestDownloader {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoIngestDownloaderBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_ingest_downloader_members {
+    pub struct enabled;
 }
 
 /// Builder for [`NodeInfoIngestDownloader`].
@@ -2680,6 +2471,7 @@ impl<S0> NodeInfoIngestDownloaderBuilder<(S0,)> {
 }
 
 impl NodeInfoIngestDownloaderBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: impl Into<String>,
@@ -2690,27 +2482,36 @@ impl NodeInfoIngestDownloaderBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoIngestDownloaderBuilder<(S0,)> {
     /// Builds a [`NodeInfoIngestDownloader`].
-    pub fn build(self) -> NodeInfoIngestDownloader {
+    pub fn build(self) -> NodeInfoIngestDownloader
+    where
+        S0: crate::typed::builder::IsSet<node_info_ingest_downloader_members::enabled>,
+    {
         NodeInfoIngestDownloader {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoIngestDownloader
+impl<S0> crate::typed::builder::Build for NodeInfoIngestDownloaderBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_downloader_members::enabled>,
 {
-    fn from(builder: NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoIngestDownloader;
+
+    fn build(self) -> NodeInfoIngestDownloader {
+        Self::build(self)
     }
 }
 
-impl NodeInfoIngestDownloaderBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> NodeInfoIngestDownloader { match enabled {} }
+impl<S0> From<NodeInfoIngestDownloaderBuilder<(S0,)>> for NodeInfoIngestDownloader
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_downloader_members::enabled>,
+{
+    fn from(builder: NodeInfoIngestDownloaderBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2720,18 +2521,27 @@ pub struct NodeInfoIngestInfo {
 
 impl NodeInfoIngestInfo {
     /// Creates a builder for [`NodeInfoIngestInfo`].
+    ///
+    /// Required: `downloader`.
     pub fn builder() -> NodeInfoIngestInfoBuilder {
         NodeInfoIngestInfoBuilder::new()
     }
 
     /// Creates a [`NodeInfoIngestInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `downloader`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> NodeInfoIngestInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoIngestInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_ingest_info_members {
+    pub struct downloader;
 }
 
 /// Builder for [`NodeInfoIngestInfo`].
@@ -2760,6 +2570,7 @@ impl<S0> NodeInfoIngestInfoBuilder<(S0,)> {
 }
 
 impl NodeInfoIngestInfoBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn downloader(
         self,
         value: impl Into<NodeInfoIngestDownloader>,
@@ -2770,35 +2581,44 @@ impl NodeInfoIngestInfoBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`downloader`](Self::downloader) with a builder.
-    pub fn downloader_with(
+    pub fn downloader_with<B: crate::typed::builder::Build<Output = NodeInfoIngestDownloader>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestDownloaderBuilder,
-        ) -> NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestDownloaderBuilder) -> B,
     ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)> {
         self.downloader(f(NodeInfoIngestDownloaderBuilder::new()).build())
     }
 }
 
-impl NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoIngestInfoBuilder<(S0,)> {
     /// Builds a [`NodeInfoIngestInfo`].
-    pub fn build(self) -> NodeInfoIngestInfo {
+    pub fn build(self) -> NodeInfoIngestInfo
+    where
+        S0: crate::typed::builder::IsSet<node_info_ingest_info_members::downloader>,
+    {
         NodeInfoIngestInfo {
             downloader: self.downloader.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>> for NodeInfoIngestInfo {
-    fn from(builder: NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoIngestInfoBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_info_members::downloader>,
+{
+    type Output = NodeInfoIngestInfo;
+
+    fn build(self) -> NodeInfoIngestInfo {
+        Self::build(self)
     }
 }
 
-impl NodeInfoIngestInfoBuilder<(crate::typed::builder::NotSet,)> {
-    /// `downloader` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, downloader: crate::typed::builder::MissingRequiredField) -> NodeInfoIngestInfo { match downloader {} }
+impl<S0> From<NodeInfoIngestInfoBuilder<(S0,)>> for NodeInfoIngestInfo
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_info_members::downloader>,
+{
+    fn from(builder: NodeInfoIngestInfoBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2808,18 +2628,27 @@ pub struct NodeInfoIngestProcessor {
 
 impl NodeInfoIngestProcessor {
     /// Creates a builder for [`NodeInfoIngestProcessor`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NodeInfoIngestProcessorBuilder {
         NodeInfoIngestProcessorBuilder::new()
     }
 
     /// Creates a [`NodeInfoIngestProcessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoIngestProcessorBuilder,
-        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoIngestProcessor>>(
+        f: impl FnOnce(NodeInfoIngestProcessorBuilder) -> B,
     ) -> NodeInfoIngestProcessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoIngestProcessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_ingest_processor_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NodeInfoIngestProcessor`].
@@ -2848,6 +2677,7 @@ impl<S0> NodeInfoIngestProcessorBuilder<(S0,)> {
 }
 
 impl NodeInfoIngestProcessorBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2858,27 +2688,36 @@ impl NodeInfoIngestProcessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoIngestProcessorBuilder<(S0,)> {
     /// Builds a [`NodeInfoIngestProcessor`].
-    pub fn build(self) -> NodeInfoIngestProcessor {
+    pub fn build(self) -> NodeInfoIngestProcessor
+    where
+        S0: crate::typed::builder::IsSet<node_info_ingest_processor_members::r#type>,
+    {
         NodeInfoIngestProcessor {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoIngestProcessor
+impl<S0> crate::typed::builder::Build for NodeInfoIngestProcessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_processor_members::r#type>,
 {
-    fn from(builder: NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoIngestProcessor;
+
+    fn build(self) -> NodeInfoIngestProcessor {
+        Self::build(self)
     }
 }
 
-impl NodeInfoIngestProcessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeInfoIngestProcessor { match r#type {} }
+impl<S0> From<NodeInfoIngestProcessorBuilder<(S0,)>> for NodeInfoIngestProcessor
+where
+    S0: crate::typed::builder::IsSet<node_info_ingest_processor_members::r#type>,
+{
+    fn from(builder: NodeInfoIngestProcessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2902,24 +2741,31 @@ pub struct NodeInfoJvmMemory {
 
 impl NodeInfoJvmMemory {
     /// Creates a builder for [`NodeInfoJvmMemory`].
+    ///
+    /// Required: `direct_max_in_bytes`, `heap_init_in_bytes`, `heap_max_in_bytes`, `non_heap_init_in_bytes`, `non_heap_max_in_bytes`.
     pub fn builder() -> NodeInfoJvmMemoryBuilder {
         NodeInfoJvmMemoryBuilder::new()
     }
 
     /// Creates a [`NodeInfoJvmMemory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoJvmMemoryBuilder,
-        ) -> NodeInfoJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `direct_max_in_bytes`, `heap_init_in_bytes`, `heap_max_in_bytes`, `non_heap_init_in_bytes`, `non_heap_max_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoJvmMemory>>(
+        f: impl FnOnce(NodeInfoJvmMemoryBuilder) -> B,
     ) -> NodeInfoJvmMemory {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoJvmMemoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_jvm_memory_members {
+    pub struct direct_max_in_bytes;
+    pub struct heap_init_in_bytes;
+    pub struct heap_max_in_bytes;
+    pub struct non_heap_init_in_bytes;
+    pub struct non_heap_max_in_bytes;
 }
 
 /// Builder for [`NodeInfoJvmMemory`].
@@ -3046,6 +2892,7 @@ impl<S0, S1, S2, S3, S4> NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> NodeInfoJvmMemoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn direct_max_in_bytes(
         self,
         value: i64,
@@ -3057,6 +2904,7 @@ impl<S1, S2, S3, S4> NodeInfoJvmMemoryBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3, S4> NodeInfoJvmMemoryBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn heap_init_in_bytes(
         self,
         value: i64,
@@ -3068,6 +2916,7 @@ impl<S0, S2, S3, S4> NodeInfoJvmMemoryBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3, S4> NodeInfoJvmMemoryBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn heap_max_in_bytes(
         self,
         value: i64,
@@ -3079,6 +2928,7 @@ impl<S0, S1, S3, S4> NodeInfoJvmMemoryBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2, S4> NodeInfoJvmMemoryBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn non_heap_init_in_bytes(
         self,
         value: i64,
@@ -3090,6 +2940,7 @@ impl<S0, S1, S2, S4> NodeInfoJvmMemoryBuilder<(S0, S1, S2, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3> NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn non_heap_max_in_bytes(
         self,
         value: i64,
@@ -3100,17 +2951,16 @@ impl<S0, S1, S2, S3> NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, crate::typed::bui
     }
 }
 
-impl
-    NodeInfoJvmMemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`NodeInfoJvmMemory`].
-    pub fn build(self) -> NodeInfoJvmMemory {
+    pub fn build(self) -> NodeInfoJvmMemory
+    where
+        S0: crate::typed::builder::IsSet<node_info_jvm_memory_members::direct_max_in_bytes>,
+        S1: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_init_in_bytes>,
+        S2: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_max_in_bytes>,
+        S3: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_init_in_bytes>,
+        S4: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_max_in_bytes>,
+    {
         NodeInfoJvmMemory {
             direct_max: self.direct_max,
             direct_max_in_bytes: self.direct_max_in_bytes.unwrap(),
@@ -3126,90 +2976,33 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfoJvmMemory
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<node_info_jvm_memory_members::direct_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_init_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_max_in_bytes>,
+    S3: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_init_in_bytes>,
+    S4: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_max_in_bytes>,
 {
-    fn from(
-        builder: NodeInfoJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoJvmMemory;
+
+    fn build(self) -> NodeInfoJvmMemory {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> NodeInfoJvmMemoryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `direct_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, direct_max_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoJvmMemory { match direct_max_in_bytes {} }
-}
-
-impl<S2, S3, S4>
-    NodeInfoJvmMemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, S4)>> for NodeInfoJvmMemory
+where
+    S0: crate::typed::builder::IsSet<node_info_jvm_memory_members::direct_max_in_bytes>,
+    S1: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_init_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_jvm_memory_members::heap_max_in_bytes>,
+    S3: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_init_in_bytes>,
+    S4: crate::typed::builder::IsSet<node_info_jvm_memory_members::non_heap_max_in_bytes>,
 {
-    /// `heap_init_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, heap_init_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoJvmMemory { match heap_init_in_bytes {} }
-}
-
-impl<S3, S4>
-    NodeInfoJvmMemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `heap_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, heap_max_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoJvmMemory { match heap_max_in_bytes {} }
-}
-
-impl<S4>
-    NodeInfoJvmMemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `non_heap_init_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, non_heap_init_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoJvmMemory { match non_heap_init_in_bytes {} }
-}
-
-impl
-    NodeInfoJvmMemoryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `non_heap_max_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, non_heap_max_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoJvmMemory { match non_heap_max_in_bytes {} }
+    fn from(builder: NodeInfoJvmMemoryBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3220,21 +3013,28 @@ pub struct NodeInfoMemory {
 
 impl NodeInfoMemory {
     /// Creates a builder for [`NodeInfoMemory`].
+    ///
+    /// Required: `total`, `total_in_bytes`.
     pub fn builder() -> NodeInfoMemoryBuilder {
         NodeInfoMemoryBuilder::new()
     }
 
     /// Creates a [`NodeInfoMemory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoMemoryBuilder,
-        ) -> NodeInfoMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `total`, `total_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoMemory>>(
+        f: impl FnOnce(NodeInfoMemoryBuilder) -> B,
     ) -> NodeInfoMemory {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoMemoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_memory_members {
+    pub struct total;
+    pub struct total_in_bytes;
 }
 
 /// Builder for [`NodeInfoMemory`].
@@ -3267,6 +3067,7 @@ impl<S0, S1> NodeInfoMemoryBuilder<(S0, S1)> {
 }
 
 impl<S1> NodeInfoMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn total(
         self,
         value: impl Into<String>,
@@ -3278,6 +3079,7 @@ impl<S1> NodeInfoMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NodeInfoMemoryBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_in_bytes(
         self,
         value: i64,
@@ -3288,9 +3090,13 @@ impl<S0> NodeInfoMemoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NodeInfoMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NodeInfoMemoryBuilder<(S0, S1)> {
     /// Builds a [`NodeInfoMemory`].
-    pub fn build(self) -> NodeInfoMemory {
+    pub fn build(self) -> NodeInfoMemory
+    where
+        S0: crate::typed::builder::IsSet<node_info_memory_members::total>,
+        S1: crate::typed::builder::IsSet<node_info_memory_members::total_in_bytes>,
+    {
         NodeInfoMemory {
             total: self.total.unwrap(),
             total_in_bytes: self.total_in_bytes.unwrap(),
@@ -3298,26 +3104,26 @@ impl NodeInfoMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<NodeInfoMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NodeInfoMemory
+impl<S0, S1> crate::typed::builder::Build for NodeInfoMemoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<node_info_memory_members::total>,
+    S1: crate::typed::builder::IsSet<node_info_memory_members::total_in_bytes>,
 {
-    fn from(
-        builder: NodeInfoMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoMemory;
+
+    fn build(self) -> NodeInfoMemory {
+        Self::build(self)
     }
 }
 
-impl<S1> NodeInfoMemoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> NodeInfoMemory { match total {} }
-}
-
-impl NodeInfoMemoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoMemory { match total_in_bytes {} }
+impl<S0, S1> From<NodeInfoMemoryBuilder<(S0, S1)>> for NodeInfoMemory
+where
+    S0: crate::typed::builder::IsSet<node_info_memory_members::total>,
+    S1: crate::typed::builder::IsSet<node_info_memory_members::total_in_bytes>,
+{
+    fn from(builder: NodeInfoMemoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3334,27 +3140,34 @@ pub struct NodeInfoOSCPU {
 
 impl NodeInfoOSCPU {
     /// Creates a builder for [`NodeInfoOSCPU`].
+    ///
+    /// Required: `cache_size`, `cache_size_in_bytes`, `cores_per_socket`, `mhz`, `model`, `total_cores`, `total_sockets`, `vendor`.
     pub fn builder() -> NodeInfoOSCPUBuilder {
         NodeInfoOSCPUBuilder::new()
     }
 
     /// Creates a [`NodeInfoOSCPU`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoOSCPUBuilder,
-        ) -> NodeInfoOSCPUBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cache_size`, `cache_size_in_bytes`, `cores_per_socket`, `mhz`, `model`, `total_cores`, `total_sockets`, `vendor`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoOSCPU>>(
+        f: impl FnOnce(NodeInfoOSCPUBuilder) -> B,
     ) -> NodeInfoOSCPU {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoOSCPUBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_oscpu_members {
+    pub struct cache_size;
+    pub struct cache_size_in_bytes;
+    pub struct cores_per_socket;
+    pub struct mhz;
+    pub struct model;
+    pub struct total_cores;
+    pub struct total_sockets;
+    pub struct vendor;
 }
 
 /// Builder for [`NodeInfoOSCPU`].
@@ -3428,6 +3241,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S
 impl<S1, S2, S3, S4, S5, S6, S7>
     NodeInfoOSCPUBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cache_size(
         self,
         value: impl Into<String>,
@@ -3441,6 +3255,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     NodeInfoOSCPUBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cache_size_in_bytes(
         self,
         value: i32,
@@ -3454,6 +3269,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     NodeInfoOSCPUBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cores_per_socket(
         self,
         value: i32,
@@ -3467,6 +3283,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     NodeInfoOSCPUBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn mhz(
         self,
         value: i32,
@@ -3480,6 +3297,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     NodeInfoOSCPUBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -3493,6 +3311,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn total_cores(
         self,
         value: i32,
@@ -3506,6 +3325,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn total_sockets(
         self,
         value: i32,
@@ -3519,6 +3339,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn vendor(
         self,
         value: impl Into<String>,
@@ -3529,20 +3350,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`NodeInfoOSCPU`].
-    pub fn build(self) -> NodeInfoOSCPU {
+    pub fn build(self) -> NodeInfoOSCPU
+    where
+        S0: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size>,
+        S1: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size_in_bytes>,
+        S2: crate::typed::builder::IsSet<node_info_oscpu_members::cores_per_socket>,
+        S3: crate::typed::builder::IsSet<node_info_oscpu_members::mhz>,
+        S4: crate::typed::builder::IsSet<node_info_oscpu_members::model>,
+        S5: crate::typed::builder::IsSet<node_info_oscpu_members::total_cores>,
+        S6: crate::typed::builder::IsSet<node_info_oscpu_members::total_sockets>,
+        S7: crate::typed::builder::IsSet<node_info_oscpu_members::vendor>,
+    {
         NodeInfoOSCPU {
             cache_size: self.cache_size.unwrap(),
             cache_size_in_bytes: self.cache_size_in_bytes.unwrap(),
@@ -3556,161 +3376,40 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoOSCPUBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfoOSCPU
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size>,
+    S1: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_oscpu_members::cores_per_socket>,
+    S3: crate::typed::builder::IsSet<node_info_oscpu_members::mhz>,
+    S4: crate::typed::builder::IsSet<node_info_oscpu_members::model>,
+    S5: crate::typed::builder::IsSet<node_info_oscpu_members::total_cores>,
+    S6: crate::typed::builder::IsSet<node_info_oscpu_members::total_sockets>,
+    S7: crate::typed::builder::IsSet<node_info_oscpu_members::vendor>,
 {
-    fn from(
-        builder: NodeInfoOSCPUBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoOSCPU;
+
+    fn build(self) -> NodeInfoOSCPU {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    NodeInfoOSCPUBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for NodeInfoOSCPU
+where
+    S0: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size>,
+    S1: crate::typed::builder::IsSet<node_info_oscpu_members::cache_size_in_bytes>,
+    S2: crate::typed::builder::IsSet<node_info_oscpu_members::cores_per_socket>,
+    S3: crate::typed::builder::IsSet<node_info_oscpu_members::mhz>,
+    S4: crate::typed::builder::IsSet<node_info_oscpu_members::model>,
+    S5: crate::typed::builder::IsSet<node_info_oscpu_members::total_cores>,
+    S6: crate::typed::builder::IsSet<node_info_oscpu_members::total_sockets>,
+    S7: crate::typed::builder::IsSet<node_info_oscpu_members::vendor>,
 {
-    /// `cache_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cache_size: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match cache_size {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `cache_size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cache_size_in_bytes: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match cache_size_in_bytes {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `cores_per_socket` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cores_per_socket: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match cores_per_socket {} }
-}
-
-impl<S4, S5, S6, S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `mhz` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mhz: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match mhz {} }
-}
-
-impl<S5, S6, S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match model {} }
-}
-
-impl<S6, S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `total_cores` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_cores: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match total_cores {} }
-}
-
-impl<S7>
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `total_sockets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_sockets: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match total_sockets {} }
-}
-
-impl
-    NodeInfoOSCPUBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `vendor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vendor: crate::typed::builder::MissingRequiredField) -> NodeInfoOSCPU { match vendor {} }
+    fn from(builder: NodeInfoOSCPUBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3757,7 +3456,9 @@ impl NodeInfoPath {
     }
 
     /// Creates a [`NodeInfoPath`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(NodeInfoPathBuilder) -> NodeInfoPathBuilder) -> NodeInfoPath {
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoPath>>(
+        f: impl FnOnce(NodeInfoPathBuilder) -> B,
+    ) -> NodeInfoPath {
         f(Self::builder()).build()
     }
 }
@@ -3848,6 +3549,14 @@ impl NodeInfoPathBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoPathBuilder {
+    type Output = NodeInfoPath;
+
+    fn build(self) -> NodeInfoPath {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoPathBuilder> for NodeInfoPath {
     fn from(builder: NodeInfoPathBuilder) -> Self {
         builder.build()
@@ -3861,18 +3570,27 @@ pub struct NodeInfoRepositories {
 
 impl NodeInfoRepositories {
     /// Creates a builder for [`NodeInfoRepositories`].
+    ///
+    /// Required: `url`.
     pub fn builder() -> NodeInfoRepositoriesBuilder {
         NodeInfoRepositoriesBuilder::new()
     }
 
     /// Creates a [`NodeInfoRepositories`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoRepositoriesBuilder,
-        ) -> NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoRepositories>>(
+        f: impl FnOnce(NodeInfoRepositoriesBuilder) -> B,
     ) -> NodeInfoRepositories {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoRepositoriesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_repositories_members {
+    pub struct url;
 }
 
 /// Builder for [`NodeInfoRepositories`].
@@ -3901,6 +3619,7 @@ impl<S0> NodeInfoRepositoriesBuilder<(S0,)> {
 }
 
 impl NodeInfoRepositoriesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn url(
         self,
         value: impl Into<NodeInfoRepositoriesUrl>,
@@ -3911,35 +3630,44 @@ impl NodeInfoRepositoriesBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`url`](Self::url) with a builder.
-    pub fn url_with(
+    pub fn url_with<B: crate::typed::builder::Build<Output = NodeInfoRepositoriesUrl>>(
         self,
-        f: impl FnOnce(
-            NodeInfoRepositoriesUrlBuilder,
-        ) -> NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoRepositoriesUrlBuilder) -> B,
     ) -> NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)> {
         self.url(f(NodeInfoRepositoriesUrlBuilder::new()).build())
     }
 }
 
-impl NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoRepositoriesBuilder<(S0,)> {
     /// Builds a [`NodeInfoRepositories`].
-    pub fn build(self) -> NodeInfoRepositories {
+    pub fn build(self) -> NodeInfoRepositories
+    where
+        S0: crate::typed::builder::IsSet<node_info_repositories_members::url>,
+    {
         NodeInfoRepositories {
             url: self.url.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)>> for NodeInfoRepositories {
-    fn from(builder: NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoRepositoriesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_repositories_members::url>,
+{
+    type Output = NodeInfoRepositories;
+
+    fn build(self) -> NodeInfoRepositories {
+        Self::build(self)
     }
 }
 
-impl NodeInfoRepositoriesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> NodeInfoRepositories { match url {} }
+impl<S0> From<NodeInfoRepositoriesBuilder<(S0,)>> for NodeInfoRepositories
+where
+    S0: crate::typed::builder::IsSet<node_info_repositories_members::url>,
+{
+    fn from(builder: NodeInfoRepositoriesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3949,18 +3677,27 @@ pub struct NodeInfoRepositoriesUrl {
 
 impl NodeInfoRepositoriesUrl {
     /// Creates a builder for [`NodeInfoRepositoriesUrl`].
+    ///
+    /// Required: `allowed_urls`.
     pub fn builder() -> NodeInfoRepositoriesUrlBuilder {
         NodeInfoRepositoriesUrlBuilder::new()
     }
 
     /// Creates a [`NodeInfoRepositoriesUrl`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoRepositoriesUrlBuilder,
-        ) -> NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `allowed_urls`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoRepositoriesUrl>>(
+        f: impl FnOnce(NodeInfoRepositoriesUrlBuilder) -> B,
     ) -> NodeInfoRepositoriesUrl {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoRepositoriesUrlBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_repositories_url_members {
+    pub struct allowed_urls;
 }
 
 /// Builder for [`NodeInfoRepositoriesUrl`].
@@ -3989,6 +3726,7 @@ impl<S0> NodeInfoRepositoriesUrlBuilder<(S0,)> {
 }
 
 impl NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn allowed_urls(
         self,
         value: impl Into<String>,
@@ -3999,27 +3737,36 @@ impl NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoRepositoriesUrlBuilder<(S0,)> {
     /// Builds a [`NodeInfoRepositoriesUrl`].
-    pub fn build(self) -> NodeInfoRepositoriesUrl {
+    pub fn build(self) -> NodeInfoRepositoriesUrl
+    where
+        S0: crate::typed::builder::IsSet<node_info_repositories_url_members::allowed_urls>,
+    {
         NodeInfoRepositoriesUrl {
             allowed_urls: self.allowed_urls.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoRepositoriesUrl
+impl<S0> crate::typed::builder::Build for NodeInfoRepositoriesUrlBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_repositories_url_members::allowed_urls>,
 {
-    fn from(builder: NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoRepositoriesUrl;
+
+    fn build(self) -> NodeInfoRepositoriesUrl {
+        Self::build(self)
     }
 }
 
-impl NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::NotSet,)> {
-    /// `allowed_urls` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allowed_urls: crate::typed::builder::MissingRequiredField) -> NodeInfoRepositoriesUrl { match allowed_urls {} }
+impl<S0> From<NodeInfoRepositoriesUrlBuilder<(S0,)>> for NodeInfoRepositoriesUrl
+where
+    S0: crate::typed::builder::IsSet<node_info_repositories_url_members::allowed_urls>,
+{
+    fn from(builder: NodeInfoRepositoriesUrlBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4031,16 +3778,27 @@ pub struct NodeInfoScript {
 
 impl NodeInfoScript {
     /// Creates a builder for [`NodeInfoScript`].
+    ///
+    /// Required: `allowed_types`.
     pub fn builder() -> NodeInfoScriptBuilder {
         NodeInfoScriptBuilder::new()
     }
 
     /// Creates a [`NodeInfoScript`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoScriptBuilder) -> NodeInfoScriptBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `allowed_types`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoScript>>(
+        f: impl FnOnce(NodeInfoScriptBuilder) -> B,
     ) -> NodeInfoScript {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoScriptBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_script_members {
+    pub struct allowed_types;
 }
 
 /// Builder for [`NodeInfoScript`].
@@ -4083,6 +3841,7 @@ impl<S0> NodeInfoScriptBuilder<(S0,)> {
 }
 
 impl NodeInfoScriptBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn allowed_types(
         self,
         value: impl Into<String>,
@@ -4093,9 +3852,12 @@ impl NodeInfoScriptBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoScriptBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoScriptBuilder<(S0,)> {
     /// Builds a [`NodeInfoScript`].
-    pub fn build(self) -> NodeInfoScript {
+    pub fn build(self) -> NodeInfoScript
+    where
+        S0: crate::typed::builder::IsSet<node_info_script_members::allowed_types>,
+    {
         NodeInfoScript {
             allowed_types: self.allowed_types.unwrap(),
             disable_max_compilations_rate: self.disable_max_compilations_rate,
@@ -4103,16 +3865,24 @@ impl NodeInfoScriptBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeInfoScriptBuilder<(crate::typed::builder::Set,)>> for NodeInfoScript {
-    fn from(builder: NodeInfoScriptBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoScriptBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_script_members::allowed_types>,
+{
+    type Output = NodeInfoScript;
+
+    fn build(self) -> NodeInfoScript {
+        Self::build(self)
     }
 }
 
-impl NodeInfoScriptBuilder<(crate::typed::builder::NotSet,)> {
-    /// `allowed_types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allowed_types: crate::typed::builder::MissingRequiredField) -> NodeInfoScript { match allowed_types {} }
+impl<S0> From<NodeInfoScriptBuilder<(S0,)>> for NodeInfoScript
+where
+    S0: crate::typed::builder::IsSet<node_info_script_members::allowed_types>,
+{
+    fn from(builder: NodeInfoScriptBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4122,16 +3892,27 @@ pub struct NodeInfoSearch {
 
 impl NodeInfoSearch {
     /// Creates a builder for [`NodeInfoSearch`].
+    ///
+    /// Required: `remote`.
     pub fn builder() -> NodeInfoSearchBuilder {
         NodeInfoSearchBuilder::new()
     }
 
     /// Creates a [`NodeInfoSearch`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoSearchBuilder) -> NodeInfoSearchBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `remote`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSearch>>(
+        f: impl FnOnce(NodeInfoSearchBuilder) -> B,
     ) -> NodeInfoSearch {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSearchBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_search_members {
+    pub struct remote;
 }
 
 /// Builder for [`NodeInfoSearch`].
@@ -4160,6 +3941,7 @@ impl<S0> NodeInfoSearchBuilder<(S0,)> {
 }
 
 impl NodeInfoSearchBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn remote(
         self,
         value: impl Into<NodeInfoSearchRemote>,
@@ -4170,35 +3952,44 @@ impl NodeInfoSearchBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`remote`](Self::remote) with a builder.
-    pub fn remote_with(
+    pub fn remote_with<B: crate::typed::builder::Build<Output = NodeInfoSearchRemote>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSearchRemoteBuilder,
-        ) -> NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSearchRemoteBuilder) -> B,
     ) -> NodeInfoSearchBuilder<(crate::typed::builder::Set,)> {
         self.remote(f(NodeInfoSearchRemoteBuilder::new()).build())
     }
 }
 
-impl NodeInfoSearchBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSearchBuilder<(S0,)> {
     /// Builds a [`NodeInfoSearch`].
-    pub fn build(self) -> NodeInfoSearch {
+    pub fn build(self) -> NodeInfoSearch
+    where
+        S0: crate::typed::builder::IsSet<node_info_search_members::remote>,
+    {
         NodeInfoSearch {
             remote: self.remote.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSearchBuilder<(crate::typed::builder::Set,)>> for NodeInfoSearch {
-    fn from(builder: NodeInfoSearchBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoSearchBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_search_members::remote>,
+{
+    type Output = NodeInfoSearch;
+
+    fn build(self) -> NodeInfoSearch {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSearchBuilder<(crate::typed::builder::NotSet,)> {
-    /// `remote` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remote: crate::typed::builder::MissingRequiredField) -> NodeInfoSearch { match remote {} }
+impl<S0> From<NodeInfoSearchBuilder<(S0,)>> for NodeInfoSearch
+where
+    S0: crate::typed::builder::IsSet<node_info_search_members::remote>,
+{
+    fn from(builder: NodeInfoSearchBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4208,18 +3999,27 @@ pub struct NodeInfoSearchRemote {
 
 impl NodeInfoSearchRemote {
     /// Creates a builder for [`NodeInfoSearchRemote`].
+    ///
+    /// Required: `connect`.
     pub fn builder() -> NodeInfoSearchRemoteBuilder {
         NodeInfoSearchRemoteBuilder::new()
     }
 
     /// Creates a [`NodeInfoSearchRemote`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSearchRemoteBuilder,
-        ) -> NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `connect`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSearchRemote>>(
+        f: impl FnOnce(NodeInfoSearchRemoteBuilder) -> B,
     ) -> NodeInfoSearchRemote {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSearchRemoteBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_search_remote_members {
+    pub struct connect;
 }
 
 /// Builder for [`NodeInfoSearchRemote`].
@@ -4248,6 +4048,7 @@ impl<S0> NodeInfoSearchRemoteBuilder<(S0,)> {
 }
 
 impl NodeInfoSearchRemoteBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn connect(
         self,
         value: impl Into<String>,
@@ -4258,25 +4059,36 @@ impl NodeInfoSearchRemoteBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSearchRemoteBuilder<(S0,)> {
     /// Builds a [`NodeInfoSearchRemote`].
-    pub fn build(self) -> NodeInfoSearchRemote {
+    pub fn build(self) -> NodeInfoSearchRemote
+    where
+        S0: crate::typed::builder::IsSet<node_info_search_remote_members::connect>,
+    {
         NodeInfoSearchRemote {
             connect: self.connect.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)>> for NodeInfoSearchRemote {
-    fn from(builder: NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoSearchRemoteBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_search_remote_members::connect>,
+{
+    type Output = NodeInfoSearchRemote;
+
+    fn build(self) -> NodeInfoSearchRemote {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSearchRemoteBuilder<(crate::typed::builder::NotSet,)> {
-    /// `connect` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connect: crate::typed::builder::MissingRequiredField) -> NodeInfoSearchRemote { match connect {} }
+impl<S0> From<NodeInfoSearchRemoteBuilder<(S0,)>> for NodeInfoSearchRemote
+where
+    S0: crate::typed::builder::IsSet<node_info_search_remote_members::connect>,
+{
+    fn from(builder: NodeInfoSearchRemoteBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4311,23 +4123,30 @@ pub struct NodeInfoSettings {
 
 impl NodeInfoSettings {
     /// Creates a builder for [`NodeInfoSettings`].
+    ///
+    /// Required: `cluster`, `node`, `http`, `transport`.
     pub fn builder() -> NodeInfoSettingsBuilder {
         NodeInfoSettingsBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsBuilder,
-        ) -> NodeInfoSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster`, `node`, `http`, `transport`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettings>>(
+        f: impl FnOnce(NodeInfoSettingsBuilder) -> B,
     ) -> NodeInfoSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_members {
+    pub struct cluster;
+    pub struct node;
+    pub struct http;
+    pub struct transport;
 }
 
 /// Builder for [`NodeInfoSettings`].
@@ -4422,7 +4241,10 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`path`](Self::path) with a builder.
-    pub fn path_with(self, f: impl FnOnce(NodeInfoPathBuilder) -> NodeInfoPathBuilder) -> Self {
+    pub fn path_with<B: crate::typed::builder::Build<Output = NodeInfoPath>>(
+        self,
+        f: impl FnOnce(NodeInfoPathBuilder) -> B,
+    ) -> Self {
         self.path(f(NodeInfoPathBuilder::new()).build())
     }
 
@@ -4438,11 +4260,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`repositories`](Self::repositories) with a builder.
-    pub fn repositories_with(
+    pub fn repositories_with<B: crate::typed::builder::Build<Output = NodeInfoRepositories>>(
         self,
-        f: impl FnOnce(
-            NodeInfoRepositoriesBuilder,
-        ) -> NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoRepositoriesBuilder) -> B,
     ) -> Self {
         self.repositories(f(NodeInfoRepositoriesBuilder::new()).build())
     }
@@ -4459,9 +4279,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`discovery`](Self::discovery) with a builder.
-    pub fn discovery_with(
+    pub fn discovery_with<B: crate::typed::builder::Build<Output = NodeInfoDiscover>>(
         self,
-        f: impl FnOnce(NodeInfoDiscoverBuilder) -> NodeInfoDiscoverBuilder,
+        f: impl FnOnce(NodeInfoDiscoverBuilder) -> B,
     ) -> Self {
         self.discovery(f(NodeInfoDiscoverBuilder::new()).build())
     }
@@ -4478,9 +4298,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`action`](Self::action) with a builder.
-    pub fn action_with(
+    pub fn action_with<B: crate::typed::builder::Build<Output = NodeInfoAction>>(
         self,
-        f: impl FnOnce(NodeInfoActionBuilder) -> NodeInfoActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoActionBuilder) -> B,
     ) -> Self {
         self.action(f(NodeInfoActionBuilder::new()).build())
     }
@@ -4497,9 +4317,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`client`](Self::client) with a builder.
-    pub fn client_with(
+    pub fn client_with<B: crate::typed::builder::Build<Output = NodeInfoClient>>(
         self,
-        f: impl FnOnce(NodeInfoClientBuilder) -> NodeInfoClientBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoClientBuilder) -> B,
     ) -> Self {
         self.client(f(NodeInfoClientBuilder::new()).build())
     }
@@ -4516,11 +4336,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`bootstrap`](Self::bootstrap) with a builder.
-    pub fn bootstrap_with(
+    pub fn bootstrap_with<B: crate::typed::builder::Build<Output = NodeInfoBootstrap>>(
         self,
-        f: impl FnOnce(
-            NodeInfoBootstrapBuilder,
-        ) -> NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoBootstrapBuilder) -> B,
     ) -> Self {
         self.bootstrap(f(NodeInfoBootstrapBuilder::new()).build())
     }
@@ -4537,9 +4355,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`network`](Self::network) with a builder.
-    pub fn network_with(
+    pub fn network_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsNetwork>>(
         self,
-        f: impl FnOnce(NodeInfoSettingsNetworkBuilder) -> NodeInfoSettingsNetworkBuilder,
+        f: impl FnOnce(NodeInfoSettingsNetworkBuilder) -> B,
     ) -> Self {
         self.network(f(NodeInfoSettingsNetworkBuilder::new()).build())
     }
@@ -4556,9 +4374,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`xpack`](Self::xpack) with a builder.
-    pub fn xpack_with(
+    pub fn xpack_with<B: crate::typed::builder::Build<Output = NodeInfoXpack>>(
         self,
-        f: impl FnOnce(NodeInfoXpackBuilder) -> NodeInfoXpackBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackBuilder) -> B,
     ) -> Self {
         self.xpack(f(NodeInfoXpackBuilder::new()).build())
     }
@@ -4575,9 +4393,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = NodeInfoScript>>(
         self,
-        f: impl FnOnce(NodeInfoScriptBuilder) -> NodeInfoScriptBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoScriptBuilder) -> B,
     ) -> Self {
         self.script(f(NodeInfoScriptBuilder::new()).build())
     }
@@ -4594,9 +4412,9 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`search`](Self::search) with a builder.
-    pub fn search_with(
+    pub fn search_with<B: crate::typed::builder::Build<Output = NodeInfoSearch>>(
         self,
-        f: impl FnOnce(NodeInfoSearchBuilder) -> NodeInfoSearchBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSearchBuilder) -> B,
     ) -> Self {
         self.search(f(NodeInfoSearchBuilder::new()).build())
     }
@@ -4613,15 +4431,16 @@ impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`ingest`](Self::ingest) with a builder.
-    pub fn ingest_with(
+    pub fn ingest_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsIngest>>(
         self,
-        f: impl FnOnce(NodeInfoSettingsIngestBuilder) -> NodeInfoSettingsIngestBuilder,
+        f: impl FnOnce(NodeInfoSettingsIngestBuilder) -> B,
     ) -> Self {
         self.ingest(f(NodeInfoSettingsIngestBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> NodeInfoSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn cluster(
         self,
         value: impl Into<NodeInfoSettingsCluster>,
@@ -4632,20 +4451,16 @@ impl<S1, S2, S3> NodeInfoSettingsBuilder<(crate::typed::builder::NotSet, S1, S2,
     }
 
     /// Sets [`cluster`](Self::cluster) with a builder.
-    pub fn cluster_with(
+    pub fn cluster_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsCluster>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsClusterBuilder,
-        ) -> NodeInfoSettingsClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoSettingsClusterBuilder) -> B,
     ) -> NodeInfoSettingsBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.cluster(f(NodeInfoSettingsClusterBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> NodeInfoSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<NodeInfoSettingsNode>,
@@ -4656,20 +4471,16 @@ impl<S0, S2, S3> NodeInfoSettingsBuilder<(S0, crate::typed::builder::NotSet, S2,
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsNode>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsNodeBuilder,
-        ) -> NodeInfoSettingsNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoSettingsNodeBuilder) -> B,
     ) -> NodeInfoSettingsBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.node(f(NodeInfoSettingsNodeBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> NodeInfoSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn http(
         self,
         value: impl Into<NodeInfoSettingsHttp>,
@@ -4680,17 +4491,16 @@ impl<S0, S1, S3> NodeInfoSettingsBuilder<(S0, S1, crate::typed::builder::NotSet,
     }
 
     /// Sets [`http`](Self::http) with a builder.
-    pub fn http_with(
+    pub fn http_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsHttp>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsHttpBuilder,
-        ) -> NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsHttpBuilder) -> B,
     ) -> NodeInfoSettingsBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.http(f(NodeInfoSettingsHttpBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> NodeInfoSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn transport(
         self,
         value: impl Into<NodeInfoSettingsTransport>,
@@ -4701,26 +4511,23 @@ impl<S0, S1, S2> NodeInfoSettingsBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 
     /// Sets [`transport`](Self::transport) with a builder.
-    pub fn transport_with(
+    pub fn transport_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsTransport>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsTransportBuilder,
-        ) -> NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsTransportBuilder) -> B,
     ) -> NodeInfoSettingsBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.transport(f(NodeInfoSettingsTransportBuilder::new()).build())
     }
 }
 
-impl
-    NodeInfoSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> NodeInfoSettingsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`NodeInfoSettings`].
-    pub fn build(self) -> NodeInfoSettings {
+    pub fn build(self) -> NodeInfoSettings
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_members::cluster>,
+        S1: crate::typed::builder::IsSet<node_info_settings_members::node>,
+        S2: crate::typed::builder::IsSet<node_info_settings_members::http>,
+        S3: crate::typed::builder::IsSet<node_info_settings_members::transport>,
+    {
         NodeInfoSettings {
             cluster: self.cluster.unwrap(),
             node: self.node.unwrap(),
@@ -4741,71 +4548,30 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfoSettings
+impl<S0, S1, S2, S3> crate::typed::builder::Build for NodeInfoSettingsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_members::cluster>,
+    S1: crate::typed::builder::IsSet<node_info_settings_members::node>,
+    S2: crate::typed::builder::IsSet<node_info_settings_members::http>,
+    S3: crate::typed::builder::IsSet<node_info_settings_members::transport>,
 {
-    fn from(
-        builder: NodeInfoSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoSettings;
+
+    fn build(self) -> NodeInfoSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> NodeInfoSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster: crate::typed::builder::MissingRequiredField) -> NodeInfoSettings { match cluster {} }
-}
-
-impl<S2, S3>
-    NodeInfoSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<NodeInfoSettingsBuilder<(S0, S1, S2, S3)>> for NodeInfoSettings
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_members::cluster>,
+    S1: crate::typed::builder::IsSet<node_info_settings_members::node>,
+    S2: crate::typed::builder::IsSet<node_info_settings_members::http>,
+    S3: crate::typed::builder::IsSet<node_info_settings_members::transport>,
 {
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> NodeInfoSettings { match node {} }
-}
-
-impl<S3>
-    NodeInfoSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `http` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, http: crate::typed::builder::MissingRequiredField) -> NodeInfoSettings { match http {} }
-}
-
-impl
-    NodeInfoSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `transport` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport: crate::typed::builder::MissingRequiredField) -> NodeInfoSettings { match transport {} }
+    fn from(builder: NodeInfoSettingsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4847,21 +4613,28 @@ impl From<&str> for NodeInfoSettingsClusterInitialMasterNodes {
 
 impl NodeInfoSettingsCluster {
     /// Creates a builder for [`NodeInfoSettingsCluster`].
+    ///
+    /// Required: `name`, `election`.
     pub fn builder() -> NodeInfoSettingsClusterBuilder {
         NodeInfoSettingsClusterBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsCluster`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsClusterBuilder,
-        ) -> NodeInfoSettingsClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `election`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsCluster>>(
+        f: impl FnOnce(NodeInfoSettingsClusterBuilder) -> B,
     ) -> NodeInfoSettingsCluster {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsClusterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_cluster_members {
+    pub struct name;
+    pub struct election;
 }
 
 /// Builder for [`NodeInfoSettingsCluster`].
@@ -4922,11 +4695,11 @@ impl<S0, S1> NodeInfoSettingsClusterBuilder<(S0, S1)> {
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(
+    pub fn routing_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexRouting>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexRoutingBuilder,
-        ) -> crate::typed::indices::_types::IndexRoutingBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexRoutingBuilder) -> B,
     ) -> Self {
         self.routing(f(crate::typed::indices::_types::IndexRoutingBuilder::new()).build())
     }
@@ -4960,17 +4733,18 @@ impl<S0, S1> NodeInfoSettingsClusterBuilder<(S0, S1)> {
     }
 
     /// Sets [`deprecation_indexing`](Self::deprecation_indexing) with a builder.
-    pub fn deprecation_indexing_with(
+    pub fn deprecation_indexing_with<
+        B: crate::typed::builder::Build<Output = DeprecationIndexing>,
+    >(
         self,
-        f: impl FnOnce(
-            DeprecationIndexingBuilder,
-        ) -> DeprecationIndexingBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DeprecationIndexingBuilder) -> B,
     ) -> Self {
         self.deprecation_indexing(f(DeprecationIndexingBuilder::new()).build())
     }
 }
 
 impl<S1> NodeInfoSettingsClusterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -4982,6 +4756,7 @@ impl<S1> NodeInfoSettingsClusterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NodeInfoSettingsClusterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn election(
         self,
         value: impl Into<NodeInfoSettingsClusterElection>,
@@ -4992,19 +4767,23 @@ impl<S0> NodeInfoSettingsClusterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`election`](Self::election) with a builder.
-    pub fn election_with(
+    pub fn election_with<
+        B: crate::typed::builder::Build<Output = NodeInfoSettingsClusterElection>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsClusterElectionBuilder,
-        ) -> NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsClusterElectionBuilder) -> B,
     ) -> NodeInfoSettingsClusterBuilder<(S0, crate::typed::builder::Set)> {
         self.election(f(NodeInfoSettingsClusterElectionBuilder::new()).build())
     }
 }
 
-impl NodeInfoSettingsClusterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NodeInfoSettingsClusterBuilder<(S0, S1)> {
     /// Builds a [`NodeInfoSettingsCluster`].
-    pub fn build(self) -> NodeInfoSettingsCluster {
+    pub fn build(self) -> NodeInfoSettingsCluster
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_cluster_members::name>,
+        S1: crate::typed::builder::IsSet<node_info_settings_cluster_members::election>,
+    {
         NodeInfoSettingsCluster {
             name: self.name.unwrap(),
             routing: self.routing,
@@ -5015,29 +4794,26 @@ impl NodeInfoSettingsClusterBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<NodeInfoSettingsClusterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NodeInfoSettingsCluster
+impl<S0, S1> crate::typed::builder::Build for NodeInfoSettingsClusterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_cluster_members::name>,
+    S1: crate::typed::builder::IsSet<node_info_settings_cluster_members::election>,
 {
-    fn from(
-        builder: NodeInfoSettingsClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsCluster;
+
+    fn build(self) -> NodeInfoSettingsCluster {
+        Self::build(self)
     }
 }
 
-impl<S1> NodeInfoSettingsClusterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsCluster { match name {} }
-}
-
-impl NodeInfoSettingsClusterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `election` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, election: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsCluster { match election {} }
+impl<S0, S1> From<NodeInfoSettingsClusterBuilder<(S0, S1)>> for NodeInfoSettingsCluster
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_cluster_members::name>,
+    S1: crate::typed::builder::IsSet<node_info_settings_cluster_members::election>,
+{
+    fn from(builder: NodeInfoSettingsClusterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5047,18 +4823,27 @@ pub struct NodeInfoSettingsClusterElection {
 
 impl NodeInfoSettingsClusterElection {
     /// Creates a builder for [`NodeInfoSettingsClusterElection`].
+    ///
+    /// Required: `strategy`.
     pub fn builder() -> NodeInfoSettingsClusterElectionBuilder {
         NodeInfoSettingsClusterElectionBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsClusterElection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsClusterElectionBuilder,
-        ) -> NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `strategy`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsClusterElection>>(
+        f: impl FnOnce(NodeInfoSettingsClusterElectionBuilder) -> B,
     ) -> NodeInfoSettingsClusterElection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsClusterElectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_cluster_election_members {
+    pub struct strategy;
 }
 
 /// Builder for [`NodeInfoSettingsClusterElection`].
@@ -5087,6 +4872,7 @@ impl<S0> NodeInfoSettingsClusterElectionBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn strategy(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -5097,29 +4883,36 @@ impl NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsClusterElectionBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsClusterElection`].
-    pub fn build(self) -> NodeInfoSettingsClusterElection {
+    pub fn build(self) -> NodeInfoSettingsClusterElection
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_cluster_election_members::strategy>,
+    {
         NodeInfoSettingsClusterElection {
             strategy: self.strategy.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoSettingsClusterElection
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsClusterElectionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_cluster_election_members::strategy>,
 {
-    fn from(
-        builder: NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsClusterElection;
+
+    fn build(self) -> NodeInfoSettingsClusterElection {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `strategy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, strategy: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsClusterElection { match strategy {} }
+impl<S0> From<NodeInfoSettingsClusterElectionBuilder<(S0,)>> for NodeInfoSettingsClusterElection
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_cluster_election_members::strategy>,
+{
+    fn from(builder: NodeInfoSettingsClusterElectionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5189,18 +4982,27 @@ impl From<&str> for NodeInfoSettingsHttpPort {
 
 impl NodeInfoSettingsHttp {
     /// Creates a builder for [`NodeInfoSettingsHttp`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NodeInfoSettingsHttpBuilder {
         NodeInfoSettingsHttpBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsHttp`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsHttpBuilder,
-        ) -> NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsHttp>>(
+        f: impl FnOnce(NodeInfoSettingsHttpBuilder) -> B,
     ) -> NodeInfoSettingsHttp {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsHttpBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_http_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NodeInfoSettingsHttp`].
@@ -5271,6 +5073,7 @@ impl<S0> NodeInfoSettingsHttpBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsHttpBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<NodeInfoSettingsHttpType>,
@@ -5281,19 +5084,20 @@ impl NodeInfoSettingsHttpBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`type`](Self::type) with a builder.
-    pub fn type_with(
+    pub fn type_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsHttpType>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsHttpTypeBuilder,
-        ) -> NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsHttpTypeBuilder) -> B,
     ) -> NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)> {
         self.r#type(f(NodeInfoSettingsHttpTypeBuilder::new()).build())
     }
 }
 
-impl NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsHttpBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsHttp`].
-    pub fn build(self) -> NodeInfoSettingsHttp {
+    pub fn build(self) -> NodeInfoSettingsHttp
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_http_members::r#type>,
+    {
         NodeInfoSettingsHttp {
             r#type: self.r#type.unwrap(),
             type_default: self.type_default,
@@ -5303,16 +5107,24 @@ impl NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)>> for NodeInfoSettingsHttp {
-    fn from(builder: NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsHttpBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_http_members::r#type>,
+{
+    type Output = NodeInfoSettingsHttp;
+
+    fn build(self) -> NodeInfoSettingsHttp {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsHttpBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsHttp { match r#type {} }
+impl<S0> From<NodeInfoSettingsHttpBuilder<(S0,)>> for NodeInfoSettingsHttp
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_http_members::r#type>,
+{
+    fn from(builder: NodeInfoSettingsHttpBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5322,18 +5134,27 @@ pub struct NodeInfoSettingsHttpType {
 
 impl NodeInfoSettingsHttpType {
     /// Creates a builder for [`NodeInfoSettingsHttpType`].
+    ///
+    /// Required: `default`.
     pub fn builder() -> NodeInfoSettingsHttpTypeBuilder {
         NodeInfoSettingsHttpTypeBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsHttpType`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsHttpTypeBuilder,
-        ) -> NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `default`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsHttpType>>(
+        f: impl FnOnce(NodeInfoSettingsHttpTypeBuilder) -> B,
     ) -> NodeInfoSettingsHttpType {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsHttpTypeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_http_type_members {
+    pub struct default;
 }
 
 /// Builder for [`NodeInfoSettingsHttpType`].
@@ -5362,6 +5183,7 @@ impl<S0> NodeInfoSettingsHttpTypeBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn default(
         self,
         value: impl Into<String>,
@@ -5372,27 +5194,36 @@ impl NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsHttpTypeBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsHttpType`].
-    pub fn build(self) -> NodeInfoSettingsHttpType {
+    pub fn build(self) -> NodeInfoSettingsHttpType
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_http_type_members::default>,
+    {
         NodeInfoSettingsHttpType {
             default: self.default.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoSettingsHttpType
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsHttpTypeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_http_type_members::default>,
 {
-    fn from(builder: NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsHttpType;
+
+    fn build(self) -> NodeInfoSettingsHttpType {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `default` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsHttpType { match default {} }
+impl<S0> From<NodeInfoSettingsHttpTypeBuilder<(S0,)>> for NodeInfoSettingsHttpType
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_http_type_members::default>,
+{
+    fn from(builder: NodeInfoSettingsHttpTypeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5474,8 +5305,8 @@ impl NodeInfoSettingsIngest {
     }
 
     /// Creates a [`NodeInfoSettingsIngest`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoSettingsIngestBuilder) -> NodeInfoSettingsIngestBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsIngest>>(
+        f: impl FnOnce(NodeInfoSettingsIngestBuilder) -> B,
     ) -> NodeInfoSettingsIngest {
         f(Self::builder()).build()
     }
@@ -5574,11 +5405,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`attachment`](Self::attachment) with a builder.
-    pub fn attachment_with(
+    pub fn attachment_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.attachment(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5595,11 +5424,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`append`](Self::append) with a builder.
-    pub fn append_with(
+    pub fn append_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.append(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5616,11 +5443,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`csv`](Self::csv) with a builder.
-    pub fn csv_with(
+    pub fn csv_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.csv(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5637,11 +5462,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`convert`](Self::convert) with a builder.
-    pub fn convert_with(
+    pub fn convert_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.convert(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5658,11 +5481,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`date`](Self::date) with a builder.
-    pub fn date_with(
+    pub fn date_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.date(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5679,11 +5500,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`date_index_name`](Self::date_index_name) with a builder.
-    pub fn date_index_name_with(
+    pub fn date_index_name_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.date_index_name(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5700,11 +5519,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`dot_expander`](Self::dot_expander) with a builder.
-    pub fn dot_expander_with(
+    pub fn dot_expander_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.dot_expander(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5721,11 +5538,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`enrich`](Self::enrich) with a builder.
-    pub fn enrich_with(
+    pub fn enrich_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.enrich(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5742,11 +5557,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`fail`](Self::fail) with a builder.
-    pub fn fail_with(
+    pub fn fail_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.fail(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5763,11 +5576,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`foreach`](Self::foreach) with a builder.
-    pub fn foreach_with(
+    pub fn foreach_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.foreach(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5784,11 +5595,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`json`](Self::json) with a builder.
-    pub fn json_with(
+    pub fn json_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.json(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5805,11 +5614,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`user_agent`](Self::user_agent) with a builder.
-    pub fn user_agent_with(
+    pub fn user_agent_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.user_agent(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5826,11 +5633,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`kv`](Self::kv) with a builder.
-    pub fn kv_with(
+    pub fn kv_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.kv(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5847,11 +5652,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`geoip`](Self::geoip) with a builder.
-    pub fn geoip_with(
+    pub fn geoip_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.geoip(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5868,11 +5671,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`grok`](Self::grok) with a builder.
-    pub fn grok_with(
+    pub fn grok_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.grok(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5889,11 +5690,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`gsub`](Self::gsub) with a builder.
-    pub fn gsub_with(
+    pub fn gsub_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.gsub(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5910,11 +5709,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`join`](Self::join) with a builder.
-    pub fn join_with(
+    pub fn join_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.join(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5931,11 +5728,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`lowercase`](Self::lowercase) with a builder.
-    pub fn lowercase_with(
+    pub fn lowercase_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.lowercase(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5952,11 +5747,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`remove`](Self::remove) with a builder.
-    pub fn remove_with(
+    pub fn remove_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.remove(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5973,11 +5766,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`rename`](Self::rename) with a builder.
-    pub fn rename_with(
+    pub fn rename_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.rename(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -5994,11 +5785,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.script(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6015,11 +5804,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`set`](Self::set) with a builder.
-    pub fn set_with(
+    pub fn set_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.set(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6036,11 +5823,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`sort`](Self::sort) with a builder.
-    pub fn sort_with(
+    pub fn sort_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.sort(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6057,11 +5842,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`split`](Self::split) with a builder.
-    pub fn split_with(
+    pub fn split_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.split(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6078,11 +5861,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`trim`](Self::trim) with a builder.
-    pub fn trim_with(
+    pub fn trim_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.trim(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6099,11 +5880,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`uppercase`](Self::uppercase) with a builder.
-    pub fn uppercase_with(
+    pub fn uppercase_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.uppercase(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6120,11 +5899,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`urldecode`](Self::urldecode) with a builder.
-    pub fn urldecode_with(
+    pub fn urldecode_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.urldecode(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6141,11 +5918,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`bytes`](Self::bytes) with a builder.
-    pub fn bytes_with(
+    pub fn bytes_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.bytes(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6162,11 +5937,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`dissect`](Self::dissect) with a builder.
-    pub fn dissect_with(
+    pub fn dissect_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.dissect(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6183,11 +5956,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`set_security_user`](Self::set_security_user) with a builder.
-    pub fn set_security_user_with(
+    pub fn set_security_user_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.set_security_user(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6204,11 +5975,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.pipeline(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6225,11 +5994,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`drop`](Self::drop) with a builder.
-    pub fn drop_with(
+    pub fn drop_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.drop(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6246,11 +6013,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`circle`](Self::circle) with a builder.
-    pub fn circle_with(
+    pub fn circle_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.circle(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6267,11 +6032,9 @@ impl NodeInfoSettingsIngestBuilder {
     }
 
     /// Sets [`inference`](Self::inference) with a builder.
-    pub fn inference_with(
+    pub fn inference_with<B: crate::typed::builder::Build<Output = NodeInfoIngestInfo>>(
         self,
-        f: impl FnOnce(
-            NodeInfoIngestInfoBuilder,
-        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoIngestInfoBuilder) -> B,
     ) -> Self {
         self.inference(f(NodeInfoIngestInfoBuilder::new()).build())
     }
@@ -6319,6 +6082,14 @@ impl NodeInfoSettingsIngestBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoSettingsIngestBuilder {
+    type Output = NodeInfoSettingsIngest;
+
+    fn build(self) -> NodeInfoSettingsIngest {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoSettingsIngestBuilder> for NodeInfoSettingsIngest {
     fn from(builder: NodeInfoSettingsIngestBuilder) -> Self {
         builder.build()
@@ -6363,8 +6134,8 @@ impl NodeInfoSettingsNetwork {
     }
 
     /// Creates a [`NodeInfoSettingsNetwork`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoSettingsNetworkBuilder) -> NodeInfoSettingsNetworkBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsNetwork>>(
+        f: impl FnOnce(NodeInfoSettingsNetworkBuilder) -> B,
     ) -> NodeInfoSettingsNetwork {
         f(Self::builder()).build()
     }
@@ -6402,6 +6173,14 @@ impl NodeInfoSettingsNetworkBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoSettingsNetworkBuilder {
+    type Output = NodeInfoSettingsNetwork;
+
+    fn build(self) -> NodeInfoSettingsNetwork {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoSettingsNetworkBuilder> for NodeInfoSettingsNetwork {
     fn from(builder: NodeInfoSettingsNetworkBuilder) -> Self {
         builder.build()
@@ -6418,21 +6197,28 @@ pub struct NodeInfoSettingsNode {
 
 impl NodeInfoSettingsNode {
     /// Creates a builder for [`NodeInfoSettingsNode`].
+    ///
+    /// Required: `name`, `attr`.
     pub fn builder() -> NodeInfoSettingsNodeBuilder {
         NodeInfoSettingsNodeBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsNodeBuilder,
-        ) -> NodeInfoSettingsNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `attr`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsNode>>(
+        f: impl FnOnce(NodeInfoSettingsNodeBuilder) -> B,
     ) -> NodeInfoSettingsNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_node_members {
+    pub struct name;
+    pub struct attr;
 }
 
 /// Builder for [`NodeInfoSettingsNode`].
@@ -6480,6 +6266,7 @@ impl<S0, S1> NodeInfoSettingsNodeBuilder<(S0, S1)> {
 }
 
 impl<S1> NodeInfoSettingsNodeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -6491,6 +6278,7 @@ impl<S1> NodeInfoSettingsNodeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NodeInfoSettingsNodeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn attr(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -6525,9 +6313,13 @@ impl<S0> NodeInfoSettingsNodeBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl NodeInfoSettingsNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NodeInfoSettingsNodeBuilder<(S0, S1)> {
     /// Builds a [`NodeInfoSettingsNode`].
-    pub fn build(self) -> NodeInfoSettingsNode {
+    pub fn build(self) -> NodeInfoSettingsNode
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_node_members::name>,
+        S1: crate::typed::builder::IsSet<node_info_settings_node_members::attr>,
+    {
         NodeInfoSettingsNode {
             name: self.name.unwrap(),
             attr: self.attr.unwrap(),
@@ -6536,29 +6328,26 @@ impl NodeInfoSettingsNodeBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<NodeInfoSettingsNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NodeInfoSettingsNode
+impl<S0, S1> crate::typed::builder::Build for NodeInfoSettingsNodeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_node_members::name>,
+    S1: crate::typed::builder::IsSet<node_info_settings_node_members::attr>,
 {
-    fn from(
-        builder: NodeInfoSettingsNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsNode;
+
+    fn build(self) -> NodeInfoSettingsNode {
+        Self::build(self)
     }
 }
 
-impl<S1> NodeInfoSettingsNodeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsNode { match name {} }
-}
-
-impl NodeInfoSettingsNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `attr` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attr: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsNode { match attr {} }
+impl<S0, S1> From<NodeInfoSettingsNodeBuilder<(S0, S1)>> for NodeInfoSettingsNode
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_node_members::name>,
+    S1: crate::typed::builder::IsSet<node_info_settings_node_members::attr>,
+{
+    fn from(builder: NodeInfoSettingsNodeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6579,18 +6368,27 @@ pub struct NodeInfoSettingsTransport {
 
 impl NodeInfoSettingsTransport {
     /// Creates a builder for [`NodeInfoSettingsTransport`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NodeInfoSettingsTransportBuilder {
         NodeInfoSettingsTransportBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsTransport`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsTransportBuilder,
-        ) -> NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsTransport>>(
+        f: impl FnOnce(NodeInfoSettingsTransportBuilder) -> B,
     ) -> NodeInfoSettingsTransport {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsTransportBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_transport_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NodeInfoSettingsTransport`].
@@ -6649,12 +6447,11 @@ impl<S0> NodeInfoSettingsTransportBuilder<(S0,)> {
     }
 
     /// Sets [`features`](Self::features) with a builder.
-    pub fn features_with(
+    pub fn features_with<
+        B: crate::typed::builder::Build<Output = NodeInfoSettingsTransportFeatures>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsTransportFeaturesBuilder,
-        )
-            -> NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsTransportFeaturesBuilder) -> B,
     ) -> Self {
         self.features(f(NodeInfoSettingsTransportFeaturesBuilder::new()).build())
     }
@@ -6679,6 +6476,7 @@ impl<S0> NodeInfoSettingsTransportBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsTransportBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<NodeInfoSettingsTransportType>,
@@ -6689,19 +6487,20 @@ impl NodeInfoSettingsTransportBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`type`](Self::type) with a builder.
-    pub fn type_with(
+    pub fn type_with<B: crate::typed::builder::Build<Output = NodeInfoSettingsTransportType>>(
         self,
-        f: impl FnOnce(
-            NodeInfoSettingsTransportTypeBuilder,
-        ) -> NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoSettingsTransportTypeBuilder) -> B,
     ) -> NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)> {
         self.r#type(f(NodeInfoSettingsTransportTypeBuilder::new()).build())
     }
 }
 
-impl NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsTransportBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsTransport`].
-    pub fn build(self) -> NodeInfoSettingsTransport {
+    pub fn build(self) -> NodeInfoSettingsTransport
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_transport_members::r#type>,
+    {
         NodeInfoSettingsTransport {
             r#type: self.r#type.unwrap(),
             type_default: self.type_default,
@@ -6711,18 +6510,24 @@ impl NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoSettingsTransport
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsTransportBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_members::r#type>,
 {
-    fn from(builder: NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsTransport;
+
+    fn build(self) -> NodeInfoSettingsTransport {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsTransportBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsTransport { match r#type {} }
+impl<S0> From<NodeInfoSettingsTransportBuilder<(S0,)>> for NodeInfoSettingsTransport
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_members::r#type>,
+{
+    fn from(builder: NodeInfoSettingsTransportBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6733,19 +6538,27 @@ pub struct NodeInfoSettingsTransportFeatures {
 
 impl NodeInfoSettingsTransportFeatures {
     /// Creates a builder for [`NodeInfoSettingsTransportFeatures`].
+    ///
+    /// Required: `x_pack`.
     pub fn builder() -> NodeInfoSettingsTransportFeaturesBuilder {
         NodeInfoSettingsTransportFeaturesBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsTransportFeatures`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsTransportFeaturesBuilder,
-        )
-            -> NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `x_pack`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsTransportFeatures>>(
+        f: impl FnOnce(NodeInfoSettingsTransportFeaturesBuilder) -> B,
     ) -> NodeInfoSettingsTransportFeatures {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsTransportFeaturesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_transport_features_members {
+    pub struct x_pack;
 }
 
 /// Builder for [`NodeInfoSettingsTransportFeatures`].
@@ -6774,6 +6587,7 @@ impl<S0> NodeInfoSettingsTransportFeaturesBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn x_pack(
         self,
         value: impl Into<String>,
@@ -6784,29 +6598,36 @@ impl NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsTransportFeaturesBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsTransportFeatures`].
-    pub fn build(self) -> NodeInfoSettingsTransportFeatures {
+    pub fn build(self) -> NodeInfoSettingsTransportFeatures
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_transport_features_members::x_pack>,
+    {
         NodeInfoSettingsTransportFeatures {
             x_pack: self.x_pack.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoSettingsTransportFeatures
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsTransportFeaturesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_features_members::x_pack>,
 {
-    fn from(
-        builder: NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsTransportFeatures;
+
+    fn build(self) -> NodeInfoSettingsTransportFeatures {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `x_pack` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, x_pack: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsTransportFeatures { match x_pack {} }
+impl<S0> From<NodeInfoSettingsTransportFeaturesBuilder<(S0,)>> for NodeInfoSettingsTransportFeatures
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_features_members::x_pack>,
+{
+    fn from(builder: NodeInfoSettingsTransportFeaturesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6816,18 +6637,27 @@ pub struct NodeInfoSettingsTransportType {
 
 impl NodeInfoSettingsTransportType {
     /// Creates a builder for [`NodeInfoSettingsTransportType`].
+    ///
+    /// Required: `default`.
     pub fn builder() -> NodeInfoSettingsTransportTypeBuilder {
         NodeInfoSettingsTransportTypeBuilder::new()
     }
 
     /// Creates a [`NodeInfoSettingsTransportType`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoSettingsTransportTypeBuilder,
-        ) -> NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `default`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoSettingsTransportType>>(
+        f: impl FnOnce(NodeInfoSettingsTransportTypeBuilder) -> B,
     ) -> NodeInfoSettingsTransportType {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoSettingsTransportTypeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_settings_transport_type_members {
+    pub struct default;
 }
 
 /// Builder for [`NodeInfoSettingsTransportType`].
@@ -6856,6 +6686,7 @@ impl<S0> NodeInfoSettingsTransportTypeBuilder<(S0,)> {
 }
 
 impl NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn default(
         self,
         value: impl Into<String>,
@@ -6866,27 +6697,36 @@ impl NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoSettingsTransportTypeBuilder<(S0,)> {
     /// Builds a [`NodeInfoSettingsTransportType`].
-    pub fn build(self) -> NodeInfoSettingsTransportType {
+    pub fn build(self) -> NodeInfoSettingsTransportType
+    where
+        S0: crate::typed::builder::IsSet<node_info_settings_transport_type_members::default>,
+    {
         NodeInfoSettingsTransportType {
             default: self.default.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoSettingsTransportType
+impl<S0> crate::typed::builder::Build for NodeInfoSettingsTransportTypeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_type_members::default>,
 {
-    fn from(builder: NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoSettingsTransportType;
+
+    fn build(self) -> NodeInfoSettingsTransportType {
+        Self::build(self)
     }
 }
 
-impl NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `default` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default: crate::typed::builder::MissingRequiredField) -> NodeInfoSettingsTransportType { match default {} }
+impl<S0> From<NodeInfoSettingsTransportTypeBuilder<(S0,)>> for NodeInfoSettingsTransportType
+where
+    S0: crate::typed::builder::IsSet<node_info_settings_transport_type_members::default>,
+{
+    fn from(builder: NodeInfoSettingsTransportTypeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6898,22 +6738,29 @@ pub struct NodeInfoTransport {
 
 impl NodeInfoTransport {
     /// Creates a builder for [`NodeInfoTransport`].
+    ///
+    /// Required: `bound_address`, `publish_address`, `profiles`.
     pub fn builder() -> NodeInfoTransportBuilder {
         NodeInfoTransportBuilder::new()
     }
 
     /// Creates a [`NodeInfoTransport`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoTransportBuilder,
-        ) -> NodeInfoTransportBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bound_address`, `publish_address`, `profiles`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoTransport>>(
+        f: impl FnOnce(NodeInfoTransportBuilder) -> B,
     ) -> NodeInfoTransport {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoTransportBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_transport_members {
+    pub struct bound_address;
+    pub struct publish_address;
+    pub struct profiles;
 }
 
 /// Builder for [`NodeInfoTransport`].
@@ -6960,6 +6807,7 @@ impl<S0, S1, S2> NodeInfoTransportBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NodeInfoTransportBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn bound_address(
         self,
         value: impl Into<Vec<String>>,
@@ -6994,6 +6842,7 @@ impl<S1, S2> NodeInfoTransportBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> NodeInfoTransportBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn publish_address(
         self,
         value: impl Into<String>,
@@ -7005,6 +6854,7 @@ impl<S0, S2> NodeInfoTransportBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> NodeInfoTransportBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn profiles(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -7039,15 +6889,14 @@ impl<S0, S1> NodeInfoTransportBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    NodeInfoTransportBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NodeInfoTransportBuilder<(S0, S1, S2)> {
     /// Builds a [`NodeInfoTransport`].
-    pub fn build(self) -> NodeInfoTransport {
+    pub fn build(self) -> NodeInfoTransport
+    where
+        S0: crate::typed::builder::IsSet<node_info_transport_members::bound_address>,
+        S1: crate::typed::builder::IsSet<node_info_transport_members::publish_address>,
+        S2: crate::typed::builder::IsSet<node_info_transport_members::profiles>,
+    {
         NodeInfoTransport {
             bound_address: self.bound_address.unwrap(),
             publish_address: self.publish_address.unwrap(),
@@ -7056,54 +6905,28 @@ impl
     }
 }
 
-impl
-    From<
-        NodeInfoTransportBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeInfoTransport
+impl<S0, S1, S2> crate::typed::builder::Build for NodeInfoTransportBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<node_info_transport_members::bound_address>,
+    S1: crate::typed::builder::IsSet<node_info_transport_members::publish_address>,
+    S2: crate::typed::builder::IsSet<node_info_transport_members::profiles>,
 {
-    fn from(
-        builder: NodeInfoTransportBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoTransport;
+
+    fn build(self) -> NodeInfoTransport {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NodeInfoTransportBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `bound_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bound_address: crate::typed::builder::MissingRequiredField) -> NodeInfoTransport { match bound_address {} }
-}
-
-impl<S2>
-    NodeInfoTransportBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NodeInfoTransportBuilder<(S0, S1, S2)>> for NodeInfoTransport
+where
+    S0: crate::typed::builder::IsSet<node_info_transport_members::bound_address>,
+    S1: crate::typed::builder::IsSet<node_info_transport_members::publish_address>,
+    S2: crate::typed::builder::IsSet<node_info_transport_members::profiles>,
 {
-    /// `publish_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, publish_address: crate::typed::builder::MissingRequiredField) -> NodeInfoTransport { match publish_address {} }
-}
-
-impl
-    NodeInfoTransportBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `profiles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, profiles: crate::typed::builder::MissingRequiredField) -> NodeInfoTransport { match profiles {} }
+    fn from(builder: NodeInfoTransportBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7119,16 +6942,27 @@ pub struct NodeInfoXpack {
 
 impl NodeInfoXpack {
     /// Creates a builder for [`NodeInfoXpack`].
+    ///
+    /// Required: `security`.
     pub fn builder() -> NodeInfoXpackBuilder {
         NodeInfoXpackBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpack`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoXpackBuilder) -> NodeInfoXpackBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `security`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpack>>(
+        f: impl FnOnce(NodeInfoXpackBuilder) -> B,
     ) -> NodeInfoXpack {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_members {
+    pub struct security;
 }
 
 /// Builder for [`NodeInfoXpack`].
@@ -7176,11 +7010,9 @@ impl<S0> NodeInfoXpackBuilder<(S0,)> {
     }
 
     /// Sets [`license`](Self::license) with a builder.
-    pub fn license_with(
+    pub fn license_with<B: crate::typed::builder::Build<Output = NodeInfoXpackLicense>>(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackLicenseBuilder,
-        ) -> NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackLicenseBuilder) -> B,
     ) -> Self {
         self.license(f(NodeInfoXpackLicenseBuilder::new()).build())
     }
@@ -7226,12 +7058,16 @@ impl<S0> NodeInfoXpackBuilder<(S0,)> {
     }
 
     /// Sets [`ml`](Self::ml) with a builder.
-    pub fn ml_with(self, f: impl FnOnce(NodeInfoXpackMlBuilder) -> NodeInfoXpackMlBuilder) -> Self {
+    pub fn ml_with<B: crate::typed::builder::Build<Output = NodeInfoXpackMl>>(
+        self,
+        f: impl FnOnce(NodeInfoXpackMlBuilder) -> B,
+    ) -> Self {
         self.ml(f(NodeInfoXpackMlBuilder::new()).build())
     }
 }
 
 impl NodeInfoXpackBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn security(
         self,
         value: impl Into<NodeInfoXpackSecurity>,
@@ -7242,19 +7078,20 @@ impl NodeInfoXpackBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`security`](Self::security) with a builder.
-    pub fn security_with(
+    pub fn security_with<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurity>>(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityBuilder,
-        ) -> NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecurityBuilder) -> B,
     ) -> NodeInfoXpackBuilder<(crate::typed::builder::Set,)> {
         self.security(f(NodeInfoXpackSecurityBuilder::new()).build())
     }
 }
 
-impl NodeInfoXpackBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpack`].
-    pub fn build(self) -> NodeInfoXpack {
+    pub fn build(self) -> NodeInfoXpack
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_members::security>,
+    {
         NodeInfoXpack {
             license: self.license,
             security: self.security.unwrap(),
@@ -7264,16 +7101,24 @@ impl NodeInfoXpackBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeInfoXpackBuilder<(crate::typed::builder::Set,)>> for NodeInfoXpack {
-    fn from(builder: NodeInfoXpackBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoXpackBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_members::security>,
+{
+    type Output = NodeInfoXpack;
+
+    fn build(self) -> NodeInfoXpack {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackBuilder<(crate::typed::builder::NotSet,)> {
-    /// `security` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, security: crate::typed::builder::MissingRequiredField) -> NodeInfoXpack { match security {} }
+impl<S0> From<NodeInfoXpackBuilder<(S0,)>> for NodeInfoXpack
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_members::security>,
+{
+    fn from(builder: NodeInfoXpackBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7283,18 +7128,27 @@ pub struct NodeInfoXpackLicense {
 
 impl NodeInfoXpackLicense {
     /// Creates a builder for [`NodeInfoXpackLicense`].
+    ///
+    /// Required: `self_generated`.
     pub fn builder() -> NodeInfoXpackLicenseBuilder {
         NodeInfoXpackLicenseBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackLicense`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackLicenseBuilder,
-        ) -> NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `self_generated`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackLicense>>(
+        f: impl FnOnce(NodeInfoXpackLicenseBuilder) -> B,
     ) -> NodeInfoXpackLicense {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackLicenseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_license_members {
+    pub struct self_generated;
 }
 
 /// Builder for [`NodeInfoXpackLicense`].
@@ -7323,6 +7177,7 @@ impl<S0> NodeInfoXpackLicenseBuilder<(S0,)> {
 }
 
 impl NodeInfoXpackLicenseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn self_generated(
         self,
         value: impl Into<NodeInfoXpackLicenseType>,
@@ -7333,35 +7188,46 @@ impl NodeInfoXpackLicenseBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`self_generated`](Self::self_generated) with a builder.
-    pub fn self_generated_with(
+    pub fn self_generated_with<
+        B: crate::typed::builder::Build<Output = NodeInfoXpackLicenseType>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackLicenseTypeBuilder,
-        ) -> NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackLicenseTypeBuilder) -> B,
     ) -> NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)> {
         self.self_generated(f(NodeInfoXpackLicenseTypeBuilder::new()).build())
     }
 }
 
-impl NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackLicenseBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackLicense`].
-    pub fn build(self) -> NodeInfoXpackLicense {
+    pub fn build(self) -> NodeInfoXpackLicense
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_license_members::self_generated>,
+    {
         NodeInfoXpackLicense {
             self_generated: self.self_generated.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)>> for NodeInfoXpackLicense {
-    fn from(builder: NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoXpackLicenseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_license_members::self_generated>,
+{
+    type Output = NodeInfoXpackLicense;
+
+    fn build(self) -> NodeInfoXpackLicense {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackLicenseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `self_generated` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, self_generated: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackLicense { match self_generated {} }
+impl<S0> From<NodeInfoXpackLicenseBuilder<(S0,)>> for NodeInfoXpackLicense
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_license_members::self_generated>,
+{
+    fn from(builder: NodeInfoXpackLicenseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7371,18 +7237,27 @@ pub struct NodeInfoXpackLicenseType {
 
 impl NodeInfoXpackLicenseType {
     /// Creates a builder for [`NodeInfoXpackLicenseType`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NodeInfoXpackLicenseTypeBuilder {
         NodeInfoXpackLicenseTypeBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackLicenseType`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackLicenseTypeBuilder,
-        ) -> NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackLicenseType>>(
+        f: impl FnOnce(NodeInfoXpackLicenseTypeBuilder) -> B,
     ) -> NodeInfoXpackLicenseType {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackLicenseTypeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_license_type_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NodeInfoXpackLicenseType`].
@@ -7411,6 +7286,7 @@ impl<S0> NodeInfoXpackLicenseTypeBuilder<(S0,)> {
 }
 
 impl NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7421,27 +7297,36 @@ impl NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackLicenseTypeBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackLicenseType`].
-    pub fn build(self) -> NodeInfoXpackLicenseType {
+    pub fn build(self) -> NodeInfoXpackLicenseType
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_license_type_members::r#type>,
+    {
         NodeInfoXpackLicenseType {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoXpackLicenseType
+impl<S0> crate::typed::builder::Build for NodeInfoXpackLicenseTypeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_license_type_members::r#type>,
 {
-    fn from(builder: NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoXpackLicenseType;
+
+    fn build(self) -> NodeInfoXpackLicenseType {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackLicenseType { match r#type {} }
+impl<S0> From<NodeInfoXpackLicenseTypeBuilder<(S0,)>> for NodeInfoXpackLicenseType
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_license_type_members::r#type>,
+{
+    fn from(builder: NodeInfoXpackLicenseTypeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7457,7 +7342,9 @@ impl NodeInfoXpackMl {
     }
 
     /// Creates a [`NodeInfoXpackMl`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(NodeInfoXpackMlBuilder) -> NodeInfoXpackMlBuilder) -> NodeInfoXpackMl {
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackMl>>(
+        f: impl FnOnce(NodeInfoXpackMlBuilder) -> B,
+    ) -> NodeInfoXpackMl {
         f(Self::builder()).build()
     }
 }
@@ -7498,6 +7385,14 @@ impl NodeInfoXpackMlBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoXpackMlBuilder {
+    type Output = NodeInfoXpackMl;
+
+    fn build(self) -> NodeInfoXpackMl {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoXpackMlBuilder> for NodeInfoXpackMl {
     fn from(builder: NodeInfoXpackMlBuilder) -> Self {
         builder.build()
@@ -7517,18 +7412,27 @@ pub struct NodeInfoXpackSecurity {
 
 impl NodeInfoXpackSecurity {
     /// Creates a builder for [`NodeInfoXpackSecurity`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> NodeInfoXpackSecurityBuilder {
         NodeInfoXpackSecurityBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackSecurity`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackSecurityBuilder,
-        ) -> NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurity>>(
+        f: impl FnOnce(NodeInfoXpackSecurityBuilder) -> B,
     ) -> NodeInfoXpackSecurity {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackSecurityBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_security_members {
+    pub struct enabled;
 }
 
 /// Builder for [`NodeInfoXpackSecurity`].
@@ -7576,11 +7480,9 @@ impl<S0> NodeInfoXpackSecurityBuilder<(S0,)> {
     }
 
     /// Sets [`http`](Self::http) with a builder.
-    pub fn http_with(
+    pub fn http_with<B: crate::typed::builder::Build<Output = NodeInfoXpackSecuritySsl>>(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackSecuritySslBuilder,
-        ) -> NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecuritySslBuilder) -> B,
     ) -> Self {
         self.http(f(NodeInfoXpackSecuritySslBuilder::new()).build())
     }
@@ -7597,11 +7499,9 @@ impl<S0> NodeInfoXpackSecurityBuilder<(S0,)> {
     }
 
     /// Sets [`transport`](Self::transport) with a builder.
-    pub fn transport_with(
+    pub fn transport_with<B: crate::typed::builder::Build<Output = NodeInfoXpackSecuritySsl>>(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackSecuritySslBuilder,
-        ) -> NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecuritySslBuilder) -> B,
     ) -> Self {
         self.transport(f(NodeInfoXpackSecuritySslBuilder::new()).build())
     }
@@ -7618,15 +7518,16 @@ impl<S0> NodeInfoXpackSecurityBuilder<(S0,)> {
     }
 
     /// Sets [`authc`](Self::authc) with a builder.
-    pub fn authc_with(
+    pub fn authc_with<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthc>>(
         self,
-        f: impl FnOnce(NodeInfoXpackSecurityAuthcBuilder) -> NodeInfoXpackSecurityAuthcBuilder,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcBuilder) -> B,
     ) -> Self {
         self.authc(f(NodeInfoXpackSecurityAuthcBuilder::new()).build())
     }
 }
 
 impl NodeInfoXpackSecurityBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: impl Into<String>,
@@ -7637,9 +7538,12 @@ impl NodeInfoXpackSecurityBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackSecurityBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackSecurity`].
-    pub fn build(self) -> NodeInfoXpackSecurity {
+    pub fn build(self) -> NodeInfoXpackSecurity
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_security_members::enabled>,
+    {
         NodeInfoXpackSecurity {
             http: self.http,
             enabled: self.enabled.unwrap(),
@@ -7649,16 +7553,24 @@ impl NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)>> for NodeInfoXpackSecurity {
-    fn from(builder: NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeInfoXpackSecurityBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_members::enabled>,
+{
+    type Output = NodeInfoXpackSecurity;
+
+    fn build(self) -> NodeInfoXpackSecurity {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackSecurityBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackSecurity { match enabled {} }
+impl<S0> From<NodeInfoXpackSecurityBuilder<(S0,)>> for NodeInfoXpackSecurity
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_members::enabled>,
+{
+    fn from(builder: NodeInfoXpackSecurityBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7676,8 +7588,8 @@ impl NodeInfoXpackSecurityAuthc {
     }
 
     /// Creates a [`NodeInfoXpackSecurityAuthc`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeInfoXpackSecurityAuthcBuilder) -> NodeInfoXpackSecurityAuthcBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthc>>(
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcBuilder) -> B,
     ) -> NodeInfoXpackSecurityAuthc {
         f(Self::builder()).build()
     }
@@ -7712,11 +7624,11 @@ impl NodeInfoXpackSecurityAuthcBuilder {
     }
 
     /// Sets [`realms`](Self::realms) with a builder.
-    pub fn realms_with(
+    pub fn realms_with<
+        B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealms>,
+    >(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsBuilder,
-        ) -> NodeInfoXpackSecurityAuthcRealmsBuilder,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsBuilder) -> B,
     ) -> Self {
         self.realms(f(NodeInfoXpackSecurityAuthcRealmsBuilder::new()).build())
     }
@@ -7733,11 +7645,9 @@ impl NodeInfoXpackSecurityAuthcBuilder {
     }
 
     /// Sets [`token`](Self::token) with a builder.
-    pub fn token_with(
+    pub fn token_with<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcToken>>(
         self,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcTokenBuilder,
-        ) -> NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcTokenBuilder) -> B,
     ) -> Self {
         self.token(f(NodeInfoXpackSecurityAuthcTokenBuilder::new()).build())
     }
@@ -7750,6 +7660,14 @@ impl NodeInfoXpackSecurityAuthcBuilder {
             realms: self.realms,
             token: self.token,
         }
+    }
+}
+
+impl crate::typed::builder::Build for NodeInfoXpackSecurityAuthcBuilder {
+    type Output = NodeInfoXpackSecurityAuthc;
+
+    fn build(self) -> NodeInfoXpackSecurityAuthc {
+        Self::build(self)
     }
 }
 
@@ -7776,10 +7694,8 @@ impl NodeInfoXpackSecurityAuthcRealms {
     }
 
     /// Creates a [`NodeInfoXpackSecurityAuthcRealms`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsBuilder,
-        ) -> NodeInfoXpackSecurityAuthcRealmsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealms>>(
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsBuilder) -> B,
     ) -> NodeInfoXpackSecurityAuthcRealms {
         f(Self::builder()).build()
     }
@@ -7834,13 +7750,12 @@ impl NodeInfoXpackSecurityAuthcRealmsBuilder {
     }
 
     /// Adds an entry to [`file`](Self::file), with a builder.
-    pub fn add_file_with(
+    pub fn add_file_with<
+        B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealmsStatus>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsStatusBuilder,
-        )
-            -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsStatusBuilder) -> B,
     ) -> Self {
         self.add_file(
             key,
@@ -7878,13 +7793,12 @@ impl NodeInfoXpackSecurityAuthcRealmsBuilder {
     }
 
     /// Adds an entry to [`native`](Self::native), with a builder.
-    pub fn add_native_with(
+    pub fn add_native_with<
+        B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealmsStatus>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsStatusBuilder,
-        )
-            -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsStatusBuilder) -> B,
     ) -> Self {
         self.add_native(
             key,
@@ -7922,13 +7836,12 @@ impl NodeInfoXpackSecurityAuthcRealmsBuilder {
     }
 
     /// Adds an entry to [`pki`](Self::pki), with a builder.
-    pub fn add_pki_with(
+    pub fn add_pki_with<
+        B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealmsStatus>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsStatusBuilder,
-        )
-            -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsStatusBuilder) -> B,
     ) -> Self {
         self.add_pki(
             key,
@@ -7948,6 +7861,14 @@ impl NodeInfoXpackSecurityAuthcRealmsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeInfoXpackSecurityAuthcRealmsBuilder {
+    type Output = NodeInfoXpackSecurityAuthcRealms;
+
+    fn build(self) -> NodeInfoXpackSecurityAuthcRealms {
+        Self::build(self)
+    }
+}
+
 impl From<NodeInfoXpackSecurityAuthcRealmsBuilder> for NodeInfoXpackSecurityAuthcRealms {
     fn from(builder: NodeInfoXpackSecurityAuthcRealmsBuilder) -> Self {
         builder.build()
@@ -7963,19 +7884,27 @@ pub struct NodeInfoXpackSecurityAuthcRealmsStatus {
 
 impl NodeInfoXpackSecurityAuthcRealmsStatus {
     /// Creates a builder for [`NodeInfoXpackSecurityAuthcRealmsStatus`].
+    ///
+    /// Required: `order`.
     pub fn builder() -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder {
         NodeInfoXpackSecurityAuthcRealmsStatusBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackSecurityAuthcRealmsStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcRealmsStatusBuilder,
-        )
-            -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `order`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcRealmsStatus>>(
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcRealmsStatusBuilder) -> B,
     ) -> NodeInfoXpackSecurityAuthcRealmsStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackSecurityAuthcRealmsStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_security_authc_realms_status_members {
+    pub struct order;
 }
 
 /// Builder for [`NodeInfoXpackSecurityAuthcRealmsStatus`].
@@ -8018,6 +7947,7 @@ impl<S0> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(S0,)> {
 }
 
 impl NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn order(
         self,
         value: impl Into<String>,
@@ -8028,9 +7958,14 @@ impl NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::NotSe
     }
 }
 
-impl NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackSecurityAuthcRealmsStatus`].
-    pub fn build(self) -> NodeInfoXpackSecurityAuthcRealmsStatus {
+    pub fn build(self) -> NodeInfoXpackSecurityAuthcRealmsStatus
+    where
+        S0: crate::typed::builder::IsSet<
+            node_info_xpack_security_authc_realms_status_members::order,
+        >,
+    {
         NodeInfoXpackSecurityAuthcRealmsStatus {
             enabled: self.enabled,
             order: self.order.unwrap(),
@@ -8038,20 +7973,25 @@ impl NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)
     }
 }
 
-impl From<NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoXpackSecurityAuthcRealmsStatus
+impl<S0> crate::typed::builder::Build for NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_authc_realms_status_members::order>,
 {
-    fn from(
-        builder: NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoXpackSecurityAuthcRealmsStatus;
+
+    fn build(self) -> NodeInfoXpackSecurityAuthcRealmsStatus {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `order` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, order: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackSecurityAuthcRealmsStatus { match order {} }
+impl<S0> From<NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(S0,)>>
+    for NodeInfoXpackSecurityAuthcRealmsStatus
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_authc_realms_status_members::order>,
+{
+    fn from(builder: NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8061,18 +8001,27 @@ pub struct NodeInfoXpackSecurityAuthcToken {
 
 impl NodeInfoXpackSecurityAuthcToken {
     /// Creates a builder for [`NodeInfoXpackSecurityAuthcToken`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> NodeInfoXpackSecurityAuthcTokenBuilder {
         NodeInfoXpackSecurityAuthcTokenBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackSecurityAuthcToken`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackSecurityAuthcTokenBuilder,
-        ) -> NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecurityAuthcToken>>(
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcTokenBuilder) -> B,
     ) -> NodeInfoXpackSecurityAuthcToken {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackSecurityAuthcTokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_security_authc_token_members {
+    pub struct enabled;
 }
 
 /// Builder for [`NodeInfoXpackSecurityAuthcToken`].
@@ -8101,6 +8050,7 @@ impl<S0> NodeInfoXpackSecurityAuthcTokenBuilder<(S0,)> {
 }
 
 impl NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(
         self,
         value: impl Into<String>,
@@ -8111,29 +8061,36 @@ impl NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackSecurityAuthcTokenBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackSecurityAuthcToken`].
-    pub fn build(self) -> NodeInfoXpackSecurityAuthcToken {
+    pub fn build(self) -> NodeInfoXpackSecurityAuthcToken
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_security_authc_token_members::enabled>,
+    {
         NodeInfoXpackSecurityAuthcToken {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoXpackSecurityAuthcToken
+impl<S0> crate::typed::builder::Build for NodeInfoXpackSecurityAuthcTokenBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_authc_token_members::enabled>,
 {
-    fn from(
-        builder: NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeInfoXpackSecurityAuthcToken;
+
+    fn build(self) -> NodeInfoXpackSecurityAuthcToken {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackSecurityAuthcToken { match enabled {} }
+impl<S0> From<NodeInfoXpackSecurityAuthcTokenBuilder<(S0,)>> for NodeInfoXpackSecurityAuthcToken
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_authc_token_members::enabled>,
+{
+    fn from(builder: NodeInfoXpackSecurityAuthcTokenBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8143,18 +8100,27 @@ pub struct NodeInfoXpackSecuritySsl {
 
 impl NodeInfoXpackSecuritySsl {
     /// Creates a builder for [`NodeInfoXpackSecuritySsl`].
+    ///
+    /// Required: `ssl`.
     pub fn builder() -> NodeInfoXpackSecuritySslBuilder {
         NodeInfoXpackSecuritySslBuilder::new()
     }
 
     /// Creates a [`NodeInfoXpackSecuritySsl`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeInfoXpackSecuritySslBuilder,
-        ) -> NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `ssl`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeInfoXpackSecuritySsl>>(
+        f: impl FnOnce(NodeInfoXpackSecuritySslBuilder) -> B,
     ) -> NodeInfoXpackSecuritySsl {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeInfoXpackSecuritySslBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_info_xpack_security_ssl_members {
+    pub struct ssl;
 }
 
 /// Builder for [`NodeInfoXpackSecuritySsl`].
@@ -8183,6 +8149,7 @@ impl<S0> NodeInfoXpackSecuritySslBuilder<(S0,)> {
 }
 
 impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn ssl(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -8217,27 +8184,36 @@ impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeInfoXpackSecuritySslBuilder<(S0,)> {
     /// Builds a [`NodeInfoXpackSecuritySsl`].
-    pub fn build(self) -> NodeInfoXpackSecuritySsl {
+    pub fn build(self) -> NodeInfoXpackSecuritySsl
+    where
+        S0: crate::typed::builder::IsSet<node_info_xpack_security_ssl_members::ssl>,
+    {
         NodeInfoXpackSecuritySsl {
             ssl: self.ssl.unwrap(),
         }
     }
 }
 
-impl From<NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>>
-    for NodeInfoXpackSecuritySsl
+impl<S0> crate::typed::builder::Build for NodeInfoXpackSecuritySslBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_ssl_members::ssl>,
 {
-    fn from(builder: NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NodeInfoXpackSecuritySsl;
+
+    fn build(self) -> NodeInfoXpackSecuritySsl {
+        Self::build(self)
     }
 }
 
-impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::NotSet,)> {
-    /// `ssl` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ssl: crate::typed::builder::MissingRequiredField) -> NodeInfoXpackSecuritySsl { match ssl {} }
+impl<S0> From<NodeInfoXpackSecuritySslBuilder<(S0,)>> for NodeInfoXpackSecuritySsl
+where
+    S0: crate::typed::builder::IsSet<node_info_xpack_security_ssl_members::ssl>,
+{
+    fn from(builder: NodeInfoXpackSecuritySslBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8285,30 +8261,37 @@ impl From<&str> for NodeJvmInfoUsingCompressedOrdinaryObjectPointers {
 
 impl NodeJvmInfo {
     /// Creates a builder for [`NodeJvmInfo`].
+    ///
+    /// Required: `gc_collectors`, `mem`, `memory_pools`, `pid`, `start_time_in_millis`, `version`, `vm_name`, `vm_vendor`, `vm_version`, `using_bundled_jdk`, `input_arguments`.
     pub fn builder() -> NodeJvmInfoBuilder {
         NodeJvmInfoBuilder::new()
     }
 
     /// Creates a [`NodeJvmInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeJvmInfoBuilder,
-        ) -> NodeJvmInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `gc_collectors`, `mem`, `memory_pools`, `pid`, `start_time_in_millis`, `version`, `vm_name`, `vm_vendor`, `vm_version`, `using_bundled_jdk`, `input_arguments`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeJvmInfo>>(
+        f: impl FnOnce(NodeJvmInfoBuilder) -> B,
     ) -> NodeJvmInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeJvmInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_jvm_info_members {
+    pub struct gc_collectors;
+    pub struct mem;
+    pub struct memory_pools;
+    pub struct pid;
+    pub struct start_time_in_millis;
+    pub struct version;
+    pub struct vm_name;
+    pub struct vm_vendor;
+    pub struct vm_version;
+    pub struct using_bundled_jdk;
+    pub struct input_arguments;
 }
 
 /// Builder for [`NodeJvmInfo`].
@@ -8433,6 +8416,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn gc_collectors(
         self,
         value: impl Into<Vec<String>>,
@@ -8519,6 +8503,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn mem(
         self,
         value: impl Into<NodeInfoJvmMemory>,
@@ -8541,17 +8526,9 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`mem`](Self::mem) with a builder.
-    pub fn mem_with(
+    pub fn mem_with<B: crate::typed::builder::Build<Output = NodeInfoJvmMemory>>(
         self,
-        f: impl FnOnce(
-            NodeInfoJvmMemoryBuilder,
-        ) -> NodeInfoJvmMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoJvmMemoryBuilder) -> B,
     ) -> NodeJvmInfoBuilder<(
         S0,
         crate::typed::builder::Set,
@@ -8584,6 +8561,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn memory_pools(
         self,
         value: impl Into<Vec<String>>,
@@ -8670,6 +8648,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn pid(
         self,
         value: i32,
@@ -8707,6 +8686,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -8744,6 +8724,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -8781,6 +8762,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn vm_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -8818,6 +8800,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn vm_vendor(
         self,
         value: impl Into<String>,
@@ -8855,6 +8838,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn vm_version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -8892,6 +8876,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn using_bundled_jdk(
         self,
         value: bool,
@@ -8929,6 +8914,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn input_arguments(
         self,
         value: impl Into<Vec<String>>,
@@ -9000,23 +8986,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    NodeJvmInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`NodeJvmInfo`].
-    pub fn build(self) -> NodeJvmInfo {
+    pub fn build(self) -> NodeJvmInfo
+    where
+        S0: crate::typed::builder::IsSet<node_jvm_info_members::gc_collectors>,
+        S1: crate::typed::builder::IsSet<node_jvm_info_members::mem>,
+        S2: crate::typed::builder::IsSet<node_jvm_info_members::memory_pools>,
+        S3: crate::typed::builder::IsSet<node_jvm_info_members::pid>,
+        S4: crate::typed::builder::IsSet<node_jvm_info_members::start_time_in_millis>,
+        S5: crate::typed::builder::IsSet<node_jvm_info_members::version>,
+        S6: crate::typed::builder::IsSet<node_jvm_info_members::vm_name>,
+        S7: crate::typed::builder::IsSet<node_jvm_info_members::vm_vendor>,
+        S8: crate::typed::builder::IsSet<node_jvm_info_members::vm_version>,
+        S9: crate::typed::builder::IsSet<node_jvm_info_members::using_bundled_jdk>,
+        S10: crate::typed::builder::IsSet<node_jvm_info_members::input_arguments>,
+    {
         NodeJvmInfo {
             gc_collectors: self.gc_collectors.unwrap(),
             mem: self.mem.unwrap(),
@@ -9035,260 +9022,46 @@ impl
     }
 }
 
-impl
-    From<
-        NodeJvmInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeJvmInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for NodeJvmInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<node_jvm_info_members::gc_collectors>,
+    S1: crate::typed::builder::IsSet<node_jvm_info_members::mem>,
+    S2: crate::typed::builder::IsSet<node_jvm_info_members::memory_pools>,
+    S3: crate::typed::builder::IsSet<node_jvm_info_members::pid>,
+    S4: crate::typed::builder::IsSet<node_jvm_info_members::start_time_in_millis>,
+    S5: crate::typed::builder::IsSet<node_jvm_info_members::version>,
+    S6: crate::typed::builder::IsSet<node_jvm_info_members::vm_name>,
+    S7: crate::typed::builder::IsSet<node_jvm_info_members::vm_vendor>,
+    S8: crate::typed::builder::IsSet<node_jvm_info_members::vm_version>,
+    S9: crate::typed::builder::IsSet<node_jvm_info_members::using_bundled_jdk>,
+    S10: crate::typed::builder::IsSet<node_jvm_info_members::input_arguments>,
 {
-    fn from(
-        builder: NodeJvmInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeJvmInfo;
+
+    fn build(self) -> NodeJvmInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<NodeJvmInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for NodeJvmInfo
+where
+    S0: crate::typed::builder::IsSet<node_jvm_info_members::gc_collectors>,
+    S1: crate::typed::builder::IsSet<node_jvm_info_members::mem>,
+    S2: crate::typed::builder::IsSet<node_jvm_info_members::memory_pools>,
+    S3: crate::typed::builder::IsSet<node_jvm_info_members::pid>,
+    S4: crate::typed::builder::IsSet<node_jvm_info_members::start_time_in_millis>,
+    S5: crate::typed::builder::IsSet<node_jvm_info_members::version>,
+    S6: crate::typed::builder::IsSet<node_jvm_info_members::vm_name>,
+    S7: crate::typed::builder::IsSet<node_jvm_info_members::vm_vendor>,
+    S8: crate::typed::builder::IsSet<node_jvm_info_members::vm_version>,
+    S9: crate::typed::builder::IsSet<node_jvm_info_members::using_bundled_jdk>,
+    S10: crate::typed::builder::IsSet<node_jvm_info_members::input_arguments>,
 {
-    /// `gc_collectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, gc_collectors: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match gc_collectors {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `mem` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mem: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match mem {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `memory_pools` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory_pools: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match memory_pools {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `pid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pid: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match pid {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match start_time_in_millis {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match version {} }
-}
-
-impl<S7, S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `vm_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_name: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match vm_name {} }
-}
-
-impl<S8, S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `vm_vendor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_vendor: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match vm_vendor {} }
-}
-
-impl<S9, S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `vm_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vm_version: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match vm_version {} }
-}
-
-impl<S10>
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `using_bundled_jdk` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, using_bundled_jdk: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match using_bundled_jdk {} }
-}
-
-impl
-    NodeJvmInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `input_arguments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_arguments: crate::typed::builder::MissingRequiredField) -> NodeJvmInfo { match input_arguments {} }
+    fn from(builder: NodeJvmInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9317,25 +9090,32 @@ pub struct NodeOperatingSystemInfo {
 
 impl NodeOperatingSystemInfo {
     /// Creates a builder for [`NodeOperatingSystemInfo`].
+    ///
+    /// Required: `arch`, `available_processors`, `name`, `pretty_name`, `refresh_interval_in_millis`, `version`.
     pub fn builder() -> NodeOperatingSystemInfoBuilder {
         NodeOperatingSystemInfoBuilder::new()
     }
 
     /// Creates a [`NodeOperatingSystemInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeOperatingSystemInfoBuilder,
-        ) -> NodeOperatingSystemInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `arch`, `available_processors`, `name`, `pretty_name`, `refresh_interval_in_millis`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeOperatingSystemInfo>>(
+        f: impl FnOnce(NodeOperatingSystemInfoBuilder) -> B,
     ) -> NodeOperatingSystemInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeOperatingSystemInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_operating_system_info_members {
+    pub struct arch;
+    pub struct available_processors;
+    pub struct name;
+    pub struct pretty_name;
+    pub struct refresh_interval_in_millis;
+    pub struct version;
 }
 
 /// Builder for [`NodeOperatingSystemInfo`].
@@ -9431,20 +9211,9 @@ impl<S0, S1, S2, S3, S4, S5> NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4,
     }
 
     /// Sets [`cpu`](Self::cpu) with a builder.
-    pub fn cpu_with(
+    pub fn cpu_with<B: crate::typed::builder::Build<Output = NodeInfoOSCPU>>(
         self,
-        f: impl FnOnce(
-            NodeInfoOSCPUBuilder,
-        ) -> NodeInfoOSCPUBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoOSCPUBuilder) -> B,
     ) -> Self {
         self.cpu(f(NodeInfoOSCPUBuilder::new()).build())
     }
@@ -9461,14 +9230,9 @@ impl<S0, S1, S2, S3, S4, S5> NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4,
     }
 
     /// Sets [`mem`](Self::mem) with a builder.
-    pub fn mem_with(
+    pub fn mem_with<B: crate::typed::builder::Build<Output = NodeInfoMemory>>(
         self,
-        f: impl FnOnce(
-            NodeInfoMemoryBuilder,
-        ) -> NodeInfoMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoMemoryBuilder) -> B,
     ) -> Self {
         self.mem(f(NodeInfoMemoryBuilder::new()).build())
     }
@@ -9485,14 +9249,9 @@ impl<S0, S1, S2, S3, S4, S5> NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4,
     }
 
     /// Sets [`swap`](Self::swap) with a builder.
-    pub fn swap_with(
+    pub fn swap_with<B: crate::typed::builder::Build<Output = NodeInfoMemory>>(
         self,
-        f: impl FnOnce(
-            NodeInfoMemoryBuilder,
-        ) -> NodeInfoMemoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoMemoryBuilder) -> B,
     ) -> Self {
         self.swap(f(NodeInfoMemoryBuilder::new()).build())
     }
@@ -9501,7 +9260,7 @@ impl<S0, S1, S2, S3, S4, S5> NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4,
 impl<S1, S2, S3, S4, S5>
     NodeOperatingSystemInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
-    /// Name of the JVM architecture (ex: amd64, x86)
+    /// **Required.** Name of the JVM architecture (ex: amd64, x86)
     pub fn arch(
         self,
         value: impl Into<String>,
@@ -9515,7 +9274,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     NodeOperatingSystemInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
-    /// Number of processors available to the Java virtual machine
+    /// **Required.** Number of processors available to the Java virtual machine
     pub fn available_processors(
         self,
         value: i32,
@@ -9529,7 +9288,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     NodeOperatingSystemInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
-    /// Name of the operating system (ex: Linux, Windows, Mac OS X)
+    /// **Required.** Name of the operating system (ex: Linux, Windows, Mac OS X)
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -9543,6 +9302,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     NodeOperatingSystemInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn pretty_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -9556,7 +9316,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
-    /// Refresh interval for the OS statistics
+    /// **Required.** Refresh interval for the OS statistics
     pub fn refresh_interval_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -9570,7 +9330,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
-    /// Version of the operating system
+    /// **Required.** Version of the operating system
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -9581,18 +9341,19 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`NodeOperatingSystemInfo`].
-    pub fn build(self) -> NodeOperatingSystemInfo {
+    pub fn build(self) -> NodeOperatingSystemInfo
+    where
+        S0: crate::typed::builder::IsSet<node_operating_system_info_members::arch>,
+        S1: crate::typed::builder::IsSet<node_operating_system_info_members::available_processors>,
+        S2: crate::typed::builder::IsSet<node_operating_system_info_members::name>,
+        S3: crate::typed::builder::IsSet<node_operating_system_info_members::pretty_name>,
+        S4: crate::typed::builder::IsSet<
+            node_operating_system_info_members::refresh_interval_in_millis,
+        >,
+        S5: crate::typed::builder::IsSet<node_operating_system_info_members::version>,
+    {
         NodeOperatingSystemInfo {
             arch: self.arch.unwrap(),
             available_processors: self.available_processors.unwrap(),
@@ -9608,113 +9369,40 @@ impl
     }
 }
 
-impl
-    From<
-        NodeOperatingSystemInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeOperatingSystemInfo
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<node_operating_system_info_members::arch>,
+    S1: crate::typed::builder::IsSet<node_operating_system_info_members::available_processors>,
+    S2: crate::typed::builder::IsSet<node_operating_system_info_members::name>,
+    S3: crate::typed::builder::IsSet<node_operating_system_info_members::pretty_name>,
+    S4: crate::typed::builder::IsSet<
+        node_operating_system_info_members::refresh_interval_in_millis,
+    >,
+    S5: crate::typed::builder::IsSet<node_operating_system_info_members::version>,
 {
-    fn from(
-        builder: NodeOperatingSystemInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeOperatingSystemInfo;
+
+    fn build(self) -> NodeOperatingSystemInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    NodeOperatingSystemInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for NodeOperatingSystemInfo
+where
+    S0: crate::typed::builder::IsSet<node_operating_system_info_members::arch>,
+    S1: crate::typed::builder::IsSet<node_operating_system_info_members::available_processors>,
+    S2: crate::typed::builder::IsSet<node_operating_system_info_members::name>,
+    S3: crate::typed::builder::IsSet<node_operating_system_info_members::pretty_name>,
+    S4: crate::typed::builder::IsSet<
+        node_operating_system_info_members::refresh_interval_in_millis,
+    >,
+    S5: crate::typed::builder::IsSet<node_operating_system_info_members::version>,
 {
-    /// `arch` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, arch: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match arch {} }
-}
-
-impl<S2, S3, S4, S5>
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `available_processors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, available_processors: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match available_processors {} }
-}
-
-impl<S3, S4, S5>
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match name {} }
-}
-
-impl<S4, S5>
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `pretty_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pretty_name: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match pretty_name {} }
-}
-
-impl<S5>
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `refresh_interval_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, refresh_interval_in_millis: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match refresh_interval_in_millis {} }
-}
-
-impl
-    NodeOperatingSystemInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> NodeOperatingSystemInfo { match version {} }
+    fn from(builder: NodeOperatingSystemInfoBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9729,22 +9417,29 @@ pub struct NodeProcessInfo {
 
 impl NodeProcessInfo {
     /// Creates a builder for [`NodeProcessInfo`].
+    ///
+    /// Required: `id`, `mlockall`, `refresh_interval_in_millis`.
     pub fn builder() -> NodeProcessInfoBuilder {
         NodeProcessInfoBuilder::new()
     }
 
     /// Creates a [`NodeProcessInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeProcessInfoBuilder,
-        ) -> NodeProcessInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `mlockall`, `refresh_interval_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeProcessInfo>>(
+        f: impl FnOnce(NodeProcessInfoBuilder) -> B,
     ) -> NodeProcessInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeProcessInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_process_info_members {
+    pub struct id;
+    pub struct mlockall;
+    pub struct refresh_interval_in_millis;
 }
 
 /// Builder for [`NodeProcessInfo`].
@@ -9791,7 +9486,7 @@ impl<S0, S1, S2> NodeProcessInfoBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NodeProcessInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Process identifier (PID)
+    /// **Required.** Process identifier (PID)
     pub fn id(self, value: i64) -> NodeProcessInfoBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.id = Some(value);
@@ -9800,7 +9495,7 @@ impl<S1, S2> NodeProcessInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> NodeProcessInfoBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Indicates if the process address space has been successfully locked in memory
+    /// **Required.** Indicates if the process address space has been successfully locked in memory
     pub fn mlockall(
         self,
         value: bool,
@@ -9812,7 +9507,7 @@ impl<S0, S2> NodeProcessInfoBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> NodeProcessInfoBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Refresh interval for the process statistics
+    /// **Required.** Refresh interval for the process statistics
     pub fn refresh_interval_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -9823,15 +9518,14 @@ impl<S0, S1> NodeProcessInfoBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    NodeProcessInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NodeProcessInfoBuilder<(S0, S1, S2)> {
     /// Builds a [`NodeProcessInfo`].
-    pub fn build(self) -> NodeProcessInfo {
+    pub fn build(self) -> NodeProcessInfo
+    where
+        S0: crate::typed::builder::IsSet<node_process_info_members::id>,
+        S1: crate::typed::builder::IsSet<node_process_info_members::mlockall>,
+        S2: crate::typed::builder::IsSet<node_process_info_members::refresh_interval_in_millis>,
+    {
         NodeProcessInfo {
             id: self.id.unwrap(),
             mlockall: self.mlockall.unwrap(),
@@ -9840,54 +9534,28 @@ impl
     }
 }
 
-impl
-    From<
-        NodeProcessInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeProcessInfo
+impl<S0, S1, S2> crate::typed::builder::Build for NodeProcessInfoBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<node_process_info_members::id>,
+    S1: crate::typed::builder::IsSet<node_process_info_members::mlockall>,
+    S2: crate::typed::builder::IsSet<node_process_info_members::refresh_interval_in_millis>,
 {
-    fn from(
-        builder: NodeProcessInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeProcessInfo;
+
+    fn build(self) -> NodeProcessInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NodeProcessInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> NodeProcessInfo { match id {} }
-}
-
-impl<S2>
-    NodeProcessInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NodeProcessInfoBuilder<(S0, S1, S2)>> for NodeProcessInfo
+where
+    S0: crate::typed::builder::IsSet<node_process_info_members::id>,
+    S1: crate::typed::builder::IsSet<node_process_info_members::mlockall>,
+    S2: crate::typed::builder::IsSet<node_process_info_members::refresh_interval_in_millis>,
 {
-    /// `mlockall` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mlockall: crate::typed::builder::MissingRequiredField) -> NodeProcessInfo { match mlockall {} }
-}
-
-impl
-    NodeProcessInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `refresh_interval_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, refresh_interval_in_millis: crate::typed::builder::MissingRequiredField) -> NodeProcessInfo { match refresh_interval_in_millis {} }
+    fn from(builder: NodeProcessInfoBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9906,21 +9574,28 @@ pub struct NodeThreadPoolInfo {
 
 impl NodeThreadPoolInfo {
     /// Creates a builder for [`NodeThreadPoolInfo`].
+    ///
+    /// Required: `queue_size`, `type`.
     pub fn builder() -> NodeThreadPoolInfoBuilder {
         NodeThreadPoolInfoBuilder::new()
     }
 
     /// Creates a [`NodeThreadPoolInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeThreadPoolInfoBuilder,
-        ) -> NodeThreadPoolInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `queue_size`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeThreadPoolInfo>>(
+        f: impl FnOnce(NodeThreadPoolInfoBuilder) -> B,
     ) -> NodeThreadPoolInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeThreadPoolInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_thread_pool_info_members {
+    pub struct queue_size;
+    pub struct r#type;
 }
 
 /// Builder for [`NodeThreadPoolInfo`].
@@ -10010,6 +9685,7 @@ impl<S0, S1> NodeThreadPoolInfoBuilder<(S0, S1)> {
 }
 
 impl<S1> NodeThreadPoolInfoBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn queue_size(
         self,
         value: i32,
@@ -10021,6 +9697,7 @@ impl<S1> NodeThreadPoolInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NodeThreadPoolInfoBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10031,9 +9708,13 @@ impl<S0> NodeThreadPoolInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NodeThreadPoolInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NodeThreadPoolInfoBuilder<(S0, S1)> {
     /// Builds a [`NodeThreadPoolInfo`].
-    pub fn build(self) -> NodeThreadPoolInfo {
+    pub fn build(self) -> NodeThreadPoolInfo
+    where
+        S0: crate::typed::builder::IsSet<node_thread_pool_info_members::queue_size>,
+        S1: crate::typed::builder::IsSet<node_thread_pool_info_members::r#type>,
+    {
         NodeThreadPoolInfo {
             core: self.core,
             keep_alive: self.keep_alive,
@@ -10045,29 +9726,26 @@ impl NodeThreadPoolInfoBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<NodeThreadPoolInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NodeThreadPoolInfo
+impl<S0, S1> crate::typed::builder::Build for NodeThreadPoolInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<node_thread_pool_info_members::queue_size>,
+    S1: crate::typed::builder::IsSet<node_thread_pool_info_members::r#type>,
 {
-    fn from(
-        builder: NodeThreadPoolInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeThreadPoolInfo;
+
+    fn build(self) -> NodeThreadPoolInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> NodeThreadPoolInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `queue_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queue_size: crate::typed::builder::MissingRequiredField) -> NodeThreadPoolInfo { match queue_size {} }
-}
-
-impl NodeThreadPoolInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NodeThreadPoolInfo { match r#type {} }
+impl<S0, S1> From<NodeThreadPoolInfoBuilder<(S0, S1)>> for NodeThreadPoolInfo
+where
+    S0: crate::typed::builder::IsSet<node_thread_pool_info_members::queue_size>,
+    S1: crate::typed::builder::IsSet<node_thread_pool_info_members::r#type>,
+{
+    fn from(builder: NodeThreadPoolInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10129,21 +9807,28 @@ pub struct RemoveClusterServer {
 
 impl RemoveClusterServer {
     /// Creates a builder for [`RemoveClusterServer`].
+    ///
+    /// Required: `bound_address`, `publish_address`.
     pub fn builder() -> RemoveClusterServerBuilder {
         RemoveClusterServerBuilder::new()
     }
 
     /// Creates a [`RemoveClusterServer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoveClusterServerBuilder,
-        ) -> RemoveClusterServerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bound_address`, `publish_address`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveClusterServer>>(
+        f: impl FnOnce(RemoveClusterServerBuilder) -> B,
     ) -> RemoveClusterServer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoveClusterServerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remove_cluster_server_members {
+    pub struct bound_address;
+    pub struct publish_address;
 }
 
 /// Builder for [`RemoveClusterServer`].
@@ -10177,6 +9862,7 @@ impl<S0, S1> RemoveClusterServerBuilder<(S0, S1)> {
 }
 
 impl<S1> RemoveClusterServerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn bound_address(
         self,
         value: impl Into<Vec<crate::typed::_types::TransportAddress>>,
@@ -10214,6 +9900,7 @@ impl<S1> RemoveClusterServerBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> RemoveClusterServerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn publish_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -10224,9 +9911,13 @@ impl<S0> RemoveClusterServerBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RemoveClusterServerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RemoveClusterServerBuilder<(S0, S1)> {
     /// Builds a [`RemoveClusterServer`].
-    pub fn build(self) -> RemoveClusterServer {
+    pub fn build(self) -> RemoveClusterServer
+    where
+        S0: crate::typed::builder::IsSet<remove_cluster_server_members::bound_address>,
+        S1: crate::typed::builder::IsSet<remove_cluster_server_members::publish_address>,
+    {
         RemoveClusterServer {
             bound_address: self.bound_address.unwrap(),
             publish_address: self.publish_address.unwrap(),
@@ -10234,29 +9925,26 @@ impl RemoveClusterServerBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<RemoveClusterServerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RemoveClusterServer
+impl<S0, S1> crate::typed::builder::Build for RemoveClusterServerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<remove_cluster_server_members::bound_address>,
+    S1: crate::typed::builder::IsSet<remove_cluster_server_members::publish_address>,
 {
-    fn from(
-        builder: RemoveClusterServerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RemoveClusterServer;
+
+    fn build(self) -> RemoveClusterServer {
+        Self::build(self)
     }
 }
 
-impl<S1> RemoveClusterServerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `bound_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bound_address: crate::typed::builder::MissingRequiredField) -> RemoveClusterServer { match bound_address {} }
-}
-
-impl RemoveClusterServerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `publish_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, publish_address: crate::typed::builder::MissingRequiredField) -> RemoveClusterServer { match publish_address {} }
+impl<S0, S1> From<RemoveClusterServerBuilder<(S0, S1)>> for RemoveClusterServer
+where
+    S0: crate::typed::builder::IsSet<remove_cluster_server_members::bound_address>,
+    S1: crate::typed::builder::IsSet<remove_cluster_server_members::publish_address>,
+{
+    fn from(builder: RemoveClusterServerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`nodes.info`](crate::typed::nodes::NodesClient::info).
@@ -10300,7 +9988,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -10458,6 +10148,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -10590,19 +10288,28 @@ pub struct ResponseBase {
 
 impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
+    ///
+    /// Required: `cluster_name`, `nodes`.
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
     }
 
     /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResponseBaseBuilder,
-        )
-            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `cluster_name`, `nodes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResponseBase>>(
+        f: impl FnOnce(ResponseBaseBuilder) -> B,
     ) -> ResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod response_base_members {
+    pub struct cluster_name;
+    pub struct nodes;
 }
 
 /// Builder for [`ResponseBase`].
@@ -10648,21 +10355,18 @@ impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     }
 
     /// Sets [`node_stats`](Self::node_stats) with a builder.
-    pub fn node_stats_with(
+    pub fn node_stats_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeStatisticsBuilder,
-        ) -> crate::typed::_types::NodeStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeStatisticsBuilder) -> B,
     ) -> Self {
         self.node_stats(f(crate::typed::_types::NodeStatisticsBuilder::new()).build())
     }
 }
 
 impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -10674,6 +10378,7 @@ impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn nodes(
         self,
         value: impl Into<indexmap::IndexMap<String, NodeInfo>>,
@@ -10698,26 +10403,10 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeInfo>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoBuilder,
-        ) -> NodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoBuilder) -> B,
     ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
         self.add_nodes(key, f(NodeInfoBuilder::new()).build())
     }
@@ -10733,34 +10422,22 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeInfo>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeInfoBuilder,
-        ) -> NodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeInfoBuilder) -> B,
     ) -> Self {
         self.add_nodes(key, f(NodeInfoBuilder::new()).build())
     }
 }
 
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     /// Builds a [`ResponseBase`].
-    pub fn build(self) -> ResponseBase {
+    pub fn build(self) -> ResponseBase
+    where
+        S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+        S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+    {
         ResponseBase {
             node_stats: self.node_stats,
             cluster_name: self.cluster_name.unwrap(),
@@ -10769,24 +10446,24 @@ impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResponseBase
+impl<S0, S1> crate::typed::builder::Build for ResponseBaseBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
 {
-    fn from(
-        builder: ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ResponseBase;
+
+    fn build(self) -> ResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> ResponseBase { match cluster_name {} }
-}
-
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> ResponseBase { match nodes {} }
+impl<S0, S1> From<ResponseBaseBuilder<(S0, S1)>> for ResponseBase
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+{
+    fn from(builder: ResponseBaseBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

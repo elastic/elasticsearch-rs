@@ -84,19 +84,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `repository`, `snapshot`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `repository`, `snapshot`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct repository;
+    pub struct snapshot;
 }
 
 /// Builder for [`Request`].
@@ -430,7 +439,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// A comma-separated list of snapshot repository names used to limit the request.
+    /// **Required.** A comma-separated list of snapshot repository names used to limit the request.
     /// Wildcard (`*`) expressions are supported.
     pub fn repository(
         self,
@@ -443,7 +452,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// A comma-separated list of snapshot names to retrieve
+    /// **Required.** A comma-separated list of snapshot names to retrieve
     /// Wildcards (`*`) are supported.
     ///
     /// * To get information about all snapshots in a registered repository, use a wildcard (`*`) or `_all`.
@@ -458,9 +467,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::repository>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot>,
+    {
         Request {
             repository: self.repository.unwrap(),
             snapshot: self.snapshot.unwrap(),
@@ -486,41 +499,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::repository>,
+    S1: crate::typed::builder::IsSet<request_members::snapshot>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> Request { match repository {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `repository` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, repository: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match repository {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `snapshot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot: crate::typed::builder::MissingRequiredField) -> Request { match snapshot {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `snapshot` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, snapshot: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match snapshot {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::repository>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -710,18 +710,27 @@ pub struct SnapshotResponseItem {
 
 impl SnapshotResponseItem {
     /// Creates a builder for [`SnapshotResponseItem`].
+    ///
+    /// Required: `repository`.
     pub fn builder() -> SnapshotResponseItemBuilder {
         SnapshotResponseItemBuilder::new()
     }
 
     /// Creates a [`SnapshotResponseItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotResponseItemBuilder,
-        ) -> SnapshotResponseItemBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `repository`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotResponseItem>>(
+        f: impl FnOnce(SnapshotResponseItemBuilder) -> B,
     ) -> SnapshotResponseItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotResponseItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_response_item_members {
+    pub struct repository;
 }
 
 /// Builder for [`SnapshotResponseItem`].
@@ -783,15 +792,11 @@ impl<S0> SnapshotResponseItemBuilder<(S0,)> {
     }
 
     /// Adds an element to [`snapshots`](Self::snapshots), with a builder.
-    pub fn add_snapshots_with(
+    pub fn add_snapshots_with<
+        B: crate::typed::builder::Build<Output = crate::typed::snapshot::_types::SnapshotInfo>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::snapshot::_types::SnapshotInfoBuilder,
-        ) -> crate::typed::snapshot::_types::SnapshotInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::snapshot::_types::SnapshotInfoBuilder) -> B,
     ) -> Self {
         self.add_snapshots(f(crate::typed::snapshot::_types::SnapshotInfoBuilder::new()).build())
     }
@@ -808,18 +813,18 @@ impl<S0> SnapshotResponseItemBuilder<(S0,)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl SnapshotResponseItemBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn repository(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -830,9 +835,12 @@ impl SnapshotResponseItemBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SnapshotResponseItemBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SnapshotResponseItemBuilder<(S0,)> {
     /// Builds a [`SnapshotResponseItem`].
-    pub fn build(self) -> SnapshotResponseItem {
+    pub fn build(self) -> SnapshotResponseItem
+    where
+        S0: crate::typed::builder::IsSet<snapshot_response_item_members::repository>,
+    {
         SnapshotResponseItem {
             repository: self.repository.unwrap(),
             snapshots: self.snapshots,
@@ -841,14 +849,22 @@ impl SnapshotResponseItemBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SnapshotResponseItemBuilder<(crate::typed::builder::Set,)>> for SnapshotResponseItem {
-    fn from(builder: SnapshotResponseItemBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SnapshotResponseItemBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_response_item_members::repository>,
+{
+    type Output = SnapshotResponseItem;
+
+    fn build(self) -> SnapshotResponseItem {
+        Self::build(self)
     }
 }
 
-impl SnapshotResponseItemBuilder<(crate::typed::builder::NotSet,)> {
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> SnapshotResponseItem { match repository {} }
+impl<S0> From<SnapshotResponseItemBuilder<(S0,)>> for SnapshotResponseItem
+where
+    S0: crate::typed::builder::IsSet<snapshot_response_item_members::repository>,
+{
+    fn from(builder: SnapshotResponseItemBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

@@ -16,7 +16,9 @@ impl GlobalRetention {
     }
 
     /// Creates a [`GlobalRetention`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GlobalRetentionBuilder) -> GlobalRetentionBuilder) -> GlobalRetention {
+    pub fn of<B: crate::typed::builder::Build<Output = GlobalRetention>>(
+        f: impl FnOnce(GlobalRetentionBuilder) -> B,
+    ) -> GlobalRetention {
         f(Self::builder()).build()
     }
 }
@@ -71,6 +73,14 @@ impl GlobalRetentionBuilder {
             max_retention: self.max_retention,
             default_retention: self.default_retention,
         }
+    }
+}
+
+impl crate::typed::builder::Build for GlobalRetentionBuilder {
+    type Output = GlobalRetention;
+
+    fn build(self) -> GlobalRetention {
+        Self::build(self)
     }
 }
 

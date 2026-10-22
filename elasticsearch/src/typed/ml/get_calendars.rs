@@ -14,19 +14,28 @@ pub struct Calendar {
 
 impl Calendar {
     /// Creates a builder for [`Calendar`].
+    ///
+    /// Required: `calendar_id`, `job_ids`.
     pub fn builder() -> CalendarBuilder {
         CalendarBuilder::new()
     }
 
     /// Creates a [`Calendar`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CalendarBuilder,
-        )
-            -> CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `calendar_id`, `job_ids`.
+    pub fn of<B: crate::typed::builder::Build<Output = Calendar>>(
+        f: impl FnOnce(CalendarBuilder) -> B,
     ) -> Calendar {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CalendarBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod calendar_members {
+    pub struct calendar_id;
+    pub struct job_ids;
 }
 
 /// Builder for [`Calendar`].
@@ -73,7 +82,7 @@ impl<S0, S1> CalendarBuilder<(S0, S1)> {
 }
 
 impl<S1> CalendarBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A string that uniquely identifies a calendar.
+    /// **Required.** A string that uniquely identifies a calendar.
     pub fn calendar_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -85,7 +94,7 @@ impl<S1> CalendarBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CalendarBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An array of anomaly detection job identifiers.
+    /// **Required.** An array of anomaly detection job identifiers.
     pub fn job_ids(
         self,
         value: impl Into<Vec<crate::typed::_types::Id>>,
@@ -119,9 +128,13 @@ impl<S0> CalendarBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CalendarBuilder<(S0, S1)> {
     /// Builds a [`Calendar`].
-    pub fn build(self) -> Calendar {
+    pub fn build(self) -> Calendar
+    where
+        S0: crate::typed::builder::IsSet<calendar_members::calendar_id>,
+        S1: crate::typed::builder::IsSet<calendar_members::job_ids>,
+    {
         Calendar {
             calendar_id: self.calendar_id.unwrap(),
             description: self.description,
@@ -130,24 +143,26 @@ impl CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Calendar {
-    fn from(
-        builder: CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for CalendarBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<calendar_members::calendar_id>,
+    S1: crate::typed::builder::IsSet<calendar_members::job_ids>,
+{
+    type Output = Calendar;
+
+    fn build(self) -> Calendar {
+        Self::build(self)
     }
 }
 
-impl<S1> CalendarBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `calendar_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, calendar_id: crate::typed::builder::MissingRequiredField) -> Calendar { match calendar_id {} }
-}
-
-impl CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `job_ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_ids: crate::typed::builder::MissingRequiredField) -> Calendar { match job_ids {} }
+impl<S0, S1> From<CalendarBuilder<(S0, S1)>> for Calendar
+where
+    S0: crate::typed::builder::IsSet<calendar_members::calendar_id>,
+    S1: crate::typed::builder::IsSet<calendar_members::job_ids>,
+{
+    fn from(builder: CalendarBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ml.get_calendars`](crate::typed::ml::MlClient::get_calendars).
@@ -189,7 +204,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -331,9 +348,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`page`](Self::page) with a builder.
-    pub fn page_with(
+    pub fn page_with<B: crate::typed::builder::Build<Output = crate::typed::ml::_types::Page>>(
         self,
-        f: impl FnOnce(crate::typed::ml::_types::PageBuilder) -> crate::typed::ml::_types::PageBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::PageBuilder) -> B,
     ) -> Self {
         self.page(f(crate::typed::ml::_types::PageBuilder::new()).build())
     }
@@ -352,6 +369,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             page: self.page,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

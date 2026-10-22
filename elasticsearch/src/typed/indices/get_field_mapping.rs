@@ -56,16 +56,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `fields`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct fields;
 }
 
 /// Builder for [`Request`].
@@ -256,7 +267,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list or wildcard expression of fields used to limit returned information.
+    /// **Required.** Comma-separated list or wildcard expression of fields used to limit returned information.
     /// Supports wildcards (`*`).
     pub fn fields(
         self,
@@ -268,9 +279,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::fields>,
+    {
         Request {
             fields: self.fields.unwrap(),
             index: self.index,
@@ -286,23 +300,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::fields>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> Request { match fields {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `fields` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, fields: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match fields {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::fields>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -440,18 +457,27 @@ pub struct TypeFieldMappings {
 
 impl TypeFieldMappings {
     /// Creates a builder for [`TypeFieldMappings`].
+    ///
+    /// Required: `mappings`.
     pub fn builder() -> TypeFieldMappingsBuilder {
         TypeFieldMappingsBuilder::new()
     }
 
     /// Creates a [`TypeFieldMappings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TypeFieldMappingsBuilder,
-        ) -> TypeFieldMappingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `mappings`.
+    pub fn of<B: crate::typed::builder::Build<Output = TypeFieldMappings>>(
+        f: impl FnOnce(TypeFieldMappingsBuilder) -> B,
     ) -> TypeFieldMappings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TypeFieldMappingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod type_field_mappings_members {
+    pub struct mappings;
 }
 
 /// Builder for [`TypeFieldMappings`].
@@ -485,6 +511,7 @@ impl<S0> TypeFieldMappingsBuilder<(S0,)> {
 }
 
 impl TypeFieldMappingsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn mappings(
         self,
         value: impl Into<
@@ -514,15 +541,12 @@ impl TypeFieldMappingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an entry to [`mappings`](Self::mappings), with a builder.
-    pub fn add_mappings_with(
+    pub fn add_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::FieldMapping>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::FieldMappingBuilder,
-        ) -> crate::typed::_types::mapping::FieldMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::FieldMappingBuilder) -> B,
     ) -> TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
         self.add_mappings(
             key,
@@ -545,15 +569,12 @@ impl TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an entry to [`mappings`](Self::mappings), with a builder.
-    pub fn add_mappings_with(
+    pub fn add_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::FieldMapping>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::FieldMappingBuilder,
-        ) -> crate::typed::_types::mapping::FieldMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::FieldMappingBuilder) -> B,
     ) -> Self {
         self.add_mappings(
             key,
@@ -562,23 +583,34 @@ impl TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TypeFieldMappingsBuilder<(S0,)> {
     /// Builds a [`TypeFieldMappings`].
-    pub fn build(self) -> TypeFieldMappings {
+    pub fn build(self) -> TypeFieldMappings
+    where
+        S0: crate::typed::builder::IsSet<type_field_mappings_members::mappings>,
+    {
         TypeFieldMappings {
             mappings: self.mappings.unwrap(),
         }
     }
 }
 
-impl From<TypeFieldMappingsBuilder<(crate::typed::builder::Set,)>> for TypeFieldMappings {
-    fn from(builder: TypeFieldMappingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TypeFieldMappingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<type_field_mappings_members::mappings>,
+{
+    type Output = TypeFieldMappings;
+
+    fn build(self) -> TypeFieldMappings {
+        Self::build(self)
     }
 }
 
-impl TypeFieldMappingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mappings: crate::typed::builder::MissingRequiredField) -> TypeFieldMappings { match mappings {} }
+impl<S0> From<TypeFieldMappingsBuilder<(S0,)>> for TypeFieldMappings
+where
+    S0: crate::typed::builder::IsSet<type_field_mappings_members::mappings>,
+{
+    fn from(builder: TypeFieldMappingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

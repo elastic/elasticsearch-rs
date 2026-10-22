@@ -13,22 +13,29 @@ pub struct DataStreamStats {
 
 impl DataStreamStats {
     /// Creates a builder for [`DataStreamStats`].
+    ///
+    /// Required: `backing_indices_in_error`, `backing_indices_in_total`, `name`.
     pub fn builder() -> DataStreamStatsBuilder {
         DataStreamStatsBuilder::new()
     }
 
     /// Creates a [`DataStreamStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamStatsBuilder,
-        ) -> DataStreamStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `backing_indices_in_error`, `backing_indices_in_total`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamStats>>(
+        f: impl FnOnce(DataStreamStatsBuilder) -> B,
     ) -> DataStreamStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_stats_members {
+    pub struct backing_indices_in_error;
+    pub struct backing_indices_in_total;
+    pub struct name;
 }
 
 /// Builder for [`DataStreamStats`].
@@ -75,7 +82,7 @@ impl<S0, S1, S2> DataStreamStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DataStreamStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The count of the backing indices for the data stream.
+    /// **Required.** The count of the backing indices for the data stream.
     pub fn backing_indices_in_error(
         self,
         value: i32,
@@ -87,7 +94,7 @@ impl<S1, S2> DataStreamStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> DataStreamStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The count of the backing indices for the data stream that have encountered an error.
+    /// **Required.** The count of the backing indices for the data stream that have encountered an error.
     pub fn backing_indices_in_total(
         self,
         value: i32,
@@ -99,7 +106,7 @@ impl<S0, S2> DataStreamStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> DataStreamStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The name of the data stream.
+    /// **Required.** The name of the data stream.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::DataStreamName>,
@@ -110,15 +117,14 @@ impl<S0, S1> DataStreamStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    DataStreamStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataStreamStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`DataStreamStats`].
-    pub fn build(self) -> DataStreamStats {
+    pub fn build(self) -> DataStreamStats
+    where
+        S0: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_error>,
+        S1: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_total>,
+        S2: crate::typed::builder::IsSet<data_stream_stats_members::name>,
+    {
         DataStreamStats {
             backing_indices_in_error: self.backing_indices_in_error.unwrap(),
             backing_indices_in_total: self.backing_indices_in_total.unwrap(),
@@ -127,54 +133,28 @@ impl
     }
 }
 
-impl
-    From<
-        DataStreamStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataStreamStats
+impl<S0, S1, S2> crate::typed::builder::Build for DataStreamStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_error>,
+    S1: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_total>,
+    S2: crate::typed::builder::IsSet<data_stream_stats_members::name>,
 {
-    fn from(
-        builder: DataStreamStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamStats;
+
+    fn build(self) -> DataStreamStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DataStreamStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `backing_indices_in_error` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, backing_indices_in_error: crate::typed::builder::MissingRequiredField) -> DataStreamStats { match backing_indices_in_error {} }
-}
-
-impl<S2>
-    DataStreamStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DataStreamStatsBuilder<(S0, S1, S2)>> for DataStreamStats
+where
+    S0: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_error>,
+    S1: crate::typed::builder::IsSet<data_stream_stats_members::backing_indices_in_total>,
+    S2: crate::typed::builder::IsSet<data_stream_stats_members::name>,
 {
-    /// `backing_indices_in_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, backing_indices_in_total: crate::typed::builder::MissingRequiredField) -> DataStreamStats { match backing_indices_in_total {} }
-}
-
-impl
-    DataStreamStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataStreamStats { match name {} }
+    fn from(builder: DataStreamStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.get_data_lifecycle_stats`](crate::typed::indices::IndicesClient::get_data_lifecycle_stats).
@@ -210,7 +190,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -305,6 +287,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

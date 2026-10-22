@@ -47,25 +47,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `current_step`, `next_step`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `index`, `current_step`, `next_step`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct current_step;
+    pub struct next_step;
 }
 
 /// Builder for [`Request`].
@@ -186,7 +190,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The name of the index whose lifecycle step is to change
+    /// **Required.** The name of the index whose lifecycle step is to change
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -198,7 +202,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The step that the index is expected to be in.
+    /// **Required.** The step that the index is expected to be in.
     pub fn current_step(
         self,
         value: impl Into<StepKey>,
@@ -209,16 +213,16 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
     }
 
     /// Sets [`current_step`](Self::current_step) with a builder.
-    pub fn current_step_with(
+    pub fn current_step_with<B: crate::typed::builder::Build<Output = StepKey>>(
         self,
-        f: impl FnOnce(StepKeyBuilder) -> StepKeyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(StepKeyBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set, S2), C> {
         self.current_step(f(StepKeyBuilder::new()).build())
     }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The step that you want to run.
+    /// **Required.** The step that you want to run.
     pub fn next_step(
         self,
         value: impl Into<StepKey>,
@@ -229,26 +233,22 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`next_step`](Self::next_step) with a builder.
-    pub fn next_step_with(
+    pub fn next_step_with<B: crate::typed::builder::Build<Output = StepKey>>(
         self,
-        f: impl FnOnce(StepKeyBuilder) -> StepKeyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(StepKeyBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
         self.next_step(f(StepKeyBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::current_step>,
+        S2: crate::typed::builder::IsSet<request_members::next_step>,
+    {
         Request {
             index: self.index.unwrap(),
             error_trace: self.error_trace,
@@ -261,90 +261,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::current_step>,
+    S2: crate::typed::builder::IsSet<request_members::next_step>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `current_step` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_step: crate::typed::builder::MissingRequiredField) -> Request { match current_step {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `current_step` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, current_step: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match current_step {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `next_step` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, next_step: crate::typed::builder::MissingRequiredField) -> Request { match next_step {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `next_step` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, next_step: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match next_step {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::current_step>,
+        S2: crate::typed::builder::IsSet<request_members::next_step>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -466,16 +406,27 @@ pub struct StepKey {
 
 impl StepKey {
     /// Creates a builder for [`StepKey`].
+    ///
+    /// Required: `phase`.
     pub fn builder() -> StepKeyBuilder {
         StepKeyBuilder::new()
     }
 
     /// Creates a [`StepKey`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StepKeyBuilder) -> StepKeyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `phase`.
+    pub fn of<B: crate::typed::builder::Build<Output = StepKey>>(
+        f: impl FnOnce(StepKeyBuilder) -> B,
     ) -> StepKey {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StepKeyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod step_key_members {
+    pub struct phase;
 }
 
 /// Builder for [`StepKey`].
@@ -534,6 +485,7 @@ impl<S0> StepKeyBuilder<(S0,)> {
 }
 
 impl StepKeyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn phase(self, value: impl Into<String>) -> StepKeyBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.phase = Some(value.into());
@@ -541,9 +493,12 @@ impl StepKeyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StepKeyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StepKeyBuilder<(S0,)> {
     /// Builds a [`StepKey`].
-    pub fn build(self) -> StepKey {
+    pub fn build(self) -> StepKey
+    where
+        S0: crate::typed::builder::IsSet<step_key_members::phase>,
+    {
         StepKey {
             action: self.action,
             name: self.name,
@@ -552,14 +507,22 @@ impl StepKeyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StepKeyBuilder<(crate::typed::builder::Set,)>> for StepKey {
-    fn from(builder: StepKeyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StepKeyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<step_key_members::phase>,
+{
+    type Output = StepKey;
+
+    fn build(self) -> StepKey {
+        Self::build(self)
     }
 }
 
-impl StepKeyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `phase` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, phase: crate::typed::builder::MissingRequiredField) -> StepKey { match phase {} }
+impl<S0> From<StepKeyBuilder<(S0,)>> for StepKey
+where
+    S0: crate::typed::builder::IsSet<step_key_members::phase>,
+{
+    fn from(builder: StepKeyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

@@ -8,18 +8,27 @@ pub struct MigrationFeature {
 
 impl MigrationFeature {
     /// Creates a builder for [`MigrationFeature`].
+    ///
+    /// Required: `feature_name`.
     pub fn builder() -> MigrationFeatureBuilder {
         MigrationFeatureBuilder::new()
     }
 
     /// Creates a [`MigrationFeature`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MigrationFeatureBuilder,
-        ) -> MigrationFeatureBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `feature_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = MigrationFeature>>(
+        f: impl FnOnce(MigrationFeatureBuilder) -> B,
     ) -> MigrationFeature {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MigrationFeatureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod migration_feature_members {
+    pub struct feature_name;
 }
 
 /// Builder for [`MigrationFeature`].
@@ -48,6 +57,7 @@ impl<S0> MigrationFeatureBuilder<(S0,)> {
 }
 
 impl MigrationFeatureBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -58,25 +68,36 @@ impl MigrationFeatureBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MigrationFeatureBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MigrationFeatureBuilder<(S0,)> {
     /// Builds a [`MigrationFeature`].
-    pub fn build(self) -> MigrationFeature {
+    pub fn build(self) -> MigrationFeature
+    where
+        S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+    {
         MigrationFeature {
             feature_name: self.feature_name.unwrap(),
         }
     }
 }
 
-impl From<MigrationFeatureBuilder<(crate::typed::builder::Set,)>> for MigrationFeature {
-    fn from(builder: MigrationFeatureBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MigrationFeatureBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+{
+    type Output = MigrationFeature;
+
+    fn build(self) -> MigrationFeature {
+        Self::build(self)
     }
 }
 
-impl MigrationFeatureBuilder<(crate::typed::builder::NotSet,)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> MigrationFeature { match feature_name {} }
+impl<S0> From<MigrationFeatureBuilder<(S0,)>> for MigrationFeature
+where
+    S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+{
+    fn from(builder: MigrationFeatureBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`migration.post_feature_upgrade`](crate::typed::migration::MigrationClient::post_feature_upgrade).
@@ -117,7 +138,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -212,6 +235,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

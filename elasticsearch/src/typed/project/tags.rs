@@ -10,16 +10,27 @@ pub struct ProjectTags {
 
 impl ProjectTags {
     /// Creates a builder for [`ProjectTags`].
+    ///
+    /// Required: `origin`.
     pub fn builder() -> ProjectTagsBuilder {
         ProjectTagsBuilder::new()
     }
 
     /// Creates a [`ProjectTags`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ProjectTagsBuilder) -> ProjectTagsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `origin`.
+    pub fn of<B: crate::typed::builder::Build<Output = ProjectTags>>(
+        f: impl FnOnce(ProjectTagsBuilder) -> B,
     ) -> ProjectTags {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ProjectTagsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod project_tags_members {
+    pub struct origin;
 }
 
 /// Builder for [`ProjectTags`].
@@ -72,23 +83,17 @@ impl<S0> ProjectTagsBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`linked_projects`](Self::linked_projects), with a builder.
-    pub fn add_linked_projects_with(
+    pub fn add_linked_projects_with<B: crate::typed::builder::Build<Output = Tags>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            TagsBuilder,
-        ) -> TagsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TagsBuilder) -> B,
     ) -> Self {
         self.add_linked_projects(key, f(TagsBuilder::new()).build())
     }
 }
 
 impl ProjectTagsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn origin(
         self,
         key: impl Into<String>,
@@ -100,25 +105,21 @@ impl ProjectTagsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`origin`](Self::origin) with a builder.
-    pub fn origin_with(
+    pub fn origin_with<B: crate::typed::builder::Build<Output = Tags>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            TagsBuilder,
-        ) -> TagsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TagsBuilder) -> B,
     ) -> ProjectTagsBuilder<(crate::typed::builder::Set,)> {
         self.origin(key, f(TagsBuilder::new()).build())
     }
 }
 
-impl ProjectTagsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ProjectTagsBuilder<(S0,)> {
     /// Builds a [`ProjectTags`].
-    pub fn build(self) -> ProjectTags {
+    pub fn build(self) -> ProjectTags
+    where
+        S0: crate::typed::builder::IsSet<project_tags_members::origin>,
+    {
         ProjectTags {
             origin: self.origin.unwrap(),
             linked_projects: self.linked_projects,
@@ -126,16 +127,24 @@ impl ProjectTagsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ProjectTagsBuilder<(crate::typed::builder::Set,)>> for ProjectTags {
-    fn from(builder: ProjectTagsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ProjectTagsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<project_tags_members::origin>,
+{
+    type Output = ProjectTags;
+
+    fn build(self) -> ProjectTags {
+        Self::build(self)
     }
 }
 
-impl ProjectTagsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> ProjectTags { match origin {} }
+impl<S0> From<ProjectTagsBuilder<(S0,)>> for ProjectTags
+where
+    S0: crate::typed::builder::IsSet<project_tags_members::origin>,
+{
+    fn from(builder: ProjectTagsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`project.tags`](crate::typed::project::ProjectClient::tags).
@@ -178,7 +187,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -299,6 +310,14 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             project_routing: self.project_routing,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -426,23 +445,30 @@ pub struct Tags {
 
 impl Tags {
     /// Creates a builder for [`Tags`].
+    ///
+    /// Required: `id`, `alias`, `type`, `organisation`.
     pub fn builder() -> TagsBuilder {
         TagsBuilder::new()
     }
 
     /// Creates a [`Tags`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TagsBuilder,
-        ) -> TagsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `alias`, `type`, `organisation`.
+    pub fn of<B: crate::typed::builder::Build<Output = Tags>>(
+        f: impl FnOnce(TagsBuilder) -> B,
     ) -> Tags {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TagsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod tags_members {
+    pub struct id;
+    pub struct alias;
+    pub struct r#type;
+    pub struct organisation;
 }
 
 /// Builder for [`Tags`].
@@ -513,6 +539,7 @@ impl<S0, S1, S2, S3> TagsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> TagsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<String>,
@@ -524,6 +551,7 @@ impl<S1, S2, S3> TagsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> TagsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn alias(
         self,
         value: impl Into<String>,
@@ -535,6 +563,7 @@ impl<S0, S2, S3> TagsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
 }
 
 impl<S0, S1, S3> TagsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -546,6 +575,7 @@ impl<S0, S1, S3> TagsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
 }
 
 impl<S0, S1, S2> TagsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn organisation(
         self,
         value: impl Into<String>,
@@ -556,16 +586,15 @@ impl<S0, S1, S2> TagsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    TagsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> TagsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Tags`].
-    pub fn build(self) -> Tags {
+    pub fn build(self) -> Tags
+    where
+        S0: crate::typed::builder::IsSet<tags_members::id>,
+        S1: crate::typed::builder::IsSet<tags_members::alias>,
+        S2: crate::typed::builder::IsSet<tags_members::r#type>,
+        S3: crate::typed::builder::IsSet<tags_members::organisation>,
+    {
         Tags {
             id: self.id.unwrap(),
             alias: self.alias.unwrap(),
@@ -576,69 +605,28 @@ impl
     }
 }
 
-impl
-    From<
-        TagsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Tags
+impl<S0, S1, S2, S3> crate::typed::builder::Build for TagsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<tags_members::id>,
+    S1: crate::typed::builder::IsSet<tags_members::alias>,
+    S2: crate::typed::builder::IsSet<tags_members::r#type>,
+    S3: crate::typed::builder::IsSet<tags_members::organisation>,
 {
-    fn from(
-        builder: TagsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Tags;
+
+    fn build(self) -> Tags {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> TagsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Tags { match id {} }
-}
-
-impl<S2, S3>
-    TagsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<TagsBuilder<(S0, S1, S2, S3)>> for Tags
+where
+    S0: crate::typed::builder::IsSet<tags_members::id>,
+    S1: crate::typed::builder::IsSet<tags_members::alias>,
+    S2: crate::typed::builder::IsSet<tags_members::r#type>,
+    S3: crate::typed::builder::IsSet<tags_members::organisation>,
 {
-    /// `alias` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, alias: crate::typed::builder::MissingRequiredField) -> Tags { match alias {} }
-}
-
-impl<S3>
-    TagsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Tags { match r#type {} }
-}
-
-impl
-    TagsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `organisation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, organisation: crate::typed::builder::MissingRequiredField) -> Tags { match organisation {} }
+    fn from(builder: TagsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

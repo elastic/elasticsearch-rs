@@ -21,18 +21,27 @@ pub struct ApostropheTokenFilter {
 
 impl ApostropheTokenFilter {
     /// Creates a builder for [`ApostropheTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ApostropheTokenFilterBuilder {
         ApostropheTokenFilterBuilder::new()
     }
 
     /// Creates a [`ApostropheTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApostropheTokenFilterBuilder,
-        ) -> ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApostropheTokenFilter>>(
+        f: impl FnOnce(ApostropheTokenFilterBuilder) -> B,
     ) -> ApostropheTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApostropheTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod apostrophe_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ApostropheTokenFilter`].
@@ -75,6 +84,7 @@ impl<S0> ApostropheTokenFilterBuilder<(S0,)> {
 }
 
 impl ApostropheTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -85,9 +95,12 @@ impl ApostropheTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ApostropheTokenFilterBuilder<(S0,)> {
     /// Builds a [`ApostropheTokenFilter`].
-    pub fn build(self) -> ApostropheTokenFilter {
+    pub fn build(self) -> ApostropheTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<apostrophe_token_filter_members::r#type>,
+    {
         ApostropheTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -95,16 +108,24 @@ impl ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)>> for ApostropheTokenFilter {
-    fn from(builder: ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ApostropheTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<apostrophe_token_filter_members::r#type>,
+{
+    type Output = ApostropheTokenFilter;
+
+    fn build(self) -> ApostropheTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ApostropheTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ApostropheTokenFilter { match r#type {} }
+impl<S0> From<ApostropheTokenFilterBuilder<(S0,)>> for ApostropheTokenFilter
+where
+    S0: crate::typed::builder::IsSet<apostrophe_token_filter_members::r#type>,
+{
+    fn from(builder: ApostropheTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -120,16 +141,27 @@ pub struct ArabicAnalyzer {
 
 impl ArabicAnalyzer {
     /// Creates a builder for [`ArabicAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ArabicAnalyzerBuilder {
         ArabicAnalyzerBuilder::new()
     }
 
     /// Creates a [`ArabicAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ArabicAnalyzerBuilder) -> ArabicAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ArabicAnalyzer>>(
+        f: impl FnOnce(ArabicAnalyzerBuilder) -> B,
     ) -> ArabicAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ArabicAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod arabic_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ArabicAnalyzer`].
@@ -208,6 +240,7 @@ impl<S0> ArabicAnalyzerBuilder<(S0,)> {
 }
 
 impl ArabicAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -218,9 +251,12 @@ impl ArabicAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ArabicAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ArabicAnalyzerBuilder<(S0,)> {
     /// Builds a [`ArabicAnalyzer`].
-    pub fn build(self) -> ArabicAnalyzer {
+    pub fn build(self) -> ArabicAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<arabic_analyzer_members::r#type>,
+    {
         ArabicAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -230,16 +266,24 @@ impl ArabicAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ArabicAnalyzerBuilder<(crate::typed::builder::Set,)>> for ArabicAnalyzer {
-    fn from(builder: ArabicAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ArabicAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<arabic_analyzer_members::r#type>,
+{
+    type Output = ArabicAnalyzer;
+
+    fn build(self) -> ArabicAnalyzer {
+        Self::build(self)
     }
 }
 
-impl ArabicAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ArabicAnalyzer { match r#type {} }
+impl<S0> From<ArabicAnalyzerBuilder<(S0,)>> for ArabicAnalyzer
+where
+    S0: crate::typed::builder::IsSet<arabic_analyzer_members::r#type>,
+{
+    fn from(builder: ArabicAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -251,18 +295,27 @@ pub struct ArabicNormalizationTokenFilter {
 
 impl ArabicNormalizationTokenFilter {
     /// Creates a builder for [`ArabicNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ArabicNormalizationTokenFilterBuilder {
         ArabicNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`ArabicNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ArabicNormalizationTokenFilterBuilder,
-        ) -> ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ArabicNormalizationTokenFilter>>(
+        f: impl FnOnce(ArabicNormalizationTokenFilterBuilder) -> B,
     ) -> ArabicNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ArabicNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod arabic_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ArabicNormalizationTokenFilter`].
@@ -305,6 +358,7 @@ impl<S0> ArabicNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -315,9 +369,12 @@ impl ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ArabicNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`ArabicNormalizationTokenFilter`].
-    pub fn build(self) -> ArabicNormalizationTokenFilter {
+    pub fn build(self) -> ArabicNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<arabic_normalization_token_filter_members::r#type>,
+    {
         ArabicNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -325,18 +382,24 @@ impl ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for ArabicNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for ArabicNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<arabic_normalization_token_filter_members::r#type>,
 {
-    fn from(builder: ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ArabicNormalizationTokenFilter;
+
+    fn build(self) -> ArabicNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ArabicNormalizationTokenFilter { match r#type {} }
+impl<S0> From<ArabicNormalizationTokenFilterBuilder<(S0,)>> for ArabicNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<arabic_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: ArabicNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -348,18 +411,27 @@ pub struct ArabicStemTokenFilter {
 
 impl ArabicStemTokenFilter {
     /// Creates a builder for [`ArabicStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ArabicStemTokenFilterBuilder {
         ArabicStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`ArabicStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ArabicStemTokenFilterBuilder,
-        ) -> ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ArabicStemTokenFilter>>(
+        f: impl FnOnce(ArabicStemTokenFilterBuilder) -> B,
     ) -> ArabicStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ArabicStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod arabic_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ArabicStemTokenFilter`].
@@ -402,6 +474,7 @@ impl<S0> ArabicStemTokenFilterBuilder<(S0,)> {
 }
 
 impl ArabicStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -412,9 +485,12 @@ impl ArabicStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ArabicStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`ArabicStemTokenFilter`].
-    pub fn build(self) -> ArabicStemTokenFilter {
+    pub fn build(self) -> ArabicStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<arabic_stem_token_filter_members::r#type>,
+    {
         ArabicStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -422,16 +498,24 @@ impl ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for ArabicStemTokenFilter {
-    fn from(builder: ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ArabicStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<arabic_stem_token_filter_members::r#type>,
+{
+    type Output = ArabicStemTokenFilter;
+
+    fn build(self) -> ArabicStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ArabicStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ArabicStemTokenFilter { match r#type {} }
+impl<S0> From<ArabicStemTokenFilterBuilder<(S0,)>> for ArabicStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<arabic_stem_token_filter_members::r#type>,
+{
+    fn from(builder: ArabicStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -447,18 +531,27 @@ pub struct ArmenianAnalyzer {
 
 impl ArmenianAnalyzer {
     /// Creates a builder for [`ArmenianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ArmenianAnalyzerBuilder {
         ArmenianAnalyzerBuilder::new()
     }
 
     /// Creates a [`ArmenianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ArmenianAnalyzerBuilder,
-        ) -> ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ArmenianAnalyzer>>(
+        f: impl FnOnce(ArmenianAnalyzerBuilder) -> B,
     ) -> ArmenianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ArmenianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod armenian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ArmenianAnalyzer`].
@@ -537,6 +630,7 @@ impl<S0> ArmenianAnalyzerBuilder<(S0,)> {
 }
 
 impl ArmenianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -547,9 +641,12 @@ impl ArmenianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ArmenianAnalyzerBuilder<(S0,)> {
     /// Builds a [`ArmenianAnalyzer`].
-    pub fn build(self) -> ArmenianAnalyzer {
+    pub fn build(self) -> ArmenianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<armenian_analyzer_members::r#type>,
+    {
         ArmenianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -559,16 +656,24 @@ impl ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)>> for ArmenianAnalyzer {
-    fn from(builder: ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ArmenianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<armenian_analyzer_members::r#type>,
+{
+    type Output = ArmenianAnalyzer;
+
+    fn build(self) -> ArmenianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl ArmenianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ArmenianAnalyzer { match r#type {} }
+impl<S0> From<ArmenianAnalyzerBuilder<(S0,)>> for ArmenianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<armenian_analyzer_members::r#type>,
+{
+    fn from(builder: ArmenianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -583,18 +688,27 @@ pub struct AsciiFoldingTokenFilter {
 
 impl AsciiFoldingTokenFilter {
     /// Creates a builder for [`AsciiFoldingTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> AsciiFoldingTokenFilterBuilder {
         AsciiFoldingTokenFilterBuilder::new()
     }
 
     /// Creates a [`AsciiFoldingTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AsciiFoldingTokenFilterBuilder,
-        ) -> AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = AsciiFoldingTokenFilter>>(
+        f: impl FnOnce(AsciiFoldingTokenFilterBuilder) -> B,
     ) -> AsciiFoldingTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AsciiFoldingTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ascii_folding_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`AsciiFoldingTokenFilter`].
@@ -658,6 +772,7 @@ impl<S0> AsciiFoldingTokenFilterBuilder<(S0,)> {
 }
 
 impl AsciiFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -668,9 +783,12 @@ impl AsciiFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AsciiFoldingTokenFilterBuilder<(S0,)> {
     /// Builds a [`AsciiFoldingTokenFilter`].
-    pub fn build(self) -> AsciiFoldingTokenFilter {
+    pub fn build(self) -> AsciiFoldingTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<ascii_folding_token_filter_members::r#type>,
+    {
         AsciiFoldingTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -679,18 +797,24 @@ impl AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for AsciiFoldingTokenFilter
+impl<S0> crate::typed::builder::Build for AsciiFoldingTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ascii_folding_token_filter_members::r#type>,
 {
-    fn from(builder: AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = AsciiFoldingTokenFilter;
+
+    fn build(self) -> AsciiFoldingTokenFilter {
+        Self::build(self)
     }
 }
 
-impl AsciiFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> AsciiFoldingTokenFilter { match r#type {} }
+impl<S0> From<AsciiFoldingTokenFilterBuilder<(S0,)>> for AsciiFoldingTokenFilter
+where
+    S0: crate::typed::builder::IsSet<ascii_folding_token_filter_members::r#type>,
+{
+    fn from(builder: AsciiFoldingTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -706,16 +830,27 @@ pub struct BasqueAnalyzer {
 
 impl BasqueAnalyzer {
     /// Creates a builder for [`BasqueAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BasqueAnalyzerBuilder {
         BasqueAnalyzerBuilder::new()
     }
 
     /// Creates a [`BasqueAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BasqueAnalyzerBuilder) -> BasqueAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BasqueAnalyzer>>(
+        f: impl FnOnce(BasqueAnalyzerBuilder) -> B,
     ) -> BasqueAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BasqueAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod basque_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BasqueAnalyzer`].
@@ -794,6 +929,7 @@ impl<S0> BasqueAnalyzerBuilder<(S0,)> {
 }
 
 impl BasqueAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -804,9 +940,12 @@ impl BasqueAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BasqueAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BasqueAnalyzerBuilder<(S0,)> {
     /// Builds a [`BasqueAnalyzer`].
-    pub fn build(self) -> BasqueAnalyzer {
+    pub fn build(self) -> BasqueAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<basque_analyzer_members::r#type>,
+    {
         BasqueAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -816,16 +955,24 @@ impl BasqueAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BasqueAnalyzerBuilder<(crate::typed::builder::Set,)>> for BasqueAnalyzer {
-    fn from(builder: BasqueAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BasqueAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<basque_analyzer_members::r#type>,
+{
+    type Output = BasqueAnalyzer;
+
+    fn build(self) -> BasqueAnalyzer {
+        Self::build(self)
     }
 }
 
-impl BasqueAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BasqueAnalyzer { match r#type {} }
+impl<S0> From<BasqueAnalyzerBuilder<(S0,)>> for BasqueAnalyzer
+where
+    S0: crate::typed::builder::IsSet<basque_analyzer_members::r#type>,
+{
+    fn from(builder: BasqueAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -841,16 +988,27 @@ pub struct BengaliAnalyzer {
 
 impl BengaliAnalyzer {
     /// Creates a builder for [`BengaliAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BengaliAnalyzerBuilder {
         BengaliAnalyzerBuilder::new()
     }
 
     /// Creates a [`BengaliAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BengaliAnalyzerBuilder) -> BengaliAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BengaliAnalyzer>>(
+        f: impl FnOnce(BengaliAnalyzerBuilder) -> B,
     ) -> BengaliAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BengaliAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bengali_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BengaliAnalyzer`].
@@ -929,6 +1087,7 @@ impl<S0> BengaliAnalyzerBuilder<(S0,)> {
 }
 
 impl BengaliAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -939,9 +1098,12 @@ impl BengaliAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BengaliAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BengaliAnalyzerBuilder<(S0,)> {
     /// Builds a [`BengaliAnalyzer`].
-    pub fn build(self) -> BengaliAnalyzer {
+    pub fn build(self) -> BengaliAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<bengali_analyzer_members::r#type>,
+    {
         BengaliAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -951,16 +1113,24 @@ impl BengaliAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BengaliAnalyzerBuilder<(crate::typed::builder::Set,)>> for BengaliAnalyzer {
-    fn from(builder: BengaliAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BengaliAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bengali_analyzer_members::r#type>,
+{
+    type Output = BengaliAnalyzer;
+
+    fn build(self) -> BengaliAnalyzer {
+        Self::build(self)
     }
 }
 
-impl BengaliAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BengaliAnalyzer { match r#type {} }
+impl<S0> From<BengaliAnalyzerBuilder<(S0,)>> for BengaliAnalyzer
+where
+    S0: crate::typed::builder::IsSet<bengali_analyzer_members::r#type>,
+{
+    fn from(builder: BengaliAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -972,18 +1142,27 @@ pub struct BengaliNormalizationTokenFilter {
 
 impl BengaliNormalizationTokenFilter {
     /// Creates a builder for [`BengaliNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BengaliNormalizationTokenFilterBuilder {
         BengaliNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`BengaliNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BengaliNormalizationTokenFilterBuilder,
-        ) -> BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BengaliNormalizationTokenFilter>>(
+        f: impl FnOnce(BengaliNormalizationTokenFilterBuilder) -> B,
     ) -> BengaliNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BengaliNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bengali_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BengaliNormalizationTokenFilter`].
@@ -1026,6 +1205,7 @@ impl<S0> BengaliNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1036,9 +1216,12 @@ impl BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BengaliNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`BengaliNormalizationTokenFilter`].
-    pub fn build(self) -> BengaliNormalizationTokenFilter {
+    pub fn build(self) -> BengaliNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<bengali_normalization_token_filter_members::r#type>,
+    {
         BengaliNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -1046,20 +1229,24 @@ impl BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for BengaliNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for BengaliNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bengali_normalization_token_filter_members::r#type>,
 {
-    fn from(
-        builder: BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = BengaliNormalizationTokenFilter;
+
+    fn build(self) -> BengaliNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BengaliNormalizationTokenFilter { match r#type {} }
+impl<S0> From<BengaliNormalizationTokenFilterBuilder<(S0,)>> for BengaliNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<bengali_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: BengaliNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1073,18 +1260,27 @@ pub struct BrazilianAnalyzer {
 
 impl BrazilianAnalyzer {
     /// Creates a builder for [`BrazilianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BrazilianAnalyzerBuilder {
         BrazilianAnalyzerBuilder::new()
     }
 
     /// Creates a [`BrazilianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BrazilianAnalyzerBuilder,
-        ) -> BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BrazilianAnalyzer>>(
+        f: impl FnOnce(BrazilianAnalyzerBuilder) -> B,
     ) -> BrazilianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BrazilianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod brazilian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BrazilianAnalyzer`].
@@ -1141,6 +1337,7 @@ impl<S0> BrazilianAnalyzerBuilder<(S0,)> {
 }
 
 impl BrazilianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1151,9 +1348,12 @@ impl BrazilianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BrazilianAnalyzerBuilder<(S0,)> {
     /// Builds a [`BrazilianAnalyzer`].
-    pub fn build(self) -> BrazilianAnalyzer {
+    pub fn build(self) -> BrazilianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<brazilian_analyzer_members::r#type>,
+    {
         BrazilianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -1162,16 +1362,24 @@ impl BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)>> for BrazilianAnalyzer {
-    fn from(builder: BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BrazilianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<brazilian_analyzer_members::r#type>,
+{
+    type Output = BrazilianAnalyzer;
+
+    fn build(self) -> BrazilianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl BrazilianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BrazilianAnalyzer { match r#type {} }
+impl<S0> From<BrazilianAnalyzerBuilder<(S0,)>> for BrazilianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<brazilian_analyzer_members::r#type>,
+{
+    fn from(builder: BrazilianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1183,18 +1391,27 @@ pub struct BrazilianStemTokenFilter {
 
 impl BrazilianStemTokenFilter {
     /// Creates a builder for [`BrazilianStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BrazilianStemTokenFilterBuilder {
         BrazilianStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`BrazilianStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BrazilianStemTokenFilterBuilder,
-        ) -> BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BrazilianStemTokenFilter>>(
+        f: impl FnOnce(BrazilianStemTokenFilterBuilder) -> B,
     ) -> BrazilianStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BrazilianStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod brazilian_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BrazilianStemTokenFilter`].
@@ -1237,6 +1454,7 @@ impl<S0> BrazilianStemTokenFilterBuilder<(S0,)> {
 }
 
 impl BrazilianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1247,9 +1465,12 @@ impl BrazilianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BrazilianStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`BrazilianStemTokenFilter`].
-    pub fn build(self) -> BrazilianStemTokenFilter {
+    pub fn build(self) -> BrazilianStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<brazilian_stem_token_filter_members::r#type>,
+    {
         BrazilianStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -1257,18 +1478,24 @@ impl BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for BrazilianStemTokenFilter
+impl<S0> crate::typed::builder::Build for BrazilianStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<brazilian_stem_token_filter_members::r#type>,
 {
-    fn from(builder: BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = BrazilianStemTokenFilter;
+
+    fn build(self) -> BrazilianStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl BrazilianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BrazilianStemTokenFilter { match r#type {} }
+impl<S0> From<BrazilianStemTokenFilterBuilder<(S0,)>> for BrazilianStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<brazilian_stem_token_filter_members::r#type>,
+{
+    fn from(builder: BrazilianStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1284,18 +1511,27 @@ pub struct BulgarianAnalyzer {
 
 impl BulgarianAnalyzer {
     /// Creates a builder for [`BulgarianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> BulgarianAnalyzerBuilder {
         BulgarianAnalyzerBuilder::new()
     }
 
     /// Creates a [`BulgarianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BulgarianAnalyzerBuilder,
-        ) -> BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = BulgarianAnalyzer>>(
+        f: impl FnOnce(BulgarianAnalyzerBuilder) -> B,
     ) -> BulgarianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BulgarianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bulgarian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`BulgarianAnalyzer`].
@@ -1374,6 +1610,7 @@ impl<S0> BulgarianAnalyzerBuilder<(S0,)> {
 }
 
 impl BulgarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1384,9 +1621,12 @@ impl BulgarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BulgarianAnalyzerBuilder<(S0,)> {
     /// Builds a [`BulgarianAnalyzer`].
-    pub fn build(self) -> BulgarianAnalyzer {
+    pub fn build(self) -> BulgarianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<bulgarian_analyzer_members::r#type>,
+    {
         BulgarianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -1396,16 +1636,24 @@ impl BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)>> for BulgarianAnalyzer {
-    fn from(builder: BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for BulgarianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bulgarian_analyzer_members::r#type>,
+{
+    type Output = BulgarianAnalyzer;
+
+    fn build(self) -> BulgarianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl BulgarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> BulgarianAnalyzer { match r#type {} }
+impl<S0> From<BulgarianAnalyzerBuilder<(S0,)>> for BulgarianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<bulgarian_analyzer_members::r#type>,
+{
+    fn from(builder: BulgarianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1421,16 +1669,27 @@ pub struct CatalanAnalyzer {
 
 impl CatalanAnalyzer {
     /// Creates a builder for [`CatalanAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CatalanAnalyzerBuilder {
         CatalanAnalyzerBuilder::new()
     }
 
     /// Creates a [`CatalanAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CatalanAnalyzerBuilder) -> CatalanAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CatalanAnalyzer>>(
+        f: impl FnOnce(CatalanAnalyzerBuilder) -> B,
     ) -> CatalanAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CatalanAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod catalan_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CatalanAnalyzer`].
@@ -1509,6 +1768,7 @@ impl<S0> CatalanAnalyzerBuilder<(S0,)> {
 }
 
 impl CatalanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1519,9 +1779,12 @@ impl CatalanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CatalanAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CatalanAnalyzerBuilder<(S0,)> {
     /// Builds a [`CatalanAnalyzer`].
-    pub fn build(self) -> CatalanAnalyzer {
+    pub fn build(self) -> CatalanAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<catalan_analyzer_members::r#type>,
+    {
         CatalanAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -1531,16 +1794,24 @@ impl CatalanAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CatalanAnalyzerBuilder<(crate::typed::builder::Set,)>> for CatalanAnalyzer {
-    fn from(builder: CatalanAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CatalanAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<catalan_analyzer_members::r#type>,
+{
+    type Output = CatalanAnalyzer;
+
+    fn build(self) -> CatalanAnalyzer {
+        Self::build(self)
     }
 }
 
-impl CatalanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CatalanAnalyzer { match r#type {} }
+impl<S0> From<CatalanAnalyzerBuilder<(S0,)>> for CatalanAnalyzer
+where
+    S0: crate::typed::builder::IsSet<catalan_analyzer_members::r#type>,
+{
+    fn from(builder: CatalanAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1581,7 +1852,9 @@ impl CharFilterBase {
     }
 
     /// Creates a [`CharFilterBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CharFilterBaseBuilder) -> CharFilterBaseBuilder) -> CharFilterBase {
+    pub fn of<B: crate::typed::builder::Build<Output = CharFilterBase>>(
+        f: impl FnOnce(CharFilterBaseBuilder) -> B,
+    ) -> CharFilterBase {
         f(Self::builder()).build()
     }
 }
@@ -1620,6 +1893,14 @@ impl CharFilterBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CharFilterBaseBuilder {
+    type Output = CharFilterBase;
+
+    fn build(self) -> CharFilterBase {
+        Self::build(self)
+    }
+}
+
 impl From<CharFilterBaseBuilder> for CharFilterBase {
     fn from(builder: CharFilterBaseBuilder) -> Self {
         builder.build()
@@ -1649,21 +1930,28 @@ pub struct CharGroupTokenizer {
 
 impl CharGroupTokenizer {
     /// Creates a builder for [`CharGroupTokenizer`].
+    ///
+    /// Required: `type`, `tokenize_on_chars`.
     pub fn builder() -> CharGroupTokenizerBuilder {
         CharGroupTokenizerBuilder::new()
     }
 
     /// Creates a [`CharGroupTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CharGroupTokenizerBuilder,
-        ) -> CharGroupTokenizerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `tokenize_on_chars`.
+    pub fn of<B: crate::typed::builder::Build<Output = CharGroupTokenizer>>(
+        f: impl FnOnce(CharGroupTokenizerBuilder) -> B,
     ) -> CharGroupTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CharGroupTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod char_group_tokenizer_members {
+    pub struct r#type;
+    pub struct tokenize_on_chars;
 }
 
 /// Builder for [`CharGroupTokenizer`].
@@ -1725,6 +2013,7 @@ impl<S0, S1> CharGroupTokenizerBuilder<(S0, S1)> {
 }
 
 impl<S1> CharGroupTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1736,6 +2025,7 @@ impl<S1> CharGroupTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CharGroupTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tokenize_on_chars(
         self,
         value: impl Into<Vec<String>>,
@@ -1769,9 +2059,13 @@ impl<S0> CharGroupTokenizerBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl CharGroupTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CharGroupTokenizerBuilder<(S0, S1)> {
     /// Builds a [`CharGroupTokenizer`].
-    pub fn build(self) -> CharGroupTokenizer {
+    pub fn build(self) -> CharGroupTokenizer
+    where
+        S0: crate::typed::builder::IsSet<char_group_tokenizer_members::r#type>,
+        S1: crate::typed::builder::IsSet<char_group_tokenizer_members::tokenize_on_chars>,
+    {
         CharGroupTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -1781,29 +2075,26 @@ impl CharGroupTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<CharGroupTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CharGroupTokenizer
+impl<S0, S1> crate::typed::builder::Build for CharGroupTokenizerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<char_group_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<char_group_tokenizer_members::tokenize_on_chars>,
 {
-    fn from(
-        builder: CharGroupTokenizerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CharGroupTokenizer;
+
+    fn build(self) -> CharGroupTokenizer {
+        Self::build(self)
     }
 }
 
-impl<S1> CharGroupTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CharGroupTokenizer { match r#type {} }
-}
-
-impl CharGroupTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tokenize_on_chars` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokenize_on_chars: crate::typed::builder::MissingRequiredField) -> CharGroupTokenizer { match tokenize_on_chars {} }
+impl<S0, S1> From<CharGroupTokenizerBuilder<(S0, S1)>> for CharGroupTokenizer
+where
+    S0: crate::typed::builder::IsSet<char_group_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<char_group_tokenizer_members::tokenize_on_chars>,
+{
+    fn from(builder: CharGroupTokenizerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1817,16 +2108,27 @@ pub struct ChineseAnalyzer {
 
 impl ChineseAnalyzer {
     /// Creates a builder for [`ChineseAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ChineseAnalyzerBuilder {
         ChineseAnalyzerBuilder::new()
     }
 
     /// Creates a [`ChineseAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChineseAnalyzerBuilder) -> ChineseAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChineseAnalyzer>>(
+        f: impl FnOnce(ChineseAnalyzerBuilder) -> B,
     ) -> ChineseAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChineseAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chinese_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ChineseAnalyzer`].
@@ -1883,6 +2185,7 @@ impl<S0> ChineseAnalyzerBuilder<(S0,)> {
 }
 
 impl ChineseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1893,9 +2196,12 @@ impl ChineseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ChineseAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChineseAnalyzerBuilder<(S0,)> {
     /// Builds a [`ChineseAnalyzer`].
-    pub fn build(self) -> ChineseAnalyzer {
+    pub fn build(self) -> ChineseAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<chinese_analyzer_members::r#type>,
+    {
         ChineseAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -1904,16 +2210,24 @@ impl ChineseAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ChineseAnalyzerBuilder<(crate::typed::builder::Set,)>> for ChineseAnalyzer {
-    fn from(builder: ChineseAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ChineseAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<chinese_analyzer_members::r#type>,
+{
+    type Output = ChineseAnalyzer;
+
+    fn build(self) -> ChineseAnalyzer {
+        Self::build(self)
     }
 }
 
-impl ChineseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ChineseAnalyzer { match r#type {} }
+impl<S0> From<ChineseAnalyzerBuilder<(S0,)>> for ChineseAnalyzer
+where
+    S0: crate::typed::builder::IsSet<chinese_analyzer_members::r#type>,
+{
+    fn from(builder: ChineseAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1927,16 +2241,27 @@ pub struct CjkAnalyzer {
 
 impl CjkAnalyzer {
     /// Creates a builder for [`CjkAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CjkAnalyzerBuilder {
         CjkAnalyzerBuilder::new()
     }
 
     /// Creates a [`CjkAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CjkAnalyzerBuilder) -> CjkAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CjkAnalyzer>>(
+        f: impl FnOnce(CjkAnalyzerBuilder) -> B,
     ) -> CjkAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CjkAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cjk_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CjkAnalyzer`].
@@ -1993,6 +2318,7 @@ impl<S0> CjkAnalyzerBuilder<(S0,)> {
 }
 
 impl CjkAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2003,9 +2329,12 @@ impl CjkAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CjkAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CjkAnalyzerBuilder<(S0,)> {
     /// Builds a [`CjkAnalyzer`].
-    pub fn build(self) -> CjkAnalyzer {
+    pub fn build(self) -> CjkAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<cjk_analyzer_members::r#type>,
+    {
         CjkAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -2014,16 +2343,24 @@ impl CjkAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CjkAnalyzerBuilder<(crate::typed::builder::Set,)>> for CjkAnalyzer {
-    fn from(builder: CjkAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CjkAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cjk_analyzer_members::r#type>,
+{
+    type Output = CjkAnalyzer;
+
+    fn build(self) -> CjkAnalyzer {
+        Self::build(self)
     }
 }
 
-impl CjkAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CjkAnalyzer { match r#type {} }
+impl<S0> From<CjkAnalyzerBuilder<(S0,)>> for CjkAnalyzer
+where
+    S0: crate::typed::builder::IsSet<cjk_analyzer_members::r#type>,
+{
+    fn from(builder: CjkAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2053,18 +2390,27 @@ pub struct CjkBigramTokenFilter {
 
 impl CjkBigramTokenFilter {
     /// Creates a builder for [`CjkBigramTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CjkBigramTokenFilterBuilder {
         CjkBigramTokenFilterBuilder::new()
     }
 
     /// Creates a [`CjkBigramTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CjkBigramTokenFilterBuilder,
-        ) -> CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CjkBigramTokenFilter>>(
+        f: impl FnOnce(CjkBigramTokenFilterBuilder) -> B,
     ) -> CjkBigramTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CjkBigramTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cjk_bigram_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CjkBigramTokenFilter`].
@@ -2145,6 +2491,7 @@ impl<S0> CjkBigramTokenFilterBuilder<(S0,)> {
 }
 
 impl CjkBigramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2155,9 +2502,12 @@ impl CjkBigramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CjkBigramTokenFilterBuilder<(S0,)> {
     /// Builds a [`CjkBigramTokenFilter`].
-    pub fn build(self) -> CjkBigramTokenFilter {
+    pub fn build(self) -> CjkBigramTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<cjk_bigram_token_filter_members::r#type>,
+    {
         CjkBigramTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -2167,16 +2517,24 @@ impl CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)>> for CjkBigramTokenFilter {
-    fn from(builder: CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CjkBigramTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cjk_bigram_token_filter_members::r#type>,
+{
+    type Output = CjkBigramTokenFilter;
+
+    fn build(self) -> CjkBigramTokenFilter {
+        Self::build(self)
     }
 }
 
-impl CjkBigramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CjkBigramTokenFilter { match r#type {} }
+impl<S0> From<CjkBigramTokenFilterBuilder<(S0,)>> for CjkBigramTokenFilter
+where
+    S0: crate::typed::builder::IsSet<cjk_bigram_token_filter_members::r#type>,
+{
+    fn from(builder: CjkBigramTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2188,18 +2546,27 @@ pub struct CjkWidthTokenFilter {
 
 impl CjkWidthTokenFilter {
     /// Creates a builder for [`CjkWidthTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CjkWidthTokenFilterBuilder {
         CjkWidthTokenFilterBuilder::new()
     }
 
     /// Creates a [`CjkWidthTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CjkWidthTokenFilterBuilder,
-        ) -> CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CjkWidthTokenFilter>>(
+        f: impl FnOnce(CjkWidthTokenFilterBuilder) -> B,
     ) -> CjkWidthTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CjkWidthTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cjk_width_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CjkWidthTokenFilter`].
@@ -2242,6 +2609,7 @@ impl<S0> CjkWidthTokenFilterBuilder<(S0,)> {
 }
 
 impl CjkWidthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2252,9 +2620,12 @@ impl CjkWidthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CjkWidthTokenFilterBuilder<(S0,)> {
     /// Builds a [`CjkWidthTokenFilter`].
-    pub fn build(self) -> CjkWidthTokenFilter {
+    pub fn build(self) -> CjkWidthTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<cjk_width_token_filter_members::r#type>,
+    {
         CjkWidthTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -2262,16 +2633,24 @@ impl CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)>> for CjkWidthTokenFilter {
-    fn from(builder: CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CjkWidthTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cjk_width_token_filter_members::r#type>,
+{
+    type Output = CjkWidthTokenFilter;
+
+    fn build(self) -> CjkWidthTokenFilter {
+        Self::build(self)
     }
 }
 
-impl CjkWidthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CjkWidthTokenFilter { match r#type {} }
+impl<S0> From<CjkWidthTokenFilterBuilder<(S0,)>> for CjkWidthTokenFilter
+where
+    S0: crate::typed::builder::IsSet<cjk_width_token_filter_members::r#type>,
+{
+    fn from(builder: CjkWidthTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2283,18 +2662,27 @@ pub struct ClassicTokenFilter {
 
 impl ClassicTokenFilter {
     /// Creates a builder for [`ClassicTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ClassicTokenFilterBuilder {
         ClassicTokenFilterBuilder::new()
     }
 
     /// Creates a [`ClassicTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClassicTokenFilterBuilder,
-        ) -> ClassicTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClassicTokenFilter>>(
+        f: impl FnOnce(ClassicTokenFilterBuilder) -> B,
     ) -> ClassicTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClassicTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod classic_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ClassicTokenFilter`].
@@ -2337,6 +2725,7 @@ impl<S0> ClassicTokenFilterBuilder<(S0,)> {
 }
 
 impl ClassicTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2347,9 +2736,12 @@ impl ClassicTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClassicTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClassicTokenFilterBuilder<(S0,)> {
     /// Builds a [`ClassicTokenFilter`].
-    pub fn build(self) -> ClassicTokenFilter {
+    pub fn build(self) -> ClassicTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<classic_token_filter_members::r#type>,
+    {
         ClassicTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -2357,16 +2749,24 @@ impl ClassicTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ClassicTokenFilterBuilder<(crate::typed::builder::Set,)>> for ClassicTokenFilter {
-    fn from(builder: ClassicTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ClassicTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<classic_token_filter_members::r#type>,
+{
+    type Output = ClassicTokenFilter;
+
+    fn build(self) -> ClassicTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ClassicTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ClassicTokenFilter { match r#type {} }
+impl<S0> From<ClassicTokenFilterBuilder<(S0,)>> for ClassicTokenFilter
+where
+    S0: crate::typed::builder::IsSet<classic_token_filter_members::r#type>,
+{
+    fn from(builder: ClassicTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2380,18 +2780,27 @@ pub struct ClassicTokenizer {
 
 impl ClassicTokenizer {
     /// Creates a builder for [`ClassicTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ClassicTokenizerBuilder {
         ClassicTokenizerBuilder::new()
     }
 
     /// Creates a [`ClassicTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClassicTokenizerBuilder,
-        ) -> ClassicTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClassicTokenizer>>(
+        f: impl FnOnce(ClassicTokenizerBuilder) -> B,
     ) -> ClassicTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClassicTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod classic_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ClassicTokenizer`].
@@ -2448,6 +2857,7 @@ impl<S0> ClassicTokenizerBuilder<(S0,)> {
 }
 
 impl ClassicTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2458,9 +2868,12 @@ impl ClassicTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ClassicTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ClassicTokenizerBuilder<(S0,)> {
     /// Builds a [`ClassicTokenizer`].
-    pub fn build(self) -> ClassicTokenizer {
+    pub fn build(self) -> ClassicTokenizer
+    where
+        S0: crate::typed::builder::IsSet<classic_tokenizer_members::r#type>,
+    {
         ClassicTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -2469,16 +2882,24 @@ impl ClassicTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ClassicTokenizerBuilder<(crate::typed::builder::Set,)>> for ClassicTokenizer {
-    fn from(builder: ClassicTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ClassicTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<classic_tokenizer_members::r#type>,
+{
+    type Output = ClassicTokenizer;
+
+    fn build(self) -> ClassicTokenizer {
+        Self::build(self)
     }
 }
 
-impl ClassicTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ClassicTokenizer { match r#type {} }
+impl<S0> From<ClassicTokenizerBuilder<(S0,)>> for ClassicTokenizer
+where
+    S0: crate::typed::builder::IsSet<classic_tokenizer_members::r#type>,
+{
+    fn from(builder: ClassicTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2508,18 +2929,27 @@ pub struct CommonGramsTokenFilter {
 
 impl CommonGramsTokenFilter {
     /// Creates a builder for [`CommonGramsTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CommonGramsTokenFilterBuilder {
         CommonGramsTokenFilterBuilder::new()
     }
 
     /// Creates a [`CommonGramsTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommonGramsTokenFilterBuilder,
-        ) -> CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommonGramsTokenFilter>>(
+        f: impl FnOnce(CommonGramsTokenFilterBuilder) -> B,
     ) -> CommonGramsTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommonGramsTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod common_grams_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CommonGramsTokenFilter`].
@@ -2636,6 +3066,7 @@ impl<S0> CommonGramsTokenFilterBuilder<(S0,)> {
 }
 
 impl CommonGramsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2646,9 +3077,12 @@ impl CommonGramsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CommonGramsTokenFilterBuilder<(S0,)> {
     /// Builds a [`CommonGramsTokenFilter`].
-    pub fn build(self) -> CommonGramsTokenFilter {
+    pub fn build(self) -> CommonGramsTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<common_grams_token_filter_members::r#type>,
+    {
         CommonGramsTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -2660,16 +3094,24 @@ impl CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)>> for CommonGramsTokenFilter {
-    fn from(builder: CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CommonGramsTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<common_grams_token_filter_members::r#type>,
+{
+    type Output = CommonGramsTokenFilter;
+
+    fn build(self) -> CommonGramsTokenFilter {
+        Self::build(self)
     }
 }
 
-impl CommonGramsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CommonGramsTokenFilter { match r#type {} }
+impl<S0> From<CommonGramsTokenFilterBuilder<(S0,)>> for CommonGramsTokenFilter
+where
+    S0: crate::typed::builder::IsSet<common_grams_token_filter_members::r#type>,
+{
+    fn from(builder: CommonGramsTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2706,8 +3148,8 @@ impl CompoundWordTokenFilterBase {
     }
 
     /// Creates a [`CompoundWordTokenFilterBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CompoundWordTokenFilterBaseBuilder) -> CompoundWordTokenFilterBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompoundWordTokenFilterBase>>(
+        f: impl FnOnce(CompoundWordTokenFilterBaseBuilder) -> B,
     ) -> CompoundWordTokenFilterBase {
         f(Self::builder()).build()
     }
@@ -2850,6 +3292,14 @@ impl CompoundWordTokenFilterBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CompoundWordTokenFilterBaseBuilder {
+    type Output = CompoundWordTokenFilterBase;
+
+    fn build(self) -> CompoundWordTokenFilterBase {
+        Self::build(self)
+    }
+}
+
 impl From<CompoundWordTokenFilterBaseBuilder> for CompoundWordTokenFilterBase {
     fn from(builder: CompoundWordTokenFilterBaseBuilder) -> Self {
         builder.build()
@@ -2869,22 +3319,29 @@ pub struct ConditionTokenFilter {
 
 impl ConditionTokenFilter {
     /// Creates a builder for [`ConditionTokenFilter`].
+    ///
+    /// Required: `type`, `filter`, `script`.
     pub fn builder() -> ConditionTokenFilterBuilder {
         ConditionTokenFilterBuilder::new()
     }
 
     /// Creates a [`ConditionTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConditionTokenFilterBuilder,
-        ) -> ConditionTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `filter`, `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConditionTokenFilter>>(
+        f: impl FnOnce(ConditionTokenFilterBuilder) -> B,
     ) -> ConditionTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConditionTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod condition_token_filter_members {
+    pub struct r#type;
+    pub struct filter;
+    pub struct script;
 }
 
 /// Builder for [`ConditionTokenFilter`].
@@ -2945,6 +3402,7 @@ impl<S0, S1, S2> ConditionTokenFilterBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ConditionTokenFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2956,7 +3414,7 @@ impl<S1, S2> ConditionTokenFilterBuilder<(crate::typed::builder::NotSet, S1, S2)
 }
 
 impl<S0, S2> ConditionTokenFilterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Array of token filters. If a token matches the predicate script in the `script` parameter, these filters are applied to the token in the order provided.
+    /// **Required.** Array of token filters. If a token matches the predicate script in the `script` parameter, these filters are applied to the token in the order provided.
     pub fn filter(
         self,
         value: impl Into<Vec<String>>,
@@ -2991,7 +3449,7 @@ impl<S0, S2> ConditionTokenFilterBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> ConditionTokenFilterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Predicate script used to apply token filters. If a token matches this script, the filters in the `filter` parameter are applied to the token.
+    /// **Required.** Predicate script used to apply token filters. If a token matches this script, the filters in the `filter` parameter are applied to the token.
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -3002,23 +3460,22 @@ impl<S0, S1> ConditionTokenFilterBuilder<(S0, S1, crate::typed::builder::NotSet)
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> ConditionTokenFilterBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl
-    ConditionTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ConditionTokenFilterBuilder<(S0, S1, S2)> {
     /// Builds a [`ConditionTokenFilter`].
-    pub fn build(self) -> ConditionTokenFilter {
+    pub fn build(self) -> ConditionTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<condition_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<condition_token_filter_members::filter>,
+        S2: crate::typed::builder::IsSet<condition_token_filter_members::script>,
+    {
         ConditionTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -3028,54 +3485,28 @@ impl
     }
 }
 
-impl
-    From<
-        ConditionTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ConditionTokenFilter
+impl<S0, S1, S2> crate::typed::builder::Build for ConditionTokenFilterBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<condition_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<condition_token_filter_members::filter>,
+    S2: crate::typed::builder::IsSet<condition_token_filter_members::script>,
 {
-    fn from(
-        builder: ConditionTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConditionTokenFilter;
+
+    fn build(self) -> ConditionTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ConditionTokenFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ConditionTokenFilter { match r#type {} }
-}
-
-impl<S2>
-    ConditionTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ConditionTokenFilterBuilder<(S0, S1, S2)>> for ConditionTokenFilter
+where
+    S0: crate::typed::builder::IsSet<condition_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<condition_token_filter_members::filter>,
+    S2: crate::typed::builder::IsSet<condition_token_filter_members::script>,
 {
-    /// `filter` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filter: crate::typed::builder::MissingRequiredField) -> ConditionTokenFilter { match filter {} }
-}
-
-impl
-    ConditionTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> ConditionTokenFilter { match script {} }
+    fn from(builder: ConditionTokenFilterBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3144,21 +3575,28 @@ impl From<&str> for CustomAnalyzerFilter {
 
 impl CustomAnalyzer {
     /// Creates a builder for [`CustomAnalyzer`].
+    ///
+    /// Required: `type`, `tokenizer`.
     pub fn builder() -> CustomAnalyzerBuilder {
         CustomAnalyzerBuilder::new()
     }
 
     /// Creates a [`CustomAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomAnalyzerBuilder,
-        ) -> CustomAnalyzerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `tokenizer`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomAnalyzer>>(
+        f: impl FnOnce(CustomAnalyzerBuilder) -> B,
     ) -> CustomAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_analyzer_members {
+    pub struct r#type;
+    pub struct tokenizer;
 }
 
 /// Builder for [`CustomAnalyzer`].
@@ -3247,6 +3685,7 @@ impl<S0, S1> CustomAnalyzerBuilder<(S0, S1)> {
 }
 
 impl<S1> CustomAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3258,6 +3697,7 @@ impl<S1> CustomAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CustomAnalyzerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tokenizer(
         self,
         value: impl Into<String>,
@@ -3268,9 +3708,13 @@ impl<S0> CustomAnalyzerBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CustomAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CustomAnalyzerBuilder<(S0, S1)> {
     /// Builds a [`CustomAnalyzer`].
-    pub fn build(self) -> CustomAnalyzer {
+    pub fn build(self) -> CustomAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<custom_analyzer_members::r#type>,
+        S1: crate::typed::builder::IsSet<custom_analyzer_members::tokenizer>,
+    {
         CustomAnalyzer {
             r#type: self.r#type.unwrap(),
             char_filter: self.char_filter,
@@ -3282,26 +3726,26 @@ impl CustomAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<CustomAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CustomAnalyzer
+impl<S0, S1> crate::typed::builder::Build for CustomAnalyzerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<custom_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<custom_analyzer_members::tokenizer>,
 {
-    fn from(
-        builder: CustomAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CustomAnalyzer;
+
+    fn build(self) -> CustomAnalyzer {
+        Self::build(self)
     }
 }
 
-impl<S1> CustomAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CustomAnalyzer { match r#type {} }
-}
-
-impl CustomAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tokenizer` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokenizer: crate::typed::builder::MissingRequiredField) -> CustomAnalyzer { match tokenizer {} }
+impl<S0, S1> From<CustomAnalyzerBuilder<(S0, S1)>> for CustomAnalyzer
+where
+    S0: crate::typed::builder::IsSet<custom_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<custom_analyzer_members::tokenizer>,
+{
+    fn from(builder: CustomAnalyzerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3315,18 +3759,27 @@ pub struct CustomNormalizer {
 
 impl CustomNormalizer {
     /// Creates a builder for [`CustomNormalizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CustomNormalizerBuilder {
         CustomNormalizerBuilder::new()
     }
 
     /// Creates a [`CustomNormalizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomNormalizerBuilder,
-        ) -> CustomNormalizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomNormalizer>>(
+        f: impl FnOnce(CustomNormalizerBuilder) -> B,
     ) -> CustomNormalizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomNormalizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_normalizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CustomNormalizer`].
@@ -3399,6 +3852,7 @@ impl<S0> CustomNormalizerBuilder<(S0,)> {
 }
 
 impl CustomNormalizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3409,9 +3863,12 @@ impl CustomNormalizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CustomNormalizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CustomNormalizerBuilder<(S0,)> {
     /// Builds a [`CustomNormalizer`].
-    pub fn build(self) -> CustomNormalizer {
+    pub fn build(self) -> CustomNormalizer
+    where
+        S0: crate::typed::builder::IsSet<custom_normalizer_members::r#type>,
+    {
         CustomNormalizer {
             r#type: self.r#type.unwrap(),
             char_filter: self.char_filter,
@@ -3420,16 +3877,24 @@ impl CustomNormalizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CustomNormalizerBuilder<(crate::typed::builder::Set,)>> for CustomNormalizer {
-    fn from(builder: CustomNormalizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CustomNormalizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<custom_normalizer_members::r#type>,
+{
+    type Output = CustomNormalizer;
+
+    fn build(self) -> CustomNormalizer {
+        Self::build(self)
     }
 }
 
-impl CustomNormalizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CustomNormalizer { match r#type {} }
+impl<S0> From<CustomNormalizerBuilder<(S0,)>> for CustomNormalizer
+where
+    S0: crate::typed::builder::IsSet<custom_normalizer_members::r#type>,
+{
+    fn from(builder: CustomNormalizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3445,16 +3910,27 @@ pub struct CzechAnalyzer {
 
 impl CzechAnalyzer {
     /// Creates a builder for [`CzechAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CzechAnalyzerBuilder {
         CzechAnalyzerBuilder::new()
     }
 
     /// Creates a [`CzechAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CzechAnalyzerBuilder) -> CzechAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CzechAnalyzer>>(
+        f: impl FnOnce(CzechAnalyzerBuilder) -> B,
     ) -> CzechAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CzechAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod czech_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CzechAnalyzer`].
@@ -3533,6 +4009,7 @@ impl<S0> CzechAnalyzerBuilder<(S0,)> {
 }
 
 impl CzechAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3543,9 +4020,12 @@ impl CzechAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CzechAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CzechAnalyzerBuilder<(S0,)> {
     /// Builds a [`CzechAnalyzer`].
-    pub fn build(self) -> CzechAnalyzer {
+    pub fn build(self) -> CzechAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<czech_analyzer_members::r#type>,
+    {
         CzechAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -3555,16 +4035,24 @@ impl CzechAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CzechAnalyzerBuilder<(crate::typed::builder::Set,)>> for CzechAnalyzer {
-    fn from(builder: CzechAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CzechAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<czech_analyzer_members::r#type>,
+{
+    type Output = CzechAnalyzer;
+
+    fn build(self) -> CzechAnalyzer {
+        Self::build(self)
     }
 }
 
-impl CzechAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CzechAnalyzer { match r#type {} }
+impl<S0> From<CzechAnalyzerBuilder<(S0,)>> for CzechAnalyzer
+where
+    S0: crate::typed::builder::IsSet<czech_analyzer_members::r#type>,
+{
+    fn from(builder: CzechAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3576,18 +4064,27 @@ pub struct CzechStemTokenFilter {
 
 impl CzechStemTokenFilter {
     /// Creates a builder for [`CzechStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> CzechStemTokenFilterBuilder {
         CzechStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`CzechStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CzechStemTokenFilterBuilder,
-        ) -> CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CzechStemTokenFilter>>(
+        f: impl FnOnce(CzechStemTokenFilterBuilder) -> B,
     ) -> CzechStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CzechStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod czech_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`CzechStemTokenFilter`].
@@ -3630,6 +4127,7 @@ impl<S0> CzechStemTokenFilterBuilder<(S0,)> {
 }
 
 impl CzechStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3640,9 +4138,12 @@ impl CzechStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CzechStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`CzechStemTokenFilter`].
-    pub fn build(self) -> CzechStemTokenFilter {
+    pub fn build(self) -> CzechStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<czech_stem_token_filter_members::r#type>,
+    {
         CzechStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -3650,16 +4151,24 @@ impl CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for CzechStemTokenFilter {
-    fn from(builder: CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CzechStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<czech_stem_token_filter_members::r#type>,
+{
+    type Output = CzechStemTokenFilter;
+
+    fn build(self) -> CzechStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl CzechStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CzechStemTokenFilter { match r#type {} }
+impl<S0> From<CzechStemTokenFilterBuilder<(S0,)>> for CzechStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<czech_stem_token_filter_members::r#type>,
+{
+    fn from(builder: CzechStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3673,16 +4182,27 @@ pub struct DanishAnalyzer {
 
 impl DanishAnalyzer {
     /// Creates a builder for [`DanishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DanishAnalyzerBuilder {
         DanishAnalyzerBuilder::new()
     }
 
     /// Creates a [`DanishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DanishAnalyzerBuilder) -> DanishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DanishAnalyzer>>(
+        f: impl FnOnce(DanishAnalyzerBuilder) -> B,
     ) -> DanishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DanishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod danish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DanishAnalyzer`].
@@ -3739,6 +4259,7 @@ impl<S0> DanishAnalyzerBuilder<(S0,)> {
 }
 
 impl DanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3749,9 +4270,12 @@ impl DanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DanishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DanishAnalyzerBuilder<(S0,)> {
     /// Builds a [`DanishAnalyzer`].
-    pub fn build(self) -> DanishAnalyzer {
+    pub fn build(self) -> DanishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<danish_analyzer_members::r#type>,
+    {
         DanishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -3760,16 +4284,24 @@ impl DanishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DanishAnalyzerBuilder<(crate::typed::builder::Set,)>> for DanishAnalyzer {
-    fn from(builder: DanishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DanishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<danish_analyzer_members::r#type>,
+{
+    type Output = DanishAnalyzer;
+
+    fn build(self) -> DanishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl DanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DanishAnalyzer { match r#type {} }
+impl<S0> From<DanishAnalyzerBuilder<(S0,)>> for DanishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<danish_analyzer_members::r#type>,
+{
+    fn from(builder: DanishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3781,18 +4313,27 @@ pub struct DecimalDigitTokenFilter {
 
 impl DecimalDigitTokenFilter {
     /// Creates a builder for [`DecimalDigitTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DecimalDigitTokenFilterBuilder {
         DecimalDigitTokenFilterBuilder::new()
     }
 
     /// Creates a [`DecimalDigitTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DecimalDigitTokenFilterBuilder,
-        ) -> DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DecimalDigitTokenFilter>>(
+        f: impl FnOnce(DecimalDigitTokenFilterBuilder) -> B,
     ) -> DecimalDigitTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DecimalDigitTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod decimal_digit_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DecimalDigitTokenFilter`].
@@ -3835,6 +4376,7 @@ impl<S0> DecimalDigitTokenFilterBuilder<(S0,)> {
 }
 
 impl DecimalDigitTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3845,9 +4387,12 @@ impl DecimalDigitTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DecimalDigitTokenFilterBuilder<(S0,)> {
     /// Builds a [`DecimalDigitTokenFilter`].
-    pub fn build(self) -> DecimalDigitTokenFilter {
+    pub fn build(self) -> DecimalDigitTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<decimal_digit_token_filter_members::r#type>,
+    {
         DecimalDigitTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -3855,18 +4400,24 @@ impl DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for DecimalDigitTokenFilter
+impl<S0> crate::typed::builder::Build for DecimalDigitTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<decimal_digit_token_filter_members::r#type>,
 {
-    fn from(builder: DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DecimalDigitTokenFilter;
+
+    fn build(self) -> DecimalDigitTokenFilter {
+        Self::build(self)
     }
 }
 
-impl DecimalDigitTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DecimalDigitTokenFilter { match r#type {} }
+impl<S0> From<DecimalDigitTokenFilterBuilder<(S0,)>> for DecimalDigitTokenFilter
+where
+    S0: crate::typed::builder::IsSet<decimal_digit_token_filter_members::r#type>,
+{
+    fn from(builder: DecimalDigitTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3894,18 +4445,27 @@ pub struct DelimitedPayloadTokenFilter {
 
 impl DelimitedPayloadTokenFilter {
     /// Creates a builder for [`DelimitedPayloadTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DelimitedPayloadTokenFilterBuilder {
         DelimitedPayloadTokenFilterBuilder::new()
     }
 
     /// Creates a [`DelimitedPayloadTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DelimitedPayloadTokenFilterBuilder,
-        ) -> DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DelimitedPayloadTokenFilter>>(
+        f: impl FnOnce(DelimitedPayloadTokenFilterBuilder) -> B,
     ) -> DelimitedPayloadTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DelimitedPayloadTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod delimited_payload_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DelimitedPayloadTokenFilter`].
@@ -3978,6 +4538,7 @@ impl<S0> DelimitedPayloadTokenFilterBuilder<(S0,)> {
 }
 
 impl DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3988,9 +4549,12 @@ impl DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DelimitedPayloadTokenFilterBuilder<(S0,)> {
     /// Builds a [`DelimitedPayloadTokenFilter`].
-    pub fn build(self) -> DelimitedPayloadTokenFilter {
+    pub fn build(self) -> DelimitedPayloadTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<delimited_payload_token_filter_members::r#type>,
+    {
         DelimitedPayloadTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -4000,18 +4564,24 @@ impl DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for DelimitedPayloadTokenFilter
+impl<S0> crate::typed::builder::Build for DelimitedPayloadTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<delimited_payload_token_filter_members::r#type>,
 {
-    fn from(builder: DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DelimitedPayloadTokenFilter;
+
+    fn build(self) -> DelimitedPayloadTokenFilter {
+        Self::build(self)
     }
 }
 
-impl DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DelimitedPayloadTokenFilter { match r#type {} }
+impl<S0> From<DelimitedPayloadTokenFilterBuilder<(S0,)>> for DelimitedPayloadTokenFilter
+where
+    S0: crate::typed::builder::IsSet<delimited_payload_token_filter_members::r#type>,
+{
+    fn from(builder: DelimitedPayloadTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4044,19 +4614,27 @@ pub struct DictionaryDecompounderTokenFilter {
 
 impl DictionaryDecompounderTokenFilter {
     /// Creates a builder for [`DictionaryDecompounderTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DictionaryDecompounderTokenFilterBuilder {
         DictionaryDecompounderTokenFilterBuilder::new()
     }
 
     /// Creates a [`DictionaryDecompounderTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DictionaryDecompounderTokenFilterBuilder,
-        )
-            -> DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DictionaryDecompounderTokenFilter>>(
+        f: impl FnOnce(DictionaryDecompounderTokenFilterBuilder) -> B,
     ) -> DictionaryDecompounderTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DictionaryDecompounderTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dictionary_decompounder_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DictionaryDecompounderTokenFilter`].
@@ -4200,6 +4778,7 @@ impl<S0> DictionaryDecompounderTokenFilterBuilder<(S0,)> {
 }
 
 impl DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4210,9 +4789,12 @@ impl DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DictionaryDecompounderTokenFilterBuilder<(S0,)> {
     /// Builds a [`DictionaryDecompounderTokenFilter`].
-    pub fn build(self) -> DictionaryDecompounderTokenFilter {
+    pub fn build(self) -> DictionaryDecompounderTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<dictionary_decompounder_token_filter_members::r#type>,
+    {
         DictionaryDecompounderTokenFilter {
             version: self.version,
             max_subword_size: self.max_subword_size,
@@ -4226,20 +4808,24 @@ impl DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for DictionaryDecompounderTokenFilter
+impl<S0> crate::typed::builder::Build for DictionaryDecompounderTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dictionary_decompounder_token_filter_members::r#type>,
 {
-    fn from(
-        builder: DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DictionaryDecompounderTokenFilter;
+
+    fn build(self) -> DictionaryDecompounderTokenFilter {
+        Self::build(self)
     }
 }
 
-impl DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DictionaryDecompounderTokenFilter { match r#type {} }
+impl<S0> From<DictionaryDecompounderTokenFilterBuilder<(S0,)>> for DictionaryDecompounderTokenFilter
+where
+    S0: crate::typed::builder::IsSet<dictionary_decompounder_token_filter_members::r#type>,
+{
+    fn from(builder: DictionaryDecompounderTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4255,16 +4841,27 @@ pub struct DutchAnalyzer {
 
 impl DutchAnalyzer {
     /// Creates a builder for [`DutchAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DutchAnalyzerBuilder {
         DutchAnalyzerBuilder::new()
     }
 
     /// Creates a [`DutchAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DutchAnalyzerBuilder) -> DutchAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DutchAnalyzer>>(
+        f: impl FnOnce(DutchAnalyzerBuilder) -> B,
     ) -> DutchAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DutchAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dutch_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DutchAnalyzer`].
@@ -4343,6 +4940,7 @@ impl<S0> DutchAnalyzerBuilder<(S0,)> {
 }
 
 impl DutchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4353,9 +4951,12 @@ impl DutchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DutchAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DutchAnalyzerBuilder<(S0,)> {
     /// Builds a [`DutchAnalyzer`].
-    pub fn build(self) -> DutchAnalyzer {
+    pub fn build(self) -> DutchAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<dutch_analyzer_members::r#type>,
+    {
         DutchAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -4365,16 +4966,24 @@ impl DutchAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DutchAnalyzerBuilder<(crate::typed::builder::Set,)>> for DutchAnalyzer {
-    fn from(builder: DutchAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DutchAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dutch_analyzer_members::r#type>,
+{
+    type Output = DutchAnalyzer;
+
+    fn build(self) -> DutchAnalyzer {
+        Self::build(self)
     }
 }
 
-impl DutchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DutchAnalyzer { match r#type {} }
+impl<S0> From<DutchAnalyzerBuilder<(S0,)>> for DutchAnalyzer
+where
+    S0: crate::typed::builder::IsSet<dutch_analyzer_members::r#type>,
+{
+    fn from(builder: DutchAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4386,18 +4995,27 @@ pub struct DutchStemTokenFilter {
 
 impl DutchStemTokenFilter {
     /// Creates a builder for [`DutchStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> DutchStemTokenFilterBuilder {
         DutchStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`DutchStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DutchStemTokenFilterBuilder,
-        ) -> DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = DutchStemTokenFilter>>(
+        f: impl FnOnce(DutchStemTokenFilterBuilder) -> B,
     ) -> DutchStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DutchStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dutch_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`DutchStemTokenFilter`].
@@ -4440,6 +5058,7 @@ impl<S0> DutchStemTokenFilterBuilder<(S0,)> {
 }
 
 impl DutchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4450,9 +5069,12 @@ impl DutchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DutchStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`DutchStemTokenFilter`].
-    pub fn build(self) -> DutchStemTokenFilter {
+    pub fn build(self) -> DutchStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<dutch_stem_token_filter_members::r#type>,
+    {
         DutchStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -4460,16 +5082,24 @@ impl DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for DutchStemTokenFilter {
-    fn from(builder: DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DutchStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dutch_stem_token_filter_members::r#type>,
+{
+    type Output = DutchStemTokenFilter;
+
+    fn build(self) -> DutchStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl DutchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> DutchStemTokenFilter { match r#type {} }
+impl<S0> From<DutchStemTokenFilterBuilder<(S0,)>> for DutchStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<dutch_stem_token_filter_members::r#type>,
+{
+    fn from(builder: DutchStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4501,18 +5131,27 @@ pub struct EdgeNGramTokenFilter {
 
 impl EdgeNGramTokenFilter {
     /// Creates a builder for [`EdgeNGramTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> EdgeNGramTokenFilterBuilder {
         EdgeNGramTokenFilterBuilder::new()
     }
 
     /// Creates a [`EdgeNGramTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EdgeNGramTokenFilterBuilder,
-        ) -> EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = EdgeNGramTokenFilter>>(
+        f: impl FnOnce(EdgeNGramTokenFilterBuilder) -> B,
     ) -> EdgeNGramTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EdgeNGramTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod edge_n_gram_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`EdgeNGramTokenFilter`].
@@ -4621,6 +5260,7 @@ impl<S0> EdgeNGramTokenFilterBuilder<(S0,)> {
 }
 
 impl EdgeNGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4631,9 +5271,12 @@ impl EdgeNGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EdgeNGramTokenFilterBuilder<(S0,)> {
     /// Builds a [`EdgeNGramTokenFilter`].
-    pub fn build(self) -> EdgeNGramTokenFilter {
+    pub fn build(self) -> EdgeNGramTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<edge_n_gram_token_filter_members::r#type>,
+    {
         EdgeNGramTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -4645,16 +5288,24 @@ impl EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)>> for EdgeNGramTokenFilter {
-    fn from(builder: EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EdgeNGramTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<edge_n_gram_token_filter_members::r#type>,
+{
+    type Output = EdgeNGramTokenFilter;
+
+    fn build(self) -> EdgeNGramTokenFilter {
+        Self::build(self)
     }
 }
 
-impl EdgeNGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EdgeNGramTokenFilter { match r#type {} }
+impl<S0> From<EdgeNGramTokenFilterBuilder<(S0,)>> for EdgeNGramTokenFilter
+where
+    S0: crate::typed::builder::IsSet<edge_n_gram_token_filter_members::r#type>,
+{
+    fn from(builder: EdgeNGramTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4674,18 +5325,27 @@ pub struct EdgeNGramTokenizer {
 
 impl EdgeNGramTokenizer {
     /// Creates a builder for [`EdgeNGramTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> EdgeNGramTokenizerBuilder {
         EdgeNGramTokenizerBuilder::new()
     }
 
     /// Creates a [`EdgeNGramTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EdgeNGramTokenizerBuilder,
-        ) -> EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = EdgeNGramTokenizer>>(
+        f: impl FnOnce(EdgeNGramTokenizerBuilder) -> B,
     ) -> EdgeNGramTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EdgeNGramTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod edge_n_gram_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`EdgeNGramTokenizer`].
@@ -4792,6 +5452,7 @@ impl<S0> EdgeNGramTokenizerBuilder<(S0,)> {
 }
 
 impl EdgeNGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4802,9 +5463,12 @@ impl EdgeNGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EdgeNGramTokenizerBuilder<(S0,)> {
     /// Builds a [`EdgeNGramTokenizer`].
-    pub fn build(self) -> EdgeNGramTokenizer {
+    pub fn build(self) -> EdgeNGramTokenizer
+    where
+        S0: crate::typed::builder::IsSet<edge_n_gram_tokenizer_members::r#type>,
+    {
         EdgeNGramTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -4816,16 +5480,24 @@ impl EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)>> for EdgeNGramTokenizer {
-    fn from(builder: EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EdgeNGramTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<edge_n_gram_tokenizer_members::r#type>,
+{
+    type Output = EdgeNGramTokenizer;
+
+    fn build(self) -> EdgeNGramTokenizer {
+        Self::build(self)
     }
 }
 
-impl EdgeNGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EdgeNGramTokenizer { match r#type {} }
+impl<S0> From<EdgeNGramTokenizerBuilder<(S0,)>> for EdgeNGramTokenizer
+where
+    S0: crate::typed::builder::IsSet<edge_n_gram_tokenizer_members::r#type>,
+{
+    fn from(builder: EdgeNGramTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4851,18 +5523,27 @@ pub struct ElisionTokenFilter {
 
 impl ElisionTokenFilter {
     /// Creates a builder for [`ElisionTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ElisionTokenFilterBuilder {
         ElisionTokenFilterBuilder::new()
     }
 
     /// Creates a [`ElisionTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ElisionTokenFilterBuilder,
-        ) -> ElisionTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ElisionTokenFilter>>(
+        f: impl FnOnce(ElisionTokenFilterBuilder) -> B,
     ) -> ElisionTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ElisionTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod elision_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ElisionTokenFilter`].
@@ -4969,6 +5650,7 @@ impl<S0> ElisionTokenFilterBuilder<(S0,)> {
 }
 
 impl ElisionTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -4979,9 +5661,12 @@ impl ElisionTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ElisionTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ElisionTokenFilterBuilder<(S0,)> {
     /// Builds a [`ElisionTokenFilter`].
-    pub fn build(self) -> ElisionTokenFilter {
+    pub fn build(self) -> ElisionTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<elision_token_filter_members::r#type>,
+    {
         ElisionTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -4992,16 +5677,24 @@ impl ElisionTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ElisionTokenFilterBuilder<(crate::typed::builder::Set,)>> for ElisionTokenFilter {
-    fn from(builder: ElisionTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ElisionTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<elision_token_filter_members::r#type>,
+{
+    type Output = ElisionTokenFilter;
+
+    fn build(self) -> ElisionTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ElisionTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ElisionTokenFilter { match r#type {} }
+impl<S0> From<ElisionTokenFilterBuilder<(S0,)>> for ElisionTokenFilter
+where
+    S0: crate::typed::builder::IsSet<elision_token_filter_members::r#type>,
+{
+    fn from(builder: ElisionTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5017,16 +5710,27 @@ pub struct EnglishAnalyzer {
 
 impl EnglishAnalyzer {
     /// Creates a builder for [`EnglishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> EnglishAnalyzerBuilder {
         EnglishAnalyzerBuilder::new()
     }
 
     /// Creates a [`EnglishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EnglishAnalyzerBuilder) -> EnglishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = EnglishAnalyzer>>(
+        f: impl FnOnce(EnglishAnalyzerBuilder) -> B,
     ) -> EnglishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EnglishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod english_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`EnglishAnalyzer`].
@@ -5105,6 +5809,7 @@ impl<S0> EnglishAnalyzerBuilder<(S0,)> {
 }
 
 impl EnglishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5115,9 +5820,12 @@ impl EnglishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EnglishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EnglishAnalyzerBuilder<(S0,)> {
     /// Builds a [`EnglishAnalyzer`].
-    pub fn build(self) -> EnglishAnalyzer {
+    pub fn build(self) -> EnglishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<english_analyzer_members::r#type>,
+    {
         EnglishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -5127,16 +5835,24 @@ impl EnglishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EnglishAnalyzerBuilder<(crate::typed::builder::Set,)>> for EnglishAnalyzer {
-    fn from(builder: EnglishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EnglishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<english_analyzer_members::r#type>,
+{
+    type Output = EnglishAnalyzer;
+
+    fn build(self) -> EnglishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl EnglishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EnglishAnalyzer { match r#type {} }
+impl<S0> From<EnglishAnalyzerBuilder<(S0,)>> for EnglishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<english_analyzer_members::r#type>,
+{
+    fn from(builder: EnglishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5150,18 +5866,27 @@ pub struct EstonianAnalyzer {
 
 impl EstonianAnalyzer {
     /// Creates a builder for [`EstonianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> EstonianAnalyzerBuilder {
         EstonianAnalyzerBuilder::new()
     }
 
     /// Creates a [`EstonianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EstonianAnalyzerBuilder,
-        ) -> EstonianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = EstonianAnalyzer>>(
+        f: impl FnOnce(EstonianAnalyzerBuilder) -> B,
     ) -> EstonianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EstonianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod estonian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`EstonianAnalyzer`].
@@ -5218,6 +5943,7 @@ impl<S0> EstonianAnalyzerBuilder<(S0,)> {
 }
 
 impl EstonianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5228,9 +5954,12 @@ impl EstonianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EstonianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EstonianAnalyzerBuilder<(S0,)> {
     /// Builds a [`EstonianAnalyzer`].
-    pub fn build(self) -> EstonianAnalyzer {
+    pub fn build(self) -> EstonianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<estonian_analyzer_members::r#type>,
+    {
         EstonianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -5239,16 +5968,24 @@ impl EstonianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EstonianAnalyzerBuilder<(crate::typed::builder::Set,)>> for EstonianAnalyzer {
-    fn from(builder: EstonianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EstonianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<estonian_analyzer_members::r#type>,
+{
+    type Output = EstonianAnalyzer;
+
+    fn build(self) -> EstonianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl EstonianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EstonianAnalyzer { match r#type {} }
+impl<S0> From<EstonianAnalyzerBuilder<(S0,)>> for EstonianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<estonian_analyzer_members::r#type>,
+{
+    fn from(builder: EstonianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5275,18 +6012,27 @@ pub struct FingerprintAnalyzer {
 
 impl FingerprintAnalyzer {
     /// Creates a builder for [`FingerprintAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FingerprintAnalyzerBuilder {
         FingerprintAnalyzerBuilder::new()
     }
 
     /// Creates a [`FingerprintAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FingerprintAnalyzerBuilder,
-        ) -> FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FingerprintAnalyzer>>(
+        f: impl FnOnce(FingerprintAnalyzerBuilder) -> B,
     ) -> FingerprintAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FingerprintAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fingerprint_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FingerprintAnalyzer`].
@@ -5392,6 +6138,7 @@ impl<S0> FingerprintAnalyzerBuilder<(S0,)> {
 }
 
 impl FingerprintAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5402,9 +6149,12 @@ impl FingerprintAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FingerprintAnalyzerBuilder<(S0,)> {
     /// Builds a [`FingerprintAnalyzer`].
-    pub fn build(self) -> FingerprintAnalyzer {
+    pub fn build(self) -> FingerprintAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<fingerprint_analyzer_members::r#type>,
+    {
         FingerprintAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -5416,16 +6166,24 @@ impl FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)>> for FingerprintAnalyzer {
-    fn from(builder: FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FingerprintAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fingerprint_analyzer_members::r#type>,
+{
+    type Output = FingerprintAnalyzer;
+
+    fn build(self) -> FingerprintAnalyzer {
+        Self::build(self)
     }
 }
 
-impl FingerprintAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FingerprintAnalyzer { match r#type {} }
+impl<S0> From<FingerprintAnalyzerBuilder<(S0,)>> for FingerprintAnalyzer
+where
+    S0: crate::typed::builder::IsSet<fingerprint_analyzer_members::r#type>,
+{
+    fn from(builder: FingerprintAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5443,18 +6201,27 @@ pub struct FingerprintTokenFilter {
 
 impl FingerprintTokenFilter {
     /// Creates a builder for [`FingerprintTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FingerprintTokenFilterBuilder {
         FingerprintTokenFilterBuilder::new()
     }
 
     /// Creates a [`FingerprintTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FingerprintTokenFilterBuilder,
-        ) -> FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FingerprintTokenFilter>>(
+        f: impl FnOnce(FingerprintTokenFilterBuilder) -> B,
     ) -> FingerprintTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FingerprintTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fingerprint_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FingerprintTokenFilter`].
@@ -5527,6 +6294,7 @@ impl<S0> FingerprintTokenFilterBuilder<(S0,)> {
 }
 
 impl FingerprintTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5537,9 +6305,12 @@ impl FingerprintTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FingerprintTokenFilterBuilder<(S0,)> {
     /// Builds a [`FingerprintTokenFilter`].
-    pub fn build(self) -> FingerprintTokenFilter {
+    pub fn build(self) -> FingerprintTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<fingerprint_token_filter_members::r#type>,
+    {
         FingerprintTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -5549,16 +6320,24 @@ impl FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)>> for FingerprintTokenFilter {
-    fn from(builder: FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FingerprintTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fingerprint_token_filter_members::r#type>,
+{
+    type Output = FingerprintTokenFilter;
+
+    fn build(self) -> FingerprintTokenFilter {
+        Self::build(self)
     }
 }
 
-impl FingerprintTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FingerprintTokenFilter { match r#type {} }
+impl<S0> From<FingerprintTokenFilterBuilder<(S0,)>> for FingerprintTokenFilter
+where
+    S0: crate::typed::builder::IsSet<fingerprint_token_filter_members::r#type>,
+{
+    fn from(builder: FingerprintTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5574,16 +6353,27 @@ pub struct FinnishAnalyzer {
 
 impl FinnishAnalyzer {
     /// Creates a builder for [`FinnishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FinnishAnalyzerBuilder {
         FinnishAnalyzerBuilder::new()
     }
 
     /// Creates a [`FinnishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FinnishAnalyzerBuilder) -> FinnishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FinnishAnalyzer>>(
+        f: impl FnOnce(FinnishAnalyzerBuilder) -> B,
     ) -> FinnishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FinnishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod finnish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FinnishAnalyzer`].
@@ -5662,6 +6452,7 @@ impl<S0> FinnishAnalyzerBuilder<(S0,)> {
 }
 
 impl FinnishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5672,9 +6463,12 @@ impl FinnishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FinnishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FinnishAnalyzerBuilder<(S0,)> {
     /// Builds a [`FinnishAnalyzer`].
-    pub fn build(self) -> FinnishAnalyzer {
+    pub fn build(self) -> FinnishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<finnish_analyzer_members::r#type>,
+    {
         FinnishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -5684,16 +6478,24 @@ impl FinnishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FinnishAnalyzerBuilder<(crate::typed::builder::Set,)>> for FinnishAnalyzer {
-    fn from(builder: FinnishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FinnishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<finnish_analyzer_members::r#type>,
+{
+    type Output = FinnishAnalyzer;
+
+    fn build(self) -> FinnishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl FinnishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FinnishAnalyzer { match r#type {} }
+impl<S0> From<FinnishAnalyzerBuilder<(S0,)>> for FinnishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<finnish_analyzer_members::r#type>,
+{
+    fn from(builder: FinnishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5705,18 +6507,27 @@ pub struct FlattenGraphTokenFilter {
 
 impl FlattenGraphTokenFilter {
     /// Creates a builder for [`FlattenGraphTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FlattenGraphTokenFilterBuilder {
         FlattenGraphTokenFilterBuilder::new()
     }
 
     /// Creates a [`FlattenGraphTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FlattenGraphTokenFilterBuilder,
-        ) -> FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FlattenGraphTokenFilter>>(
+        f: impl FnOnce(FlattenGraphTokenFilterBuilder) -> B,
     ) -> FlattenGraphTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FlattenGraphTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod flatten_graph_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FlattenGraphTokenFilter`].
@@ -5759,6 +6570,7 @@ impl<S0> FlattenGraphTokenFilterBuilder<(S0,)> {
 }
 
 impl FlattenGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5769,9 +6581,12 @@ impl FlattenGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FlattenGraphTokenFilterBuilder<(S0,)> {
     /// Builds a [`FlattenGraphTokenFilter`].
-    pub fn build(self) -> FlattenGraphTokenFilter {
+    pub fn build(self) -> FlattenGraphTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<flatten_graph_token_filter_members::r#type>,
+    {
         FlattenGraphTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -5779,18 +6594,24 @@ impl FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for FlattenGraphTokenFilter
+impl<S0> crate::typed::builder::Build for FlattenGraphTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<flatten_graph_token_filter_members::r#type>,
 {
-    fn from(builder: FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = FlattenGraphTokenFilter;
+
+    fn build(self) -> FlattenGraphTokenFilter {
+        Self::build(self)
     }
 }
 
-impl FlattenGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FlattenGraphTokenFilter { match r#type {} }
+impl<S0> From<FlattenGraphTokenFilterBuilder<(S0,)>> for FlattenGraphTokenFilter
+where
+    S0: crate::typed::builder::IsSet<flatten_graph_token_filter_members::r#type>,
+{
+    fn from(builder: FlattenGraphTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5806,16 +6627,27 @@ pub struct FrenchAnalyzer {
 
 impl FrenchAnalyzer {
     /// Creates a builder for [`FrenchAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FrenchAnalyzerBuilder {
         FrenchAnalyzerBuilder::new()
     }
 
     /// Creates a [`FrenchAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FrenchAnalyzerBuilder) -> FrenchAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrenchAnalyzer>>(
+        f: impl FnOnce(FrenchAnalyzerBuilder) -> B,
     ) -> FrenchAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrenchAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod french_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FrenchAnalyzer`].
@@ -5894,6 +6726,7 @@ impl<S0> FrenchAnalyzerBuilder<(S0,)> {
 }
 
 impl FrenchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5904,9 +6737,12 @@ impl FrenchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FrenchAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FrenchAnalyzerBuilder<(S0,)> {
     /// Builds a [`FrenchAnalyzer`].
-    pub fn build(self) -> FrenchAnalyzer {
+    pub fn build(self) -> FrenchAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<french_analyzer_members::r#type>,
+    {
         FrenchAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -5916,16 +6752,24 @@ impl FrenchAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FrenchAnalyzerBuilder<(crate::typed::builder::Set,)>> for FrenchAnalyzer {
-    fn from(builder: FrenchAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FrenchAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<french_analyzer_members::r#type>,
+{
+    type Output = FrenchAnalyzer;
+
+    fn build(self) -> FrenchAnalyzer {
+        Self::build(self)
     }
 }
 
-impl FrenchAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FrenchAnalyzer { match r#type {} }
+impl<S0> From<FrenchAnalyzerBuilder<(S0,)>> for FrenchAnalyzer
+where
+    S0: crate::typed::builder::IsSet<french_analyzer_members::r#type>,
+{
+    fn from(builder: FrenchAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5937,18 +6781,27 @@ pub struct FrenchStemTokenFilter {
 
 impl FrenchStemTokenFilter {
     /// Creates a builder for [`FrenchStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> FrenchStemTokenFilterBuilder {
         FrenchStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`FrenchStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrenchStemTokenFilterBuilder,
-        ) -> FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrenchStemTokenFilter>>(
+        f: impl FnOnce(FrenchStemTokenFilterBuilder) -> B,
     ) -> FrenchStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrenchStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod french_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`FrenchStemTokenFilter`].
@@ -5991,6 +6844,7 @@ impl<S0> FrenchStemTokenFilterBuilder<(S0,)> {
 }
 
 impl FrenchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6001,9 +6855,12 @@ impl FrenchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FrenchStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`FrenchStemTokenFilter`].
-    pub fn build(self) -> FrenchStemTokenFilter {
+    pub fn build(self) -> FrenchStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<french_stem_token_filter_members::r#type>,
+    {
         FrenchStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -6011,16 +6868,24 @@ impl FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for FrenchStemTokenFilter {
-    fn from(builder: FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FrenchStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<french_stem_token_filter_members::r#type>,
+{
+    type Output = FrenchStemTokenFilter;
+
+    fn build(self) -> FrenchStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl FrenchStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FrenchStemTokenFilter { match r#type {} }
+impl<S0> From<FrenchStemTokenFilterBuilder<(S0,)>> for FrenchStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<french_stem_token_filter_members::r#type>,
+{
+    fn from(builder: FrenchStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6036,18 +6901,27 @@ pub struct GalicianAnalyzer {
 
 impl GalicianAnalyzer {
     /// Creates a builder for [`GalicianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GalicianAnalyzerBuilder {
         GalicianAnalyzerBuilder::new()
     }
 
     /// Creates a [`GalicianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GalicianAnalyzerBuilder,
-        ) -> GalicianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GalicianAnalyzer>>(
+        f: impl FnOnce(GalicianAnalyzerBuilder) -> B,
     ) -> GalicianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GalicianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod galician_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GalicianAnalyzer`].
@@ -6126,6 +7000,7 @@ impl<S0> GalicianAnalyzerBuilder<(S0,)> {
 }
 
 impl GalicianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6136,9 +7011,12 @@ impl GalicianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GalicianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GalicianAnalyzerBuilder<(S0,)> {
     /// Builds a [`GalicianAnalyzer`].
-    pub fn build(self) -> GalicianAnalyzer {
+    pub fn build(self) -> GalicianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<galician_analyzer_members::r#type>,
+    {
         GalicianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -6148,16 +7026,24 @@ impl GalicianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GalicianAnalyzerBuilder<(crate::typed::builder::Set,)>> for GalicianAnalyzer {
-    fn from(builder: GalicianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GalicianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<galician_analyzer_members::r#type>,
+{
+    type Output = GalicianAnalyzer;
+
+    fn build(self) -> GalicianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl GalicianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GalicianAnalyzer { match r#type {} }
+impl<S0> From<GalicianAnalyzerBuilder<(S0,)>> for GalicianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<galician_analyzer_members::r#type>,
+{
+    fn from(builder: GalicianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6173,16 +7059,27 @@ pub struct GermanAnalyzer {
 
 impl GermanAnalyzer {
     /// Creates a builder for [`GermanAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GermanAnalyzerBuilder {
         GermanAnalyzerBuilder::new()
     }
 
     /// Creates a [`GermanAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GermanAnalyzerBuilder) -> GermanAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GermanAnalyzer>>(
+        f: impl FnOnce(GermanAnalyzerBuilder) -> B,
     ) -> GermanAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GermanAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod german_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GermanAnalyzer`].
@@ -6261,6 +7158,7 @@ impl<S0> GermanAnalyzerBuilder<(S0,)> {
 }
 
 impl GermanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6271,9 +7169,12 @@ impl GermanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GermanAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GermanAnalyzerBuilder<(S0,)> {
     /// Builds a [`GermanAnalyzer`].
-    pub fn build(self) -> GermanAnalyzer {
+    pub fn build(self) -> GermanAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<german_analyzer_members::r#type>,
+    {
         GermanAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -6283,16 +7184,24 @@ impl GermanAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GermanAnalyzerBuilder<(crate::typed::builder::Set,)>> for GermanAnalyzer {
-    fn from(builder: GermanAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GermanAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<german_analyzer_members::r#type>,
+{
+    type Output = GermanAnalyzer;
+
+    fn build(self) -> GermanAnalyzer {
+        Self::build(self)
     }
 }
 
-impl GermanAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GermanAnalyzer { match r#type {} }
+impl<S0> From<GermanAnalyzerBuilder<(S0,)>> for GermanAnalyzer
+where
+    S0: crate::typed::builder::IsSet<german_analyzer_members::r#type>,
+{
+    fn from(builder: GermanAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6304,18 +7213,27 @@ pub struct GermanNormalizationTokenFilter {
 
 impl GermanNormalizationTokenFilter {
     /// Creates a builder for [`GermanNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GermanNormalizationTokenFilterBuilder {
         GermanNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`GermanNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GermanNormalizationTokenFilterBuilder,
-        ) -> GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GermanNormalizationTokenFilter>>(
+        f: impl FnOnce(GermanNormalizationTokenFilterBuilder) -> B,
     ) -> GermanNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GermanNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod german_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GermanNormalizationTokenFilter`].
@@ -6358,6 +7276,7 @@ impl<S0> GermanNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl GermanNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6368,9 +7287,12 @@ impl GermanNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GermanNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`GermanNormalizationTokenFilter`].
-    pub fn build(self) -> GermanNormalizationTokenFilter {
+    pub fn build(self) -> GermanNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<german_normalization_token_filter_members::r#type>,
+    {
         GermanNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -6378,18 +7300,24 @@ impl GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for GermanNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for GermanNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<german_normalization_token_filter_members::r#type>,
 {
-    fn from(builder: GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = GermanNormalizationTokenFilter;
+
+    fn build(self) -> GermanNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl GermanNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GermanNormalizationTokenFilter { match r#type {} }
+impl<S0> From<GermanNormalizationTokenFilterBuilder<(S0,)>> for GermanNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<german_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: GermanNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6401,18 +7329,27 @@ pub struct GermanStemTokenFilter {
 
 impl GermanStemTokenFilter {
     /// Creates a builder for [`GermanStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GermanStemTokenFilterBuilder {
         GermanStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`GermanStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GermanStemTokenFilterBuilder,
-        ) -> GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GermanStemTokenFilter>>(
+        f: impl FnOnce(GermanStemTokenFilterBuilder) -> B,
     ) -> GermanStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GermanStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod german_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GermanStemTokenFilter`].
@@ -6455,6 +7392,7 @@ impl<S0> GermanStemTokenFilterBuilder<(S0,)> {
 }
 
 impl GermanStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6465,9 +7403,12 @@ impl GermanStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GermanStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`GermanStemTokenFilter`].
-    pub fn build(self) -> GermanStemTokenFilter {
+    pub fn build(self) -> GermanStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<german_stem_token_filter_members::r#type>,
+    {
         GermanStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -6475,16 +7416,24 @@ impl GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for GermanStemTokenFilter {
-    fn from(builder: GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GermanStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<german_stem_token_filter_members::r#type>,
+{
+    type Output = GermanStemTokenFilter;
+
+    fn build(self) -> GermanStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl GermanStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GermanStemTokenFilter { match r#type {} }
+impl<S0> From<GermanStemTokenFilterBuilder<(S0,)>> for GermanStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<german_stem_token_filter_members::r#type>,
+{
+    fn from(builder: GermanStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6498,16 +7447,27 @@ pub struct GreekAnalyzer {
 
 impl GreekAnalyzer {
     /// Creates a builder for [`GreekAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> GreekAnalyzerBuilder {
         GreekAnalyzerBuilder::new()
     }
 
     /// Creates a [`GreekAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GreekAnalyzerBuilder) -> GreekAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = GreekAnalyzer>>(
+        f: impl FnOnce(GreekAnalyzerBuilder) -> B,
     ) -> GreekAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GreekAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod greek_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`GreekAnalyzer`].
@@ -6564,6 +7524,7 @@ impl<S0> GreekAnalyzerBuilder<(S0,)> {
 }
 
 impl GreekAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6574,9 +7535,12 @@ impl GreekAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GreekAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GreekAnalyzerBuilder<(S0,)> {
     /// Builds a [`GreekAnalyzer`].
-    pub fn build(self) -> GreekAnalyzer {
+    pub fn build(self) -> GreekAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<greek_analyzer_members::r#type>,
+    {
         GreekAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -6585,16 +7549,24 @@ impl GreekAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GreekAnalyzerBuilder<(crate::typed::builder::Set,)>> for GreekAnalyzer {
-    fn from(builder: GreekAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GreekAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<greek_analyzer_members::r#type>,
+{
+    type Output = GreekAnalyzer;
+
+    fn build(self) -> GreekAnalyzer {
+        Self::build(self)
     }
 }
 
-impl GreekAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GreekAnalyzer { match r#type {} }
+impl<S0> From<GreekAnalyzerBuilder<(S0,)>> for GreekAnalyzer
+where
+    S0: crate::typed::builder::IsSet<greek_analyzer_members::r#type>,
+{
+    fn from(builder: GreekAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6610,16 +7582,27 @@ pub struct HindiAnalyzer {
 
 impl HindiAnalyzer {
     /// Creates a builder for [`HindiAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HindiAnalyzerBuilder {
         HindiAnalyzerBuilder::new()
     }
 
     /// Creates a [`HindiAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HindiAnalyzerBuilder) -> HindiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HindiAnalyzer>>(
+        f: impl FnOnce(HindiAnalyzerBuilder) -> B,
     ) -> HindiAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HindiAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hindi_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HindiAnalyzer`].
@@ -6698,6 +7681,7 @@ impl<S0> HindiAnalyzerBuilder<(S0,)> {
 }
 
 impl HindiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6708,9 +7692,12 @@ impl HindiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HindiAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HindiAnalyzerBuilder<(S0,)> {
     /// Builds a [`HindiAnalyzer`].
-    pub fn build(self) -> HindiAnalyzer {
+    pub fn build(self) -> HindiAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<hindi_analyzer_members::r#type>,
+    {
         HindiAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -6720,16 +7707,24 @@ impl HindiAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HindiAnalyzerBuilder<(crate::typed::builder::Set,)>> for HindiAnalyzer {
-    fn from(builder: HindiAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HindiAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hindi_analyzer_members::r#type>,
+{
+    type Output = HindiAnalyzer;
+
+    fn build(self) -> HindiAnalyzer {
+        Self::build(self)
     }
 }
 
-impl HindiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HindiAnalyzer { match r#type {} }
+impl<S0> From<HindiAnalyzerBuilder<(S0,)>> for HindiAnalyzer
+where
+    S0: crate::typed::builder::IsSet<hindi_analyzer_members::r#type>,
+{
+    fn from(builder: HindiAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6741,18 +7736,27 @@ pub struct HindiNormalizationTokenFilter {
 
 impl HindiNormalizationTokenFilter {
     /// Creates a builder for [`HindiNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HindiNormalizationTokenFilterBuilder {
         HindiNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`HindiNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HindiNormalizationTokenFilterBuilder,
-        ) -> HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HindiNormalizationTokenFilter>>(
+        f: impl FnOnce(HindiNormalizationTokenFilterBuilder) -> B,
     ) -> HindiNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HindiNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hindi_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HindiNormalizationTokenFilter`].
@@ -6795,6 +7799,7 @@ impl<S0> HindiNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl HindiNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6805,9 +7810,12 @@ impl HindiNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HindiNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`HindiNormalizationTokenFilter`].
-    pub fn build(self) -> HindiNormalizationTokenFilter {
+    pub fn build(self) -> HindiNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<hindi_normalization_token_filter_members::r#type>,
+    {
         HindiNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -6815,18 +7823,24 @@ impl HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for HindiNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for HindiNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hindi_normalization_token_filter_members::r#type>,
 {
-    fn from(builder: HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = HindiNormalizationTokenFilter;
+
+    fn build(self) -> HindiNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl HindiNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HindiNormalizationTokenFilter { match r#type {} }
+impl<S0> From<HindiNormalizationTokenFilterBuilder<(S0,)>> for HindiNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<hindi_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: HindiNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6840,18 +7854,27 @@ pub struct HtmlStripCharFilter {
 
 impl HtmlStripCharFilter {
     /// Creates a builder for [`HtmlStripCharFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HtmlStripCharFilterBuilder {
         HtmlStripCharFilterBuilder::new()
     }
 
     /// Creates a [`HtmlStripCharFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HtmlStripCharFilterBuilder,
-        ) -> HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HtmlStripCharFilter>>(
+        f: impl FnOnce(HtmlStripCharFilterBuilder) -> B,
     ) -> HtmlStripCharFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HtmlStripCharFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod html_strip_char_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HtmlStripCharFilter`].
@@ -6916,6 +7939,7 @@ impl<S0> HtmlStripCharFilterBuilder<(S0,)> {
 }
 
 impl HtmlStripCharFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -6926,9 +7950,12 @@ impl HtmlStripCharFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HtmlStripCharFilterBuilder<(S0,)> {
     /// Builds a [`HtmlStripCharFilter`].
-    pub fn build(self) -> HtmlStripCharFilter {
+    pub fn build(self) -> HtmlStripCharFilter
+    where
+        S0: crate::typed::builder::IsSet<html_strip_char_filter_members::r#type>,
+    {
         HtmlStripCharFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -6937,16 +7964,24 @@ impl HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)>> for HtmlStripCharFilter {
-    fn from(builder: HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HtmlStripCharFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<html_strip_char_filter_members::r#type>,
+{
+    type Output = HtmlStripCharFilter;
+
+    fn build(self) -> HtmlStripCharFilter {
+        Self::build(self)
     }
 }
 
-impl HtmlStripCharFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HtmlStripCharFilter { match r#type {} }
+impl<S0> From<HtmlStripCharFilterBuilder<(S0,)>> for HtmlStripCharFilter
+where
+    S0: crate::typed::builder::IsSet<html_strip_char_filter_members::r#type>,
+{
+    fn from(builder: HtmlStripCharFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6962,18 +7997,27 @@ pub struct HungarianAnalyzer {
 
 impl HungarianAnalyzer {
     /// Creates a builder for [`HungarianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> HungarianAnalyzerBuilder {
         HungarianAnalyzerBuilder::new()
     }
 
     /// Creates a [`HungarianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HungarianAnalyzerBuilder,
-        ) -> HungarianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HungarianAnalyzer>>(
+        f: impl FnOnce(HungarianAnalyzerBuilder) -> B,
     ) -> HungarianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HungarianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hungarian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`HungarianAnalyzer`].
@@ -7052,6 +8096,7 @@ impl<S0> HungarianAnalyzerBuilder<(S0,)> {
 }
 
 impl HungarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7062,9 +8107,12 @@ impl HungarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HungarianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HungarianAnalyzerBuilder<(S0,)> {
     /// Builds a [`HungarianAnalyzer`].
-    pub fn build(self) -> HungarianAnalyzer {
+    pub fn build(self) -> HungarianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<hungarian_analyzer_members::r#type>,
+    {
         HungarianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -7074,16 +8122,24 @@ impl HungarianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HungarianAnalyzerBuilder<(crate::typed::builder::Set,)>> for HungarianAnalyzer {
-    fn from(builder: HungarianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HungarianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hungarian_analyzer_members::r#type>,
+{
+    type Output = HungarianAnalyzer;
+
+    fn build(self) -> HungarianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl HungarianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HungarianAnalyzer { match r#type {} }
+impl<S0> From<HungarianAnalyzerBuilder<(S0,)>> for HungarianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<hungarian_analyzer_members::r#type>,
+{
+    fn from(builder: HungarianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7108,21 +8164,28 @@ pub struct HunspellTokenFilter {
 
 impl HunspellTokenFilter {
     /// Creates a builder for [`HunspellTokenFilter`].
+    ///
+    /// Required: `type`, `locale`.
     pub fn builder() -> HunspellTokenFilterBuilder {
         HunspellTokenFilterBuilder::new()
     }
 
     /// Creates a [`HunspellTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HunspellTokenFilterBuilder,
-        ) -> HunspellTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `locale`.
+    pub fn of<B: crate::typed::builder::Build<Output = HunspellTokenFilter>>(
+        f: impl FnOnce(HunspellTokenFilterBuilder) -> B,
     ) -> HunspellTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HunspellTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hunspell_token_filter_members {
+    pub struct r#type;
+    pub struct locale;
 }
 
 /// Builder for [`HunspellTokenFilter`].
@@ -7216,6 +8279,7 @@ impl<S0, S1> HunspellTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> HunspellTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7227,7 +8291,7 @@ impl<S1> HunspellTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> HunspellTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Locale directory used to specify the `.aff` and `.dic` files for a Hunspell dictionary.
+    /// **Required.** Locale directory used to specify the `.aff` and `.dic` files for a Hunspell dictionary.
     pub fn locale(
         self,
         value: impl Into<String>,
@@ -7238,9 +8302,13 @@ impl<S0> HunspellTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl HunspellTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HunspellTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`HunspellTokenFilter`].
-    pub fn build(self) -> HunspellTokenFilter {
+    pub fn build(self) -> HunspellTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<hunspell_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<hunspell_token_filter_members::locale>,
+    {
         HunspellTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -7252,29 +8320,26 @@ impl HunspellTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<HunspellTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for HunspellTokenFilter
+impl<S0, S1> crate::typed::builder::Build for HunspellTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<hunspell_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<hunspell_token_filter_members::locale>,
 {
-    fn from(
-        builder: HunspellTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HunspellTokenFilter;
+
+    fn build(self) -> HunspellTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> HunspellTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HunspellTokenFilter { match r#type {} }
-}
-
-impl HunspellTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `locale` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, locale: crate::typed::builder::MissingRequiredField) -> HunspellTokenFilter { match locale {} }
+impl<S0, S1> From<HunspellTokenFilterBuilder<(S0, S1)>> for HunspellTokenFilter
+where
+    S0: crate::typed::builder::IsSet<hunspell_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<hunspell_token_filter_members::locale>,
+{
+    fn from(builder: HunspellTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7316,21 +8381,28 @@ pub struct HyphenationDecompounderTokenFilter {
 
 impl HyphenationDecompounderTokenFilter {
     /// Creates a builder for [`HyphenationDecompounderTokenFilter`].
+    ///
+    /// Required: `type`, `hyphenation_patterns_path`.
     pub fn builder() -> HyphenationDecompounderTokenFilterBuilder {
         HyphenationDecompounderTokenFilterBuilder::new()
     }
 
     /// Creates a [`HyphenationDecompounderTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HyphenationDecompounderTokenFilterBuilder,
-        ) -> HyphenationDecompounderTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `hyphenation_patterns_path`.
+    pub fn of<B: crate::typed::builder::Build<Output = HyphenationDecompounderTokenFilter>>(
+        f: impl FnOnce(HyphenationDecompounderTokenFilterBuilder) -> B,
     ) -> HyphenationDecompounderTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HyphenationDecompounderTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hyphenation_decompounder_token_filter_members {
+    pub struct r#type;
+    pub struct hyphenation_patterns_path;
 }
 
 /// Builder for [`HyphenationDecompounderTokenFilter`].
@@ -7514,6 +8586,7 @@ impl<S0, S1> HyphenationDecompounderTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> HyphenationDecompounderTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7525,7 +8598,7 @@ impl<S1> HyphenationDecompounderTokenFilterBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0> HyphenationDecompounderTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Path to an Apache FOP (Formatting Objects Processor) XML hyphenation pattern file.
+    /// **Required.** Path to an Apache FOP (Formatting Objects Processor) XML hyphenation pattern file.
     /// This path must be absolute or relative to the `config` location. Only FOP v1.2 compatible files are supported.
     pub fn hyphenation_patterns_path(
         self,
@@ -7537,14 +8610,15 @@ impl<S0> HyphenationDecompounderTokenFilterBuilder<(S0, crate::typed::builder::N
     }
 }
 
-impl
-    HyphenationDecompounderTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> HyphenationDecompounderTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`HyphenationDecompounderTokenFilter`].
-    pub fn build(self) -> HyphenationDecompounderTokenFilter {
+    pub fn build(self) -> HyphenationDecompounderTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<hyphenation_decompounder_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<
+            hyphenation_decompounder_token_filter_members::hyphenation_patterns_path,
+        >,
+    {
         HyphenationDecompounderTokenFilter {
             version: self.version,
             max_subword_size: self.max_subword_size,
@@ -7561,39 +8635,31 @@ impl
     }
 }
 
-impl
-    From<
-        HyphenationDecompounderTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HyphenationDecompounderTokenFilter
+impl<S0, S1> crate::typed::builder::Build for HyphenationDecompounderTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<hyphenation_decompounder_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<
+        hyphenation_decompounder_token_filter_members::hyphenation_patterns_path,
+    >,
 {
-    fn from(
-        builder: HyphenationDecompounderTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HyphenationDecompounderTokenFilter;
+
+    fn build(self) -> HyphenationDecompounderTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> HyphenationDecompounderTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HyphenationDecompounderTokenFilter { match r#type {} }
-}
-
-impl
-    HyphenationDecompounderTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<HyphenationDecompounderTokenFilterBuilder<(S0, S1)>>
+    for HyphenationDecompounderTokenFilter
+where
+    S0: crate::typed::builder::IsSet<hyphenation_decompounder_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<
+        hyphenation_decompounder_token_filter_members::hyphenation_patterns_path,
+    >,
 {
-    /// `hyphenation_patterns_path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hyphenation_patterns_path: crate::typed::builder::MissingRequiredField) -> HyphenationDecompounderTokenFilter { match hyphenation_patterns_path {} }
+    fn from(builder: HyphenationDecompounderTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7605,22 +8671,29 @@ pub struct IcuAnalyzer {
 
 impl IcuAnalyzer {
     /// Creates a builder for [`IcuAnalyzer`].
+    ///
+    /// Required: `type`, `method`, `mode`.
     pub fn builder() -> IcuAnalyzerBuilder {
         IcuAnalyzerBuilder::new()
     }
 
     /// Creates a [`IcuAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuAnalyzerBuilder,
-        ) -> IcuAnalyzerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `method`, `mode`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuAnalyzer>>(
+        f: impl FnOnce(IcuAnalyzerBuilder) -> B,
     ) -> IcuAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_analyzer_members {
+    pub struct r#type;
+    pub struct method;
+    pub struct mode;
 }
 
 /// Builder for [`IcuAnalyzer`].
@@ -7667,6 +8740,7 @@ impl<S0, S1, S2> IcuAnalyzerBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> IcuAnalyzerBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -7678,6 +8752,7 @@ impl<S1, S2> IcuAnalyzerBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> IcuAnalyzerBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn method(
         self,
         value: impl Into<IcuNormalizationType>,
@@ -7689,6 +8764,7 @@ impl<S0, S2> IcuAnalyzerBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> IcuAnalyzerBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn mode(
         self,
         value: impl Into<IcuNormalizationMode>,
@@ -7699,15 +8775,14 @@ impl<S0, S1> IcuAnalyzerBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    IcuAnalyzerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> IcuAnalyzerBuilder<(S0, S1, S2)> {
     /// Builds a [`IcuAnalyzer`].
-    pub fn build(self) -> IcuAnalyzer {
+    pub fn build(self) -> IcuAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<icu_analyzer_members::r#type>,
+        S1: crate::typed::builder::IsSet<icu_analyzer_members::method>,
+        S2: crate::typed::builder::IsSet<icu_analyzer_members::mode>,
+    {
         IcuAnalyzer {
             r#type: self.r#type.unwrap(),
             method: self.method.unwrap(),
@@ -7716,54 +8791,28 @@ impl
     }
 }
 
-impl
-    From<
-        IcuAnalyzerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IcuAnalyzer
+impl<S0, S1, S2> crate::typed::builder::Build for IcuAnalyzerBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<icu_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_analyzer_members::method>,
+    S2: crate::typed::builder::IsSet<icu_analyzer_members::mode>,
 {
-    fn from(
-        builder: IcuAnalyzerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IcuAnalyzer;
+
+    fn build(self) -> IcuAnalyzer {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> IcuAnalyzerBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuAnalyzer { match r#type {} }
-}
-
-impl<S2>
-    IcuAnalyzerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<IcuAnalyzerBuilder<(S0, S1, S2)>> for IcuAnalyzer
+where
+    S0: crate::typed::builder::IsSet<icu_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_analyzer_members::method>,
+    S2: crate::typed::builder::IsSet<icu_analyzer_members::mode>,
 {
-    /// `method` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, method: crate::typed::builder::MissingRequiredField) -> IcuAnalyzer { match method {} }
-}
-
-impl
-    IcuAnalyzerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> IcuAnalyzer { match mode {} }
+    fn from(builder: IcuAnalyzerBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -7845,18 +8894,27 @@ pub struct IcuCollationTokenFilter {
 
 impl IcuCollationTokenFilter {
     /// Creates a builder for [`IcuCollationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IcuCollationTokenFilterBuilder {
         IcuCollationTokenFilterBuilder::new()
     }
 
     /// Creates a [`IcuCollationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuCollationTokenFilterBuilder,
-        ) -> IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuCollationTokenFilter>>(
+        f: impl FnOnce(IcuCollationTokenFilterBuilder) -> B,
     ) -> IcuCollationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuCollationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_collation_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IcuCollationTokenFilter`].
@@ -8067,6 +9125,7 @@ impl<S0> IcuCollationTokenFilterBuilder<(S0,)> {
 }
 
 impl IcuCollationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8077,9 +9136,12 @@ impl IcuCollationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IcuCollationTokenFilterBuilder<(S0,)> {
     /// Builds a [`IcuCollationTokenFilter`].
-    pub fn build(self) -> IcuCollationTokenFilter {
+    pub fn build(self) -> IcuCollationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<icu_collation_token_filter_members::r#type>,
+    {
         IcuCollationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8099,18 +9161,24 @@ impl IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for IcuCollationTokenFilter
+impl<S0> crate::typed::builder::Build for IcuCollationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<icu_collation_token_filter_members::r#type>,
 {
-    fn from(builder: IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = IcuCollationTokenFilter;
+
+    fn build(self) -> IcuCollationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl IcuCollationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuCollationTokenFilter { match r#type {} }
+impl<S0> From<IcuCollationTokenFilterBuilder<(S0,)>> for IcuCollationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<icu_collation_token_filter_members::r#type>,
+{
+    fn from(builder: IcuCollationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8123,21 +9191,28 @@ pub struct IcuFoldingTokenFilter {
 
 impl IcuFoldingTokenFilter {
     /// Creates a builder for [`IcuFoldingTokenFilter`].
+    ///
+    /// Required: `type`, `unicode_set_filter`.
     pub fn builder() -> IcuFoldingTokenFilterBuilder {
         IcuFoldingTokenFilterBuilder::new()
     }
 
     /// Creates a [`IcuFoldingTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuFoldingTokenFilterBuilder,
-        ) -> IcuFoldingTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `unicode_set_filter`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuFoldingTokenFilter>>(
+        f: impl FnOnce(IcuFoldingTokenFilterBuilder) -> B,
     ) -> IcuFoldingTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuFoldingTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_folding_token_filter_members {
+    pub struct r#type;
+    pub struct unicode_set_filter;
 }
 
 /// Builder for [`IcuFoldingTokenFilter`].
@@ -8185,6 +9260,7 @@ impl<S0, S1> IcuFoldingTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> IcuFoldingTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8196,6 +9272,7 @@ impl<S1> IcuFoldingTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IcuFoldingTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn unicode_set_filter(
         self,
         value: impl Into<String>,
@@ -8206,9 +9283,13 @@ impl<S0> IcuFoldingTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IcuFoldingTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IcuFoldingTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`IcuFoldingTokenFilter`].
-    pub fn build(self) -> IcuFoldingTokenFilter {
+    pub fn build(self) -> IcuFoldingTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<icu_folding_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<icu_folding_token_filter_members::unicode_set_filter>,
+    {
         IcuFoldingTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8217,29 +9298,26 @@ impl IcuFoldingTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<IcuFoldingTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IcuFoldingTokenFilter
+impl<S0, S1> crate::typed::builder::Build for IcuFoldingTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<icu_folding_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_folding_token_filter_members::unicode_set_filter>,
 {
-    fn from(
-        builder: IcuFoldingTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IcuFoldingTokenFilter;
+
+    fn build(self) -> IcuFoldingTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> IcuFoldingTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuFoldingTokenFilter { match r#type {} }
-}
-
-impl IcuFoldingTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `unicode_set_filter` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, unicode_set_filter: crate::typed::builder::MissingRequiredField) -> IcuFoldingTokenFilter { match unicode_set_filter {} }
+impl<S0, S1> From<IcuFoldingTokenFilterBuilder<(S0, S1)>> for IcuFoldingTokenFilter
+where
+    S0: crate::typed::builder::IsSet<icu_folding_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_folding_token_filter_members::unicode_set_filter>,
+{
+    fn from(builder: IcuFoldingTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8257,18 +9335,27 @@ pub struct IcuNormalizationCharFilter {
 
 impl IcuNormalizationCharFilter {
     /// Creates a builder for [`IcuNormalizationCharFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IcuNormalizationCharFilterBuilder {
         IcuNormalizationCharFilterBuilder::new()
     }
 
     /// Creates a [`IcuNormalizationCharFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuNormalizationCharFilterBuilder,
-        ) -> IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuNormalizationCharFilter>>(
+        f: impl FnOnce(IcuNormalizationCharFilterBuilder) -> B,
     ) -> IcuNormalizationCharFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuNormalizationCharFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_normalization_char_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IcuNormalizationCharFilter`].
@@ -8353,6 +9440,7 @@ impl<S0> IcuNormalizationCharFilterBuilder<(S0,)> {
 }
 
 impl IcuNormalizationCharFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8363,9 +9451,12 @@ impl IcuNormalizationCharFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IcuNormalizationCharFilterBuilder<(S0,)> {
     /// Builds a [`IcuNormalizationCharFilter`].
-    pub fn build(self) -> IcuNormalizationCharFilter {
+    pub fn build(self) -> IcuNormalizationCharFilter
+    where
+        S0: crate::typed::builder::IsSet<icu_normalization_char_filter_members::r#type>,
+    {
         IcuNormalizationCharFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8376,18 +9467,24 @@ impl IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)>>
-    for IcuNormalizationCharFilter
+impl<S0> crate::typed::builder::Build for IcuNormalizationCharFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<icu_normalization_char_filter_members::r#type>,
 {
-    fn from(builder: IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = IcuNormalizationCharFilter;
+
+    fn build(self) -> IcuNormalizationCharFilter {
+        Self::build(self)
     }
 }
 
-impl IcuNormalizationCharFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuNormalizationCharFilter { match r#type {} }
+impl<S0> From<IcuNormalizationCharFilterBuilder<(S0,)>> for IcuNormalizationCharFilter
+where
+    S0: crate::typed::builder::IsSet<icu_normalization_char_filter_members::r#type>,
+{
+    fn from(builder: IcuNormalizationCharFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8408,21 +9505,28 @@ pub struct IcuNormalizationTokenFilter {
 
 impl IcuNormalizationTokenFilter {
     /// Creates a builder for [`IcuNormalizationTokenFilter`].
+    ///
+    /// Required: `type`, `name`.
     pub fn builder() -> IcuNormalizationTokenFilterBuilder {
         IcuNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`IcuNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuNormalizationTokenFilterBuilder,
-        ) -> IcuNormalizationTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuNormalizationTokenFilter>>(
+        f: impl FnOnce(IcuNormalizationTokenFilterBuilder) -> B,
     ) -> IcuNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_normalization_token_filter_members {
+    pub struct r#type;
+    pub struct name;
 }
 
 /// Builder for [`IcuNormalizationTokenFilter`].
@@ -8475,6 +9579,7 @@ impl<S0, S1> IcuNormalizationTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> IcuNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8486,6 +9591,7 @@ impl<S1> IcuNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet, S1)>
 }
 
 impl<S0> IcuNormalizationTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<IcuNormalizationType>,
@@ -8496,9 +9602,13 @@ impl<S0> IcuNormalizationTokenFilterBuilder<(S0, crate::typed::builder::NotSet)>
     }
 }
 
-impl IcuNormalizationTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IcuNormalizationTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`IcuNormalizationTokenFilter`].
-    pub fn build(self) -> IcuNormalizationTokenFilter {
+    pub fn build(self) -> IcuNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<icu_normalization_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<icu_normalization_token_filter_members::name>,
+    {
         IcuNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8507,36 +9617,26 @@ impl IcuNormalizationTokenFilterBuilder<(crate::typed::builder::Set, crate::type
     }
 }
 
-impl
-    From<
-        IcuNormalizationTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IcuNormalizationTokenFilter
+impl<S0, S1> crate::typed::builder::Build for IcuNormalizationTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<icu_normalization_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_normalization_token_filter_members::name>,
 {
-    fn from(
-        builder: IcuNormalizationTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IcuNormalizationTokenFilter;
+
+    fn build(self) -> IcuNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> IcuNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuNormalizationTokenFilter { match r#type {} }
-}
-
-impl
-    IcuNormalizationTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<IcuNormalizationTokenFilterBuilder<(S0, S1)>> for IcuNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<icu_normalization_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_normalization_token_filter_members::name>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> IcuNormalizationTokenFilter { match name {} }
+    fn from(builder: IcuNormalizationTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8559,19 +9659,28 @@ pub struct IcuTokenizer {
 
 impl IcuTokenizer {
     /// Creates a builder for [`IcuTokenizer`].
+    ///
+    /// Required: `type`, `rule_files`.
     pub fn builder() -> IcuTokenizerBuilder {
         IcuTokenizerBuilder::new()
     }
 
     /// Creates a [`IcuTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuTokenizerBuilder,
-        )
-            -> IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `type`, `rule_files`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuTokenizer>>(
+        f: impl FnOnce(IcuTokenizerBuilder) -> B,
     ) -> IcuTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_tokenizer_members {
+    pub struct r#type;
+    pub struct rule_files;
 }
 
 /// Builder for [`IcuTokenizer`].
@@ -8617,6 +9726,7 @@ impl<S0, S1> IcuTokenizerBuilder<(S0, S1)> {
 }
 
 impl<S1> IcuTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8628,6 +9738,7 @@ impl<S1> IcuTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IcuTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn rule_files(
         self,
         value: impl Into<String>,
@@ -8638,9 +9749,13 @@ impl<S0> IcuTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IcuTokenizerBuilder<(S0, S1)> {
     /// Builds a [`IcuTokenizer`].
-    pub fn build(self) -> IcuTokenizer {
+    pub fn build(self) -> IcuTokenizer
+    where
+        S0: crate::typed::builder::IsSet<icu_tokenizer_members::r#type>,
+        S1: crate::typed::builder::IsSet<icu_tokenizer_members::rule_files>,
+    {
         IcuTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8649,26 +9764,26 @@ impl IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IcuTokenizer
+impl<S0, S1> crate::typed::builder::Build for IcuTokenizerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<icu_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_tokenizer_members::rule_files>,
 {
-    fn from(
-        builder: IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IcuTokenizer;
+
+    fn build(self) -> IcuTokenizer {
+        Self::build(self)
     }
 }
 
-impl<S1> IcuTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuTokenizer { match r#type {} }
-}
-
-impl IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `rule_files` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_files: crate::typed::builder::MissingRequiredField) -> IcuTokenizer { match rule_files {} }
+impl<S0, S1> From<IcuTokenizerBuilder<(S0, S1)>> for IcuTokenizer
+where
+    S0: crate::typed::builder::IsSet<icu_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_tokenizer_members::rule_files>,
+{
+    fn from(builder: IcuTokenizerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8691,21 +9806,28 @@ pub struct IcuTransformTokenFilter {
 
 impl IcuTransformTokenFilter {
     /// Creates a builder for [`IcuTransformTokenFilter`].
+    ///
+    /// Required: `type`, `id`.
     pub fn builder() -> IcuTransformTokenFilterBuilder {
         IcuTransformTokenFilterBuilder::new()
     }
 
     /// Creates a [`IcuTransformTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IcuTransformTokenFilterBuilder,
-        ) -> IcuTransformTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = IcuTransformTokenFilter>>(
+        f: impl FnOnce(IcuTransformTokenFilterBuilder) -> B,
     ) -> IcuTransformTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IcuTransformTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod icu_transform_token_filter_members {
+    pub struct r#type;
+    pub struct id;
 }
 
 /// Builder for [`IcuTransformTokenFilter`].
@@ -8769,6 +9891,7 @@ impl<S0, S1> IcuTransformTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> IcuTransformTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8780,6 +9903,7 @@ impl<S1> IcuTransformTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IcuTransformTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<String>,
@@ -8790,9 +9914,13 @@ impl<S0> IcuTransformTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IcuTransformTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IcuTransformTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`IcuTransformTokenFilter`].
-    pub fn build(self) -> IcuTransformTokenFilter {
+    pub fn build(self) -> IcuTransformTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<icu_transform_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<icu_transform_token_filter_members::id>,
+    {
         IcuTransformTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8802,29 +9930,26 @@ impl IcuTransformTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<IcuTransformTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IcuTransformTokenFilter
+impl<S0, S1> crate::typed::builder::Build for IcuTransformTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<icu_transform_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_transform_token_filter_members::id>,
 {
-    fn from(
-        builder: IcuTransformTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IcuTransformTokenFilter;
+
+    fn build(self) -> IcuTransformTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> IcuTransformTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IcuTransformTokenFilter { match r#type {} }
-}
-
-impl IcuTransformTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> IcuTransformTokenFilter { match id {} }
+impl<S0, S1> From<IcuTransformTokenFilterBuilder<(S0, S1)>> for IcuTransformTokenFilter
+where
+    S0: crate::typed::builder::IsSet<icu_transform_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<icu_transform_token_filter_members::id>,
+{
+    fn from(builder: IcuTransformTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8836,18 +9961,27 @@ pub struct IndicNormalizationTokenFilter {
 
 impl IndicNormalizationTokenFilter {
     /// Creates a builder for [`IndicNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IndicNormalizationTokenFilterBuilder {
         IndicNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`IndicNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicNormalizationTokenFilterBuilder,
-        ) -> IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicNormalizationTokenFilter>>(
+        f: impl FnOnce(IndicNormalizationTokenFilterBuilder) -> B,
     ) -> IndicNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indic_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IndicNormalizationTokenFilter`].
@@ -8890,6 +10024,7 @@ impl<S0> IndicNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl IndicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8900,9 +10035,12 @@ impl IndicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndicNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`IndicNormalizationTokenFilter`].
-    pub fn build(self) -> IndicNormalizationTokenFilter {
+    pub fn build(self) -> IndicNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<indic_normalization_token_filter_members::r#type>,
+    {
         IndicNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -8910,18 +10048,24 @@ impl IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for IndicNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for IndicNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indic_normalization_token_filter_members::r#type>,
 {
-    fn from(builder: IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = IndicNormalizationTokenFilter;
+
+    fn build(self) -> IndicNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl IndicNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IndicNormalizationTokenFilter { match r#type {} }
+impl<S0> From<IndicNormalizationTokenFilterBuilder<(S0,)>> for IndicNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<indic_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: IndicNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8937,18 +10081,27 @@ pub struct IndonesianAnalyzer {
 
 impl IndonesianAnalyzer {
     /// Creates a builder for [`IndonesianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IndonesianAnalyzerBuilder {
         IndonesianAnalyzerBuilder::new()
     }
 
     /// Creates a [`IndonesianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndonesianAnalyzerBuilder,
-        ) -> IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndonesianAnalyzer>>(
+        f: impl FnOnce(IndonesianAnalyzerBuilder) -> B,
     ) -> IndonesianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndonesianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indonesian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IndonesianAnalyzer`].
@@ -9027,6 +10180,7 @@ impl<S0> IndonesianAnalyzerBuilder<(S0,)> {
 }
 
 impl IndonesianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9037,9 +10191,12 @@ impl IndonesianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndonesianAnalyzerBuilder<(S0,)> {
     /// Builds a [`IndonesianAnalyzer`].
-    pub fn build(self) -> IndonesianAnalyzer {
+    pub fn build(self) -> IndonesianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<indonesian_analyzer_members::r#type>,
+    {
         IndonesianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -9049,16 +10206,24 @@ impl IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)>> for IndonesianAnalyzer {
-    fn from(builder: IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndonesianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indonesian_analyzer_members::r#type>,
+{
+    type Output = IndonesianAnalyzer;
+
+    fn build(self) -> IndonesianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl IndonesianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IndonesianAnalyzer { match r#type {} }
+impl<S0> From<IndonesianAnalyzerBuilder<(S0,)>> for IndonesianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<indonesian_analyzer_members::r#type>,
+{
+    fn from(builder: IndonesianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9074,16 +10239,27 @@ pub struct IrishAnalyzer {
 
 impl IrishAnalyzer {
     /// Creates a builder for [`IrishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> IrishAnalyzerBuilder {
         IrishAnalyzerBuilder::new()
     }
 
     /// Creates a [`IrishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IrishAnalyzerBuilder) -> IrishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = IrishAnalyzer>>(
+        f: impl FnOnce(IrishAnalyzerBuilder) -> B,
     ) -> IrishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IrishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod irish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`IrishAnalyzer`].
@@ -9162,6 +10338,7 @@ impl<S0> IrishAnalyzerBuilder<(S0,)> {
 }
 
 impl IrishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9172,9 +10349,12 @@ impl IrishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IrishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IrishAnalyzerBuilder<(S0,)> {
     /// Builds a [`IrishAnalyzer`].
-    pub fn build(self) -> IrishAnalyzer {
+    pub fn build(self) -> IrishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<irish_analyzer_members::r#type>,
+    {
         IrishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -9184,16 +10364,24 @@ impl IrishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IrishAnalyzerBuilder<(crate::typed::builder::Set,)>> for IrishAnalyzer {
-    fn from(builder: IrishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IrishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<irish_analyzer_members::r#type>,
+{
+    type Output = IrishAnalyzer;
+
+    fn build(self) -> IrishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl IrishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> IrishAnalyzer { match r#type {} }
+impl<S0> From<IrishAnalyzerBuilder<(S0,)>> for IrishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<irish_analyzer_members::r#type>,
+{
+    fn from(builder: IrishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9209,16 +10397,27 @@ pub struct ItalianAnalyzer {
 
 impl ItalianAnalyzer {
     /// Creates a builder for [`ItalianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ItalianAnalyzerBuilder {
         ItalianAnalyzerBuilder::new()
     }
 
     /// Creates a [`ItalianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ItalianAnalyzerBuilder) -> ItalianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ItalianAnalyzer>>(
+        f: impl FnOnce(ItalianAnalyzerBuilder) -> B,
     ) -> ItalianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ItalianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod italian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ItalianAnalyzer`].
@@ -9297,6 +10496,7 @@ impl<S0> ItalianAnalyzerBuilder<(S0,)> {
 }
 
 impl ItalianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9307,9 +10507,12 @@ impl ItalianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ItalianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ItalianAnalyzerBuilder<(S0,)> {
     /// Builds a [`ItalianAnalyzer`].
-    pub fn build(self) -> ItalianAnalyzer {
+    pub fn build(self) -> ItalianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<italian_analyzer_members::r#type>,
+    {
         ItalianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -9319,16 +10522,24 @@ impl ItalianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ItalianAnalyzerBuilder<(crate::typed::builder::Set,)>> for ItalianAnalyzer {
-    fn from(builder: ItalianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ItalianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<italian_analyzer_members::r#type>,
+{
+    type Output = ItalianAnalyzer;
+
+    fn build(self) -> ItalianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl ItalianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ItalianAnalyzer { match r#type {} }
+impl<S0> From<ItalianAnalyzerBuilder<(S0,)>> for ItalianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<italian_analyzer_members::r#type>,
+{
+    fn from(builder: ItalianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9342,18 +10553,27 @@ pub struct JaStopTokenFilter {
 
 impl JaStopTokenFilter {
     /// Creates a builder for [`JaStopTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> JaStopTokenFilterBuilder {
         JaStopTokenFilterBuilder::new()
     }
 
     /// Creates a [`JaStopTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JaStopTokenFilterBuilder,
-        ) -> JaStopTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = JaStopTokenFilter>>(
+        f: impl FnOnce(JaStopTokenFilterBuilder) -> B,
     ) -> JaStopTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JaStopTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ja_stop_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`JaStopTokenFilter`].
@@ -9410,6 +10630,7 @@ impl<S0> JaStopTokenFilterBuilder<(S0,)> {
 }
 
 impl JaStopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9420,9 +10641,12 @@ impl JaStopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl JaStopTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> JaStopTokenFilterBuilder<(S0,)> {
     /// Builds a [`JaStopTokenFilter`].
-    pub fn build(self) -> JaStopTokenFilter {
+    pub fn build(self) -> JaStopTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<ja_stop_token_filter_members::r#type>,
+    {
         JaStopTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -9431,16 +10655,24 @@ impl JaStopTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<JaStopTokenFilterBuilder<(crate::typed::builder::Set,)>> for JaStopTokenFilter {
-    fn from(builder: JaStopTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for JaStopTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ja_stop_token_filter_members::r#type>,
+{
+    type Output = JaStopTokenFilter;
+
+    fn build(self) -> JaStopTokenFilter {
+        Self::build(self)
     }
 }
 
-impl JaStopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> JaStopTokenFilter { match r#type {} }
+impl<S0> From<JaStopTokenFilterBuilder<(S0,)>> for JaStopTokenFilter
+where
+    S0: crate::typed::builder::IsSet<ja_stop_token_filter_members::r#type>,
+{
+    fn from(builder: JaStopTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9452,18 +10684,27 @@ pub struct KStemTokenFilter {
 
 impl KStemTokenFilter {
     /// Creates a builder for [`KStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KStemTokenFilterBuilder {
         KStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`KStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KStemTokenFilterBuilder,
-        ) -> KStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KStemTokenFilter>>(
+        f: impl FnOnce(KStemTokenFilterBuilder) -> B,
     ) -> KStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod k_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KStemTokenFilter`].
@@ -9506,6 +10747,7 @@ impl<S0> KStemTokenFilterBuilder<(S0,)> {
 }
 
 impl KStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9516,9 +10758,12 @@ impl KStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`KStemTokenFilter`].
-    pub fn build(self) -> KStemTokenFilter {
+    pub fn build(self) -> KStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<k_stem_token_filter_members::r#type>,
+    {
         KStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -9526,16 +10771,24 @@ impl KStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for KStemTokenFilter {
-    fn from(builder: KStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<k_stem_token_filter_members::r#type>,
+{
+    type Output = KStemTokenFilter;
+
+    fn build(self) -> KStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl KStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KStemTokenFilter { match r#type {} }
+impl<S0> From<KStemTokenFilterBuilder<(S0,)>> for KStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<k_stem_token_filter_members::r#type>,
+{
+    fn from(builder: KStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9560,21 +10813,28 @@ pub struct KeepTypesTokenFilter {
 
 impl KeepTypesTokenFilter {
     /// Creates a builder for [`KeepTypesTokenFilter`].
+    ///
+    /// Required: `type`, `types`.
     pub fn builder() -> KeepTypesTokenFilterBuilder {
         KeepTypesTokenFilterBuilder::new()
     }
 
     /// Creates a [`KeepTypesTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeepTypesTokenFilterBuilder,
-        ) -> KeepTypesTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `types`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeepTypesTokenFilter>>(
+        f: impl FnOnce(KeepTypesTokenFilterBuilder) -> B,
     ) -> KeepTypesTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeepTypesTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keep_types_token_filter_members {
+    pub struct r#type;
+    pub struct types;
 }
 
 /// Builder for [`KeepTypesTokenFilter`].
@@ -9637,6 +10897,7 @@ impl<S0, S1> KeepTypesTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> KeepTypesTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9648,7 +10909,7 @@ impl<S1> KeepTypesTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> KeepTypesTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// List of token types to keep or remove.
+    /// **Required.** List of token types to keep or remove.
     pub fn types(
         self,
         value: impl Into<Vec<String>>,
@@ -9682,9 +10943,13 @@ impl<S0> KeepTypesTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl KeepTypesTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> KeepTypesTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`KeepTypesTokenFilter`].
-    pub fn build(self) -> KeepTypesTokenFilter {
+    pub fn build(self) -> KeepTypesTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<keep_types_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<keep_types_token_filter_members::types>,
+    {
         KeepTypesTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -9694,29 +10959,26 @@ impl KeepTypesTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<KeepTypesTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for KeepTypesTokenFilter
+impl<S0, S1> crate::typed::builder::Build for KeepTypesTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<keep_types_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<keep_types_token_filter_members::types>,
 {
-    fn from(
-        builder: KeepTypesTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KeepTypesTokenFilter;
+
+    fn build(self) -> KeepTypesTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> KeepTypesTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeepTypesTokenFilter { match r#type {} }
-}
-
-impl KeepTypesTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `types` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, types: crate::typed::builder::MissingRequiredField) -> KeepTypesTokenFilter { match types {} }
+impl<S0, S1> From<KeepTypesTokenFilterBuilder<(S0, S1)>> for KeepTypesTokenFilter
+where
+    S0: crate::typed::builder::IsSet<keep_types_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<keep_types_token_filter_members::types>,
+{
+    fn from(builder: KeepTypesTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9740,18 +11002,27 @@ pub struct KeepWordsTokenFilter {
 
 impl KeepWordsTokenFilter {
     /// Creates a builder for [`KeepWordsTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeepWordsTokenFilterBuilder {
         KeepWordsTokenFilterBuilder::new()
     }
 
     /// Creates a [`KeepWordsTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeepWordsTokenFilterBuilder,
-        ) -> KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeepWordsTokenFilter>>(
+        f: impl FnOnce(KeepWordsTokenFilterBuilder) -> B,
     ) -> KeepWordsTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeepWordsTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keep_words_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeepWordsTokenFilter`].
@@ -9850,6 +11121,7 @@ impl<S0> KeepWordsTokenFilterBuilder<(S0,)> {
 }
 
 impl KeepWordsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9860,9 +11132,12 @@ impl KeepWordsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeepWordsTokenFilterBuilder<(S0,)> {
     /// Builds a [`KeepWordsTokenFilter`].
-    pub fn build(self) -> KeepWordsTokenFilter {
+    pub fn build(self) -> KeepWordsTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<keep_words_token_filter_members::r#type>,
+    {
         KeepWordsTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -9873,16 +11148,24 @@ impl KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)>> for KeepWordsTokenFilter {
-    fn from(builder: KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KeepWordsTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keep_words_token_filter_members::r#type>,
+{
+    type Output = KeepWordsTokenFilter;
+
+    fn build(self) -> KeepWordsTokenFilter {
+        Self::build(self)
     }
 }
 
-impl KeepWordsTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeepWordsTokenFilter { match r#type {} }
+impl<S0> From<KeepWordsTokenFilterBuilder<(S0,)>> for KeepWordsTokenFilter
+where
+    S0: crate::typed::builder::IsSet<keep_words_token_filter_members::r#type>,
+{
+    fn from(builder: KeepWordsTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9894,16 +11177,27 @@ pub struct KeywordAnalyzer {
 
 impl KeywordAnalyzer {
     /// Creates a builder for [`KeywordAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeywordAnalyzerBuilder {
         KeywordAnalyzerBuilder::new()
     }
 
     /// Creates a [`KeywordAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(KeywordAnalyzerBuilder) -> KeywordAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeywordAnalyzer>>(
+        f: impl FnOnce(KeywordAnalyzerBuilder) -> B,
     ) -> KeywordAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeywordAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keyword_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeywordAnalyzer`].
@@ -9946,6 +11240,7 @@ impl<S0> KeywordAnalyzerBuilder<(S0,)> {
 }
 
 impl KeywordAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -9956,9 +11251,12 @@ impl KeywordAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeywordAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeywordAnalyzerBuilder<(S0,)> {
     /// Builds a [`KeywordAnalyzer`].
-    pub fn build(self) -> KeywordAnalyzer {
+    pub fn build(self) -> KeywordAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<keyword_analyzer_members::r#type>,
+    {
         KeywordAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -9966,16 +11264,24 @@ impl KeywordAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeywordAnalyzerBuilder<(crate::typed::builder::Set,)>> for KeywordAnalyzer {
-    fn from(builder: KeywordAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KeywordAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keyword_analyzer_members::r#type>,
+{
+    type Output = KeywordAnalyzer;
+
+    fn build(self) -> KeywordAnalyzer {
+        Self::build(self)
     }
 }
 
-impl KeywordAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeywordAnalyzer { match r#type {} }
+impl<S0> From<KeywordAnalyzerBuilder<(S0,)>> for KeywordAnalyzer
+where
+    S0: crate::typed::builder::IsSet<keyword_analyzer_members::r#type>,
+{
+    fn from(builder: KeywordAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10028,18 +11334,27 @@ impl From<&str> for KeywordMarkerTokenFilterKeywords {
 
 impl KeywordMarkerTokenFilter {
     /// Creates a builder for [`KeywordMarkerTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeywordMarkerTokenFilterBuilder {
         KeywordMarkerTokenFilterBuilder::new()
     }
 
     /// Creates a [`KeywordMarkerTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeywordMarkerTokenFilterBuilder,
-        ) -> KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeywordMarkerTokenFilter>>(
+        f: impl FnOnce(KeywordMarkerTokenFilterBuilder) -> B,
     ) -> KeywordMarkerTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeywordMarkerTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keyword_marker_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeywordMarkerTokenFilter`].
@@ -10146,6 +11461,7 @@ impl<S0> KeywordMarkerTokenFilterBuilder<(S0,)> {
 }
 
 impl KeywordMarkerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10156,9 +11472,12 @@ impl KeywordMarkerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeywordMarkerTokenFilterBuilder<(S0,)> {
     /// Builds a [`KeywordMarkerTokenFilter`].
-    pub fn build(self) -> KeywordMarkerTokenFilter {
+    pub fn build(self) -> KeywordMarkerTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<keyword_marker_token_filter_members::r#type>,
+    {
         KeywordMarkerTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10170,18 +11489,24 @@ impl KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for KeywordMarkerTokenFilter
+impl<S0> crate::typed::builder::Build for KeywordMarkerTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keyword_marker_token_filter_members::r#type>,
 {
-    fn from(builder: KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = KeywordMarkerTokenFilter;
+
+    fn build(self) -> KeywordMarkerTokenFilter {
+        Self::build(self)
     }
 }
 
-impl KeywordMarkerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeywordMarkerTokenFilter { match r#type {} }
+impl<S0> From<KeywordMarkerTokenFilterBuilder<(S0,)>> for KeywordMarkerTokenFilter
+where
+    S0: crate::typed::builder::IsSet<keyword_marker_token_filter_members::r#type>,
+{
+    fn from(builder: KeywordMarkerTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10193,18 +11518,27 @@ pub struct KeywordRepeatTokenFilter {
 
 impl KeywordRepeatTokenFilter {
     /// Creates a builder for [`KeywordRepeatTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeywordRepeatTokenFilterBuilder {
         KeywordRepeatTokenFilterBuilder::new()
     }
 
     /// Creates a [`KeywordRepeatTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeywordRepeatTokenFilterBuilder,
-        ) -> KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeywordRepeatTokenFilter>>(
+        f: impl FnOnce(KeywordRepeatTokenFilterBuilder) -> B,
     ) -> KeywordRepeatTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeywordRepeatTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keyword_repeat_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeywordRepeatTokenFilter`].
@@ -10247,6 +11581,7 @@ impl<S0> KeywordRepeatTokenFilterBuilder<(S0,)> {
 }
 
 impl KeywordRepeatTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10257,9 +11592,12 @@ impl KeywordRepeatTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeywordRepeatTokenFilterBuilder<(S0,)> {
     /// Builds a [`KeywordRepeatTokenFilter`].
-    pub fn build(self) -> KeywordRepeatTokenFilter {
+    pub fn build(self) -> KeywordRepeatTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<keyword_repeat_token_filter_members::r#type>,
+    {
         KeywordRepeatTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10267,18 +11605,24 @@ impl KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for KeywordRepeatTokenFilter
+impl<S0> crate::typed::builder::Build for KeywordRepeatTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keyword_repeat_token_filter_members::r#type>,
 {
-    fn from(builder: KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = KeywordRepeatTokenFilter;
+
+    fn build(self) -> KeywordRepeatTokenFilter {
+        Self::build(self)
     }
 }
 
-impl KeywordRepeatTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeywordRepeatTokenFilter { match r#type {} }
+impl<S0> From<KeywordRepeatTokenFilterBuilder<(S0,)>> for KeywordRepeatTokenFilter
+where
+    S0: crate::typed::builder::IsSet<keyword_repeat_token_filter_members::r#type>,
+{
+    fn from(builder: KeywordRepeatTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10292,18 +11636,27 @@ pub struct KeywordTokenizer {
 
 impl KeywordTokenizer {
     /// Creates a builder for [`KeywordTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KeywordTokenizerBuilder {
         KeywordTokenizerBuilder::new()
     }
 
     /// Creates a [`KeywordTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KeywordTokenizerBuilder,
-        ) -> KeywordTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KeywordTokenizer>>(
+        f: impl FnOnce(KeywordTokenizerBuilder) -> B,
     ) -> KeywordTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KeywordTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod keyword_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KeywordTokenizer`].
@@ -10360,6 +11713,7 @@ impl<S0> KeywordTokenizerBuilder<(S0,)> {
 }
 
 impl KeywordTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10370,9 +11724,12 @@ impl KeywordTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KeywordTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KeywordTokenizerBuilder<(S0,)> {
     /// Builds a [`KeywordTokenizer`].
-    pub fn build(self) -> KeywordTokenizer {
+    pub fn build(self) -> KeywordTokenizer
+    where
+        S0: crate::typed::builder::IsSet<keyword_tokenizer_members::r#type>,
+    {
         KeywordTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10381,16 +11738,24 @@ impl KeywordTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KeywordTokenizerBuilder<(crate::typed::builder::Set,)>> for KeywordTokenizer {
-    fn from(builder: KeywordTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KeywordTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<keyword_tokenizer_members::r#type>,
+{
+    type Output = KeywordTokenizer;
+
+    fn build(self) -> KeywordTokenizer {
+        Self::build(self)
     }
 }
 
-impl KeywordTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KeywordTokenizer { match r#type {} }
+impl<S0> From<KeywordTokenizerBuilder<(S0,)>> for KeywordTokenizer
+where
+    S0: crate::typed::builder::IsSet<keyword_tokenizer_members::r#type>,
+{
+    fn from(builder: KeywordTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10404,18 +11769,27 @@ pub struct KuromojiAnalyzer {
 
 impl KuromojiAnalyzer {
     /// Creates a builder for [`KuromojiAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> KuromojiAnalyzerBuilder {
         KuromojiAnalyzerBuilder::new()
     }
 
     /// Creates a [`KuromojiAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiAnalyzerBuilder,
-        ) -> KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiAnalyzer>>(
+        f: impl FnOnce(KuromojiAnalyzerBuilder) -> B,
     ) -> KuromojiAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`KuromojiAnalyzer`].
@@ -10472,6 +11846,7 @@ impl<S0> KuromojiAnalyzerBuilder<(S0,)> {
 }
 
 impl KuromojiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10482,9 +11857,12 @@ impl KuromojiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KuromojiAnalyzerBuilder<(S0,)> {
     /// Builds a [`KuromojiAnalyzer`].
-    pub fn build(self) -> KuromojiAnalyzer {
+    pub fn build(self) -> KuromojiAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_analyzer_members::r#type>,
+    {
         KuromojiAnalyzer {
             r#type: self.r#type.unwrap(),
             mode: self.mode,
@@ -10493,16 +11871,24 @@ impl KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)>> for KuromojiAnalyzer {
-    fn from(builder: KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KuromojiAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_analyzer_members::r#type>,
+{
+    type Output = KuromojiAnalyzer;
+
+    fn build(self) -> KuromojiAnalyzer {
+        Self::build(self)
     }
 }
 
-impl KuromojiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiAnalyzer { match r#type {} }
+impl<S0> From<KuromojiAnalyzerBuilder<(S0,)>> for KuromojiAnalyzer
+where
+    S0: crate::typed::builder::IsSet<kuromoji_analyzer_members::r#type>,
+{
+    fn from(builder: KuromojiAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10516,22 +11902,29 @@ pub struct KuromojiIterationMarkCharFilter {
 
 impl KuromojiIterationMarkCharFilter {
     /// Creates a builder for [`KuromojiIterationMarkCharFilter`].
+    ///
+    /// Required: `type`, `normalize_kana`, `normalize_kanji`.
     pub fn builder() -> KuromojiIterationMarkCharFilterBuilder {
         KuromojiIterationMarkCharFilterBuilder::new()
     }
 
     /// Creates a [`KuromojiIterationMarkCharFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiIterationMarkCharFilterBuilder,
-        ) -> KuromojiIterationMarkCharFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `normalize_kana`, `normalize_kanji`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiIterationMarkCharFilter>>(
+        f: impl FnOnce(KuromojiIterationMarkCharFilterBuilder) -> B,
     ) -> KuromojiIterationMarkCharFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiIterationMarkCharFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_iteration_mark_char_filter_members {
+    pub struct r#type;
+    pub struct normalize_kana;
+    pub struct normalize_kanji;
 }
 
 /// Builder for [`KuromojiIterationMarkCharFilter`].
@@ -10592,6 +11985,7 @@ impl<S0, S1, S2> KuromojiIterationMarkCharFilterBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> KuromojiIterationMarkCharFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10603,6 +11997,7 @@ impl<S1, S2> KuromojiIterationMarkCharFilterBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2> KuromojiIterationMarkCharFilterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn normalize_kana(
         self,
         value: bool,
@@ -10614,6 +12009,7 @@ impl<S0, S2> KuromojiIterationMarkCharFilterBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1> KuromojiIterationMarkCharFilterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn normalize_kanji(
         self,
         value: bool,
@@ -10624,15 +12020,18 @@ impl<S0, S1> KuromojiIterationMarkCharFilterBuilder<(S0, S1, crate::typed::build
     }
 }
 
-impl
-    KuromojiIterationMarkCharFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> KuromojiIterationMarkCharFilterBuilder<(S0, S1, S2)> {
     /// Builds a [`KuromojiIterationMarkCharFilter`].
-    pub fn build(self) -> KuromojiIterationMarkCharFilter {
+    pub fn build(self) -> KuromojiIterationMarkCharFilter
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<
+            kuromoji_iteration_mark_char_filter_members::normalize_kana,
+        >,
+        S2: crate::typed::builder::IsSet<
+            kuromoji_iteration_mark_char_filter_members::normalize_kanji,
+        >,
+    {
         KuromojiIterationMarkCharFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10642,54 +12041,30 @@ impl
     }
 }
 
-impl
-    From<
-        KuromojiIterationMarkCharFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for KuromojiIterationMarkCharFilter
+impl<S0, S1, S2> crate::typed::builder::Build
+    for KuromojiIterationMarkCharFilterBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::normalize_kana>,
+    S2: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::normalize_kanji>,
 {
-    fn from(
-        builder: KuromojiIterationMarkCharFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KuromojiIterationMarkCharFilter;
+
+    fn build(self) -> KuromojiIterationMarkCharFilter {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> KuromojiIterationMarkCharFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiIterationMarkCharFilter { match r#type {} }
-}
-
-impl<S2>
-    KuromojiIterationMarkCharFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<KuromojiIterationMarkCharFilterBuilder<(S0, S1, S2)>>
+    for KuromojiIterationMarkCharFilter
+where
+    S0: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::normalize_kana>,
+    S2: crate::typed::builder::IsSet<kuromoji_iteration_mark_char_filter_members::normalize_kanji>,
 {
-    /// `normalize_kana` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, normalize_kana: crate::typed::builder::MissingRequiredField) -> KuromojiIterationMarkCharFilter { match normalize_kana {} }
-}
-
-impl
-    KuromojiIterationMarkCharFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `normalize_kanji` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, normalize_kanji: crate::typed::builder::MissingRequiredField) -> KuromojiIterationMarkCharFilter { match normalize_kanji {} }
+    fn from(builder: KuromojiIterationMarkCharFilterBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10702,21 +12077,28 @@ pub struct KuromojiPartOfSpeechTokenFilter {
 
 impl KuromojiPartOfSpeechTokenFilter {
     /// Creates a builder for [`KuromojiPartOfSpeechTokenFilter`].
+    ///
+    /// Required: `type`, `stoptags`.
     pub fn builder() -> KuromojiPartOfSpeechTokenFilterBuilder {
         KuromojiPartOfSpeechTokenFilterBuilder::new()
     }
 
     /// Creates a [`KuromojiPartOfSpeechTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiPartOfSpeechTokenFilterBuilder,
-        ) -> KuromojiPartOfSpeechTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `stoptags`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiPartOfSpeechTokenFilter>>(
+        f: impl FnOnce(KuromojiPartOfSpeechTokenFilterBuilder) -> B,
     ) -> KuromojiPartOfSpeechTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiPartOfSpeechTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_part_of_speech_token_filter_members {
+    pub struct r#type;
+    pub struct stoptags;
 }
 
 /// Builder for [`KuromojiPartOfSpeechTokenFilter`].
@@ -10769,6 +12151,7 @@ impl<S0, S1> KuromojiPartOfSpeechTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> KuromojiPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10780,6 +12163,7 @@ impl<S1> KuromojiPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0> KuromojiPartOfSpeechTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stoptags(
         self,
         value: impl Into<Vec<String>>,
@@ -10813,11 +12197,13 @@ impl<S0> KuromojiPartOfSpeechTokenFilterBuilder<(S0, crate::typed::builder::Set)
     }
 }
 
-impl
-    KuromojiPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> KuromojiPartOfSpeechTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`KuromojiPartOfSpeechTokenFilter`].
-    pub fn build(self) -> KuromojiPartOfSpeechTokenFilter {
+    pub fn build(self) -> KuromojiPartOfSpeechTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::stoptags>,
+    {
         KuromojiPartOfSpeechTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10826,39 +12212,27 @@ impl
     }
 }
 
-impl
-    From<
-        KuromojiPartOfSpeechTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for KuromojiPartOfSpeechTokenFilter
+impl<S0, S1> crate::typed::builder::Build for KuromojiPartOfSpeechTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::stoptags>,
 {
-    fn from(
-        builder: KuromojiPartOfSpeechTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KuromojiPartOfSpeechTokenFilter;
+
+    fn build(self) -> KuromojiPartOfSpeechTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> KuromojiPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiPartOfSpeechTokenFilter { match r#type {} }
-}
-
-impl
-    KuromojiPartOfSpeechTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<KuromojiPartOfSpeechTokenFilterBuilder<(S0, S1)>>
+    for KuromojiPartOfSpeechTokenFilter
+where
+    S0: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_part_of_speech_token_filter_members::stoptags>,
 {
-    /// `stoptags` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stoptags: crate::typed::builder::MissingRequiredField) -> KuromojiPartOfSpeechTokenFilter { match stoptags {} }
+    fn from(builder: KuromojiPartOfSpeechTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10871,21 +12245,28 @@ pub struct KuromojiReadingFormTokenFilter {
 
 impl KuromojiReadingFormTokenFilter {
     /// Creates a builder for [`KuromojiReadingFormTokenFilter`].
+    ///
+    /// Required: `type`, `use_romaji`.
     pub fn builder() -> KuromojiReadingFormTokenFilterBuilder {
         KuromojiReadingFormTokenFilterBuilder::new()
     }
 
     /// Creates a [`KuromojiReadingFormTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiReadingFormTokenFilterBuilder,
-        ) -> KuromojiReadingFormTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `use_romaji`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiReadingFormTokenFilter>>(
+        f: impl FnOnce(KuromojiReadingFormTokenFilterBuilder) -> B,
     ) -> KuromojiReadingFormTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiReadingFormTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_reading_form_token_filter_members {
+    pub struct r#type;
+    pub struct use_romaji;
 }
 
 /// Builder for [`KuromojiReadingFormTokenFilter`].
@@ -10938,6 +12319,7 @@ impl<S0, S1> KuromojiReadingFormTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> KuromojiReadingFormTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10949,6 +12331,7 @@ impl<S1> KuromojiReadingFormTokenFilterBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0> KuromojiReadingFormTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn use_romaji(
         self,
         value: bool,
@@ -10959,11 +12342,13 @@ impl<S0> KuromojiReadingFormTokenFilterBuilder<(S0, crate::typed::builder::NotSe
     }
 }
 
-impl
-    KuromojiReadingFormTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> KuromojiReadingFormTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`KuromojiReadingFormTokenFilter`].
-    pub fn build(self) -> KuromojiReadingFormTokenFilter {
+    pub fn build(self) -> KuromojiReadingFormTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::use_romaji>,
+    {
         KuromojiReadingFormTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -10972,39 +12357,27 @@ impl
     }
 }
 
-impl
-    From<
-        KuromojiReadingFormTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for KuromojiReadingFormTokenFilter
+impl<S0, S1> crate::typed::builder::Build for KuromojiReadingFormTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::use_romaji>,
 {
-    fn from(
-        builder: KuromojiReadingFormTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KuromojiReadingFormTokenFilter;
+
+    fn build(self) -> KuromojiReadingFormTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> KuromojiReadingFormTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiReadingFormTokenFilter { match r#type {} }
-}
-
-impl
-    KuromojiReadingFormTokenFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<KuromojiReadingFormTokenFilterBuilder<(S0, S1)>>
+    for KuromojiReadingFormTokenFilter
+where
+    S0: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_reading_form_token_filter_members::use_romaji>,
 {
-    /// `use_romaji` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, use_romaji: crate::typed::builder::MissingRequiredField) -> KuromojiReadingFormTokenFilter { match use_romaji {} }
+    fn from(builder: KuromojiReadingFormTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11017,21 +12390,28 @@ pub struct KuromojiStemmerTokenFilter {
 
 impl KuromojiStemmerTokenFilter {
     /// Creates a builder for [`KuromojiStemmerTokenFilter`].
+    ///
+    /// Required: `type`, `minimum_length`.
     pub fn builder() -> KuromojiStemmerTokenFilterBuilder {
         KuromojiStemmerTokenFilterBuilder::new()
     }
 
     /// Creates a [`KuromojiStemmerTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiStemmerTokenFilterBuilder,
-        ) -> KuromojiStemmerTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `minimum_length`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiStemmerTokenFilter>>(
+        f: impl FnOnce(KuromojiStemmerTokenFilterBuilder) -> B,
     ) -> KuromojiStemmerTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiStemmerTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_stemmer_token_filter_members {
+    pub struct r#type;
+    pub struct minimum_length;
 }
 
 /// Builder for [`KuromojiStemmerTokenFilter`].
@@ -11084,6 +12464,7 @@ impl<S0, S1> KuromojiStemmerTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11095,6 +12476,7 @@ impl<S1> KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> KuromojiStemmerTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn minimum_length(
         self,
         value: i32,
@@ -11105,9 +12487,13 @@ impl<S0> KuromojiStemmerTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> KuromojiStemmerTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`KuromojiStemmerTokenFilter`].
-    pub fn build(self) -> KuromojiStemmerTokenFilter {
+    pub fn build(self) -> KuromojiStemmerTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::minimum_length>,
+    {
         KuromojiStemmerTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -11116,33 +12502,26 @@ impl KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for KuromojiStemmerTokenFilter
+impl<S0, S1> crate::typed::builder::Build for KuromojiStemmerTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::minimum_length>,
 {
-    fn from(
-        builder: KuromojiStemmerTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = KuromojiStemmerTokenFilter;
+
+    fn build(self) -> KuromojiStemmerTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiStemmerTokenFilter { match r#type {} }
-}
-
-impl
-    KuromojiStemmerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<KuromojiStemmerTokenFilterBuilder<(S0, S1)>> for KuromojiStemmerTokenFilter
+where
+    S0: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_stemmer_token_filter_members::minimum_length>,
 {
-    /// `minimum_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, minimum_length: crate::typed::builder::MissingRequiredField) -> KuromojiStemmerTokenFilter { match minimum_length {} }
+    fn from(builder: KuromojiStemmerTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -11177,21 +12556,28 @@ pub struct KuromojiTokenizer {
 
 impl KuromojiTokenizer {
     /// Creates a builder for [`KuromojiTokenizer`].
+    ///
+    /// Required: `type`, `mode`.
     pub fn builder() -> KuromojiTokenizerBuilder {
         KuromojiTokenizerBuilder::new()
     }
 
     /// Creates a [`KuromojiTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            KuromojiTokenizerBuilder,
-        ) -> KuromojiTokenizerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `mode`.
+    pub fn of<B: crate::typed::builder::Build<Output = KuromojiTokenizer>>(
+        f: impl FnOnce(KuromojiTokenizerBuilder) -> B,
     ) -> KuromojiTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KuromojiTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kuromoji_tokenizer_members {
+    pub struct r#type;
+    pub struct mode;
 }
 
 /// Builder for [`KuromojiTokenizer`].
@@ -11331,6 +12717,7 @@ impl<S0, S1> KuromojiTokenizerBuilder<(S0, S1)> {
 }
 
 impl<S1> KuromojiTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11342,6 +12729,7 @@ impl<S1> KuromojiTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> KuromojiTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn mode(
         self,
         value: impl Into<KuromojiTokenizationMode>,
@@ -11352,9 +12740,13 @@ impl<S0> KuromojiTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl KuromojiTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> KuromojiTokenizerBuilder<(S0, S1)> {
     /// Builds a [`KuromojiTokenizer`].
-    pub fn build(self) -> KuromojiTokenizer {
+    pub fn build(self) -> KuromojiTokenizer
+    where
+        S0: crate::typed::builder::IsSet<kuromoji_tokenizer_members::r#type>,
+        S1: crate::typed::builder::IsSet<kuromoji_tokenizer_members::mode>,
+    {
         KuromojiTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -11369,26 +12761,26 @@ impl KuromojiTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<KuromojiTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for KuromojiTokenizer
+impl<S0, S1> crate::typed::builder::Build for KuromojiTokenizerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<kuromoji_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_tokenizer_members::mode>,
 {
-    fn from(
-        builder: KuromojiTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = KuromojiTokenizer;
+
+    fn build(self) -> KuromojiTokenizer {
+        Self::build(self)
     }
 }
 
-impl<S1> KuromojiTokenizerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> KuromojiTokenizer { match r#type {} }
-}
-
-impl KuromojiTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> KuromojiTokenizer { match mode {} }
+impl<S0, S1> From<KuromojiTokenizerBuilder<(S0, S1)>> for KuromojiTokenizer
+where
+    S0: crate::typed::builder::IsSet<kuromoji_tokenizer_members::r#type>,
+    S1: crate::typed::builder::IsSet<kuromoji_tokenizer_members::mode>,
+{
+    fn from(builder: KuromojiTokenizerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11404,16 +12796,27 @@ pub struct LatvianAnalyzer {
 
 impl LatvianAnalyzer {
     /// Creates a builder for [`LatvianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LatvianAnalyzerBuilder {
         LatvianAnalyzerBuilder::new()
     }
 
     /// Creates a [`LatvianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(LatvianAnalyzerBuilder) -> LatvianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LatvianAnalyzer>>(
+        f: impl FnOnce(LatvianAnalyzerBuilder) -> B,
     ) -> LatvianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LatvianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod latvian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LatvianAnalyzer`].
@@ -11492,6 +12895,7 @@ impl<S0> LatvianAnalyzerBuilder<(S0,)> {
 }
 
 impl LatvianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11502,9 +12906,12 @@ impl LatvianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LatvianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LatvianAnalyzerBuilder<(S0,)> {
     /// Builds a [`LatvianAnalyzer`].
-    pub fn build(self) -> LatvianAnalyzer {
+    pub fn build(self) -> LatvianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<latvian_analyzer_members::r#type>,
+    {
         LatvianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -11514,16 +12921,24 @@ impl LatvianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LatvianAnalyzerBuilder<(crate::typed::builder::Set,)>> for LatvianAnalyzer {
-    fn from(builder: LatvianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LatvianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<latvian_analyzer_members::r#type>,
+{
+    type Output = LatvianAnalyzer;
+
+    fn build(self) -> LatvianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl LatvianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LatvianAnalyzer { match r#type {} }
+impl<S0> From<LatvianAnalyzerBuilder<(S0,)>> for LatvianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<latvian_analyzer_members::r#type>,
+{
+    fn from(builder: LatvianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11541,18 +12956,27 @@ pub struct LengthTokenFilter {
 
 impl LengthTokenFilter {
     /// Creates a builder for [`LengthTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LengthTokenFilterBuilder {
         LengthTokenFilterBuilder::new()
     }
 
     /// Creates a [`LengthTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LengthTokenFilterBuilder,
-        ) -> LengthTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LengthTokenFilter>>(
+        f: impl FnOnce(LengthTokenFilterBuilder) -> B,
     ) -> LengthTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LengthTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod length_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LengthTokenFilter`].
@@ -11625,6 +13049,7 @@ impl<S0> LengthTokenFilterBuilder<(S0,)> {
 }
 
 impl LengthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11635,9 +13060,12 @@ impl LengthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LengthTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LengthTokenFilterBuilder<(S0,)> {
     /// Builds a [`LengthTokenFilter`].
-    pub fn build(self) -> LengthTokenFilter {
+    pub fn build(self) -> LengthTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<length_token_filter_members::r#type>,
+    {
         LengthTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -11647,16 +13075,24 @@ impl LengthTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LengthTokenFilterBuilder<(crate::typed::builder::Set,)>> for LengthTokenFilter {
-    fn from(builder: LengthTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LengthTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<length_token_filter_members::r#type>,
+{
+    type Output = LengthTokenFilter;
+
+    fn build(self) -> LengthTokenFilter {
+        Self::build(self)
     }
 }
 
-impl LengthTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LengthTokenFilter { match r#type {} }
+impl<S0> From<LengthTokenFilterBuilder<(S0,)>> for LengthTokenFilter
+where
+    S0: crate::typed::builder::IsSet<length_token_filter_members::r#type>,
+{
+    fn from(builder: LengthTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11668,16 +13104,27 @@ pub struct LetterTokenizer {
 
 impl LetterTokenizer {
     /// Creates a builder for [`LetterTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LetterTokenizerBuilder {
         LetterTokenizerBuilder::new()
     }
 
     /// Creates a [`LetterTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(LetterTokenizerBuilder) -> LetterTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LetterTokenizer>>(
+        f: impl FnOnce(LetterTokenizerBuilder) -> B,
     ) -> LetterTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LetterTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod letter_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LetterTokenizer`].
@@ -11720,6 +13167,7 @@ impl<S0> LetterTokenizerBuilder<(S0,)> {
 }
 
 impl LetterTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11730,9 +13178,12 @@ impl LetterTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LetterTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LetterTokenizerBuilder<(S0,)> {
     /// Builds a [`LetterTokenizer`].
-    pub fn build(self) -> LetterTokenizer {
+    pub fn build(self) -> LetterTokenizer
+    where
+        S0: crate::typed::builder::IsSet<letter_tokenizer_members::r#type>,
+    {
         LetterTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -11740,16 +13191,24 @@ impl LetterTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LetterTokenizerBuilder<(crate::typed::builder::Set,)>> for LetterTokenizer {
-    fn from(builder: LetterTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LetterTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<letter_tokenizer_members::r#type>,
+{
+    type Output = LetterTokenizer;
+
+    fn build(self) -> LetterTokenizer {
+        Self::build(self)
     }
 }
 
-impl LetterTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LetterTokenizer { match r#type {} }
+impl<S0> From<LetterTokenizerBuilder<(S0,)>> for LetterTokenizer
+where
+    S0: crate::typed::builder::IsSet<letter_tokenizer_members::r#type>,
+{
+    fn from(builder: LetterTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11767,18 +13226,27 @@ pub struct LimitTokenCountTokenFilter {
 
 impl LimitTokenCountTokenFilter {
     /// Creates a builder for [`LimitTokenCountTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LimitTokenCountTokenFilterBuilder {
         LimitTokenCountTokenFilterBuilder::new()
     }
 
     /// Creates a [`LimitTokenCountTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LimitTokenCountTokenFilterBuilder,
-        ) -> LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LimitTokenCountTokenFilter>>(
+        f: impl FnOnce(LimitTokenCountTokenFilterBuilder) -> B,
     ) -> LimitTokenCountTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LimitTokenCountTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod limit_token_count_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LimitTokenCountTokenFilter`].
@@ -11857,6 +13325,7 @@ impl<S0> LimitTokenCountTokenFilterBuilder<(S0,)> {
 }
 
 impl LimitTokenCountTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11867,9 +13336,12 @@ impl LimitTokenCountTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LimitTokenCountTokenFilterBuilder<(S0,)> {
     /// Builds a [`LimitTokenCountTokenFilter`].
-    pub fn build(self) -> LimitTokenCountTokenFilter {
+    pub fn build(self) -> LimitTokenCountTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<limit_token_count_token_filter_members::r#type>,
+    {
         LimitTokenCountTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -11879,18 +13351,24 @@ impl LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for LimitTokenCountTokenFilter
+impl<S0> crate::typed::builder::Build for LimitTokenCountTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<limit_token_count_token_filter_members::r#type>,
 {
-    fn from(builder: LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = LimitTokenCountTokenFilter;
+
+    fn build(self) -> LimitTokenCountTokenFilter {
+        Self::build(self)
     }
 }
 
-impl LimitTokenCountTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LimitTokenCountTokenFilter { match r#type {} }
+impl<S0> From<LimitTokenCountTokenFilterBuilder<(S0,)>> for LimitTokenCountTokenFilter
+where
+    S0: crate::typed::builder::IsSet<limit_token_count_token_filter_members::r#type>,
+{
+    fn from(builder: LimitTokenCountTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11906,18 +13384,27 @@ pub struct LithuanianAnalyzer {
 
 impl LithuanianAnalyzer {
     /// Creates a builder for [`LithuanianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LithuanianAnalyzerBuilder {
         LithuanianAnalyzerBuilder::new()
     }
 
     /// Creates a [`LithuanianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LithuanianAnalyzerBuilder,
-        ) -> LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LithuanianAnalyzer>>(
+        f: impl FnOnce(LithuanianAnalyzerBuilder) -> B,
     ) -> LithuanianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LithuanianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lithuanian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LithuanianAnalyzer`].
@@ -11996,6 +13483,7 @@ impl<S0> LithuanianAnalyzerBuilder<(S0,)> {
 }
 
 impl LithuanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12006,9 +13494,12 @@ impl LithuanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LithuanianAnalyzerBuilder<(S0,)> {
     /// Builds a [`LithuanianAnalyzer`].
-    pub fn build(self) -> LithuanianAnalyzer {
+    pub fn build(self) -> LithuanianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<lithuanian_analyzer_members::r#type>,
+    {
         LithuanianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -12018,16 +13509,24 @@ impl LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)>> for LithuanianAnalyzer {
-    fn from(builder: LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LithuanianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<lithuanian_analyzer_members::r#type>,
+{
+    type Output = LithuanianAnalyzer;
+
+    fn build(self) -> LithuanianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl LithuanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LithuanianAnalyzer { match r#type {} }
+impl<S0> From<LithuanianAnalyzerBuilder<(S0,)>> for LithuanianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<lithuanian_analyzer_members::r#type>,
+{
+    fn from(builder: LithuanianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12037,18 +13536,27 @@ pub struct LowercaseNormalizer {
 
 impl LowercaseNormalizer {
     /// Creates a builder for [`LowercaseNormalizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LowercaseNormalizerBuilder {
         LowercaseNormalizerBuilder::new()
     }
 
     /// Creates a [`LowercaseNormalizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LowercaseNormalizerBuilder,
-        ) -> LowercaseNormalizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LowercaseNormalizer>>(
+        f: impl FnOnce(LowercaseNormalizerBuilder) -> B,
     ) -> LowercaseNormalizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LowercaseNormalizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lowercase_normalizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LowercaseNormalizer`].
@@ -12077,6 +13585,7 @@ impl<S0> LowercaseNormalizerBuilder<(S0,)> {
 }
 
 impl LowercaseNormalizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12087,25 +13596,36 @@ impl LowercaseNormalizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LowercaseNormalizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LowercaseNormalizerBuilder<(S0,)> {
     /// Builds a [`LowercaseNormalizer`].
-    pub fn build(self) -> LowercaseNormalizer {
+    pub fn build(self) -> LowercaseNormalizer
+    where
+        S0: crate::typed::builder::IsSet<lowercase_normalizer_members::r#type>,
+    {
         LowercaseNormalizer {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<LowercaseNormalizerBuilder<(crate::typed::builder::Set,)>> for LowercaseNormalizer {
-    fn from(builder: LowercaseNormalizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LowercaseNormalizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<lowercase_normalizer_members::r#type>,
+{
+    type Output = LowercaseNormalizer;
+
+    fn build(self) -> LowercaseNormalizer {
+        Self::build(self)
     }
 }
 
-impl LowercaseNormalizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LowercaseNormalizer { match r#type {} }
+impl<S0> From<LowercaseNormalizerBuilder<(S0,)>> for LowercaseNormalizer
+where
+    S0: crate::typed::builder::IsSet<lowercase_normalizer_members::r#type>,
+{
+    fn from(builder: LowercaseNormalizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12120,18 +13640,27 @@ pub struct LowercaseTokenFilter {
 
 impl LowercaseTokenFilter {
     /// Creates a builder for [`LowercaseTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LowercaseTokenFilterBuilder {
         LowercaseTokenFilterBuilder::new()
     }
 
     /// Creates a [`LowercaseTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LowercaseTokenFilterBuilder,
-        ) -> LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LowercaseTokenFilter>>(
+        f: impl FnOnce(LowercaseTokenFilterBuilder) -> B,
     ) -> LowercaseTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LowercaseTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lowercase_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LowercaseTokenFilter`].
@@ -12189,6 +13718,7 @@ impl<S0> LowercaseTokenFilterBuilder<(S0,)> {
 }
 
 impl LowercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12199,9 +13729,12 @@ impl LowercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LowercaseTokenFilterBuilder<(S0,)> {
     /// Builds a [`LowercaseTokenFilter`].
-    pub fn build(self) -> LowercaseTokenFilter {
+    pub fn build(self) -> LowercaseTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<lowercase_token_filter_members::r#type>,
+    {
         LowercaseTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12210,16 +13743,24 @@ impl LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)>> for LowercaseTokenFilter {
-    fn from(builder: LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LowercaseTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<lowercase_token_filter_members::r#type>,
+{
+    type Output = LowercaseTokenFilter;
+
+    fn build(self) -> LowercaseTokenFilter {
+        Self::build(self)
     }
 }
 
-impl LowercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LowercaseTokenFilter { match r#type {} }
+impl<S0> From<LowercaseTokenFilterBuilder<(S0,)>> for LowercaseTokenFilter
+where
+    S0: crate::typed::builder::IsSet<lowercase_token_filter_members::r#type>,
+{
+    fn from(builder: LowercaseTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -12241,18 +13782,27 @@ pub struct LowercaseTokenizer {
 
 impl LowercaseTokenizer {
     /// Creates a builder for [`LowercaseTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> LowercaseTokenizerBuilder {
         LowercaseTokenizerBuilder::new()
     }
 
     /// Creates a [`LowercaseTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LowercaseTokenizerBuilder,
-        ) -> LowercaseTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = LowercaseTokenizer>>(
+        f: impl FnOnce(LowercaseTokenizerBuilder) -> B,
     ) -> LowercaseTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LowercaseTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lowercase_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`LowercaseTokenizer`].
@@ -12295,6 +13845,7 @@ impl<S0> LowercaseTokenizerBuilder<(S0,)> {
 }
 
 impl LowercaseTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12305,9 +13856,12 @@ impl LowercaseTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LowercaseTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LowercaseTokenizerBuilder<(S0,)> {
     /// Builds a [`LowercaseTokenizer`].
-    pub fn build(self) -> LowercaseTokenizer {
+    pub fn build(self) -> LowercaseTokenizer
+    where
+        S0: crate::typed::builder::IsSet<lowercase_tokenizer_members::r#type>,
+    {
         LowercaseTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12315,16 +13869,24 @@ impl LowercaseTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LowercaseTokenizerBuilder<(crate::typed::builder::Set,)>> for LowercaseTokenizer {
-    fn from(builder: LowercaseTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LowercaseTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<lowercase_tokenizer_members::r#type>,
+{
+    type Output = LowercaseTokenizer;
+
+    fn build(self) -> LowercaseTokenizer {
+        Self::build(self)
     }
 }
 
-impl LowercaseTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> LowercaseTokenizer { match r#type {} }
+impl<S0> From<LowercaseTokenizerBuilder<(S0,)>> for LowercaseTokenizer
+where
+    S0: crate::typed::builder::IsSet<lowercase_tokenizer_members::r#type>,
+{
+    fn from(builder: LowercaseTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12340,18 +13902,27 @@ pub struct MappingCharFilter {
 
 impl MappingCharFilter {
     /// Creates a builder for [`MappingCharFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> MappingCharFilterBuilder {
         MappingCharFilterBuilder::new()
     }
 
     /// Creates a [`MappingCharFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingCharFilterBuilder,
-        ) -> MappingCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = MappingCharFilter>>(
+        f: impl FnOnce(MappingCharFilterBuilder) -> B,
     ) -> MappingCharFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MappingCharFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod mapping_char_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`MappingCharFilter`].
@@ -12430,6 +14001,7 @@ impl<S0> MappingCharFilterBuilder<(S0,)> {
 }
 
 impl MappingCharFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12440,9 +14012,12 @@ impl MappingCharFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MappingCharFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MappingCharFilterBuilder<(S0,)> {
     /// Builds a [`MappingCharFilter`].
-    pub fn build(self) -> MappingCharFilter {
+    pub fn build(self) -> MappingCharFilter
+    where
+        S0: crate::typed::builder::IsSet<mapping_char_filter_members::r#type>,
+    {
         MappingCharFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12452,16 +14027,24 @@ impl MappingCharFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MappingCharFilterBuilder<(crate::typed::builder::Set,)>> for MappingCharFilter {
-    fn from(builder: MappingCharFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MappingCharFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<mapping_char_filter_members::r#type>,
+{
+    type Output = MappingCharFilter;
+
+    fn build(self) -> MappingCharFilter {
+        Self::build(self)
     }
 }
 
-impl MappingCharFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> MappingCharFilter { match r#type {} }
+impl<S0> From<MappingCharFilterBuilder<(S0,)>> for MappingCharFilter
+where
+    S0: crate::typed::builder::IsSet<mapping_char_filter_members::r#type>,
+{
+    fn from(builder: MappingCharFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12486,18 +14069,27 @@ pub struct MinHashTokenFilter {
 
 impl MinHashTokenFilter {
     /// Creates a builder for [`MinHashTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> MinHashTokenFilterBuilder {
         MinHashTokenFilterBuilder::new()
     }
 
     /// Creates a [`MinHashTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MinHashTokenFilterBuilder,
-        ) -> MinHashTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = MinHashTokenFilter>>(
+        f: impl FnOnce(MinHashTokenFilterBuilder) -> B,
     ) -> MinHashTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MinHashTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod min_hash_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`MinHashTokenFilter`].
@@ -12601,6 +14193,7 @@ impl<S0> MinHashTokenFilterBuilder<(S0,)> {
 }
 
 impl MinHashTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12611,9 +14204,12 @@ impl MinHashTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MinHashTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MinHashTokenFilterBuilder<(S0,)> {
     /// Builds a [`MinHashTokenFilter`].
-    pub fn build(self) -> MinHashTokenFilter {
+    pub fn build(self) -> MinHashTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<min_hash_token_filter_members::r#type>,
+    {
         MinHashTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12625,16 +14221,24 @@ impl MinHashTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MinHashTokenFilterBuilder<(crate::typed::builder::Set,)>> for MinHashTokenFilter {
-    fn from(builder: MinHashTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MinHashTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<min_hash_token_filter_members::r#type>,
+{
+    type Output = MinHashTokenFilter;
+
+    fn build(self) -> MinHashTokenFilter {
+        Self::build(self)
     }
 }
 
-impl MinHashTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> MinHashTokenFilter { match r#type {} }
+impl<S0> From<MinHashTokenFilterBuilder<(S0,)>> for MinHashTokenFilter
+where
+    S0: crate::typed::builder::IsSet<min_hash_token_filter_members::r#type>,
+{
+    fn from(builder: MinHashTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12651,21 +14255,28 @@ pub struct MultiplexerTokenFilter {
 
 impl MultiplexerTokenFilter {
     /// Creates a builder for [`MultiplexerTokenFilter`].
+    ///
+    /// Required: `type`, `filters`.
     pub fn builder() -> MultiplexerTokenFilterBuilder {
         MultiplexerTokenFilterBuilder::new()
     }
 
     /// Creates a [`MultiplexerTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiplexerTokenFilterBuilder,
-        ) -> MultiplexerTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `filters`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiplexerTokenFilter>>(
+        f: impl FnOnce(MultiplexerTokenFilterBuilder) -> B,
     ) -> MultiplexerTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiplexerTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multiplexer_token_filter_members {
+    pub struct r#type;
+    pub struct filters;
 }
 
 /// Builder for [`MultiplexerTokenFilter`].
@@ -12734,6 +14345,7 @@ impl<S0, S1> MultiplexerTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> MultiplexerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12745,7 +14357,7 @@ impl<S1> MultiplexerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MultiplexerTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A list of token filters to apply to incoming tokens.
+    /// **Required.** A list of token filters to apply to incoming tokens.
     pub fn filters(
         self,
         value: impl Into<Vec<String>>,
@@ -12779,9 +14391,13 @@ impl<S0> MultiplexerTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl MultiplexerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MultiplexerTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`MultiplexerTokenFilter`].
-    pub fn build(self) -> MultiplexerTokenFilter {
+    pub fn build(self) -> MultiplexerTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<multiplexer_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<multiplexer_token_filter_members::filters>,
+    {
         MultiplexerTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12791,29 +14407,26 @@ impl MultiplexerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<MultiplexerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MultiplexerTokenFilter
+impl<S0, S1> crate::typed::builder::Build for MultiplexerTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<multiplexer_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<multiplexer_token_filter_members::filters>,
 {
-    fn from(
-        builder: MultiplexerTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiplexerTokenFilter;
+
+    fn build(self) -> MultiplexerTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> MultiplexerTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> MultiplexerTokenFilter { match r#type {} }
-}
-
-impl MultiplexerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `filters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filters: crate::typed::builder::MissingRequiredField) -> MultiplexerTokenFilter { match filters {} }
+impl<S0, S1> From<MultiplexerTokenFilterBuilder<(S0, S1)>> for MultiplexerTokenFilter
+where
+    S0: crate::typed::builder::IsSet<multiplexer_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<multiplexer_token_filter_members::filters>,
+{
+    fn from(builder: MultiplexerTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12834,18 +14447,27 @@ pub struct NGramTokenFilter {
 
 impl NGramTokenFilter {
     /// Creates a builder for [`NGramTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NGramTokenFilterBuilder {
         NGramTokenFilterBuilder::new()
     }
 
     /// Creates a [`NGramTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NGramTokenFilterBuilder,
-        ) -> NGramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NGramTokenFilter>>(
+        f: impl FnOnce(NGramTokenFilterBuilder) -> B,
     ) -> NGramTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NGramTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod n_gram_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NGramTokenFilter`].
@@ -12939,6 +14561,7 @@ impl<S0> NGramTokenFilterBuilder<(S0,)> {
 }
 
 impl NGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -12949,9 +14572,12 @@ impl NGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NGramTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NGramTokenFilterBuilder<(S0,)> {
     /// Builds a [`NGramTokenFilter`].
-    pub fn build(self) -> NGramTokenFilter {
+    pub fn build(self) -> NGramTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<n_gram_token_filter_members::r#type>,
+    {
         NGramTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -12962,16 +14588,24 @@ impl NGramTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NGramTokenFilterBuilder<(crate::typed::builder::Set,)>> for NGramTokenFilter {
-    fn from(builder: NGramTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NGramTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<n_gram_token_filter_members::r#type>,
+{
+    type Output = NGramTokenFilter;
+
+    fn build(self) -> NGramTokenFilter {
+        Self::build(self)
     }
 }
 
-impl NGramTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NGramTokenFilter { match r#type {} }
+impl<S0> From<NGramTokenFilterBuilder<(S0,)>> for NGramTokenFilter
+where
+    S0: crate::typed::builder::IsSet<n_gram_token_filter_members::r#type>,
+{
+    fn from(builder: NGramTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12991,16 +14625,27 @@ pub struct NGramTokenizer {
 
 impl NGramTokenizer {
     /// Creates a builder for [`NGramTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NGramTokenizerBuilder {
         NGramTokenizerBuilder::new()
     }
 
     /// Creates a [`NGramTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NGramTokenizerBuilder) -> NGramTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NGramTokenizer>>(
+        f: impl FnOnce(NGramTokenizerBuilder) -> B,
     ) -> NGramTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NGramTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod n_gram_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NGramTokenizer`].
@@ -13107,6 +14752,7 @@ impl<S0> NGramTokenizerBuilder<(S0,)> {
 }
 
 impl NGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13117,9 +14763,12 @@ impl NGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NGramTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NGramTokenizerBuilder<(S0,)> {
     /// Builds a [`NGramTokenizer`].
-    pub fn build(self) -> NGramTokenizer {
+    pub fn build(self) -> NGramTokenizer
+    where
+        S0: crate::typed::builder::IsSet<n_gram_tokenizer_members::r#type>,
+    {
         NGramTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -13131,16 +14780,24 @@ impl NGramTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NGramTokenizerBuilder<(crate::typed::builder::Set,)>> for NGramTokenizer {
-    fn from(builder: NGramTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NGramTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<n_gram_tokenizer_members::r#type>,
+{
+    type Output = NGramTokenizer;
+
+    fn build(self) -> NGramTokenizer {
+        Self::build(self)
     }
 }
 
-impl NGramTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NGramTokenizer { match r#type {} }
+impl<S0> From<NGramTokenizerBuilder<(S0,)>> for NGramTokenizer
+where
+    S0: crate::typed::builder::IsSet<n_gram_tokenizer_members::r#type>,
+{
+    fn from(builder: NGramTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13158,16 +14815,27 @@ pub struct NoriAnalyzer {
 
 impl NoriAnalyzer {
     /// Creates a builder for [`NoriAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NoriAnalyzerBuilder {
         NoriAnalyzerBuilder::new()
     }
 
     /// Creates a [`NoriAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NoriAnalyzerBuilder) -> NoriAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NoriAnalyzer>>(
+        f: impl FnOnce(NoriAnalyzerBuilder) -> B,
     ) -> NoriAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NoriAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nori_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NoriAnalyzer`].
@@ -13260,6 +14928,7 @@ impl<S0> NoriAnalyzerBuilder<(S0,)> {
 }
 
 impl NoriAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13270,9 +14939,12 @@ impl NoriAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NoriAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NoriAnalyzerBuilder<(S0,)> {
     /// Builds a [`NoriAnalyzer`].
-    pub fn build(self) -> NoriAnalyzer {
+    pub fn build(self) -> NoriAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<nori_analyzer_members::r#type>,
+    {
         NoriAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -13283,16 +14955,24 @@ impl NoriAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NoriAnalyzerBuilder<(crate::typed::builder::Set,)>> for NoriAnalyzer {
-    fn from(builder: NoriAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NoriAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nori_analyzer_members::r#type>,
+{
+    type Output = NoriAnalyzer;
+
+    fn build(self) -> NoriAnalyzer {
+        Self::build(self)
     }
 }
 
-impl NoriAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NoriAnalyzer { match r#type {} }
+impl<S0> From<NoriAnalyzerBuilder<(S0,)>> for NoriAnalyzer
+where
+    S0: crate::typed::builder::IsSet<nori_analyzer_members::r#type>,
+{
+    fn from(builder: NoriAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -13317,18 +14997,27 @@ pub struct NoriPartOfSpeechTokenFilter {
 
 impl NoriPartOfSpeechTokenFilter {
     /// Creates a builder for [`NoriPartOfSpeechTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NoriPartOfSpeechTokenFilterBuilder {
         NoriPartOfSpeechTokenFilterBuilder::new()
     }
 
     /// Creates a [`NoriPartOfSpeechTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NoriPartOfSpeechTokenFilterBuilder,
-        ) -> NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NoriPartOfSpeechTokenFilter>>(
+        f: impl FnOnce(NoriPartOfSpeechTokenFilterBuilder) -> B,
     ) -> NoriPartOfSpeechTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NoriPartOfSpeechTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nori_part_of_speech_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NoriPartOfSpeechTokenFilter`].
@@ -13394,6 +15083,7 @@ impl<S0> NoriPartOfSpeechTokenFilterBuilder<(S0,)> {
 }
 
 impl NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13404,9 +15094,12 @@ impl NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NoriPartOfSpeechTokenFilterBuilder<(S0,)> {
     /// Builds a [`NoriPartOfSpeechTokenFilter`].
-    pub fn build(self) -> NoriPartOfSpeechTokenFilter {
+    pub fn build(self) -> NoriPartOfSpeechTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<nori_part_of_speech_token_filter_members::r#type>,
+    {
         NoriPartOfSpeechTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -13415,18 +15108,24 @@ impl NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for NoriPartOfSpeechTokenFilter
+impl<S0> crate::typed::builder::Build for NoriPartOfSpeechTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nori_part_of_speech_token_filter_members::r#type>,
 {
-    fn from(builder: NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = NoriPartOfSpeechTokenFilter;
+
+    fn build(self) -> NoriPartOfSpeechTokenFilter {
+        Self::build(self)
     }
 }
 
-impl NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NoriPartOfSpeechTokenFilter { match r#type {} }
+impl<S0> From<NoriPartOfSpeechTokenFilterBuilder<(S0,)>> for NoriPartOfSpeechTokenFilter
+where
+    S0: crate::typed::builder::IsSet<nori_part_of_speech_token_filter_members::r#type>,
+{
+    fn from(builder: NoriPartOfSpeechTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13446,16 +15145,27 @@ pub struct NoriTokenizer {
 
 impl NoriTokenizer {
     /// Creates a builder for [`NoriTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NoriTokenizerBuilder {
         NoriTokenizerBuilder::new()
     }
 
     /// Creates a [`NoriTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NoriTokenizerBuilder) -> NoriTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NoriTokenizer>>(
+        f: impl FnOnce(NoriTokenizerBuilder) -> B,
     ) -> NoriTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NoriTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nori_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NoriTokenizer`].
@@ -13562,6 +15272,7 @@ impl<S0> NoriTokenizerBuilder<(S0,)> {
 }
 
 impl NoriTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13572,9 +15283,12 @@ impl NoriTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NoriTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NoriTokenizerBuilder<(S0,)> {
     /// Builds a [`NoriTokenizer`].
-    pub fn build(self) -> NoriTokenizer {
+    pub fn build(self) -> NoriTokenizer
+    where
+        S0: crate::typed::builder::IsSet<nori_tokenizer_members::r#type>,
+    {
         NoriTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -13586,16 +15300,24 @@ impl NoriTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NoriTokenizerBuilder<(crate::typed::builder::Set,)>> for NoriTokenizer {
-    fn from(builder: NoriTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NoriTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nori_tokenizer_members::r#type>,
+{
+    type Output = NoriTokenizer;
+
+    fn build(self) -> NoriTokenizer {
+        Self::build(self)
     }
 }
 
-impl NoriTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NoriTokenizer { match r#type {} }
+impl<S0> From<NoriTokenizerBuilder<(S0,)>> for NoriTokenizer
+where
+    S0: crate::typed::builder::IsSet<nori_tokenizer_members::r#type>,
+{
+    fn from(builder: NoriTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
@@ -13622,18 +15344,27 @@ pub struct NorwegianAnalyzer {
 
 impl NorwegianAnalyzer {
     /// Creates a builder for [`NorwegianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> NorwegianAnalyzerBuilder {
         NorwegianAnalyzerBuilder::new()
     }
 
     /// Creates a [`NorwegianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NorwegianAnalyzerBuilder,
-        ) -> NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = NorwegianAnalyzer>>(
+        f: impl FnOnce(NorwegianAnalyzerBuilder) -> B,
     ) -> NorwegianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NorwegianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod norwegian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`NorwegianAnalyzer`].
@@ -13712,6 +15443,7 @@ impl<S0> NorwegianAnalyzerBuilder<(S0,)> {
 }
 
 impl NorwegianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13722,9 +15454,12 @@ impl NorwegianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NorwegianAnalyzerBuilder<(S0,)> {
     /// Builds a [`NorwegianAnalyzer`].
-    pub fn build(self) -> NorwegianAnalyzer {
+    pub fn build(self) -> NorwegianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<norwegian_analyzer_members::r#type>,
+    {
         NorwegianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -13734,16 +15469,24 @@ impl NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)>> for NorwegianAnalyzer {
-    fn from(builder: NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NorwegianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<norwegian_analyzer_members::r#type>,
+{
+    type Output = NorwegianAnalyzer;
+
+    fn build(self) -> NorwegianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl NorwegianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> NorwegianAnalyzer { match r#type {} }
+impl<S0> From<NorwegianAnalyzerBuilder<(S0,)>> for NorwegianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<norwegian_analyzer_members::r#type>,
+{
+    fn from(builder: NorwegianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13765,18 +15508,27 @@ pub struct PathHierarchyTokenizer {
 
 impl PathHierarchyTokenizer {
     /// Creates a builder for [`PathHierarchyTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PathHierarchyTokenizerBuilder {
         PathHierarchyTokenizerBuilder::new()
     }
 
     /// Creates a [`PathHierarchyTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PathHierarchyTokenizerBuilder,
-        ) -> PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PathHierarchyTokenizer>>(
+        f: impl FnOnce(PathHierarchyTokenizerBuilder) -> B,
     ) -> PathHierarchyTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PathHierarchyTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod path_hierarchy_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PathHierarchyTokenizer`].
@@ -13904,6 +15656,7 @@ impl<S0> PathHierarchyTokenizerBuilder<(S0,)> {
 }
 
 impl PathHierarchyTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -13914,9 +15667,12 @@ impl PathHierarchyTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PathHierarchyTokenizerBuilder<(S0,)> {
     /// Builds a [`PathHierarchyTokenizer`].
-    pub fn build(self) -> PathHierarchyTokenizer {
+    pub fn build(self) -> PathHierarchyTokenizer
+    where
+        S0: crate::typed::builder::IsSet<path_hierarchy_tokenizer_members::r#type>,
+    {
         PathHierarchyTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -13929,16 +15685,24 @@ impl PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)>> for PathHierarchyTokenizer {
-    fn from(builder: PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PathHierarchyTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<path_hierarchy_tokenizer_members::r#type>,
+{
+    type Output = PathHierarchyTokenizer;
+
+    fn build(self) -> PathHierarchyTokenizer {
+        Self::build(self)
     }
 }
 
-impl PathHierarchyTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PathHierarchyTokenizer { match r#type {} }
+impl<S0> From<PathHierarchyTokenizerBuilder<(S0,)>> for PathHierarchyTokenizer
+where
+    S0: crate::typed::builder::IsSet<path_hierarchy_tokenizer_members::r#type>,
+{
+    fn from(builder: PathHierarchyTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13968,16 +15732,27 @@ pub struct PatternAnalyzer {
 
 impl PatternAnalyzer {
     /// Creates a builder for [`PatternAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PatternAnalyzerBuilder {
         PatternAnalyzerBuilder::new()
     }
 
     /// Creates a [`PatternAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PatternAnalyzerBuilder) -> PatternAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PatternAnalyzer>>(
+        f: impl FnOnce(PatternAnalyzerBuilder) -> B,
     ) -> PatternAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PatternAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pattern_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PatternAnalyzer`].
@@ -14098,6 +15873,7 @@ impl<S0> PatternAnalyzerBuilder<(S0,)> {
 }
 
 impl PatternAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14108,9 +15884,12 @@ impl PatternAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PatternAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PatternAnalyzerBuilder<(S0,)> {
     /// Builds a [`PatternAnalyzer`].
-    pub fn build(self) -> PatternAnalyzer {
+    pub fn build(self) -> PatternAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<pattern_analyzer_members::r#type>,
+    {
         PatternAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -14123,16 +15902,24 @@ impl PatternAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PatternAnalyzerBuilder<(crate::typed::builder::Set,)>> for PatternAnalyzer {
-    fn from(builder: PatternAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PatternAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<pattern_analyzer_members::r#type>,
+{
+    type Output = PatternAnalyzer;
+
+    fn build(self) -> PatternAnalyzer {
+        Self::build(self)
     }
 }
 
-impl PatternAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PatternAnalyzer { match r#type {} }
+impl<S0> From<PatternAnalyzerBuilder<(S0,)>> for PatternAnalyzer
+where
+    S0: crate::typed::builder::IsSet<pattern_analyzer_members::r#type>,
+{
+    fn from(builder: PatternAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14149,21 +15936,28 @@ pub struct PatternCaptureTokenFilter {
 
 impl PatternCaptureTokenFilter {
     /// Creates a builder for [`PatternCaptureTokenFilter`].
+    ///
+    /// Required: `type`, `patterns`.
     pub fn builder() -> PatternCaptureTokenFilterBuilder {
         PatternCaptureTokenFilterBuilder::new()
     }
 
     /// Creates a [`PatternCaptureTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PatternCaptureTokenFilterBuilder,
-        ) -> PatternCaptureTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `patterns`.
+    pub fn of<B: crate::typed::builder::Build<Output = PatternCaptureTokenFilter>>(
+        f: impl FnOnce(PatternCaptureTokenFilterBuilder) -> B,
     ) -> PatternCaptureTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PatternCaptureTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pattern_capture_token_filter_members {
+    pub struct r#type;
+    pub struct patterns;
 }
 
 /// Builder for [`PatternCaptureTokenFilter`].
@@ -14234,6 +16028,7 @@ impl<S0, S1> PatternCaptureTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> PatternCaptureTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14245,7 +16040,7 @@ impl<S1> PatternCaptureTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PatternCaptureTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A list of regular expressions to match.
+    /// **Required.** A list of regular expressions to match.
     pub fn patterns(
         self,
         value: impl Into<Vec<String>>,
@@ -14279,9 +16074,13 @@ impl<S0> PatternCaptureTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl PatternCaptureTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PatternCaptureTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`PatternCaptureTokenFilter`].
-    pub fn build(self) -> PatternCaptureTokenFilter {
+    pub fn build(self) -> PatternCaptureTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<pattern_capture_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<pattern_capture_token_filter_members::patterns>,
+    {
         PatternCaptureTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -14291,30 +16090,26 @@ impl PatternCaptureTokenFilterBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<PatternCaptureTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PatternCaptureTokenFilter
+impl<S0, S1> crate::typed::builder::Build for PatternCaptureTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<pattern_capture_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_capture_token_filter_members::patterns>,
 {
-    fn from(
-        builder: PatternCaptureTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PatternCaptureTokenFilter;
+
+    fn build(self) -> PatternCaptureTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> PatternCaptureTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PatternCaptureTokenFilter { match r#type {} }
-}
-
-impl PatternCaptureTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, patterns: crate::typed::builder::MissingRequiredField) -> PatternCaptureTokenFilter { match patterns {} }
+impl<S0, S1> From<PatternCaptureTokenFilterBuilder<(S0, S1)>> for PatternCaptureTokenFilter
+where
+    S0: crate::typed::builder::IsSet<pattern_capture_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_capture_token_filter_members::patterns>,
+{
+    fn from(builder: PatternCaptureTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14331,21 +16126,28 @@ pub struct PatternReplaceCharFilter {
 
 impl PatternReplaceCharFilter {
     /// Creates a builder for [`PatternReplaceCharFilter`].
+    ///
+    /// Required: `type`, `pattern`.
     pub fn builder() -> PatternReplaceCharFilterBuilder {
         PatternReplaceCharFilterBuilder::new()
     }
 
     /// Creates a [`PatternReplaceCharFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PatternReplaceCharFilterBuilder,
-        ) -> PatternReplaceCharFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = PatternReplaceCharFilter>>(
+        f: impl FnOnce(PatternReplaceCharFilterBuilder) -> B,
     ) -> PatternReplaceCharFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PatternReplaceCharFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pattern_replace_char_filter_members {
+    pub struct r#type;
+    pub struct pattern;
 }
 
 /// Builder for [`PatternReplaceCharFilter`].
@@ -14423,6 +16225,7 @@ impl<S0, S1> PatternReplaceCharFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> PatternReplaceCharFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14434,6 +16237,7 @@ impl<S1> PatternReplaceCharFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PatternReplaceCharFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -14444,9 +16248,13 @@ impl<S0> PatternReplaceCharFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl PatternReplaceCharFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PatternReplaceCharFilterBuilder<(S0, S1)> {
     /// Builds a [`PatternReplaceCharFilter`].
-    pub fn build(self) -> PatternReplaceCharFilter {
+    pub fn build(self) -> PatternReplaceCharFilter
+    where
+        S0: crate::typed::builder::IsSet<pattern_replace_char_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<pattern_replace_char_filter_members::pattern>,
+    {
         PatternReplaceCharFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -14457,29 +16265,26 @@ impl PatternReplaceCharFilterBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<PatternReplaceCharFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PatternReplaceCharFilter
+impl<S0, S1> crate::typed::builder::Build for PatternReplaceCharFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<pattern_replace_char_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_replace_char_filter_members::pattern>,
 {
-    fn from(
-        builder: PatternReplaceCharFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PatternReplaceCharFilter;
+
+    fn build(self) -> PatternReplaceCharFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> PatternReplaceCharFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PatternReplaceCharFilter { match r#type {} }
-}
-
-impl PatternReplaceCharFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> PatternReplaceCharFilter { match pattern {} }
+impl<S0, S1> From<PatternReplaceCharFilterBuilder<(S0, S1)>> for PatternReplaceCharFilter
+where
+    S0: crate::typed::builder::IsSet<pattern_replace_char_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_replace_char_filter_members::pattern>,
+{
+    fn from(builder: PatternReplaceCharFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14501,21 +16306,28 @@ pub struct PatternReplaceTokenFilter {
 
 impl PatternReplaceTokenFilter {
     /// Creates a builder for [`PatternReplaceTokenFilter`].
+    ///
+    /// Required: `type`, `pattern`.
     pub fn builder() -> PatternReplaceTokenFilterBuilder {
         PatternReplaceTokenFilterBuilder::new()
     }
 
     /// Creates a [`PatternReplaceTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PatternReplaceTokenFilterBuilder,
-        ) -> PatternReplaceTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = PatternReplaceTokenFilter>>(
+        f: impl FnOnce(PatternReplaceTokenFilterBuilder) -> B,
     ) -> PatternReplaceTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PatternReplaceTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pattern_replace_token_filter_members {
+    pub struct r#type;
+    pub struct pattern;
 }
 
 /// Builder for [`PatternReplaceTokenFilter`].
@@ -14609,6 +16421,7 @@ impl<S0, S1> PatternReplaceTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> PatternReplaceTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14620,7 +16433,7 @@ impl<S1> PatternReplaceTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PatternReplaceTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Regular expression, written in Java’s regular expression syntax. The filter replaces token substrings matching this pattern with the substring in the `replacement` parameter.
+    /// **Required.** Regular expression, written in Java’s regular expression syntax. The filter replaces token substrings matching this pattern with the substring in the `replacement` parameter.
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -14631,9 +16444,13 @@ impl<S0> PatternReplaceTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl PatternReplaceTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PatternReplaceTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`PatternReplaceTokenFilter`].
-    pub fn build(self) -> PatternReplaceTokenFilter {
+    pub fn build(self) -> PatternReplaceTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<pattern_replace_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<pattern_replace_token_filter_members::pattern>,
+    {
         PatternReplaceTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -14645,30 +16462,26 @@ impl PatternReplaceTokenFilterBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<PatternReplaceTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PatternReplaceTokenFilter
+impl<S0, S1> crate::typed::builder::Build for PatternReplaceTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<pattern_replace_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_replace_token_filter_members::pattern>,
 {
-    fn from(
-        builder: PatternReplaceTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PatternReplaceTokenFilter;
+
+    fn build(self) -> PatternReplaceTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> PatternReplaceTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PatternReplaceTokenFilter { match r#type {} }
-}
-
-impl PatternReplaceTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> PatternReplaceTokenFilter { match pattern {} }
+impl<S0, S1> From<PatternReplaceTokenFilterBuilder<(S0, S1)>> for PatternReplaceTokenFilter
+where
+    S0: crate::typed::builder::IsSet<pattern_replace_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<pattern_replace_token_filter_members::pattern>,
+{
+    fn from(builder: PatternReplaceTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14686,18 +16499,27 @@ pub struct PatternTokenizer {
 
 impl PatternTokenizer {
     /// Creates a builder for [`PatternTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PatternTokenizerBuilder {
         PatternTokenizerBuilder::new()
     }
 
     /// Creates a [`PatternTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PatternTokenizerBuilder,
-        ) -> PatternTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PatternTokenizer>>(
+        f: impl FnOnce(PatternTokenizerBuilder) -> B,
     ) -> PatternTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PatternTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pattern_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PatternTokenizer`].
@@ -14782,6 +16604,7 @@ impl<S0> PatternTokenizerBuilder<(S0,)> {
 }
 
 impl PatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14792,9 +16615,12 @@ impl PatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PatternTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PatternTokenizerBuilder<(S0,)> {
     /// Builds a [`PatternTokenizer`].
-    pub fn build(self) -> PatternTokenizer {
+    pub fn build(self) -> PatternTokenizer
+    where
+        S0: crate::typed::builder::IsSet<pattern_tokenizer_members::r#type>,
+    {
         PatternTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -14805,16 +16631,24 @@ impl PatternTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PatternTokenizerBuilder<(crate::typed::builder::Set,)>> for PatternTokenizer {
-    fn from(builder: PatternTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PatternTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<pattern_tokenizer_members::r#type>,
+{
+    type Output = PatternTokenizer;
+
+    fn build(self) -> PatternTokenizer {
+        Self::build(self)
     }
 }
 
-impl PatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PatternTokenizer { match r#type {} }
+impl<S0> From<PatternTokenizerBuilder<(S0,)>> for PatternTokenizer
+where
+    S0: crate::typed::builder::IsSet<pattern_tokenizer_members::r#type>,
+{
+    fn from(builder: PatternTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14828,16 +16662,27 @@ pub struct PersianAnalyzer {
 
 impl PersianAnalyzer {
     /// Creates a builder for [`PersianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PersianAnalyzerBuilder {
         PersianAnalyzerBuilder::new()
     }
 
     /// Creates a [`PersianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PersianAnalyzerBuilder) -> PersianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PersianAnalyzer>>(
+        f: impl FnOnce(PersianAnalyzerBuilder) -> B,
     ) -> PersianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PersianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod persian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PersianAnalyzer`].
@@ -14894,6 +16739,7 @@ impl<S0> PersianAnalyzerBuilder<(S0,)> {
 }
 
 impl PersianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -14904,9 +16750,12 @@ impl PersianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PersianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PersianAnalyzerBuilder<(S0,)> {
     /// Builds a [`PersianAnalyzer`].
-    pub fn build(self) -> PersianAnalyzer {
+    pub fn build(self) -> PersianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<persian_analyzer_members::r#type>,
+    {
         PersianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -14915,16 +16764,24 @@ impl PersianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PersianAnalyzerBuilder<(crate::typed::builder::Set,)>> for PersianAnalyzer {
-    fn from(builder: PersianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PersianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<persian_analyzer_members::r#type>,
+{
+    type Output = PersianAnalyzer;
+
+    fn build(self) -> PersianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl PersianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PersianAnalyzer { match r#type {} }
+impl<S0> From<PersianAnalyzerBuilder<(S0,)>> for PersianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<persian_analyzer_members::r#type>,
+{
+    fn from(builder: PersianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14936,18 +16793,27 @@ pub struct PersianNormalizationTokenFilter {
 
 impl PersianNormalizationTokenFilter {
     /// Creates a builder for [`PersianNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PersianNormalizationTokenFilterBuilder {
         PersianNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`PersianNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PersianNormalizationTokenFilterBuilder,
-        ) -> PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PersianNormalizationTokenFilter>>(
+        f: impl FnOnce(PersianNormalizationTokenFilterBuilder) -> B,
     ) -> PersianNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PersianNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod persian_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PersianNormalizationTokenFilter`].
@@ -14990,6 +16856,7 @@ impl<S0> PersianNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl PersianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15000,9 +16867,12 @@ impl PersianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PersianNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`PersianNormalizationTokenFilter`].
-    pub fn build(self) -> PersianNormalizationTokenFilter {
+    pub fn build(self) -> PersianNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<persian_normalization_token_filter_members::r#type>,
+    {
         PersianNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15010,20 +16880,24 @@ impl PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for PersianNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for PersianNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<persian_normalization_token_filter_members::r#type>,
 {
-    fn from(
-        builder: PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = PersianNormalizationTokenFilter;
+
+    fn build(self) -> PersianNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl PersianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PersianNormalizationTokenFilter { match r#type {} }
+impl<S0> From<PersianNormalizationTokenFilterBuilder<(S0,)>> for PersianNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<persian_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: PersianNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15035,18 +16909,27 @@ pub struct PersianStemTokenFilter {
 
 impl PersianStemTokenFilter {
     /// Creates a builder for [`PersianStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PersianStemTokenFilterBuilder {
         PersianStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`PersianStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PersianStemTokenFilterBuilder,
-        ) -> PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PersianStemTokenFilter>>(
+        f: impl FnOnce(PersianStemTokenFilterBuilder) -> B,
     ) -> PersianStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PersianStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod persian_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PersianStemTokenFilter`].
@@ -15089,6 +16972,7 @@ impl<S0> PersianStemTokenFilterBuilder<(S0,)> {
 }
 
 impl PersianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15099,9 +16983,12 @@ impl PersianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PersianStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`PersianStemTokenFilter`].
-    pub fn build(self) -> PersianStemTokenFilter {
+    pub fn build(self) -> PersianStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<persian_stem_token_filter_members::r#type>,
+    {
         PersianStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15109,16 +16996,24 @@ impl PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for PersianStemTokenFilter {
-    fn from(builder: PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PersianStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<persian_stem_token_filter_members::r#type>,
+{
+    type Output = PersianStemTokenFilter;
+
+    fn build(self) -> PersianStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl PersianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PersianStemTokenFilter { match r#type {} }
+impl<S0> From<PersianStemTokenFilterBuilder<(S0,)>> for PersianStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<persian_stem_token_filter_members::r#type>,
+{
+    fn from(builder: PersianStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -15234,21 +17129,28 @@ impl From<Vec<PhoneticLanguage>> for PhoneticTokenFilterLanguageset {
 
 impl PhoneticTokenFilter {
     /// Creates a builder for [`PhoneticTokenFilter`].
+    ///
+    /// Required: `type`, `encoder`.
     pub fn builder() -> PhoneticTokenFilterBuilder {
         PhoneticTokenFilterBuilder::new()
     }
 
     /// Creates a [`PhoneticTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PhoneticTokenFilterBuilder,
-        ) -> PhoneticTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `encoder`.
+    pub fn of<B: crate::typed::builder::Build<Output = PhoneticTokenFilter>>(
+        f: impl FnOnce(PhoneticTokenFilterBuilder) -> B,
     ) -> PhoneticTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PhoneticTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod phonetic_token_filter_members {
+    pub struct r#type;
+    pub struct encoder;
 }
 
 /// Builder for [`PhoneticTokenFilter`].
@@ -15366,6 +17268,7 @@ impl<S0, S1> PhoneticTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> PhoneticTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15377,6 +17280,7 @@ impl<S1> PhoneticTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PhoneticTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn encoder(
         self,
         value: impl Into<PhoneticEncoder>,
@@ -15387,9 +17291,13 @@ impl<S0> PhoneticTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl PhoneticTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PhoneticTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`PhoneticTokenFilter`].
-    pub fn build(self) -> PhoneticTokenFilter {
+    pub fn build(self) -> PhoneticTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<phonetic_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<phonetic_token_filter_members::encoder>,
+    {
         PhoneticTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15403,29 +17311,26 @@ impl PhoneticTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<PhoneticTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PhoneticTokenFilter
+impl<S0, S1> crate::typed::builder::Build for PhoneticTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<phonetic_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<phonetic_token_filter_members::encoder>,
 {
-    fn from(
-        builder: PhoneticTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PhoneticTokenFilter;
+
+    fn build(self) -> PhoneticTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> PhoneticTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PhoneticTokenFilter { match r#type {} }
-}
-
-impl PhoneticTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `encoder` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, encoder: crate::typed::builder::MissingRequiredField) -> PhoneticTokenFilter { match encoder {} }
+impl<S0, S1> From<PhoneticTokenFilterBuilder<(S0, S1)>> for PhoneticTokenFilter
+where
+    S0: crate::typed::builder::IsSet<phonetic_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<phonetic_token_filter_members::encoder>,
+{
+    fn from(builder: PhoneticTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15437,18 +17342,27 @@ pub struct PorterStemTokenFilter {
 
 impl PorterStemTokenFilter {
     /// Creates a builder for [`PorterStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PorterStemTokenFilterBuilder {
         PorterStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`PorterStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PorterStemTokenFilterBuilder,
-        ) -> PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PorterStemTokenFilter>>(
+        f: impl FnOnce(PorterStemTokenFilterBuilder) -> B,
     ) -> PorterStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PorterStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod porter_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PorterStemTokenFilter`].
@@ -15491,6 +17405,7 @@ impl<S0> PorterStemTokenFilterBuilder<(S0,)> {
 }
 
 impl PorterStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15501,9 +17416,12 @@ impl PorterStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PorterStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`PorterStemTokenFilter`].
-    pub fn build(self) -> PorterStemTokenFilter {
+    pub fn build(self) -> PorterStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<porter_stem_token_filter_members::r#type>,
+    {
         PorterStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15511,16 +17429,24 @@ impl PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for PorterStemTokenFilter {
-    fn from(builder: PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PorterStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<porter_stem_token_filter_members::r#type>,
+{
+    type Output = PorterStemTokenFilter;
+
+    fn build(self) -> PorterStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl PorterStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PorterStemTokenFilter { match r#type {} }
+impl<S0> From<PorterStemTokenFilterBuilder<(S0,)>> for PorterStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<porter_stem_token_filter_members::r#type>,
+{
+    fn from(builder: PorterStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15536,18 +17462,27 @@ pub struct PortugueseAnalyzer {
 
 impl PortugueseAnalyzer {
     /// Creates a builder for [`PortugueseAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> PortugueseAnalyzerBuilder {
         PortugueseAnalyzerBuilder::new()
     }
 
     /// Creates a [`PortugueseAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PortugueseAnalyzerBuilder,
-        ) -> PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = PortugueseAnalyzer>>(
+        f: impl FnOnce(PortugueseAnalyzerBuilder) -> B,
     ) -> PortugueseAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PortugueseAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod portuguese_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`PortugueseAnalyzer`].
@@ -15626,6 +17561,7 @@ impl<S0> PortugueseAnalyzerBuilder<(S0,)> {
 }
 
 impl PortugueseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15636,9 +17572,12 @@ impl PortugueseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PortugueseAnalyzerBuilder<(S0,)> {
     /// Builds a [`PortugueseAnalyzer`].
-    pub fn build(self) -> PortugueseAnalyzer {
+    pub fn build(self) -> PortugueseAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<portuguese_analyzer_members::r#type>,
+    {
         PortugueseAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -15648,16 +17587,24 @@ impl PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)>> for PortugueseAnalyzer {
-    fn from(builder: PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PortugueseAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<portuguese_analyzer_members::r#type>,
+{
+    type Output = PortugueseAnalyzer;
+
+    fn build(self) -> PortugueseAnalyzer {
+        Self::build(self)
     }
 }
 
-impl PortugueseAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PortugueseAnalyzer { match r#type {} }
+impl<S0> From<PortugueseAnalyzerBuilder<(S0,)>> for PortugueseAnalyzer
+where
+    S0: crate::typed::builder::IsSet<portuguese_analyzer_members::r#type>,
+{
+    fn from(builder: PortugueseAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15671,21 +17618,28 @@ pub struct PredicateTokenFilter {
 
 impl PredicateTokenFilter {
     /// Creates a builder for [`PredicateTokenFilter`].
+    ///
+    /// Required: `type`, `script`.
     pub fn builder() -> PredicateTokenFilterBuilder {
         PredicateTokenFilterBuilder::new()
     }
 
     /// Creates a [`PredicateTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PredicateTokenFilterBuilder,
-        ) -> PredicateTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = PredicateTokenFilter>>(
+        f: impl FnOnce(PredicateTokenFilterBuilder) -> B,
     ) -> PredicateTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PredicateTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod predicate_token_filter_members {
+    pub struct r#type;
+    pub struct script;
 }
 
 /// Builder for [`PredicateTokenFilter`].
@@ -15733,6 +17687,7 @@ impl<S0, S1> PredicateTokenFilterBuilder<(S0, S1)> {
 }
 
 impl<S1> PredicateTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15744,7 +17699,7 @@ impl<S1> PredicateTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PredicateTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Script containing a condition used to filter incoming tokens. Only tokens that match this script are included in the output.
+    /// **Required.** Script containing a condition used to filter incoming tokens. Only tokens that match this script are included in the output.
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -15755,17 +17710,21 @@ impl<S0> PredicateTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> PredicateTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl PredicateTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PredicateTokenFilterBuilder<(S0, S1)> {
     /// Builds a [`PredicateTokenFilter`].
-    pub fn build(self) -> PredicateTokenFilter {
+    pub fn build(self) -> PredicateTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<predicate_token_filter_members::r#type>,
+        S1: crate::typed::builder::IsSet<predicate_token_filter_members::script>,
+    {
         PredicateTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15774,29 +17733,26 @@ impl PredicateTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<PredicateTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PredicateTokenFilter
+impl<S0, S1> crate::typed::builder::Build for PredicateTokenFilterBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<predicate_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<predicate_token_filter_members::script>,
 {
-    fn from(
-        builder: PredicateTokenFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PredicateTokenFilter;
+
+    fn build(self) -> PredicateTokenFilter {
+        Self::build(self)
     }
 }
 
-impl<S1> PredicateTokenFilterBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> PredicateTokenFilter { match r#type {} }
-}
-
-impl PredicateTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> PredicateTokenFilter { match script {} }
+impl<S0, S1> From<PredicateTokenFilterBuilder<(S0, S1)>> for PredicateTokenFilter
+where
+    S0: crate::typed::builder::IsSet<predicate_token_filter_members::r#type>,
+    S1: crate::typed::builder::IsSet<predicate_token_filter_members::script>,
+{
+    fn from(builder: PredicateTokenFilterBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15808,18 +17764,27 @@ pub struct RemoveDuplicatesTokenFilter {
 
 impl RemoveDuplicatesTokenFilter {
     /// Creates a builder for [`RemoveDuplicatesTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RemoveDuplicatesTokenFilterBuilder {
         RemoveDuplicatesTokenFilterBuilder::new()
     }
 
     /// Creates a [`RemoveDuplicatesTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RemoveDuplicatesTokenFilterBuilder,
-        ) -> RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RemoveDuplicatesTokenFilter>>(
+        f: impl FnOnce(RemoveDuplicatesTokenFilterBuilder) -> B,
     ) -> RemoveDuplicatesTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RemoveDuplicatesTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod remove_duplicates_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RemoveDuplicatesTokenFilter`].
@@ -15862,6 +17827,7 @@ impl<S0> RemoveDuplicatesTokenFilterBuilder<(S0,)> {
 }
 
 impl RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15872,9 +17838,12 @@ impl RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RemoveDuplicatesTokenFilterBuilder<(S0,)> {
     /// Builds a [`RemoveDuplicatesTokenFilter`].
-    pub fn build(self) -> RemoveDuplicatesTokenFilter {
+    pub fn build(self) -> RemoveDuplicatesTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<remove_duplicates_token_filter_members::r#type>,
+    {
         RemoveDuplicatesTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15882,18 +17851,24 @@ impl RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for RemoveDuplicatesTokenFilter
+impl<S0> crate::typed::builder::Build for RemoveDuplicatesTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<remove_duplicates_token_filter_members::r#type>,
 {
-    fn from(builder: RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RemoveDuplicatesTokenFilter;
+
+    fn build(self) -> RemoveDuplicatesTokenFilter {
+        Self::build(self)
     }
 }
 
-impl RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RemoveDuplicatesTokenFilter { match r#type {} }
+impl<S0> From<RemoveDuplicatesTokenFilterBuilder<(S0,)>> for RemoveDuplicatesTokenFilter
+where
+    S0: crate::typed::builder::IsSet<remove_duplicates_token_filter_members::r#type>,
+{
+    fn from(builder: RemoveDuplicatesTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15905,18 +17880,27 @@ pub struct ReverseTokenFilter {
 
 impl ReverseTokenFilter {
     /// Creates a builder for [`ReverseTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ReverseTokenFilterBuilder {
         ReverseTokenFilterBuilder::new()
     }
 
     /// Creates a [`ReverseTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReverseTokenFilterBuilder,
-        ) -> ReverseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReverseTokenFilter>>(
+        f: impl FnOnce(ReverseTokenFilterBuilder) -> B,
     ) -> ReverseTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReverseTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reverse_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ReverseTokenFilter`].
@@ -15959,6 +17943,7 @@ impl<S0> ReverseTokenFilterBuilder<(S0,)> {
 }
 
 impl ReverseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -15969,9 +17954,12 @@ impl ReverseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ReverseTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ReverseTokenFilterBuilder<(S0,)> {
     /// Builds a [`ReverseTokenFilter`].
-    pub fn build(self) -> ReverseTokenFilter {
+    pub fn build(self) -> ReverseTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<reverse_token_filter_members::r#type>,
+    {
         ReverseTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -15979,16 +17967,24 @@ impl ReverseTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ReverseTokenFilterBuilder<(crate::typed::builder::Set,)>> for ReverseTokenFilter {
-    fn from(builder: ReverseTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ReverseTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<reverse_token_filter_members::r#type>,
+{
+    type Output = ReverseTokenFilter;
+
+    fn build(self) -> ReverseTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ReverseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ReverseTokenFilter { match r#type {} }
+impl<S0> From<ReverseTokenFilterBuilder<(S0,)>> for ReverseTokenFilter
+where
+    S0: crate::typed::builder::IsSet<reverse_token_filter_members::r#type>,
+{
+    fn from(builder: ReverseTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16004,18 +18000,27 @@ pub struct RomanianAnalyzer {
 
 impl RomanianAnalyzer {
     /// Creates a builder for [`RomanianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RomanianAnalyzerBuilder {
         RomanianAnalyzerBuilder::new()
     }
 
     /// Creates a [`RomanianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RomanianAnalyzerBuilder,
-        ) -> RomanianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RomanianAnalyzer>>(
+        f: impl FnOnce(RomanianAnalyzerBuilder) -> B,
     ) -> RomanianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RomanianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod romanian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RomanianAnalyzer`].
@@ -16094,6 +18099,7 @@ impl<S0> RomanianAnalyzerBuilder<(S0,)> {
 }
 
 impl RomanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16104,9 +18110,12 @@ impl RomanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RomanianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RomanianAnalyzerBuilder<(S0,)> {
     /// Builds a [`RomanianAnalyzer`].
-    pub fn build(self) -> RomanianAnalyzer {
+    pub fn build(self) -> RomanianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<romanian_analyzer_members::r#type>,
+    {
         RomanianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -16116,16 +18125,24 @@ impl RomanianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RomanianAnalyzerBuilder<(crate::typed::builder::Set,)>> for RomanianAnalyzer {
-    fn from(builder: RomanianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RomanianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<romanian_analyzer_members::r#type>,
+{
+    type Output = RomanianAnalyzer;
+
+    fn build(self) -> RomanianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl RomanianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RomanianAnalyzer { match r#type {} }
+impl<S0> From<RomanianAnalyzerBuilder<(S0,)>> for RomanianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<romanian_analyzer_members::r#type>,
+{
+    fn from(builder: RomanianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16141,16 +18158,27 @@ pub struct RussianAnalyzer {
 
 impl RussianAnalyzer {
     /// Creates a builder for [`RussianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RussianAnalyzerBuilder {
         RussianAnalyzerBuilder::new()
     }
 
     /// Creates a [`RussianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RussianAnalyzerBuilder) -> RussianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RussianAnalyzer>>(
+        f: impl FnOnce(RussianAnalyzerBuilder) -> B,
     ) -> RussianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RussianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod russian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RussianAnalyzer`].
@@ -16229,6 +18257,7 @@ impl<S0> RussianAnalyzerBuilder<(S0,)> {
 }
 
 impl RussianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16239,9 +18268,12 @@ impl RussianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RussianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RussianAnalyzerBuilder<(S0,)> {
     /// Builds a [`RussianAnalyzer`].
-    pub fn build(self) -> RussianAnalyzer {
+    pub fn build(self) -> RussianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<russian_analyzer_members::r#type>,
+    {
         RussianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -16251,16 +18283,24 @@ impl RussianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RussianAnalyzerBuilder<(crate::typed::builder::Set,)>> for RussianAnalyzer {
-    fn from(builder: RussianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RussianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<russian_analyzer_members::r#type>,
+{
+    type Output = RussianAnalyzer;
+
+    fn build(self) -> RussianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl RussianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RussianAnalyzer { match r#type {} }
+impl<S0> From<RussianAnalyzerBuilder<(S0,)>> for RussianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<russian_analyzer_members::r#type>,
+{
+    fn from(builder: RussianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16272,18 +18312,27 @@ pub struct RussianStemTokenFilter {
 
 impl RussianStemTokenFilter {
     /// Creates a builder for [`RussianStemTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> RussianStemTokenFilterBuilder {
         RussianStemTokenFilterBuilder::new()
     }
 
     /// Creates a [`RussianStemTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RussianStemTokenFilterBuilder,
-        ) -> RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = RussianStemTokenFilter>>(
+        f: impl FnOnce(RussianStemTokenFilterBuilder) -> B,
     ) -> RussianStemTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RussianStemTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod russian_stem_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`RussianStemTokenFilter`].
@@ -16326,6 +18375,7 @@ impl<S0> RussianStemTokenFilterBuilder<(S0,)> {
 }
 
 impl RussianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16336,9 +18386,12 @@ impl RussianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RussianStemTokenFilterBuilder<(S0,)> {
     /// Builds a [`RussianStemTokenFilter`].
-    pub fn build(self) -> RussianStemTokenFilter {
+    pub fn build(self) -> RussianStemTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<russian_stem_token_filter_members::r#type>,
+    {
         RussianStemTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -16346,16 +18399,24 @@ impl RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)>> for RussianStemTokenFilter {
-    fn from(builder: RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RussianStemTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<russian_stem_token_filter_members::r#type>,
+{
+    type Output = RussianStemTokenFilter;
+
+    fn build(self) -> RussianStemTokenFilter {
+        Self::build(self)
     }
 }
 
-impl RussianStemTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> RussianStemTokenFilter { match r#type {} }
+impl<S0> From<RussianStemTokenFilterBuilder<(S0,)>> for RussianStemTokenFilter
+where
+    S0: crate::typed::builder::IsSet<russian_stem_token_filter_members::r#type>,
+{
+    fn from(builder: RussianStemTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16367,18 +18428,27 @@ pub struct ScandinavianFoldingTokenFilter {
 
 impl ScandinavianFoldingTokenFilter {
     /// Creates a builder for [`ScandinavianFoldingTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ScandinavianFoldingTokenFilterBuilder {
         ScandinavianFoldingTokenFilterBuilder::new()
     }
 
     /// Creates a [`ScandinavianFoldingTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScandinavianFoldingTokenFilterBuilder,
-        ) -> ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScandinavianFoldingTokenFilter>>(
+        f: impl FnOnce(ScandinavianFoldingTokenFilterBuilder) -> B,
     ) -> ScandinavianFoldingTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScandinavianFoldingTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod scandinavian_folding_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ScandinavianFoldingTokenFilter`].
@@ -16421,6 +18491,7 @@ impl<S0> ScandinavianFoldingTokenFilterBuilder<(S0,)> {
 }
 
 impl ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16431,9 +18502,12 @@ impl ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScandinavianFoldingTokenFilterBuilder<(S0,)> {
     /// Builds a [`ScandinavianFoldingTokenFilter`].
-    pub fn build(self) -> ScandinavianFoldingTokenFilter {
+    pub fn build(self) -> ScandinavianFoldingTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<scandinavian_folding_token_filter_members::r#type>,
+    {
         ScandinavianFoldingTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -16441,18 +18515,24 @@ impl ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for ScandinavianFoldingTokenFilter
+impl<S0> crate::typed::builder::Build for ScandinavianFoldingTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<scandinavian_folding_token_filter_members::r#type>,
 {
-    fn from(builder: ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ScandinavianFoldingTokenFilter;
+
+    fn build(self) -> ScandinavianFoldingTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ScandinavianFoldingTokenFilter { match r#type {} }
+impl<S0> From<ScandinavianFoldingTokenFilterBuilder<(S0,)>> for ScandinavianFoldingTokenFilter
+where
+    S0: crate::typed::builder::IsSet<scandinavian_folding_token_filter_members::r#type>,
+{
+    fn from(builder: ScandinavianFoldingTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16464,19 +18544,27 @@ pub struct ScandinavianNormalizationTokenFilter {
 
 impl ScandinavianNormalizationTokenFilter {
     /// Creates a builder for [`ScandinavianNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ScandinavianNormalizationTokenFilterBuilder {
         ScandinavianNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`ScandinavianNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScandinavianNormalizationTokenFilterBuilder,
-        )
-            -> ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScandinavianNormalizationTokenFilter>>(
+        f: impl FnOnce(ScandinavianNormalizationTokenFilterBuilder) -> B,
     ) -> ScandinavianNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScandinavianNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod scandinavian_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ScandinavianNormalizationTokenFilter`].
@@ -16519,6 +18607,7 @@ impl<S0> ScandinavianNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16529,9 +18618,12 @@ impl ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,
     }
 }
 
-impl ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScandinavianNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`ScandinavianNormalizationTokenFilter`].
-    pub fn build(self) -> ScandinavianNormalizationTokenFilter {
+    pub fn build(self) -> ScandinavianNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<scandinavian_normalization_token_filter_members::r#type>,
+    {
         ScandinavianNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -16539,20 +18631,25 @@ impl ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> 
     }
 }
 
-impl From<ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for ScandinavianNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for ScandinavianNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<scandinavian_normalization_token_filter_members::r#type>,
 {
-    fn from(
-        builder: ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ScandinavianNormalizationTokenFilter;
+
+    fn build(self) -> ScandinavianNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ScandinavianNormalizationTokenFilter { match r#type {} }
+impl<S0> From<ScandinavianNormalizationTokenFilterBuilder<(S0,)>>
+    for ScandinavianNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<scandinavian_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: ScandinavianNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16568,16 +18665,27 @@ pub struct SerbianAnalyzer {
 
 impl SerbianAnalyzer {
     /// Creates a builder for [`SerbianAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SerbianAnalyzerBuilder {
         SerbianAnalyzerBuilder::new()
     }
 
     /// Creates a [`SerbianAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SerbianAnalyzerBuilder) -> SerbianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SerbianAnalyzer>>(
+        f: impl FnOnce(SerbianAnalyzerBuilder) -> B,
     ) -> SerbianAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SerbianAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod serbian_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SerbianAnalyzer`].
@@ -16656,6 +18764,7 @@ impl<S0> SerbianAnalyzerBuilder<(S0,)> {
 }
 
 impl SerbianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16666,9 +18775,12 @@ impl SerbianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SerbianAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SerbianAnalyzerBuilder<(S0,)> {
     /// Builds a [`SerbianAnalyzer`].
-    pub fn build(self) -> SerbianAnalyzer {
+    pub fn build(self) -> SerbianAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<serbian_analyzer_members::r#type>,
+    {
         SerbianAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -16678,16 +18790,24 @@ impl SerbianAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SerbianAnalyzerBuilder<(crate::typed::builder::Set,)>> for SerbianAnalyzer {
-    fn from(builder: SerbianAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SerbianAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<serbian_analyzer_members::r#type>,
+{
+    type Output = SerbianAnalyzer;
+
+    fn build(self) -> SerbianAnalyzer {
+        Self::build(self)
     }
 }
 
-impl SerbianAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SerbianAnalyzer { match r#type {} }
+impl<S0> From<SerbianAnalyzerBuilder<(S0,)>> for SerbianAnalyzer
+where
+    S0: crate::typed::builder::IsSet<serbian_analyzer_members::r#type>,
+{
+    fn from(builder: SerbianAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16699,18 +18819,27 @@ pub struct SerbianNormalizationTokenFilter {
 
 impl SerbianNormalizationTokenFilter {
     /// Creates a builder for [`SerbianNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SerbianNormalizationTokenFilterBuilder {
         SerbianNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`SerbianNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SerbianNormalizationTokenFilterBuilder,
-        ) -> SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SerbianNormalizationTokenFilter>>(
+        f: impl FnOnce(SerbianNormalizationTokenFilterBuilder) -> B,
     ) -> SerbianNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SerbianNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod serbian_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SerbianNormalizationTokenFilter`].
@@ -16753,6 +18882,7 @@ impl<S0> SerbianNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16763,9 +18893,12 @@ impl SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SerbianNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`SerbianNormalizationTokenFilter`].
-    pub fn build(self) -> SerbianNormalizationTokenFilter {
+    pub fn build(self) -> SerbianNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<serbian_normalization_token_filter_members::r#type>,
+    {
         SerbianNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -16773,20 +18906,24 @@ impl SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for SerbianNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for SerbianNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<serbian_normalization_token_filter_members::r#type>,
 {
-    fn from(
-        builder: SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = SerbianNormalizationTokenFilter;
+
+    fn build(self) -> SerbianNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SerbianNormalizationTokenFilter { match r#type {} }
+impl<S0> From<SerbianNormalizationTokenFilterBuilder<(S0,)>> for SerbianNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<serbian_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: SerbianNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16816,18 +18953,27 @@ pub struct ShingleTokenFilter {
 
 impl ShingleTokenFilter {
     /// Creates a builder for [`ShingleTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ShingleTokenFilterBuilder {
         ShingleTokenFilterBuilder::new()
     }
 
     /// Creates a [`ShingleTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShingleTokenFilterBuilder,
-        ) -> ShingleTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShingleTokenFilter>>(
+        f: impl FnOnce(ShingleTokenFilterBuilder) -> B,
     ) -> ShingleTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShingleTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shingle_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ShingleTokenFilter`].
@@ -16972,6 +19118,7 @@ impl<S0> ShingleTokenFilterBuilder<(S0,)> {
 }
 
 impl ShingleTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -16982,9 +19129,12 @@ impl ShingleTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ShingleTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ShingleTokenFilterBuilder<(S0,)> {
     /// Builds a [`ShingleTokenFilter`].
-    pub fn build(self) -> ShingleTokenFilter {
+    pub fn build(self) -> ShingleTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<shingle_token_filter_members::r#type>,
+    {
         ShingleTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -16998,16 +19148,24 @@ impl ShingleTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ShingleTokenFilterBuilder<(crate::typed::builder::Set,)>> for ShingleTokenFilter {
-    fn from(builder: ShingleTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ShingleTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shingle_token_filter_members::r#type>,
+{
+    type Output = ShingleTokenFilter;
+
+    fn build(self) -> ShingleTokenFilter {
+        Self::build(self)
     }
 }
 
-impl ShingleTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ShingleTokenFilter { match r#type {} }
+impl<S0> From<ShingleTokenFilterBuilder<(S0,)>> for ShingleTokenFilter
+where
+    S0: crate::typed::builder::IsSet<shingle_token_filter_members::r#type>,
+{
+    fn from(builder: ShingleTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17019,16 +19177,27 @@ pub struct SimpleAnalyzer {
 
 impl SimpleAnalyzer {
     /// Creates a builder for [`SimpleAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SimpleAnalyzerBuilder {
         SimpleAnalyzerBuilder::new()
     }
 
     /// Creates a [`SimpleAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SimpleAnalyzerBuilder) -> SimpleAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimpleAnalyzer>>(
+        f: impl FnOnce(SimpleAnalyzerBuilder) -> B,
     ) -> SimpleAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimpleAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SimpleAnalyzer`].
@@ -17071,6 +19240,7 @@ impl<S0> SimpleAnalyzerBuilder<(S0,)> {
 }
 
 impl SimpleAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17081,9 +19251,12 @@ impl SimpleAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SimpleAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SimpleAnalyzerBuilder<(S0,)> {
     /// Builds a [`SimpleAnalyzer`].
-    pub fn build(self) -> SimpleAnalyzer {
+    pub fn build(self) -> SimpleAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<simple_analyzer_members::r#type>,
+    {
         SimpleAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -17091,16 +19264,24 @@ impl SimpleAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SimpleAnalyzerBuilder<(crate::typed::builder::Set,)>> for SimpleAnalyzer {
-    fn from(builder: SimpleAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SimpleAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<simple_analyzer_members::r#type>,
+{
+    type Output = SimpleAnalyzer;
+
+    fn build(self) -> SimpleAnalyzer {
+        Self::build(self)
     }
 }
 
-impl SimpleAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SimpleAnalyzer { match r#type {} }
+impl<S0> From<SimpleAnalyzerBuilder<(S0,)>> for SimpleAnalyzer
+where
+    S0: crate::typed::builder::IsSet<simple_analyzer_members::r#type>,
+{
+    fn from(builder: SimpleAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17114,18 +19295,27 @@ pub struct SimplePatternSplitTokenizer {
 
 impl SimplePatternSplitTokenizer {
     /// Creates a builder for [`SimplePatternSplitTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SimplePatternSplitTokenizerBuilder {
         SimplePatternSplitTokenizerBuilder::new()
     }
 
     /// Creates a [`SimplePatternSplitTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SimplePatternSplitTokenizerBuilder,
-        ) -> SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimplePatternSplitTokenizer>>(
+        f: impl FnOnce(SimplePatternSplitTokenizerBuilder) -> B,
     ) -> SimplePatternSplitTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimplePatternSplitTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_pattern_split_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SimplePatternSplitTokenizer`].
@@ -17182,6 +19372,7 @@ impl<S0> SimplePatternSplitTokenizerBuilder<(S0,)> {
 }
 
 impl SimplePatternSplitTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17192,9 +19383,12 @@ impl SimplePatternSplitTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SimplePatternSplitTokenizerBuilder<(S0,)> {
     /// Builds a [`SimplePatternSplitTokenizer`].
-    pub fn build(self) -> SimplePatternSplitTokenizer {
+    pub fn build(self) -> SimplePatternSplitTokenizer
+    where
+        S0: crate::typed::builder::IsSet<simple_pattern_split_tokenizer_members::r#type>,
+    {
         SimplePatternSplitTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -17203,18 +19397,24 @@ impl SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)>>
-    for SimplePatternSplitTokenizer
+impl<S0> crate::typed::builder::Build for SimplePatternSplitTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<simple_pattern_split_tokenizer_members::r#type>,
 {
-    fn from(builder: SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SimplePatternSplitTokenizer;
+
+    fn build(self) -> SimplePatternSplitTokenizer {
+        Self::build(self)
     }
 }
 
-impl SimplePatternSplitTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SimplePatternSplitTokenizer { match r#type {} }
+impl<S0> From<SimplePatternSplitTokenizerBuilder<(S0,)>> for SimplePatternSplitTokenizer
+where
+    S0: crate::typed::builder::IsSet<simple_pattern_split_tokenizer_members::r#type>,
+{
+    fn from(builder: SimplePatternSplitTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17228,18 +19428,27 @@ pub struct SimplePatternTokenizer {
 
 impl SimplePatternTokenizer {
     /// Creates a builder for [`SimplePatternTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SimplePatternTokenizerBuilder {
         SimplePatternTokenizerBuilder::new()
     }
 
     /// Creates a [`SimplePatternTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SimplePatternTokenizerBuilder,
-        ) -> SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimplePatternTokenizer>>(
+        f: impl FnOnce(SimplePatternTokenizerBuilder) -> B,
     ) -> SimplePatternTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimplePatternTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_pattern_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SimplePatternTokenizer`].
@@ -17296,6 +19505,7 @@ impl<S0> SimplePatternTokenizerBuilder<(S0,)> {
 }
 
 impl SimplePatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17306,9 +19516,12 @@ impl SimplePatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SimplePatternTokenizerBuilder<(S0,)> {
     /// Builds a [`SimplePatternTokenizer`].
-    pub fn build(self) -> SimplePatternTokenizer {
+    pub fn build(self) -> SimplePatternTokenizer
+    where
+        S0: crate::typed::builder::IsSet<simple_pattern_tokenizer_members::r#type>,
+    {
         SimplePatternTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -17317,16 +19530,24 @@ impl SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)>> for SimplePatternTokenizer {
-    fn from(builder: SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SimplePatternTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<simple_pattern_tokenizer_members::r#type>,
+{
+    type Output = SimplePatternTokenizer;
+
+    fn build(self) -> SimplePatternTokenizer {
+        Self::build(self)
     }
 }
 
-impl SimplePatternTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SimplePatternTokenizer { match r#type {} }
+impl<S0> From<SimplePatternTokenizerBuilder<(S0,)>> for SimplePatternTokenizer
+where
+    S0: crate::typed::builder::IsSet<simple_pattern_tokenizer_members::r#type>,
+{
+    fn from(builder: SimplePatternTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17341,21 +19562,28 @@ pub struct SnowballAnalyzer {
 
 impl SnowballAnalyzer {
     /// Creates a builder for [`SnowballAnalyzer`].
+    ///
+    /// Required: `type`, `language`.
     pub fn builder() -> SnowballAnalyzerBuilder {
         SnowballAnalyzerBuilder::new()
     }
 
     /// Creates a [`SnowballAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnowballAnalyzerBuilder,
-        ) -> SnowballAnalyzerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `language`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnowballAnalyzer>>(
+        f: impl FnOnce(SnowballAnalyzerBuilder) -> B,
     ) -> SnowballAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnowballAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snowball_analyzer_members {
+    pub struct r#type;
+    pub struct language;
 }
 
 /// Builder for [`SnowballAnalyzer`].
@@ -17417,6 +19645,7 @@ impl<S0, S1> SnowballAnalyzerBuilder<(S0, S1)> {
 }
 
 impl<S1> SnowballAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17428,6 +19657,7 @@ impl<S1> SnowballAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SnowballAnalyzerBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn language(
         self,
         value: impl Into<SnowballLanguage>,
@@ -17438,9 +19668,13 @@ impl<S0> SnowballAnalyzerBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SnowballAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SnowballAnalyzerBuilder<(S0, S1)> {
     /// Builds a [`SnowballAnalyzer`].
-    pub fn build(self) -> SnowballAnalyzer {
+    pub fn build(self) -> SnowballAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<snowball_analyzer_members::r#type>,
+        S1: crate::typed::builder::IsSet<snowball_analyzer_members::language>,
+    {
         SnowballAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -17450,26 +19684,26 @@ impl SnowballAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<SnowballAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SnowballAnalyzer
+impl<S0, S1> crate::typed::builder::Build for SnowballAnalyzerBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<snowball_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<snowball_analyzer_members::language>,
 {
-    fn from(
-        builder: SnowballAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SnowballAnalyzer;
+
+    fn build(self) -> SnowballAnalyzer {
+        Self::build(self)
     }
 }
 
-impl<S1> SnowballAnalyzerBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SnowballAnalyzer { match r#type {} }
-}
-
-impl SnowballAnalyzerBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `language` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, language: crate::typed::builder::MissingRequiredField) -> SnowballAnalyzer { match language {} }
+impl<S0, S1> From<SnowballAnalyzerBuilder<(S0, S1)>> for SnowballAnalyzer
+where
+    S0: crate::typed::builder::IsSet<snowball_analyzer_members::r#type>,
+    S1: crate::typed::builder::IsSet<snowball_analyzer_members::language>,
+{
+    fn from(builder: SnowballAnalyzerBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -17515,18 +19749,27 @@ pub struct SnowballTokenFilter {
 
 impl SnowballTokenFilter {
     /// Creates a builder for [`SnowballTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SnowballTokenFilterBuilder {
         SnowballTokenFilterBuilder::new()
     }
 
     /// Creates a [`SnowballTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnowballTokenFilterBuilder,
-        ) -> SnowballTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnowballTokenFilter>>(
+        f: impl FnOnce(SnowballTokenFilterBuilder) -> B,
     ) -> SnowballTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnowballTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snowball_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SnowballTokenFilter`].
@@ -17584,6 +19827,7 @@ impl<S0> SnowballTokenFilterBuilder<(S0,)> {
 }
 
 impl SnowballTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17594,9 +19838,12 @@ impl SnowballTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SnowballTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SnowballTokenFilterBuilder<(S0,)> {
     /// Builds a [`SnowballTokenFilter`].
-    pub fn build(self) -> SnowballTokenFilter {
+    pub fn build(self) -> SnowballTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<snowball_token_filter_members::r#type>,
+    {
         SnowballTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -17605,16 +19852,24 @@ impl SnowballTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SnowballTokenFilterBuilder<(crate::typed::builder::Set,)>> for SnowballTokenFilter {
-    fn from(builder: SnowballTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SnowballTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<snowball_token_filter_members::r#type>,
+{
+    type Output = SnowballTokenFilter;
+
+    fn build(self) -> SnowballTokenFilter {
+        Self::build(self)
     }
 }
 
-impl SnowballTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SnowballTokenFilter { match r#type {} }
+impl<S0> From<SnowballTokenFilterBuilder<(S0,)>> for SnowballTokenFilter
+where
+    S0: crate::typed::builder::IsSet<snowball_token_filter_members::r#type>,
+{
+    fn from(builder: SnowballTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17630,16 +19885,27 @@ pub struct SoraniAnalyzer {
 
 impl SoraniAnalyzer {
     /// Creates a builder for [`SoraniAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SoraniAnalyzerBuilder {
         SoraniAnalyzerBuilder::new()
     }
 
     /// Creates a [`SoraniAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SoraniAnalyzerBuilder) -> SoraniAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SoraniAnalyzer>>(
+        f: impl FnOnce(SoraniAnalyzerBuilder) -> B,
     ) -> SoraniAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SoraniAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sorani_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SoraniAnalyzer`].
@@ -17718,6 +19984,7 @@ impl<S0> SoraniAnalyzerBuilder<(S0,)> {
 }
 
 impl SoraniAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17728,9 +19995,12 @@ impl SoraniAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SoraniAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SoraniAnalyzerBuilder<(S0,)> {
     /// Builds a [`SoraniAnalyzer`].
-    pub fn build(self) -> SoraniAnalyzer {
+    pub fn build(self) -> SoraniAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<sorani_analyzer_members::r#type>,
+    {
         SoraniAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -17740,16 +20010,24 @@ impl SoraniAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SoraniAnalyzerBuilder<(crate::typed::builder::Set,)>> for SoraniAnalyzer {
-    fn from(builder: SoraniAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SoraniAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sorani_analyzer_members::r#type>,
+{
+    type Output = SoraniAnalyzer;
+
+    fn build(self) -> SoraniAnalyzer {
+        Self::build(self)
     }
 }
 
-impl SoraniAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SoraniAnalyzer { match r#type {} }
+impl<S0> From<SoraniAnalyzerBuilder<(S0,)>> for SoraniAnalyzer
+where
+    S0: crate::typed::builder::IsSet<sorani_analyzer_members::r#type>,
+{
+    fn from(builder: SoraniAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17761,18 +20039,27 @@ pub struct SoraniNormalizationTokenFilter {
 
 impl SoraniNormalizationTokenFilter {
     /// Creates a builder for [`SoraniNormalizationTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SoraniNormalizationTokenFilterBuilder {
         SoraniNormalizationTokenFilterBuilder::new()
     }
 
     /// Creates a [`SoraniNormalizationTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SoraniNormalizationTokenFilterBuilder,
-        ) -> SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SoraniNormalizationTokenFilter>>(
+        f: impl FnOnce(SoraniNormalizationTokenFilterBuilder) -> B,
     ) -> SoraniNormalizationTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SoraniNormalizationTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sorani_normalization_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SoraniNormalizationTokenFilter`].
@@ -17815,6 +20102,7 @@ impl<S0> SoraniNormalizationTokenFilterBuilder<(S0,)> {
 }
 
 impl SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17825,9 +20113,12 @@ impl SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SoraniNormalizationTokenFilterBuilder<(S0,)> {
     /// Builds a [`SoraniNormalizationTokenFilter`].
-    pub fn build(self) -> SoraniNormalizationTokenFilter {
+    pub fn build(self) -> SoraniNormalizationTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<sorani_normalization_token_filter_members::r#type>,
+    {
         SoraniNormalizationTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -17835,18 +20126,24 @@ impl SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for SoraniNormalizationTokenFilter
+impl<S0> crate::typed::builder::Build for SoraniNormalizationTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sorani_normalization_token_filter_members::r#type>,
 {
-    fn from(builder: SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SoraniNormalizationTokenFilter;
+
+    fn build(self) -> SoraniNormalizationTokenFilter {
+        Self::build(self)
     }
 }
 
-impl SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SoraniNormalizationTokenFilter { match r#type {} }
+impl<S0> From<SoraniNormalizationTokenFilterBuilder<(S0,)>> for SoraniNormalizationTokenFilter
+where
+    S0: crate::typed::builder::IsSet<sorani_normalization_token_filter_members::r#type>,
+{
+    fn from(builder: SoraniNormalizationTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17862,16 +20159,27 @@ pub struct SpanishAnalyzer {
 
 impl SpanishAnalyzer {
     /// Creates a builder for [`SpanishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SpanishAnalyzerBuilder {
         SpanishAnalyzerBuilder::new()
     }
 
     /// Creates a [`SpanishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SpanishAnalyzerBuilder) -> SpanishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanishAnalyzer>>(
+        f: impl FnOnce(SpanishAnalyzerBuilder) -> B,
     ) -> SpanishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod spanish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SpanishAnalyzer`].
@@ -17950,6 +20258,7 @@ impl<S0> SpanishAnalyzerBuilder<(S0,)> {
 }
 
 impl SpanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -17960,9 +20269,12 @@ impl SpanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SpanishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanishAnalyzerBuilder<(S0,)> {
     /// Builds a [`SpanishAnalyzer`].
-    pub fn build(self) -> SpanishAnalyzer {
+    pub fn build(self) -> SpanishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<spanish_analyzer_members::r#type>,
+    {
         SpanishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -17972,16 +20284,24 @@ impl SpanishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SpanishAnalyzerBuilder<(crate::typed::builder::Set,)>> for SpanishAnalyzer {
-    fn from(builder: SpanishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<spanish_analyzer_members::r#type>,
+{
+    type Output = SpanishAnalyzer;
+
+    fn build(self) -> SpanishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl SpanishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SpanishAnalyzer { match r#type {} }
+impl<S0> From<SpanishAnalyzerBuilder<(S0,)>> for SpanishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<spanish_analyzer_members::r#type>,
+{
+    fn from(builder: SpanishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18002,18 +20322,27 @@ pub struct StandardAnalyzer {
 
 impl StandardAnalyzer {
     /// Creates a builder for [`StandardAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StandardAnalyzerBuilder {
         StandardAnalyzerBuilder::new()
     }
 
     /// Creates a [`StandardAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StandardAnalyzerBuilder,
-        ) -> StandardAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StandardAnalyzer>>(
+        f: impl FnOnce(StandardAnalyzerBuilder) -> B,
     ) -> StandardAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StandardAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod standard_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StandardAnalyzer`].
@@ -18089,6 +20418,7 @@ impl<S0> StandardAnalyzerBuilder<(S0,)> {
 }
 
 impl StandardAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18099,9 +20429,12 @@ impl StandardAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StandardAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StandardAnalyzerBuilder<(S0,)> {
     /// Builds a [`StandardAnalyzer`].
-    pub fn build(self) -> StandardAnalyzer {
+    pub fn build(self) -> StandardAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<standard_analyzer_members::r#type>,
+    {
         StandardAnalyzer {
             r#type: self.r#type.unwrap(),
             max_token_length: self.max_token_length,
@@ -18111,16 +20444,24 @@ impl StandardAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StandardAnalyzerBuilder<(crate::typed::builder::Set,)>> for StandardAnalyzer {
-    fn from(builder: StandardAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StandardAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<standard_analyzer_members::r#type>,
+{
+    type Output = StandardAnalyzer;
+
+    fn build(self) -> StandardAnalyzer {
+        Self::build(self)
     }
 }
 
-impl StandardAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StandardAnalyzer { match r#type {} }
+impl<S0> From<StandardAnalyzerBuilder<(S0,)>> for StandardAnalyzer
+where
+    S0: crate::typed::builder::IsSet<standard_analyzer_members::r#type>,
+{
+    fn from(builder: StandardAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18134,18 +20475,27 @@ pub struct StandardTokenizer {
 
 impl StandardTokenizer {
     /// Creates a builder for [`StandardTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StandardTokenizerBuilder {
         StandardTokenizerBuilder::new()
     }
 
     /// Creates a [`StandardTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StandardTokenizerBuilder,
-        ) -> StandardTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StandardTokenizer>>(
+        f: impl FnOnce(StandardTokenizerBuilder) -> B,
     ) -> StandardTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StandardTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod standard_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StandardTokenizer`].
@@ -18202,6 +20552,7 @@ impl<S0> StandardTokenizerBuilder<(S0,)> {
 }
 
 impl StandardTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18212,9 +20563,12 @@ impl StandardTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StandardTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StandardTokenizerBuilder<(S0,)> {
     /// Builds a [`StandardTokenizer`].
-    pub fn build(self) -> StandardTokenizer {
+    pub fn build(self) -> StandardTokenizer
+    where
+        S0: crate::typed::builder::IsSet<standard_tokenizer_members::r#type>,
+    {
         StandardTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -18223,16 +20577,24 @@ impl StandardTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StandardTokenizerBuilder<(crate::typed::builder::Set,)>> for StandardTokenizer {
-    fn from(builder: StandardTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StandardTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<standard_tokenizer_members::r#type>,
+{
+    type Output = StandardTokenizer;
+
+    fn build(self) -> StandardTokenizer {
+        Self::build(self)
     }
 }
 
-impl StandardTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StandardTokenizer { match r#type {} }
+impl<S0> From<StandardTokenizerBuilder<(S0,)>> for StandardTokenizer
+where
+    S0: crate::typed::builder::IsSet<standard_tokenizer_members::r#type>,
+{
+    fn from(builder: StandardTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18250,18 +20612,27 @@ pub struct StemmerOverrideTokenFilter {
 
 impl StemmerOverrideTokenFilter {
     /// Creates a builder for [`StemmerOverrideTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StemmerOverrideTokenFilterBuilder {
         StemmerOverrideTokenFilterBuilder::new()
     }
 
     /// Creates a [`StemmerOverrideTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StemmerOverrideTokenFilterBuilder,
-        ) -> StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StemmerOverrideTokenFilter>>(
+        f: impl FnOnce(StemmerOverrideTokenFilterBuilder) -> B,
     ) -> StemmerOverrideTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StemmerOverrideTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stemmer_override_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StemmerOverrideTokenFilter`].
@@ -18342,6 +20713,7 @@ impl<S0> StemmerOverrideTokenFilterBuilder<(S0,)> {
 }
 
 impl StemmerOverrideTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18352,9 +20724,12 @@ impl StemmerOverrideTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StemmerOverrideTokenFilterBuilder<(S0,)> {
     /// Builds a [`StemmerOverrideTokenFilter`].
-    pub fn build(self) -> StemmerOverrideTokenFilter {
+    pub fn build(self) -> StemmerOverrideTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<stemmer_override_token_filter_members::r#type>,
+    {
         StemmerOverrideTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -18364,18 +20739,24 @@ impl StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for StemmerOverrideTokenFilter
+impl<S0> crate::typed::builder::Build for StemmerOverrideTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<stemmer_override_token_filter_members::r#type>,
 {
-    fn from(builder: StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = StemmerOverrideTokenFilter;
+
+    fn build(self) -> StemmerOverrideTokenFilter {
+        Self::build(self)
     }
 }
 
-impl StemmerOverrideTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StemmerOverrideTokenFilter { match r#type {} }
+impl<S0> From<StemmerOverrideTokenFilterBuilder<(S0,)>> for StemmerOverrideTokenFilter
+where
+    S0: crate::typed::builder::IsSet<stemmer_override_token_filter_members::r#type>,
+{
+    fn from(builder: StemmerOverrideTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18389,18 +20770,27 @@ pub struct StemmerTokenFilter {
 
 impl StemmerTokenFilter {
     /// Creates a builder for [`StemmerTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StemmerTokenFilterBuilder {
         StemmerTokenFilterBuilder::new()
     }
 
     /// Creates a [`StemmerTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StemmerTokenFilterBuilder,
-        ) -> StemmerTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StemmerTokenFilter>>(
+        f: impl FnOnce(StemmerTokenFilterBuilder) -> B,
     ) -> StemmerTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StemmerTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stemmer_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StemmerTokenFilter`].
@@ -18457,6 +20847,7 @@ impl<S0> StemmerTokenFilterBuilder<(S0,)> {
 }
 
 impl StemmerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18467,9 +20858,12 @@ impl StemmerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StemmerTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StemmerTokenFilterBuilder<(S0,)> {
     /// Builds a [`StemmerTokenFilter`].
-    pub fn build(self) -> StemmerTokenFilter {
+    pub fn build(self) -> StemmerTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<stemmer_token_filter_members::r#type>,
+    {
         StemmerTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -18478,16 +20872,24 @@ impl StemmerTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StemmerTokenFilterBuilder<(crate::typed::builder::Set,)>> for StemmerTokenFilter {
-    fn from(builder: StemmerTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StemmerTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<stemmer_token_filter_members::r#type>,
+{
+    type Output = StemmerTokenFilter;
+
+    fn build(self) -> StemmerTokenFilter {
+        Self::build(self)
     }
 }
 
-impl StemmerTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StemmerTokenFilter { match r#type {} }
+impl<S0> From<StemmerTokenFilterBuilder<(S0,)>> for StemmerTokenFilter
+where
+    S0: crate::typed::builder::IsSet<stemmer_token_filter_members::r#type>,
+{
+    fn from(builder: StemmerTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18506,16 +20908,27 @@ pub struct StopAnalyzer {
 
 impl StopAnalyzer {
     /// Creates a builder for [`StopAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StopAnalyzerBuilder {
         StopAnalyzerBuilder::new()
     }
 
     /// Creates a [`StopAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StopAnalyzerBuilder) -> StopAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StopAnalyzer>>(
+        f: impl FnOnce(StopAnalyzerBuilder) -> B,
     ) -> StopAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StopAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stop_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StopAnalyzer`].
@@ -18589,6 +21002,7 @@ impl<S0> StopAnalyzerBuilder<(S0,)> {
 }
 
 impl StopAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18599,9 +21013,12 @@ impl StopAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StopAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StopAnalyzerBuilder<(S0,)> {
     /// Builds a [`StopAnalyzer`].
-    pub fn build(self) -> StopAnalyzer {
+    pub fn build(self) -> StopAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<stop_analyzer_members::r#type>,
+    {
         StopAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -18611,16 +21028,24 @@ impl StopAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StopAnalyzerBuilder<(crate::typed::builder::Set,)>> for StopAnalyzer {
-    fn from(builder: StopAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StopAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<stop_analyzer_members::r#type>,
+{
+    type Output = StopAnalyzer;
+
+    fn build(self) -> StopAnalyzer {
+        Self::build(self)
     }
 }
 
-impl StopAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StopAnalyzer { match r#type {} }
+impl<S0> From<StopAnalyzerBuilder<(S0,)>> for StopAnalyzer
+where
+    S0: crate::typed::builder::IsSet<stop_analyzer_members::r#type>,
+{
+    fn from(builder: StopAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18645,16 +21070,27 @@ pub struct StopTokenFilter {
 
 impl StopTokenFilter {
     /// Creates a builder for [`StopTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StopTokenFilterBuilder {
         StopTokenFilterBuilder::new()
     }
 
     /// Creates a [`StopTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StopTokenFilterBuilder) -> StopTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = StopTokenFilter>>(
+        f: impl FnOnce(StopTokenFilterBuilder) -> B,
     ) -> StopTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StopTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stop_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`StopTokenFilter`].
@@ -18758,6 +21194,7 @@ impl<S0> StopTokenFilterBuilder<(S0,)> {
 }
 
 impl StopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -18768,9 +21205,12 @@ impl StopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StopTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StopTokenFilterBuilder<(S0,)> {
     /// Builds a [`StopTokenFilter`].
-    pub fn build(self) -> StopTokenFilter {
+    pub fn build(self) -> StopTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<stop_token_filter_members::r#type>,
+    {
         StopTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -18782,16 +21222,24 @@ impl StopTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StopTokenFilterBuilder<(crate::typed::builder::Set,)>> for StopTokenFilter {
-    fn from(builder: StopTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StopTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<stop_token_filter_members::r#type>,
+{
+    type Output = StopTokenFilter;
+
+    fn build(self) -> StopTokenFilter {
+        Self::build(self)
     }
 }
 
-impl StopTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> StopTokenFilter { match r#type {} }
+impl<S0> From<StopTokenFilterBuilder<(S0,)>> for StopTokenFilter
+where
+    S0: crate::typed::builder::IsSet<stop_token_filter_members::r#type>,
+{
+    fn from(builder: StopTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18907,16 +21355,27 @@ pub struct SwedishAnalyzer {
 
 impl SwedishAnalyzer {
     /// Creates a builder for [`SwedishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SwedishAnalyzerBuilder {
         SwedishAnalyzerBuilder::new()
     }
 
     /// Creates a [`SwedishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SwedishAnalyzerBuilder) -> SwedishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SwedishAnalyzer>>(
+        f: impl FnOnce(SwedishAnalyzerBuilder) -> B,
     ) -> SwedishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SwedishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod swedish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SwedishAnalyzer`].
@@ -18995,6 +21454,7 @@ impl<S0> SwedishAnalyzerBuilder<(S0,)> {
 }
 
 impl SwedishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -19005,9 +21465,12 @@ impl SwedishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SwedishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SwedishAnalyzerBuilder<(S0,)> {
     /// Builds a [`SwedishAnalyzer`].
-    pub fn build(self) -> SwedishAnalyzer {
+    pub fn build(self) -> SwedishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<swedish_analyzer_members::r#type>,
+    {
         SwedishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -19017,16 +21480,24 @@ impl SwedishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SwedishAnalyzerBuilder<(crate::typed::builder::Set,)>> for SwedishAnalyzer {
-    fn from(builder: SwedishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SwedishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<swedish_analyzer_members::r#type>,
+{
+    type Output = SwedishAnalyzer;
+
+    fn build(self) -> SwedishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl SwedishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SwedishAnalyzer { match r#type {} }
+impl<S0> From<SwedishAnalyzerBuilder<(S0,)>> for SwedishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<swedish_analyzer_members::r#type>,
+{
+    fn from(builder: SwedishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19095,18 +21566,27 @@ impl From<&str> for SynonymGraphTokenFilterSynonymsSet {
 
 impl SynonymGraphTokenFilter {
     /// Creates a builder for [`SynonymGraphTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SynonymGraphTokenFilterBuilder {
         SynonymGraphTokenFilterBuilder::new()
     }
 
     /// Creates a [`SynonymGraphTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymGraphTokenFilterBuilder,
-        ) -> SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymGraphTokenFilter>>(
+        f: impl FnOnce(SynonymGraphTokenFilterBuilder) -> B,
     ) -> SynonymGraphTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymGraphTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonym_graph_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SynonymGraphTokenFilter`].
@@ -19277,6 +21757,7 @@ impl<S0> SynonymGraphTokenFilterBuilder<(S0,)> {
 }
 
 impl SynonymGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -19287,9 +21768,12 @@ impl SynonymGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SynonymGraphTokenFilterBuilder<(S0,)> {
     /// Builds a [`SynonymGraphTokenFilter`].
-    pub fn build(self) -> SynonymGraphTokenFilter {
+    pub fn build(self) -> SynonymGraphTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<synonym_graph_token_filter_members::r#type>,
+    {
         SynonymGraphTokenFilter {
             version: self.version,
             expand: self.expand,
@@ -19305,18 +21789,24 @@ impl SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for SynonymGraphTokenFilter
+impl<S0> crate::typed::builder::Build for SynonymGraphTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<synonym_graph_token_filter_members::r#type>,
 {
-    fn from(builder: SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SynonymGraphTokenFilter;
+
+    fn build(self) -> SynonymGraphTokenFilter {
+        Self::build(self)
     }
 }
 
-impl SynonymGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SynonymGraphTokenFilter { match r#type {} }
+impl<S0> From<SynonymGraphTokenFilterBuilder<(S0,)>> for SynonymGraphTokenFilter
+where
+    S0: crate::typed::builder::IsSet<synonym_graph_token_filter_members::r#type>,
+{
+    fn from(builder: SynonymGraphTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19377,18 +21867,27 @@ impl From<&str> for SynonymTokenFilterSynonymsSet {
 
 impl SynonymTokenFilter {
     /// Creates a builder for [`SynonymTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SynonymTokenFilterBuilder {
         SynonymTokenFilterBuilder::new()
     }
 
     /// Creates a [`SynonymTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymTokenFilterBuilder,
-        ) -> SynonymTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymTokenFilter>>(
+        f: impl FnOnce(SynonymTokenFilterBuilder) -> B,
     ) -> SynonymTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonym_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SynonymTokenFilter`].
@@ -19559,6 +22058,7 @@ impl<S0> SynonymTokenFilterBuilder<(S0,)> {
 }
 
 impl SynonymTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -19569,9 +22069,12 @@ impl SynonymTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SynonymTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SynonymTokenFilterBuilder<(S0,)> {
     /// Builds a [`SynonymTokenFilter`].
-    pub fn build(self) -> SynonymTokenFilter {
+    pub fn build(self) -> SynonymTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<synonym_token_filter_members::r#type>,
+    {
         SynonymTokenFilter {
             version: self.version,
             expand: self.expand,
@@ -19587,16 +22090,24 @@ impl SynonymTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SynonymTokenFilterBuilder<(crate::typed::builder::Set,)>> for SynonymTokenFilter {
-    fn from(builder: SynonymTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SynonymTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<synonym_token_filter_members::r#type>,
+{
+    type Output = SynonymTokenFilter;
+
+    fn build(self) -> SynonymTokenFilter {
+        Self::build(self)
     }
 }
 
-impl SynonymTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SynonymTokenFilter { match r#type {} }
+impl<S0> From<SynonymTokenFilterBuilder<(S0,)>> for SynonymTokenFilter
+where
+    S0: crate::typed::builder::IsSet<synonym_token_filter_members::r#type>,
+{
+    fn from(builder: SynonymTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19661,8 +22172,8 @@ impl SynonymTokenFilterBase {
     }
 
     /// Creates a [`SynonymTokenFilterBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SynonymTokenFilterBaseBuilder) -> SynonymTokenFilterBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymTokenFilterBase>>(
+        f: impl FnOnce(SynonymTokenFilterBaseBuilder) -> B,
     ) -> SynonymTokenFilterBase {
         f(Self::builder()).build()
     }
@@ -19832,6 +22343,14 @@ impl SynonymTokenFilterBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SynonymTokenFilterBaseBuilder {
+    type Output = SynonymTokenFilterBase;
+
+    fn build(self) -> SynonymTokenFilterBase {
+        Self::build(self)
+    }
+}
+
 impl From<SynonymTokenFilterBaseBuilder> for SynonymTokenFilterBase {
     fn from(builder: SynonymTokenFilterBaseBuilder) -> Self {
         builder.build()
@@ -19849,16 +22368,27 @@ pub struct ThaiAnalyzer {
 
 impl ThaiAnalyzer {
     /// Creates a builder for [`ThaiAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ThaiAnalyzerBuilder {
         ThaiAnalyzerBuilder::new()
     }
 
     /// Creates a [`ThaiAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ThaiAnalyzerBuilder) -> ThaiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ThaiAnalyzer>>(
+        f: impl FnOnce(ThaiAnalyzerBuilder) -> B,
     ) -> ThaiAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ThaiAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod thai_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ThaiAnalyzer`].
@@ -19915,6 +22445,7 @@ impl<S0> ThaiAnalyzerBuilder<(S0,)> {
 }
 
 impl ThaiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -19925,9 +22456,12 @@ impl ThaiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ThaiAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ThaiAnalyzerBuilder<(S0,)> {
     /// Builds a [`ThaiAnalyzer`].
-    pub fn build(self) -> ThaiAnalyzer {
+    pub fn build(self) -> ThaiAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<thai_analyzer_members::r#type>,
+    {
         ThaiAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -19936,16 +22470,24 @@ impl ThaiAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ThaiAnalyzerBuilder<(crate::typed::builder::Set,)>> for ThaiAnalyzer {
-    fn from(builder: ThaiAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ThaiAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<thai_analyzer_members::r#type>,
+{
+    type Output = ThaiAnalyzer;
+
+    fn build(self) -> ThaiAnalyzer {
+        Self::build(self)
     }
 }
 
-impl ThaiAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ThaiAnalyzer { match r#type {} }
+impl<S0> From<ThaiAnalyzerBuilder<(S0,)>> for ThaiAnalyzer
+where
+    S0: crate::typed::builder::IsSet<thai_analyzer_members::r#type>,
+{
+    fn from(builder: ThaiAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19957,16 +22499,27 @@ pub struct ThaiTokenizer {
 
 impl ThaiTokenizer {
     /// Creates a builder for [`ThaiTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ThaiTokenizerBuilder {
         ThaiTokenizerBuilder::new()
     }
 
     /// Creates a [`ThaiTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ThaiTokenizerBuilder) -> ThaiTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ThaiTokenizer>>(
+        f: impl FnOnce(ThaiTokenizerBuilder) -> B,
     ) -> ThaiTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ThaiTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod thai_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ThaiTokenizer`].
@@ -20009,6 +22562,7 @@ impl<S0> ThaiTokenizerBuilder<(S0,)> {
 }
 
 impl ThaiTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20019,9 +22573,12 @@ impl ThaiTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ThaiTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ThaiTokenizerBuilder<(S0,)> {
     /// Builds a [`ThaiTokenizer`].
-    pub fn build(self) -> ThaiTokenizer {
+    pub fn build(self) -> ThaiTokenizer
+    where
+        S0: crate::typed::builder::IsSet<thai_tokenizer_members::r#type>,
+    {
         ThaiTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20029,16 +22586,24 @@ impl ThaiTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ThaiTokenizerBuilder<(crate::typed::builder::Set,)>> for ThaiTokenizer {
-    fn from(builder: ThaiTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ThaiTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<thai_tokenizer_members::r#type>,
+{
+    type Output = ThaiTokenizer;
+
+    fn build(self) -> ThaiTokenizer {
+        Self::build(self)
     }
 }
 
-impl ThaiTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ThaiTokenizer { match r#type {} }
+impl<S0> From<ThaiTokenizerBuilder<(S0,)>> for ThaiTokenizer
+where
+    S0: crate::typed::builder::IsSet<thai_tokenizer_members::r#type>,
+{
+    fn from(builder: ThaiTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -20095,7 +22660,9 @@ impl TokenFilterBase {
     }
 
     /// Creates a [`TokenFilterBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TokenFilterBaseBuilder) -> TokenFilterBaseBuilder) -> TokenFilterBase {
+    pub fn of<B: crate::typed::builder::Build<Output = TokenFilterBase>>(
+        f: impl FnOnce(TokenFilterBaseBuilder) -> B,
+    ) -> TokenFilterBase {
         f(Self::builder()).build()
     }
 }
@@ -20131,6 +22698,14 @@ impl TokenFilterBaseBuilder {
         TokenFilterBase {
             version: self.version,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TokenFilterBaseBuilder {
+    type Output = TokenFilterBase;
+
+    fn build(self) -> TokenFilterBase {
+        Self::build(self)
     }
 }
 
@@ -20189,7 +22764,9 @@ impl TokenizerBase {
     }
 
     /// Creates a [`TokenizerBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TokenizerBaseBuilder) -> TokenizerBaseBuilder) -> TokenizerBase {
+    pub fn of<B: crate::typed::builder::Build<Output = TokenizerBase>>(
+        f: impl FnOnce(TokenizerBaseBuilder) -> B,
+    ) -> TokenizerBase {
         f(Self::builder()).build()
     }
 }
@@ -20228,6 +22805,14 @@ impl TokenizerBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TokenizerBaseBuilder {
+    type Output = TokenizerBase;
+
+    fn build(self) -> TokenizerBase {
+        Self::build(self)
+    }
+}
+
 impl From<TokenizerBaseBuilder> for TokenizerBase {
     fn from(builder: TokenizerBaseBuilder) -> Self {
         builder.build()
@@ -20254,16 +22839,27 @@ pub struct TrimTokenFilter {
 
 impl TrimTokenFilter {
     /// Creates a builder for [`TrimTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TrimTokenFilterBuilder {
         TrimTokenFilterBuilder::new()
     }
 
     /// Creates a [`TrimTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TrimTokenFilterBuilder) -> TrimTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrimTokenFilter>>(
+        f: impl FnOnce(TrimTokenFilterBuilder) -> B,
     ) -> TrimTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrimTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trim_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TrimTokenFilter`].
@@ -20306,6 +22902,7 @@ impl<S0> TrimTokenFilterBuilder<(S0,)> {
 }
 
 impl TrimTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20316,9 +22913,12 @@ impl TrimTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TrimTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrimTokenFilterBuilder<(S0,)> {
     /// Builds a [`TrimTokenFilter`].
-    pub fn build(self) -> TrimTokenFilter {
+    pub fn build(self) -> TrimTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<trim_token_filter_members::r#type>,
+    {
         TrimTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20326,16 +22926,24 @@ impl TrimTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TrimTokenFilterBuilder<(crate::typed::builder::Set,)>> for TrimTokenFilter {
-    fn from(builder: TrimTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TrimTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trim_token_filter_members::r#type>,
+{
+    type Output = TrimTokenFilter;
+
+    fn build(self) -> TrimTokenFilter {
+        Self::build(self)
     }
 }
 
-impl TrimTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TrimTokenFilter { match r#type {} }
+impl<S0> From<TrimTokenFilterBuilder<(S0,)>> for TrimTokenFilter
+where
+    S0: crate::typed::builder::IsSet<trim_token_filter_members::r#type>,
+{
+    fn from(builder: TrimTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20350,18 +22958,27 @@ pub struct TruncateTokenFilter {
 
 impl TruncateTokenFilter {
     /// Creates a builder for [`TruncateTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TruncateTokenFilterBuilder {
         TruncateTokenFilterBuilder::new()
     }
 
     /// Creates a [`TruncateTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TruncateTokenFilterBuilder,
-        ) -> TruncateTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TruncateTokenFilter>>(
+        f: impl FnOnce(TruncateTokenFilterBuilder) -> B,
     ) -> TruncateTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TruncateTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod truncate_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TruncateTokenFilter`].
@@ -20419,6 +23036,7 @@ impl<S0> TruncateTokenFilterBuilder<(S0,)> {
 }
 
 impl TruncateTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20429,9 +23047,12 @@ impl TruncateTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TruncateTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TruncateTokenFilterBuilder<(S0,)> {
     /// Builds a [`TruncateTokenFilter`].
-    pub fn build(self) -> TruncateTokenFilter {
+    pub fn build(self) -> TruncateTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<truncate_token_filter_members::r#type>,
+    {
         TruncateTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20440,16 +23061,24 @@ impl TruncateTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TruncateTokenFilterBuilder<(crate::typed::builder::Set,)>> for TruncateTokenFilter {
-    fn from(builder: TruncateTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TruncateTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<truncate_token_filter_members::r#type>,
+{
+    type Output = TruncateTokenFilter;
+
+    fn build(self) -> TruncateTokenFilter {
+        Self::build(self)
     }
 }
 
-impl TruncateTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TruncateTokenFilter { match r#type {} }
+impl<S0> From<TruncateTokenFilterBuilder<(S0,)>> for TruncateTokenFilter
+where
+    S0: crate::typed::builder::IsSet<truncate_token_filter_members::r#type>,
+{
+    fn from(builder: TruncateTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20465,16 +23094,27 @@ pub struct TurkishAnalyzer {
 
 impl TurkishAnalyzer {
     /// Creates a builder for [`TurkishAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TurkishAnalyzerBuilder {
         TurkishAnalyzerBuilder::new()
     }
 
     /// Creates a [`TurkishAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TurkishAnalyzerBuilder) -> TurkishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TurkishAnalyzer>>(
+        f: impl FnOnce(TurkishAnalyzerBuilder) -> B,
     ) -> TurkishAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TurkishAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod turkish_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TurkishAnalyzer`].
@@ -20553,6 +23193,7 @@ impl<S0> TurkishAnalyzerBuilder<(S0,)> {
 }
 
 impl TurkishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20563,9 +23204,12 @@ impl TurkishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TurkishAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TurkishAnalyzerBuilder<(S0,)> {
     /// Builds a [`TurkishAnalyzer`].
-    pub fn build(self) -> TurkishAnalyzer {
+    pub fn build(self) -> TurkishAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<turkish_analyzer_members::r#type>,
+    {
         TurkishAnalyzer {
             r#type: self.r#type.unwrap(),
             stopwords: self.stopwords,
@@ -20575,16 +23219,24 @@ impl TurkishAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TurkishAnalyzerBuilder<(crate::typed::builder::Set,)>> for TurkishAnalyzer {
-    fn from(builder: TurkishAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TurkishAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<turkish_analyzer_members::r#type>,
+{
+    type Output = TurkishAnalyzer;
+
+    fn build(self) -> TurkishAnalyzer {
+        Self::build(self)
     }
 }
 
-impl TurkishAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TurkishAnalyzer { match r#type {} }
+impl<S0> From<TurkishAnalyzerBuilder<(S0,)>> for TurkishAnalyzer
+where
+    S0: crate::typed::builder::IsSet<turkish_analyzer_members::r#type>,
+{
+    fn from(builder: TurkishAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20598,18 +23250,27 @@ pub struct UaxEmailUrlTokenizer {
 
 impl UaxEmailUrlTokenizer {
     /// Creates a builder for [`UaxEmailUrlTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> UaxEmailUrlTokenizerBuilder {
         UaxEmailUrlTokenizerBuilder::new()
     }
 
     /// Creates a [`UaxEmailUrlTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UaxEmailUrlTokenizerBuilder,
-        ) -> UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = UaxEmailUrlTokenizer>>(
+        f: impl FnOnce(UaxEmailUrlTokenizerBuilder) -> B,
     ) -> UaxEmailUrlTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UaxEmailUrlTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod uax_email_url_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`UaxEmailUrlTokenizer`].
@@ -20666,6 +23327,7 @@ impl<S0> UaxEmailUrlTokenizerBuilder<(S0,)> {
 }
 
 impl UaxEmailUrlTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20676,9 +23338,12 @@ impl UaxEmailUrlTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UaxEmailUrlTokenizerBuilder<(S0,)> {
     /// Builds a [`UaxEmailUrlTokenizer`].
-    pub fn build(self) -> UaxEmailUrlTokenizer {
+    pub fn build(self) -> UaxEmailUrlTokenizer
+    where
+        S0: crate::typed::builder::IsSet<uax_email_url_tokenizer_members::r#type>,
+    {
         UaxEmailUrlTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20687,16 +23352,24 @@ impl UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)>> for UaxEmailUrlTokenizer {
-    fn from(builder: UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UaxEmailUrlTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<uax_email_url_tokenizer_members::r#type>,
+{
+    type Output = UaxEmailUrlTokenizer;
+
+    fn build(self) -> UaxEmailUrlTokenizer {
+        Self::build(self)
     }
 }
 
-impl UaxEmailUrlTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> UaxEmailUrlTokenizer { match r#type {} }
+impl<S0> From<UaxEmailUrlTokenizerBuilder<(S0,)>> for UaxEmailUrlTokenizer
+where
+    S0: crate::typed::builder::IsSet<uax_email_url_tokenizer_members::r#type>,
+{
+    fn from(builder: UaxEmailUrlTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20711,18 +23384,27 @@ pub struct UniqueTokenFilter {
 
 impl UniqueTokenFilter {
     /// Creates a builder for [`UniqueTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> UniqueTokenFilterBuilder {
         UniqueTokenFilterBuilder::new()
     }
 
     /// Creates a [`UniqueTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UniqueTokenFilterBuilder,
-        ) -> UniqueTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = UniqueTokenFilter>>(
+        f: impl FnOnce(UniqueTokenFilterBuilder) -> B,
     ) -> UniqueTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UniqueTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unique_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`UniqueTokenFilter`].
@@ -20780,6 +23462,7 @@ impl<S0> UniqueTokenFilterBuilder<(S0,)> {
 }
 
 impl UniqueTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20790,9 +23473,12 @@ impl UniqueTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UniqueTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UniqueTokenFilterBuilder<(S0,)> {
     /// Builds a [`UniqueTokenFilter`].
-    pub fn build(self) -> UniqueTokenFilter {
+    pub fn build(self) -> UniqueTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<unique_token_filter_members::r#type>,
+    {
         UniqueTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20801,16 +23487,24 @@ impl UniqueTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UniqueTokenFilterBuilder<(crate::typed::builder::Set,)>> for UniqueTokenFilter {
-    fn from(builder: UniqueTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UniqueTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unique_token_filter_members::r#type>,
+{
+    type Output = UniqueTokenFilter;
+
+    fn build(self) -> UniqueTokenFilter {
+        Self::build(self)
     }
 }
 
-impl UniqueTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> UniqueTokenFilter { match r#type {} }
+impl<S0> From<UniqueTokenFilterBuilder<(S0,)>> for UniqueTokenFilter
+where
+    S0: crate::typed::builder::IsSet<unique_token_filter_members::r#type>,
+{
+    fn from(builder: UniqueTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20822,18 +23516,27 @@ pub struct UppercaseTokenFilter {
 
 impl UppercaseTokenFilter {
     /// Creates a builder for [`UppercaseTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> UppercaseTokenFilterBuilder {
         UppercaseTokenFilterBuilder::new()
     }
 
     /// Creates a [`UppercaseTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UppercaseTokenFilterBuilder,
-        ) -> UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = UppercaseTokenFilter>>(
+        f: impl FnOnce(UppercaseTokenFilterBuilder) -> B,
     ) -> UppercaseTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UppercaseTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod uppercase_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`UppercaseTokenFilter`].
@@ -20876,6 +23579,7 @@ impl<S0> UppercaseTokenFilterBuilder<(S0,)> {
 }
 
 impl UppercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20886,9 +23590,12 @@ impl UppercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UppercaseTokenFilterBuilder<(S0,)> {
     /// Builds a [`UppercaseTokenFilter`].
-    pub fn build(self) -> UppercaseTokenFilter {
+    pub fn build(self) -> UppercaseTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<uppercase_token_filter_members::r#type>,
+    {
         UppercaseTokenFilter {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -20896,16 +23603,24 @@ impl UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)>> for UppercaseTokenFilter {
-    fn from(builder: UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UppercaseTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<uppercase_token_filter_members::r#type>,
+{
+    type Output = UppercaseTokenFilter;
+
+    fn build(self) -> UppercaseTokenFilter {
+        Self::build(self)
     }
 }
 
-impl UppercaseTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> UppercaseTokenFilter { match r#type {} }
+impl<S0> From<UppercaseTokenFilterBuilder<(S0,)>> for UppercaseTokenFilter
+where
+    S0: crate::typed::builder::IsSet<uppercase_token_filter_members::r#type>,
+{
+    fn from(builder: UppercaseTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20917,18 +23632,27 @@ pub struct WhitespaceAnalyzer {
 
 impl WhitespaceAnalyzer {
     /// Creates a builder for [`WhitespaceAnalyzer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> WhitespaceAnalyzerBuilder {
         WhitespaceAnalyzerBuilder::new()
     }
 
     /// Creates a [`WhitespaceAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WhitespaceAnalyzerBuilder,
-        ) -> WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = WhitespaceAnalyzer>>(
+        f: impl FnOnce(WhitespaceAnalyzerBuilder) -> B,
     ) -> WhitespaceAnalyzer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WhitespaceAnalyzerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod whitespace_analyzer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`WhitespaceAnalyzer`].
@@ -20971,6 +23695,7 @@ impl<S0> WhitespaceAnalyzerBuilder<(S0,)> {
 }
 
 impl WhitespaceAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20981,9 +23706,12 @@ impl WhitespaceAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WhitespaceAnalyzerBuilder<(S0,)> {
     /// Builds a [`WhitespaceAnalyzer`].
-    pub fn build(self) -> WhitespaceAnalyzer {
+    pub fn build(self) -> WhitespaceAnalyzer
+    where
+        S0: crate::typed::builder::IsSet<whitespace_analyzer_members::r#type>,
+    {
         WhitespaceAnalyzer {
             r#type: self.r#type.unwrap(),
             version: self.version,
@@ -20991,16 +23719,24 @@ impl WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)>> for WhitespaceAnalyzer {
-    fn from(builder: WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WhitespaceAnalyzerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<whitespace_analyzer_members::r#type>,
+{
+    type Output = WhitespaceAnalyzer;
+
+    fn build(self) -> WhitespaceAnalyzer {
+        Self::build(self)
     }
 }
 
-impl WhitespaceAnalyzerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> WhitespaceAnalyzer { match r#type {} }
+impl<S0> From<WhitespaceAnalyzerBuilder<(S0,)>> for WhitespaceAnalyzer
+where
+    S0: crate::typed::builder::IsSet<whitespace_analyzer_members::r#type>,
+{
+    fn from(builder: WhitespaceAnalyzerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21014,18 +23750,27 @@ pub struct WhitespaceTokenizer {
 
 impl WhitespaceTokenizer {
     /// Creates a builder for [`WhitespaceTokenizer`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> WhitespaceTokenizerBuilder {
         WhitespaceTokenizerBuilder::new()
     }
 
     /// Creates a [`WhitespaceTokenizer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WhitespaceTokenizerBuilder,
-        ) -> WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = WhitespaceTokenizer>>(
+        f: impl FnOnce(WhitespaceTokenizerBuilder) -> B,
     ) -> WhitespaceTokenizer {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WhitespaceTokenizerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod whitespace_tokenizer_members {
+    pub struct r#type;
 }
 
 /// Builder for [`WhitespaceTokenizer`].
@@ -21082,6 +23827,7 @@ impl<S0> WhitespaceTokenizerBuilder<(S0,)> {
 }
 
 impl WhitespaceTokenizerBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -21092,9 +23838,12 @@ impl WhitespaceTokenizerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WhitespaceTokenizerBuilder<(S0,)> {
     /// Builds a [`WhitespaceTokenizer`].
-    pub fn build(self) -> WhitespaceTokenizer {
+    pub fn build(self) -> WhitespaceTokenizer
+    where
+        S0: crate::typed::builder::IsSet<whitespace_tokenizer_members::r#type>,
+    {
         WhitespaceTokenizer {
             version: self.version,
             r#type: self.r#type.unwrap(),
@@ -21103,16 +23852,24 @@ impl WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)>> for WhitespaceTokenizer {
-    fn from(builder: WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WhitespaceTokenizerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<whitespace_tokenizer_members::r#type>,
+{
+    type Output = WhitespaceTokenizer;
+
+    fn build(self) -> WhitespaceTokenizer {
+        Self::build(self)
     }
 }
 
-impl WhitespaceTokenizerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> WhitespaceTokenizer { match r#type {} }
+impl<S0> From<WhitespaceTokenizerBuilder<(S0,)>> for WhitespaceTokenizer
+where
+    S0: crate::typed::builder::IsSet<whitespace_tokenizer_members::r#type>,
+{
+    fn from(builder: WhitespaceTokenizerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21170,18 +23927,27 @@ pub struct WordDelimiterGraphTokenFilter {
 
 impl WordDelimiterGraphTokenFilter {
     /// Creates a builder for [`WordDelimiterGraphTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> WordDelimiterGraphTokenFilterBuilder {
         WordDelimiterGraphTokenFilterBuilder::new()
     }
 
     /// Creates a [`WordDelimiterGraphTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WordDelimiterGraphTokenFilterBuilder,
-        ) -> WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = WordDelimiterGraphTokenFilter>>(
+        f: impl FnOnce(WordDelimiterGraphTokenFilterBuilder) -> B,
     ) -> WordDelimiterGraphTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WordDelimiterGraphTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod word_delimiter_graph_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`WordDelimiterGraphTokenFilter`].
@@ -21472,6 +24238,7 @@ impl<S0> WordDelimiterGraphTokenFilterBuilder<(S0,)> {
 }
 
 impl WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -21482,9 +24249,12 @@ impl WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WordDelimiterGraphTokenFilterBuilder<(S0,)> {
     /// Builds a [`WordDelimiterGraphTokenFilter`].
-    pub fn build(self) -> WordDelimiterGraphTokenFilter {
+    pub fn build(self) -> WordDelimiterGraphTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<word_delimiter_graph_token_filter_members::r#type>,
+    {
         WordDelimiterGraphTokenFilter {
             version: self.version,
             catenate_all: self.catenate_all,
@@ -21507,18 +24277,24 @@ impl WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for WordDelimiterGraphTokenFilter
+impl<S0> crate::typed::builder::Build for WordDelimiterGraphTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<word_delimiter_graph_token_filter_members::r#type>,
 {
-    fn from(builder: WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = WordDelimiterGraphTokenFilter;
+
+    fn build(self) -> WordDelimiterGraphTokenFilter {
+        Self::build(self)
     }
 }
 
-impl WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> WordDelimiterGraphTokenFilter { match r#type {} }
+impl<S0> From<WordDelimiterGraphTokenFilterBuilder<(S0,)>> for WordDelimiterGraphTokenFilter
+where
+    S0: crate::typed::builder::IsSet<word_delimiter_graph_token_filter_members::r#type>,
+{
+    fn from(builder: WordDelimiterGraphTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21570,18 +24346,27 @@ pub struct WordDelimiterTokenFilter {
 
 impl WordDelimiterTokenFilter {
     /// Creates a builder for [`WordDelimiterTokenFilter`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> WordDelimiterTokenFilterBuilder {
         WordDelimiterTokenFilterBuilder::new()
     }
 
     /// Creates a [`WordDelimiterTokenFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WordDelimiterTokenFilterBuilder,
-        ) -> WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = WordDelimiterTokenFilter>>(
+        f: impl FnOnce(WordDelimiterTokenFilterBuilder) -> B,
     ) -> WordDelimiterTokenFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WordDelimiterTokenFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod word_delimiter_token_filter_members {
+    pub struct r#type;
 }
 
 /// Builder for [`WordDelimiterTokenFilter`].
@@ -21842,6 +24627,7 @@ impl<S0> WordDelimiterTokenFilterBuilder<(S0,)> {
 }
 
 impl WordDelimiterTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -21852,9 +24638,12 @@ impl WordDelimiterTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WordDelimiterTokenFilterBuilder<(S0,)> {
     /// Builds a [`WordDelimiterTokenFilter`].
-    pub fn build(self) -> WordDelimiterTokenFilter {
+    pub fn build(self) -> WordDelimiterTokenFilter
+    where
+        S0: crate::typed::builder::IsSet<word_delimiter_token_filter_members::r#type>,
+    {
         WordDelimiterTokenFilter {
             version: self.version,
             catenate_all: self.catenate_all,
@@ -21875,18 +24664,24 @@ impl WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)>>
-    for WordDelimiterTokenFilter
+impl<S0> crate::typed::builder::Build for WordDelimiterTokenFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<word_delimiter_token_filter_members::r#type>,
 {
-    fn from(builder: WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = WordDelimiterTokenFilter;
+
+    fn build(self) -> WordDelimiterTokenFilter {
+        Self::build(self)
     }
 }
 
-impl WordDelimiterTokenFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> WordDelimiterTokenFilter { match r#type {} }
+impl<S0> From<WordDelimiterTokenFilterBuilder<(S0,)>> for WordDelimiterTokenFilter
+where
+    S0: crate::typed::builder::IsSet<word_delimiter_token_filter_members::r#type>,
+{
+    fn from(builder: WordDelimiterTokenFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21942,8 +24737,8 @@ impl WordDelimiterTokenFilterBase {
     }
 
     /// Creates a [`WordDelimiterTokenFilterBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(WordDelimiterTokenFilterBaseBuilder) -> WordDelimiterTokenFilterBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = WordDelimiterTokenFilterBase>>(
+        f: impl FnOnce(WordDelimiterTokenFilterBaseBuilder) -> B,
     ) -> WordDelimiterTokenFilterBase {
         f(Self::builder()).build()
     }
@@ -22200,6 +24995,14 @@ impl WordDelimiterTokenFilterBaseBuilder {
             type_table: self.type_table,
             type_table_path: self.type_table_path,
         }
+    }
+}
+
+impl crate::typed::builder::Build for WordDelimiterTokenFilterBaseBuilder {
+    type Output = WordDelimiterTokenFilterBase;
+
+    fn build(self) -> WordDelimiterTokenFilterBase {
+        Self::build(self)
     }
 }
 

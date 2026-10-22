@@ -27,16 +27,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `detector`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `detector`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct detector;
 }
 
 /// Builder for [`Request`].
@@ -135,7 +146,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn detector(
         self,
         value: impl Into<crate::typed::ml::_types::Detector>,
@@ -146,19 +157,22 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Sets [`detector`](Self::detector) with a builder.
-    pub fn detector_with(
+    pub fn detector_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::Detector>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DetectorBuilder,
-        ) -> crate::typed::ml::_types::DetectorBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DetectorBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.detector(f(crate::typed::ml::_types::DetectorBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::detector>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -169,23 +183,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::detector>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `detector` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, detector: crate::typed::builder::MissingRequiredField) -> Request { match detector {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `detector` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, detector: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match detector {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::detector>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

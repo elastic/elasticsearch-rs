@@ -17,23 +17,30 @@ pub struct QueryRulesetListItem {
 
 impl QueryRulesetListItem {
     /// Creates a builder for [`QueryRulesetListItem`].
+    ///
+    /// Required: `ruleset_id`, `rule_total_count`, `rule_criteria_types_counts`, `rule_type_counts`.
     pub fn builder() -> QueryRulesetListItemBuilder {
         QueryRulesetListItemBuilder::new()
     }
 
     /// Creates a [`QueryRulesetListItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryRulesetListItemBuilder,
-        ) -> QueryRulesetListItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `ruleset_id`, `rule_total_count`, `rule_criteria_types_counts`, `rule_type_counts`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryRulesetListItem>>(
+        f: impl FnOnce(QueryRulesetListItemBuilder) -> B,
     ) -> QueryRulesetListItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryRulesetListItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_ruleset_list_item_members {
+    pub struct ruleset_id;
+    pub struct rule_total_count;
+    pub struct rule_criteria_types_counts;
+    pub struct rule_type_counts;
 }
 
 /// Builder for [`QueryRulesetListItem`].
@@ -85,7 +92,7 @@ impl<S0, S1, S2, S3> QueryRulesetListItemBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> QueryRulesetListItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// A unique identifier for the ruleset.
+    /// **Required.** A unique identifier for the ruleset.
     pub fn ruleset_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -97,7 +104,7 @@ impl<S1, S2, S3> QueryRulesetListItemBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3> QueryRulesetListItemBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The number of rules associated with the ruleset.
+    /// **Required.** The number of rules associated with the ruleset.
     pub fn rule_total_count(
         self,
         value: i32,
@@ -109,7 +116,7 @@ impl<S0, S2, S3> QueryRulesetListItemBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3> QueryRulesetListItemBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// A map of criteria type (for example, `exact`) to the number of rules of that type.
+    /// **Required.** A map of criteria type (for example, `exact`) to the number of rules of that type.
     ///
     /// NOTE: The counts in `rule_criteria_types_counts` may be larger than the value of `rule_total_count` because a rule may have multiple criteria.
     pub fn rule_criteria_types_counts(
@@ -147,7 +154,7 @@ impl<S0, S1, S3> QueryRulesetListItemBuilder<(S0, S1, crate::typed::builder::Set
 }
 
 impl<S0, S1, S2> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// A map of rule type (for example, `pinned`) to the number of rules of that type.
+    /// **Required.** A map of rule type (for example, `pinned`) to the number of rules of that type.
     pub fn rule_type_counts(
         self,
         value: impl Into<indexmap::IndexMap<String, i32>>,
@@ -182,16 +189,17 @@ impl<S0, S1, S2> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder:
     }
 }
 
-impl
-    QueryRulesetListItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> QueryRulesetListItemBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`QueryRulesetListItem`].
-    pub fn build(self) -> QueryRulesetListItem {
+    pub fn build(self) -> QueryRulesetListItem
+    where
+        S0: crate::typed::builder::IsSet<query_ruleset_list_item_members::ruleset_id>,
+        S1: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_total_count>,
+        S2: crate::typed::builder::IsSet<
+            query_ruleset_list_item_members::rule_criteria_types_counts,
+        >,
+        S3: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_type_counts>,
+    {
         QueryRulesetListItem {
             ruleset_id: self.ruleset_id.unwrap(),
             rule_total_count: self.rule_total_count.unwrap(),
@@ -201,71 +209,30 @@ impl
     }
 }
 
-impl
-    From<
-        QueryRulesetListItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for QueryRulesetListItem
+impl<S0, S1, S2, S3> crate::typed::builder::Build for QueryRulesetListItemBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<query_ruleset_list_item_members::ruleset_id>,
+    S1: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_total_count>,
+    S2: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_criteria_types_counts>,
+    S3: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_type_counts>,
 {
-    fn from(
-        builder: QueryRulesetListItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = QueryRulesetListItem;
+
+    fn build(self) -> QueryRulesetListItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> QueryRulesetListItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `ruleset_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ruleset_id: crate::typed::builder::MissingRequiredField) -> QueryRulesetListItem { match ruleset_id {} }
-}
-
-impl<S2, S3>
-    QueryRulesetListItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<QueryRulesetListItemBuilder<(S0, S1, S2, S3)>> for QueryRulesetListItem
+where
+    S0: crate::typed::builder::IsSet<query_ruleset_list_item_members::ruleset_id>,
+    S1: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_total_count>,
+    S2: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_criteria_types_counts>,
+    S3: crate::typed::builder::IsSet<query_ruleset_list_item_members::rule_type_counts>,
 {
-    /// `rule_total_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_total_count: crate::typed::builder::MissingRequiredField) -> QueryRulesetListItem { match rule_total_count {} }
-}
-
-impl<S3>
-    QueryRulesetListItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `rule_criteria_types_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_criteria_types_counts: crate::typed::builder::MissingRequiredField) -> QueryRulesetListItem { match rule_criteria_types_counts {} }
-}
-
-impl
-    QueryRulesetListItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `rule_type_counts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_type_counts: crate::typed::builder::MissingRequiredField) -> QueryRulesetListItem { match rule_type_counts {} }
+    fn from(builder: QueryRulesetListItemBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`query_rules.list_rulesets`](crate::typed::query_rules::QueryRulesClient::list_rulesets).
@@ -305,7 +272,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -430,6 +399,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

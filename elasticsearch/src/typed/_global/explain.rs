@@ -10,22 +10,29 @@ pub struct Explanation {
 
 impl Explanation {
     /// Creates a builder for [`Explanation`].
+    ///
+    /// Required: `description`, `details`, `value`.
     pub fn builder() -> ExplanationBuilder {
         ExplanationBuilder::new()
     }
 
     /// Creates a [`Explanation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExplanationBuilder,
-        ) -> ExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `description`, `details`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = Explanation>>(
+        f: impl FnOnce(ExplanationBuilder) -> B,
     ) -> Explanation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExplanationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod explanation_members {
+    pub struct description;
+    pub struct details;
+    pub struct value;
 }
 
 /// Builder for [`Explanation`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> ExplanationBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -83,6 +91,7 @@ impl<S1, S2> ExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn details(
         self,
         value: impl Into<Vec<ExplanationDetail>>,
@@ -106,14 +115,9 @@ impl<S0, S2> ExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Adds an element to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = ExplanationDetail>>(
         self,
-        f: impl FnOnce(
-            ExplanationDetailBuilder,
-        ) -> ExplanationDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplanationDetailBuilder) -> B,
     ) -> ExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_details(f(ExplanationDetailBuilder::new()).build())
     }
@@ -129,20 +133,16 @@ impl<S0, S2> ExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = ExplanationDetail>>(
         self,
-        f: impl FnOnce(
-            ExplanationDetailBuilder,
-        ) -> ExplanationDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplanationDetailBuilder) -> B,
     ) -> Self {
         self.add_details(f(ExplanationDetailBuilder::new()).build())
     }
 }
 
 impl<S0, S1> ExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(self, value: f32) -> ExplanationBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.value = Some(value);
@@ -150,15 +150,14 @@ impl<S0, S1> ExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    ExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ExplanationBuilder<(S0, S1, S2)> {
     /// Builds a [`Explanation`].
-    pub fn build(self) -> Explanation {
+    pub fn build(self) -> Explanation
+    where
+        S0: crate::typed::builder::IsSet<explanation_members::description>,
+        S1: crate::typed::builder::IsSet<explanation_members::details>,
+        S2: crate::typed::builder::IsSet<explanation_members::value>,
+    {
         Explanation {
             description: self.description.unwrap(),
             details: self.details.unwrap(),
@@ -167,54 +166,28 @@ impl
     }
 }
 
-impl
-    From<
-        ExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Explanation
+impl<S0, S1, S2> crate::typed::builder::Build for ExplanationBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<explanation_members::description>,
+    S1: crate::typed::builder::IsSet<explanation_members::details>,
+    S2: crate::typed::builder::IsSet<explanation_members::value>,
 {
-    fn from(
-        builder: ExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Explanation;
+
+    fn build(self) -> Explanation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ExplanationBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> Explanation { match description {} }
-}
-
-impl<S2>
-    ExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ExplanationBuilder<(S0, S1, S2)>> for Explanation
+where
+    S0: crate::typed::builder::IsSet<explanation_members::description>,
+    S1: crate::typed::builder::IsSet<explanation_members::details>,
+    S2: crate::typed::builder::IsSet<explanation_members::value>,
 {
-    /// `details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, details: crate::typed::builder::MissingRequiredField) -> Explanation { match details {} }
-}
-
-impl
-    ExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> Explanation { match value {} }
+    fn from(builder: ExplanationBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -227,21 +200,28 @@ pub struct ExplanationDetail {
 
 impl ExplanationDetail {
     /// Creates a builder for [`ExplanationDetail`].
+    ///
+    /// Required: `description`, `value`.
     pub fn builder() -> ExplanationDetailBuilder {
         ExplanationDetailBuilder::new()
     }
 
     /// Creates a [`ExplanationDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExplanationDetailBuilder,
-        ) -> ExplanationDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `description`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExplanationDetail>>(
+        f: impl FnOnce(ExplanationDetailBuilder) -> B,
     ) -> ExplanationDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExplanationDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod explanation_detail_members {
+    pub struct description;
+    pub struct value;
 }
 
 /// Builder for [`ExplanationDetail`].
@@ -296,20 +276,16 @@ impl<S0, S1> ExplanationDetailBuilder<(S0, S1)> {
     }
 
     /// Adds an element to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = ExplanationDetail>>(
         self,
-        f: impl FnOnce(
-            ExplanationDetailBuilder,
-        ) -> ExplanationDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ExplanationDetailBuilder) -> B,
     ) -> Self {
         self.add_details(f(ExplanationDetailBuilder::new()).build())
     }
 }
 
 impl<S1> ExplanationDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -321,6 +297,7 @@ impl<S1> ExplanationDetailBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ExplanationDetailBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(self, value: f32) -> ExplanationDetailBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.value = Some(value);
@@ -328,9 +305,13 @@ impl<S0> ExplanationDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ExplanationDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ExplanationDetailBuilder<(S0, S1)> {
     /// Builds a [`ExplanationDetail`].
-    pub fn build(self) -> ExplanationDetail {
+    pub fn build(self) -> ExplanationDetail
+    where
+        S0: crate::typed::builder::IsSet<explanation_detail_members::description>,
+        S1: crate::typed::builder::IsSet<explanation_detail_members::value>,
+    {
         ExplanationDetail {
             description: self.description.unwrap(),
             details: self.details,
@@ -339,26 +320,26 @@ impl ExplanationDetailBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<ExplanationDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ExplanationDetail
+impl<S0, S1> crate::typed::builder::Build for ExplanationDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<explanation_detail_members::description>,
+    S1: crate::typed::builder::IsSet<explanation_detail_members::value>,
 {
-    fn from(
-        builder: ExplanationDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ExplanationDetail;
+
+    fn build(self) -> ExplanationDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> ExplanationDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> ExplanationDetail { match description {} }
-}
-
-impl ExplanationDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> ExplanationDetail { match value {} }
+impl<S0, S1> From<ExplanationDetailBuilder<(S0, S1)>> for ExplanationDetail
+where
+    S0: crate::typed::builder::IsSet<explanation_detail_members::description>,
+    S1: crate::typed::builder::IsSet<explanation_detail_members::value>,
+{
+    fn from(builder: ExplanationDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`explain`](crate::typed::Client::explain).
@@ -437,19 +418,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `id`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -795,20 +785,18 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The document identifier.
+    /// **Required.** The document identifier.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -820,7 +808,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Index names that are used to limit the request.
+    /// **Required.** Index names that are used to limit the request.
     /// Only a single index name can be provided to this parameter.
     pub fn index(
         self,
@@ -832,9 +820,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -860,41 +852,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

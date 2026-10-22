@@ -11,23 +11,30 @@ pub struct ConfusionMatrixItem {
 
 impl ConfusionMatrixItem {
     /// Creates a builder for [`ConfusionMatrixItem`].
+    ///
+    /// Required: `actual_class`, `actual_class_doc_count`, `predicted_classes`, `other_predicted_class_doc_count`.
     pub fn builder() -> ConfusionMatrixItemBuilder {
         ConfusionMatrixItemBuilder::new()
     }
 
     /// Creates a [`ConfusionMatrixItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConfusionMatrixItemBuilder,
-        ) -> ConfusionMatrixItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `actual_class`, `actual_class_doc_count`, `predicted_classes`, `other_predicted_class_doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConfusionMatrixItem>>(
+        f: impl FnOnce(ConfusionMatrixItemBuilder) -> B,
     ) -> ConfusionMatrixItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConfusionMatrixItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod confusion_matrix_item_members {
+    pub struct actual_class;
+    pub struct actual_class_doc_count;
+    pub struct predicted_classes;
+    pub struct other_predicted_class_doc_count;
 }
 
 /// Builder for [`ConfusionMatrixItem`].
@@ -79,6 +86,7 @@ impl<S0, S1, S2, S3> ConfusionMatrixItemBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ConfusionMatrixItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn actual_class(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -90,6 +98,7 @@ impl<S1, S2, S3> ConfusionMatrixItemBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2, S3> ConfusionMatrixItemBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn actual_class_doc_count(
         self,
         value: i32,
@@ -101,6 +110,7 @@ impl<S0, S2, S3> ConfusionMatrixItemBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn predicted_classes(
         self,
         value: impl Into<Vec<ConfusionMatrixPrediction>>,
@@ -124,14 +134,11 @@ impl<S0, S1, S3> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::NotS
     }
 
     /// Adds an element to [`predicted_classes`](Self::predicted_classes), with a builder.
-    pub fn add_predicted_classes_with(
+    pub fn add_predicted_classes_with<
+        B: crate::typed::builder::Build<Output = ConfusionMatrixPrediction>,
+    >(
         self,
-        f: impl FnOnce(
-            ConfusionMatrixPredictionBuilder,
-        ) -> ConfusionMatrixPredictionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConfusionMatrixPredictionBuilder) -> B,
     ) -> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.add_predicted_classes(f(ConfusionMatrixPredictionBuilder::new()).build())
     }
@@ -147,20 +154,18 @@ impl<S0, S1, S3> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::Set,
     }
 
     /// Adds an element to [`predicted_classes`](Self::predicted_classes), with a builder.
-    pub fn add_predicted_classes_with(
+    pub fn add_predicted_classes_with<
+        B: crate::typed::builder::Build<Output = ConfusionMatrixPrediction>,
+    >(
         self,
-        f: impl FnOnce(
-            ConfusionMatrixPredictionBuilder,
-        ) -> ConfusionMatrixPredictionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConfusionMatrixPredictionBuilder) -> B,
     ) -> Self {
         self.add_predicted_classes(f(ConfusionMatrixPredictionBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> ConfusionMatrixItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn other_predicted_class_doc_count(
         self,
         value: i32,
@@ -171,16 +176,17 @@ impl<S0, S1, S2> ConfusionMatrixItemBuilder<(S0, S1, S2, crate::typed::builder::
     }
 }
 
-impl
-    ConfusionMatrixItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ConfusionMatrixItemBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ConfusionMatrixItem`].
-    pub fn build(self) -> ConfusionMatrixItem {
+    pub fn build(self) -> ConfusionMatrixItem
+    where
+        S0: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class>,
+        S1: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class_doc_count>,
+        S2: crate::typed::builder::IsSet<confusion_matrix_item_members::predicted_classes>,
+        S3: crate::typed::builder::IsSet<
+            confusion_matrix_item_members::other_predicted_class_doc_count,
+        >,
+    {
         ConfusionMatrixItem {
             actual_class: self.actual_class.unwrap(),
             actual_class_doc_count: self.actual_class_doc_count.unwrap(),
@@ -190,71 +196,34 @@ impl
     }
 }
 
-impl
-    From<
-        ConfusionMatrixItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ConfusionMatrixItem
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ConfusionMatrixItemBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class_doc_count>,
+    S2: crate::typed::builder::IsSet<confusion_matrix_item_members::predicted_classes>,
+    S3: crate::typed::builder::IsSet<
+        confusion_matrix_item_members::other_predicted_class_doc_count,
+    >,
 {
-    fn from(
-        builder: ConfusionMatrixItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConfusionMatrixItem;
+
+    fn build(self) -> ConfusionMatrixItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ConfusionMatrixItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `actual_class` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actual_class: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixItem { match actual_class {} }
-}
-
-impl<S2, S3>
-    ConfusionMatrixItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ConfusionMatrixItemBuilder<(S0, S1, S2, S3)>> for ConfusionMatrixItem
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_item_members::actual_class_doc_count>,
+    S2: crate::typed::builder::IsSet<confusion_matrix_item_members::predicted_classes>,
+    S3: crate::typed::builder::IsSet<
+        confusion_matrix_item_members::other_predicted_class_doc_count,
+    >,
 {
-    /// `actual_class_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actual_class_doc_count: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixItem { match actual_class_doc_count {} }
-}
-
-impl<S3>
-    ConfusionMatrixItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `predicted_classes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, predicted_classes: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixItem { match predicted_classes {} }
-}
-
-impl
-    ConfusionMatrixItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `other_predicted_class_doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, other_predicted_class_doc_count: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixItem { match other_predicted_class_doc_count {} }
+    fn from(builder: ConfusionMatrixItemBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -265,21 +234,28 @@ pub struct ConfusionMatrixPrediction {
 
 impl ConfusionMatrixPrediction {
     /// Creates a builder for [`ConfusionMatrixPrediction`].
+    ///
+    /// Required: `predicted_class`, `count`.
     pub fn builder() -> ConfusionMatrixPredictionBuilder {
         ConfusionMatrixPredictionBuilder::new()
     }
 
     /// Creates a [`ConfusionMatrixPrediction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConfusionMatrixPredictionBuilder,
-        ) -> ConfusionMatrixPredictionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `predicted_class`, `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConfusionMatrixPrediction>>(
+        f: impl FnOnce(ConfusionMatrixPredictionBuilder) -> B,
     ) -> ConfusionMatrixPrediction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConfusionMatrixPredictionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod confusion_matrix_prediction_members {
+    pub struct predicted_class;
+    pub struct count;
 }
 
 /// Builder for [`ConfusionMatrixPrediction`].
@@ -315,6 +291,7 @@ impl<S0, S1> ConfusionMatrixPredictionBuilder<(S0, S1)> {
 }
 
 impl<S1> ConfusionMatrixPredictionBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn predicted_class(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -326,6 +303,7 @@ impl<S1> ConfusionMatrixPredictionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ConfusionMatrixPredictionBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i32,
@@ -336,9 +314,13 @@ impl<S0> ConfusionMatrixPredictionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ConfusionMatrixPredictionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ConfusionMatrixPredictionBuilder<(S0, S1)> {
     /// Builds a [`ConfusionMatrixPrediction`].
-    pub fn build(self) -> ConfusionMatrixPrediction {
+    pub fn build(self) -> ConfusionMatrixPrediction
+    where
+        S0: crate::typed::builder::IsSet<confusion_matrix_prediction_members::predicted_class>,
+        S1: crate::typed::builder::IsSet<confusion_matrix_prediction_members::count>,
+    {
         ConfusionMatrixPrediction {
             predicted_class: self.predicted_class.unwrap(),
             count: self.count.unwrap(),
@@ -346,30 +328,26 @@ impl ConfusionMatrixPredictionBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<ConfusionMatrixPredictionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ConfusionMatrixPrediction
+impl<S0, S1> crate::typed::builder::Build for ConfusionMatrixPredictionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_prediction_members::predicted_class>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_prediction_members::count>,
 {
-    fn from(
-        builder: ConfusionMatrixPredictionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConfusionMatrixPrediction;
+
+    fn build(self) -> ConfusionMatrixPrediction {
+        Self::build(self)
     }
 }
 
-impl<S1> ConfusionMatrixPredictionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `predicted_class` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, predicted_class: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixPrediction { match predicted_class {} }
-}
-
-impl ConfusionMatrixPredictionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixPrediction { match count {} }
+impl<S0, S1> From<ConfusionMatrixPredictionBuilder<(S0, S1)>> for ConfusionMatrixPrediction
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_prediction_members::predicted_class>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_prediction_members::count>,
+{
+    fn from(builder: ConfusionMatrixPredictionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -390,23 +368,30 @@ pub struct ConfusionMatrixThreshold {
 
 impl ConfusionMatrixThreshold {
     /// Creates a builder for [`ConfusionMatrixThreshold`].
+    ///
+    /// Required: `true_positive`, `false_positive`, `true_negative`, `false_negative`.
     pub fn builder() -> ConfusionMatrixThresholdBuilder {
         ConfusionMatrixThresholdBuilder::new()
     }
 
     /// Creates a [`ConfusionMatrixThreshold`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConfusionMatrixThresholdBuilder,
-        ) -> ConfusionMatrixThresholdBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `true_positive`, `false_positive`, `true_negative`, `false_negative`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConfusionMatrixThreshold>>(
+        f: impl FnOnce(ConfusionMatrixThresholdBuilder) -> B,
     ) -> ConfusionMatrixThreshold {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConfusionMatrixThresholdBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod confusion_matrix_threshold_members {
+    pub struct true_positive;
+    pub struct false_positive;
+    pub struct true_negative;
+    pub struct false_negative;
 }
 
 /// Builder for [`ConfusionMatrixThreshold`].
@@ -458,7 +443,7 @@ impl<S0, S1, S2, S3> ConfusionMatrixThresholdBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ConfusionMatrixThresholdBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// True Positive
+    /// **Required.** True Positive
     pub fn true_positive(
         self,
         value: i32,
@@ -470,7 +455,7 @@ impl<S1, S2, S3> ConfusionMatrixThresholdBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3> ConfusionMatrixThresholdBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// False Positive
+    /// **Required.** False Positive
     pub fn false_positive(
         self,
         value: i32,
@@ -482,7 +467,7 @@ impl<S0, S2, S3> ConfusionMatrixThresholdBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3> ConfusionMatrixThresholdBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// True Negative
+    /// **Required.** True Negative
     pub fn true_negative(
         self,
         value: i32,
@@ -494,7 +479,7 @@ impl<S0, S1, S3> ConfusionMatrixThresholdBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2> ConfusionMatrixThresholdBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// False Negative
+    /// **Required.** False Negative
     pub fn false_negative(
         self,
         value: i32,
@@ -505,16 +490,15 @@ impl<S0, S1, S2> ConfusionMatrixThresholdBuilder<(S0, S1, S2, crate::typed::buil
     }
 }
 
-impl
-    ConfusionMatrixThresholdBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ConfusionMatrixThresholdBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ConfusionMatrixThreshold`].
-    pub fn build(self) -> ConfusionMatrixThreshold {
+    pub fn build(self) -> ConfusionMatrixThreshold
+    where
+        S0: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_positive>,
+        S1: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_positive>,
+        S2: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_negative>,
+        S3: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_negative>,
+    {
         ConfusionMatrixThreshold {
             true_positive: self.true_positive.unwrap(),
             false_positive: self.false_positive.unwrap(),
@@ -524,71 +508,32 @@ impl
     }
 }
 
-impl
-    From<
-        ConfusionMatrixThresholdBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ConfusionMatrixThreshold
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for ConfusionMatrixThresholdBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_positive>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_positive>,
+    S2: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_negative>,
+    S3: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_negative>,
 {
-    fn from(
-        builder: ConfusionMatrixThresholdBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ConfusionMatrixThreshold;
+
+    fn build(self) -> ConfusionMatrixThreshold {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ConfusionMatrixThresholdBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `true_positive` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, true_positive: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixThreshold { match true_positive {} }
-}
-
-impl<S2, S3>
-    ConfusionMatrixThresholdBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ConfusionMatrixThresholdBuilder<(S0, S1, S2, S3)>>
+    for ConfusionMatrixThreshold
+where
+    S0: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_positive>,
+    S1: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_positive>,
+    S2: crate::typed::builder::IsSet<confusion_matrix_threshold_members::true_negative>,
+    S3: crate::typed::builder::IsSet<confusion_matrix_threshold_members::false_negative>,
 {
-    /// `false_positive` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, false_positive: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixThreshold { match false_positive {} }
-}
-
-impl<S3>
-    ConfusionMatrixThresholdBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `true_negative` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, true_negative: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixThreshold { match true_negative {} }
-}
-
-impl
-    ConfusionMatrixThresholdBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `false_negative` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, false_negative: crate::typed::builder::MissingRequiredField) -> ConfusionMatrixThreshold { match false_negative {} }
+    fn from(builder: ConfusionMatrixThresholdBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -619,8 +564,8 @@ impl DataframeClassificationSummary {
     }
 
     /// Creates a [`DataframeClassificationSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataframeClassificationSummaryBuilder) -> DataframeClassificationSummaryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeClassificationSummary>>(
+        f: impl FnOnce(DataframeClassificationSummaryBuilder) -> B,
     ) -> DataframeClassificationSummary {
         f(Self::builder()).build()
     }
@@ -663,12 +608,11 @@ impl DataframeClassificationSummaryBuilder {
     }
 
     /// Sets [`auc_roc`](Self::auc_roc) with a builder.
-    pub fn auc_roc_with(
+    pub fn auc_roc_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationSummaryAucRoc>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationSummaryAucRocBuilder,
-        )
-            -> DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationSummaryAucRocBuilder) -> B,
     ) -> Self {
         self.auc_roc(f(DataframeEvaluationSummaryAucRocBuilder::new()).build())
     }
@@ -686,14 +630,11 @@ impl DataframeClassificationSummaryBuilder {
     }
 
     /// Sets [`accuracy`](Self::accuracy) with a builder.
-    pub fn accuracy_with(
+    pub fn accuracy_with<
+        B: crate::typed::builder::Build<Output = DataframeClassificationSummaryAccuracy>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeClassificationSummaryAccuracyBuilder,
-        ) -> DataframeClassificationSummaryAccuracyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeClassificationSummaryAccuracyBuilder) -> B,
     ) -> Self {
         self.accuracy(f(DataframeClassificationSummaryAccuracyBuilder::new()).build())
     }
@@ -717,14 +658,13 @@ impl DataframeClassificationSummaryBuilder {
     }
 
     /// Sets [`multiclass_confusion_matrix`](Self::multiclass_confusion_matrix) with a builder.
-    pub fn multiclass_confusion_matrix_with(
+    pub fn multiclass_confusion_matrix_with<
+        B: crate::typed::builder::Build<
+            Output = DataframeClassificationSummaryMulticlassConfusionMatrix,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeClassificationSummaryMulticlassConfusionMatrixBuilder,
-        ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeClassificationSummaryMulticlassConfusionMatrixBuilder) -> B,
     ) -> Self {
         self.multiclass_confusion_matrix(
             f(DataframeClassificationSummaryMulticlassConfusionMatrixBuilder::new()).build(),
@@ -747,14 +687,11 @@ impl DataframeClassificationSummaryBuilder {
     }
 
     /// Sets [`precision`](Self::precision) with a builder.
-    pub fn precision_with(
+    pub fn precision_with<
+        B: crate::typed::builder::Build<Output = DataframeClassificationSummaryPrecision>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeClassificationSummaryPrecisionBuilder,
-        ) -> DataframeClassificationSummaryPrecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeClassificationSummaryPrecisionBuilder) -> B,
     ) -> Self {
         self.precision(f(DataframeClassificationSummaryPrecisionBuilder::new()).build())
     }
@@ -772,14 +709,11 @@ impl DataframeClassificationSummaryBuilder {
     }
 
     /// Sets [`recall`](Self::recall) with a builder.
-    pub fn recall_with(
+    pub fn recall_with<
+        B: crate::typed::builder::Build<Output = DataframeClassificationSummaryRecall>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeClassificationSummaryRecallBuilder,
-        ) -> DataframeClassificationSummaryRecallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeClassificationSummaryRecallBuilder) -> B,
     ) -> Self {
         self.recall(f(DataframeClassificationSummaryRecallBuilder::new()).build())
     }
@@ -798,6 +732,14 @@ impl DataframeClassificationSummaryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataframeClassificationSummaryBuilder {
+    type Output = DataframeClassificationSummary;
+
+    fn build(self) -> DataframeClassificationSummary {
+        Self::build(self)
+    }
+}
+
 impl From<DataframeClassificationSummaryBuilder> for DataframeClassificationSummary {
     fn from(builder: DataframeClassificationSummaryBuilder) -> Self {
         builder.build()
@@ -812,21 +754,28 @@ pub struct DataframeClassificationSummaryAccuracy {
 
 impl DataframeClassificationSummaryAccuracy {
     /// Creates a builder for [`DataframeClassificationSummaryAccuracy`].
+    ///
+    /// Required: `classes`, `overall_accuracy`.
     pub fn builder() -> DataframeClassificationSummaryAccuracyBuilder {
         DataframeClassificationSummaryAccuracyBuilder::new()
     }
 
     /// Creates a [`DataframeClassificationSummaryAccuracy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeClassificationSummaryAccuracyBuilder,
-        ) -> DataframeClassificationSummaryAccuracyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `classes`, `overall_accuracy`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeClassificationSummaryAccuracy>>(
+        f: impl FnOnce(DataframeClassificationSummaryAccuracyBuilder) -> B,
     ) -> DataframeClassificationSummaryAccuracy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeClassificationSummaryAccuracyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_classification_summary_accuracy_members {
+    pub struct classes;
+    pub struct overall_accuracy;
 }
 
 /// Builder for [`DataframeClassificationSummaryAccuracy`].
@@ -865,6 +814,7 @@ impl<S0, S1> DataframeClassificationSummaryAccuracyBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn classes(
         self,
         value: impl Into<Vec<DataframeEvaluationClass>>,
@@ -888,14 +838,9 @@ impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::N
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::Set, S1)> {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
@@ -911,20 +856,16 @@ impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::S
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> Self {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
 }
 
 impl<S0> DataframeClassificationSummaryAccuracyBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn overall_accuracy(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -935,14 +876,17 @@ impl<S0> DataframeClassificationSummaryAccuracyBuilder<(S0, crate::typed::builde
     }
 }
 
-impl
-    DataframeClassificationSummaryAccuracyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeClassificationSummaryAccuracyBuilder<(S0, S1)> {
     /// Builds a [`DataframeClassificationSummaryAccuracy`].
-    pub fn build(self) -> DataframeClassificationSummaryAccuracy {
+    pub fn build(self) -> DataframeClassificationSummaryAccuracy
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_classification_summary_accuracy_members::classes,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_classification_summary_accuracy_members::overall_accuracy,
+        >,
+    {
         DataframeClassificationSummaryAccuracy {
             classes: self.classes.unwrap(),
             overall_accuracy: self.overall_accuracy.unwrap(),
@@ -950,39 +894,32 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeClassificationSummaryAccuracyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeClassificationSummaryAccuracy
+impl<S0, S1> crate::typed::builder::Build
+    for DataframeClassificationSummaryAccuracyBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_accuracy_members::classes>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_classification_summary_accuracy_members::overall_accuracy,
+    >,
 {
-    fn from(
-        builder: DataframeClassificationSummaryAccuracyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeClassificationSummaryAccuracy;
+
+    fn build(self) -> DataframeClassificationSummaryAccuracy {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `classes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, classes: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryAccuracy { match classes {} }
-}
-
-impl
-    DataframeClassificationSummaryAccuracyBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeClassificationSummaryAccuracyBuilder<(S0, S1)>>
+    for DataframeClassificationSummaryAccuracy
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_accuracy_members::classes>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_classification_summary_accuracy_members::overall_accuracy,
+    >,
 {
-    /// `overall_accuracy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, overall_accuracy: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryAccuracy { match overall_accuracy {} }
+    fn from(builder: DataframeClassificationSummaryAccuracyBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -993,21 +930,32 @@ pub struct DataframeClassificationSummaryMulticlassConfusionMatrix {
 
 impl DataframeClassificationSummaryMulticlassConfusionMatrix {
     /// Creates a builder for [`DataframeClassificationSummaryMulticlassConfusionMatrix`].
+    ///
+    /// Required: `confusion_matrix`, `other_actual_class_count`.
     pub fn builder() -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder {
         DataframeClassificationSummaryMulticlassConfusionMatrixBuilder::new()
     }
 
     /// Creates a [`DataframeClassificationSummaryMulticlassConfusionMatrix`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeClassificationSummaryMulticlassConfusionMatrixBuilder,
-        ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `confusion_matrix`, `other_actual_class_count`.
+    pub fn of<
+        B: crate::typed::builder::Build<
+            Output = DataframeClassificationSummaryMulticlassConfusionMatrix,
+        >,
+    >(
+        f: impl FnOnce(DataframeClassificationSummaryMulticlassConfusionMatrixBuilder) -> B,
     ) -> DataframeClassificationSummaryMulticlassConfusionMatrix {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeClassificationSummaryMulticlassConfusionMatrixBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_classification_summary_multiclass_confusion_matrix_members {
+    pub struct confusion_matrix;
+    pub struct other_actual_class_count;
 }
 
 /// Builder for [`DataframeClassificationSummaryMulticlassConfusionMatrix`].
@@ -1051,6 +999,7 @@ impl<S1>
         S1,
     )>
 {
+    /// **Required.**
     pub fn confusion_matrix(
         self,
         value: impl Into<Vec<ConfusionMatrixItem>>,
@@ -1080,16 +1029,11 @@ impl<S1>
     }
 
     /// Adds an element to [`confusion_matrix`](Self::confusion_matrix), with a builder.
-    pub fn add_confusion_matrix_with(
+    pub fn add_confusion_matrix_with<
+        B: crate::typed::builder::Build<Output = ConfusionMatrixItem>,
+    >(
         self,
-        f: impl FnOnce(
-            ConfusionMatrixItemBuilder,
-        ) -> ConfusionMatrixItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConfusionMatrixItemBuilder) -> B,
     ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
         crate::typed::builder::Set,
         S1,
@@ -1110,16 +1054,11 @@ impl<S1>
     }
 
     /// Adds an element to [`confusion_matrix`](Self::confusion_matrix), with a builder.
-    pub fn add_confusion_matrix_with(
+    pub fn add_confusion_matrix_with<
+        B: crate::typed::builder::Build<Output = ConfusionMatrixItem>,
+    >(
         self,
-        f: impl FnOnce(
-            ConfusionMatrixItemBuilder,
-        ) -> ConfusionMatrixItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConfusionMatrixItemBuilder) -> B,
     ) -> Self {
         self.add_confusion_matrix(f(ConfusionMatrixItemBuilder::new()).build())
     }
@@ -1131,6 +1070,7 @@ impl<S0>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn other_actual_class_count(
         self,
         value: i32,
@@ -1144,14 +1084,9 @@ impl<S0>
     }
 }
 
-impl
-    DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(S0, S1)> {
     /// Builds a [`DataframeClassificationSummaryMulticlassConfusionMatrix`].
-    pub fn build(self) -> DataframeClassificationSummaryMulticlassConfusionMatrix {
+    pub fn build(self) -> DataframeClassificationSummaryMulticlassConfusionMatrix where S0: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::confusion_matrix>, S1: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::other_actual_class_count>{
         DataframeClassificationSummaryMulticlassConfusionMatrix {
             confusion_matrix: self.confusion_matrix.unwrap(),
             other_actual_class_count: self.other_actual_class_count.unwrap(),
@@ -1159,45 +1094,11 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeClassificationSummaryMulticlassConfusionMatrix
-{
-    fn from(
-        builder: DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
-    }
-}
+impl<S0, S1> crate::typed::builder::Build for DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(S0, S1)> where S0: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::confusion_matrix>, S1: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::other_actual_class_count> { type Output = DataframeClassificationSummaryMulticlassConfusionMatrix;
 
-impl<S1>
-    DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-    )>
-{
-    /// `confusion_matrix` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, confusion_matrix: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryMulticlassConfusionMatrix { match confusion_matrix {} }
-}
+ fn build(self) -> DataframeClassificationSummaryMulticlassConfusionMatrix { Self::build(self) } }
 
-impl
-    DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `other_actual_class_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, other_actual_class_count: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryMulticlassConfusionMatrix { match other_actual_class_count {} }
-}
+impl<S0, S1> From<DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(S0, S1)>> for DataframeClassificationSummaryMulticlassConfusionMatrix where S0: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::confusion_matrix>, S1: crate::typed::builder::IsSet<dataframe_classification_summary_multiclass_confusion_matrix_members::other_actual_class_count> { fn from(builder: DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(S0, S1)>) -> Self { builder.build() } }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DataframeClassificationSummaryPrecision {
@@ -1207,21 +1108,28 @@ pub struct DataframeClassificationSummaryPrecision {
 
 impl DataframeClassificationSummaryPrecision {
     /// Creates a builder for [`DataframeClassificationSummaryPrecision`].
+    ///
+    /// Required: `classes`, `avg_precision`.
     pub fn builder() -> DataframeClassificationSummaryPrecisionBuilder {
         DataframeClassificationSummaryPrecisionBuilder::new()
     }
 
     /// Creates a [`DataframeClassificationSummaryPrecision`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeClassificationSummaryPrecisionBuilder,
-        ) -> DataframeClassificationSummaryPrecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `classes`, `avg_precision`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeClassificationSummaryPrecision>>(
+        f: impl FnOnce(DataframeClassificationSummaryPrecisionBuilder) -> B,
     ) -> DataframeClassificationSummaryPrecision {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeClassificationSummaryPrecisionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_classification_summary_precision_members {
+    pub struct classes;
+    pub struct avg_precision;
 }
 
 /// Builder for [`DataframeClassificationSummaryPrecision`].
@@ -1260,6 +1168,7 @@ impl<S0, S1> DataframeClassificationSummaryPrecisionBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn classes(
         self,
         value: impl Into<Vec<DataframeEvaluationClass>>,
@@ -1283,14 +1192,9 @@ impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::Set, S1)> {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
@@ -1306,20 +1210,16 @@ impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> Self {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
 }
 
 impl<S0> DataframeClassificationSummaryPrecisionBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn avg_precision(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1330,14 +1230,17 @@ impl<S0> DataframeClassificationSummaryPrecisionBuilder<(S0, crate::typed::build
     }
 }
 
-impl
-    DataframeClassificationSummaryPrecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeClassificationSummaryPrecisionBuilder<(S0, S1)> {
     /// Builds a [`DataframeClassificationSummaryPrecision`].
-    pub fn build(self) -> DataframeClassificationSummaryPrecision {
+    pub fn build(self) -> DataframeClassificationSummaryPrecision
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_classification_summary_precision_members::classes,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_classification_summary_precision_members::avg_precision,
+        >,
+    {
         DataframeClassificationSummaryPrecision {
             classes: self.classes.unwrap(),
             avg_precision: self.avg_precision.unwrap(),
@@ -1345,39 +1248,32 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeClassificationSummaryPrecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeClassificationSummaryPrecision
+impl<S0, S1> crate::typed::builder::Build
+    for DataframeClassificationSummaryPrecisionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_precision_members::classes>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_classification_summary_precision_members::avg_precision,
+    >,
 {
-    fn from(
-        builder: DataframeClassificationSummaryPrecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeClassificationSummaryPrecision;
+
+    fn build(self) -> DataframeClassificationSummaryPrecision {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `classes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, classes: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryPrecision { match classes {} }
-}
-
-impl
-    DataframeClassificationSummaryPrecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeClassificationSummaryPrecisionBuilder<(S0, S1)>>
+    for DataframeClassificationSummaryPrecision
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_precision_members::classes>,
+    S1: crate::typed::builder::IsSet<
+        dataframe_classification_summary_precision_members::avg_precision,
+    >,
 {
-    /// `avg_precision` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg_precision: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryPrecision { match avg_precision {} }
+    fn from(builder: DataframeClassificationSummaryPrecisionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1388,21 +1284,28 @@ pub struct DataframeClassificationSummaryRecall {
 
 impl DataframeClassificationSummaryRecall {
     /// Creates a builder for [`DataframeClassificationSummaryRecall`].
+    ///
+    /// Required: `classes`, `avg_recall`.
     pub fn builder() -> DataframeClassificationSummaryRecallBuilder {
         DataframeClassificationSummaryRecallBuilder::new()
     }
 
     /// Creates a [`DataframeClassificationSummaryRecall`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeClassificationSummaryRecallBuilder,
-        ) -> DataframeClassificationSummaryRecallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `classes`, `avg_recall`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeClassificationSummaryRecall>>(
+        f: impl FnOnce(DataframeClassificationSummaryRecallBuilder) -> B,
     ) -> DataframeClassificationSummaryRecall {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeClassificationSummaryRecallBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_classification_summary_recall_members {
+    pub struct classes;
+    pub struct avg_recall;
 }
 
 /// Builder for [`DataframeClassificationSummaryRecall`].
@@ -1441,6 +1344,7 @@ impl<S0, S1> DataframeClassificationSummaryRecallBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn classes(
         self,
         value: impl Into<Vec<DataframeEvaluationClass>>,
@@ -1464,14 +1368,9 @@ impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Not
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Set, S1)> {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
@@ -1487,20 +1386,16 @@ impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Set
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> Self {
         self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
 }
 
 impl<S0> DataframeClassificationSummaryRecallBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn avg_recall(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1511,14 +1406,15 @@ impl<S0> DataframeClassificationSummaryRecallBuilder<(S0, crate::typed::builder:
     }
 }
 
-impl
-    DataframeClassificationSummaryRecallBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> DataframeClassificationSummaryRecallBuilder<(S0, S1)> {
     /// Builds a [`DataframeClassificationSummaryRecall`].
-    pub fn build(self) -> DataframeClassificationSummaryRecall {
+    pub fn build(self) -> DataframeClassificationSummaryRecall
+    where
+        S0: crate::typed::builder::IsSet<dataframe_classification_summary_recall_members::classes>,
+        S1: crate::typed::builder::IsSet<
+            dataframe_classification_summary_recall_members::avg_recall,
+        >,
+    {
         DataframeClassificationSummaryRecall {
             classes: self.classes.unwrap(),
             avg_recall: self.avg_recall.unwrap(),
@@ -1526,39 +1422,27 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeClassificationSummaryRecallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeClassificationSummaryRecall
+impl<S0, S1> crate::typed::builder::Build for DataframeClassificationSummaryRecallBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_recall_members::classes>,
+    S1: crate::typed::builder::IsSet<dataframe_classification_summary_recall_members::avg_recall>,
 {
-    fn from(
-        builder: DataframeClassificationSummaryRecallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeClassificationSummaryRecall;
+
+    fn build(self) -> DataframeClassificationSummaryRecall {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `classes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, classes: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryRecall { match classes {} }
-}
-
-impl
-    DataframeClassificationSummaryRecallBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DataframeClassificationSummaryRecallBuilder<(S0, S1)>>
+    for DataframeClassificationSummaryRecall
+where
+    S0: crate::typed::builder::IsSet<dataframe_classification_summary_recall_members::classes>,
+    S1: crate::typed::builder::IsSet<dataframe_classification_summary_recall_members::avg_recall>,
 {
-    /// `avg_recall` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg_recall: crate::typed::builder::MissingRequiredField) -> DataframeClassificationSummaryRecall { match avg_recall {} }
+    fn from(builder: DataframeClassificationSummaryRecallBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1569,21 +1453,28 @@ pub struct DataframeEvaluationClass {
 
 impl DataframeEvaluationClass {
     /// Creates a builder for [`DataframeEvaluationClass`].
+    ///
+    /// Required: `value`, `class_name`.
     pub fn builder() -> DataframeEvaluationClassBuilder {
         DataframeEvaluationClassBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationClass`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationClassBuilder,
-        ) -> DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `value`, `class_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationClass>>(
+        f: impl FnOnce(DataframeEvaluationClassBuilder) -> B,
     ) -> DataframeEvaluationClass {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationClassBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_class_members {
+    pub struct value;
+    pub struct class_name;
 }
 
 /// Builder for [`DataframeEvaluationClass`].
@@ -1619,6 +1510,7 @@ impl<S0, S1> DataframeEvaluationClassBuilder<(S0, S1)> {
 }
 
 impl<S1> DataframeEvaluationClassBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1630,6 +1522,7 @@ impl<S1> DataframeEvaluationClassBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DataframeEvaluationClassBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1640,9 +1533,13 @@ impl<S0> DataframeEvaluationClassBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DataframeEvaluationClassBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataframeEvaluationClassBuilder<(S0, S1)> {
     /// Builds a [`DataframeEvaluationClass`].
-    pub fn build(self) -> DataframeEvaluationClass {
+    pub fn build(self) -> DataframeEvaluationClass
+    where
+        S0: crate::typed::builder::IsSet<dataframe_evaluation_class_members::value>,
+        S1: crate::typed::builder::IsSet<dataframe_evaluation_class_members::class_name>,
+    {
         DataframeEvaluationClass {
             value: self.value.unwrap(),
             class_name: self.class_name.unwrap(),
@@ -1650,29 +1547,26 @@ impl DataframeEvaluationClassBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<DataframeEvaluationClassBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DataframeEvaluationClass
+impl<S0, S1> crate::typed::builder::Build for DataframeEvaluationClassBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_class_members::value>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_class_members::class_name>,
 {
-    fn from(
-        builder: DataframeEvaluationClassBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationClass;
+
+    fn build(self) -> DataframeEvaluationClass {
+        Self::build(self)
     }
 }
 
-impl<S1> DataframeEvaluationClassBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationClass { match value {} }
-}
-
-impl DataframeEvaluationClassBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationClass { match class_name {} }
+impl<S0, S1> From<DataframeEvaluationClassBuilder<(S0, S1)>> for DataframeEvaluationClass
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_class_members::value>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_class_members::class_name>,
+{
+    fn from(builder: DataframeEvaluationClassBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1684,19 +1578,27 @@ pub struct DataframeEvaluationSummaryAucRoc {
 
 impl DataframeEvaluationSummaryAucRoc {
     /// Creates a builder for [`DataframeEvaluationSummaryAucRoc`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> DataframeEvaluationSummaryAucRocBuilder {
         DataframeEvaluationSummaryAucRocBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationSummaryAucRoc`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationSummaryAucRocBuilder,
-        )
-            -> DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationSummaryAucRoc>>(
+        f: impl FnOnce(DataframeEvaluationSummaryAucRocBuilder) -> B,
     ) -> DataframeEvaluationSummaryAucRoc {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationSummaryAucRocBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_summary_auc_roc_members {
+    pub struct value;
 }
 
 /// Builder for [`DataframeEvaluationSummaryAucRoc`].
@@ -1755,21 +1657,18 @@ impl<S0> DataframeEvaluationSummaryAucRocBuilder<(S0,)> {
     }
 
     /// Adds an element to [`curve`](Self::curve), with a builder.
-    pub fn add_curve_with(
+    pub fn add_curve_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationSummaryAucRocCurveItem>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationSummaryAucRocCurveItemBuilder,
-        ) -> DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataframeEvaluationSummaryAucRocCurveItemBuilder) -> B,
     ) -> Self {
         self.add_curve(f(DataframeEvaluationSummaryAucRocCurveItemBuilder::new()).build())
     }
 }
 
 impl DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1780,9 +1679,12 @@ impl DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeEvaluationSummaryAucRocBuilder<(S0,)> {
     /// Builds a [`DataframeEvaluationSummaryAucRoc`].
-    pub fn build(self) -> DataframeEvaluationSummaryAucRoc {
+    pub fn build(self) -> DataframeEvaluationSummaryAucRoc
+    where
+        S0: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_members::value>,
+    {
         DataframeEvaluationSummaryAucRoc {
             value: self.value.unwrap(),
             curve: self.curve,
@@ -1790,20 +1692,24 @@ impl DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>>
-    for DataframeEvaluationSummaryAucRoc
+impl<S0> crate::typed::builder::Build for DataframeEvaluationSummaryAucRocBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_members::value>,
 {
-    fn from(
-        builder: DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationSummaryAucRoc;
+
+    fn build(self) -> DataframeEvaluationSummaryAucRoc {
+        Self::build(self)
     }
 }
 
-impl DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationSummaryAucRoc { match value {} }
+impl<S0> From<DataframeEvaluationSummaryAucRocBuilder<(S0,)>> for DataframeEvaluationSummaryAucRoc
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_members::value>,
+{
+    fn from(builder: DataframeEvaluationSummaryAucRocBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1815,22 +1721,31 @@ pub struct DataframeEvaluationSummaryAucRocCurveItem {
 
 impl DataframeEvaluationSummaryAucRocCurveItem {
     /// Creates a builder for [`DataframeEvaluationSummaryAucRocCurveItem`].
+    ///
+    /// Required: `tpr`, `fpr`, `threshold`.
     pub fn builder() -> DataframeEvaluationSummaryAucRocCurveItemBuilder {
         DataframeEvaluationSummaryAucRocCurveItemBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationSummaryAucRocCurveItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationSummaryAucRocCurveItemBuilder,
-        ) -> DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `tpr`, `fpr`, `threshold`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationSummaryAucRocCurveItem>,
+    >(
+        f: impl FnOnce(DataframeEvaluationSummaryAucRocCurveItemBuilder) -> B,
     ) -> DataframeEvaluationSummaryAucRocCurveItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationSummaryAucRocCurveItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_summary_auc_roc_curve_item_members {
+    pub struct tpr;
+    pub struct fpr;
+    pub struct threshold;
 }
 
 /// Builder for [`DataframeEvaluationSummaryAucRocCurveItem`].
@@ -1879,6 +1794,7 @@ impl<S0, S1, S2> DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, S2)> 
 impl<S1, S2>
     DataframeEvaluationSummaryAucRocCurveItemBuilder<(crate::typed::builder::NotSet, S1, S2)>
 {
+    /// **Required.**
     pub fn tpr(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1893,6 +1809,7 @@ impl<S1, S2>
 impl<S0, S2>
     DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, crate::typed::builder::NotSet, S2)>
 {
+    /// **Required.**
     pub fn fpr(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1907,6 +1824,7 @@ impl<S0, S2>
 impl<S0, S1>
     DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn threshold(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1918,15 +1836,20 @@ impl<S0, S1>
     }
 }
 
-impl
-    DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, S2)> {
     /// Builds a [`DataframeEvaluationSummaryAucRocCurveItem`].
-    pub fn build(self) -> DataframeEvaluationSummaryAucRocCurveItem {
+    pub fn build(self) -> DataframeEvaluationSummaryAucRocCurveItem
+    where
+        S0: crate::typed::builder::IsSet<
+            dataframe_evaluation_summary_auc_roc_curve_item_members::tpr,
+        >,
+        S1: crate::typed::builder::IsSet<
+            dataframe_evaluation_summary_auc_roc_curve_item_members::fpr,
+        >,
+        S2: crate::typed::builder::IsSet<
+            dataframe_evaluation_summary_auc_roc_curve_item_members::threshold,
+        >,
+    {
         DataframeEvaluationSummaryAucRocCurveItem {
             tpr: self.tpr.unwrap(),
             fpr: self.fpr.unwrap(),
@@ -1935,56 +1858,34 @@ impl
     }
 }
 
-impl
-    From<
-        DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataframeEvaluationSummaryAucRocCurveItem
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_curve_item_members::tpr>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_curve_item_members::fpr>,
+    S2: crate::typed::builder::IsSet<
+        dataframe_evaluation_summary_auc_roc_curve_item_members::threshold,
+    >,
 {
-    fn from(
-        builder: DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationSummaryAucRocCurveItem;
+
+    fn build(self) -> DataframeEvaluationSummaryAucRocCurveItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    DataframeEvaluationSummaryAucRocCurveItemBuilder<(crate::typed::builder::NotSet, S1, S2)>
+impl<S0, S1, S2> From<DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, S2)>>
+    for DataframeEvaluationSummaryAucRocCurveItem
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_curve_item_members::tpr>,
+    S1: crate::typed::builder::IsSet<dataframe_evaluation_summary_auc_roc_curve_item_members::fpr>,
+    S2: crate::typed::builder::IsSet<
+        dataframe_evaluation_summary_auc_roc_curve_item_members::threshold,
+    >,
 {
-    /// `tpr` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tpr: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationSummaryAucRocCurveItem { match tpr {} }
-}
-
-impl<S2>
-    DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `fpr` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fpr: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationSummaryAucRocCurveItem { match fpr {} }
-}
-
-impl
-    DataframeEvaluationSummaryAucRocCurveItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `threshold` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, threshold: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationSummaryAucRocCurveItem { match threshold {} }
+    fn from(builder: DataframeEvaluationSummaryAucRocCurveItemBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1994,18 +1895,27 @@ pub struct DataframeEvaluationValue {
 
 impl DataframeEvaluationValue {
     /// Creates a builder for [`DataframeEvaluationValue`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> DataframeEvaluationValueBuilder {
         DataframeEvaluationValueBuilder::new()
     }
 
     /// Creates a [`DataframeEvaluationValue`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeEvaluationValueBuilder,
-        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeEvaluationValue>>(
+        f: impl FnOnce(DataframeEvaluationValueBuilder) -> B,
     ) -> DataframeEvaluationValue {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataframeEvaluationValueBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dataframe_evaluation_value_members {
+    pub struct value;
 }
 
 /// Builder for [`DataframeEvaluationValue`].
@@ -2034,6 +1944,7 @@ impl<S0> DataframeEvaluationValueBuilder<(S0,)> {
 }
 
 impl DataframeEvaluationValueBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -2044,27 +1955,36 @@ impl DataframeEvaluationValueBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataframeEvaluationValueBuilder<(S0,)> {
     /// Builds a [`DataframeEvaluationValue`].
-    pub fn build(self) -> DataframeEvaluationValue {
+    pub fn build(self) -> DataframeEvaluationValue
+    where
+        S0: crate::typed::builder::IsSet<dataframe_evaluation_value_members::value>,
+    {
         DataframeEvaluationValue {
             value: self.value.unwrap(),
         }
     }
 }
 
-impl From<DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>>
-    for DataframeEvaluationValue
+impl<S0> crate::typed::builder::Build for DataframeEvaluationValueBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_value_members::value>,
 {
-    fn from(builder: DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataframeEvaluationValue;
+
+    fn build(self) -> DataframeEvaluationValue {
+        Self::build(self)
     }
 }
 
-impl DataframeEvaluationValueBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> DataframeEvaluationValue { match value {} }
+impl<S0> From<DataframeEvaluationValueBuilder<(S0,)>> for DataframeEvaluationValue
+where
+    S0: crate::typed::builder::IsSet<dataframe_evaluation_value_members::value>,
+{
+    fn from(builder: DataframeEvaluationValueBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2090,10 +2010,8 @@ impl DataframeOutlierDetectionSummary {
     }
 
     /// Creates a [`DataframeOutlierDetectionSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataframeOutlierDetectionSummaryBuilder,
-        ) -> DataframeOutlierDetectionSummaryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeOutlierDetectionSummary>>(
+        f: impl FnOnce(DataframeOutlierDetectionSummaryBuilder) -> B,
     ) -> DataframeOutlierDetectionSummary {
         f(Self::builder()).build()
     }
@@ -2133,12 +2051,11 @@ impl DataframeOutlierDetectionSummaryBuilder {
     }
 
     /// Sets [`auc_roc`](Self::auc_roc) with a builder.
-    pub fn auc_roc_with(
+    pub fn auc_roc_with<
+        B: crate::typed::builder::Build<Output = DataframeEvaluationSummaryAucRoc>,
+    >(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationSummaryAucRocBuilder,
-        )
-            -> DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationSummaryAucRocBuilder) -> B,
     ) -> Self {
         self.auc_roc(f(DataframeEvaluationSummaryAucRocBuilder::new()).build())
     }
@@ -2234,17 +2151,12 @@ impl DataframeOutlierDetectionSummaryBuilder {
     }
 
     /// Adds an entry to [`confusion_matrix`](Self::confusion_matrix), with a builder.
-    pub fn add_confusion_matrix_with(
+    pub fn add_confusion_matrix_with<
+        B: crate::typed::builder::Build<Output = ConfusionMatrixThreshold>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ConfusionMatrixThresholdBuilder,
-        ) -> ConfusionMatrixThresholdBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ConfusionMatrixThresholdBuilder) -> B,
     ) -> Self {
         self.add_confusion_matrix(key, f(ConfusionMatrixThresholdBuilder::new()).build())
     }
@@ -2259,6 +2171,14 @@ impl DataframeOutlierDetectionSummaryBuilder {
             recall: self.recall,
             confusion_matrix: self.confusion_matrix,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataframeOutlierDetectionSummaryBuilder {
+    type Output = DataframeOutlierDetectionSummary;
+
+    fn build(self) -> DataframeOutlierDetectionSummary {
+        Self::build(self)
     }
 }
 
@@ -2291,8 +2211,8 @@ impl DataframeRegressionSummary {
     }
 
     /// Creates a [`DataframeRegressionSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataframeRegressionSummaryBuilder) -> DataframeRegressionSummaryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataframeRegressionSummary>>(
+        f: impl FnOnce(DataframeRegressionSummaryBuilder) -> B,
     ) -> DataframeRegressionSummary {
         f(Self::builder()).build()
     }
@@ -2332,11 +2252,9 @@ impl DataframeRegressionSummaryBuilder {
     }
 
     /// Sets [`huber`](Self::huber) with a builder.
-    pub fn huber_with(
+    pub fn huber_with<B: crate::typed::builder::Build<Output = DataframeEvaluationValue>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationValueBuilder,
-        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationValueBuilder) -> B,
     ) -> Self {
         self.huber(f(DataframeEvaluationValueBuilder::new()).build())
     }
@@ -2354,11 +2272,9 @@ impl DataframeRegressionSummaryBuilder {
     }
 
     /// Sets [`mse`](Self::mse) with a builder.
-    pub fn mse_with(
+    pub fn mse_with<B: crate::typed::builder::Build<Output = DataframeEvaluationValue>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationValueBuilder,
-        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationValueBuilder) -> B,
     ) -> Self {
         self.mse(f(DataframeEvaluationValueBuilder::new()).build())
     }
@@ -2376,11 +2292,9 @@ impl DataframeRegressionSummaryBuilder {
     }
 
     /// Sets [`msle`](Self::msle) with a builder.
-    pub fn msle_with(
+    pub fn msle_with<B: crate::typed::builder::Build<Output = DataframeEvaluationValue>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationValueBuilder,
-        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationValueBuilder) -> B,
     ) -> Self {
         self.msle(f(DataframeEvaluationValueBuilder::new()).build())
     }
@@ -2398,11 +2312,9 @@ impl DataframeRegressionSummaryBuilder {
     }
 
     /// Sets [`r_squared`](Self::r_squared) with a builder.
-    pub fn r_squared_with(
+    pub fn r_squared_with<B: crate::typed::builder::Build<Output = DataframeEvaluationValue>>(
         self,
-        f: impl FnOnce(
-            DataframeEvaluationValueBuilder,
-        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataframeEvaluationValueBuilder) -> B,
     ) -> Self {
         self.r_squared(f(DataframeEvaluationValueBuilder::new()).build())
     }
@@ -2417,6 +2329,14 @@ impl DataframeRegressionSummaryBuilder {
             msle: self.msle,
             r_squared: self.r_squared,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataframeRegressionSummaryBuilder {
+    type Output = DataframeRegressionSummary;
+
+    fn build(self) -> DataframeRegressionSummary {
+        Self::build(self)
     }
 }
 
@@ -2463,19 +2383,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `evaluation`, `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `evaluation`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct evaluation;
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -2600,20 +2529,18 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// Defines the type of evaluation you want to perform.
+    /// **Required.** Defines the type of evaluation you want to perform.
     pub fn evaluation(
         self,
         value: impl Into<crate::typed::ml::_types::DataframeEvaluationContainer>,
@@ -2624,13 +2551,13 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
     }
 
     /// Sets [`evaluation`](Self::evaluation) with a builder.
-    pub fn evaluation_with(
+    pub fn evaluation_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeEvaluationContainer,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeEvaluationContainerBuilder,
-        ) -> crate::typed::ml::_types::DataframeEvaluationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeEvaluationContainerBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
         self.evaluation(
             f(crate::typed::ml::_types::DataframeEvaluationContainerBuilder::new()).build(),
@@ -2639,7 +2566,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Defines the `index` in which the evaluation will be performed.
+    /// **Required.** Defines the `index` in which the evaluation will be performed.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -2650,9 +2577,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::evaluation>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -2665,41 +2596,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::evaluation>,
+    S1: crate::typed::builder::IsSet<request_members::index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `evaluation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, evaluation: crate::typed::builder::MissingRequiredField) -> Request { match evaluation {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `evaluation` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, evaluation: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match evaluation {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::evaluation>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

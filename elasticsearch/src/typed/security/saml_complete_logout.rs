@@ -46,19 +46,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `realm`, `ids`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `realm`, `ids`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct realm;
+    pub struct ids;
 }
 
 /// Builder for [`Request`].
@@ -193,7 +202,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the SAML realm in Elasticsearch for which the configuration is used to verify the logout response.
+    /// **Required.** The name of the SAML realm in Elasticsearch for which the configuration is used to verify the logout response.
     pub fn realm(
         self,
         value: impl Into<String>,
@@ -205,7 +214,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// A JSON array with all the valid SAML Request Ids that the caller of the API has for the current user.
+    /// **Required.** A JSON array with all the valid SAML Request Ids that the caller of the API has for the current user.
     pub fn ids(
         self,
         value: impl Into<crate::typed::_types::Ids>,
@@ -216,9 +225,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::realm>,
+        S1: crate::typed::builder::IsSet<request_members::ids>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -232,41 +245,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::realm>,
+    S1: crate::typed::builder::IsSet<request_members::ids>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `realm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, realm: crate::typed::builder::MissingRequiredField) -> Request { match realm {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `realm` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, realm: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match realm {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ids: crate::typed::builder::MissingRequiredField) -> Request { match ids {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `ids` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, ids: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match ids {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::realm>,
+        S1: crate::typed::builder::IsSet<request_members::ids>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

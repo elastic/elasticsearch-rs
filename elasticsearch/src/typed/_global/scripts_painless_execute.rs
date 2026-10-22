@@ -57,21 +57,28 @@ pub struct PainlessContextSetup {
 
 impl PainlessContextSetup {
     /// Creates a builder for [`PainlessContextSetup`].
+    ///
+    /// Required: `document`, `index`.
     pub fn builder() -> PainlessContextSetupBuilder {
         PainlessContextSetupBuilder::new()
     }
 
     /// Creates a [`PainlessContextSetup`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PainlessContextSetupBuilder,
-        ) -> PainlessContextSetupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `document`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = PainlessContextSetup>>(
+        f: impl FnOnce(PainlessContextSetupBuilder) -> B,
     ) -> PainlessContextSetup {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PainlessContextSetupBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod painless_context_setup_members {
+    pub struct document;
+    pub struct index;
 }
 
 /// Builder for [`PainlessContextSetup`].
@@ -125,20 +132,18 @@ impl<S0, S1> PainlessContextSetupBuilder<(S0, S1)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S1> PainlessContextSetupBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Document that's temporarily indexed in-memory and accessible from the script.
+    /// **Required.** Document that's temporarily indexed in-memory and accessible from the script.
     pub fn document(
         self,
         value: impl Into<serde_json::Value>,
@@ -150,7 +155,7 @@ impl<S1> PainlessContextSetupBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> PainlessContextSetupBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Index containing a mapping that's compatible with the indexed document.
+    /// **Required.** Index containing a mapping that's compatible with the indexed document.
     /// You may specify a remote index by prefixing the index with the remote cluster alias.
     /// For example, `remote1:my_index` indicates that you want to run the painless script against the "my_index" index on the "remote1" cluster.
     /// This request will be forwarded to the "remote1" cluster if you have configured a connection to that remote cluster.
@@ -167,9 +172,13 @@ impl<S0> PainlessContextSetupBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl PainlessContextSetupBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PainlessContextSetupBuilder<(S0, S1)> {
     /// Builds a [`PainlessContextSetup`].
-    pub fn build(self) -> PainlessContextSetup {
+    pub fn build(self) -> PainlessContextSetup
+    where
+        S0: crate::typed::builder::IsSet<painless_context_setup_members::document>,
+        S1: crate::typed::builder::IsSet<painless_context_setup_members::index>,
+    {
         PainlessContextSetup {
             document: self.document.unwrap(),
             index: self.index.unwrap(),
@@ -178,29 +187,26 @@ impl PainlessContextSetupBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<PainlessContextSetupBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PainlessContextSetup
+impl<S0, S1> crate::typed::builder::Build for PainlessContextSetupBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<painless_context_setup_members::document>,
+    S1: crate::typed::builder::IsSet<painless_context_setup_members::index>,
 {
-    fn from(
-        builder: PainlessContextSetupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PainlessContextSetup;
+
+    fn build(self) -> PainlessContextSetup {
+        Self::build(self)
     }
 }
 
-impl<S1> PainlessContextSetupBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `document` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, document: crate::typed::builder::MissingRequiredField) -> PainlessContextSetup { match document {} }
-}
-
-impl PainlessContextSetupBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> PainlessContextSetup { match index {} }
+impl<S0, S1> From<PainlessContextSetupBuilder<(S0, S1)>> for PainlessContextSetup
+where
+    S0: crate::typed::builder::IsSet<painless_context_setup_members::document>,
+    S1: crate::typed::builder::IsSet<painless_context_setup_members::index>,
+{
+    fn from(builder: PainlessContextSetupBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`scripts_painless_execute`](crate::typed::Client::scripts_painless_execute).
@@ -250,7 +256,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -368,14 +376,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`context_setup`](Self::context_setup) with a builder.
-    pub fn context_setup_with(
+    pub fn context_setup_with<B: crate::typed::builder::Build<Output = PainlessContextSetup>>(
         self,
-        f: impl FnOnce(
-            PainlessContextSetupBuilder,
-        ) -> PainlessContextSetupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(PainlessContextSetupBuilder) -> B,
     ) -> Self {
         self.context_setup(f(PainlessContextSetupBuilder::new()).build())
     }
@@ -393,9 +396,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -413,6 +416,14 @@ impl<C> RequestBuilder<(), C> {
             context_setup: self.context_setup,
             script: self.script,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

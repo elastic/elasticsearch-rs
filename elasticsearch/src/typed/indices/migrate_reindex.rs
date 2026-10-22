@@ -11,21 +11,28 @@ pub struct MigrateReindex {
 
 impl MigrateReindex {
     /// Creates a builder for [`MigrateReindex`].
+    ///
+    /// Required: `mode`, `source`.
     pub fn builder() -> MigrateReindexBuilder {
         MigrateReindexBuilder::new()
     }
 
     /// Creates a [`MigrateReindex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MigrateReindexBuilder,
-        ) -> MigrateReindexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `mode`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = MigrateReindex>>(
+        f: impl FnOnce(MigrateReindexBuilder) -> B,
     ) -> MigrateReindex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MigrateReindexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod migrate_reindex_members {
+    pub struct mode;
+    pub struct source;
 }
 
 /// Builder for [`MigrateReindex`].
@@ -58,7 +65,7 @@ impl<S0, S1> MigrateReindexBuilder<(S0, S1)> {
 }
 
 impl<S1> MigrateReindexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Reindex mode. Currently only 'upgrade' is supported.
+    /// **Required.** Reindex mode. Currently only 'upgrade' is supported.
     pub fn mode(
         self,
         value: impl Into<ModeEnum>,
@@ -70,7 +77,7 @@ impl<S1> MigrateReindexBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MigrateReindexBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The source index or data stream (only data streams are currently supported).
+    /// **Required.** The source index or data stream (only data streams are currently supported).
     pub fn source(
         self,
         value: impl Into<SourceIndex>,
@@ -81,17 +88,21 @@ impl<S0> MigrateReindexBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<B: crate::typed::builder::Build<Output = SourceIndex>>(
         self,
-        f: impl FnOnce(SourceIndexBuilder) -> SourceIndexBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SourceIndexBuilder) -> B,
     ) -> MigrateReindexBuilder<(S0, crate::typed::builder::Set)> {
         self.source(f(SourceIndexBuilder::new()).build())
     }
 }
 
-impl MigrateReindexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MigrateReindexBuilder<(S0, S1)> {
     /// Builds a [`MigrateReindex`].
-    pub fn build(self) -> MigrateReindex {
+    pub fn build(self) -> MigrateReindex
+    where
+        S0: crate::typed::builder::IsSet<migrate_reindex_members::mode>,
+        S1: crate::typed::builder::IsSet<migrate_reindex_members::source>,
+    {
         MigrateReindex {
             mode: self.mode.unwrap(),
             source: self.source.unwrap(),
@@ -99,26 +110,26 @@ impl MigrateReindexBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<MigrateReindexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MigrateReindex
+impl<S0, S1> crate::typed::builder::Build for MigrateReindexBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<migrate_reindex_members::mode>,
+    S1: crate::typed::builder::IsSet<migrate_reindex_members::source>,
 {
-    fn from(
-        builder: MigrateReindexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = MigrateReindex;
+
+    fn build(self) -> MigrateReindex {
+        Self::build(self)
     }
 }
 
-impl<S1> MigrateReindexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> MigrateReindex { match mode {} }
-}
-
-impl MigrateReindexBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> MigrateReindex { match source {} }
+impl<S0, S1> From<MigrateReindexBuilder<(S0, S1)>> for MigrateReindex
+where
+    S0: crate::typed::builder::IsSet<migrate_reindex_members::mode>,
+    S1: crate::typed::builder::IsSet<migrate_reindex_members::source>,
+{
+    fn from(builder: MigrateReindexBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -159,16 +170,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `reindex`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `reindex`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct reindex;
 }
 
 /// Builder for [`Request`].
@@ -267,7 +289,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn reindex(
         self,
         value: impl Into<MigrateReindex>,
@@ -278,22 +300,20 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Sets [`reindex`](Self::reindex) with a builder.
-    pub fn reindex_with(
+    pub fn reindex_with<B: crate::typed::builder::Build<Output = MigrateReindex>>(
         self,
-        f: impl FnOnce(
-            MigrateReindexBuilder,
-        ) -> MigrateReindexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MigrateReindexBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.reindex(f(MigrateReindexBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::reindex>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -304,23 +324,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::reindex>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `reindex` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reindex: crate::typed::builder::MissingRequiredField) -> Request { match reindex {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `reindex` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, reindex: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match reindex {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::reindex>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -420,16 +443,27 @@ pub struct SourceIndex {
 
 impl SourceIndex {
     /// Creates a builder for [`SourceIndex`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> SourceIndexBuilder {
         SourceIndexBuilder::new()
     }
 
     /// Creates a [`SourceIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SourceIndexBuilder) -> SourceIndexBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = SourceIndex>>(
+        f: impl FnOnce(SourceIndexBuilder) -> B,
     ) -> SourceIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_index_members {
+    pub struct index;
 }
 
 /// Builder for [`SourceIndex`].
@@ -458,6 +492,7 @@ impl<S0> SourceIndexBuilder<(S0,)> {
 }
 
 impl SourceIndexBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -468,23 +503,34 @@ impl SourceIndexBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SourceIndexBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SourceIndexBuilder<(S0,)> {
     /// Builds a [`SourceIndex`].
-    pub fn build(self) -> SourceIndex {
+    pub fn build(self) -> SourceIndex
+    where
+        S0: crate::typed::builder::IsSet<source_index_members::index>,
+    {
         SourceIndex {
             index: self.index.unwrap(),
         }
     }
 }
 
-impl From<SourceIndexBuilder<(crate::typed::builder::Set,)>> for SourceIndex {
-    fn from(builder: SourceIndexBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SourceIndexBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<source_index_members::index>,
+{
+    type Output = SourceIndex;
+
+    fn build(self) -> SourceIndex {
+        Self::build(self)
     }
 }
 
-impl SourceIndexBuilder<(crate::typed::builder::NotSet,)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> SourceIndex { match index {} }
+impl<S0> From<SourceIndexBuilder<(S0,)>> for SourceIndex
+where
+    S0: crate::typed::builder::IsSet<source_index_members::index>,
+{
+    fn from(builder: SourceIndexBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

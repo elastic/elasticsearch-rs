@@ -12,21 +12,28 @@ pub struct GetUserProfileErrors {
 
 impl GetUserProfileErrors {
     /// Creates a builder for [`GetUserProfileErrors`].
+    ///
+    /// Required: `count`, `details`.
     pub fn builder() -> GetUserProfileErrorsBuilder {
         GetUserProfileErrorsBuilder::new()
     }
 
     /// Creates a [`GetUserProfileErrors`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GetUserProfileErrorsBuilder,
-        ) -> GetUserProfileErrorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `details`.
+    pub fn of<B: crate::typed::builder::Build<Output = GetUserProfileErrors>>(
+        f: impl FnOnce(GetUserProfileErrorsBuilder) -> B,
     ) -> GetUserProfileErrors {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GetUserProfileErrorsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod get_user_profile_errors_members {
+    pub struct count;
+    pub struct details;
 }
 
 /// Builder for [`GetUserProfileErrors`].
@@ -65,6 +72,7 @@ impl<S0, S1> GetUserProfileErrorsBuilder<(S0, S1)> {
 }
 
 impl<S1> GetUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -76,6 +84,7 @@ impl<S1> GetUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn details(
         self,
         value: impl Into<
@@ -105,13 +114,12 @@ impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<crate::typed::security::_types::UserProfileId>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_details(
             key,
@@ -134,13 +142,12 @@ impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
         key: impl Into<crate::typed::security::_types::UserProfileId>,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.add_details(
             key,
@@ -149,9 +156,13 @@ impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl GetUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GetUserProfileErrorsBuilder<(S0, S1)> {
     /// Builds a [`GetUserProfileErrors`].
-    pub fn build(self) -> GetUserProfileErrors {
+    pub fn build(self) -> GetUserProfileErrors
+    where
+        S0: crate::typed::builder::IsSet<get_user_profile_errors_members::count>,
+        S1: crate::typed::builder::IsSet<get_user_profile_errors_members::details>,
+    {
         GetUserProfileErrors {
             count: self.count.unwrap(),
             details: self.details.unwrap(),
@@ -159,29 +170,26 @@ impl GetUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<GetUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GetUserProfileErrors
+impl<S0, S1> crate::typed::builder::Build for GetUserProfileErrorsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<get_user_profile_errors_members::count>,
+    S1: crate::typed::builder::IsSet<get_user_profile_errors_members::details>,
 {
-    fn from(
-        builder: GetUserProfileErrorsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GetUserProfileErrors;
+
+    fn build(self) -> GetUserProfileErrors {
+        Self::build(self)
     }
 }
 
-impl<S1> GetUserProfileErrorsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> GetUserProfileErrors { match count {} }
-}
-
-impl GetUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, details: crate::typed::builder::MissingRequiredField) -> GetUserProfileErrors { match details {} }
+impl<S0, S1> From<GetUserProfileErrorsBuilder<(S0, S1)>> for GetUserProfileErrors
+where
+    S0: crate::typed::builder::IsSet<get_user_profile_errors_members::count>,
+    S1: crate::typed::builder::IsSet<get_user_profile_errors_members::details>,
+{
+    fn from(builder: GetUserProfileErrorsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.get_user_profile`](crate::typed::security::SecurityClient::get_user_profile).
@@ -223,16 +231,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `uid`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `uid`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct uid;
 }
 
 /// Builder for [`Request`].
@@ -349,7 +368,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A unique identifier for the user profile.
+    /// **Required.** A unique identifier for the user profile.
     pub fn uid(
         self,
         value: impl Into<RequestUid>,
@@ -360,9 +379,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::uid>,
+    {
         Request {
             uid: self.uid.unwrap(),
             data: self.data,
@@ -374,23 +396,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::uid>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `uid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uid: crate::typed::builder::MissingRequiredField) -> Request { match uid {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `uid` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, uid: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match uid {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::uid>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

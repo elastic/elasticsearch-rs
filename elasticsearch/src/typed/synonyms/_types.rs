@@ -13,16 +13,27 @@ pub struct SynonymRule {
 
 impl SynonymRule {
     /// Creates a builder for [`SynonymRule`].
+    ///
+    /// Required: `synonyms`.
     pub fn builder() -> SynonymRuleBuilder {
         SynonymRuleBuilder::new()
     }
 
     /// Creates a [`SynonymRule`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SynonymRuleBuilder) -> SynonymRuleBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `synonyms`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymRule>>(
+        f: impl FnOnce(SynonymRuleBuilder) -> B,
     ) -> SynonymRule {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymRuleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonym_rule_members {
+    pub struct synonyms;
 }
 
 /// Builder for [`SynonymRule`].
@@ -67,7 +78,7 @@ impl<S0> SynonymRuleBuilder<(S0,)> {
 }
 
 impl SynonymRuleBuilder<(crate::typed::builder::NotSet,)> {
-    /// The synonyms that conform the synonym rule in Solr format.
+    /// **Required.** The synonyms that conform the synonym rule in Solr format.
     pub fn synonyms(
         self,
         value: impl Into<SynonymString>,
@@ -78,9 +89,12 @@ impl SynonymRuleBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SynonymRuleBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SynonymRuleBuilder<(S0,)> {
     /// Builds a [`SynonymRule`].
-    pub fn build(self) -> SynonymRule {
+    pub fn build(self) -> SynonymRule
+    where
+        S0: crate::typed::builder::IsSet<synonym_rule_members::synonyms>,
+    {
         SynonymRule {
             id: self.id,
             synonyms: self.synonyms.unwrap(),
@@ -88,16 +102,24 @@ impl SynonymRuleBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SynonymRuleBuilder<(crate::typed::builder::Set,)>> for SynonymRule {
-    fn from(builder: SynonymRuleBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SynonymRuleBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<synonym_rule_members::synonyms>,
+{
+    type Output = SynonymRule;
+
+    fn build(self) -> SynonymRule {
+        Self::build(self)
     }
 }
 
-impl SynonymRuleBuilder<(crate::typed::builder::NotSet,)> {
-    /// `synonyms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, synonyms: crate::typed::builder::MissingRequiredField) -> SynonymRule { match synonyms {} }
+impl<S0> From<SynonymRuleBuilder<(S0,)>> for SynonymRule
+where
+    S0: crate::typed::builder::IsSet<synonym_rule_members::synonyms>,
+{
+    fn from(builder: SynonymRuleBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -111,21 +133,28 @@ pub struct SynonymRuleRead {
 
 impl SynonymRuleRead {
     /// Creates a builder for [`SynonymRuleRead`].
+    ///
+    /// Required: `id`, `synonyms`.
     pub fn builder() -> SynonymRuleReadBuilder {
         SynonymRuleReadBuilder::new()
     }
 
     /// Creates a [`SynonymRuleRead`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymRuleReadBuilder,
-        ) -> SynonymRuleReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `synonyms`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymRuleRead>>(
+        f: impl FnOnce(SynonymRuleReadBuilder) -> B,
     ) -> SynonymRuleRead {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymRuleReadBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonym_rule_read_members {
+    pub struct id;
+    pub struct synonyms;
 }
 
 /// Builder for [`SynonymRuleRead`].
@@ -159,7 +188,7 @@ impl<S0, S1> SynonymRuleReadBuilder<(S0, S1)> {
 }
 
 impl<S1> SynonymRuleReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The identifier for the synonym rule.
+    /// **Required.** The identifier for the synonym rule.
     /// If you do not specify a synonym rule ID when you create a rule, an identifier is created automatically by Elasticsearch.
     pub fn id(
         self,
@@ -172,7 +201,7 @@ impl<S1> SynonymRuleReadBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SynonymRuleReadBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The synonyms that conform the synonym rule in Solr format.
+    /// **Required.** The synonyms that conform the synonym rule in Solr format.
     pub fn synonyms(
         self,
         value: impl Into<SynonymString>,
@@ -183,9 +212,13 @@ impl<S0> SynonymRuleReadBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SynonymRuleReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SynonymRuleReadBuilder<(S0, S1)> {
     /// Builds a [`SynonymRuleRead`].
-    pub fn build(self) -> SynonymRuleRead {
+    pub fn build(self) -> SynonymRuleRead
+    where
+        S0: crate::typed::builder::IsSet<synonym_rule_read_members::id>,
+        S1: crate::typed::builder::IsSet<synonym_rule_read_members::synonyms>,
+    {
         SynonymRuleRead {
             id: self.id.unwrap(),
             synonyms: self.synonyms.unwrap(),
@@ -193,26 +226,26 @@ impl SynonymRuleReadBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<SynonymRuleReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SynonymRuleRead
+impl<S0, S1> crate::typed::builder::Build for SynonymRuleReadBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<synonym_rule_read_members::id>,
+    S1: crate::typed::builder::IsSet<synonym_rule_read_members::synonyms>,
 {
-    fn from(
-        builder: SynonymRuleReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SynonymRuleRead;
+
+    fn build(self) -> SynonymRuleRead {
+        Self::build(self)
     }
 }
 
-impl<S1> SynonymRuleReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> SynonymRuleRead { match id {} }
-}
-
-impl SynonymRuleReadBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `synonyms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, synonyms: crate::typed::builder::MissingRequiredField) -> SynonymRuleRead { match synonyms {} }
+impl<S0, S1> From<SynonymRuleReadBuilder<(S0, S1)>> for SynonymRuleRead
+where
+    S0: crate::typed::builder::IsSet<synonym_rule_read_members::id>,
+    S1: crate::typed::builder::IsSet<synonym_rule_read_members::synonyms>,
+{
+    fn from(builder: SynonymRuleReadBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type SynonymString = String;
@@ -230,18 +263,27 @@ pub struct SynonymsUpdateResult {
 
 impl SynonymsUpdateResult {
     /// Creates a builder for [`SynonymsUpdateResult`].
+    ///
+    /// Required: `result`.
     pub fn builder() -> SynonymsUpdateResultBuilder {
         SynonymsUpdateResultBuilder::new()
     }
 
     /// Creates a [`SynonymsUpdateResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SynonymsUpdateResultBuilder,
-        ) -> SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `result`.
+    pub fn of<B: crate::typed::builder::Build<Output = SynonymsUpdateResult>>(
+        f: impl FnOnce(SynonymsUpdateResultBuilder) -> B,
     ) -> SynonymsUpdateResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SynonymsUpdateResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod synonyms_update_result_members {
+    pub struct result;
 }
 
 /// Builder for [`SynonymsUpdateResult`].
@@ -291,14 +333,13 @@ impl<S0> SynonymsUpdateResultBuilder<(S0,)> {
     }
 
     /// Sets [`reload_analyzers_details`](Self::reload_analyzers_details) with a builder.
-    pub fn reload_analyzers_details_with(
+    pub fn reload_analyzers_details_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::reload_search_analyzers::ReloadResult,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::reload_search_analyzers::ReloadResultBuilder,
-        ) -> crate::typed::indices::reload_search_analyzers::ReloadResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::reload_search_analyzers::ReloadResultBuilder) -> B,
     ) -> Self {
         self.reload_analyzers_details(
             f(crate::typed::indices::reload_search_analyzers::ReloadResultBuilder::new()).build(),
@@ -307,7 +348,7 @@ impl<S0> SynonymsUpdateResultBuilder<(S0,)> {
 }
 
 impl SynonymsUpdateResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// The update operation result.
+    /// **Required.** The update operation result.
     pub fn result(
         self,
         value: impl Into<crate::typed::_types::Result>,
@@ -318,9 +359,12 @@ impl SynonymsUpdateResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SynonymsUpdateResultBuilder<(S0,)> {
     /// Builds a [`SynonymsUpdateResult`].
-    pub fn build(self) -> SynonymsUpdateResult {
+    pub fn build(self) -> SynonymsUpdateResult
+    where
+        S0: crate::typed::builder::IsSet<synonyms_update_result_members::result>,
+    {
         SynonymsUpdateResult {
             result: self.result.unwrap(),
             reload_analyzers_details: self.reload_analyzers_details,
@@ -328,14 +372,22 @@ impl SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)>> for SynonymsUpdateResult {
-    fn from(builder: SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SynonymsUpdateResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<synonyms_update_result_members::result>,
+{
+    type Output = SynonymsUpdateResult;
+
+    fn build(self) -> SynonymsUpdateResult {
+        Self::build(self)
     }
 }
 
-impl SynonymsUpdateResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `result` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result: crate::typed::builder::MissingRequiredField) -> SynonymsUpdateResult { match result {} }
+impl<S0> From<SynonymsUpdateResultBuilder<(S0,)>> for SynonymsUpdateResult
+where
+    S0: crate::typed::builder::IsSet<synonyms_update_result_members::result>,
+{
+    fn from(builder: SynonymsUpdateResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

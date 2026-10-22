@@ -33,19 +33,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`, `search_application`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `name`, `search_application`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
+    pub struct search_application;
 }
 
 /// Builder for [`Request`].
@@ -166,7 +175,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The name of the search application to be created or updated.
+    /// **Required.** The name of the search application to be created or updated.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -178,7 +187,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn search_application(
         self,
         value: impl Into<crate::typed::search_application::_types::SearchApplicationParameters>,
@@ -189,14 +198,15 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`search_application`](Self::search_application) with a builder.
-    pub fn search_application_with(
+    pub fn search_application_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::search_application::_types::SearchApplicationParameters,
+        >,
+    >(
         self,
         f: impl FnOnce(
             crate::typed::search_application::_types::SearchApplicationParametersBuilder,
-        )
-            -> crate::typed::search_application::_types::SearchApplicationParametersBuilder<
-            (crate::typed::builder::Set,),
-        >,
+        ) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.search_application(
             f(crate::typed::search_application::_types::SearchApplicationParametersBuilder::new())
@@ -205,9 +215,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::search_application>,
+    {
         Request {
             name: self.name.unwrap(),
             create: self.create,
@@ -220,41 +234,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+    S1: crate::typed::builder::IsSet<request_members::search_application>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `search_application` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_application: crate::typed::builder::MissingRequiredField) -> Request { match search_application {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `search_application` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, search_application: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match search_application {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::search_application>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

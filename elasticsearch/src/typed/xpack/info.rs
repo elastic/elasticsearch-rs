@@ -9,21 +9,28 @@ pub struct BuildInformation {
 
 impl BuildInformation {
     /// Creates a builder for [`BuildInformation`].
+    ///
+    /// Required: `date`, `hash`.
     pub fn builder() -> BuildInformationBuilder {
         BuildInformationBuilder::new()
     }
 
     /// Creates a [`BuildInformation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BuildInformationBuilder,
-        ) -> BuildInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `date`, `hash`.
+    pub fn of<B: crate::typed::builder::Build<Output = BuildInformation>>(
+        f: impl FnOnce(BuildInformationBuilder) -> B,
     ) -> BuildInformation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BuildInformationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod build_information_members {
+    pub struct date;
+    pub struct hash;
 }
 
 /// Builder for [`BuildInformation`].
@@ -57,6 +64,7 @@ impl<S0, S1> BuildInformationBuilder<(S0, S1)> {
 }
 
 impl<S1> BuildInformationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn date(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -68,6 +76,7 @@ impl<S1> BuildInformationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> BuildInformationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn hash(
         self,
         value: impl Into<String>,
@@ -78,9 +87,13 @@ impl<S0> BuildInformationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl BuildInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> BuildInformationBuilder<(S0, S1)> {
     /// Builds a [`BuildInformation`].
-    pub fn build(self) -> BuildInformation {
+    pub fn build(self) -> BuildInformation
+    where
+        S0: crate::typed::builder::IsSet<build_information_members::date>,
+        S1: crate::typed::builder::IsSet<build_information_members::hash>,
+    {
         BuildInformation {
             date: self.date.unwrap(),
             hash: self.hash.unwrap(),
@@ -88,26 +101,26 @@ impl BuildInformationBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<BuildInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for BuildInformation
+impl<S0, S1> crate::typed::builder::Build for BuildInformationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<build_information_members::date>,
+    S1: crate::typed::builder::IsSet<build_information_members::hash>,
 {
-    fn from(
-        builder: BuildInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = BuildInformation;
+
+    fn build(self) -> BuildInformation {
+        Self::build(self)
     }
 }
 
-impl<S1> BuildInformationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `date` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, date: crate::typed::builder::MissingRequiredField) -> BuildInformation { match date {} }
-}
-
-impl BuildInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `hash` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hash: crate::typed::builder::MissingRequiredField) -> BuildInformation { match hash {} }
+impl<S0, S1> From<BuildInformationBuilder<(S0, S1)>> for BuildInformation
+where
+    S0: crate::typed::builder::IsSet<build_information_members::date>,
+    S1: crate::typed::builder::IsSet<build_information_members::hash>,
+{
+    fn from(builder: BuildInformationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -122,19 +135,28 @@ pub struct Feature {
 
 impl Feature {
     /// Creates a builder for [`Feature`].
+    ///
+    /// Required: `available`, `enabled`.
     pub fn builder() -> FeatureBuilder {
         FeatureBuilder::new()
     }
 
     /// Creates a [`Feature`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `available`, `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = Feature>>(
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> Feature {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FeatureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod feature_members {
+    pub struct available;
+    pub struct enabled;
 }
 
 /// Builder for [`Feature`].
@@ -193,20 +215,18 @@ impl<S0, S1> FeatureBuilder<(S0, S1)> {
     }
 
     /// Sets [`native_code_info`](Self::native_code_info) with a builder.
-    pub fn native_code_info_with(
+    pub fn native_code_info_with<
+        B: crate::typed::builder::Build<Output = NativeCodeInformation>,
+    >(
         self,
-        f: impl FnOnce(
-            NativeCodeInformationBuilder,
-        ) -> NativeCodeInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NativeCodeInformationBuilder) -> B,
     ) -> Self {
         self.native_code_info(f(NativeCodeInformationBuilder::new()).build())
     }
 }
 
 impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn available(self, value: bool) -> FeatureBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.available = Some(value);
@@ -215,6 +235,7 @@ impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FeatureBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> FeatureBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -222,9 +243,13 @@ impl<S0> FeatureBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FeatureBuilder<(S0, S1)> {
     /// Builds a [`Feature`].
-    pub fn build(self) -> Feature {
+    pub fn build(self) -> Feature
+    where
+        S0: crate::typed::builder::IsSet<feature_members::available>,
+        S1: crate::typed::builder::IsSet<feature_members::enabled>,
+    {
         Feature {
             available: self.available.unwrap(),
             description: self.description,
@@ -234,24 +259,26 @@ impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Feature {
-    fn from(
-        builder: FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for FeatureBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<feature_members::available>,
+    S1: crate::typed::builder::IsSet<feature_members::enabled>,
+{
+    type Output = Feature;
+
+    fn build(self) -> Feature {
+        Self::build(self)
     }
 }
 
-impl<S1> FeatureBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `available` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, available: crate::typed::builder::MissingRequiredField) -> Feature { match available {} }
-}
-
-impl FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> Feature { match enabled {} }
+impl<S0, S1> From<FeatureBuilder<(S0, S1)>> for Feature
+where
+    S0: crate::typed::builder::IsSet<feature_members::available>,
+    S1: crate::typed::builder::IsSet<feature_members::enabled>,
+{
+    fn from(builder: FeatureBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -289,46 +316,53 @@ pub struct Features {
 
 impl Features {
     /// Creates a builder for [`Features`].
+    ///
+    /// Required: `aggregate_metric`, `analytics`, `ccr`, `data_streams`, `data_tiers`, `enrich`, `enterprise_search`, `eql`, `esql`, `graph`, `gpu_vector_indexing`, `ilm`, `logstash`, `logsdb`, `ml`, `monitoring`, `rollup`, `searchable_snapshots`, `security`, `slm`, `spatial`, `sql`, `transform`, `universal_profiling`, `voting_only`, `watcher`, `archive`.
     pub fn builder() -> FeaturesBuilder {
         FeaturesBuilder::new()
     }
 
     /// Creates a [`Features`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FeaturesBuilder,
-        ) -> FeaturesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `aggregate_metric`, `analytics`, `ccr`, `data_streams`, `data_tiers`, `enrich`, `enterprise_search`, `eql`, `esql`, `graph`, `gpu_vector_indexing`, `ilm`, `logstash`, `logsdb`, `ml`, `monitoring`, `rollup`, `searchable_snapshots`, `security`, `slm`, `spatial`, `sql`, `transform`, `universal_profiling`, `voting_only`, `watcher`, `archive`.
+    pub fn of<B: crate::typed::builder::Build<Output = Features>>(
+        f: impl FnOnce(FeaturesBuilder) -> B,
     ) -> Features {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FeaturesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod features_members {
+    pub struct aggregate_metric;
+    pub struct analytics;
+    pub struct ccr;
+    pub struct data_streams;
+    pub struct data_tiers;
+    pub struct enrich;
+    pub struct enterprise_search;
+    pub struct eql;
+    pub struct esql;
+    pub struct graph;
+    pub struct gpu_vector_indexing;
+    pub struct ilm;
+    pub struct logstash;
+    pub struct logsdb;
+    pub struct ml;
+    pub struct monitoring;
+    pub struct rollup;
+    pub struct searchable_snapshots;
+    pub struct security;
+    pub struct slm;
+    pub struct spatial;
+    pub struct sql;
+    pub struct transform;
+    pub struct universal_profiling;
+    pub struct voting_only;
+    pub struct watcher;
+    pub struct archive;
 }
 
 /// Builder for [`Features`].
@@ -566,12 +600,9 @@ impl<
     }
 
     /// Sets [`runtime_fields`](Self::runtime_fields) with a builder.
-    pub fn runtime_fields_with(
+    pub fn runtime_fields_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> Self {
         self.runtime_fields(f(FeatureBuilder::new()).build())
     }
@@ -635,6 +666,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn aggregate_metric(
         self,
         value: impl Into<Feature>,
@@ -673,12 +705,9 @@ impl<
     }
 
     /// Sets [`aggregate_metric`](Self::aggregate_metric) with a builder.
-    pub fn aggregate_metric_with(
+    pub fn aggregate_metric_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         crate::typed::builder::Set,
         S1,
@@ -770,6 +799,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn analytics(
         self,
         value: impl Into<Feature>,
@@ -808,12 +838,9 @@ impl<
     }
 
     /// Sets [`analytics`](Self::analytics) with a builder.
-    pub fn analytics_with(
+    pub fn analytics_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         crate::typed::builder::Set,
@@ -905,6 +932,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn ccr(
         self,
         value: impl Into<Feature>,
@@ -943,12 +971,9 @@ impl<
     }
 
     /// Sets [`ccr`](Self::ccr) with a builder.
-    pub fn ccr_with(
+    pub fn ccr_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1040,6 +1065,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn data_streams(
         self,
         value: impl Into<Feature>,
@@ -1078,12 +1104,9 @@ impl<
     }
 
     /// Sets [`data_streams`](Self::data_streams) with a builder.
-    pub fn data_streams_with(
+    pub fn data_streams_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1175,6 +1198,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn data_tiers(
         self,
         value: impl Into<Feature>,
@@ -1213,12 +1237,9 @@ impl<
     }
 
     /// Sets [`data_tiers`](Self::data_tiers) with a builder.
-    pub fn data_tiers_with(
+    pub fn data_tiers_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1310,6 +1331,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn enrich(
         self,
         value: impl Into<Feature>,
@@ -1348,12 +1370,9 @@ impl<
     }
 
     /// Sets [`enrich`](Self::enrich) with a builder.
-    pub fn enrich_with(
+    pub fn enrich_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1445,6 +1464,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn enterprise_search(
         self,
         value: impl Into<Feature>,
@@ -1483,12 +1503,9 @@ impl<
     }
 
     /// Sets [`enterprise_search`](Self::enterprise_search) with a builder.
-    pub fn enterprise_search_with(
+    pub fn enterprise_search_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1580,6 +1597,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn eql(
         self,
         value: impl Into<Feature>,
@@ -1618,12 +1636,9 @@ impl<
     }
 
     /// Sets [`eql`](Self::eql) with a builder.
-    pub fn eql_with(
+    pub fn eql_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1715,6 +1730,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn esql(
         self,
         value: impl Into<Feature>,
@@ -1753,12 +1769,9 @@ impl<
     }
 
     /// Sets [`esql`](Self::esql) with a builder.
-    pub fn esql_with(
+    pub fn esql_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1850,6 +1863,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn graph(
         self,
         value: impl Into<Feature>,
@@ -1888,12 +1902,9 @@ impl<
     }
 
     /// Sets [`graph`](Self::graph) with a builder.
-    pub fn graph_with(
+    pub fn graph_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -1985,6 +1996,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn gpu_vector_indexing(
         self,
         value: impl Into<Feature>,
@@ -2023,12 +2035,9 @@ impl<
     }
 
     /// Sets [`gpu_vector_indexing`](Self::gpu_vector_indexing) with a builder.
-    pub fn gpu_vector_indexing_with(
+    pub fn gpu_vector_indexing_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2120,6 +2129,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn ilm(
         self,
         value: impl Into<Feature>,
@@ -2158,12 +2168,9 @@ impl<
     }
 
     /// Sets [`ilm`](Self::ilm) with a builder.
-    pub fn ilm_with(
+    pub fn ilm_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2255,6 +2262,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn logstash(
         self,
         value: impl Into<Feature>,
@@ -2293,12 +2301,9 @@ impl<
     }
 
     /// Sets [`logstash`](Self::logstash) with a builder.
-    pub fn logstash_with(
+    pub fn logstash_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2390,6 +2395,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn logsdb(
         self,
         value: impl Into<Feature>,
@@ -2428,12 +2434,9 @@ impl<
     }
 
     /// Sets [`logsdb`](Self::logsdb) with a builder.
-    pub fn logsdb_with(
+    pub fn logsdb_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2525,6 +2528,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn ml(
         self,
         value: impl Into<Feature>,
@@ -2563,12 +2567,9 @@ impl<
     }
 
     /// Sets [`ml`](Self::ml) with a builder.
-    pub fn ml_with(
+    pub fn ml_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2660,6 +2661,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn monitoring(
         self,
         value: impl Into<Feature>,
@@ -2698,12 +2700,9 @@ impl<
     }
 
     /// Sets [`monitoring`](Self::monitoring) with a builder.
-    pub fn monitoring_with(
+    pub fn monitoring_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2795,6 +2794,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn rollup(
         self,
         value: impl Into<Feature>,
@@ -2833,12 +2833,9 @@ impl<
     }
 
     /// Sets [`rollup`](Self::rollup) with a builder.
-    pub fn rollup_with(
+    pub fn rollup_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -2930,6 +2927,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn searchable_snapshots(
         self,
         value: impl Into<Feature>,
@@ -2968,12 +2966,9 @@ impl<
     }
 
     /// Sets [`searchable_snapshots`](Self::searchable_snapshots) with a builder.
-    pub fn searchable_snapshots_with(
+    pub fn searchable_snapshots_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3065,6 +3060,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn security(
         self,
         value: impl Into<Feature>,
@@ -3103,12 +3099,9 @@ impl<
     }
 
     /// Sets [`security`](Self::security) with a builder.
-    pub fn security_with(
+    pub fn security_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3200,6 +3193,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn slm(
         self,
         value: impl Into<Feature>,
@@ -3238,12 +3232,9 @@ impl<
     }
 
     /// Sets [`slm`](Self::slm) with a builder.
-    pub fn slm_with(
+    pub fn slm_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3335,6 +3326,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn spatial(
         self,
         value: impl Into<Feature>,
@@ -3373,12 +3365,9 @@ impl<
     }
 
     /// Sets [`spatial`](Self::spatial) with a builder.
-    pub fn spatial_with(
+    pub fn spatial_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3470,6 +3459,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn sql(
         self,
         value: impl Into<Feature>,
@@ -3508,12 +3498,9 @@ impl<
     }
 
     /// Sets [`sql`](Self::sql) with a builder.
-    pub fn sql_with(
+    pub fn sql_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3605,6 +3592,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn transform(
         self,
         value: impl Into<Feature>,
@@ -3643,12 +3631,9 @@ impl<
     }
 
     /// Sets [`transform`](Self::transform) with a builder.
-    pub fn transform_with(
+    pub fn transform_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3740,6 +3725,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn universal_profiling(
         self,
         value: impl Into<Feature>,
@@ -3778,12 +3764,9 @@ impl<
     }
 
     /// Sets [`universal_profiling`](Self::universal_profiling) with a builder.
-    pub fn universal_profiling_with(
+    pub fn universal_profiling_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -3875,6 +3858,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn voting_only(
         self,
         value: impl Into<Feature>,
@@ -3913,12 +3897,9 @@ impl<
     }
 
     /// Sets [`voting_only`](Self::voting_only) with a builder.
-    pub fn voting_only_with(
+    pub fn voting_only_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -4010,6 +3991,7 @@ impl<
         S26,
     )>
 {
+    /// **Required.**
     pub fn watcher(
         self,
         value: impl Into<Feature>,
@@ -4048,12 +4030,9 @@ impl<
     }
 
     /// Sets [`watcher`](Self::watcher) with a builder.
-    pub fn watcher_with(
+    pub fn watcher_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -4145,6 +4124,7 @@ impl<
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn archive(
         self,
         value: impl Into<Feature>,
@@ -4183,12 +4163,9 @@ impl<
     }
 
     /// Sets [`archive`](Self::archive) with a builder.
-    pub fn archive_with(
+    pub fn archive_with<B: crate::typed::builder::Build<Output = Feature>>(
         self,
-        f: impl FnOnce(
-            FeatureBuilder,
-        )
-            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FeatureBuilder) -> B,
     ) -> FeaturesBuilder<(
         S0,
         S1,
@@ -4222,39 +4199,96 @@ impl<
     }
 }
 
-impl
+impl<
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+    >
     FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
     )>
 {
     /// Builds a [`Features`].
-    pub fn build(self) -> Features {
+    pub fn build(self) -> Features
+    where
+        S0: crate::typed::builder::IsSet<features_members::aggregate_metric>,
+        S1: crate::typed::builder::IsSet<features_members::analytics>,
+        S2: crate::typed::builder::IsSet<features_members::ccr>,
+        S3: crate::typed::builder::IsSet<features_members::data_streams>,
+        S4: crate::typed::builder::IsSet<features_members::data_tiers>,
+        S5: crate::typed::builder::IsSet<features_members::enrich>,
+        S6: crate::typed::builder::IsSet<features_members::enterprise_search>,
+        S7: crate::typed::builder::IsSet<features_members::eql>,
+        S8: crate::typed::builder::IsSet<features_members::esql>,
+        S9: crate::typed::builder::IsSet<features_members::graph>,
+        S10: crate::typed::builder::IsSet<features_members::gpu_vector_indexing>,
+        S11: crate::typed::builder::IsSet<features_members::ilm>,
+        S12: crate::typed::builder::IsSet<features_members::logstash>,
+        S13: crate::typed::builder::IsSet<features_members::logsdb>,
+        S14: crate::typed::builder::IsSet<features_members::ml>,
+        S15: crate::typed::builder::IsSet<features_members::monitoring>,
+        S16: crate::typed::builder::IsSet<features_members::rollup>,
+        S17: crate::typed::builder::IsSet<features_members::searchable_snapshots>,
+        S18: crate::typed::builder::IsSet<features_members::security>,
+        S19: crate::typed::builder::IsSet<features_members::slm>,
+        S20: crate::typed::builder::IsSet<features_members::spatial>,
+        S21: crate::typed::builder::IsSet<features_members::sql>,
+        S22: crate::typed::builder::IsSet<features_members::transform>,
+        S23: crate::typed::builder::IsSet<features_members::universal_profiling>,
+        S24: crate::typed::builder::IsSet<features_members::voting_only>,
+        S25: crate::typed::builder::IsSet<features_members::watcher>,
+        S26: crate::typed::builder::IsSet<features_members::archive>,
+    {
         Features {
             aggregate_metric: self.aggregate_metric.unwrap(),
             analytics: self.analytics.unwrap(),
@@ -4288,75 +4322,102 @@ impl
     }
 }
 
-impl
-    From<
-        FeaturesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Features
+impl<
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+    > crate::typed::builder::Build
+    for FeaturesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+    )>
+where
+    S0: crate::typed::builder::IsSet<features_members::aggregate_metric>,
+    S1: crate::typed::builder::IsSet<features_members::analytics>,
+    S2: crate::typed::builder::IsSet<features_members::ccr>,
+    S3: crate::typed::builder::IsSet<features_members::data_streams>,
+    S4: crate::typed::builder::IsSet<features_members::data_tiers>,
+    S5: crate::typed::builder::IsSet<features_members::enrich>,
+    S6: crate::typed::builder::IsSet<features_members::enterprise_search>,
+    S7: crate::typed::builder::IsSet<features_members::eql>,
+    S8: crate::typed::builder::IsSet<features_members::esql>,
+    S9: crate::typed::builder::IsSet<features_members::graph>,
+    S10: crate::typed::builder::IsSet<features_members::gpu_vector_indexing>,
+    S11: crate::typed::builder::IsSet<features_members::ilm>,
+    S12: crate::typed::builder::IsSet<features_members::logstash>,
+    S13: crate::typed::builder::IsSet<features_members::logsdb>,
+    S14: crate::typed::builder::IsSet<features_members::ml>,
+    S15: crate::typed::builder::IsSet<features_members::monitoring>,
+    S16: crate::typed::builder::IsSet<features_members::rollup>,
+    S17: crate::typed::builder::IsSet<features_members::searchable_snapshots>,
+    S18: crate::typed::builder::IsSet<features_members::security>,
+    S19: crate::typed::builder::IsSet<features_members::slm>,
+    S20: crate::typed::builder::IsSet<features_members::spatial>,
+    S21: crate::typed::builder::IsSet<features_members::sql>,
+    S22: crate::typed::builder::IsSet<features_members::transform>,
+    S23: crate::typed::builder::IsSet<features_members::universal_profiling>,
+    S24: crate::typed::builder::IsSet<features_members::voting_only>,
+    S25: crate::typed::builder::IsSet<features_members::watcher>,
+    S26: crate::typed::builder::IsSet<features_members::archive>,
 {
-    fn from(
-        builder: FeaturesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Features;
+
+    fn build(self) -> Features {
+        Self::build(self)
     }
 }
 
 impl<
+        S0,
         S1,
         S2,
         S3,
@@ -4384,1136 +4445,99 @@ impl<
         S25,
         S26,
     >
-    FeaturesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
+    From<
+        FeaturesBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+            S16,
+            S17,
+            S18,
+            S19,
+            S20,
+            S21,
+            S22,
+            S23,
+            S24,
+            S25,
+            S26,
+        )>,
+    > for Features
+where
+    S0: crate::typed::builder::IsSet<features_members::aggregate_metric>,
+    S1: crate::typed::builder::IsSet<features_members::analytics>,
+    S2: crate::typed::builder::IsSet<features_members::ccr>,
+    S3: crate::typed::builder::IsSet<features_members::data_streams>,
+    S4: crate::typed::builder::IsSet<features_members::data_tiers>,
+    S5: crate::typed::builder::IsSet<features_members::enrich>,
+    S6: crate::typed::builder::IsSet<features_members::enterprise_search>,
+    S7: crate::typed::builder::IsSet<features_members::eql>,
+    S8: crate::typed::builder::IsSet<features_members::esql>,
+    S9: crate::typed::builder::IsSet<features_members::graph>,
+    S10: crate::typed::builder::IsSet<features_members::gpu_vector_indexing>,
+    S11: crate::typed::builder::IsSet<features_members::ilm>,
+    S12: crate::typed::builder::IsSet<features_members::logstash>,
+    S13: crate::typed::builder::IsSet<features_members::logsdb>,
+    S14: crate::typed::builder::IsSet<features_members::ml>,
+    S15: crate::typed::builder::IsSet<features_members::monitoring>,
+    S16: crate::typed::builder::IsSet<features_members::rollup>,
+    S17: crate::typed::builder::IsSet<features_members::searchable_snapshots>,
+    S18: crate::typed::builder::IsSet<features_members::security>,
+    S19: crate::typed::builder::IsSet<features_members::slm>,
+    S20: crate::typed::builder::IsSet<features_members::spatial>,
+    S21: crate::typed::builder::IsSet<features_members::sql>,
+    S22: crate::typed::builder::IsSet<features_members::transform>,
+    S23: crate::typed::builder::IsSet<features_members::universal_profiling>,
+    S24: crate::typed::builder::IsSet<features_members::voting_only>,
+    S25: crate::typed::builder::IsSet<features_members::watcher>,
+    S26: crate::typed::builder::IsSet<features_members::archive>,
 {
-    /// `aggregate_metric` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aggregate_metric: crate::typed::builder::MissingRequiredField) -> Features { match aggregate_metric {} }
-}
-
-impl<
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `analytics` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analytics: crate::typed::builder::MissingRequiredField) -> Features { match analytics {} }
-}
-
-impl<
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `ccr` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ccr: crate::typed::builder::MissingRequiredField) -> Features { match ccr {} }
-}
-
-impl<
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `data_streams` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_streams: crate::typed::builder::MissingRequiredField) -> Features { match data_streams {} }
-}
-
-impl<
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `data_tiers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_tiers: crate::typed::builder::MissingRequiredField) -> Features { match data_tiers {} }
-}
-
-impl<
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `enrich` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enrich: crate::typed::builder::MissingRequiredField) -> Features { match enrich {} }
-}
-
-impl<
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `enterprise_search` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enterprise_search: crate::typed::builder::MissingRequiredField) -> Features { match enterprise_search {} }
-}
-
-impl<
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    >
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `eql` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, eql: crate::typed::builder::MissingRequiredField) -> Features { match eql {} }
-}
-
-impl<S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `esql` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, esql: crate::typed::builder::MissingRequiredField) -> Features { match esql {} }
-}
-
-impl<S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `graph` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, graph: crate::typed::builder::MissingRequiredField) -> Features { match graph {} }
-}
-
-impl<S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `gpu_vector_indexing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, gpu_vector_indexing: crate::typed::builder::MissingRequiredField) -> Features { match gpu_vector_indexing {} }
-}
-
-impl<S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `ilm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ilm: crate::typed::builder::MissingRequiredField) -> Features { match ilm {} }
-}
-
-impl<S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `logstash` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, logstash: crate::typed::builder::MissingRequiredField) -> Features { match logstash {} }
-}
-
-impl<S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `logsdb` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, logsdb: crate::typed::builder::MissingRequiredField) -> Features { match logsdb {} }
-}
-
-impl<S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `ml` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ml: crate::typed::builder::MissingRequiredField) -> Features { match ml {} }
-}
-
-impl<S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `monitoring` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, monitoring: crate::typed::builder::MissingRequiredField) -> Features { match monitoring {} }
-}
-
-impl<S17, S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `rollup` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollup: crate::typed::builder::MissingRequiredField) -> Features { match rollup {} }
-}
-
-impl<S18, S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `searchable_snapshots` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, searchable_snapshots: crate::typed::builder::MissingRequiredField) -> Features { match searchable_snapshots {} }
-}
-
-impl<S19, S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `security` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, security: crate::typed::builder::MissingRequiredField) -> Features { match security {} }
-}
-
-impl<S20, S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `slm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, slm: crate::typed::builder::MissingRequiredField) -> Features { match slm {} }
-}
-
-impl<S21, S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `spatial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, spatial: crate::typed::builder::MissingRequiredField) -> Features { match spatial {} }
-}
-
-impl<S22, S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `sql` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sql: crate::typed::builder::MissingRequiredField) -> Features { match sql {} }
-}
-
-impl<S23, S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S23,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `transform` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transform: crate::typed::builder::MissingRequiredField) -> Features { match transform {} }
-}
-
-impl<S24, S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S24,
-        S25,
-        S26,
-    )>
-{
-    /// `universal_profiling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, universal_profiling: crate::typed::builder::MissingRequiredField) -> Features { match universal_profiling {} }
-}
-
-impl<S25, S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S25,
-        S26,
-    )>
-{
-    /// `voting_only` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, voting_only: crate::typed::builder::MissingRequiredField) -> Features { match voting_only {} }
-}
-
-impl<S26>
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S26,
-    )>
-{
-    /// `watcher` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, watcher: crate::typed::builder::MissingRequiredField) -> Features { match watcher {} }
-}
-
-impl
-    FeaturesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `archive` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, archive: crate::typed::builder::MissingRequiredField) -> Features { match archive {} }
+    fn from(
+        builder: FeaturesBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+            S16,
+            S17,
+            S18,
+            S19,
+            S20,
+            S21,
+            S22,
+            S23,
+            S24,
+            S25,
+            S26,
+        )>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5527,24 +4551,31 @@ pub struct MinimalLicenseInformation {
 
 impl MinimalLicenseInformation {
     /// Creates a builder for [`MinimalLicenseInformation`].
+    ///
+    /// Required: `expiry_date_in_millis`, `mode`, `status`, `type`, `uid`.
     pub fn builder() -> MinimalLicenseInformationBuilder {
         MinimalLicenseInformationBuilder::new()
     }
 
     /// Creates a [`MinimalLicenseInformation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MinimalLicenseInformationBuilder,
-        ) -> MinimalLicenseInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `expiry_date_in_millis`, `mode`, `status`, `type`, `uid`.
+    pub fn of<B: crate::typed::builder::Build<Output = MinimalLicenseInformation>>(
+        f: impl FnOnce(MinimalLicenseInformationBuilder) -> B,
     ) -> MinimalLicenseInformation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MinimalLicenseInformationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod minimal_license_information_members {
+    pub struct expiry_date_in_millis;
+    pub struct mode;
+    pub struct status;
+    pub struct r#type;
+    pub struct uid;
 }
 
 /// Builder for [`MinimalLicenseInformation`].
@@ -5603,6 +4634,7 @@ impl<S0, S1, S2, S3, S4> MinimalLicenseInformationBuilder<(S0, S1, S2, S3, S4)> 
 impl<S1, S2, S3, S4>
     MinimalLicenseInformationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
+    /// **Required.**
     pub fn expiry_date_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -5616,6 +4648,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     MinimalLicenseInformationBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
+    /// **Required.**
     pub fn mode(
         self,
         value: impl Into<crate::typed::license::_types::LicenseType>,
@@ -5629,6 +4662,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     MinimalLicenseInformationBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<crate::typed::license::_types::LicenseStatus>,
@@ -5642,6 +4676,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     MinimalLicenseInformationBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<crate::typed::license::_types::LicenseType>,
@@ -5655,6 +4690,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     MinimalLicenseInformationBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn uid(
         self,
         value: impl Into<String>,
@@ -5665,17 +4701,18 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    MinimalLicenseInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> MinimalLicenseInformationBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`MinimalLicenseInformation`].
-    pub fn build(self) -> MinimalLicenseInformation {
+    pub fn build(self) -> MinimalLicenseInformation
+    where
+        S0: crate::typed::builder::IsSet<
+            minimal_license_information_members::expiry_date_in_millis,
+        >,
+        S1: crate::typed::builder::IsSet<minimal_license_information_members::mode>,
+        S2: crate::typed::builder::IsSet<minimal_license_information_members::status>,
+        S3: crate::typed::builder::IsSet<minimal_license_information_members::r#type>,
+        S4: crate::typed::builder::IsSet<minimal_license_information_members::uid>,
+    {
         MinimalLicenseInformation {
             expiry_date_in_millis: self.expiry_date_in_millis.unwrap(),
             mode: self.mode.unwrap(),
@@ -5686,92 +4723,34 @@ impl
     }
 }
 
-impl
-    From<
-        MinimalLicenseInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MinimalLicenseInformation
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for MinimalLicenseInformationBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<minimal_license_information_members::expiry_date_in_millis>,
+    S1: crate::typed::builder::IsSet<minimal_license_information_members::mode>,
+    S2: crate::typed::builder::IsSet<minimal_license_information_members::status>,
+    S3: crate::typed::builder::IsSet<minimal_license_information_members::r#type>,
+    S4: crate::typed::builder::IsSet<minimal_license_information_members::uid>,
 {
-    fn from(
-        builder: MinimalLicenseInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MinimalLicenseInformation;
+
+    fn build(self) -> MinimalLicenseInformation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    MinimalLicenseInformationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<MinimalLicenseInformationBuilder<(S0, S1, S2, S3, S4)>>
+    for MinimalLicenseInformation
+where
+    S0: crate::typed::builder::IsSet<minimal_license_information_members::expiry_date_in_millis>,
+    S1: crate::typed::builder::IsSet<minimal_license_information_members::mode>,
+    S2: crate::typed::builder::IsSet<minimal_license_information_members::status>,
+    S3: crate::typed::builder::IsSet<minimal_license_information_members::r#type>,
+    S4: crate::typed::builder::IsSet<minimal_license_information_members::uid>,
 {
-    /// `expiry_date_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiry_date_in_millis: crate::typed::builder::MissingRequiredField) -> MinimalLicenseInformation { match expiry_date_in_millis {} }
-}
-
-impl<S2, S3, S4>
-    MinimalLicenseInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> MinimalLicenseInformation { match mode {} }
-}
-
-impl<S3, S4>
-    MinimalLicenseInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> MinimalLicenseInformation { match status {} }
-}
-
-impl<S4>
-    MinimalLicenseInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> MinimalLicenseInformation { match r#type {} }
-}
-
-impl
-    MinimalLicenseInformationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `uid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uid: crate::typed::builder::MissingRequiredField) -> MinimalLicenseInformation { match uid {} }
+    fn from(builder: MinimalLicenseInformationBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5782,21 +4761,28 @@ pub struct NativeCodeInformation {
 
 impl NativeCodeInformation {
     /// Creates a builder for [`NativeCodeInformation`].
+    ///
+    /// Required: `build_hash`, `version`.
     pub fn builder() -> NativeCodeInformationBuilder {
         NativeCodeInformationBuilder::new()
     }
 
     /// Creates a [`NativeCodeInformation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NativeCodeInformationBuilder,
-        ) -> NativeCodeInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `build_hash`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = NativeCodeInformation>>(
+        f: impl FnOnce(NativeCodeInformationBuilder) -> B,
     ) -> NativeCodeInformation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NativeCodeInformationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod native_code_information_members {
+    pub struct build_hash;
+    pub struct version;
 }
 
 /// Builder for [`NativeCodeInformation`].
@@ -5830,6 +4816,7 @@ impl<S0, S1> NativeCodeInformationBuilder<(S0, S1)> {
 }
 
 impl<S1> NativeCodeInformationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn build_hash(
         self,
         value: impl Into<String>,
@@ -5841,6 +4828,7 @@ impl<S1> NativeCodeInformationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NativeCodeInformationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -5851,9 +4839,13 @@ impl<S0> NativeCodeInformationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NativeCodeInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NativeCodeInformationBuilder<(S0, S1)> {
     /// Builds a [`NativeCodeInformation`].
-    pub fn build(self) -> NativeCodeInformation {
+    pub fn build(self) -> NativeCodeInformation
+    where
+        S0: crate::typed::builder::IsSet<native_code_information_members::build_hash>,
+        S1: crate::typed::builder::IsSet<native_code_information_members::version>,
+    {
         NativeCodeInformation {
             build_hash: self.build_hash.unwrap(),
             version: self.version.unwrap(),
@@ -5861,29 +4853,26 @@ impl NativeCodeInformationBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<NativeCodeInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NativeCodeInformation
+impl<S0, S1> crate::typed::builder::Build for NativeCodeInformationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<native_code_information_members::build_hash>,
+    S1: crate::typed::builder::IsSet<native_code_information_members::version>,
 {
-    fn from(
-        builder: NativeCodeInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NativeCodeInformation;
+
+    fn build(self) -> NativeCodeInformation {
+        Self::build(self)
     }
 }
 
-impl<S1> NativeCodeInformationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `build_hash` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, build_hash: crate::typed::builder::MissingRequiredField) -> NativeCodeInformation { match build_hash {} }
-}
-
-impl NativeCodeInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> NativeCodeInformation { match version {} }
+impl<S0, S1> From<NativeCodeInformationBuilder<(S0, S1)>> for NativeCodeInformation
+where
+    S0: crate::typed::builder::IsSet<native_code_information_members::build_hash>,
+    S1: crate::typed::builder::IsSet<native_code_information_members::version>,
+{
+    fn from(builder: NativeCodeInformationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`xpack.info`](crate::typed::xpack::XpackClient::info).
@@ -5931,7 +4920,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -6081,6 +5072,14 @@ impl<C> RequestBuilder<(), C> {
             human2: self.human2,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

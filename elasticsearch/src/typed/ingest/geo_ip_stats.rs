@@ -19,25 +19,32 @@ pub struct GeoIpDownloadStatistics {
 
 impl GeoIpDownloadStatistics {
     /// Creates a builder for [`GeoIpDownloadStatistics`].
+    ///
+    /// Required: `successful_downloads`, `failed_downloads`, `total_download_time`, `databases_count`, `skipped_updates`, `expired_databases`.
     pub fn builder() -> GeoIpDownloadStatisticsBuilder {
         GeoIpDownloadStatisticsBuilder::new()
     }
 
     /// Creates a [`GeoIpDownloadStatistics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoIpDownloadStatisticsBuilder,
-        ) -> GeoIpDownloadStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `successful_downloads`, `failed_downloads`, `total_download_time`, `databases_count`, `skipped_updates`, `expired_databases`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoIpDownloadStatistics>>(
+        f: impl FnOnce(GeoIpDownloadStatisticsBuilder) -> B,
     ) -> GeoIpDownloadStatistics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoIpDownloadStatisticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_ip_download_statistics_members {
+    pub struct successful_downloads;
+    pub struct failed_downloads;
+    pub struct total_download_time;
+    pub struct databases_count;
+    pub struct skipped_updates;
+    pub struct expired_databases;
 }
 
 /// Builder for [`GeoIpDownloadStatistics`].
@@ -101,7 +108,7 @@ impl<S0, S1, S2, S3, S4, S5> GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4,
 impl<S1, S2, S3, S4, S5>
     GeoIpDownloadStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
-    /// Total number of successful database downloads.
+    /// **Required.** Total number of successful database downloads.
     pub fn successful_downloads(
         self,
         value: i32,
@@ -115,7 +122,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     GeoIpDownloadStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
-    /// Total number of failed database downloads.
+    /// **Required.** Total number of failed database downloads.
     pub fn failed_downloads(
         self,
         value: i32,
@@ -129,7 +136,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     GeoIpDownloadStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
-    /// Total milliseconds spent downloading databases.
+    /// **Required.** Total milliseconds spent downloading databases.
     pub fn total_download_time(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -143,7 +150,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     GeoIpDownloadStatisticsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
-    /// Current number of databases available for use.
+    /// **Required.** Current number of databases available for use.
     pub fn databases_count(
         self,
         value: i32,
@@ -157,7 +164,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
-    /// Total number of database updates skipped.
+    /// **Required.** Total number of database updates skipped.
     pub fn skipped_updates(
         self,
         value: i32,
@@ -171,7 +178,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
-    /// Total number of databases not updated after 30 days
+    /// **Required.** Total number of databases not updated after 30 days
     pub fn expired_databases(
         self,
         value: i32,
@@ -182,18 +189,17 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`GeoIpDownloadStatistics`].
-    pub fn build(self) -> GeoIpDownloadStatistics {
+    pub fn build(self) -> GeoIpDownloadStatistics
+    where
+        S0: crate::typed::builder::IsSet<geo_ip_download_statistics_members::successful_downloads>,
+        S1: crate::typed::builder::IsSet<geo_ip_download_statistics_members::failed_downloads>,
+        S2: crate::typed::builder::IsSet<geo_ip_download_statistics_members::total_download_time>,
+        S3: crate::typed::builder::IsSet<geo_ip_download_statistics_members::databases_count>,
+        S4: crate::typed::builder::IsSet<geo_ip_download_statistics_members::skipped_updates>,
+        S5: crate::typed::builder::IsSet<geo_ip_download_statistics_members::expired_databases>,
+    {
         GeoIpDownloadStatistics {
             successful_downloads: self.successful_downloads.unwrap(),
             failed_downloads: self.failed_downloads.unwrap(),
@@ -205,113 +211,36 @@ impl
     }
 }
 
-impl
-    From<
-        GeoIpDownloadStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GeoIpDownloadStatistics
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<geo_ip_download_statistics_members::successful_downloads>,
+    S1: crate::typed::builder::IsSet<geo_ip_download_statistics_members::failed_downloads>,
+    S2: crate::typed::builder::IsSet<geo_ip_download_statistics_members::total_download_time>,
+    S3: crate::typed::builder::IsSet<geo_ip_download_statistics_members::databases_count>,
+    S4: crate::typed::builder::IsSet<geo_ip_download_statistics_members::skipped_updates>,
+    S5: crate::typed::builder::IsSet<geo_ip_download_statistics_members::expired_databases>,
 {
-    fn from(
-        builder: GeoIpDownloadStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoIpDownloadStatistics;
+
+    fn build(self) -> GeoIpDownloadStatistics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    GeoIpDownloadStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for GeoIpDownloadStatistics
+where
+    S0: crate::typed::builder::IsSet<geo_ip_download_statistics_members::successful_downloads>,
+    S1: crate::typed::builder::IsSet<geo_ip_download_statistics_members::failed_downloads>,
+    S2: crate::typed::builder::IsSet<geo_ip_download_statistics_members::total_download_time>,
+    S3: crate::typed::builder::IsSet<geo_ip_download_statistics_members::databases_count>,
+    S4: crate::typed::builder::IsSet<geo_ip_download_statistics_members::skipped_updates>,
+    S5: crate::typed::builder::IsSet<geo_ip_download_statistics_members::expired_databases>,
 {
-    /// `successful_downloads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, successful_downloads: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match successful_downloads {} }
-}
-
-impl<S2, S3, S4, S5>
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `failed_downloads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed_downloads: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match failed_downloads {} }
-}
-
-impl<S3, S4, S5>
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `total_download_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_download_time: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match total_download_time {} }
-}
-
-impl<S4, S5>
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `databases_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, databases_count: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match databases_count {} }
-}
-
-impl<S5>
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `skipped_updates` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skipped_updates: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match skipped_updates {} }
-}
-
-impl
-    GeoIpDownloadStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `expired_databases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expired_databases: crate::typed::builder::MissingRequiredField) -> GeoIpDownloadStatistics { match expired_databases {} }
+    fn from(builder: GeoIpDownloadStatisticsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -322,18 +251,27 @@ pub struct GeoIpNodeDatabaseName {
 
 impl GeoIpNodeDatabaseName {
     /// Creates a builder for [`GeoIpNodeDatabaseName`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> GeoIpNodeDatabaseNameBuilder {
         GeoIpNodeDatabaseNameBuilder::new()
     }
 
     /// Creates a [`GeoIpNodeDatabaseName`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoIpNodeDatabaseNameBuilder,
-        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoIpNodeDatabaseName>>(
+        f: impl FnOnce(GeoIpNodeDatabaseNameBuilder) -> B,
     ) -> GeoIpNodeDatabaseName {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoIpNodeDatabaseNameBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_ip_node_database_name_members {
+    pub struct name;
 }
 
 /// Builder for [`GeoIpNodeDatabaseName`].
@@ -362,7 +300,7 @@ impl<S0> GeoIpNodeDatabaseNameBuilder<(S0,)> {
 }
 
 impl GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::NotSet,)> {
-    /// Name of the database.
+    /// **Required.** Name of the database.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -373,25 +311,36 @@ impl GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoIpNodeDatabaseNameBuilder<(S0,)> {
     /// Builds a [`GeoIpNodeDatabaseName`].
-    pub fn build(self) -> GeoIpNodeDatabaseName {
+    pub fn build(self) -> GeoIpNodeDatabaseName
+    where
+        S0: crate::typed::builder::IsSet<geo_ip_node_database_name_members::name>,
+    {
         GeoIpNodeDatabaseName {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>> for GeoIpNodeDatabaseName {
-    fn from(builder: GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoIpNodeDatabaseNameBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_ip_node_database_name_members::name>,
+{
+    type Output = GeoIpNodeDatabaseName;
+
+    fn build(self) -> GeoIpNodeDatabaseName {
+        Self::build(self)
     }
 }
 
-impl GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> GeoIpNodeDatabaseName { match name {} }
+impl<S0> From<GeoIpNodeDatabaseNameBuilder<(S0,)>> for GeoIpNodeDatabaseName
+where
+    S0: crate::typed::builder::IsSet<geo_ip_node_database_name_members::name>,
+{
+    fn from(builder: GeoIpNodeDatabaseNameBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Downloaded databases for the node. The field key is the node ID.
@@ -405,21 +354,28 @@ pub struct GeoIpNodeDatabases {
 
 impl GeoIpNodeDatabases {
     /// Creates a builder for [`GeoIpNodeDatabases`].
+    ///
+    /// Required: `databases`, `files_in_temp`.
     pub fn builder() -> GeoIpNodeDatabasesBuilder {
         GeoIpNodeDatabasesBuilder::new()
     }
 
     /// Creates a [`GeoIpNodeDatabases`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoIpNodeDatabasesBuilder,
-        ) -> GeoIpNodeDatabasesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `databases`, `files_in_temp`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoIpNodeDatabases>>(
+        f: impl FnOnce(GeoIpNodeDatabasesBuilder) -> B,
     ) -> GeoIpNodeDatabases {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoIpNodeDatabasesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_ip_node_databases_members {
+    pub struct databases;
+    pub struct files_in_temp;
 }
 
 /// Builder for [`GeoIpNodeDatabases`].
@@ -453,7 +409,7 @@ impl<S0, S1> GeoIpNodeDatabasesBuilder<(S0, S1)> {
 }
 
 impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Downloaded databases for the node.
+    /// **Required.** Downloaded databases for the node.
     pub fn databases(
         self,
         value: impl Into<Vec<GeoIpNodeDatabaseName>>,
@@ -477,11 +433,9 @@ impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Adds an element to [`databases`](Self::databases), with a builder.
-    pub fn add_databases_with(
+    pub fn add_databases_with<B: crate::typed::builder::Build<Output = GeoIpNodeDatabaseName>>(
         self,
-        f: impl FnOnce(
-            GeoIpNodeDatabaseNameBuilder,
-        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoIpNodeDatabaseNameBuilder) -> B,
     ) -> GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, S1)> {
         self.add_databases(f(GeoIpNodeDatabaseNameBuilder::new()).build())
     }
@@ -497,18 +451,16 @@ impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, S1)> {
     }
 
     /// Adds an element to [`databases`](Self::databases), with a builder.
-    pub fn add_databases_with(
+    pub fn add_databases_with<B: crate::typed::builder::Build<Output = GeoIpNodeDatabaseName>>(
         self,
-        f: impl FnOnce(
-            GeoIpNodeDatabaseNameBuilder,
-        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoIpNodeDatabaseNameBuilder) -> B,
     ) -> Self {
         self.add_databases(f(GeoIpNodeDatabaseNameBuilder::new()).build())
     }
 }
 
 impl<S0> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Downloaded database files, including related license files. Elasticsearch stores these files in the node’s temporary directory: $ES_TMPDIR/geoip-databases/<node_id>.
+    /// **Required.** Downloaded database files, including related license files. Elasticsearch stores these files in the node’s temporary directory: $ES_TMPDIR/geoip-databases/<node_id>.
     pub fn files_in_temp(
         self,
         value: impl Into<Vec<String>>,
@@ -542,9 +494,13 @@ impl<S0> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GeoIpNodeDatabasesBuilder<(S0, S1)> {
     /// Builds a [`GeoIpNodeDatabases`].
-    pub fn build(self) -> GeoIpNodeDatabases {
+    pub fn build(self) -> GeoIpNodeDatabases
+    where
+        S0: crate::typed::builder::IsSet<geo_ip_node_databases_members::databases>,
+        S1: crate::typed::builder::IsSet<geo_ip_node_databases_members::files_in_temp>,
+    {
         GeoIpNodeDatabases {
             databases: self.databases.unwrap(),
             files_in_temp: self.files_in_temp.unwrap(),
@@ -552,29 +508,26 @@ impl GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GeoIpNodeDatabases
+impl<S0, S1> crate::typed::builder::Build for GeoIpNodeDatabasesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<geo_ip_node_databases_members::databases>,
+    S1: crate::typed::builder::IsSet<geo_ip_node_databases_members::files_in_temp>,
 {
-    fn from(
-        builder: GeoIpNodeDatabasesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoIpNodeDatabases;
+
+    fn build(self) -> GeoIpNodeDatabases {
+        Self::build(self)
     }
 }
 
-impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `databases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, databases: crate::typed::builder::MissingRequiredField) -> GeoIpNodeDatabases { match databases {} }
-}
-
-impl GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `files_in_temp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, files_in_temp: crate::typed::builder::MissingRequiredField) -> GeoIpNodeDatabases { match files_in_temp {} }
+impl<S0, S1> From<GeoIpNodeDatabasesBuilder<(S0, S1)>> for GeoIpNodeDatabases
+where
+    S0: crate::typed::builder::IsSet<geo_ip_node_databases_members::databases>,
+    S1: crate::typed::builder::IsSet<geo_ip_node_databases_members::files_in_temp>,
+{
+    fn from(builder: GeoIpNodeDatabasesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ingest.geo_ip_stats`](crate::typed::ingest::IngestClient::geo_ip_stats).
@@ -610,7 +563,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -705,6 +660,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

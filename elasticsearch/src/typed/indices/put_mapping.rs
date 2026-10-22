@@ -102,16 +102,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -458,13 +469,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`field_names`](Self::field_names) with a builder.
-    pub fn field_names_with(
+    pub fn field_names_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::FieldNamesField>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::FieldNamesFieldBuilder,
-        ) -> crate::typed::_types::mapping::FieldNamesFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::FieldNamesFieldBuilder) -> B,
     ) -> Self {
         self.field_names(f(crate::typed::_types::mapping::FieldNamesFieldBuilder::new()).build())
     }
@@ -566,13 +575,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(
+    pub fn routing_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RoutingField>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RoutingFieldBuilder,
-        ) -> crate::typed::_types::mapping::RoutingFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RoutingFieldBuilder) -> B,
     ) -> Self {
         self.routing(f(crate::typed::_types::mapping::RoutingFieldBuilder::new()).build())
     }
@@ -593,11 +600,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::SourceField>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::SourceFieldBuilder,
-        ) -> crate::typed::_types::mapping::SourceFieldBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::SourceFieldBuilder) -> B,
     ) -> Self {
         self.source(f(crate::typed::_types::mapping::SourceFieldBuilder::new()).build())
     }
@@ -633,14 +640,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`runtime`](Self::runtime), with a builder.
-    pub fn add_runtime_with(
+    pub fn add_runtime_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime(
             key,
@@ -650,7 +655,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A comma-separated list of index names the mapping should be added to (supports wildcards).
+    /// **Required.** A comma-separated list of index names the mapping should be added to (supports wildcards).
     /// Use `_all` or omit to add the mapping on all indices.
     pub fn index(
         self,
@@ -662,9 +667,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -692,23 +700,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

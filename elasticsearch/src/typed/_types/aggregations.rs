@@ -9,21 +9,28 @@ pub struct AbstractChangePoint {
 
 impl AbstractChangePoint {
     /// Creates a builder for [`AbstractChangePoint`].
+    ///
+    /// Required: `p_value`, `change_point`.
     pub fn builder() -> AbstractChangePointBuilder {
         AbstractChangePointBuilder::new()
     }
 
     /// Creates a [`AbstractChangePoint`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AbstractChangePointBuilder,
-        ) -> AbstractChangePointBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `p_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = AbstractChangePoint>>(
+        f: impl FnOnce(AbstractChangePointBuilder) -> B,
     ) -> AbstractChangePoint {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AbstractChangePointBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod abstract_change_point_members {
+    pub struct p_value;
+    pub struct change_point;
 }
 
 /// Builder for [`AbstractChangePoint`].
@@ -57,6 +64,7 @@ impl<S0, S1> AbstractChangePointBuilder<(S0, S1)> {
 }
 
 impl<S1> AbstractChangePointBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -68,6 +76,7 @@ impl<S1> AbstractChangePointBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AbstractChangePointBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(
         self,
         value: i32,
@@ -78,9 +87,13 @@ impl<S0> AbstractChangePointBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AbstractChangePointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AbstractChangePointBuilder<(S0, S1)> {
     /// Builds a [`AbstractChangePoint`].
-    pub fn build(self) -> AbstractChangePoint {
+    pub fn build(self) -> AbstractChangePoint
+    where
+        S0: crate::typed::builder::IsSet<abstract_change_point_members::p_value>,
+        S1: crate::typed::builder::IsSet<abstract_change_point_members::change_point>,
+    {
         AbstractChangePoint {
             p_value: self.p_value.unwrap(),
             change_point: self.change_point.unwrap(),
@@ -88,29 +101,26 @@ impl AbstractChangePointBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<AbstractChangePointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AbstractChangePoint
+impl<S0, S1> crate::typed::builder::Build for AbstractChangePointBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<abstract_change_point_members::p_value>,
+    S1: crate::typed::builder::IsSet<abstract_change_point_members::change_point>,
 {
-    fn from(
-        builder: AbstractChangePointBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AbstractChangePoint;
+
+    fn build(self) -> AbstractChangePoint {
+        Self::build(self)
     }
 }
 
-impl<S1> AbstractChangePointBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> AbstractChangePoint { match p_value {} }
-}
-
-impl AbstractChangePointBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> AbstractChangePoint { match change_point {} }
+impl<S0, S1> From<AbstractChangePointBuilder<(S0, S1)>> for AbstractChangePoint
+where
+    S0: crate::typed::builder::IsSet<abstract_change_point_members::p_value>,
+    S1: crate::typed::builder::IsSet<abstract_change_point_members::change_point>,
+{
+    fn from(builder: AbstractChangePointBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -122,18 +132,27 @@ pub struct AdjacencyMatrixAggregate {
 
 impl AdjacencyMatrixAggregate {
     /// Creates a builder for [`AdjacencyMatrixAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> AdjacencyMatrixAggregateBuilder {
         AdjacencyMatrixAggregateBuilder::new()
     }
 
     /// Creates a [`AdjacencyMatrixAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AdjacencyMatrixAggregateBuilder,
-        ) -> AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = AdjacencyMatrixAggregate>>(
+        f: impl FnOnce(AdjacencyMatrixAggregateBuilder) -> B,
     ) -> AdjacencyMatrixAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AdjacencyMatrixAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod adjacency_matrix_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`AdjacencyMatrixAggregate`].
@@ -184,6 +203,7 @@ impl<S0> AdjacencyMatrixAggregateBuilder<(S0,)> {
 }
 
 impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsAdjacencyMatrixBucket>,
@@ -194,9 +214,12 @@ impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AdjacencyMatrixAggregateBuilder<(S0,)> {
     /// Builds a [`AdjacencyMatrixAggregate`].
-    pub fn build(self) -> AdjacencyMatrixAggregate {
+    pub fn build(self) -> AdjacencyMatrixAggregate
+    where
+        S0: crate::typed::builder::IsSet<adjacency_matrix_aggregate_members::buckets>,
+    {
         AdjacencyMatrixAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -204,18 +227,24 @@ impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>>
-    for AdjacencyMatrixAggregate
+impl<S0> crate::typed::builder::Build for AdjacencyMatrixAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<adjacency_matrix_aggregate_members::buckets>,
 {
-    fn from(builder: AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = AdjacencyMatrixAggregate;
+
+    fn build(self) -> AdjacencyMatrixAggregate {
+        Self::build(self)
     }
 }
 
-impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> AdjacencyMatrixAggregate { match buckets {} }
+impl<S0> From<AdjacencyMatrixAggregateBuilder<(S0,)>> for AdjacencyMatrixAggregate
+where
+    S0: crate::typed::builder::IsSet<adjacency_matrix_aggregate_members::buckets>,
+{
+    fn from(builder: AdjacencyMatrixAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -237,8 +266,8 @@ impl AdjacencyMatrixAggregation {
     }
 
     /// Creates a [`AdjacencyMatrixAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AdjacencyMatrixAggregationBuilder) -> AdjacencyMatrixAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AdjacencyMatrixAggregation>>(
+        f: impl FnOnce(AdjacencyMatrixAggregationBuilder) -> B,
     ) -> AdjacencyMatrixAggregation {
         f(Self::builder()).build()
     }
@@ -293,14 +322,12 @@ impl AdjacencyMatrixAggregationBuilder {
     }
 
     /// Adds an entry to [`filters`](Self::filters), with a builder.
-    pub fn add_filters_with(
+    pub fn add_filters_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.add_filters(
             key,
@@ -331,6 +358,14 @@ impl AdjacencyMatrixAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AdjacencyMatrixAggregationBuilder {
+    type Output = AdjacencyMatrixAggregation;
+
+    fn build(self) -> AdjacencyMatrixAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<AdjacencyMatrixAggregationBuilder> for AdjacencyMatrixAggregation {
     fn from(builder: AdjacencyMatrixAggregationBuilder) -> Self {
         builder.build()
@@ -348,21 +383,28 @@ pub struct AdjacencyMatrixBucket {
 
 impl AdjacencyMatrixBucket {
     /// Creates a builder for [`AdjacencyMatrixBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> AdjacencyMatrixBucketBuilder {
         AdjacencyMatrixBucketBuilder::new()
     }
 
     /// Creates a [`AdjacencyMatrixBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AdjacencyMatrixBucketBuilder,
-        ) -> AdjacencyMatrixBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = AdjacencyMatrixBucket>>(
+        f: impl FnOnce(AdjacencyMatrixBucketBuilder) -> B,
     ) -> AdjacencyMatrixBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AdjacencyMatrixBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod adjacency_matrix_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`AdjacencyMatrixBucket`].
@@ -418,6 +460,7 @@ impl<S0, S1> AdjacencyMatrixBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> AdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -429,6 +472,7 @@ impl<S1> AdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AdjacencyMatrixBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<String>,
@@ -439,9 +483,13 @@ impl<S0> AdjacencyMatrixBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AdjacencyMatrixBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AdjacencyMatrixBucketBuilder<(S0, S1)> {
     /// Builds a [`AdjacencyMatrixBucket`].
-    pub fn build(self) -> AdjacencyMatrixBucket {
+    pub fn build(self) -> AdjacencyMatrixBucket
+    where
+        S0: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::key>,
+    {
         AdjacencyMatrixBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -450,29 +498,26 @@ impl AdjacencyMatrixBucketBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<AdjacencyMatrixBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AdjacencyMatrixBucket
+impl<S0, S1> crate::typed::builder::Build for AdjacencyMatrixBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::key>,
 {
-    fn from(
-        builder: AdjacencyMatrixBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AdjacencyMatrixBucket;
+
+    fn build(self) -> AdjacencyMatrixBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> AdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> AdjacencyMatrixBucket { match doc_count {} }
-}
-
-impl AdjacencyMatrixBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> AdjacencyMatrixBucket { match key {} }
+impl<S0, S1> From<AdjacencyMatrixBucketBuilder<(S0, S1)>> for AdjacencyMatrixBucket
+where
+    S0: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<adjacency_matrix_bucket_members::key>,
+{
+    fn from(builder: AdjacencyMatrixBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
@@ -499,7 +544,9 @@ impl AggregateBase {
     }
 
     /// Creates a [`AggregateBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AggregateBaseBuilder) -> AggregateBaseBuilder) -> AggregateBase {
+    pub fn of<B: crate::typed::builder::Build<Output = AggregateBase>>(
+        f: impl FnOnce(AggregateBaseBuilder) -> B,
+    ) -> AggregateBase {
         f(Self::builder()).build()
     }
 }
@@ -541,6 +588,14 @@ impl AggregateBaseBuilder {
     /// Builds a [`AggregateBase`].
     pub fn build(self) -> AggregateBase {
         AggregateBase { meta: self.meta }
+    }
+}
+
+impl crate::typed::builder::Build for AggregateBaseBuilder {
+    type Output = AggregateBase;
+
+    fn build(self) -> AggregateBase {
+        Self::build(self)
     }
 }
 
@@ -589,7 +644,9 @@ impl Aggregation {
     }
 
     /// Creates a [`Aggregation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AggregationBuilder) -> AggregationBuilder) -> Aggregation {
+    pub fn of<B: crate::typed::builder::Build<Output = Aggregation>>(
+        f: impl FnOnce(AggregationBuilder) -> B,
+    ) -> Aggregation {
         f(Self::builder()).build()
     }
 }
@@ -610,6 +667,14 @@ impl AggregationBuilder {
     /// Builds a [`Aggregation`].
     pub fn build(self) -> Aggregation {
         Aggregation {}
+    }
+}
+
+impl crate::typed::builder::Build for AggregationBuilder {
+    type Output = Aggregation;
+
+    fn build(self) -> Aggregation {
+        Self::build(self)
     }
 }
 
@@ -2651,15 +2716,17 @@ impl From<VariableWidthHistogramAggregationBuilder> for AggregationContainer {
 
 impl AggregationContainer {
     /// Creates a builder for [`AggregationContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> AggregationContainerBuilder {
         AggregationContainerBuilder::new()
     }
 
     /// Creates a [`AggregationContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AggregationContainerBuilder,
-        ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = AggregationContainer>>(
+        f: impl FnOnce(AggregationContainerBuilder) -> B,
     ) -> AggregationContainer {
         f(Self::builder()).build()
     }
@@ -2727,12 +2794,10 @@ impl<S0> AggregationContainerBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<B: crate::typed::builder::Build<Output = AggregationContainer>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            AggregationContainerBuilder,
-        ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(key, f(AggregationContainerBuilder::new()).build())
     }
@@ -2771,9 +2836,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`adjacency_matrix`](Self::adjacency_matrix) with a builder.
-    pub fn adjacency_matrix_with(
+    pub fn adjacency_matrix_with<
+        B: crate::typed::builder::Build<Output = AdjacencyMatrixAggregation>,
+    >(
         self,
-        f: impl FnOnce(AdjacencyMatrixAggregationBuilder) -> AdjacencyMatrixAggregationBuilder,
+        f: impl FnOnce(AdjacencyMatrixAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.adjacency_matrix(f(AdjacencyMatrixAggregationBuilder::new()).build())
     }
@@ -2789,9 +2856,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`auto_date_histogram`](Self::auto_date_histogram) with a builder.
-    pub fn auto_date_histogram_with(
+    pub fn auto_date_histogram_with<
+        B: crate::typed::builder::Build<Output = AutoDateHistogramAggregation>,
+    >(
         self,
-        f: impl FnOnce(AutoDateHistogramAggregationBuilder) -> AutoDateHistogramAggregationBuilder,
+        f: impl FnOnce(AutoDateHistogramAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.auto_date_histogram(f(AutoDateHistogramAggregationBuilder::new()).build())
     }
@@ -2807,9 +2876,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`avg`](Self::avg) with a builder.
-    pub fn avg_with(
+    pub fn avg_with<B: crate::typed::builder::Build<Output = AverageAggregation>>(
         self,
-        f: impl FnOnce(AverageAggregationBuilder) -> AverageAggregationBuilder,
+        f: impl FnOnce(AverageAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.avg(f(AverageAggregationBuilder::new()).build())
     }
@@ -2826,9 +2895,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`avg_bucket`](Self::avg_bucket) with a builder.
-    pub fn avg_bucket_with(
+    pub fn avg_bucket_with<B: crate::typed::builder::Build<Output = AverageBucketAggregation>>(
         self,
-        f: impl FnOnce(AverageBucketAggregationBuilder) -> AverageBucketAggregationBuilder,
+        f: impl FnOnce(AverageBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.avg_bucket(f(AverageBucketAggregationBuilder::new()).build())
     }
@@ -2844,9 +2913,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`boxplot`](Self::boxplot) with a builder.
-    pub fn boxplot_with(
+    pub fn boxplot_with<B: crate::typed::builder::Build<Output = BoxplotAggregation>>(
         self,
-        f: impl FnOnce(BoxplotAggregationBuilder) -> BoxplotAggregationBuilder,
+        f: impl FnOnce(BoxplotAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.boxplot(f(BoxplotAggregationBuilder::new()).build())
     }
@@ -2862,9 +2931,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bucket_script`](Self::bucket_script) with a builder.
-    pub fn bucket_script_with(
+    pub fn bucket_script_with<B: crate::typed::builder::Build<Output = BucketScriptAggregation>>(
         self,
-        f: impl FnOnce(BucketScriptAggregationBuilder) -> BucketScriptAggregationBuilder,
+        f: impl FnOnce(BucketScriptAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.bucket_script(f(BucketScriptAggregationBuilder::new()).build())
     }
@@ -2880,9 +2949,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bucket_selector`](Self::bucket_selector) with a builder.
-    pub fn bucket_selector_with(
+    pub fn bucket_selector_with<
+        B: crate::typed::builder::Build<Output = BucketSelectorAggregation>,
+    >(
         self,
-        f: impl FnOnce(BucketSelectorAggregationBuilder) -> BucketSelectorAggregationBuilder,
+        f: impl FnOnce(BucketSelectorAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.bucket_selector(f(BucketSelectorAggregationBuilder::new()).build())
     }
@@ -2898,9 +2969,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bucket_sort`](Self::bucket_sort) with a builder.
-    pub fn bucket_sort_with(
+    pub fn bucket_sort_with<B: crate::typed::builder::Build<Output = BucketSortAggregation>>(
         self,
-        f: impl FnOnce(BucketSortAggregationBuilder) -> BucketSortAggregationBuilder,
+        f: impl FnOnce(BucketSortAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.bucket_sort(f(BucketSortAggregationBuilder::new()).build())
     }
@@ -2916,9 +2987,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bucket_count_ks_test`](Self::bucket_count_ks_test) with a builder.
-    pub fn bucket_count_ks_test_with(
+    pub fn bucket_count_ks_test_with<
+        B: crate::typed::builder::Build<Output = BucketKsAggregation>,
+    >(
         self,
-        f: impl FnOnce(BucketKsAggregationBuilder) -> BucketKsAggregationBuilder,
+        f: impl FnOnce(BucketKsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.bucket_count_ks_test(f(BucketKsAggregationBuilder::new()).build())
     }
@@ -2934,11 +3007,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bucket_correlation`](Self::bucket_correlation) with a builder.
-    pub fn bucket_correlation_with(
+    pub fn bucket_correlation_with<
+        B: crate::typed::builder::Build<Output = BucketCorrelationAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            BucketCorrelationAggregationBuilder,
-        ) -> BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(BucketCorrelationAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.bucket_correlation(f(BucketCorrelationAggregationBuilder::new()).build())
     }
@@ -2954,9 +3027,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cardinality`](Self::cardinality) with a builder.
-    pub fn cardinality_with(
+    pub fn cardinality_with<B: crate::typed::builder::Build<Output = CardinalityAggregation>>(
         self,
-        f: impl FnOnce(CardinalityAggregationBuilder) -> CardinalityAggregationBuilder,
+        f: impl FnOnce(CardinalityAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cardinality(f(CardinalityAggregationBuilder::new()).build())
     }
@@ -2972,9 +3045,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cartesian_bounds`](Self::cartesian_bounds) with a builder.
-    pub fn cartesian_bounds_with(
+    pub fn cartesian_bounds_with<
+        B: crate::typed::builder::Build<Output = CartesianBoundsAggregation>,
+    >(
         self,
-        f: impl FnOnce(CartesianBoundsAggregationBuilder) -> CartesianBoundsAggregationBuilder,
+        f: impl FnOnce(CartesianBoundsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cartesian_bounds(f(CartesianBoundsAggregationBuilder::new()).build())
     }
@@ -2990,9 +3065,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cartesian_centroid`](Self::cartesian_centroid) with a builder.
-    pub fn cartesian_centroid_with(
+    pub fn cartesian_centroid_with<
+        B: crate::typed::builder::Build<Output = CartesianCentroidAggregation>,
+    >(
         self,
-        f: impl FnOnce(CartesianCentroidAggregationBuilder) -> CartesianCentroidAggregationBuilder,
+        f: impl FnOnce(CartesianCentroidAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cartesian_centroid(f(CartesianCentroidAggregationBuilder::new()).build())
     }
@@ -3008,11 +3085,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`categorize_text`](Self::categorize_text) with a builder.
-    pub fn categorize_text_with(
+    pub fn categorize_text_with<
+        B: crate::typed::builder::Build<Output = CategorizeTextAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            CategorizeTextAggregationBuilder,
-        ) -> CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CategorizeTextAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.categorize_text(f(CategorizeTextAggregationBuilder::new()).build())
     }
@@ -3032,9 +3109,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`change_point`](Self::change_point) with a builder.
-    pub fn change_point_with(
+    pub fn change_point_with<B: crate::typed::builder::Build<Output = ChangePointAggregation>>(
         self,
-        f: impl FnOnce(ChangePointAggregationBuilder) -> ChangePointAggregationBuilder,
+        f: impl FnOnce(ChangePointAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.change_point(f(ChangePointAggregationBuilder::new()).build())
     }
@@ -3050,9 +3127,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`children`](Self::children) with a builder.
-    pub fn children_with(
+    pub fn children_with<B: crate::typed::builder::Build<Output = ChildrenAggregation>>(
         self,
-        f: impl FnOnce(ChildrenAggregationBuilder) -> ChildrenAggregationBuilder,
+        f: impl FnOnce(ChildrenAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.children(f(ChildrenAggregationBuilder::new()).build())
     }
@@ -3069,9 +3146,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`composite`](Self::composite) with a builder.
-    pub fn composite_with(
+    pub fn composite_with<B: crate::typed::builder::Build<Output = CompositeAggregation>>(
         self,
-        f: impl FnOnce(CompositeAggregationBuilder) -> CompositeAggregationBuilder,
+        f: impl FnOnce(CompositeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.composite(f(CompositeAggregationBuilder::new()).build())
     }
@@ -3089,11 +3166,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cumulative_cardinality`](Self::cumulative_cardinality) with a builder.
-    pub fn cumulative_cardinality_with(
+    pub fn cumulative_cardinality_with<
+        B: crate::typed::builder::Build<Output = CumulativeCardinalityAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            CumulativeCardinalityAggregationBuilder,
-        ) -> CumulativeCardinalityAggregationBuilder,
+        f: impl FnOnce(CumulativeCardinalityAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cumulative_cardinality(f(CumulativeCardinalityAggregationBuilder::new()).build())
     }
@@ -3109,9 +3186,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cumulative_sum`](Self::cumulative_sum) with a builder.
-    pub fn cumulative_sum_with(
+    pub fn cumulative_sum_with<
+        B: crate::typed::builder::Build<Output = CumulativeSumAggregation>,
+    >(
         self,
-        f: impl FnOnce(CumulativeSumAggregationBuilder) -> CumulativeSumAggregationBuilder,
+        f: impl FnOnce(CumulativeSumAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cumulative_sum(f(CumulativeSumAggregationBuilder::new()).build())
     }
@@ -3128,9 +3207,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_histogram`](Self::date_histogram) with a builder.
-    pub fn date_histogram_with(
+    pub fn date_histogram_with<
+        B: crate::typed::builder::Build<Output = DateHistogramAggregation>,
+    >(
         self,
-        f: impl FnOnce(DateHistogramAggregationBuilder) -> DateHistogramAggregationBuilder,
+        f: impl FnOnce(DateHistogramAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.date_histogram(f(DateHistogramAggregationBuilder::new()).build())
     }
@@ -3146,9 +3227,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_range`](Self::date_range) with a builder.
-    pub fn date_range_with(
+    pub fn date_range_with<B: crate::typed::builder::Build<Output = DateRangeAggregation>>(
         self,
-        f: impl FnOnce(DateRangeAggregationBuilder) -> DateRangeAggregationBuilder,
+        f: impl FnOnce(DateRangeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.date_range(f(DateRangeAggregationBuilder::new()).build())
     }
@@ -3164,9 +3245,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`derivative`](Self::derivative) with a builder.
-    pub fn derivative_with(
+    pub fn derivative_with<B: crate::typed::builder::Build<Output = DerivativeAggregation>>(
         self,
-        f: impl FnOnce(DerivativeAggregationBuilder) -> DerivativeAggregationBuilder,
+        f: impl FnOnce(DerivativeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.derivative(f(DerivativeAggregationBuilder::new()).build())
     }
@@ -3183,9 +3264,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`diversified_sampler`](Self::diversified_sampler) with a builder.
-    pub fn diversified_sampler_with(
+    pub fn diversified_sampler_with<
+        B: crate::typed::builder::Build<Output = DiversifiedSamplerAggregation>,
+    >(
         self,
-        f: impl FnOnce(DiversifiedSamplerAggregationBuilder) -> DiversifiedSamplerAggregationBuilder,
+        f: impl FnOnce(DiversifiedSamplerAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.diversified_sampler(f(DiversifiedSamplerAggregationBuilder::new()).build())
     }
@@ -3201,9 +3284,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`extended_stats`](Self::extended_stats) with a builder.
-    pub fn extended_stats_with(
+    pub fn extended_stats_with<
+        B: crate::typed::builder::Build<Output = ExtendedStatsAggregation>,
+    >(
         self,
-        f: impl FnOnce(ExtendedStatsAggregationBuilder) -> ExtendedStatsAggregationBuilder,
+        f: impl FnOnce(ExtendedStatsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.extended_stats(f(ExtendedStatsAggregationBuilder::new()).build())
     }
@@ -3219,9 +3304,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`extended_stats_bucket`](Self::extended_stats_bucket) with a builder.
-    pub fn extended_stats_bucket_with(
+    pub fn extended_stats_bucket_with<
+        B: crate::typed::builder::Build<Output = ExtendedStatsBucketAggregation>,
+    >(
         self,
-        f: impl FnOnce(ExtendedStatsBucketAggregationBuilder) -> ExtendedStatsBucketAggregationBuilder,
+        f: impl FnOnce(ExtendedStatsBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.extended_stats_bucket(f(ExtendedStatsBucketAggregationBuilder::new()).build())
     }
@@ -3237,11 +3324,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`frequent_item_sets`](Self::frequent_item_sets) with a builder.
-    pub fn frequent_item_sets_with(
+    pub fn frequent_item_sets_with<
+        B: crate::typed::builder::Build<Output = FrequentItemSetsAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            FrequentItemSetsAggregationBuilder,
-        ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FrequentItemSetsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.frequent_item_sets(f(FrequentItemSetsAggregationBuilder::new()).build())
     }
@@ -3257,13 +3344,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -3279,9 +3364,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`filters`](Self::filters) with a builder.
-    pub fn filters_with(
+    pub fn filters_with<B: crate::typed::builder::Build<Output = FiltersAggregation>>(
         self,
-        f: impl FnOnce(FiltersAggregationBuilder) -> FiltersAggregationBuilder,
+        f: impl FnOnce(FiltersAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.filters(f(FiltersAggregationBuilder::new()).build())
     }
@@ -3297,9 +3382,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_bounds`](Self::geo_bounds) with a builder.
-    pub fn geo_bounds_with(
+    pub fn geo_bounds_with<B: crate::typed::builder::Build<Output = GeoBoundsAggregation>>(
         self,
-        f: impl FnOnce(GeoBoundsAggregationBuilder) -> GeoBoundsAggregationBuilder,
+        f: impl FnOnce(GeoBoundsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_bounds(f(GeoBoundsAggregationBuilder::new()).build())
     }
@@ -3315,9 +3400,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_centroid`](Self::geo_centroid) with a builder.
-    pub fn geo_centroid_with(
+    pub fn geo_centroid_with<B: crate::typed::builder::Build<Output = GeoCentroidAggregation>>(
         self,
-        f: impl FnOnce(GeoCentroidAggregationBuilder) -> GeoCentroidAggregationBuilder,
+        f: impl FnOnce(GeoCentroidAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_centroid(f(GeoCentroidAggregationBuilder::new()).build())
     }
@@ -3334,9 +3419,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_distance`](Self::geo_distance) with a builder.
-    pub fn geo_distance_with(
+    pub fn geo_distance_with<B: crate::typed::builder::Build<Output = GeoDistanceAggregation>>(
         self,
-        f: impl FnOnce(GeoDistanceAggregationBuilder) -> GeoDistanceAggregationBuilder,
+        f: impl FnOnce(GeoDistanceAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_distance(f(GeoDistanceAggregationBuilder::new()).build())
     }
@@ -3353,9 +3438,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geohash_grid`](Self::geohash_grid) with a builder.
-    pub fn geohash_grid_with(
+    pub fn geohash_grid_with<B: crate::typed::builder::Build<Output = GeoHashGridAggregation>>(
         self,
-        f: impl FnOnce(GeoHashGridAggregationBuilder) -> GeoHashGridAggregationBuilder,
+        f: impl FnOnce(GeoHashGridAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geohash_grid(f(GeoHashGridAggregationBuilder::new()).build())
     }
@@ -3371,11 +3456,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_line`](Self::geo_line) with a builder.
-    pub fn geo_line_with(
+    pub fn geo_line_with<B: crate::typed::builder::Build<Output = GeoLineAggregation>>(
         self,
-        f: impl FnOnce(
-            GeoLineAggregationBuilder,
-        ) -> GeoLineAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoLineAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_line(f(GeoLineAggregationBuilder::new()).build())
     }
@@ -3392,9 +3475,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geotile_grid`](Self::geotile_grid) with a builder.
-    pub fn geotile_grid_with(
+    pub fn geotile_grid_with<B: crate::typed::builder::Build<Output = GeoTileGridAggregation>>(
         self,
-        f: impl FnOnce(GeoTileGridAggregationBuilder) -> GeoTileGridAggregationBuilder,
+        f: impl FnOnce(GeoTileGridAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geotile_grid(f(GeoTileGridAggregationBuilder::new()).build())
     }
@@ -3411,11 +3494,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geohex_grid`](Self::geohex_grid) with a builder.
-    pub fn geohex_grid_with(
+    pub fn geohex_grid_with<B: crate::typed::builder::Build<Output = GeohexGridAggregation>>(
         self,
-        f: impl FnOnce(
-            GeohexGridAggregationBuilder,
-        ) -> GeohexGridAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeohexGridAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.geohex_grid(f(GeohexGridAggregationBuilder::new()).build())
     }
@@ -3432,9 +3513,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`global`](Self::global) with a builder.
-    pub fn global_with(
+    pub fn global_with<B: crate::typed::builder::Build<Output = GlobalAggregation>>(
         self,
-        f: impl FnOnce(GlobalAggregationBuilder) -> GlobalAggregationBuilder,
+        f: impl FnOnce(GlobalAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.global(f(GlobalAggregationBuilder::new()).build())
     }
@@ -3451,9 +3532,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`histogram`](Self::histogram) with a builder.
-    pub fn histogram_with(
+    pub fn histogram_with<B: crate::typed::builder::Build<Output = HistogramAggregation>>(
         self,
-        f: impl FnOnce(HistogramAggregationBuilder) -> HistogramAggregationBuilder,
+        f: impl FnOnce(HistogramAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.histogram(f(HistogramAggregationBuilder::new()).build())
     }
@@ -3469,9 +3550,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ip_range`](Self::ip_range) with a builder.
-    pub fn ip_range_with(
+    pub fn ip_range_with<B: crate::typed::builder::Build<Output = IpRangeAggregation>>(
         self,
-        f: impl FnOnce(IpRangeAggregationBuilder) -> IpRangeAggregationBuilder,
+        f: impl FnOnce(IpRangeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.ip_range(f(IpRangeAggregationBuilder::new()).build())
     }
@@ -3487,14 +3568,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ip_prefix`](Self::ip_prefix) with a builder.
-    pub fn ip_prefix_with(
+    pub fn ip_prefix_with<B: crate::typed::builder::Build<Output = IpPrefixAggregation>>(
         self,
-        f: impl FnOnce(
-            IpPrefixAggregationBuilder,
-        ) -> IpPrefixAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IpPrefixAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.ip_prefix(f(IpPrefixAggregationBuilder::new()).build())
     }
@@ -3510,11 +3586,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`inference`](Self::inference) with a builder.
-    pub fn inference_with(
+    pub fn inference_with<B: crate::typed::builder::Build<Output = InferenceAggregation>>(
         self,
-        f: impl FnOnce(
-            InferenceAggregationBuilder,
-        ) -> InferenceAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.inference(f(InferenceAggregationBuilder::new()).build())
     }
@@ -3529,11 +3603,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`line`](Self::line) with a builder.
-    pub fn line_with(
+    pub fn line_with<B: crate::typed::builder::Build<Output = GeoLineAggregation>>(
         self,
-        f: impl FnOnce(
-            GeoLineAggregationBuilder,
-        ) -> GeoLineAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoLineAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.line(f(GeoLineAggregationBuilder::new()).build())
     }
@@ -3549,9 +3621,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`matrix_stats`](Self::matrix_stats) with a builder.
-    pub fn matrix_stats_with(
+    pub fn matrix_stats_with<B: crate::typed::builder::Build<Output = MatrixStatsAggregation>>(
         self,
-        f: impl FnOnce(MatrixStatsAggregationBuilder) -> MatrixStatsAggregationBuilder,
+        f: impl FnOnce(MatrixStatsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.matrix_stats(f(MatrixStatsAggregationBuilder::new()).build())
     }
@@ -3567,9 +3639,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`max`](Self::max) with a builder.
-    pub fn max_with(
+    pub fn max_with<B: crate::typed::builder::Build<Output = MaxAggregation>>(
         self,
-        f: impl FnOnce(MaxAggregationBuilder) -> MaxAggregationBuilder,
+        f: impl FnOnce(MaxAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.max(f(MaxAggregationBuilder::new()).build())
     }
@@ -3585,9 +3657,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`max_bucket`](Self::max_bucket) with a builder.
-    pub fn max_bucket_with(
+    pub fn max_bucket_with<B: crate::typed::builder::Build<Output = MaxBucketAggregation>>(
         self,
-        f: impl FnOnce(MaxBucketAggregationBuilder) -> MaxBucketAggregationBuilder,
+        f: impl FnOnce(MaxBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.max_bucket(f(MaxBucketAggregationBuilder::new()).build())
     }
@@ -3605,11 +3677,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`median_absolute_deviation`](Self::median_absolute_deviation) with a builder.
-    pub fn median_absolute_deviation_with(
+    pub fn median_absolute_deviation_with<
+        B: crate::typed::builder::Build<Output = MedianAbsoluteDeviationAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            MedianAbsoluteDeviationAggregationBuilder,
-        ) -> MedianAbsoluteDeviationAggregationBuilder,
+        f: impl FnOnce(MedianAbsoluteDeviationAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.median_absolute_deviation(f(MedianAbsoluteDeviationAggregationBuilder::new()).build())
     }
@@ -3625,9 +3697,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`min`](Self::min) with a builder.
-    pub fn min_with(
+    pub fn min_with<B: crate::typed::builder::Build<Output = MinAggregation>>(
         self,
-        f: impl FnOnce(MinAggregationBuilder) -> MinAggregationBuilder,
+        f: impl FnOnce(MinAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.min(f(MinAggregationBuilder::new()).build())
     }
@@ -3643,9 +3715,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`min_bucket`](Self::min_bucket) with a builder.
-    pub fn min_bucket_with(
+    pub fn min_bucket_with<B: crate::typed::builder::Build<Output = MinBucketAggregation>>(
         self,
-        f: impl FnOnce(MinBucketAggregationBuilder) -> MinBucketAggregationBuilder,
+        f: impl FnOnce(MinBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.min_bucket(f(MinBucketAggregationBuilder::new()).build())
     }
@@ -3661,9 +3733,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`missing`](Self::missing) with a builder.
-    pub fn missing_with(
+    pub fn missing_with<B: crate::typed::builder::Build<Output = MissingAggregation>>(
         self,
-        f: impl FnOnce(MissingAggregationBuilder) -> MissingAggregationBuilder,
+        f: impl FnOnce(MissingAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.missing(f(MissingAggregationBuilder::new()).build())
     }
@@ -3688,9 +3760,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`moving_percentiles`](Self::moving_percentiles) with a builder.
-    pub fn moving_percentiles_with(
+    pub fn moving_percentiles_with<
+        B: crate::typed::builder::Build<Output = MovingPercentilesAggregation>,
+    >(
         self,
-        f: impl FnOnce(MovingPercentilesAggregationBuilder) -> MovingPercentilesAggregationBuilder,
+        f: impl FnOnce(MovingPercentilesAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.moving_percentiles(f(MovingPercentilesAggregationBuilder::new()).build())
     }
@@ -3707,9 +3781,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`moving_fn`](Self::moving_fn) with a builder.
-    pub fn moving_fn_with(
+    pub fn moving_fn_with<B: crate::typed::builder::Build<Output = MovingFunctionAggregation>>(
         self,
-        f: impl FnOnce(MovingFunctionAggregationBuilder) -> MovingFunctionAggregationBuilder,
+        f: impl FnOnce(MovingFunctionAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.moving_fn(f(MovingFunctionAggregationBuilder::new()).build())
     }
@@ -3725,11 +3799,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`multi_terms`](Self::multi_terms) with a builder.
-    pub fn multi_terms_with(
+    pub fn multi_terms_with<B: crate::typed::builder::Build<Output = MultiTermsAggregation>>(
         self,
-        f: impl FnOnce(
-            MultiTermsAggregationBuilder,
-        ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MultiTermsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.multi_terms(f(MultiTermsAggregationBuilder::new()).build())
     }
@@ -3745,9 +3817,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`nested`](Self::nested) with a builder.
-    pub fn nested_with(
+    pub fn nested_with<B: crate::typed::builder::Build<Output = NestedAggregation>>(
         self,
-        f: impl FnOnce(NestedAggregationBuilder) -> NestedAggregationBuilder,
+        f: impl FnOnce(NestedAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.nested(f(NestedAggregationBuilder::new()).build())
     }
@@ -3763,9 +3835,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`normalize`](Self::normalize) with a builder.
-    pub fn normalize_with(
+    pub fn normalize_with<B: crate::typed::builder::Build<Output = NormalizeAggregation>>(
         self,
-        f: impl FnOnce(NormalizeAggregationBuilder) -> NormalizeAggregationBuilder,
+        f: impl FnOnce(NormalizeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.normalize(f(NormalizeAggregationBuilder::new()).build())
     }
@@ -3781,9 +3853,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`parent`](Self::parent) with a builder.
-    pub fn parent_with(
+    pub fn parent_with<B: crate::typed::builder::Build<Output = ParentAggregation>>(
         self,
-        f: impl FnOnce(ParentAggregationBuilder) -> ParentAggregationBuilder,
+        f: impl FnOnce(ParentAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.parent(f(ParentAggregationBuilder::new()).build())
     }
@@ -3799,9 +3871,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`percentile_ranks`](Self::percentile_ranks) with a builder.
-    pub fn percentile_ranks_with(
+    pub fn percentile_ranks_with<
+        B: crate::typed::builder::Build<Output = PercentileRanksAggregation>,
+    >(
         self,
-        f: impl FnOnce(PercentileRanksAggregationBuilder) -> PercentileRanksAggregationBuilder,
+        f: impl FnOnce(PercentileRanksAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.percentile_ranks(f(PercentileRanksAggregationBuilder::new()).build())
     }
@@ -3817,9 +3891,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`percentiles`](Self::percentiles) with a builder.
-    pub fn percentiles_with(
+    pub fn percentiles_with<B: crate::typed::builder::Build<Output = PercentilesAggregation>>(
         self,
-        f: impl FnOnce(PercentilesAggregationBuilder) -> PercentilesAggregationBuilder,
+        f: impl FnOnce(PercentilesAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.percentiles(f(PercentilesAggregationBuilder::new()).build())
     }
@@ -3835,9 +3909,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`percentiles_bucket`](Self::percentiles_bucket) with a builder.
-    pub fn percentiles_bucket_with(
+    pub fn percentiles_bucket_with<
+        B: crate::typed::builder::Build<Output = PercentilesBucketAggregation>,
+    >(
         self,
-        f: impl FnOnce(PercentilesBucketAggregationBuilder) -> PercentilesBucketAggregationBuilder,
+        f: impl FnOnce(PercentilesBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.percentiles_bucket(f(PercentilesBucketAggregationBuilder::new()).build())
     }
@@ -3853,9 +3929,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`range`](Self::range) with a builder.
-    pub fn range_with(
+    pub fn range_with<B: crate::typed::builder::Build<Output = RangeAggregation>>(
         self,
-        f: impl FnOnce(RangeAggregationBuilder) -> RangeAggregationBuilder,
+        f: impl FnOnce(RangeAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.range(f(RangeAggregationBuilder::new()).build())
     }
@@ -3871,9 +3947,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`rare_terms`](Self::rare_terms) with a builder.
-    pub fn rare_terms_with(
+    pub fn rare_terms_with<B: crate::typed::builder::Build<Output = RareTermsAggregation>>(
         self,
-        f: impl FnOnce(RareTermsAggregationBuilder) -> RareTermsAggregationBuilder,
+        f: impl FnOnce(RareTermsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.rare_terms(f(RareTermsAggregationBuilder::new()).build())
     }
@@ -3890,9 +3966,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`rate`](Self::rate) with a builder.
-    pub fn rate_with(
+    pub fn rate_with<B: crate::typed::builder::Build<Output = RateAggregation>>(
         self,
-        f: impl FnOnce(RateAggregationBuilder) -> RateAggregationBuilder,
+        f: impl FnOnce(RateAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.rate(f(RateAggregationBuilder::new()).build())
     }
@@ -3909,9 +3985,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`reverse_nested`](Self::reverse_nested) with a builder.
-    pub fn reverse_nested_with(
+    pub fn reverse_nested_with<
+        B: crate::typed::builder::Build<Output = ReverseNestedAggregation>,
+    >(
         self,
-        f: impl FnOnce(ReverseNestedAggregationBuilder) -> ReverseNestedAggregationBuilder,
+        f: impl FnOnce(ReverseNestedAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.reverse_nested(f(ReverseNestedAggregationBuilder::new()).build())
     }
@@ -3928,11 +4006,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`random_sampler`](Self::random_sampler) with a builder.
-    pub fn random_sampler_with(
+    pub fn random_sampler_with<
+        B: crate::typed::builder::Build<Output = RandomSamplerAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            RandomSamplerAggregationBuilder,
-        ) -> RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RandomSamplerAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.random_sampler(f(RandomSamplerAggregationBuilder::new()).build())
     }
@@ -3948,9 +4026,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`sampler`](Self::sampler) with a builder.
-    pub fn sampler_with(
+    pub fn sampler_with<B: crate::typed::builder::Build<Output = SamplerAggregation>>(
         self,
-        f: impl FnOnce(SamplerAggregationBuilder) -> SamplerAggregationBuilder,
+        f: impl FnOnce(SamplerAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.sampler(f(SamplerAggregationBuilder::new()).build())
     }
@@ -3966,9 +4044,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`scripted_metric`](Self::scripted_metric) with a builder.
-    pub fn scripted_metric_with(
+    pub fn scripted_metric_with<
+        B: crate::typed::builder::Build<Output = ScriptedMetricAggregation>,
+    >(
         self,
-        f: impl FnOnce(ScriptedMetricAggregationBuilder) -> ScriptedMetricAggregationBuilder,
+        f: impl FnOnce(ScriptedMetricAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.scripted_metric(f(ScriptedMetricAggregationBuilder::new()).build())
     }
@@ -3984,9 +4064,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`serial_diff`](Self::serial_diff) with a builder.
-    pub fn serial_diff_with(
+    pub fn serial_diff_with<
+        B: crate::typed::builder::Build<Output = SerialDifferencingAggregation>,
+    >(
         self,
-        f: impl FnOnce(SerialDifferencingAggregationBuilder) -> SerialDifferencingAggregationBuilder,
+        f: impl FnOnce(SerialDifferencingAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.serial_diff(f(SerialDifferencingAggregationBuilder::new()).build())
     }
@@ -4002,9 +4084,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`significant_terms`](Self::significant_terms) with a builder.
-    pub fn significant_terms_with(
+    pub fn significant_terms_with<
+        B: crate::typed::builder::Build<Output = SignificantTermsAggregation>,
+    >(
         self,
-        f: impl FnOnce(SignificantTermsAggregationBuilder) -> SignificantTermsAggregationBuilder,
+        f: impl FnOnce(SignificantTermsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.significant_terms(f(SignificantTermsAggregationBuilder::new()).build())
     }
@@ -4020,9 +4104,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`significant_text`](Self::significant_text) with a builder.
-    pub fn significant_text_with(
+    pub fn significant_text_with<
+        B: crate::typed::builder::Build<Output = SignificantTextAggregation>,
+    >(
         self,
-        f: impl FnOnce(SignificantTextAggregationBuilder) -> SignificantTextAggregationBuilder,
+        f: impl FnOnce(SignificantTextAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.significant_text(f(SignificantTextAggregationBuilder::new()).build())
     }
@@ -4038,9 +4124,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = StatsAggregation>>(
         self,
-        f: impl FnOnce(StatsAggregationBuilder) -> StatsAggregationBuilder,
+        f: impl FnOnce(StatsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.stats(f(StatsAggregationBuilder::new()).build())
     }
@@ -4056,9 +4142,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`stats_bucket`](Self::stats_bucket) with a builder.
-    pub fn stats_bucket_with(
+    pub fn stats_bucket_with<B: crate::typed::builder::Build<Output = StatsBucketAggregation>>(
         self,
-        f: impl FnOnce(StatsBucketAggregationBuilder) -> StatsBucketAggregationBuilder,
+        f: impl FnOnce(StatsBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.stats_bucket(f(StatsBucketAggregationBuilder::new()).build())
     }
@@ -4074,9 +4160,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`string_stats`](Self::string_stats) with a builder.
-    pub fn string_stats_with(
+    pub fn string_stats_with<B: crate::typed::builder::Build<Output = StringStatsAggregation>>(
         self,
-        f: impl FnOnce(StringStatsAggregationBuilder) -> StringStatsAggregationBuilder,
+        f: impl FnOnce(StringStatsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.string_stats(f(StringStatsAggregationBuilder::new()).build())
     }
@@ -4092,9 +4178,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`sum`](Self::sum) with a builder.
-    pub fn sum_with(
+    pub fn sum_with<B: crate::typed::builder::Build<Output = SumAggregation>>(
         self,
-        f: impl FnOnce(SumAggregationBuilder) -> SumAggregationBuilder,
+        f: impl FnOnce(SumAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.sum(f(SumAggregationBuilder::new()).build())
     }
@@ -4110,9 +4196,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`sum_bucket`](Self::sum_bucket) with a builder.
-    pub fn sum_bucket_with(
+    pub fn sum_bucket_with<B: crate::typed::builder::Build<Output = SumBucketAggregation>>(
         self,
-        f: impl FnOnce(SumBucketAggregationBuilder) -> SumBucketAggregationBuilder,
+        f: impl FnOnce(SumBucketAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.sum_bucket(f(SumBucketAggregationBuilder::new()).build())
     }
@@ -4128,9 +4214,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<B: crate::typed::builder::Build<Output = TermsAggregation>>(
         self,
-        f: impl FnOnce(TermsAggregationBuilder) -> TermsAggregationBuilder,
+        f: impl FnOnce(TermsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(TermsAggregationBuilder::new()).build())
     }
@@ -4147,9 +4233,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`time_series`](Self::time_series) with a builder.
-    pub fn time_series_with(
+    pub fn time_series_with<B: crate::typed::builder::Build<Output = TimeSeriesAggregation>>(
         self,
-        f: impl FnOnce(TimeSeriesAggregationBuilder) -> TimeSeriesAggregationBuilder,
+        f: impl FnOnce(TimeSeriesAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.time_series(f(TimeSeriesAggregationBuilder::new()).build())
     }
@@ -4165,9 +4251,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`top_hits`](Self::top_hits) with a builder.
-    pub fn top_hits_with(
+    pub fn top_hits_with<B: crate::typed::builder::Build<Output = TopHitsAggregation>>(
         self,
-        f: impl FnOnce(TopHitsAggregationBuilder) -> TopHitsAggregationBuilder,
+        f: impl FnOnce(TopHitsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.top_hits(f(TopHitsAggregationBuilder::new()).build())
     }
@@ -4183,9 +4269,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`t_test`](Self::t_test) with a builder.
-    pub fn t_test_with(
+    pub fn t_test_with<B: crate::typed::builder::Build<Output = TTestAggregation>>(
         self,
-        f: impl FnOnce(TTestAggregationBuilder) -> TTestAggregationBuilder,
+        f: impl FnOnce(TTestAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.t_test(f(TTestAggregationBuilder::new()).build())
     }
@@ -4201,9 +4287,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`top_metrics`](Self::top_metrics) with a builder.
-    pub fn top_metrics_with(
+    pub fn top_metrics_with<B: crate::typed::builder::Build<Output = TopMetricsAggregation>>(
         self,
-        f: impl FnOnce(TopMetricsAggregationBuilder) -> TopMetricsAggregationBuilder,
+        f: impl FnOnce(TopMetricsAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.top_metrics(f(TopMetricsAggregationBuilder::new()).build())
     }
@@ -4219,9 +4305,9 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`value_count`](Self::value_count) with a builder.
-    pub fn value_count_with(
+    pub fn value_count_with<B: crate::typed::builder::Build<Output = ValueCountAggregation>>(
         self,
-        f: impl FnOnce(ValueCountAggregationBuilder) -> ValueCountAggregationBuilder,
+        f: impl FnOnce(ValueCountAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.value_count(f(ValueCountAggregationBuilder::new()).build())
     }
@@ -4237,9 +4323,11 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`weighted_avg`](Self::weighted_avg) with a builder.
-    pub fn weighted_avg_with(
+    pub fn weighted_avg_with<
+        B: crate::typed::builder::Build<Output = WeightedAverageAggregation>,
+    >(
         self,
-        f: impl FnOnce(WeightedAverageAggregationBuilder) -> WeightedAverageAggregationBuilder,
+        f: impl FnOnce(WeightedAverageAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.weighted_avg(f(WeightedAverageAggregationBuilder::new()).build())
     }
@@ -4257,19 +4345,22 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`variable_width_histogram`](Self::variable_width_histogram) with a builder.
-    pub fn variable_width_histogram_with(
+    pub fn variable_width_histogram_with<
+        B: crate::typed::builder::Build<Output = VariableWidthHistogramAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            VariableWidthHistogramAggregationBuilder,
-        ) -> VariableWidthHistogramAggregationBuilder,
+        f: impl FnOnce(VariableWidthHistogramAggregationBuilder) -> B,
     ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.variable_width_histogram(f(VariableWidthHistogramAggregationBuilder::new()).build())
     }
 }
 
-impl AggregationContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AggregationContainerBuilder<(S0,)> {
     /// Builds a [`AggregationContainer`].
-    pub fn build(self) -> AggregationContainer {
+    pub fn build(self) -> AggregationContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<AggregationContainer>,
+    {
         AggregationContainer {
             aggregations: self.aggregations,
             meta: self.meta,
@@ -4278,16 +4369,24 @@ impl AggregationContainerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AggregationContainerBuilder<(crate::typed::builder::Set,)>> for AggregationContainer {
-    fn from(builder: AggregationContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AggregationContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<AggregationContainer>,
+{
+    type Output = AggregationContainer;
+
+    fn build(self) -> AggregationContainer {
+        Self::build(self)
     }
 }
 
-impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> AggregationContainer { match variant {} }
+impl<S0> From<AggregationContainerBuilder<(S0,)>> for AggregationContainer
+where
+    S0: crate::typed::builder::IsVariantSet<AggregationContainer>,
+{
+    fn from(builder: AggregationContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4348,8 +4447,8 @@ impl AggregationRange {
     }
 
     /// Creates a [`AggregationRange`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AggregationRangeBuilder) -> AggregationRangeBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AggregationRange>>(
+        f: impl FnOnce(AggregationRangeBuilder) -> B,
     ) -> AggregationRange {
         f(Self::builder()).build()
     }
@@ -4422,6 +4521,14 @@ impl AggregationRangeBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AggregationRangeBuilder {
+    type Output = AggregationRange;
+
+    fn build(self) -> AggregationRange {
+        Self::build(self)
+    }
+}
+
 impl From<AggregationRangeBuilder> for AggregationRange {
     fn from(builder: AggregationRangeBuilder) -> Self {
         builder.build()
@@ -4457,21 +4564,28 @@ impl From<f64> for ArrayPercentilesItemValue {
 
 impl ArrayPercentilesItem {
     /// Creates a builder for [`ArrayPercentilesItem`].
+    ///
+    /// Required: `key`, `value`.
     pub fn builder() -> ArrayPercentilesItemBuilder {
         ArrayPercentilesItemBuilder::new()
     }
 
     /// Creates a [`ArrayPercentilesItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ArrayPercentilesItemBuilder,
-        ) -> ArrayPercentilesItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `key`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = ArrayPercentilesItem>>(
+        f: impl FnOnce(ArrayPercentilesItemBuilder) -> B,
     ) -> ArrayPercentilesItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ArrayPercentilesItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod array_percentiles_item_members {
+    pub struct key;
+    pub struct value;
 }
 
 /// Builder for [`ArrayPercentilesItem`].
@@ -4519,6 +4633,7 @@ impl<S0, S1> ArrayPercentilesItemBuilder<(S0, S1)> {
 }
 
 impl<S1> ArrayPercentilesItemBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -4530,6 +4645,7 @@ impl<S1> ArrayPercentilesItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ArrayPercentilesItemBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<ArrayPercentilesItemValue>,
@@ -4540,9 +4656,13 @@ impl<S0> ArrayPercentilesItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ArrayPercentilesItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ArrayPercentilesItemBuilder<(S0, S1)> {
     /// Builds a [`ArrayPercentilesItem`].
-    pub fn build(self) -> ArrayPercentilesItem {
+    pub fn build(self) -> ArrayPercentilesItem
+    where
+        S0: crate::typed::builder::IsSet<array_percentiles_item_members::key>,
+        S1: crate::typed::builder::IsSet<array_percentiles_item_members::value>,
+    {
         ArrayPercentilesItem {
             key: self.key.unwrap(),
             value: self.value.unwrap(),
@@ -4551,29 +4671,26 @@ impl ArrayPercentilesItemBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<ArrayPercentilesItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ArrayPercentilesItem
+impl<S0, S1> crate::typed::builder::Build for ArrayPercentilesItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<array_percentiles_item_members::key>,
+    S1: crate::typed::builder::IsSet<array_percentiles_item_members::value>,
 {
-    fn from(
-        builder: ArrayPercentilesItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ArrayPercentilesItem;
+
+    fn build(self) -> ArrayPercentilesItem {
+        Self::build(self)
     }
 }
 
-impl<S1> ArrayPercentilesItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> ArrayPercentilesItem { match key {} }
-}
-
-impl ArrayPercentilesItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> ArrayPercentilesItem { match value {} }
+impl<S0, S1> From<ArrayPercentilesItemBuilder<(S0, S1)>> for ArrayPercentilesItem
+where
+    S0: crate::typed::builder::IsSet<array_percentiles_item_members::key>,
+    S1: crate::typed::builder::IsSet<array_percentiles_item_members::value>,
+{
+    fn from(builder: ArrayPercentilesItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4586,21 +4703,28 @@ pub struct AutoDateHistogramAggregate {
 
 impl AutoDateHistogramAggregate {
     /// Creates a builder for [`AutoDateHistogramAggregate`].
+    ///
+    /// Required: `buckets`, `interval`.
     pub fn builder() -> AutoDateHistogramAggregateBuilder {
         AutoDateHistogramAggregateBuilder::new()
     }
 
     /// Creates a [`AutoDateHistogramAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoDateHistogramAggregateBuilder,
-        ) -> AutoDateHistogramAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`, `interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoDateHistogramAggregate>>(
+        f: impl FnOnce(AutoDateHistogramAggregateBuilder) -> B,
     ) -> AutoDateHistogramAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoDateHistogramAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod auto_date_histogram_aggregate_members {
+    pub struct buckets;
+    pub struct interval;
 }
 
 /// Builder for [`AutoDateHistogramAggregate`].
@@ -4661,6 +4785,7 @@ impl<S0, S1> AutoDateHistogramAggregateBuilder<(S0, S1)> {
 }
 
 impl<S1> AutoDateHistogramAggregateBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDateHistogramBucket>,
@@ -4672,6 +4797,7 @@ impl<S1> AutoDateHistogramAggregateBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> AutoDateHistogramAggregateBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn interval(
         self,
         value: impl Into<crate::typed::_types::DurationLarge>,
@@ -4682,9 +4808,13 @@ impl<S0> AutoDateHistogramAggregateBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl AutoDateHistogramAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AutoDateHistogramAggregateBuilder<(S0, S1)> {
     /// Builds a [`AutoDateHistogramAggregate`].
-    pub fn build(self) -> AutoDateHistogramAggregate {
+    pub fn build(self) -> AutoDateHistogramAggregate
+    where
+        S0: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::buckets>,
+        S1: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::interval>,
+    {
         AutoDateHistogramAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -4693,33 +4823,26 @@ impl AutoDateHistogramAggregateBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        AutoDateHistogramAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for AutoDateHistogramAggregate
+impl<S0, S1> crate::typed::builder::Build for AutoDateHistogramAggregateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::buckets>,
+    S1: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::interval>,
 {
-    fn from(
-        builder: AutoDateHistogramAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoDateHistogramAggregate;
+
+    fn build(self) -> AutoDateHistogramAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1> AutoDateHistogramAggregateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> AutoDateHistogramAggregate { match buckets {} }
-}
-
-impl
-    AutoDateHistogramAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<AutoDateHistogramAggregateBuilder<(S0, S1)>> for AutoDateHistogramAggregate
+where
+    S0: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::buckets>,
+    S1: crate::typed::builder::IsSet<auto_date_histogram_aggregate_members::interval>,
 {
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> AutoDateHistogramAggregate { match interval {} }
+    fn from(builder: AutoDateHistogramAggregateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4774,8 +4897,8 @@ impl AutoDateHistogramAggregation {
     }
 
     /// Creates a [`AutoDateHistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AutoDateHistogramAggregationBuilder) -> AutoDateHistogramAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AutoDateHistogramAggregation>>(
+        f: impl FnOnce(AutoDateHistogramAggregationBuilder) -> B,
     ) -> AutoDateHistogramAggregation {
         f(Self::builder()).build()
     }
@@ -4934,9 +5057,9 @@ impl AutoDateHistogramAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -4971,6 +5094,14 @@ impl AutoDateHistogramAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AutoDateHistogramAggregationBuilder {
+    type Output = AutoDateHistogramAggregation;
+
+    fn build(self) -> AutoDateHistogramAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<AutoDateHistogramAggregationBuilder> for AutoDateHistogramAggregation {
     fn from(builder: AutoDateHistogramAggregationBuilder) -> Self {
         builder.build()
@@ -4999,8 +5130,8 @@ impl AverageAggregation {
     }
 
     /// Creates a [`AverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AverageAggregationBuilder) -> AverageAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AverageAggregation>>(
+        f: impl FnOnce(AverageAggregationBuilder) -> B,
     ) -> AverageAggregation {
         f(Self::builder()).build()
     }
@@ -5064,9 +5195,9 @@ impl AverageAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -5092,6 +5223,14 @@ impl AverageAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for AverageAggregationBuilder {
+    type Output = AverageAggregation;
+
+    fn build(self) -> AverageAggregation {
+        Self::build(self)
     }
 }
 
@@ -5122,8 +5261,8 @@ impl AverageBucketAggregation {
     }
 
     /// Creates a [`AverageBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AverageBucketAggregationBuilder) -> AverageBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AverageBucketAggregation>>(
+        f: impl FnOnce(AverageBucketAggregationBuilder) -> B,
     ) -> AverageBucketAggregation {
         f(Self::builder()).build()
     }
@@ -5197,6 +5336,14 @@ impl AverageBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AverageBucketAggregationBuilder {
+    type Output = AverageBucketAggregation;
+
+    fn build(self) -> AverageBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<AverageBucketAggregationBuilder> for AverageBucketAggregation {
     fn from(builder: AverageBucketAggregationBuilder) -> Self {
         builder.build()
@@ -5235,16 +5382,27 @@ impl From<f64> for AvgAggregateValue {
 
 impl AvgAggregate {
     /// Creates a builder for [`AvgAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> AvgAggregateBuilder {
         AvgAggregateBuilder::new()
     }
 
     /// Creates a [`AvgAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AvgAggregateBuilder) -> AvgAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = AvgAggregate>>(
+        f: impl FnOnce(AvgAggregateBuilder) -> B,
     ) -> AvgAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AvgAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod avg_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`AvgAggregate`].
@@ -5309,7 +5467,7 @@ impl<S0> AvgAggregateBuilder<(S0,)> {
 }
 
 impl AvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -5321,9 +5479,12 @@ impl AvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AvgAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AvgAggregateBuilder<(S0,)> {
     /// Builds a [`AvgAggregate`].
-    pub fn build(self) -> AvgAggregate {
+    pub fn build(self) -> AvgAggregate
+    where
+        S0: crate::typed::builder::IsSet<avg_aggregate_members::value>,
+    {
         AvgAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -5332,16 +5493,24 @@ impl AvgAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AvgAggregateBuilder<(crate::typed::builder::Set,)>> for AvgAggregate {
-    fn from(builder: AvgAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AvgAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<avg_aggregate_members::value>,
+{
+    type Output = AvgAggregate;
+
+    fn build(self) -> AvgAggregate {
+        Self::build(self)
     }
 }
 
-impl AvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> AvgAggregate { match value {} }
+impl<S0> From<AvgAggregateBuilder<(S0,)>> for AvgAggregate
+where
+    S0: crate::typed::builder::IsSet<avg_aggregate_members::value>,
+{
+    fn from(builder: AvgAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5373,26 +5542,33 @@ pub struct BoxPlotAggregate {
 
 impl BoxPlotAggregate {
     /// Creates a builder for [`BoxPlotAggregate`].
+    ///
+    /// Required: `min`, `max`, `q1`, `q2`, `q3`, `lower`, `upper`.
     pub fn builder() -> BoxPlotAggregateBuilder {
         BoxPlotAggregateBuilder::new()
     }
 
     /// Creates a [`BoxPlotAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BoxPlotAggregateBuilder,
-        ) -> BoxPlotAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `min`, `max`, `q1`, `q2`, `q3`, `lower`, `upper`.
+    pub fn of<B: crate::typed::builder::Build<Output = BoxPlotAggregate>>(
+        f: impl FnOnce(BoxPlotAggregateBuilder) -> B,
     ) -> BoxPlotAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BoxPlotAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod box_plot_aggregate_members {
+    pub struct min;
+    pub struct max;
+    pub struct q1;
+    pub struct q2;
+    pub struct q3;
+    pub struct lower;
+    pub struct upper;
 }
 
 /// Builder for [`BoxPlotAggregate`].
@@ -5581,6 +5757,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5
 impl<S1, S2, S3, S4, S5, S6>
     BoxPlotAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5594,6 +5771,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     BoxPlotAggregateBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5607,6 +5785,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     BoxPlotAggregateBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn q1(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5620,6 +5799,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     BoxPlotAggregateBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn q2(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5633,6 +5813,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     BoxPlotAggregateBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn q3(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5646,6 +5827,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn lower(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5659,6 +5841,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn upper(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -5669,19 +5852,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`BoxPlotAggregate`].
-    pub fn build(self) -> BoxPlotAggregate {
+    pub fn build(self) -> BoxPlotAggregate
+    where
+        S0: crate::typed::builder::IsSet<box_plot_aggregate_members::min>,
+        S1: crate::typed::builder::IsSet<box_plot_aggregate_members::max>,
+        S2: crate::typed::builder::IsSet<box_plot_aggregate_members::q1>,
+        S3: crate::typed::builder::IsSet<box_plot_aggregate_members::q2>,
+        S4: crate::typed::builder::IsSet<box_plot_aggregate_members::q3>,
+        S5: crate::typed::builder::IsSet<box_plot_aggregate_members::lower>,
+        S6: crate::typed::builder::IsSet<box_plot_aggregate_members::upper>,
+    {
         BoxPlotAggregate {
             meta: self.meta,
             min: self.min.unwrap(),
@@ -5702,136 +5884,38 @@ impl
     }
 }
 
-impl
-    From<
-        BoxPlotAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BoxPlotAggregate
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<box_plot_aggregate_members::min>,
+    S1: crate::typed::builder::IsSet<box_plot_aggregate_members::max>,
+    S2: crate::typed::builder::IsSet<box_plot_aggregate_members::q1>,
+    S3: crate::typed::builder::IsSet<box_plot_aggregate_members::q2>,
+    S4: crate::typed::builder::IsSet<box_plot_aggregate_members::q3>,
+    S5: crate::typed::builder::IsSet<box_plot_aggregate_members::lower>,
+    S6: crate::typed::builder::IsSet<box_plot_aggregate_members::upper>,
 {
-    fn from(
-        builder: BoxPlotAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BoxPlotAggregate;
+
+    fn build(self) -> BoxPlotAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    BoxPlotAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for BoxPlotAggregate
+where
+    S0: crate::typed::builder::IsSet<box_plot_aggregate_members::min>,
+    S1: crate::typed::builder::IsSet<box_plot_aggregate_members::max>,
+    S2: crate::typed::builder::IsSet<box_plot_aggregate_members::q1>,
+    S3: crate::typed::builder::IsSet<box_plot_aggregate_members::q2>,
+    S4: crate::typed::builder::IsSet<box_plot_aggregate_members::q3>,
+    S5: crate::typed::builder::IsSet<box_plot_aggregate_members::lower>,
+    S6: crate::typed::builder::IsSet<box_plot_aggregate_members::upper>,
 {
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match min {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match max {} }
-}
-
-impl<S3, S4, S5, S6>
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `q1` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, q1: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match q1 {} }
-}
-
-impl<S4, S5, S6>
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `q2` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, q2: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match q2 {} }
-}
-
-impl<S5, S6>
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `q3` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, q3: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match q3 {} }
-}
-
-impl<S6>
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `lower` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match lower {} }
-}
-
-impl
-    BoxPlotAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `upper` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper: crate::typed::builder::MissingRequiredField) -> BoxPlotAggregate { match upper {} }
+    fn from(builder: BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5861,8 +5945,8 @@ impl BoxplotAggregation {
     }
 
     /// Creates a [`BoxplotAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BoxplotAggregationBuilder) -> BoxplotAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BoxplotAggregation>>(
+        f: impl FnOnce(BoxplotAggregationBuilder) -> B,
     ) -> BoxplotAggregation {
         f(Self::builder()).build()
     }
@@ -5928,9 +6012,9 @@ impl BoxplotAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -5974,6 +6058,14 @@ impl BoxplotAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BoxplotAggregationBuilder {
+    type Output = BoxplotAggregation;
+
+    fn build(self) -> BoxplotAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<BoxplotAggregationBuilder> for BoxplotAggregation {
     fn from(builder: BoxplotAggregationBuilder) -> Self {
         builder.build()
@@ -5991,8 +6083,8 @@ impl BucketAggregationBase {
     }
 
     /// Creates a [`BucketAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketAggregationBaseBuilder) -> BucketAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketAggregationBase>>(
+        f: impl FnOnce(BucketAggregationBaseBuilder) -> B,
     ) -> BucketAggregationBase {
         f(Self::builder()).build()
     }
@@ -6017,6 +6109,14 @@ impl BucketAggregationBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BucketAggregationBaseBuilder {
+    type Output = BucketAggregationBase;
+
+    fn build(self) -> BucketAggregationBase {
+        Self::build(self)
+    }
+}
+
 impl From<BucketAggregationBaseBuilder> for BucketAggregationBase {
     fn from(builder: BucketAggregationBaseBuilder) -> Self {
         builder.build()
@@ -6035,18 +6135,27 @@ pub struct BucketCorrelationAggregation {
 
 impl BucketCorrelationAggregation {
     /// Creates a builder for [`BucketCorrelationAggregation`].
+    ///
+    /// Required: `function`.
     pub fn builder() -> BucketCorrelationAggregationBuilder {
         BucketCorrelationAggregationBuilder::new()
     }
 
     /// Creates a [`BucketCorrelationAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketCorrelationAggregationBuilder,
-        ) -> BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `function`.
+    pub fn of<B: crate::typed::builder::Build<Output = BucketCorrelationAggregation>>(
+        f: impl FnOnce(BucketCorrelationAggregationBuilder) -> B,
     ) -> BucketCorrelationAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketCorrelationAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_correlation_aggregation_members {
+    pub struct function;
 }
 
 /// Builder for [`BucketCorrelationAggregation`].
@@ -6090,7 +6199,7 @@ impl<S0> BucketCorrelationAggregationBuilder<(S0,)> {
 }
 
 impl BucketCorrelationAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The correlation function to execute.
+    /// **Required.** The correlation function to execute.
     pub fn function(
         self,
         value: impl Into<BucketCorrelationFunction>,
@@ -6101,19 +6210,20 @@ impl BucketCorrelationAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`function`](Self::function) with a builder.
-    pub fn function_with(
+    pub fn function_with<B: crate::typed::builder::Build<Output = BucketCorrelationFunction>>(
         self,
-        f: impl FnOnce(
-            BucketCorrelationFunctionBuilder,
-        ) -> BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(BucketCorrelationFunctionBuilder) -> B,
     ) -> BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)> {
         self.function(f(BucketCorrelationFunctionBuilder::new()).build())
     }
 }
 
-impl BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BucketCorrelationAggregationBuilder<(S0,)> {
     /// Builds a [`BucketCorrelationAggregation`].
-    pub fn build(self) -> BucketCorrelationAggregation {
+    pub fn build(self) -> BucketCorrelationAggregation
+    where
+        S0: crate::typed::builder::IsSet<bucket_correlation_aggregation_members::function>,
+    {
         BucketCorrelationAggregation {
             buckets_path: self.buckets_path,
             function: self.function.unwrap(),
@@ -6121,18 +6231,24 @@ impl BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)>>
-    for BucketCorrelationAggregation
+impl<S0> crate::typed::builder::Build for BucketCorrelationAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bucket_correlation_aggregation_members::function>,
 {
-    fn from(builder: BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = BucketCorrelationAggregation;
+
+    fn build(self) -> BucketCorrelationAggregation {
+        Self::build(self)
     }
 }
 
-impl BucketCorrelationAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `function` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, function: crate::typed::builder::MissingRequiredField) -> BucketCorrelationAggregation { match function {} }
+impl<S0> From<BucketCorrelationAggregationBuilder<(S0,)>> for BucketCorrelationAggregation
+where
+    S0: crate::typed::builder::IsSet<bucket_correlation_aggregation_members::function>,
+{
+    fn from(builder: BucketCorrelationAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6143,18 +6259,27 @@ pub struct BucketCorrelationFunction {
 
 impl BucketCorrelationFunction {
     /// Creates a builder for [`BucketCorrelationFunction`].
+    ///
+    /// Required: `count_correlation`.
     pub fn builder() -> BucketCorrelationFunctionBuilder {
         BucketCorrelationFunctionBuilder::new()
     }
 
     /// Creates a [`BucketCorrelationFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketCorrelationFunctionBuilder,
-        ) -> BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `count_correlation`.
+    pub fn of<B: crate::typed::builder::Build<Output = BucketCorrelationFunction>>(
+        f: impl FnOnce(BucketCorrelationFunctionBuilder) -> B,
     ) -> BucketCorrelationFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketCorrelationFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_correlation_function_members {
+    pub struct count_correlation;
 }
 
 /// Builder for [`BucketCorrelationFunction`].
@@ -6183,7 +6308,7 @@ impl<S0> BucketCorrelationFunctionBuilder<(S0,)> {
 }
 
 impl BucketCorrelationFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// The configuration to calculate a count correlation. This function is designed for determining the correlation of a term value and a given metric.
+    /// **Required.** The configuration to calculate a count correlation. This function is designed for determining the correlation of a term value and a given metric.
     pub fn count_correlation(
         self,
         value: impl Into<BucketCorrelationFunctionCountCorrelation>,
@@ -6194,39 +6319,46 @@ impl BucketCorrelationFunctionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`count_correlation`](Self::count_correlation) with a builder.
-    pub fn count_correlation_with(
+    pub fn count_correlation_with<
+        B: crate::typed::builder::Build<Output = BucketCorrelationFunctionCountCorrelation>,
+    >(
         self,
-        f: impl FnOnce(
-            BucketCorrelationFunctionCountCorrelationBuilder,
-        ) -> BucketCorrelationFunctionCountCorrelationBuilder<
-            (crate::typed::builder::Set,),
-        >,
+        f: impl FnOnce(BucketCorrelationFunctionCountCorrelationBuilder) -> B,
     ) -> BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)> {
         self.count_correlation(f(BucketCorrelationFunctionCountCorrelationBuilder::new()).build())
     }
 }
 
-impl BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BucketCorrelationFunctionBuilder<(S0,)> {
     /// Builds a [`BucketCorrelationFunction`].
-    pub fn build(self) -> BucketCorrelationFunction {
+    pub fn build(self) -> BucketCorrelationFunction
+    where
+        S0: crate::typed::builder::IsSet<bucket_correlation_function_members::count_correlation>,
+    {
         BucketCorrelationFunction {
             count_correlation: self.count_correlation.unwrap(),
         }
     }
 }
 
-impl From<BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)>>
-    for BucketCorrelationFunction
+impl<S0> crate::typed::builder::Build for BucketCorrelationFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<bucket_correlation_function_members::count_correlation>,
 {
-    fn from(builder: BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = BucketCorrelationFunction;
+
+    fn build(self) -> BucketCorrelationFunction {
+        Self::build(self)
     }
 }
 
-impl BucketCorrelationFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `count_correlation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count_correlation: crate::typed::builder::MissingRequiredField) -> BucketCorrelationFunction { match count_correlation {} }
+impl<S0> From<BucketCorrelationFunctionBuilder<(S0,)>> for BucketCorrelationFunction
+where
+    S0: crate::typed::builder::IsSet<bucket_correlation_function_members::count_correlation>,
+{
+    fn from(builder: BucketCorrelationFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6237,20 +6369,29 @@ pub struct BucketCorrelationFunctionCountCorrelation {
 
 impl BucketCorrelationFunctionCountCorrelation {
     /// Creates a builder for [`BucketCorrelationFunctionCountCorrelation`].
+    ///
+    /// Required: `indicator`.
     pub fn builder() -> BucketCorrelationFunctionCountCorrelationBuilder {
         BucketCorrelationFunctionCountCorrelationBuilder::new()
     }
 
     /// Creates a [`BucketCorrelationFunctionCountCorrelation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketCorrelationFunctionCountCorrelationBuilder,
-        ) -> BucketCorrelationFunctionCountCorrelationBuilder<
-            (crate::typed::builder::Set,),
-        >,
+    ///
+    /// Required: `indicator`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = BucketCorrelationFunctionCountCorrelation>,
+    >(
+        f: impl FnOnce(BucketCorrelationFunctionCountCorrelationBuilder) -> B,
     ) -> BucketCorrelationFunctionCountCorrelation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketCorrelationFunctionCountCorrelationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_correlation_function_count_correlation_members {
+    pub struct indicator;
 }
 
 /// Builder for [`BucketCorrelationFunctionCountCorrelation`].
@@ -6279,7 +6420,7 @@ impl<S0> BucketCorrelationFunctionCountCorrelationBuilder<(S0,)> {
 }
 
 impl BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The indicator with which to correlate the configured `bucket_path` values.
+    /// **Required.** The indicator with which to correlate the configured `bucket_path` values.
     pub fn indicator(
         self,
         value: impl Into<BucketCorrelationFunctionCountCorrelationIndicator>,
@@ -6290,42 +6431,53 @@ impl BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::No
     }
 
     /// Sets [`indicator`](Self::indicator) with a builder.
-    pub fn indicator_with(
+    pub fn indicator_with<
+        B: crate::typed::builder::Build<Output = BucketCorrelationFunctionCountCorrelationIndicator>,
+    >(
         self,
-        f: impl FnOnce(
-            BucketCorrelationFunctionCountCorrelationIndicatorBuilder,
-        ) -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(BucketCorrelationFunctionCountCorrelationIndicatorBuilder) -> B,
     ) -> BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::Set,)> {
         self.indicator(f(BucketCorrelationFunctionCountCorrelationIndicatorBuilder::new()).build())
     }
 }
 
-impl BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> BucketCorrelationFunctionCountCorrelationBuilder<(S0,)> {
     /// Builds a [`BucketCorrelationFunctionCountCorrelation`].
-    pub fn build(self) -> BucketCorrelationFunctionCountCorrelation {
+    pub fn build(self) -> BucketCorrelationFunctionCountCorrelation
+    where
+        S0: crate::typed::builder::IsSet<
+            bucket_correlation_function_count_correlation_members::indicator,
+        >,
+    {
         BucketCorrelationFunctionCountCorrelation {
             indicator: self.indicator.unwrap(),
         }
     }
 }
 
-impl From<BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::Set,)>>
-    for BucketCorrelationFunctionCountCorrelation
+impl<S0> crate::typed::builder::Build for BucketCorrelationFunctionCountCorrelationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_members::indicator,
+    >,
 {
-    fn from(
-        builder: BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = BucketCorrelationFunctionCountCorrelation;
+
+    fn build(self) -> BucketCorrelationFunctionCountCorrelation {
+        Self::build(self)
     }
 }
 
-impl BucketCorrelationFunctionCountCorrelationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `indicator` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indicator: crate::typed::builder::MissingRequiredField) -> BucketCorrelationFunctionCountCorrelation { match indicator {} }
+impl<S0> From<BucketCorrelationFunctionCountCorrelationBuilder<(S0,)>>
+    for BucketCorrelationFunctionCountCorrelation
+where
+    S0: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_members::indicator,
+    >,
+{
+    fn from(builder: BucketCorrelationFunctionCountCorrelationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6346,21 +6498,30 @@ pub struct BucketCorrelationFunctionCountCorrelationIndicator {
 
 impl BucketCorrelationFunctionCountCorrelationIndicator {
     /// Creates a builder for [`BucketCorrelationFunctionCountCorrelationIndicator`].
+    ///
+    /// Required: `doc_count`, `expectations`.
     pub fn builder() -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder {
         BucketCorrelationFunctionCountCorrelationIndicatorBuilder::new()
     }
 
     /// Creates a [`BucketCorrelationFunctionCountCorrelationIndicator`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketCorrelationFunctionCountCorrelationIndicatorBuilder,
-        ) -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `expectations`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = BucketCorrelationFunctionCountCorrelationIndicator>,
+    >(
+        f: impl FnOnce(BucketCorrelationFunctionCountCorrelationIndicatorBuilder) -> B,
     ) -> BucketCorrelationFunctionCountCorrelationIndicator {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketCorrelationFunctionCountCorrelationIndicatorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_correlation_function_count_correlation_indicator_members {
+    pub struct doc_count;
+    pub struct expectations;
 }
 
 /// Builder for [`BucketCorrelationFunctionCountCorrelationIndicator`].
@@ -6426,7 +6587,7 @@ impl<S0, S1> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, S1)>
 impl<S1>
     BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(crate::typed::builder::NotSet, S1)>
 {
-    /// The total number of documents that initially created the expectations. It’s required to be greater
+    /// **Required.** The total number of documents that initially created the expectations. It’s required to be greater
     /// than or equal to the sum of all values in the buckets_path as this is the originating superset of data
     /// to which the term values are correlated.
     pub fn doc_count(
@@ -6443,7 +6604,7 @@ impl<S1>
 impl<S0>
     BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, crate::typed::builder::NotSet)>
 {
-    /// An array of numbers with which to correlate the configured `bucket_path` values.
+    /// **Required.** An array of numbers with which to correlate the configured `bucket_path` values.
     /// The length of this value must always equal the number of buckets returned by the `bucket_path`.
     pub fn expectations(
         self,
@@ -6482,14 +6643,17 @@ impl<S0>
     }
 }
 
-impl
-    BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, S1)> {
     /// Builds a [`BucketCorrelationFunctionCountCorrelationIndicator`].
-    pub fn build(self) -> BucketCorrelationFunctionCountCorrelationIndicator {
+    pub fn build(self) -> BucketCorrelationFunctionCountCorrelationIndicator
+    where
+        S0: crate::typed::builder::IsSet<
+            bucket_correlation_function_count_correlation_indicator_members::doc_count,
+        >,
+        S1: crate::typed::builder::IsSet<
+            bucket_correlation_function_count_correlation_indicator_members::expectations,
+        >,
+    {
         BucketCorrelationFunctionCountCorrelationIndicator {
             doc_count: self.doc_count.unwrap(),
             expectations: self.expectations.unwrap(),
@@ -6498,41 +6662,36 @@ impl
     }
 }
 
-impl
-    From<
-        BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BucketCorrelationFunctionCountCorrelationIndicator
+impl<S0, S1> crate::typed::builder::Build
+    for BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_indicator_members::doc_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_indicator_members::expectations,
+    >,
 {
-    fn from(
-        builder: BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BucketCorrelationFunctionCountCorrelationIndicator;
+
+    fn build(self) -> BucketCorrelationFunctionCountCorrelationIndicator {
+        Self::build(self)
     }
 }
 
-impl<S1>
-    BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(crate::typed::builder::NotSet, S1)>
+impl<S0, S1> From<BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, S1)>>
+    for BucketCorrelationFunctionCountCorrelationIndicator
+where
+    S0: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_indicator_members::doc_count,
+    >,
+    S1: crate::typed::builder::IsSet<
+        bucket_correlation_function_count_correlation_indicator_members::expectations,
+    >,
 {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> BucketCorrelationFunctionCountCorrelationIndicator { match doc_count {} }
-}
-
-impl
-    BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `expectations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expectations: crate::typed::builder::MissingRequiredField) -> BucketCorrelationFunctionCountCorrelationIndicator { match expectations {} }
+    fn from(builder: BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A sibling pipeline aggregation which executes a two sample Kolmogorov–Smirnov test (referred
@@ -6576,8 +6735,8 @@ impl BucketKsAggregation {
     }
 
     /// Creates a [`BucketKsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketKsAggregationBuilder) -> BucketKsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketKsAggregation>>(
+        f: impl FnOnce(BucketKsAggregationBuilder) -> B,
     ) -> BucketKsAggregation {
         f(Self::builder()).build()
     }
@@ -6690,6 +6849,14 @@ impl BucketKsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BucketKsAggregationBuilder {
+    type Output = BucketKsAggregation;
+
+    fn build(self) -> BucketKsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<BucketKsAggregationBuilder> for BucketKsAggregation {
     fn from(builder: BucketKsAggregationBuilder) -> Self {
         builder.build()
@@ -6729,21 +6896,28 @@ impl From<f64> for BucketMetricValueAggregateValue {
 
 impl BucketMetricValueAggregate {
     /// Creates a builder for [`BucketMetricValueAggregate`].
+    ///
+    /// Required: `value`, `keys`.
     pub fn builder() -> BucketMetricValueAggregateBuilder {
         BucketMetricValueAggregateBuilder::new()
     }
 
     /// Creates a [`BucketMetricValueAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BucketMetricValueAggregateBuilder,
-        ) -> BucketMetricValueAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `value`, `keys`.
+    pub fn of<B: crate::typed::builder::Build<Output = BucketMetricValueAggregate>>(
+        f: impl FnOnce(BucketMetricValueAggregateBuilder) -> B,
     ) -> BucketMetricValueAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BucketMetricValueAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod bucket_metric_value_aggregate_members {
+    pub struct value;
+    pub struct keys;
 }
 
 /// Builder for [`BucketMetricValueAggregate`].
@@ -6818,7 +6992,7 @@ impl<S0, S1> BucketMetricValueAggregateBuilder<(S0, S1)> {
 }
 
 impl<S1> BucketMetricValueAggregateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -6831,6 +7005,7 @@ impl<S1> BucketMetricValueAggregateBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> BucketMetricValueAggregateBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn keys(
         self,
         value: impl Into<Vec<String>>,
@@ -6864,9 +7039,13 @@ impl<S0> BucketMetricValueAggregateBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl BucketMetricValueAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> BucketMetricValueAggregateBuilder<(S0, S1)> {
     /// Builds a [`BucketMetricValueAggregate`].
-    pub fn build(self) -> BucketMetricValueAggregate {
+    pub fn build(self) -> BucketMetricValueAggregate
+    where
+        S0: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::value>,
+        S1: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::keys>,
+    {
         BucketMetricValueAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -6876,33 +7055,26 @@ impl BucketMetricValueAggregateBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        BucketMetricValueAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for BucketMetricValueAggregate
+impl<S0, S1> crate::typed::builder::Build for BucketMetricValueAggregateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::value>,
+    S1: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::keys>,
 {
-    fn from(
-        builder: BucketMetricValueAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BucketMetricValueAggregate;
+
+    fn build(self) -> BucketMetricValueAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1> BucketMetricValueAggregateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> BucketMetricValueAggregate { match value {} }
-}
-
-impl
-    BucketMetricValueAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<BucketMetricValueAggregateBuilder<(S0, S1)>> for BucketMetricValueAggregate
+where
+    S0: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::value>,
+    S1: crate::typed::builder::IsSet<bucket_metric_value_aggregate_members::keys>,
 {
-    /// `keys` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, keys: crate::typed::builder::MissingRequiredField) -> BucketMetricValueAggregate { match keys {} }
+    fn from(builder: BucketMetricValueAggregateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6919,8 +7091,8 @@ impl BucketPathAggregation {
     }
 
     /// Creates a [`BucketPathAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketPathAggregationBuilder) -> BucketPathAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketPathAggregation>>(
+        f: impl FnOnce(BucketPathAggregationBuilder) -> B,
     ) -> BucketPathAggregation {
         f(Self::builder()).build()
     }
@@ -6961,6 +7133,14 @@ impl BucketPathAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BucketPathAggregationBuilder {
+    type Output = BucketPathAggregation;
+
+    fn build(self) -> BucketPathAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<BucketPathAggregationBuilder> for BucketPathAggregation {
     fn from(builder: BucketPathAggregationBuilder) -> Self {
         builder.build()
@@ -6991,8 +7171,8 @@ impl BucketScriptAggregation {
     }
 
     /// Creates a [`BucketScriptAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketScriptAggregationBuilder) -> BucketScriptAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketScriptAggregation>>(
+        f: impl FnOnce(BucketScriptAggregationBuilder) -> B,
     ) -> BucketScriptAggregation {
         f(Self::builder()).build()
     }
@@ -7069,9 +7249,9 @@ impl BucketScriptAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -7086,6 +7266,14 @@ impl BucketScriptAggregationBuilder {
             gap_policy: self.gap_policy,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for BucketScriptAggregationBuilder {
+    type Output = BucketScriptAggregation;
+
+    fn build(self) -> BucketScriptAggregation {
+        Self::build(self)
     }
 }
 
@@ -7119,8 +7307,8 @@ impl BucketSelectorAggregation {
     }
 
     /// Creates a [`BucketSelectorAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketSelectorAggregationBuilder) -> BucketSelectorAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketSelectorAggregation>>(
+        f: impl FnOnce(BucketSelectorAggregationBuilder) -> B,
     ) -> BucketSelectorAggregation {
         f(Self::builder()).build()
     }
@@ -7197,9 +7385,9 @@ impl BucketSelectorAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -7214,6 +7402,14 @@ impl BucketSelectorAggregationBuilder {
             gap_policy: self.gap_policy,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for BucketSelectorAggregationBuilder {
+    type Output = BucketSelectorAggregation;
+
+    fn build(self) -> BucketSelectorAggregation {
+        Self::build(self)
     }
 }
 
@@ -7247,8 +7443,8 @@ impl BucketSortAggregation {
     }
 
     /// Creates a [`BucketSortAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BucketSortAggregationBuilder) -> BucketSortAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BucketSortAggregation>>(
+        f: impl FnOnce(BucketSortAggregationBuilder) -> B,
     ) -> BucketSortAggregation {
         f(Self::builder()).build()
     }
@@ -7334,6 +7530,14 @@ impl BucketSortAggregationBuilder {
             size: self.size,
             sort: self.sort,
         }
+    }
+}
+
+impl crate::typed::builder::Build for BucketSortAggregationBuilder {
+    type Output = BucketSortAggregation;
+
+    fn build(self) -> BucketSortAggregation {
+        Self::build(self)
     }
 }
 
@@ -7951,18 +8155,27 @@ pub struct CardinalityAggregate {
 
 impl CardinalityAggregate {
     /// Creates a builder for [`CardinalityAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> CardinalityAggregateBuilder {
         CardinalityAggregateBuilder::new()
     }
 
     /// Creates a [`CardinalityAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CardinalityAggregateBuilder,
-        ) -> CardinalityAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = CardinalityAggregate>>(
+        f: impl FnOnce(CardinalityAggregateBuilder) -> B,
     ) -> CardinalityAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CardinalityAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cardinality_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`CardinalityAggregate`].
@@ -8013,6 +8226,7 @@ impl<S0> CardinalityAggregateBuilder<(S0,)> {
 }
 
 impl CardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(self, value: i64) -> CardinalityAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.value = Some(value);
@@ -8020,9 +8234,12 @@ impl CardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CardinalityAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CardinalityAggregateBuilder<(S0,)> {
     /// Builds a [`CardinalityAggregate`].
-    pub fn build(self) -> CardinalityAggregate {
+    pub fn build(self) -> CardinalityAggregate
+    where
+        S0: crate::typed::builder::IsSet<cardinality_aggregate_members::value>,
+    {
         CardinalityAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -8030,16 +8247,24 @@ impl CardinalityAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CardinalityAggregateBuilder<(crate::typed::builder::Set,)>> for CardinalityAggregate {
-    fn from(builder: CardinalityAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CardinalityAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cardinality_aggregate_members::value>,
+{
+    type Output = CardinalityAggregate;
+
+    fn build(self) -> CardinalityAggregate {
+        Self::build(self)
     }
 }
 
-impl CardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> CardinalityAggregate { match value {} }
+impl<S0> From<CardinalityAggregateBuilder<(S0,)>> for CardinalityAggregate
+where
+    S0: crate::typed::builder::IsSet<cardinality_aggregate_members::value>,
+{
+    fn from(builder: CardinalityAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8071,8 +8296,8 @@ impl CardinalityAggregation {
     }
 
     /// Creates a [`CardinalityAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CardinalityAggregationBuilder) -> CardinalityAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CardinalityAggregation>>(
+        f: impl FnOnce(CardinalityAggregationBuilder) -> B,
     ) -> CardinalityAggregation {
         f(Self::builder()).build()
     }
@@ -8140,9 +8365,9 @@ impl CardinalityAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -8198,6 +8423,14 @@ impl CardinalityAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CardinalityAggregationBuilder {
+    type Output = CardinalityAggregation;
+
+    fn build(self) -> CardinalityAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CardinalityAggregationBuilder> for CardinalityAggregation {
     fn from(builder: CardinalityAggregationBuilder) -> Self {
         builder.build()
@@ -8238,8 +8471,8 @@ impl CartesianBoundsAggregate {
     }
 
     /// Creates a [`CartesianBoundsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CartesianBoundsAggregateBuilder) -> CartesianBoundsAggregateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CartesianBoundsAggregate>>(
+        f: impl FnOnce(CartesianBoundsAggregateBuilder) -> B,
     ) -> CartesianBoundsAggregate {
         f(Self::builder()).build()
     }
@@ -8299,14 +8532,11 @@ impl CartesianBoundsAggregateBuilder {
     }
 
     /// Sets [`bounds`](Self::bounds) with a builder.
-    pub fn bounds_with(
+    pub fn bounds_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TopLeftBottomRightGeoBounds>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TopLeftBottomRightGeoBoundsBuilder,
-        ) -> crate::typed::_types::TopLeftBottomRightGeoBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::TopLeftBottomRightGeoBoundsBuilder) -> B,
     ) -> Self {
         self.bounds(f(crate::typed::_types::TopLeftBottomRightGeoBoundsBuilder::new()).build())
     }
@@ -8319,6 +8549,14 @@ impl CartesianBoundsAggregateBuilder {
             meta: self.meta,
             bounds: self.bounds,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CartesianBoundsAggregateBuilder {
+    type Output = CartesianBoundsAggregate;
+
+    fn build(self) -> CartesianBoundsAggregate {
+        Self::build(self)
     }
 }
 
@@ -8348,8 +8586,8 @@ impl CartesianBoundsAggregation {
     }
 
     /// Creates a [`CartesianBoundsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CartesianBoundsAggregationBuilder) -> CartesianBoundsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CartesianBoundsAggregation>>(
+        f: impl FnOnce(CartesianBoundsAggregationBuilder) -> B,
     ) -> CartesianBoundsAggregation {
         f(Self::builder()).build()
     }
@@ -8411,9 +8649,9 @@ impl CartesianBoundsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -8427,6 +8665,14 @@ impl CartesianBoundsAggregationBuilder {
             missing: self.missing,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CartesianBoundsAggregationBuilder {
+    type Output = CartesianBoundsAggregation;
+
+    fn build(self) -> CartesianBoundsAggregation {
+        Self::build(self)
     }
 }
 
@@ -8447,18 +8693,27 @@ pub struct CartesianCentroidAggregate {
 
 impl CartesianCentroidAggregate {
     /// Creates a builder for [`CartesianCentroidAggregate`].
+    ///
+    /// Required: `count`.
     pub fn builder() -> CartesianCentroidAggregateBuilder {
         CartesianCentroidAggregateBuilder::new()
     }
 
     /// Creates a [`CartesianCentroidAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CartesianCentroidAggregateBuilder,
-        ) -> CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = CartesianCentroidAggregate>>(
+        f: impl FnOnce(CartesianCentroidAggregateBuilder) -> B,
     ) -> CartesianCentroidAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CartesianCentroidAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cartesian_centroid_aggregate_members {
+    pub struct count;
 }
 
 /// Builder for [`CartesianCentroidAggregate`].
@@ -8522,20 +8777,18 @@ impl<S0> CartesianCentroidAggregateBuilder<(S0,)> {
     }
 
     /// Sets [`location`](Self::location) with a builder.
-    pub fn location_with(
+    pub fn location_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::CartesianPoint>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::CartesianPointBuilder,
-        ) -> crate::typed::_types::CartesianPointBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::CartesianPointBuilder) -> B,
     ) -> Self {
         self.location(f(crate::typed::_types::CartesianPointBuilder::new()).build())
     }
 }
 
 impl CartesianCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -8546,9 +8799,12 @@ impl CartesianCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CartesianCentroidAggregateBuilder<(S0,)> {
     /// Builds a [`CartesianCentroidAggregate`].
-    pub fn build(self) -> CartesianCentroidAggregate {
+    pub fn build(self) -> CartesianCentroidAggregate
+    where
+        S0: crate::typed::builder::IsSet<cartesian_centroid_aggregate_members::count>,
+    {
         CartesianCentroidAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -8557,18 +8813,24 @@ impl CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>>
-    for CartesianCentroidAggregate
+impl<S0> crate::typed::builder::Build for CartesianCentroidAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cartesian_centroid_aggregate_members::count>,
 {
-    fn from(builder: CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CartesianCentroidAggregate;
+
+    fn build(self) -> CartesianCentroidAggregate {
+        Self::build(self)
     }
 }
 
-impl CartesianCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> CartesianCentroidAggregate { match count {} }
+impl<S0> From<CartesianCentroidAggregateBuilder<(S0,)>> for CartesianCentroidAggregate
+where
+    S0: crate::typed::builder::IsSet<cartesian_centroid_aggregate_members::count>,
+{
+    fn from(builder: CartesianCentroidAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8591,8 +8853,8 @@ impl CartesianCentroidAggregation {
     }
 
     /// Creates a [`CartesianCentroidAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CartesianCentroidAggregationBuilder) -> CartesianCentroidAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CartesianCentroidAggregation>>(
+        f: impl FnOnce(CartesianCentroidAggregationBuilder) -> B,
     ) -> CartesianCentroidAggregation {
         f(Self::builder()).build()
     }
@@ -8654,9 +8916,9 @@ impl CartesianCentroidAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -8670,6 +8932,14 @@ impl CartesianCentroidAggregationBuilder {
             missing: self.missing,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CartesianCentroidAggregationBuilder {
+    type Output = CartesianCentroidAggregation;
+
+    fn build(self) -> CartesianCentroidAggregation {
+        Self::build(self)
     }
 }
 
@@ -8731,18 +9001,27 @@ pub struct CategorizeTextAggregation {
 
 impl CategorizeTextAggregation {
     /// Creates a builder for [`CategorizeTextAggregation`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> CategorizeTextAggregationBuilder {
         CategorizeTextAggregationBuilder::new()
     }
 
     /// Creates a [`CategorizeTextAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CategorizeTextAggregationBuilder,
-        ) -> CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = CategorizeTextAggregation>>(
+        f: impl FnOnce(CategorizeTextAggregationBuilder) -> B,
     ) -> CategorizeTextAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CategorizeTextAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod categorize_text_aggregation_members {
+    pub struct field;
 }
 
 /// Builder for [`CategorizeTextAggregation`].
@@ -8927,7 +9206,7 @@ impl<S0> CategorizeTextAggregationBuilder<(S0,)> {
 }
 
 impl CategorizeTextAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The semi-structured text field to categorize.
+    /// **Required.** The semi-structured text field to categorize.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -8938,9 +9217,12 @@ impl CategorizeTextAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CategorizeTextAggregationBuilder<(S0,)> {
     /// Builds a [`CategorizeTextAggregation`].
-    pub fn build(self) -> CategorizeTextAggregation {
+    pub fn build(self) -> CategorizeTextAggregation
+    where
+        S0: crate::typed::builder::IsSet<categorize_text_aggregation_members::field>,
+    {
         CategorizeTextAggregation {
             field: self.field.unwrap(),
             max_unique_tokens: self.max_unique_tokens,
@@ -8956,18 +9238,24 @@ impl CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)>>
-    for CategorizeTextAggregation
+impl<S0> crate::typed::builder::Build for CategorizeTextAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<categorize_text_aggregation_members::field>,
 {
-    fn from(builder: CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CategorizeTextAggregation;
+
+    fn build(self) -> CategorizeTextAggregation {
+        Self::build(self)
     }
 }
 
-impl CategorizeTextAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> CategorizeTextAggregation { match field {} }
+impl<S0> From<CategorizeTextAggregationBuilder<(S0,)>> for CategorizeTextAggregation
+where
+    S0: crate::typed::builder::IsSet<categorize_text_aggregation_members::field>,
+{
+    fn from(builder: CategorizeTextAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9006,18 +9294,27 @@ pub struct ChangePointAggregate {
 
 impl ChangePointAggregate {
     /// Creates a builder for [`ChangePointAggregate`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> ChangePointAggregateBuilder {
         ChangePointAggregateBuilder::new()
     }
 
     /// Creates a [`ChangePointAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChangePointAggregateBuilder,
-        ) -> ChangePointAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChangePointAggregate>>(
+        f: impl FnOnce(ChangePointAggregateBuilder) -> B,
     ) -> ChangePointAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChangePointAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod change_point_aggregate_members {
+    pub struct r#type;
 }
 
 /// Builder for [`ChangePointAggregate`].
@@ -9081,20 +9378,16 @@ impl<S0> ChangePointAggregateBuilder<(S0,)> {
     }
 
     /// Sets [`bucket`](Self::bucket) with a builder.
-    pub fn bucket_with(
+    pub fn bucket_with<B: crate::typed::builder::Build<Output = ChangePointBucket>>(
         self,
-        f: impl FnOnce(
-            ChangePointBucketBuilder,
-        ) -> ChangePointBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChangePointBucketBuilder) -> B,
     ) -> Self {
         self.bucket(f(ChangePointBucketBuilder::new()).build())
     }
 }
 
 impl ChangePointAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<ChangeType>,
@@ -9105,17 +9398,20 @@ impl ChangePointAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`type`](Self::type) with a builder.
-    pub fn type_with(
+    pub fn type_with<B: crate::typed::builder::Build<Output = ChangeType>>(
         self,
-        f: impl FnOnce(ChangeTypeBuilder) -> ChangeTypeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ChangeTypeBuilder) -> B,
     ) -> ChangePointAggregateBuilder<(crate::typed::builder::Set,)> {
         self.r#type(f(ChangeTypeBuilder::new()).build())
     }
 }
 
-impl ChangePointAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChangePointAggregateBuilder<(S0,)> {
     /// Builds a [`ChangePointAggregate`].
-    pub fn build(self) -> ChangePointAggregate {
+    pub fn build(self) -> ChangePointAggregate
+    where
+        S0: crate::typed::builder::IsSet<change_point_aggregate_members::r#type>,
+    {
         ChangePointAggregate {
             meta: self.meta,
             r#type: self.r#type.unwrap(),
@@ -9124,16 +9420,24 @@ impl ChangePointAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ChangePointAggregateBuilder<(crate::typed::builder::Set,)>> for ChangePointAggregate {
-    fn from(builder: ChangePointAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ChangePointAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<change_point_aggregate_members::r#type>,
+{
+    type Output = ChangePointAggregate;
+
+    fn build(self) -> ChangePointAggregate {
+        Self::build(self)
     }
 }
 
-impl ChangePointAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ChangePointAggregate { match r#type {} }
+impl<S0> From<ChangePointAggregateBuilder<(S0,)>> for ChangePointAggregate
+where
+    S0: crate::typed::builder::IsSet<change_point_aggregate_members::r#type>,
+{
+    fn from(builder: ChangePointAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9157,8 +9461,8 @@ impl ChangePointAggregation {
     }
 
     /// Creates a [`ChangePointAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChangePointAggregationBuilder) -> ChangePointAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChangePointAggregation>>(
+        f: impl FnOnce(ChangePointAggregationBuilder) -> B,
     ) -> ChangePointAggregation {
         f(Self::builder()).build()
     }
@@ -9232,6 +9536,14 @@ impl ChangePointAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChangePointAggregationBuilder {
+    type Output = ChangePointAggregation;
+
+    fn build(self) -> ChangePointAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<ChangePointAggregationBuilder> for ChangePointAggregation {
     fn from(builder: ChangePointAggregationBuilder) -> Self {
         builder.build()
@@ -9249,21 +9561,28 @@ pub struct ChangePointBucket {
 
 impl ChangePointBucket {
     /// Creates a builder for [`ChangePointBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> ChangePointBucketBuilder {
         ChangePointBucketBuilder::new()
     }
 
     /// Creates a [`ChangePointBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChangePointBucketBuilder,
-        ) -> ChangePointBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChangePointBucket>>(
+        f: impl FnOnce(ChangePointBucketBuilder) -> B,
     ) -> ChangePointBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChangePointBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod change_point_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`ChangePointBucket`].
@@ -9319,6 +9638,7 @@ impl<S0, S1> ChangePointBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> ChangePointBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -9330,6 +9650,7 @@ impl<S1> ChangePointBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ChangePointBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::FieldValue>,
@@ -9340,9 +9661,13 @@ impl<S0> ChangePointBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ChangePointBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ChangePointBucketBuilder<(S0, S1)> {
     /// Builds a [`ChangePointBucket`].
-    pub fn build(self) -> ChangePointBucket {
+    pub fn build(self) -> ChangePointBucket
+    where
+        S0: crate::typed::builder::IsSet<change_point_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<change_point_bucket_members::key>,
+    {
         ChangePointBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -9351,26 +9676,26 @@ impl ChangePointBucketBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<ChangePointBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ChangePointBucket
+impl<S0, S1> crate::typed::builder::Build for ChangePointBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<change_point_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<change_point_bucket_members::key>,
 {
-    fn from(
-        builder: ChangePointBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ChangePointBucket;
+
+    fn build(self) -> ChangePointBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> ChangePointBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> ChangePointBucket { match doc_count {} }
-}
-
-impl ChangePointBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> ChangePointBucket { match key {} }
+impl<S0, S1> From<ChangePointBucketBuilder<(S0, S1)>> for ChangePointBucket
+where
+    S0: crate::typed::builder::IsSet<change_point_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<change_point_bucket_members::key>,
+{
+    fn from(builder: ChangePointBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9532,13 +9857,17 @@ impl
 
 impl ChangeType {
     /// Creates a builder for [`ChangeType`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ChangeTypeBuilder {
         ChangeTypeBuilder::new()
     }
 
     /// Creates a [`ChangeType`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChangeTypeBuilder) -> ChangeTypeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ChangeType>>(
+        f: impl FnOnce(ChangeTypeBuilder) -> B,
     ) -> ChangeType {
         f(Self::builder()).build()
     }
@@ -9577,11 +9906,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`dip`](Self::dip) with a builder.
-    pub fn dip_with(
+    pub fn dip_with<B: crate::typed::builder::Build<Output = Dip>>(
         self,
-        f: impl FnOnce(
-            DipBuilder,
-        ) -> DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(DipBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.dip(f(DipBuilder::new()).build())
     }
@@ -9596,14 +9923,11 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`distribution_change`](Self::distribution_change) with a builder.
-    pub fn distribution_change_with(
+    pub fn distribution_change_with<
+        B: crate::typed::builder::Build<Output = DistributionChange>,
+    >(
         self,
-        f: impl FnOnce(
-            DistributionChangeBuilder,
-        ) -> DistributionChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DistributionChangeBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.distribution_change(f(DistributionChangeBuilder::new()).build())
     }
@@ -9618,9 +9942,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`indeterminable`](Self::indeterminable) with a builder.
-    pub fn indeterminable_with(
+    pub fn indeterminable_with<B: crate::typed::builder::Build<Output = Indeterminable>>(
         self,
-        f: impl FnOnce(IndeterminableBuilder) -> IndeterminableBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IndeterminableBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.indeterminable(f(IndeterminableBuilder::new()).build())
     }
@@ -9635,15 +9959,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`non_stationary`](Self::non_stationary) with a builder.
-    pub fn non_stationary_with(
+    pub fn non_stationary_with<B: crate::typed::builder::Build<Output = NonStationary>>(
         self,
-        f: impl FnOnce(
-            NonStationaryBuilder,
-        ) -> NonStationaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NonStationaryBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.non_stationary(f(NonStationaryBuilder::new()).build())
     }
@@ -9658,12 +9976,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`spike`](Self::spike) with a builder.
-    pub fn spike_with(
+    pub fn spike_with<B: crate::typed::builder::Build<Output = Spike>>(
         self,
-        f: impl FnOnce(
-            SpikeBuilder,
-        )
-            -> SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SpikeBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.spike(f(SpikeBuilder::new()).build())
     }
@@ -9678,9 +9993,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`stationary`](Self::stationary) with a builder.
-    pub fn stationary_with(
+    pub fn stationary_with<B: crate::typed::builder::Build<Output = Stationary>>(
         self,
-        f: impl FnOnce(StationaryBuilder) -> StationaryBuilder,
+        f: impl FnOnce(StationaryBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.stationary(f(StationaryBuilder::new()).build())
     }
@@ -9695,12 +10010,9 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`step_change`](Self::step_change) with a builder.
-    pub fn step_change_with(
+    pub fn step_change_with<B: crate::typed::builder::Build<Output = StepChange>>(
         self,
-        f: impl FnOnce(
-            StepChangeBuilder,
-        )
-            -> StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(StepChangeBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.step_change(f(StepChangeBuilder::new()).build())
     }
@@ -9715,37 +10027,42 @@ impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`trend_change`](Self::trend_change) with a builder.
-    pub fn trend_change_with(
+    pub fn trend_change_with<B: crate::typed::builder::Build<Output = TrendChange>>(
         self,
-        f: impl FnOnce(
-            TrendChangeBuilder,
-        ) -> TrendChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrendChangeBuilder) -> B,
     ) -> ChangeTypeBuilder<(crate::typed::builder::Set,)> {
         self.trend_change(f(TrendChangeBuilder::new()).build())
     }
 }
 
-impl ChangeTypeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChangeTypeBuilder<(S0,)> {
     /// Builds a [`ChangeType`].
-    pub fn build(self) -> ChangeType {
+    pub fn build(self) -> ChangeType
+    where
+        S0: crate::typed::builder::IsVariantSet<ChangeType>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ChangeTypeBuilder<(crate::typed::builder::Set,)>> for ChangeType {
-    fn from(builder: ChangeTypeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ChangeTypeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ChangeType>,
+{
+    type Output = ChangeType;
+
+    fn build(self) -> ChangeType {
+        Self::build(self)
     }
 }
 
-impl ChangeTypeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> ChangeType { match variant {} }
+impl<S0> From<ChangeTypeBuilder<(S0,)>> for ChangeType
+where
+    S0: crate::typed::builder::IsVariantSet<ChangeType>,
+{
+    fn from(builder: ChangeTypeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9758,21 +10075,28 @@ pub struct ChiSquareHeuristic {
 
 impl ChiSquareHeuristic {
     /// Creates a builder for [`ChiSquareHeuristic`].
+    ///
+    /// Required: `background_is_superset`, `include_negatives`.
     pub fn builder() -> ChiSquareHeuristicBuilder {
         ChiSquareHeuristicBuilder::new()
     }
 
     /// Creates a [`ChiSquareHeuristic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChiSquareHeuristicBuilder,
-        ) -> ChiSquareHeuristicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `background_is_superset`, `include_negatives`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChiSquareHeuristic>>(
+        f: impl FnOnce(ChiSquareHeuristicBuilder) -> B,
     ) -> ChiSquareHeuristic {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChiSquareHeuristicBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chi_square_heuristic_members {
+    pub struct background_is_superset;
+    pub struct include_negatives;
 }
 
 /// Builder for [`ChiSquareHeuristic`].
@@ -9806,7 +10130,7 @@ impl<S0, S1> ChiSquareHeuristicBuilder<(S0, S1)> {
 }
 
 impl<S1> ChiSquareHeuristicBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
+    /// **Required.** Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
     pub fn background_is_superset(
         self,
         value: bool,
@@ -9818,7 +10142,7 @@ impl<S1> ChiSquareHeuristicBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ChiSquareHeuristicBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
+    /// **Required.** Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
     pub fn include_negatives(
         self,
         value: bool,
@@ -9829,9 +10153,13 @@ impl<S0> ChiSquareHeuristicBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ChiSquareHeuristicBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ChiSquareHeuristicBuilder<(S0, S1)> {
     /// Builds a [`ChiSquareHeuristic`].
-    pub fn build(self) -> ChiSquareHeuristic {
+    pub fn build(self) -> ChiSquareHeuristic
+    where
+        S0: crate::typed::builder::IsSet<chi_square_heuristic_members::background_is_superset>,
+        S1: crate::typed::builder::IsSet<chi_square_heuristic_members::include_negatives>,
+    {
         ChiSquareHeuristic {
             background_is_superset: self.background_is_superset.unwrap(),
             include_negatives: self.include_negatives.unwrap(),
@@ -9839,29 +10167,26 @@ impl ChiSquareHeuristicBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<ChiSquareHeuristicBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ChiSquareHeuristic
+impl<S0, S1> crate::typed::builder::Build for ChiSquareHeuristicBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<chi_square_heuristic_members::background_is_superset>,
+    S1: crate::typed::builder::IsSet<chi_square_heuristic_members::include_negatives>,
 {
-    fn from(
-        builder: ChiSquareHeuristicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ChiSquareHeuristic;
+
+    fn build(self) -> ChiSquareHeuristic {
+        Self::build(self)
     }
 }
 
-impl<S1> ChiSquareHeuristicBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `background_is_superset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, background_is_superset: crate::typed::builder::MissingRequiredField) -> ChiSquareHeuristic { match background_is_superset {} }
-}
-
-impl ChiSquareHeuristicBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `include_negatives` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, include_negatives: crate::typed::builder::MissingRequiredField) -> ChiSquareHeuristic { match include_negatives {} }
+impl<S0, S1> From<ChiSquareHeuristicBuilder<(S0, S1)>> for ChiSquareHeuristic
+where
+    S0: crate::typed::builder::IsSet<chi_square_heuristic_members::background_is_superset>,
+    S1: crate::typed::builder::IsSet<chi_square_heuristic_members::include_negatives>,
+{
+    fn from(builder: ChiSquareHeuristicBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9876,18 +10201,27 @@ pub struct ChildrenAggregate {
 
 impl ChildrenAggregate {
     /// Creates a builder for [`ChildrenAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> ChildrenAggregateBuilder {
         ChildrenAggregateBuilder::new()
     }
 
     /// Creates a [`ChildrenAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChildrenAggregateBuilder,
-        ) -> ChildrenAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChildrenAggregate>>(
+        f: impl FnOnce(ChildrenAggregateBuilder) -> B,
     ) -> ChildrenAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChildrenAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod children_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`ChildrenAggregate`].
@@ -9960,6 +10294,7 @@ impl<S0> ChildrenAggregateBuilder<(S0,)> {
 }
 
 impl ChildrenAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> ChildrenAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -9967,9 +10302,12 @@ impl ChildrenAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ChildrenAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ChildrenAggregateBuilder<(S0,)> {
     /// Builds a [`ChildrenAggregate`].
-    pub fn build(self) -> ChildrenAggregate {
+    pub fn build(self) -> ChildrenAggregate
+    where
+        S0: crate::typed::builder::IsSet<children_aggregate_members::doc_count>,
+    {
         ChildrenAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -9978,16 +10316,24 @@ impl ChildrenAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ChildrenAggregateBuilder<(crate::typed::builder::Set,)>> for ChildrenAggregate {
-    fn from(builder: ChildrenAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ChildrenAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<children_aggregate_members::doc_count>,
+{
+    type Output = ChildrenAggregate;
+
+    fn build(self) -> ChildrenAggregate {
+        Self::build(self)
     }
 }
 
-impl ChildrenAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> ChildrenAggregate { match doc_count {} }
+impl<S0> From<ChildrenAggregateBuilder<(S0,)>> for ChildrenAggregate
+where
+    S0: crate::typed::builder::IsSet<children_aggregate_members::doc_count>,
+{
+    fn from(builder: ChildrenAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10004,8 +10350,8 @@ impl ChildrenAggregation {
     }
 
     /// Creates a [`ChildrenAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChildrenAggregationBuilder) -> ChildrenAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChildrenAggregation>>(
+        f: impl FnOnce(ChildrenAggregationBuilder) -> B,
     ) -> ChildrenAggregation {
         f(Self::builder()).build()
     }
@@ -10046,6 +10392,14 @@ impl ChildrenAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChildrenAggregationBuilder {
+    type Output = ChildrenAggregation;
+
+    fn build(self) -> ChildrenAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<ChildrenAggregationBuilder> for ChildrenAggregation {
     fn from(builder: ChildrenAggregationBuilder) -> Self {
         builder.build()
@@ -10063,18 +10417,27 @@ pub struct CompositeAggregate {
 
 impl CompositeAggregate {
     /// Creates a builder for [`CompositeAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> CompositeAggregateBuilder {
         CompositeAggregateBuilder::new()
     }
 
     /// Creates a [`CompositeAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeAggregateBuilder,
-        ) -> CompositeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeAggregate>>(
+        f: impl FnOnce(CompositeAggregateBuilder) -> B,
     ) -> CompositeAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompositeAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod composite_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`CompositeAggregate`].
@@ -10151,6 +10514,7 @@ impl<S0> CompositeAggregateBuilder<(S0,)> {
 }
 
 impl CompositeAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsCompositeBucket>,
@@ -10161,9 +10525,12 @@ impl CompositeAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompositeAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompositeAggregateBuilder<(S0,)> {
     /// Builds a [`CompositeAggregate`].
-    pub fn build(self) -> CompositeAggregate {
+    pub fn build(self) -> CompositeAggregate
+    where
+        S0: crate::typed::builder::IsSet<composite_aggregate_members::buckets>,
+    {
         CompositeAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -10172,16 +10539,24 @@ impl CompositeAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CompositeAggregateBuilder<(crate::typed::builder::Set,)>> for CompositeAggregate {
-    fn from(builder: CompositeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CompositeAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<composite_aggregate_members::buckets>,
+{
+    type Output = CompositeAggregate;
+
+    fn build(self) -> CompositeAggregate {
+        Self::build(self)
     }
 }
 
-impl CompositeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> CompositeAggregate { match buckets {} }
+impl<S0> From<CompositeAggregateBuilder<(S0,)>> for CompositeAggregate
+where
+    S0: crate::typed::builder::IsSet<composite_aggregate_members::buckets>,
+{
+    fn from(builder: CompositeAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type CompositeAggregateKey =
@@ -10208,8 +10583,8 @@ impl CompositeAggregation {
     }
 
     /// Creates a [`CompositeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CompositeAggregationBuilder) -> CompositeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeAggregation>>(
+        f: impl FnOnce(CompositeAggregationBuilder) -> B,
     ) -> CompositeAggregation {
         f(Self::builder()).build()
     }
@@ -10312,6 +10687,14 @@ impl CompositeAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CompositeAggregationBuilder {
+    type Output = CompositeAggregation;
+
+    fn build(self) -> CompositeAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CompositeAggregationBuilder> for CompositeAggregation {
     fn from(builder: CompositeAggregationBuilder) -> Self {
         builder.build()
@@ -10343,8 +10726,8 @@ impl CompositeAggregationBase {
     }
 
     /// Creates a [`CompositeAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CompositeAggregationBaseBuilder) -> CompositeAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeAggregationBase>>(
+        f: impl FnOnce(CompositeAggregationBaseBuilder) -> B,
     ) -> CompositeAggregationBase {
         f(Self::builder()).build()
     }
@@ -10422,9 +10805,9 @@ impl CompositeAggregationBaseBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -10463,6 +10846,14 @@ impl CompositeAggregationBaseBuilder {
             value_type: self.value_type,
             order: self.order,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CompositeAggregationBaseBuilder {
+    type Output = CompositeAggregationBase;
+
+    fn build(self) -> CompositeAggregationBase {
+        Self::build(self)
     }
 }
 
@@ -10540,15 +10931,17 @@ impl From<CompositeGeoTileGridAggregationBuilder> for CompositeAggregationSource
 
 impl CompositeAggregationSource {
     /// Creates a builder for [`CompositeAggregationSource`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> CompositeAggregationSourceBuilder {
         CompositeAggregationSourceBuilder::new()
     }
 
     /// Creates a [`CompositeAggregationSource`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeAggregationSourceBuilder,
-        ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeAggregationSource>>(
+        f: impl FnOnce(CompositeAggregationSourceBuilder) -> B,
     ) -> CompositeAggregationSource {
         f(Self::builder()).build()
     }
@@ -10591,9 +10984,9 @@ impl CompositeAggregationSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<B: crate::typed::builder::Build<Output = CompositeTermsAggregation>>(
         self,
-        f: impl FnOnce(CompositeTermsAggregationBuilder) -> CompositeTermsAggregationBuilder,
+        f: impl FnOnce(CompositeTermsAggregationBuilder) -> B,
     ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(CompositeTermsAggregationBuilder::new()).build())
     }
@@ -10609,11 +11002,11 @@ impl CompositeAggregationSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`histogram`](Self::histogram) with a builder.
-    pub fn histogram_with(
+    pub fn histogram_with<
+        B: crate::typed::builder::Build<Output = CompositeHistogramAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            CompositeHistogramAggregationBuilder,
-        ) -> CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompositeHistogramAggregationBuilder) -> B,
     ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)> {
         self.histogram(f(CompositeHistogramAggregationBuilder::new()).build())
     }
@@ -10629,11 +11022,11 @@ impl CompositeAggregationSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_histogram`](Self::date_histogram) with a builder.
-    pub fn date_histogram_with(
+    pub fn date_histogram_with<
+        B: crate::typed::builder::Build<Output = CompositeDateHistogramAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            CompositeDateHistogramAggregationBuilder,
-        ) -> CompositeDateHistogramAggregationBuilder,
+        f: impl FnOnce(CompositeDateHistogramAggregationBuilder) -> B,
     ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)> {
         self.date_histogram(f(CompositeDateHistogramAggregationBuilder::new()).build())
     }
@@ -10649,33 +11042,44 @@ impl CompositeAggregationSourceBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geotile_grid`](Self::geotile_grid) with a builder.
-    pub fn geotile_grid_with(
+    pub fn geotile_grid_with<
+        B: crate::typed::builder::Build<Output = CompositeGeoTileGridAggregation>,
+    >(
         self,
-        f: impl FnOnce(CompositeGeoTileGridAggregationBuilder) -> CompositeGeoTileGridAggregationBuilder,
+        f: impl FnOnce(CompositeGeoTileGridAggregationBuilder) -> B,
     ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)> {
         self.geotile_grid(f(CompositeGeoTileGridAggregationBuilder::new()).build())
     }
 }
 
-impl CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompositeAggregationSourceBuilder<(S0,)> {
     /// Builds a [`CompositeAggregationSource`].
-    pub fn build(self) -> CompositeAggregationSource {
+    pub fn build(self) -> CompositeAggregationSource
+    where
+        S0: crate::typed::builder::IsVariantSet<CompositeAggregationSource>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)>>
-    for CompositeAggregationSource
+impl<S0> crate::typed::builder::Build for CompositeAggregationSourceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<CompositeAggregationSource>,
 {
-    fn from(builder: CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CompositeAggregationSource;
+
+    fn build(self) -> CompositeAggregationSource {
+        Self::build(self)
     }
 }
 
-impl CompositeAggregationSourceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> CompositeAggregationSource { match variant {} }
+impl<S0> From<CompositeAggregationSourceBuilder<(S0,)>> for CompositeAggregationSource
+where
+    S0: crate::typed::builder::IsVariantSet<CompositeAggregationSource>,
+{
+    fn from(builder: CompositeAggregationSourceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10689,21 +11093,28 @@ pub struct CompositeBucket {
 
 impl CompositeBucket {
     /// Creates a builder for [`CompositeBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> CompositeBucketBuilder {
         CompositeBucketBuilder::new()
     }
 
     /// Creates a [`CompositeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeBucketBuilder,
-        ) -> CompositeBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeBucket>>(
+        f: impl FnOnce(CompositeBucketBuilder) -> B,
     ) -> CompositeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompositeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod composite_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`CompositeBucket`].
@@ -10759,6 +11170,7 @@ impl<S0, S1> CompositeBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> CompositeBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> CompositeBucketBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -10767,6 +11179,7 @@ impl<S1> CompositeBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CompositeBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<CompositeAggregateKey>,
@@ -10805,9 +11218,13 @@ impl<S0> CompositeBucketBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl CompositeBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CompositeBucketBuilder<(S0, S1)> {
     /// Builds a [`CompositeBucket`].
-    pub fn build(self) -> CompositeBucket {
+    pub fn build(self) -> CompositeBucket
+    where
+        S0: crate::typed::builder::IsSet<composite_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<composite_bucket_members::key>,
+    {
         CompositeBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -10816,26 +11233,26 @@ impl CompositeBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<CompositeBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CompositeBucket
+impl<S0, S1> crate::typed::builder::Build for CompositeBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<composite_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<composite_bucket_members::key>,
 {
-    fn from(
-        builder: CompositeBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CompositeBucket;
+
+    fn build(self) -> CompositeBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> CompositeBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> CompositeBucket { match doc_count {} }
-}
-
-impl CompositeBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> CompositeBucket { match key {} }
+impl<S0, S1> From<CompositeBucketBuilder<(S0, S1)>> for CompositeBucket
+where
+    S0: crate::typed::builder::IsSet<composite_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<composite_bucket_members::key>,
+{
+    fn from(builder: CompositeBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10875,10 +11292,8 @@ impl CompositeDateHistogramAggregation {
     }
 
     /// Creates a [`CompositeDateHistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeDateHistogramAggregationBuilder,
-        ) -> CompositeDateHistogramAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeDateHistogramAggregation>>(
+        f: impl FnOnce(CompositeDateHistogramAggregationBuilder) -> B,
     ) -> CompositeDateHistogramAggregation {
         f(Self::builder()).build()
     }
@@ -10966,9 +11381,9 @@ impl CompositeDateHistogramAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11081,6 +11496,14 @@ impl CompositeDateHistogramAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CompositeDateHistogramAggregationBuilder {
+    type Output = CompositeDateHistogramAggregation;
+
+    fn build(self) -> CompositeDateHistogramAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CompositeDateHistogramAggregationBuilder> for CompositeDateHistogramAggregation {
     fn from(builder: CompositeDateHistogramAggregationBuilder) -> Self {
         builder.build()
@@ -11116,8 +11539,8 @@ impl CompositeGeoTileGridAggregation {
     }
 
     /// Creates a [`CompositeGeoTileGridAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CompositeGeoTileGridAggregationBuilder) -> CompositeGeoTileGridAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeGeoTileGridAggregation>>(
+        f: impl FnOnce(CompositeGeoTileGridAggregationBuilder) -> B,
     ) -> CompositeGeoTileGridAggregation {
         f(Self::builder()).build()
     }
@@ -11199,9 +11622,9 @@ impl CompositeGeoTileGridAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11267,6 +11690,14 @@ impl CompositeGeoTileGridAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CompositeGeoTileGridAggregationBuilder {
+    type Output = CompositeGeoTileGridAggregation;
+
+    fn build(self) -> CompositeGeoTileGridAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CompositeGeoTileGridAggregationBuilder> for CompositeGeoTileGridAggregation {
     fn from(builder: CompositeGeoTileGridAggregationBuilder) -> Self {
         builder.build()
@@ -11294,18 +11725,27 @@ pub struct CompositeHistogramAggregation {
 
 impl CompositeHistogramAggregation {
     /// Creates a builder for [`CompositeHistogramAggregation`].
+    ///
+    /// Required: `interval`.
     pub fn builder() -> CompositeHistogramAggregationBuilder {
         CompositeHistogramAggregationBuilder::new()
     }
 
     /// Creates a [`CompositeHistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompositeHistogramAggregationBuilder,
-        ) -> CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeHistogramAggregation>>(
+        f: impl FnOnce(CompositeHistogramAggregationBuilder) -> B,
     ) -> CompositeHistogramAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompositeHistogramAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod composite_histogram_aggregation_members {
+    pub struct interval;
 }
 
 /// Builder for [`CompositeHistogramAggregation`].
@@ -11397,9 +11837,9 @@ impl<S0> CompositeHistogramAggregationBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11428,6 +11868,7 @@ impl<S0> CompositeHistogramAggregationBuilder<(S0,)> {
 }
 
 impl CompositeHistogramAggregationBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn interval(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -11438,9 +11879,12 @@ impl CompositeHistogramAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompositeHistogramAggregationBuilder<(S0,)> {
     /// Builds a [`CompositeHistogramAggregation`].
-    pub fn build(self) -> CompositeHistogramAggregation {
+    pub fn build(self) -> CompositeHistogramAggregation
+    where
+        S0: crate::typed::builder::IsSet<composite_histogram_aggregation_members::interval>,
+    {
         CompositeHistogramAggregation {
             field: self.field,
             missing_bucket: self.missing_bucket,
@@ -11453,18 +11897,24 @@ impl CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)>>
-    for CompositeHistogramAggregation
+impl<S0> crate::typed::builder::Build for CompositeHistogramAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<composite_histogram_aggregation_members::interval>,
 {
-    fn from(builder: CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CompositeHistogramAggregation;
+
+    fn build(self) -> CompositeHistogramAggregation {
+        Self::build(self)
     }
 }
 
-impl CompositeHistogramAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, interval: crate::typed::builder::MissingRequiredField) -> CompositeHistogramAggregation { match interval {} }
+impl<S0> From<CompositeHistogramAggregationBuilder<(S0,)>> for CompositeHistogramAggregation
+where
+    S0: crate::typed::builder::IsSet<composite_histogram_aggregation_members::interval>,
+{
+    fn from(builder: CompositeHistogramAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11492,8 +11942,8 @@ impl CompositeTermsAggregation {
     }
 
     /// Creates a [`CompositeTermsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CompositeTermsAggregationBuilder) -> CompositeTermsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CompositeTermsAggregation>>(
+        f: impl FnOnce(CompositeTermsAggregationBuilder) -> B,
     ) -> CompositeTermsAggregation {
         f(Self::builder()).build()
     }
@@ -11571,9 +12021,9 @@ impl CompositeTermsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -11615,6 +12065,14 @@ impl CompositeTermsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CompositeTermsAggregationBuilder {
+    type Output = CompositeTermsAggregation;
+
+    fn build(self) -> CompositeTermsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CompositeTermsAggregationBuilder> for CompositeTermsAggregation {
     fn from(builder: CompositeTermsAggregationBuilder) -> Self {
         builder.build()
@@ -11633,18 +12091,27 @@ pub struct CumulativeCardinalityAggregate {
 
 impl CumulativeCardinalityAggregate {
     /// Creates a builder for [`CumulativeCardinalityAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> CumulativeCardinalityAggregateBuilder {
         CumulativeCardinalityAggregateBuilder::new()
     }
 
     /// Creates a [`CumulativeCardinalityAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CumulativeCardinalityAggregateBuilder,
-        ) -> CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = CumulativeCardinalityAggregate>>(
+        f: impl FnOnce(CumulativeCardinalityAggregateBuilder) -> B,
     ) -> CumulativeCardinalityAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CumulativeCardinalityAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cumulative_cardinality_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`CumulativeCardinalityAggregate`].
@@ -11709,6 +12176,7 @@ impl<S0> CumulativeCardinalityAggregateBuilder<(S0,)> {
 }
 
 impl CumulativeCardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: i64,
@@ -11719,9 +12187,12 @@ impl CumulativeCardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CumulativeCardinalityAggregateBuilder<(S0,)> {
     /// Builds a [`CumulativeCardinalityAggregate`].
-    pub fn build(self) -> CumulativeCardinalityAggregate {
+    pub fn build(self) -> CumulativeCardinalityAggregate
+    where
+        S0: crate::typed::builder::IsSet<cumulative_cardinality_aggregate_members::value>,
+    {
         CumulativeCardinalityAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -11730,18 +12201,24 @@ impl CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>>
-    for CumulativeCardinalityAggregate
+impl<S0> crate::typed::builder::Build for CumulativeCardinalityAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cumulative_cardinality_aggregate_members::value>,
 {
-    fn from(builder: CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CumulativeCardinalityAggregate;
+
+    fn build(self) -> CumulativeCardinalityAggregate {
+        Self::build(self)
     }
 }
 
-impl CumulativeCardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> CumulativeCardinalityAggregate { match value {} }
+impl<S0> From<CumulativeCardinalityAggregateBuilder<(S0,)>> for CumulativeCardinalityAggregate
+where
+    S0: crate::typed::builder::IsSet<cumulative_cardinality_aggregate_members::value>,
+{
+    fn from(builder: CumulativeCardinalityAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11765,10 +12242,8 @@ impl CumulativeCardinalityAggregation {
     }
 
     /// Creates a [`CumulativeCardinalityAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CumulativeCardinalityAggregationBuilder,
-        ) -> CumulativeCardinalityAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CumulativeCardinalityAggregation>>(
+        f: impl FnOnce(CumulativeCardinalityAggregationBuilder) -> B,
     ) -> CumulativeCardinalityAggregation {
         f(Self::builder()).build()
     }
@@ -11842,6 +12317,14 @@ impl CumulativeCardinalityAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CumulativeCardinalityAggregationBuilder {
+    type Output = CumulativeCardinalityAggregation;
+
+    fn build(self) -> CumulativeCardinalityAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CumulativeCardinalityAggregationBuilder> for CumulativeCardinalityAggregation {
     fn from(builder: CumulativeCardinalityAggregationBuilder) -> Self {
         builder.build()
@@ -11869,8 +12352,8 @@ impl CumulativeSumAggregation {
     }
 
     /// Creates a [`CumulativeSumAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CumulativeSumAggregationBuilder) -> CumulativeSumAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CumulativeSumAggregation>>(
+        f: impl FnOnce(CumulativeSumAggregationBuilder) -> B,
     ) -> CumulativeSumAggregation {
         f(Self::builder()).build()
     }
@@ -11944,6 +12427,14 @@ impl CumulativeSumAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CumulativeSumAggregationBuilder {
+    type Output = CumulativeSumAggregation;
+
+    fn build(self) -> CumulativeSumAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<CumulativeSumAggregationBuilder> for CumulativeSumAggregation {
     fn from(builder: CumulativeSumAggregationBuilder) -> Self {
         builder.build()
@@ -11967,8 +12458,8 @@ impl CustomCategorizeTextAnalyzer {
     }
 
     /// Creates a [`CustomCategorizeTextAnalyzer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CustomCategorizeTextAnalyzerBuilder) -> CustomCategorizeTextAnalyzerBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CustomCategorizeTextAnalyzer>>(
+        f: impl FnOnce(CustomCategorizeTextAnalyzerBuilder) -> B,
     ) -> CustomCategorizeTextAnalyzer {
         f(Self::builder()).build()
     }
@@ -12054,6 +12545,14 @@ impl CustomCategorizeTextAnalyzerBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CustomCategorizeTextAnalyzerBuilder {
+    type Output = CustomCategorizeTextAnalyzer;
+
+    fn build(self) -> CustomCategorizeTextAnalyzer {
+        Self::build(self)
+    }
+}
+
 impl From<CustomCategorizeTextAnalyzerBuilder> for CustomCategorizeTextAnalyzer {
     fn from(builder: CustomCategorizeTextAnalyzerBuilder) -> Self {
         builder.build()
@@ -12069,18 +12568,27 @@ pub struct DateHistogramAggregate {
 
 impl DateHistogramAggregate {
     /// Creates a builder for [`DateHistogramAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> DateHistogramAggregateBuilder {
         DateHistogramAggregateBuilder::new()
     }
 
     /// Creates a [`DateHistogramAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateHistogramAggregateBuilder,
-        ) -> DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateHistogramAggregate>>(
+        f: impl FnOnce(DateHistogramAggregateBuilder) -> B,
     ) -> DateHistogramAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateHistogramAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_histogram_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`DateHistogramAggregate`].
@@ -12131,6 +12639,7 @@ impl<S0> DateHistogramAggregateBuilder<(S0,)> {
 }
 
 impl DateHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDateHistogramBucket>,
@@ -12141,9 +12650,12 @@ impl DateHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DateHistogramAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DateHistogramAggregateBuilder<(S0,)> {
     /// Builds a [`DateHistogramAggregate`].
-    pub fn build(self) -> DateHistogramAggregate {
+    pub fn build(self) -> DateHistogramAggregate
+    where
+        S0: crate::typed::builder::IsSet<date_histogram_aggregate_members::buckets>,
+    {
         DateHistogramAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -12151,16 +12663,24 @@ impl DateHistogramAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>> for DateHistogramAggregate {
-    fn from(builder: DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DateHistogramAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_histogram_aggregate_members::buckets>,
+{
+    type Output = DateHistogramAggregate;
+
+    fn build(self) -> DateHistogramAggregate {
+        Self::build(self)
     }
 }
 
-impl DateHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> DateHistogramAggregate { match buckets {} }
+impl<S0> From<DateHistogramAggregateBuilder<(S0,)>> for DateHistogramAggregate
+where
+    S0: crate::typed::builder::IsSet<date_histogram_aggregate_members::buckets>,
+{
+    fn from(builder: DateHistogramAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12221,8 +12741,8 @@ impl DateHistogramAggregation {
     }
 
     /// Creates a [`DateHistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DateHistogramAggregationBuilder) -> DateHistogramAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DateHistogramAggregation>>(
+        f: impl FnOnce(DateHistogramAggregationBuilder) -> B,
     ) -> DateHistogramAggregation {
         f(Self::builder()).build()
     }
@@ -12297,9 +12817,11 @@ impl DateHistogramAggregationBuilder {
     }
 
     /// Sets [`extended_bounds`](Self::extended_bounds) with a builder.
-    pub fn extended_bounds_with(
+    pub fn extended_bounds_with<
+        B: crate::typed::builder::Build<Output = ExtendedBoundsFieldDateMath>,
+    >(
         self,
-        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> ExtendedBoundsFieldDateMathBuilder,
+        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> B,
     ) -> Self {
         self.extended_bounds(f(ExtendedBoundsFieldDateMathBuilder::new()).build())
     }
@@ -12317,9 +12839,11 @@ impl DateHistogramAggregationBuilder {
     }
 
     /// Sets [`hard_bounds`](Self::hard_bounds) with a builder.
-    pub fn hard_bounds_with(
+    pub fn hard_bounds_with<
+        B: crate::typed::builder::Build<Output = ExtendedBoundsFieldDateMath>,
+    >(
         self,
-        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> ExtendedBoundsFieldDateMathBuilder,
+        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> B,
     ) -> Self {
         self.hard_bounds(f(ExtendedBoundsFieldDateMathBuilder::new()).build())
     }
@@ -12463,9 +12987,9 @@ impl DateHistogramAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -12519,6 +13043,14 @@ impl DateHistogramAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DateHistogramAggregationBuilder {
+    type Output = DateHistogramAggregation;
+
+    fn build(self) -> DateHistogramAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<DateHistogramAggregationBuilder> for DateHistogramAggregation {
     fn from(builder: DateHistogramAggregationBuilder) -> Self {
         builder.build()
@@ -12538,21 +13070,28 @@ pub struct DateHistogramBucket {
 
 impl DateHistogramBucket {
     /// Creates a builder for [`DateHistogramBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> DateHistogramBucketBuilder {
         DateHistogramBucketBuilder::new()
     }
 
     /// Creates a [`DateHistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateHistogramBucketBuilder,
-        ) -> DateHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateHistogramBucket>>(
+        f: impl FnOnce(DateHistogramBucketBuilder) -> B,
     ) -> DateHistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateHistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_histogram_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`DateHistogramBucket`].
@@ -12622,6 +13161,7 @@ impl<S0, S1> DateHistogramBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> DateHistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -12633,6 +13173,7 @@ impl<S1> DateHistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DateHistogramBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -12643,9 +13184,13 @@ impl<S0> DateHistogramBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DateHistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DateHistogramBucketBuilder<(S0, S1)> {
     /// Builds a [`DateHistogramBucket`].
-    pub fn build(self) -> DateHistogramBucket {
+    pub fn build(self) -> DateHistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<date_histogram_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<date_histogram_bucket_members::key>,
+    {
         DateHistogramBucket {
             doc_count: self.doc_count.unwrap(),
             key_as_string: self.key_as_string,
@@ -12655,29 +13200,26 @@ impl DateHistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<DateHistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DateHistogramBucket
+impl<S0, S1> crate::typed::builder::Build for DateHistogramBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<date_histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<date_histogram_bucket_members::key>,
 {
-    fn from(
-        builder: DateHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DateHistogramBucket;
+
+    fn build(self) -> DateHistogramBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> DateHistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> DateHistogramBucket { match doc_count {} }
-}
-
-impl DateHistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> DateHistogramBucket { match key {} }
+impl<S0, S1> From<DateHistogramBucketBuilder<(S0, S1)>> for DateHistogramBucket
+where
+    S0: crate::typed::builder::IsSet<date_histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<date_histogram_bucket_members::key>,
+{
+    fn from(builder: DateHistogramBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of a `date_range` aggregation. Same format as a for a `range` aggregation: `from` and `to`
@@ -12691,18 +13233,27 @@ pub struct DateRangeAggregate {
 
 impl DateRangeAggregate {
     /// Creates a builder for [`DateRangeAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> DateRangeAggregateBuilder {
         DateRangeAggregateBuilder::new()
     }
 
     /// Creates a [`DateRangeAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateRangeAggregateBuilder,
-        ) -> DateRangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateRangeAggregate>>(
+        f: impl FnOnce(DateRangeAggregateBuilder) -> B,
     ) -> DateRangeAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateRangeAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_range_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`DateRangeAggregate`].
@@ -12753,6 +13304,7 @@ impl<S0> DateRangeAggregateBuilder<(S0,)> {
 }
 
 impl DateRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsRangeBucket>,
@@ -12763,9 +13315,12 @@ impl DateRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DateRangeAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DateRangeAggregateBuilder<(S0,)> {
     /// Builds a [`DateRangeAggregate`].
-    pub fn build(self) -> DateRangeAggregate {
+    pub fn build(self) -> DateRangeAggregate
+    where
+        S0: crate::typed::builder::IsSet<date_range_aggregate_members::buckets>,
+    {
         DateRangeAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -12773,16 +13328,24 @@ impl DateRangeAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DateRangeAggregateBuilder<(crate::typed::builder::Set,)>> for DateRangeAggregate {
-    fn from(builder: DateRangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DateRangeAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<date_range_aggregate_members::buckets>,
+{
+    type Output = DateRangeAggregate;
+
+    fn build(self) -> DateRangeAggregate {
+        Self::build(self)
     }
 }
 
-impl DateRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> DateRangeAggregate { match buckets {} }
+impl<S0> From<DateRangeAggregateBuilder<(S0,)>> for DateRangeAggregate
+where
+    S0: crate::typed::builder::IsSet<date_range_aggregate_members::buckets>,
+{
+    fn from(builder: DateRangeAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12815,8 +13378,8 @@ impl DateRangeAggregation {
     }
 
     /// Creates a [`DateRangeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DateRangeAggregationBuilder) -> DateRangeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DateRangeAggregation>>(
+        f: impl FnOnce(DateRangeAggregationBuilder) -> B,
     ) -> DateRangeAggregation {
         f(Self::builder()).build()
     }
@@ -12905,9 +13468,9 @@ impl DateRangeAggregationBuilder {
     }
 
     /// Adds an element to [`ranges`](Self::ranges), with a builder.
-    pub fn add_ranges_with(
+    pub fn add_ranges_with<B: crate::typed::builder::Build<Output = DateRangeExpression>>(
         self,
-        f: impl FnOnce(DateRangeExpressionBuilder) -> DateRangeExpressionBuilder,
+        f: impl FnOnce(DateRangeExpressionBuilder) -> B,
     ) -> Self {
         self.add_ranges(f(DateRangeExpressionBuilder::new()).build())
     }
@@ -12951,6 +13514,14 @@ impl DateRangeAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DateRangeAggregationBuilder {
+    type Output = DateRangeAggregation;
+
+    fn build(self) -> DateRangeAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<DateRangeAggregationBuilder> for DateRangeAggregation {
     fn from(builder: DateRangeAggregationBuilder) -> Self {
         builder.build()
@@ -12977,8 +13548,8 @@ impl DateRangeExpression {
     }
 
     /// Creates a [`DateRangeExpression`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DateRangeExpressionBuilder) -> DateRangeExpressionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DateRangeExpression>>(
+        f: impl FnOnce(DateRangeExpressionBuilder) -> B,
     ) -> DateRangeExpression {
         f(Self::builder()).build()
     }
@@ -13051,6 +13622,14 @@ impl DateRangeExpressionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DateRangeExpressionBuilder {
+    type Output = DateRangeExpression;
+
+    fn build(self) -> DateRangeExpression {
+        Self::build(self)
+    }
+}
+
 impl From<DateRangeExpressionBuilder> for DateRangeExpression {
     fn from(builder: DateRangeExpressionBuilder) -> Self {
         builder.build()
@@ -13093,18 +13672,27 @@ impl From<f64> for DerivativeAggregateValue {
 
 impl DerivativeAggregate {
     /// Creates a builder for [`DerivativeAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> DerivativeAggregateBuilder {
         DerivativeAggregateBuilder::new()
     }
 
     /// Creates a [`DerivativeAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DerivativeAggregateBuilder,
-        ) -> DerivativeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = DerivativeAggregate>>(
+        f: impl FnOnce(DerivativeAggregateBuilder) -> B,
     ) -> DerivativeAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DerivativeAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod derivative_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`DerivativeAggregate`].
@@ -13197,7 +13785,7 @@ impl<S0> DerivativeAggregateBuilder<(S0,)> {
 }
 
 impl DerivativeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -13209,9 +13797,12 @@ impl DerivativeAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DerivativeAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DerivativeAggregateBuilder<(S0,)> {
     /// Builds a [`DerivativeAggregate`].
-    pub fn build(self) -> DerivativeAggregate {
+    pub fn build(self) -> DerivativeAggregate
+    where
+        S0: crate::typed::builder::IsSet<derivative_aggregate_members::value>,
+    {
         DerivativeAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -13222,16 +13813,24 @@ impl DerivativeAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DerivativeAggregateBuilder<(crate::typed::builder::Set,)>> for DerivativeAggregate {
-    fn from(builder: DerivativeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DerivativeAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<derivative_aggregate_members::value>,
+{
+    type Output = DerivativeAggregate;
+
+    fn build(self) -> DerivativeAggregate {
+        Self::build(self)
     }
 }
 
-impl DerivativeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> DerivativeAggregate { match value {} }
+impl<S0> From<DerivativeAggregateBuilder<(S0,)>> for DerivativeAggregate
+where
+    S0: crate::typed::builder::IsSet<derivative_aggregate_members::value>,
+{
+    fn from(builder: DerivativeAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13255,8 +13854,8 @@ impl DerivativeAggregation {
     }
 
     /// Creates a [`DerivativeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DerivativeAggregationBuilder) -> DerivativeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DerivativeAggregation>>(
+        f: impl FnOnce(DerivativeAggregationBuilder) -> B,
     ) -> DerivativeAggregation {
         f(Self::builder()).build()
     }
@@ -13330,6 +13929,14 @@ impl DerivativeAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DerivativeAggregationBuilder {
+    type Output = DerivativeAggregation;
+
+    fn build(self) -> DerivativeAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<DerivativeAggregationBuilder> for DerivativeAggregation {
     fn from(builder: DerivativeAggregationBuilder) -> Self {
         builder.build()
@@ -13344,18 +13951,28 @@ pub struct Dip {
 
 impl Dip {
     /// Creates a builder for [`Dip`].
+    ///
+    /// Required: `p_value`, `change_point`.
     pub fn builder() -> DipBuilder {
         DipBuilder::new()
     }
 
     /// Creates a [`Dip`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DipBuilder,
-        ) -> DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `p_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = Dip>>(
+        f: impl FnOnce(DipBuilder) -> B,
     ) -> Dip {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DipBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dip_members {
+    pub struct p_value;
+    pub struct change_point;
 }
 
 /// Builder for [`Dip`].
@@ -13387,6 +14004,7 @@ impl<S0, S1> DipBuilder<(S0, S1)> {
 }
 
 impl<S1> DipBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -13398,6 +14016,7 @@ impl<S1> DipBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DipBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(self, value: i32) -> DipBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.change_point = Some(value);
@@ -13405,9 +14024,13 @@ impl<S0> DipBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DipBuilder<(S0, S1)> {
     /// Builds a [`Dip`].
-    pub fn build(self) -> Dip {
+    pub fn build(self) -> Dip
+    where
+        S0: crate::typed::builder::IsSet<dip_members::p_value>,
+        S1: crate::typed::builder::IsSet<dip_members::change_point>,
+    {
         Dip {
             p_value: self.p_value.unwrap(),
             change_point: self.change_point.unwrap(),
@@ -13415,22 +14038,26 @@ impl DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Dip {
-    fn from(builder: DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for DipBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<dip_members::p_value>,
+    S1: crate::typed::builder::IsSet<dip_members::change_point>,
+{
+    type Output = Dip;
+
+    fn build(self) -> Dip {
+        Self::build(self)
     }
 }
 
-impl<S1> DipBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> Dip { match p_value {} }
-}
-
-impl DipBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> Dip { match change_point {} }
+impl<S0, S1> From<DipBuilder<(S0, S1)>> for Dip
+where
+    S0: crate::typed::builder::IsSet<dip_members::p_value>,
+    S1: crate::typed::builder::IsSet<dip_members::change_point>,
+{
+    fn from(builder: DipBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13441,21 +14068,28 @@ pub struct DistributionChange {
 
 impl DistributionChange {
     /// Creates a builder for [`DistributionChange`].
+    ///
+    /// Required: `p_value`, `change_point`.
     pub fn builder() -> DistributionChangeBuilder {
         DistributionChangeBuilder::new()
     }
 
     /// Creates a [`DistributionChange`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DistributionChangeBuilder,
-        ) -> DistributionChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `p_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = DistributionChange>>(
+        f: impl FnOnce(DistributionChangeBuilder) -> B,
     ) -> DistributionChange {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DistributionChangeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod distribution_change_members {
+    pub struct p_value;
+    pub struct change_point;
 }
 
 /// Builder for [`DistributionChange`].
@@ -13489,6 +14123,7 @@ impl<S0, S1> DistributionChangeBuilder<(S0, S1)> {
 }
 
 impl<S1> DistributionChangeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -13500,6 +14135,7 @@ impl<S1> DistributionChangeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DistributionChangeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(
         self,
         value: i32,
@@ -13510,9 +14146,13 @@ impl<S0> DistributionChangeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DistributionChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DistributionChangeBuilder<(S0, S1)> {
     /// Builds a [`DistributionChange`].
-    pub fn build(self) -> DistributionChange {
+    pub fn build(self) -> DistributionChange
+    where
+        S0: crate::typed::builder::IsSet<distribution_change_members::p_value>,
+        S1: crate::typed::builder::IsSet<distribution_change_members::change_point>,
+    {
         DistributionChange {
             p_value: self.p_value.unwrap(),
             change_point: self.change_point.unwrap(),
@@ -13520,29 +14160,26 @@ impl DistributionChangeBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<DistributionChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DistributionChange
+impl<S0, S1> crate::typed::builder::Build for DistributionChangeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<distribution_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<distribution_change_members::change_point>,
 {
-    fn from(
-        builder: DistributionChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DistributionChange;
+
+    fn build(self) -> DistributionChange {
+        Self::build(self)
     }
 }
 
-impl<S1> DistributionChangeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> DistributionChange { match p_value {} }
-}
-
-impl DistributionChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> DistributionChange { match change_point {} }
+impl<S0, S1> From<DistributionChangeBuilder<(S0, S1)>> for DistributionChange
+where
+    S0: crate::typed::builder::IsSet<distribution_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<distribution_change_members::change_point>,
+{
+    fn from(builder: DistributionChangeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13570,8 +14207,8 @@ impl DiversifiedSamplerAggregation {
     }
 
     /// Creates a [`DiversifiedSamplerAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DiversifiedSamplerAggregationBuilder) -> DiversifiedSamplerAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DiversifiedSamplerAggregation>>(
+        f: impl FnOnce(DiversifiedSamplerAggregationBuilder) -> B,
     ) -> DiversifiedSamplerAggregation {
         f(Self::builder()).build()
     }
@@ -13636,9 +14273,9 @@ impl DiversifiedSamplerAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -13681,6 +14318,14 @@ impl DiversifiedSamplerAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DiversifiedSamplerAggregationBuilder {
+    type Output = DiversifiedSamplerAggregation;
+
+    fn build(self) -> DiversifiedSamplerAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<DiversifiedSamplerAggregationBuilder> for DiversifiedSamplerAggregation {
     fn from(builder: DiversifiedSamplerAggregationBuilder) -> Self {
         builder.build()
@@ -13701,18 +14346,27 @@ pub struct DoubleTermsAggregate {
 
 impl DoubleTermsAggregate {
     /// Creates a builder for [`DoubleTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> DoubleTermsAggregateBuilder {
         DoubleTermsAggregateBuilder::new()
     }
 
     /// Creates a [`DoubleTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DoubleTermsAggregateBuilder,
-        ) -> DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = DoubleTermsAggregate>>(
+        f: impl FnOnce(DoubleTermsAggregateBuilder) -> B,
     ) -> DoubleTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DoubleTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod double_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`DoubleTermsAggregate`].
@@ -13791,6 +14445,7 @@ impl<S0> DoubleTermsAggregateBuilder<(S0,)> {
 }
 
 impl DoubleTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDoubleTermsBucket>,
@@ -13801,9 +14456,12 @@ impl DoubleTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DoubleTermsAggregateBuilder<(S0,)> {
     /// Builds a [`DoubleTermsAggregate`].
-    pub fn build(self) -> DoubleTermsAggregate {
+    pub fn build(self) -> DoubleTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<double_terms_aggregate_members::buckets>,
+    {
         DoubleTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -13813,16 +14471,24 @@ impl DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>> for DoubleTermsAggregate {
-    fn from(builder: DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DoubleTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<double_terms_aggregate_members::buckets>,
+{
+    type Output = DoubleTermsAggregate;
+
+    fn build(self) -> DoubleTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl DoubleTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> DoubleTermsAggregate { match buckets {} }
+impl<S0> From<DoubleTermsAggregateBuilder<(S0,)>> for DoubleTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<double_terms_aggregate_members::buckets>,
+{
+    fn from(builder: DoubleTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13840,21 +14506,28 @@ pub struct DoubleTermsBucket {
 
 impl DoubleTermsBucket {
     /// Creates a builder for [`DoubleTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> DoubleTermsBucketBuilder {
         DoubleTermsBucketBuilder::new()
     }
 
     /// Creates a [`DoubleTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DoubleTermsBucketBuilder,
-        ) -> DoubleTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = DoubleTermsBucket>>(
+        f: impl FnOnce(DoubleTermsBucketBuilder) -> B,
     ) -> DoubleTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DoubleTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod double_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`DoubleTermsBucket`].
@@ -13938,6 +14611,7 @@ impl<S0, S1> DoubleTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> DoubleTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -13949,6 +14623,7 @@ impl<S1> DoubleTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DoubleTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -13959,9 +14634,13 @@ impl<S0> DoubleTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DoubleTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DoubleTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`DoubleTermsBucket`].
-    pub fn build(self) -> DoubleTermsBucket {
+    pub fn build(self) -> DoubleTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<double_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<double_terms_bucket_members::key>,
+    {
         DoubleTermsBucket {
             doc_count: self.doc_count.unwrap(),
             doc_count_error_upper_bound: self.doc_count_error_upper_bound,
@@ -13972,26 +14651,26 @@ impl DoubleTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<DoubleTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DoubleTermsBucket
+impl<S0, S1> crate::typed::builder::Build for DoubleTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<double_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<double_terms_bucket_members::key>,
 {
-    fn from(
-        builder: DoubleTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DoubleTermsBucket;
+
+    fn build(self) -> DoubleTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> DoubleTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> DoubleTermsBucket { match doc_count {} }
-}
-
-impl DoubleTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> DoubleTermsBucket { match key {} }
+impl<S0, S1> From<DoubleTermsBucketBuilder<(S0, S1)>> for DoubleTermsBucket
+where
+    S0: crate::typed::builder::IsSet<double_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<double_terms_bucket_members::key>,
+{
+    fn from(builder: DoubleTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14007,8 +14686,8 @@ impl EwmaModelSettings {
     }
 
     /// Creates a [`EwmaModelSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EwmaModelSettingsBuilder) -> EwmaModelSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = EwmaModelSettings>>(
+        f: impl FnOnce(EwmaModelSettingsBuilder) -> B,
     ) -> EwmaModelSettings {
         f(Self::builder()).build()
     }
@@ -14046,6 +14725,14 @@ impl EwmaModelSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for EwmaModelSettingsBuilder {
+    type Output = EwmaModelSettings;
+
+    fn build(self) -> EwmaModelSettings {
+        Self::build(self)
+    }
+}
+
 impl From<EwmaModelSettingsBuilder> for EwmaModelSettings {
     fn from(builder: EwmaModelSettingsBuilder) -> Self {
         builder.build()
@@ -14076,21 +14763,28 @@ pub struct EwmaMovingAverageAggregation {
 
 impl EwmaMovingAverageAggregation {
     /// Creates a builder for [`EwmaMovingAverageAggregation`].
+    ///
+    /// Required: `model`, `settings`.
     pub fn builder() -> EwmaMovingAverageAggregationBuilder {
         EwmaMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`EwmaMovingAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EwmaMovingAverageAggregationBuilder,
-        ) -> EwmaMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = EwmaMovingAverageAggregation>>(
+        f: impl FnOnce(EwmaMovingAverageAggregationBuilder) -> B,
     ) -> EwmaMovingAverageAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EwmaMovingAverageAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ewma_moving_average_aggregation_members {
+    pub struct model;
+    pub struct settings;
 }
 
 /// Builder for [`EwmaMovingAverageAggregation`].
@@ -14217,6 +14911,7 @@ impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -14228,6 +14923,7 @@ impl<S1> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<EwmaModelSettings>,
@@ -14238,17 +14934,21 @@ impl<S0> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = EwmaModelSettings>>(
         self,
-        f: impl FnOnce(EwmaModelSettingsBuilder) -> EwmaModelSettingsBuilder,
+        f: impl FnOnce(EwmaModelSettingsBuilder) -> B,
     ) -> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(EwmaModelSettingsBuilder::new()).build())
     }
 }
 
-impl EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
     /// Builds a [`EwmaMovingAverageAggregation`].
-    pub fn build(self) -> EwmaMovingAverageAggregation {
+    pub fn build(self) -> EwmaMovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
+        S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
+    {
         EwmaMovingAverageAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -14262,36 +14962,26 @@ impl EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        EwmaMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for EwmaMovingAverageAggregation
+impl<S0, S1> crate::typed::builder::Build for EwmaMovingAverageAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
 {
-    fn from(
-        builder: EwmaMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EwmaMovingAverageAggregation;
+
+    fn build(self) -> EwmaMovingAverageAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> EwmaMovingAverageAggregation { match model {} }
-}
-
-impl
-    EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<EwmaMovingAverageAggregationBuilder<(S0, S1)>> for EwmaMovingAverageAggregation
+where
+    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> EwmaMovingAverageAggregation { match settings {} }
+    fn from(builder: EwmaMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14311,8 +15001,8 @@ impl ExtendedBoundsFieldDateMath {
     }
 
     /// Creates a [`ExtendedBoundsFieldDateMath`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> ExtendedBoundsFieldDateMathBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedBoundsFieldDateMath>>(
+        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> B,
     ) -> ExtendedBoundsFieldDateMath {
         f(Self::builder()).build()
     }
@@ -14370,6 +15060,14 @@ impl ExtendedBoundsFieldDateMathBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ExtendedBoundsFieldDateMathBuilder {
+    type Output = ExtendedBoundsFieldDateMath;
+
+    fn build(self) -> ExtendedBoundsFieldDateMath {
+        Self::build(self)
+    }
+}
+
 impl From<ExtendedBoundsFieldDateMathBuilder> for ExtendedBoundsFieldDateMath {
     fn from(builder: ExtendedBoundsFieldDateMathBuilder) -> Self {
         builder.build()
@@ -14393,8 +15091,8 @@ impl ExtendedBoundsdouble {
     }
 
     /// Creates a [`ExtendedBoundsdouble`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> ExtendedBoundsdoubleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedBoundsdouble>>(
+        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> B,
     ) -> ExtendedBoundsdouble {
         f(Self::builder()).build()
     }
@@ -14449,6 +15147,14 @@ impl ExtendedBoundsdoubleBuilder {
             max: self.max,
             min: self.min,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ExtendedBoundsdoubleBuilder {
+    type Output = ExtendedBoundsdouble;
+
+    fn build(self) -> ExtendedBoundsdouble {
+        Self::build(self)
     }
 }
 
@@ -14690,31 +15396,38 @@ impl From<f64> for ExtendedStatsAggregateStdDeviationSampling {
 
 impl ExtendedStatsAggregate {
     /// Creates a builder for [`ExtendedStatsAggregate`].
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`, `sum_of_squares`, `variance`, `variance_population`, `variance_sampling`, `std_deviation`, `std_deviation_population`, `std_deviation_sampling`.
     pub fn builder() -> ExtendedStatsAggregateBuilder {
         ExtendedStatsAggregateBuilder::new()
     }
 
     /// Creates a [`ExtendedStatsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExtendedStatsAggregateBuilder,
-        ) -> ExtendedStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`, `sum_of_squares`, `variance`, `variance_population`, `variance_sampling`, `std_deviation`, `std_deviation_population`, `std_deviation_sampling`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedStatsAggregate>>(
+        f: impl FnOnce(ExtendedStatsAggregateBuilder) -> B,
     ) -> ExtendedStatsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExtendedStatsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod extended_stats_aggregate_members {
+    pub struct count;
+    pub struct min;
+    pub struct max;
+    pub struct avg;
+    pub struct sum;
+    pub struct sum_of_squares;
+    pub struct variance;
+    pub struct variance_population;
+    pub struct variance_sampling;
+    pub struct std_deviation;
+    pub struct std_deviation_population;
+    pub struct std_deviation_sampling;
 }
 
 /// Builder for [`ExtendedStatsAggregate`].
@@ -14917,18 +15630,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`std_deviation_bounds`](Self::std_deviation_bounds) with a builder.
-    pub fn std_deviation_bounds_with(
+    pub fn std_deviation_bounds_with<
+        B: crate::typed::builder::Build<Output = StandardDeviationBounds>,
+    >(
         self,
-        f: impl FnOnce(
-            StandardDeviationBoundsBuilder,
-        ) -> StandardDeviationBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(StandardDeviationBoundsBuilder) -> B,
     ) -> Self {
         self.std_deviation_bounds(f(StandardDeviationBoundsBuilder::new()).build())
     }
@@ -15006,18 +15712,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`std_deviation_bounds_as_string`](Self::std_deviation_bounds_as_string) with a builder.
-    pub fn std_deviation_bounds_as_string_with(
+    pub fn std_deviation_bounds_as_string_with<
+        B: crate::typed::builder::Build<Output = StandardDeviationBoundsAsString>,
+    >(
         self,
-        f: impl FnOnce(
-            StandardDeviationBoundsAsStringBuilder,
-        ) -> StandardDeviationBoundsAsStringBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(StandardDeviationBoundsAsStringBuilder) -> B,
     ) -> Self {
         self.std_deviation_bounds_as_string(
             f(StandardDeviationBoundsAsStringBuilder::new()).build(),
@@ -15041,6 +15740,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -15080,6 +15780,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<ExtendedStatsAggregateMin>,
@@ -15119,6 +15820,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<ExtendedStatsAggregateMax>,
@@ -15158,6 +15860,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn avg(
         self,
         value: impl Into<ExtendedStatsAggregateAvg>,
@@ -15197,6 +15900,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn sum(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -15236,6 +15940,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn sum_of_squares(
         self,
         value: impl Into<ExtendedStatsAggregateSumOfSquares>,
@@ -15275,6 +15980,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance(
         self,
         value: impl Into<ExtendedStatsAggregateVariance>,
@@ -15314,6 +16020,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance_population(
         self,
         value: impl Into<ExtendedStatsAggregateVariancePopulation>,
@@ -15353,6 +16060,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance_sampling(
         self,
         value: impl Into<ExtendedStatsAggregateVarianceSampling>,
@@ -15392,6 +16100,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn std_deviation(
         self,
         value: impl Into<ExtendedStatsAggregateStdDeviation>,
@@ -15431,6 +16140,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn std_deviation_population(
         self,
         value: impl Into<ExtendedStatsAggregateStdDeviationPopulation>,
@@ -15470,6 +16180,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn std_deviation_sampling(
         self,
         value: impl Into<ExtendedStatsAggregateStdDeviationSampling>,
@@ -15493,24 +16204,27 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    ExtendedStatsAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`ExtendedStatsAggregate`].
-    pub fn build(self) -> ExtendedStatsAggregate {
+    pub fn build(self) -> ExtendedStatsAggregate
+    where
+        S0: crate::typed::builder::IsSet<extended_stats_aggregate_members::count>,
+        S1: crate::typed::builder::IsSet<extended_stats_aggregate_members::min>,
+        S2: crate::typed::builder::IsSet<extended_stats_aggregate_members::max>,
+        S3: crate::typed::builder::IsSet<extended_stats_aggregate_members::avg>,
+        S4: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum>,
+        S5: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum_of_squares>,
+        S6: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance>,
+        S7: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_population>,
+        S8: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_sampling>,
+        S9: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation>,
+        S10: crate::typed::builder::IsSet<
+            extended_stats_aggregate_members::std_deviation_population,
+        >,
+        S11: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation_sampling>,
+    {
         ExtendedStatsAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -15540,294 +16254,51 @@ impl
     }
 }
 
-impl
-    From<
-        ExtendedStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ExtendedStatsAggregate
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for ExtendedStatsAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<extended_stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<extended_stats_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<extended_stats_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<extended_stats_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum>,
+    S5: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum_of_squares>,
+    S6: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance>,
+    S7: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_population>,
+    S8: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_sampling>,
+    S9: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation>,
+    S10: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation_population>,
+    S11: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation_sampling>,
 {
-    fn from(
-        builder: ExtendedStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ExtendedStatsAggregate;
+
+    fn build(self) -> ExtendedStatsAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<ExtendedStatsAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>>
+    for ExtendedStatsAggregate
+where
+    S0: crate::typed::builder::IsSet<extended_stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<extended_stats_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<extended_stats_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<extended_stats_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum>,
+    S5: crate::typed::builder::IsSet<extended_stats_aggregate_members::sum_of_squares>,
+    S6: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance>,
+    S7: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_population>,
+    S8: crate::typed::builder::IsSet<extended_stats_aggregate_members::variance_sampling>,
+    S9: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation>,
+    S10: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation_population>,
+    S11: crate::typed::builder::IsSet<extended_stats_aggregate_members::std_deviation_sampling>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match count {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match min {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match max {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match avg {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `sum` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match sum {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `sum_of_squares` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum_of_squares: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match sum_of_squares {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match variance {} }
-}
-
-impl<S8, S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance_population: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match variance_population {} }
-}
-
-impl<S9, S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance_sampling: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match variance_sampling {} }
-}
-
-impl<S10, S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `std_deviation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match std_deviation {} }
-}
-
-impl<S11>
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `std_deviation_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation_population: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match std_deviation_population {} }
-}
-
-impl
-    ExtendedStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `std_deviation_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation_sampling: crate::typed::builder::MissingRequiredField) -> ExtendedStatsAggregate { match std_deviation_sampling {} }
+    fn from(
+        builder: ExtendedStatsAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15855,8 +16326,8 @@ impl ExtendedStatsAggregation {
     }
 
     /// Creates a [`ExtendedStatsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedStatsAggregationBuilder) -> ExtendedStatsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedStatsAggregation>>(
+        f: impl FnOnce(ExtendedStatsAggregationBuilder) -> B,
     ) -> ExtendedStatsAggregation {
         f(Self::builder()).build()
     }
@@ -15922,9 +16393,9 @@ impl ExtendedStatsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -15963,6 +16434,14 @@ impl ExtendedStatsAggregationBuilder {
             format: self.format,
             sigma: self.sigma,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ExtendedStatsAggregationBuilder {
+    type Output = ExtendedStatsAggregation;
+
+    fn build(self) -> ExtendedStatsAggregation {
+        Self::build(self)
     }
 }
 
@@ -16204,31 +16683,38 @@ impl From<f64> for ExtendedStatsBucketAggregateStdDeviationSampling {
 
 impl ExtendedStatsBucketAggregate {
     /// Creates a builder for [`ExtendedStatsBucketAggregate`].
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`, `sum_of_squares`, `variance`, `variance_population`, `variance_sampling`, `std_deviation`, `std_deviation_population`, `std_deviation_sampling`.
     pub fn builder() -> ExtendedStatsBucketAggregateBuilder {
         ExtendedStatsBucketAggregateBuilder::new()
     }
 
     /// Creates a [`ExtendedStatsBucketAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ExtendedStatsBucketAggregateBuilder,
-        ) -> ExtendedStatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`, `sum_of_squares`, `variance`, `variance_population`, `variance_sampling`, `std_deviation`, `std_deviation_population`, `std_deviation_sampling`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedStatsBucketAggregate>>(
+        f: impl FnOnce(ExtendedStatsBucketAggregateBuilder) -> B,
     ) -> ExtendedStatsBucketAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExtendedStatsBucketAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod extended_stats_bucket_aggregate_members {
+    pub struct count;
+    pub struct min;
+    pub struct max;
+    pub struct avg;
+    pub struct sum;
+    pub struct sum_of_squares;
+    pub struct variance;
+    pub struct variance_population;
+    pub struct variance_sampling;
+    pub struct std_deviation;
+    pub struct std_deviation_population;
+    pub struct std_deviation_sampling;
 }
 
 /// Builder for [`ExtendedStatsBucketAggregate`].
@@ -16431,18 +16917,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`std_deviation_bounds`](Self::std_deviation_bounds) with a builder.
-    pub fn std_deviation_bounds_with(
+    pub fn std_deviation_bounds_with<
+        B: crate::typed::builder::Build<Output = StandardDeviationBounds>,
+    >(
         self,
-        f: impl FnOnce(
-            StandardDeviationBoundsBuilder,
-        ) -> StandardDeviationBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(StandardDeviationBoundsBuilder) -> B,
     ) -> Self {
         self.std_deviation_bounds(f(StandardDeviationBoundsBuilder::new()).build())
     }
@@ -16520,18 +16999,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     }
 
     /// Sets [`std_deviation_bounds_as_string`](Self::std_deviation_bounds_as_string) with a builder.
-    pub fn std_deviation_bounds_as_string_with(
+    pub fn std_deviation_bounds_as_string_with<
+        B: crate::typed::builder::Build<Output = StandardDeviationBoundsAsString>,
+    >(
         self,
-        f: impl FnOnce(
-            StandardDeviationBoundsAsStringBuilder,
-        ) -> StandardDeviationBoundsAsStringBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(StandardDeviationBoundsAsStringBuilder) -> B,
     ) -> Self {
         self.std_deviation_bounds_as_string(
             f(StandardDeviationBoundsAsStringBuilder::new()).build(),
@@ -16555,6 +17027,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -16594,6 +17067,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<ExtendedStatsBucketAggregateMin>,
@@ -16633,6 +17107,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<ExtendedStatsBucketAggregateMax>,
@@ -16672,6 +17147,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn avg(
         self,
         value: impl Into<ExtendedStatsBucketAggregateAvg>,
@@ -16711,6 +17187,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn sum(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -16750,6 +17227,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn sum_of_squares(
         self,
         value: impl Into<ExtendedStatsBucketAggregateSumOfSquares>,
@@ -16789,6 +17267,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance(
         self,
         value: impl Into<ExtendedStatsBucketAggregateVariance>,
@@ -16828,6 +17307,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance_population(
         self,
         value: impl Into<ExtendedStatsBucketAggregateVariancePopulation>,
@@ -16867,6 +17347,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn variance_sampling(
         self,
         value: impl Into<ExtendedStatsBucketAggregateVarianceSampling>,
@@ -16906,6 +17387,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn std_deviation(
         self,
         value: impl Into<ExtendedStatsBucketAggregateStdDeviation>,
@@ -16945,6 +17427,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn std_deviation_population(
         self,
         value: impl Into<ExtendedStatsBucketAggregateStdDeviationPopulation>,
@@ -16984,6 +17467,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn std_deviation_sampling(
         self,
         value: impl Into<ExtendedStatsBucketAggregateStdDeviationSampling>,
@@ -17007,24 +17491,33 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    ExtendedStatsBucketAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`ExtendedStatsBucketAggregate`].
-    pub fn build(self) -> ExtendedStatsBucketAggregate {
+    pub fn build(self) -> ExtendedStatsBucketAggregate
+    where
+        S0: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::count>,
+        S1: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::min>,
+        S2: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::max>,
+        S3: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::avg>,
+        S4: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum>,
+        S5: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum_of_squares>,
+        S6: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance>,
+        S7: crate::typed::builder::IsSet<
+            extended_stats_bucket_aggregate_members::variance_population,
+        >,
+        S8: crate::typed::builder::IsSet<
+            extended_stats_bucket_aggregate_members::variance_sampling,
+        >,
+        S9: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::std_deviation>,
+        S10: crate::typed::builder::IsSet<
+            extended_stats_bucket_aggregate_members::std_deviation_population,
+        >,
+        S11: crate::typed::builder::IsSet<
+            extended_stats_bucket_aggregate_members::std_deviation_sampling,
+        >,
+    {
         ExtendedStatsBucketAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -17054,294 +17547,72 @@ impl
     }
 }
 
-impl
-    From<
-        ExtendedStatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ExtendedStatsBucketAggregate
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for ExtendedStatsBucketAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum>,
+    S5: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum_of_squares>,
+    S6: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance>,
+    S7: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance_population>,
+    S8: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance_sampling>,
+    S9: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::std_deviation>,
+    S10: crate::typed::builder::IsSet<
+        extended_stats_bucket_aggregate_members::std_deviation_population,
+    >,
+    S11: crate::typed::builder::IsSet<
+        extended_stats_bucket_aggregate_members::std_deviation_sampling,
+    >,
+{
+    type Output = ExtendedStatsBucketAggregate;
+
+    fn build(self) -> ExtendedStatsBucketAggregate {
+        Self::build(self)
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<ExtendedStatsBucketAggregateBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>>
+    for ExtendedStatsBucketAggregate
+where
+    S0: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum>,
+    S5: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::sum_of_squares>,
+    S6: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance>,
+    S7: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance_population>,
+    S8: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::variance_sampling>,
+    S9: crate::typed::builder::IsSet<extended_stats_bucket_aggregate_members::std_deviation>,
+    S10: crate::typed::builder::IsSet<
+        extended_stats_bucket_aggregate_members::std_deviation_population,
+    >,
+    S11: crate::typed::builder::IsSet<
+        extended_stats_bucket_aggregate_members::std_deviation_sampling,
+    >,
 {
     fn from(
         builder: ExtendedStatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
         )>,
     ) -> Self {
         builder.build()
     }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match count {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match min {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match max {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match avg {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `sum` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match sum {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `sum_of_squares` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum_of_squares: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match sum_of_squares {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match variance {} }
-}
-
-impl<S8, S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance_population: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match variance_population {} }
-}
-
-impl<S9, S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `variance_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance_sampling: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match variance_sampling {} }
-}
-
-impl<S10, S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `std_deviation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match std_deviation {} }
-}
-
-impl<S11>
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `std_deviation_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation_population: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match std_deviation_population {} }
-}
-
-impl
-    ExtendedStatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `std_deviation_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, std_deviation_sampling: crate::typed::builder::MissingRequiredField) -> ExtendedStatsBucketAggregate { match std_deviation_sampling {} }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17368,8 +17639,8 @@ impl ExtendedStatsBucketAggregation {
     }
 
     /// Creates a [`ExtendedStatsBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExtendedStatsBucketAggregationBuilder) -> ExtendedStatsBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ExtendedStatsBucketAggregation>>(
+        f: impl FnOnce(ExtendedStatsBucketAggregationBuilder) -> B,
     ) -> ExtendedStatsBucketAggregation {
         f(Self::builder()).build()
     }
@@ -17458,6 +17729,14 @@ impl ExtendedStatsBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ExtendedStatsBucketAggregationBuilder {
+    type Output = ExtendedStatsBucketAggregation;
+
+    fn build(self) -> ExtendedStatsBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<ExtendedStatsBucketAggregationBuilder> for ExtendedStatsBucketAggregation {
     fn from(builder: ExtendedStatsBucketAggregationBuilder) -> Self {
         builder.build()
@@ -17503,16 +17782,27 @@ pub struct FilterAggregate {
 
 impl FilterAggregate {
     /// Creates a builder for [`FilterAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> FilterAggregateBuilder {
         FilterAggregateBuilder::new()
     }
 
     /// Creates a [`FilterAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FilterAggregateBuilder) -> FilterAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = FilterAggregate>>(
+        f: impl FnOnce(FilterAggregateBuilder) -> B,
     ) -> FilterAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FilterAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filter_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`FilterAggregate`].
@@ -17585,6 +17875,7 @@ impl<S0> FilterAggregateBuilder<(S0,)> {
 }
 
 impl FilterAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> FilterAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -17592,9 +17883,12 @@ impl FilterAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FilterAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FilterAggregateBuilder<(S0,)> {
     /// Builds a [`FilterAggregate`].
-    pub fn build(self) -> FilterAggregate {
+    pub fn build(self) -> FilterAggregate
+    where
+        S0: crate::typed::builder::IsSet<filter_aggregate_members::doc_count>,
+    {
         FilterAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -17603,16 +17897,24 @@ impl FilterAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FilterAggregateBuilder<(crate::typed::builder::Set,)>> for FilterAggregate {
-    fn from(builder: FilterAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FilterAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<filter_aggregate_members::doc_count>,
+{
+    type Output = FilterAggregate;
+
+    fn build(self) -> FilterAggregate {
+        Self::build(self)
     }
 }
 
-impl FilterAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> FilterAggregate { match doc_count {} }
+impl<S0> From<FilterAggregateBuilder<(S0,)>> for FilterAggregate
+where
+    S0: crate::typed::builder::IsSet<filter_aggregate_members::doc_count>,
+{
+    fn from(builder: FilterAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17624,18 +17926,27 @@ pub struct FiltersAggregate {
 
 impl FiltersAggregate {
     /// Creates a builder for [`FiltersAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> FiltersAggregateBuilder {
         FiltersAggregateBuilder::new()
     }
 
     /// Creates a [`FiltersAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FiltersAggregateBuilder,
-        ) -> FiltersAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = FiltersAggregate>>(
+        f: impl FnOnce(FiltersAggregateBuilder) -> B,
     ) -> FiltersAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FiltersAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filters_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`FiltersAggregate`].
@@ -17686,6 +17997,7 @@ impl<S0> FiltersAggregateBuilder<(S0,)> {
 }
 
 impl FiltersAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsFiltersBucket>,
@@ -17696,9 +18008,12 @@ impl FiltersAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FiltersAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FiltersAggregateBuilder<(S0,)> {
     /// Builds a [`FiltersAggregate`].
-    pub fn build(self) -> FiltersAggregate {
+    pub fn build(self) -> FiltersAggregate
+    where
+        S0: crate::typed::builder::IsSet<filters_aggregate_members::buckets>,
+    {
         FiltersAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -17706,16 +18021,24 @@ impl FiltersAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FiltersAggregateBuilder<(crate::typed::builder::Set,)>> for FiltersAggregate {
-    fn from(builder: FiltersAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FiltersAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<filters_aggregate_members::buckets>,
+{
+    type Output = FiltersAggregate;
+
+    fn build(self) -> FiltersAggregate {
+        Self::build(self)
     }
 }
 
-impl FiltersAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> FiltersAggregate { match buckets {} }
+impl<S0> From<FiltersAggregateBuilder<(S0,)>> for FiltersAggregate
+where
+    S0: crate::typed::builder::IsSet<filters_aggregate_members::buckets>,
+{
+    fn from(builder: FiltersAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17742,8 +18065,8 @@ impl FiltersAggregation {
     }
 
     /// Creates a [`FiltersAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FiltersAggregationBuilder) -> FiltersAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FiltersAggregation>>(
+        f: impl FnOnce(FiltersAggregationBuilder) -> B,
     ) -> FiltersAggregation {
         f(Self::builder()).build()
     }
@@ -17832,6 +18155,14 @@ impl FiltersAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FiltersAggregationBuilder {
+    type Output = FiltersAggregation;
+
+    fn build(self) -> FiltersAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<FiltersAggregationBuilder> for FiltersAggregation {
     fn from(builder: FiltersAggregationBuilder) -> Self {
         builder.build()
@@ -17850,16 +18181,27 @@ pub struct FiltersBucket {
 
 impl FiltersBucket {
     /// Creates a builder for [`FiltersBucket`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> FiltersBucketBuilder {
         FiltersBucketBuilder::new()
     }
 
     /// Creates a [`FiltersBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FiltersBucketBuilder) -> FiltersBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = FiltersBucket>>(
+        f: impl FnOnce(FiltersBucketBuilder) -> B,
     ) -> FiltersBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FiltersBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod filters_bucket_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`FiltersBucket`].
@@ -17924,6 +18266,7 @@ impl<S0> FiltersBucketBuilder<(S0,)> {
 }
 
 impl FiltersBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> FiltersBucketBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -17931,9 +18274,12 @@ impl FiltersBucketBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FiltersBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FiltersBucketBuilder<(S0,)> {
     /// Builds a [`FiltersBucket`].
-    pub fn build(self) -> FiltersBucket {
+    pub fn build(self) -> FiltersBucket
+    where
+        S0: crate::typed::builder::IsSet<filters_bucket_members::doc_count>,
+    {
         FiltersBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key,
@@ -17942,16 +18288,24 @@ impl FiltersBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FiltersBucketBuilder<(crate::typed::builder::Set,)>> for FiltersBucket {
-    fn from(builder: FiltersBucketBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FiltersBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<filters_bucket_members::doc_count>,
+{
+    type Output = FiltersBucket;
+
+    fn build(self) -> FiltersBucket {
+        Self::build(self)
     }
 }
 
-impl FiltersBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> FiltersBucket { match doc_count {} }
+impl<S0> From<FiltersBucketBuilder<(S0,)>> for FiltersBucket
+where
+    S0: crate::typed::builder::IsSet<filters_bucket_members::doc_count>,
+{
+    fn from(builder: FiltersBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17976,8 +18330,8 @@ impl FormatMetricAggregationBase {
     }
 
     /// Creates a [`FormatMetricAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FormatMetricAggregationBaseBuilder) -> FormatMetricAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FormatMetricAggregationBase>>(
+        f: impl FnOnce(FormatMetricAggregationBaseBuilder) -> B,
     ) -> FormatMetricAggregationBase {
         f(Self::builder()).build()
     }
@@ -18041,9 +18395,9 @@ impl FormatMetricAggregationBaseBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -18069,6 +18423,14 @@ impl FormatMetricAggregationBaseBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for FormatMetricAggregationBaseBuilder {
+    type Output = FormatMetricAggregationBase;
+
+    fn build(self) -> FormatMetricAggregationBase {
+        Self::build(self)
     }
 }
 
@@ -18100,8 +18462,8 @@ impl FormattableMetricAggregation {
     }
 
     /// Creates a [`FormattableMetricAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FormattableMetricAggregationBuilder) -> FormattableMetricAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FormattableMetricAggregation>>(
+        f: impl FnOnce(FormattableMetricAggregationBuilder) -> B,
     ) -> FormattableMetricAggregation {
         f(Self::builder()).build()
     }
@@ -18165,9 +18527,9 @@ impl FormattableMetricAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -18196,6 +18558,14 @@ impl FormattableMetricAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FormattableMetricAggregationBuilder {
+    type Output = FormattableMetricAggregation;
+
+    fn build(self) -> FormattableMetricAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<FormattableMetricAggregationBuilder> for FormattableMetricAggregation {
     fn from(builder: FormattableMetricAggregationBuilder) -> Self {
         builder.build()
@@ -18211,18 +18581,27 @@ pub struct FrequentItemSetsAggregate {
 
 impl FrequentItemSetsAggregate {
     /// Creates a builder for [`FrequentItemSetsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> FrequentItemSetsAggregateBuilder {
         FrequentItemSetsAggregateBuilder::new()
     }
 
     /// Creates a [`FrequentItemSetsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrequentItemSetsAggregateBuilder,
-        ) -> FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrequentItemSetsAggregate>>(
+        f: impl FnOnce(FrequentItemSetsAggregateBuilder) -> B,
     ) -> FrequentItemSetsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrequentItemSetsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod frequent_item_sets_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`FrequentItemSetsAggregate`].
@@ -18273,6 +18652,7 @@ impl<S0> FrequentItemSetsAggregateBuilder<(S0,)> {
 }
 
 impl FrequentItemSetsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsFrequentItemSetsBucket>,
@@ -18283,9 +18663,12 @@ impl FrequentItemSetsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FrequentItemSetsAggregateBuilder<(S0,)> {
     /// Builds a [`FrequentItemSetsAggregate`].
-    pub fn build(self) -> FrequentItemSetsAggregate {
+    pub fn build(self) -> FrequentItemSetsAggregate
+    where
+        S0: crate::typed::builder::IsSet<frequent_item_sets_aggregate_members::buckets>,
+    {
         FrequentItemSetsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -18293,18 +18676,24 @@ impl FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for FrequentItemSetsAggregate
+impl<S0> crate::typed::builder::Build for FrequentItemSetsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_aggregate_members::buckets>,
 {
-    fn from(builder: FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = FrequentItemSetsAggregate;
+
+    fn build(self) -> FrequentItemSetsAggregate {
+        Self::build(self)
     }
 }
 
-impl FrequentItemSetsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsAggregate { match buckets {} }
+impl<S0> From<FrequentItemSetsAggregateBuilder<(S0,)>> for FrequentItemSetsAggregate
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_aggregate_members::buckets>,
+{
+    fn from(builder: FrequentItemSetsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18327,18 +18716,27 @@ pub struct FrequentItemSetsAggregation {
 
 impl FrequentItemSetsAggregation {
     /// Creates a builder for [`FrequentItemSetsAggregation`].
+    ///
+    /// Required: `fields`.
     pub fn builder() -> FrequentItemSetsAggregationBuilder {
         FrequentItemSetsAggregationBuilder::new()
     }
 
     /// Creates a [`FrequentItemSetsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrequentItemSetsAggregationBuilder,
-        ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrequentItemSetsAggregation>>(
+        f: impl FnOnce(FrequentItemSetsAggregationBuilder) -> B,
     ) -> FrequentItemSetsAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrequentItemSetsAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod frequent_item_sets_aggregation_members {
+    pub struct fields;
 }
 
 /// Builder for [`FrequentItemSetsAggregation`].
@@ -18432,20 +18830,18 @@ impl<S0> FrequentItemSetsAggregationBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// Fields to analyze.
+    /// **Required.** Fields to analyze.
     pub fn fields(
         self,
         value: impl Into<Vec<FrequentItemSetsField>>,
@@ -18469,11 +18865,9 @@ impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = FrequentItemSetsField>>(
         self,
-        f: impl FnOnce(
-            FrequentItemSetsFieldBuilder,
-        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FrequentItemSetsFieldBuilder) -> B,
     ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
         self.add_fields(f(FrequentItemSetsFieldBuilder::new()).build())
     }
@@ -18489,19 +18883,20 @@ impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = FrequentItemSetsField>>(
         self,
-        f: impl FnOnce(
-            FrequentItemSetsFieldBuilder,
-        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FrequentItemSetsFieldBuilder) -> B,
     ) -> Self {
         self.add_fields(f(FrequentItemSetsFieldBuilder::new()).build())
     }
 }
 
-impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FrequentItemSetsAggregationBuilder<(S0,)> {
     /// Builds a [`FrequentItemSetsAggregation`].
-    pub fn build(self) -> FrequentItemSetsAggregation {
+    pub fn build(self) -> FrequentItemSetsAggregation
+    where
+        S0: crate::typed::builder::IsSet<frequent_item_sets_aggregation_members::fields>,
+    {
         FrequentItemSetsAggregation {
             fields: self.fields.unwrap(),
             minimum_set_size: self.minimum_set_size,
@@ -18512,18 +18907,24 @@ impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)>>
-    for FrequentItemSetsAggregation
+impl<S0> crate::typed::builder::Build for FrequentItemSetsAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_aggregation_members::fields>,
 {
-    fn from(builder: FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = FrequentItemSetsAggregation;
+
+    fn build(self) -> FrequentItemSetsAggregation {
+        Self::build(self)
     }
 }
 
-impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsAggregation { match fields {} }
+impl<S0> From<FrequentItemSetsAggregationBuilder<(S0,)>> for FrequentItemSetsAggregation
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_aggregation_members::fields>,
+{
+    fn from(builder: FrequentItemSetsAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18538,22 +18939,29 @@ pub struct FrequentItemSetsBucket {
 
 impl FrequentItemSetsBucket {
     /// Creates a builder for [`FrequentItemSetsBucket`].
+    ///
+    /// Required: `doc_count`, `key`, `support`.
     pub fn builder() -> FrequentItemSetsBucketBuilder {
         FrequentItemSetsBucketBuilder::new()
     }
 
     /// Creates a [`FrequentItemSetsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrequentItemSetsBucketBuilder,
-        ) -> FrequentItemSetsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`, `support`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrequentItemSetsBucket>>(
+        f: impl FnOnce(FrequentItemSetsBucketBuilder) -> B,
     ) -> FrequentItemSetsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrequentItemSetsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod frequent_item_sets_bucket_members {
+    pub struct doc_count;
+    pub struct key;
+    pub struct support;
 }
 
 /// Builder for [`FrequentItemSetsBucket`].
@@ -18622,6 +19030,7 @@ impl<S0, S1, S2> FrequentItemSetsBucketBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -18633,6 +19042,7 @@ impl<S1, S2> FrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2> FrequentItemSetsBucketBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Field, Vec<String>>>,
@@ -18672,6 +19082,7 @@ impl<S0, S2> FrequentItemSetsBucketBuilder<(S0, crate::typed::builder::Set, S2)>
 }
 
 impl<S0, S1> FrequentItemSetsBucketBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn support(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -18682,15 +19093,14 @@ impl<S0, S1> FrequentItemSetsBucketBuilder<(S0, S1, crate::typed::builder::NotSe
     }
 }
 
-impl
-    FrequentItemSetsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FrequentItemSetsBucketBuilder<(S0, S1, S2)> {
     /// Builds a [`FrequentItemSetsBucket`].
-    pub fn build(self) -> FrequentItemSetsBucket {
+    pub fn build(self) -> FrequentItemSetsBucket
+    where
+        S0: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::key>,
+        S2: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::support>,
+    {
         FrequentItemSetsBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -18700,54 +19110,28 @@ impl
     }
 }
 
-impl
-    From<
-        FrequentItemSetsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FrequentItemSetsBucket
+impl<S0, S1, S2> crate::typed::builder::Build for FrequentItemSetsBucketBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::key>,
+    S2: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::support>,
 {
-    fn from(
-        builder: FrequentItemSetsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FrequentItemSetsBucket;
+
+    fn build(self) -> FrequentItemSetsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsBucket { match doc_count {} }
-}
-
-impl<S2>
-    FrequentItemSetsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FrequentItemSetsBucketBuilder<(S0, S1, S2)>> for FrequentItemSetsBucket
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::key>,
+    S2: crate::typed::builder::IsSet<frequent_item_sets_bucket_members::support>,
 {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsBucket { match key {} }
-}
-
-impl
-    FrequentItemSetsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `support` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, support: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsBucket { match support {} }
+    fn from(builder: FrequentItemSetsBucketBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18765,18 +19149,27 @@ pub struct FrequentItemSetsField {
 
 impl FrequentItemSetsField {
     /// Creates a builder for [`FrequentItemSetsField`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> FrequentItemSetsFieldBuilder {
         FrequentItemSetsFieldBuilder::new()
     }
 
     /// Creates a [`FrequentItemSetsField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrequentItemSetsFieldBuilder,
-        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrequentItemSetsField>>(
+        f: impl FnOnce(FrequentItemSetsFieldBuilder) -> B,
     ) -> FrequentItemSetsField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrequentItemSetsFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod frequent_item_sets_field_members {
+    pub struct field;
 }
 
 /// Builder for [`FrequentItemSetsField`].
@@ -18837,6 +19230,7 @@ impl<S0> FrequentItemSetsFieldBuilder<(S0,)> {
 }
 
 impl FrequentItemSetsFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -18847,9 +19241,12 @@ impl FrequentItemSetsFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FrequentItemSetsFieldBuilder<(S0,)> {
     /// Builds a [`FrequentItemSetsField`].
-    pub fn build(self) -> FrequentItemSetsField {
+    pub fn build(self) -> FrequentItemSetsField
+    where
+        S0: crate::typed::builder::IsSet<frequent_item_sets_field_members::field>,
+    {
         FrequentItemSetsField {
             field: self.field.unwrap(),
             exclude: self.exclude,
@@ -18858,16 +19255,24 @@ impl FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>> for FrequentItemSetsField {
-    fn from(builder: FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FrequentItemSetsFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_field_members::field>,
+{
+    type Output = FrequentItemSetsField;
+
+    fn build(self) -> FrequentItemSetsField {
+        Self::build(self)
     }
 }
 
-impl FrequentItemSetsFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FrequentItemSetsField { match field {} }
+impl<S0> From<FrequentItemSetsFieldBuilder<(S0,)>> for FrequentItemSetsField
+where
+    S0: crate::typed::builder::IsSet<frequent_item_sets_field_members::field>,
+{
+    fn from(builder: FrequentItemSetsFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18900,8 +19305,8 @@ impl GeoBoundsAggregate {
     }
 
     /// Creates a [`GeoBoundsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoBoundsAggregateBuilder) -> GeoBoundsAggregateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoBoundsAggregate>>(
+        f: impl FnOnce(GeoBoundsAggregateBuilder) -> B,
     ) -> GeoBoundsAggregate {
         f(Self::builder()).build()
     }
@@ -18965,6 +19370,14 @@ impl GeoBoundsAggregateBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoBoundsAggregateBuilder {
+    type Output = GeoBoundsAggregate;
+
+    fn build(self) -> GeoBoundsAggregate {
+        Self::build(self)
+    }
+}
+
 impl From<GeoBoundsAggregateBuilder> for GeoBoundsAggregate {
     fn from(builder: GeoBoundsAggregateBuilder) -> Self {
         builder.build()
@@ -18994,8 +19407,8 @@ impl GeoBoundsAggregation {
     }
 
     /// Creates a [`GeoBoundsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoBoundsAggregationBuilder) -> GeoBoundsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoBoundsAggregation>>(
+        f: impl FnOnce(GeoBoundsAggregationBuilder) -> B,
     ) -> GeoBoundsAggregation {
         f(Self::builder()).build()
     }
@@ -19059,9 +19472,9 @@ impl GeoBoundsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -19091,6 +19504,14 @@ impl GeoBoundsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoBoundsAggregationBuilder {
+    type Output = GeoBoundsAggregation;
+
+    fn build(self) -> GeoBoundsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GeoBoundsAggregationBuilder> for GeoBoundsAggregation {
     fn from(builder: GeoBoundsAggregationBuilder) -> Self {
         builder.build()
@@ -19108,18 +19529,27 @@ pub struct GeoCentroidAggregate {
 
 impl GeoCentroidAggregate {
     /// Creates a builder for [`GeoCentroidAggregate`].
+    ///
+    /// Required: `count`.
     pub fn builder() -> GeoCentroidAggregateBuilder {
         GeoCentroidAggregateBuilder::new()
     }
 
     /// Creates a [`GeoCentroidAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoCentroidAggregateBuilder,
-        ) -> GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoCentroidAggregate>>(
+        f: impl FnOnce(GeoCentroidAggregateBuilder) -> B,
     ) -> GeoCentroidAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoCentroidAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_centroid_aggregate_members {
+    pub struct count;
 }
 
 /// Builder for [`GeoCentroidAggregate`].
@@ -19184,6 +19614,7 @@ impl<S0> GeoCentroidAggregateBuilder<(S0,)> {
 }
 
 impl GeoCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn count(self, value: i64) -> GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.count = Some(value);
@@ -19191,9 +19622,12 @@ impl GeoCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoCentroidAggregateBuilder<(S0,)> {
     /// Builds a [`GeoCentroidAggregate`].
-    pub fn build(self) -> GeoCentroidAggregate {
+    pub fn build(self) -> GeoCentroidAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_centroid_aggregate_members::count>,
+    {
         GeoCentroidAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -19202,16 +19636,24 @@ impl GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>> for GeoCentroidAggregate {
-    fn from(builder: GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoCentroidAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_centroid_aggregate_members::count>,
+{
+    type Output = GeoCentroidAggregate;
+
+    fn build(self) -> GeoCentroidAggregate {
+        Self::build(self)
     }
 }
 
-impl GeoCentroidAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> GeoCentroidAggregate { match count {} }
+impl<S0> From<GeoCentroidAggregateBuilder<(S0,)>> for GeoCentroidAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_centroid_aggregate_members::count>,
+{
+    fn from(builder: GeoCentroidAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19238,8 +19680,8 @@ impl GeoCentroidAggregation {
     }
 
     /// Creates a [`GeoCentroidAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoCentroidAggregationBuilder) -> GeoCentroidAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoCentroidAggregation>>(
+        f: impl FnOnce(GeoCentroidAggregationBuilder) -> B,
     ) -> GeoCentroidAggregation {
         f(Self::builder()).build()
     }
@@ -19305,9 +19747,9 @@ impl GeoCentroidAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -19348,6 +19790,14 @@ impl GeoCentroidAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoCentroidAggregationBuilder {
+    type Output = GeoCentroidAggregation;
+
+    fn build(self) -> GeoCentroidAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GeoCentroidAggregationBuilder> for GeoCentroidAggregation {
     fn from(builder: GeoCentroidAggregationBuilder) -> Self {
         builder.build()
@@ -19364,18 +19814,27 @@ pub struct GeoDistanceAggregate {
 
 impl GeoDistanceAggregate {
     /// Creates a builder for [`GeoDistanceAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> GeoDistanceAggregateBuilder {
         GeoDistanceAggregateBuilder::new()
     }
 
     /// Creates a [`GeoDistanceAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoDistanceAggregateBuilder,
-        ) -> GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoDistanceAggregate>>(
+        f: impl FnOnce(GeoDistanceAggregateBuilder) -> B,
     ) -> GeoDistanceAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoDistanceAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_distance_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`GeoDistanceAggregate`].
@@ -19426,6 +19885,7 @@ impl<S0> GeoDistanceAggregateBuilder<(S0,)> {
 }
 
 impl GeoDistanceAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsRangeBucket>,
@@ -19436,9 +19896,12 @@ impl GeoDistanceAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoDistanceAggregateBuilder<(S0,)> {
     /// Builds a [`GeoDistanceAggregate`].
-    pub fn build(self) -> GeoDistanceAggregate {
+    pub fn build(self) -> GeoDistanceAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_distance_aggregate_members::buckets>,
+    {
         GeoDistanceAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -19446,16 +19909,24 @@ impl GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>> for GeoDistanceAggregate {
-    fn from(builder: GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoDistanceAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_distance_aggregate_members::buckets>,
+{
+    type Output = GeoDistanceAggregate;
+
+    fn build(self) -> GeoDistanceAggregate {
+        Self::build(self)
     }
 }
 
-impl GeoDistanceAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> GeoDistanceAggregate { match buckets {} }
+impl<S0> From<GeoDistanceAggregateBuilder<(S0,)>> for GeoDistanceAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_distance_aggregate_members::buckets>,
+{
+    fn from(builder: GeoDistanceAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19484,8 +19955,8 @@ impl GeoDistanceAggregation {
     }
 
     /// Creates a [`GeoDistanceAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoDistanceAggregationBuilder) -> GeoDistanceAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoDistanceAggregation>>(
+        f: impl FnOnce(GeoDistanceAggregationBuilder) -> B,
     ) -> GeoDistanceAggregation {
         f(Self::builder()).build()
     }
@@ -19577,9 +20048,9 @@ impl GeoDistanceAggregationBuilder {
     }
 
     /// Adds an element to [`ranges`](Self::ranges), with a builder.
-    pub fn add_ranges_with(
+    pub fn add_ranges_with<B: crate::typed::builder::Build<Output = AggregationRange>>(
         self,
-        f: impl FnOnce(AggregationRangeBuilder) -> AggregationRangeBuilder,
+        f: impl FnOnce(AggregationRangeBuilder) -> B,
     ) -> Self {
         self.add_ranges(f(AggregationRangeBuilder::new()).build())
     }
@@ -19610,6 +20081,14 @@ impl GeoDistanceAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoDistanceAggregationBuilder {
+    type Output = GeoDistanceAggregation;
+
+    fn build(self) -> GeoDistanceAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GeoDistanceAggregationBuilder> for GeoDistanceAggregation {
     fn from(builder: GeoDistanceAggregationBuilder) -> Self {
         builder.build()
@@ -19625,18 +20104,27 @@ pub struct GeoHashGridAggregate {
 
 impl GeoHashGridAggregate {
     /// Creates a builder for [`GeoHashGridAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> GeoHashGridAggregateBuilder {
         GeoHashGridAggregateBuilder::new()
     }
 
     /// Creates a [`GeoHashGridAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoHashGridAggregateBuilder,
-        ) -> GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoHashGridAggregate>>(
+        f: impl FnOnce(GeoHashGridAggregateBuilder) -> B,
     ) -> GeoHashGridAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoHashGridAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_hash_grid_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`GeoHashGridAggregate`].
@@ -19687,6 +20175,7 @@ impl<S0> GeoHashGridAggregateBuilder<(S0,)> {
 }
 
 impl GeoHashGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoHashGridBucket>,
@@ -19697,9 +20186,12 @@ impl GeoHashGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoHashGridAggregateBuilder<(S0,)> {
     /// Builds a [`GeoHashGridAggregate`].
-    pub fn build(self) -> GeoHashGridAggregate {
+    pub fn build(self) -> GeoHashGridAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_hash_grid_aggregate_members::buckets>,
+    {
         GeoHashGridAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -19707,16 +20199,24 @@ impl GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>> for GeoHashGridAggregate {
-    fn from(builder: GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoHashGridAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_hash_grid_aggregate_members::buckets>,
+{
+    type Output = GeoHashGridAggregate;
+
+    fn build(self) -> GeoHashGridAggregate {
+        Self::build(self)
     }
 }
 
-impl GeoHashGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> GeoHashGridAggregate { match buckets {} }
+impl<S0> From<GeoHashGridAggregateBuilder<(S0,)>> for GeoHashGridAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_hash_grid_aggregate_members::buckets>,
+{
+    fn from(builder: GeoHashGridAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19747,8 +20247,8 @@ impl GeoHashGridAggregation {
     }
 
     /// Creates a [`GeoHashGridAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoHashGridAggregationBuilder) -> GeoHashGridAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoHashGridAggregation>>(
+        f: impl FnOnce(GeoHashGridAggregationBuilder) -> B,
     ) -> GeoHashGridAggregation {
         f(Self::builder()).build()
     }
@@ -19856,6 +20356,14 @@ impl GeoHashGridAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoHashGridAggregationBuilder {
+    type Output = GeoHashGridAggregation;
+
+    fn build(self) -> GeoHashGridAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GeoHashGridAggregationBuilder> for GeoHashGridAggregation {
     fn from(builder: GeoHashGridAggregationBuilder) -> Self {
         builder.build()
@@ -19873,21 +20381,28 @@ pub struct GeoHashGridBucket {
 
 impl GeoHashGridBucket {
     /// Creates a builder for [`GeoHashGridBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> GeoHashGridBucketBuilder {
         GeoHashGridBucketBuilder::new()
     }
 
     /// Creates a [`GeoHashGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoHashGridBucketBuilder,
-        ) -> GeoHashGridBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoHashGridBucket>>(
+        f: impl FnOnce(GeoHashGridBucketBuilder) -> B,
     ) -> GeoHashGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoHashGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_hash_grid_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`GeoHashGridBucket`].
@@ -19943,6 +20458,7 @@ impl<S0, S1> GeoHashGridBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> GeoHashGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -19954,6 +20470,7 @@ impl<S1> GeoHashGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GeoHashGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::GeoHash>,
@@ -19964,9 +20481,13 @@ impl<S0> GeoHashGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl GeoHashGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GeoHashGridBucketBuilder<(S0, S1)> {
     /// Builds a [`GeoHashGridBucket`].
-    pub fn build(self) -> GeoHashGridBucket {
+    pub fn build(self) -> GeoHashGridBucket
+    where
+        S0: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::key>,
+    {
         GeoHashGridBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -19975,26 +20496,26 @@ impl GeoHashGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<GeoHashGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GeoHashGridBucket
+impl<S0, S1> crate::typed::builder::Build for GeoHashGridBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::key>,
 {
-    fn from(
-        builder: GeoHashGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoHashGridBucket;
+
+    fn build(self) -> GeoHashGridBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> GeoHashGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> GeoHashGridBucket { match doc_count {} }
-}
-
-impl GeoHashGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> GeoHashGridBucket { match key {} }
+impl<S0, S1> From<GeoHashGridBucketBuilder<(S0, S1)>> for GeoHashGridBucket
+where
+    S0: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_hash_grid_bucket_members::key>,
+{
+    fn from(builder: GeoHashGridBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20006,18 +20527,27 @@ pub struct GeoHexGridAggregate {
 
 impl GeoHexGridAggregate {
     /// Creates a builder for [`GeoHexGridAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> GeoHexGridAggregateBuilder {
         GeoHexGridAggregateBuilder::new()
     }
 
     /// Creates a [`GeoHexGridAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoHexGridAggregateBuilder,
-        ) -> GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoHexGridAggregate>>(
+        f: impl FnOnce(GeoHexGridAggregateBuilder) -> B,
     ) -> GeoHexGridAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoHexGridAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_hex_grid_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`GeoHexGridAggregate`].
@@ -20068,6 +20598,7 @@ impl<S0> GeoHexGridAggregateBuilder<(S0,)> {
 }
 
 impl GeoHexGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoHexGridBucket>,
@@ -20078,9 +20609,12 @@ impl GeoHexGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoHexGridAggregateBuilder<(S0,)> {
     /// Builds a [`GeoHexGridAggregate`].
-    pub fn build(self) -> GeoHexGridAggregate {
+    pub fn build(self) -> GeoHexGridAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_hex_grid_aggregate_members::buckets>,
+    {
         GeoHexGridAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -20088,16 +20622,24 @@ impl GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>> for GeoHexGridAggregate {
-    fn from(builder: GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoHexGridAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_hex_grid_aggregate_members::buckets>,
+{
+    type Output = GeoHexGridAggregate;
+
+    fn build(self) -> GeoHexGridAggregate {
+        Self::build(self)
     }
 }
 
-impl GeoHexGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> GeoHexGridAggregate { match buckets {} }
+impl<S0> From<GeoHexGridAggregateBuilder<(S0,)>> for GeoHexGridAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_hex_grid_aggregate_members::buckets>,
+{
+    fn from(builder: GeoHexGridAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20111,21 +20653,28 @@ pub struct GeoHexGridBucket {
 
 impl GeoHexGridBucket {
     /// Creates a builder for [`GeoHexGridBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> GeoHexGridBucketBuilder {
         GeoHexGridBucketBuilder::new()
     }
 
     /// Creates a [`GeoHexGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoHexGridBucketBuilder,
-        ) -> GeoHexGridBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoHexGridBucket>>(
+        f: impl FnOnce(GeoHexGridBucketBuilder) -> B,
     ) -> GeoHexGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoHexGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_hex_grid_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`GeoHexGridBucket`].
@@ -20181,6 +20730,7 @@ impl<S0, S1> GeoHexGridBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> GeoHexGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -20192,6 +20742,7 @@ impl<S1> GeoHexGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GeoHexGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::GeoHexCell>,
@@ -20202,9 +20753,13 @@ impl<S0> GeoHexGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl GeoHexGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GeoHexGridBucketBuilder<(S0, S1)> {
     /// Builds a [`GeoHexGridBucket`].
-    pub fn build(self) -> GeoHexGridBucket {
+    pub fn build(self) -> GeoHexGridBucket
+    where
+        S0: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::key>,
+    {
         GeoHexGridBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -20213,26 +20768,26 @@ impl GeoHexGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<GeoHexGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GeoHexGridBucket
+impl<S0, S1> crate::typed::builder::Build for GeoHexGridBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::key>,
 {
-    fn from(
-        builder: GeoHexGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoHexGridBucket;
+
+    fn build(self) -> GeoHexGridBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> GeoHexGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> GeoHexGridBucket { match doc_count {} }
-}
-
-impl GeoHexGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> GeoHexGridBucket { match key {} }
+impl<S0, S1> From<GeoHexGridBucketBuilder<(S0, S1)>> for GeoHexGridBucket
+where
+    S0: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_hex_grid_bucket_members::key>,
+{
+    fn from(builder: GeoHexGridBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20246,22 +20801,29 @@ pub struct GeoLineAggregate {
 
 impl GeoLineAggregate {
     /// Creates a builder for [`GeoLineAggregate`].
+    ///
+    /// Required: `type`, `geometry`, `properties`.
     pub fn builder() -> GeoLineAggregateBuilder {
         GeoLineAggregateBuilder::new()
     }
 
     /// Creates a [`GeoLineAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoLineAggregateBuilder,
-        ) -> GeoLineAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `geometry`, `properties`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoLineAggregate>>(
+        f: impl FnOnce(GeoLineAggregateBuilder) -> B,
     ) -> GeoLineAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoLineAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_line_aggregate_members {
+    pub struct r#type;
+    pub struct geometry;
+    pub struct properties;
 }
 
 /// Builder for [`GeoLineAggregate`].
@@ -20330,6 +20892,7 @@ impl<S0, S1, S2> GeoLineAggregateBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> GeoLineAggregateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -20341,6 +20904,7 @@ impl<S1, S2> GeoLineAggregateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> GeoLineAggregateBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn geometry(
         self,
         value: impl Into<crate::typed::_types::GeoLine>,
@@ -20351,20 +20915,18 @@ impl<S0, S2> GeoLineAggregateBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`geometry`](Self::geometry) with a builder.
-    pub fn geometry_with(
+    pub fn geometry_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::GeoLine>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::GeoLineBuilder,
-        ) -> crate::typed::_types::GeoLineBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::GeoLineBuilder) -> B,
     ) -> GeoLineAggregateBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.geometry(f(crate::typed::_types::GeoLineBuilder::new()).build())
     }
 }
 
 impl<S0, S1> GeoLineAggregateBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn properties(
         self,
         value: impl Into<serde_json::Value>,
@@ -20375,15 +20937,14 @@ impl<S0, S1> GeoLineAggregateBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    GeoLineAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> GeoLineAggregateBuilder<(S0, S1, S2)> {
     /// Builds a [`GeoLineAggregate`].
-    pub fn build(self) -> GeoLineAggregate {
+    pub fn build(self) -> GeoLineAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_line_aggregate_members::r#type>,
+        S1: crate::typed::builder::IsSet<geo_line_aggregate_members::geometry>,
+        S2: crate::typed::builder::IsSet<geo_line_aggregate_members::properties>,
+    {
         GeoLineAggregate {
             meta: self.meta,
             r#type: self.r#type.unwrap(),
@@ -20393,54 +20954,28 @@ impl
     }
 }
 
-impl
-    From<
-        GeoLineAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GeoLineAggregate
+impl<S0, S1, S2> crate::typed::builder::Build for GeoLineAggregateBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<geo_line_aggregate_members::r#type>,
+    S1: crate::typed::builder::IsSet<geo_line_aggregate_members::geometry>,
+    S2: crate::typed::builder::IsSet<geo_line_aggregate_members::properties>,
 {
-    fn from(
-        builder: GeoLineAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoLineAggregate;
+
+    fn build(self) -> GeoLineAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> GeoLineAggregateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GeoLineAggregate { match r#type {} }
-}
-
-impl<S2>
-    GeoLineAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<GeoLineAggregateBuilder<(S0, S1, S2)>> for GeoLineAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_line_aggregate_members::r#type>,
+    S1: crate::typed::builder::IsSet<geo_line_aggregate_members::geometry>,
+    S2: crate::typed::builder::IsSet<geo_line_aggregate_members::properties>,
 {
-    /// `geometry` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, geometry: crate::typed::builder::MissingRequiredField) -> GeoLineAggregate { match geometry {} }
-}
-
-impl
-    GeoLineAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `properties` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, properties: crate::typed::builder::MissingRequiredField) -> GeoLineAggregate { match properties {} }
+    fn from(builder: GeoLineAggregateBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20465,18 +21000,27 @@ pub struct GeoLineAggregation {
 
 impl GeoLineAggregation {
     /// Creates a builder for [`GeoLineAggregation`].
+    ///
+    /// Required: `point`.
     pub fn builder() -> GeoLineAggregationBuilder {
         GeoLineAggregationBuilder::new()
     }
 
     /// Creates a [`GeoLineAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoLineAggregationBuilder,
-        ) -> GeoLineAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `point`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoLineAggregation>>(
+        f: impl FnOnce(GeoLineAggregationBuilder) -> B,
     ) -> GeoLineAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoLineAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_line_aggregation_members {
+    pub struct point;
 }
 
 /// Builder for [`GeoLineAggregation`].
@@ -20529,9 +21073,9 @@ impl<S0> GeoLineAggregationBuilder<(S0,)> {
     }
 
     /// Sets [`sort`](Self::sort) with a builder.
-    pub fn sort_with(
+    pub fn sort_with<B: crate::typed::builder::Build<Output = GeoLineSort>>(
         self,
-        f: impl FnOnce(GeoLineSortBuilder) -> GeoLineSortBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoLineSortBuilder) -> B,
     ) -> Self {
         self.sort(f(GeoLineSortBuilder::new()).build())
     }
@@ -20575,7 +21119,7 @@ impl<S0> GeoLineAggregationBuilder<(S0,)> {
 }
 
 impl GeoLineAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the geo_point field.
+    /// **Required.** The name of the geo_point field.
     pub fn point(
         self,
         value: impl Into<GeoLinePoint>,
@@ -20586,17 +21130,20 @@ impl GeoLineAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`point`](Self::point) with a builder.
-    pub fn point_with(
+    pub fn point_with<B: crate::typed::builder::Build<Output = GeoLinePoint>>(
         self,
-        f: impl FnOnce(GeoLinePointBuilder) -> GeoLinePointBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoLinePointBuilder) -> B,
     ) -> GeoLineAggregationBuilder<(crate::typed::builder::Set,)> {
         self.point(f(GeoLinePointBuilder::new()).build())
     }
 }
 
-impl GeoLineAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoLineAggregationBuilder<(S0,)> {
     /// Builds a [`GeoLineAggregation`].
-    pub fn build(self) -> GeoLineAggregation {
+    pub fn build(self) -> GeoLineAggregation
+    where
+        S0: crate::typed::builder::IsSet<geo_line_aggregation_members::point>,
+    {
         GeoLineAggregation {
             point: self.point.unwrap(),
             sort: self.sort,
@@ -20607,16 +21154,24 @@ impl GeoLineAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoLineAggregationBuilder<(crate::typed::builder::Set,)>> for GeoLineAggregation {
-    fn from(builder: GeoLineAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoLineAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_line_aggregation_members::point>,
+{
+    type Output = GeoLineAggregation;
+
+    fn build(self) -> GeoLineAggregation {
+        Self::build(self)
     }
 }
 
-impl GeoLineAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, point: crate::typed::builder::MissingRequiredField) -> GeoLineAggregation { match point {} }
+impl<S0> From<GeoLineAggregationBuilder<(S0,)>> for GeoLineAggregation
+where
+    S0: crate::typed::builder::IsSet<geo_line_aggregation_members::point>,
+{
+    fn from(builder: GeoLineAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20627,16 +21182,27 @@ pub struct GeoLinePoint {
 
 impl GeoLinePoint {
     /// Creates a builder for [`GeoLinePoint`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> GeoLinePointBuilder {
         GeoLinePointBuilder::new()
     }
 
     /// Creates a [`GeoLinePoint`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoLinePointBuilder) -> GeoLinePointBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoLinePoint>>(
+        f: impl FnOnce(GeoLinePointBuilder) -> B,
     ) -> GeoLinePoint {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoLinePointBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_line_point_members {
+    pub struct field;
 }
 
 /// Builder for [`GeoLinePoint`].
@@ -20665,7 +21231,7 @@ impl<S0> GeoLinePointBuilder<(S0,)> {
 }
 
 impl GeoLinePointBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the geo_point field.
+    /// **Required.** The name of the geo_point field.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -20676,25 +21242,36 @@ impl GeoLinePointBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoLinePointBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoLinePointBuilder<(S0,)> {
     /// Builds a [`GeoLinePoint`].
-    pub fn build(self) -> GeoLinePoint {
+    pub fn build(self) -> GeoLinePoint
+    where
+        S0: crate::typed::builder::IsSet<geo_line_point_members::field>,
+    {
         GeoLinePoint {
             field: self.field.unwrap(),
         }
     }
 }
 
-impl From<GeoLinePointBuilder<(crate::typed::builder::Set,)>> for GeoLinePoint {
-    fn from(builder: GeoLinePointBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoLinePointBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_line_point_members::field>,
+{
+    type Output = GeoLinePoint;
+
+    fn build(self) -> GeoLinePoint {
+        Self::build(self)
     }
 }
 
-impl GeoLinePointBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeoLinePoint { match field {} }
+impl<S0> From<GeoLinePointBuilder<(S0,)>> for GeoLinePoint
+where
+    S0: crate::typed::builder::IsSet<geo_line_point_members::field>,
+{
+    fn from(builder: GeoLinePointBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20705,16 +21282,27 @@ pub struct GeoLineSort {
 
 impl GeoLineSort {
     /// Creates a builder for [`GeoLineSort`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> GeoLineSortBuilder {
         GeoLineSortBuilder::new()
     }
 
     /// Creates a [`GeoLineSort`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoLineSortBuilder) -> GeoLineSortBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoLineSort>>(
+        f: impl FnOnce(GeoLineSortBuilder) -> B,
     ) -> GeoLineSort {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoLineSortBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_line_sort_members {
+    pub struct field;
 }
 
 /// Builder for [`GeoLineSort`].
@@ -20743,7 +21331,7 @@ impl<S0> GeoLineSortBuilder<(S0,)> {
 }
 
 impl GeoLineSortBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the numeric field to use as the sort key for ordering the points.
+    /// **Required.** The name of the numeric field to use as the sort key for ordering the points.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -20754,25 +21342,36 @@ impl GeoLineSortBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoLineSortBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoLineSortBuilder<(S0,)> {
     /// Builds a [`GeoLineSort`].
-    pub fn build(self) -> GeoLineSort {
+    pub fn build(self) -> GeoLineSort
+    where
+        S0: crate::typed::builder::IsSet<geo_line_sort_members::field>,
+    {
         GeoLineSort {
             field: self.field.unwrap(),
         }
     }
 }
 
-impl From<GeoLineSortBuilder<(crate::typed::builder::Set,)>> for GeoLineSort {
-    fn from(builder: GeoLineSortBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoLineSortBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_line_sort_members::field>,
+{
+    type Output = GeoLineSort;
+
+    fn build(self) -> GeoLineSort {
+        Self::build(self)
     }
 }
 
-impl GeoLineSortBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeoLineSort { match field {} }
+impl<S0> From<GeoLineSortBuilder<(S0,)>> for GeoLineSort
+where
+    S0: crate::typed::builder::IsSet<geo_line_sort_members::field>,
+{
+    fn from(builder: GeoLineSortBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20784,18 +21383,27 @@ pub struct GeoTileGridAggregate {
 
 impl GeoTileGridAggregate {
     /// Creates a builder for [`GeoTileGridAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> GeoTileGridAggregateBuilder {
         GeoTileGridAggregateBuilder::new()
     }
 
     /// Creates a [`GeoTileGridAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoTileGridAggregateBuilder,
-        ) -> GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoTileGridAggregate>>(
+        f: impl FnOnce(GeoTileGridAggregateBuilder) -> B,
     ) -> GeoTileGridAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoTileGridAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_tile_grid_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`GeoTileGridAggregate`].
@@ -20846,6 +21454,7 @@ impl<S0> GeoTileGridAggregateBuilder<(S0,)> {
 }
 
 impl GeoTileGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoTileGridBucket>,
@@ -20856,9 +21465,12 @@ impl GeoTileGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoTileGridAggregateBuilder<(S0,)> {
     /// Builds a [`GeoTileGridAggregate`].
-    pub fn build(self) -> GeoTileGridAggregate {
+    pub fn build(self) -> GeoTileGridAggregate
+    where
+        S0: crate::typed::builder::IsSet<geo_tile_grid_aggregate_members::buckets>,
+    {
         GeoTileGridAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -20866,16 +21478,24 @@ impl GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>> for GeoTileGridAggregate {
-    fn from(builder: GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoTileGridAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_tile_grid_aggregate_members::buckets>,
+{
+    type Output = GeoTileGridAggregate;
+
+    fn build(self) -> GeoTileGridAggregate {
+        Self::build(self)
     }
 }
 
-impl GeoTileGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> GeoTileGridAggregate { match buckets {} }
+impl<S0> From<GeoTileGridAggregateBuilder<(S0,)>> for GeoTileGridAggregate
+where
+    S0: crate::typed::builder::IsSet<geo_tile_grid_aggregate_members::buckets>,
+{
+    fn from(builder: GeoTileGridAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20907,8 +21527,8 @@ impl GeoTileGridAggregation {
     }
 
     /// Creates a [`GeoTileGridAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoTileGridAggregationBuilder) -> GeoTileGridAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoTileGridAggregation>>(
+        f: impl FnOnce(GeoTileGridAggregationBuilder) -> B,
     ) -> GeoTileGridAggregation {
         f(Self::builder()).build()
     }
@@ -21017,6 +21637,14 @@ impl GeoTileGridAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoTileGridAggregationBuilder {
+    type Output = GeoTileGridAggregation;
+
+    fn build(self) -> GeoTileGridAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GeoTileGridAggregationBuilder> for GeoTileGridAggregation {
     fn from(builder: GeoTileGridAggregationBuilder) -> Self {
         builder.build()
@@ -21034,21 +21662,28 @@ pub struct GeoTileGridBucket {
 
 impl GeoTileGridBucket {
     /// Creates a builder for [`GeoTileGridBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> GeoTileGridBucketBuilder {
         GeoTileGridBucketBuilder::new()
     }
 
     /// Creates a [`GeoTileGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoTileGridBucketBuilder,
-        ) -> GeoTileGridBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoTileGridBucket>>(
+        f: impl FnOnce(GeoTileGridBucketBuilder) -> B,
     ) -> GeoTileGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoTileGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_tile_grid_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`GeoTileGridBucket`].
@@ -21104,6 +21739,7 @@ impl<S0, S1> GeoTileGridBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> GeoTileGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -21115,6 +21751,7 @@ impl<S1> GeoTileGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GeoTileGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::GeoTile>,
@@ -21125,9 +21762,13 @@ impl<S0> GeoTileGridBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl GeoTileGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GeoTileGridBucketBuilder<(S0, S1)> {
     /// Builds a [`GeoTileGridBucket`].
-    pub fn build(self) -> GeoTileGridBucket {
+    pub fn build(self) -> GeoTileGridBucket
+    where
+        S0: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::key>,
+    {
         GeoTileGridBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -21136,26 +21777,26 @@ impl GeoTileGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<GeoTileGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GeoTileGridBucket
+impl<S0, S1> crate::typed::builder::Build for GeoTileGridBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::key>,
 {
-    fn from(
-        builder: GeoTileGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoTileGridBucket;
+
+    fn build(self) -> GeoTileGridBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> GeoTileGridBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> GeoTileGridBucket { match doc_count {} }
-}
-
-impl GeoTileGridBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> GeoTileGridBucket { match key {} }
+impl<S0, S1> From<GeoTileGridBucketBuilder<(S0, S1)>> for GeoTileGridBucket
+where
+    S0: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<geo_tile_grid_bucket_members::key>,
+{
+    fn from(builder: GeoTileGridBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21180,18 +21821,27 @@ pub struct GeohexGridAggregation {
 
 impl GeohexGridAggregation {
     /// Creates a builder for [`GeohexGridAggregation`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> GeohexGridAggregationBuilder {
         GeohexGridAggregationBuilder::new()
     }
 
     /// Creates a [`GeohexGridAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeohexGridAggregationBuilder,
-        ) -> GeohexGridAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeohexGridAggregation>>(
+        f: impl FnOnce(GeohexGridAggregationBuilder) -> B,
     ) -> GeohexGridAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeohexGridAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geohex_grid_aggregation_members {
+    pub struct field;
 }
 
 /// Builder for [`GeohexGridAggregation`].
@@ -21281,7 +21931,7 @@ impl<S0> GeohexGridAggregationBuilder<(S0,)> {
 }
 
 impl GeohexGridAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field containing indexed `geo_point` or `geo_shape` values.
+    /// **Required.** Field containing indexed `geo_point` or `geo_shape` values.
     /// If the field contains an array, `geohex_grid` aggregates all array values.
     pub fn field(
         self,
@@ -21293,9 +21943,12 @@ impl GeohexGridAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeohexGridAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeohexGridAggregationBuilder<(S0,)> {
     /// Builds a [`GeohexGridAggregation`].
-    pub fn build(self) -> GeohexGridAggregation {
+    pub fn build(self) -> GeohexGridAggregation
+    where
+        S0: crate::typed::builder::IsSet<geohex_grid_aggregation_members::field>,
+    {
         GeohexGridAggregation {
             field: self.field.unwrap(),
             precision: self.precision,
@@ -21306,16 +21959,24 @@ impl GeohexGridAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeohexGridAggregationBuilder<(crate::typed::builder::Set,)>> for GeohexGridAggregation {
-    fn from(builder: GeohexGridAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeohexGridAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geohex_grid_aggregation_members::field>,
+{
+    type Output = GeohexGridAggregation;
+
+    fn build(self) -> GeohexGridAggregation {
+        Self::build(self)
     }
 }
 
-impl GeohexGridAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeohexGridAggregation { match field {} }
+impl<S0> From<GeohexGridAggregationBuilder<(S0,)>> for GeohexGridAggregation
+where
+    S0: crate::typed::builder::IsSet<geohex_grid_aggregation_members::field>,
+{
+    fn from(builder: GeohexGridAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21330,16 +21991,27 @@ pub struct GlobalAggregate {
 
 impl GlobalAggregate {
     /// Creates a builder for [`GlobalAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> GlobalAggregateBuilder {
         GlobalAggregateBuilder::new()
     }
 
     /// Creates a [`GlobalAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GlobalAggregateBuilder) -> GlobalAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = GlobalAggregate>>(
+        f: impl FnOnce(GlobalAggregateBuilder) -> B,
     ) -> GlobalAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GlobalAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod global_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`GlobalAggregate`].
@@ -21412,6 +22084,7 @@ impl<S0> GlobalAggregateBuilder<(S0,)> {
 }
 
 impl GlobalAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> GlobalAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -21419,9 +22092,12 @@ impl GlobalAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GlobalAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GlobalAggregateBuilder<(S0,)> {
     /// Builds a [`GlobalAggregate`].
-    pub fn build(self) -> GlobalAggregate {
+    pub fn build(self) -> GlobalAggregate
+    where
+        S0: crate::typed::builder::IsSet<global_aggregate_members::doc_count>,
+    {
         GlobalAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -21430,16 +22106,24 @@ impl GlobalAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GlobalAggregateBuilder<(crate::typed::builder::Set,)>> for GlobalAggregate {
-    fn from(builder: GlobalAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GlobalAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<global_aggregate_members::doc_count>,
+{
+    type Output = GlobalAggregate;
+
+    fn build(self) -> GlobalAggregate {
+        Self::build(self)
     }
 }
 
-impl GlobalAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> GlobalAggregate { match doc_count {} }
+impl<S0> From<GlobalAggregateBuilder<(S0,)>> for GlobalAggregate
+where
+    S0: crate::typed::builder::IsSet<global_aggregate_members::doc_count>,
+{
+    fn from(builder: GlobalAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21452,8 +22136,8 @@ impl GlobalAggregation {
     }
 
     /// Creates a [`GlobalAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GlobalAggregationBuilder) -> GlobalAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GlobalAggregation>>(
+        f: impl FnOnce(GlobalAggregationBuilder) -> B,
     ) -> GlobalAggregation {
         f(Self::builder()).build()
     }
@@ -21478,6 +22162,14 @@ impl GlobalAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GlobalAggregationBuilder {
+    type Output = GlobalAggregation;
+
+    fn build(self) -> GlobalAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<GlobalAggregationBuilder> for GlobalAggregation {
     fn from(builder: GlobalAggregationBuilder) -> Self {
         builder.build()
@@ -21498,10 +22190,8 @@ impl GoogleNormalizedDistanceHeuristic {
     }
 
     /// Creates a [`GoogleNormalizedDistanceHeuristic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GoogleNormalizedDistanceHeuristicBuilder,
-        ) -> GoogleNormalizedDistanceHeuristicBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GoogleNormalizedDistanceHeuristic>>(
+        f: impl FnOnce(GoogleNormalizedDistanceHeuristicBuilder) -> B,
     ) -> GoogleNormalizedDistanceHeuristic {
         f(Self::builder()).build()
     }
@@ -21544,6 +22234,14 @@ impl GoogleNormalizedDistanceHeuristicBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GoogleNormalizedDistanceHeuristicBuilder {
+    type Output = GoogleNormalizedDistanceHeuristic;
+
+    fn build(self) -> GoogleNormalizedDistanceHeuristic {
+        Self::build(self)
+    }
+}
+
 impl From<GoogleNormalizedDistanceHeuristicBuilder> for GoogleNormalizedDistanceHeuristic {
     fn from(builder: GoogleNormalizedDistanceHeuristicBuilder) -> Self {
         builder.build()
@@ -21564,7 +22262,9 @@ impl HdrMethod {
     }
 
     /// Creates a [`HdrMethod`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(HdrMethodBuilder) -> HdrMethodBuilder) -> HdrMethod {
+    pub fn of<B: crate::typed::builder::Build<Output = HdrMethod>>(
+        f: impl FnOnce(HdrMethodBuilder) -> B,
+    ) -> HdrMethod {
         f(Self::builder()).build()
     }
 }
@@ -21606,6 +22306,14 @@ impl HdrMethodBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HdrMethodBuilder {
+    type Output = HdrMethod;
+
+    fn build(self) -> HdrMethod {
+        Self::build(self)
+    }
+}
+
 impl From<HdrMethodBuilder> for HdrMethod {
     fn from(builder: HdrMethodBuilder) -> Self {
         builder.build()
@@ -21621,18 +22329,27 @@ pub struct HdrPercentileRanksAggregate {
 
 impl HdrPercentileRanksAggregate {
     /// Creates a builder for [`HdrPercentileRanksAggregate`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> HdrPercentileRanksAggregateBuilder {
         HdrPercentileRanksAggregateBuilder::new()
     }
 
     /// Creates a [`HdrPercentileRanksAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HdrPercentileRanksAggregateBuilder,
-        ) -> HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = HdrPercentileRanksAggregate>>(
+        f: impl FnOnce(HdrPercentileRanksAggregateBuilder) -> B,
     ) -> HdrPercentileRanksAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HdrPercentileRanksAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hdr_percentile_ranks_aggregate_members {
+    pub struct values;
 }
 
 /// Builder for [`HdrPercentileRanksAggregate`].
@@ -21683,6 +22400,7 @@ impl<S0> HdrPercentileRanksAggregateBuilder<(S0,)> {
 }
 
 impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -21693,9 +22411,12 @@ impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HdrPercentileRanksAggregateBuilder<(S0,)> {
     /// Builds a [`HdrPercentileRanksAggregate`].
-    pub fn build(self) -> HdrPercentileRanksAggregate {
+    pub fn build(self) -> HdrPercentileRanksAggregate
+    where
+        S0: crate::typed::builder::IsSet<hdr_percentile_ranks_aggregate_members::values>,
+    {
         HdrPercentileRanksAggregate {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -21703,18 +22424,24 @@ impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>>
-    for HdrPercentileRanksAggregate
+impl<S0> crate::typed::builder::Build for HdrPercentileRanksAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hdr_percentile_ranks_aggregate_members::values>,
 {
-    fn from(builder: HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = HdrPercentileRanksAggregate;
+
+    fn build(self) -> HdrPercentileRanksAggregate {
+        Self::build(self)
     }
 }
 
-impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> HdrPercentileRanksAggregate { match values {} }
+impl<S0> From<HdrPercentileRanksAggregateBuilder<(S0,)>> for HdrPercentileRanksAggregate
+where
+    S0: crate::typed::builder::IsSet<hdr_percentile_ranks_aggregate_members::values>,
+{
+    fn from(builder: HdrPercentileRanksAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21726,18 +22453,27 @@ pub struct HdrPercentilesAggregate {
 
 impl HdrPercentilesAggregate {
     /// Creates a builder for [`HdrPercentilesAggregate`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> HdrPercentilesAggregateBuilder {
         HdrPercentilesAggregateBuilder::new()
     }
 
     /// Creates a [`HdrPercentilesAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HdrPercentilesAggregateBuilder,
-        ) -> HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = HdrPercentilesAggregate>>(
+        f: impl FnOnce(HdrPercentilesAggregateBuilder) -> B,
     ) -> HdrPercentilesAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HdrPercentilesAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hdr_percentiles_aggregate_members {
+    pub struct values;
 }
 
 /// Builder for [`HdrPercentilesAggregate`].
@@ -21788,6 +22524,7 @@ impl<S0> HdrPercentilesAggregateBuilder<(S0,)> {
 }
 
 impl HdrPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -21798,9 +22535,12 @@ impl HdrPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HdrPercentilesAggregateBuilder<(S0,)> {
     /// Builds a [`HdrPercentilesAggregate`].
-    pub fn build(self) -> HdrPercentilesAggregate {
+    pub fn build(self) -> HdrPercentilesAggregate
+    where
+        S0: crate::typed::builder::IsSet<hdr_percentiles_aggregate_members::values>,
+    {
         HdrPercentilesAggregate {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -21808,18 +22548,24 @@ impl HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>>
-    for HdrPercentilesAggregate
+impl<S0> crate::typed::builder::Build for HdrPercentilesAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hdr_percentiles_aggregate_members::values>,
 {
-    fn from(builder: HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = HdrPercentilesAggregate;
+
+    fn build(self) -> HdrPercentilesAggregate {
+        Self::build(self)
     }
 }
 
-impl HdrPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> HdrPercentilesAggregate { match values {} }
+impl<S0> From<HdrPercentilesAggregateBuilder<(S0,)>> for HdrPercentilesAggregate
+where
+    S0: crate::typed::builder::IsSet<hdr_percentiles_aggregate_members::values>,
+{
+    fn from(builder: HdrPercentilesAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21831,18 +22577,27 @@ pub struct HistogramAggregate {
 
 impl HistogramAggregate {
     /// Creates a builder for [`HistogramAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> HistogramAggregateBuilder {
         HistogramAggregateBuilder::new()
     }
 
     /// Creates a [`HistogramAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HistogramAggregateBuilder,
-        ) -> HistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = HistogramAggregate>>(
+        f: impl FnOnce(HistogramAggregateBuilder) -> B,
     ) -> HistogramAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HistogramAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod histogram_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`HistogramAggregate`].
@@ -21893,6 +22648,7 @@ impl<S0> HistogramAggregateBuilder<(S0,)> {
 }
 
 impl HistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsHistogramBucket>,
@@ -21903,9 +22659,12 @@ impl HistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl HistogramAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HistogramAggregateBuilder<(S0,)> {
     /// Builds a [`HistogramAggregate`].
-    pub fn build(self) -> HistogramAggregate {
+    pub fn build(self) -> HistogramAggregate
+    where
+        S0: crate::typed::builder::IsSet<histogram_aggregate_members::buckets>,
+    {
         HistogramAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -21913,16 +22672,24 @@ impl HistogramAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HistogramAggregateBuilder<(crate::typed::builder::Set,)>> for HistogramAggregate {
-    fn from(builder: HistogramAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HistogramAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<histogram_aggregate_members::buckets>,
+{
+    type Output = HistogramAggregate;
+
+    fn build(self) -> HistogramAggregate {
+        Self::build(self)
     }
 }
 
-impl HistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> HistogramAggregate { match buckets {} }
+impl<S0> From<HistogramAggregateBuilder<(S0,)>> for HistogramAggregate
+where
+    S0: crate::typed::builder::IsSet<histogram_aggregate_members::buckets>,
+{
+    fn from(builder: HistogramAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21973,8 +22740,8 @@ impl HistogramAggregation {
     }
 
     /// Creates a [`HistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HistogramAggregationBuilder) -> HistogramAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = HistogramAggregation>>(
+        f: impl FnOnce(HistogramAggregationBuilder) -> B,
     ) -> HistogramAggregation {
         f(Self::builder()).build()
     }
@@ -22028,9 +22795,9 @@ impl HistogramAggregationBuilder {
     }
 
     /// Sets [`extended_bounds`](Self::extended_bounds) with a builder.
-    pub fn extended_bounds_with(
+    pub fn extended_bounds_with<B: crate::typed::builder::Build<Output = ExtendedBoundsdouble>>(
         self,
-        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> ExtendedBoundsdoubleBuilder,
+        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> B,
     ) -> Self {
         self.extended_bounds(f(ExtendedBoundsdoubleBuilder::new()).build())
     }
@@ -22049,9 +22816,9 @@ impl HistogramAggregationBuilder {
     }
 
     /// Sets [`hard_bounds`](Self::hard_bounds) with a builder.
-    pub fn hard_bounds_with(
+    pub fn hard_bounds_with<B: crate::typed::builder::Build<Output = ExtendedBoundsdouble>>(
         self,
-        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> ExtendedBoundsdoubleBuilder,
+        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> B,
     ) -> Self {
         self.hard_bounds(f(ExtendedBoundsdoubleBuilder::new()).build())
     }
@@ -22145,9 +22912,9 @@ impl HistogramAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -22195,6 +22962,14 @@ impl HistogramAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HistogramAggregationBuilder {
+    type Output = HistogramAggregation;
+
+    fn build(self) -> HistogramAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<HistogramAggregationBuilder> for HistogramAggregation {
     fn from(builder: HistogramAggregationBuilder) -> Self {
         builder.build()
@@ -22214,21 +22989,28 @@ pub struct HistogramBucket {
 
 impl HistogramBucket {
     /// Creates a builder for [`HistogramBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> HistogramBucketBuilder {
         HistogramBucketBuilder::new()
     }
 
     /// Creates a [`HistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HistogramBucketBuilder,
-        ) -> HistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = HistogramBucket>>(
+        f: impl FnOnce(HistogramBucketBuilder) -> B,
     ) -> HistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod histogram_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`HistogramBucket`].
@@ -22298,6 +23080,7 @@ impl<S0, S1> HistogramBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> HistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> HistogramBucketBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -22306,6 +23089,7 @@ impl<S1> HistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> HistogramBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -22316,9 +23100,13 @@ impl<S0> HistogramBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl HistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HistogramBucketBuilder<(S0, S1)> {
     /// Builds a [`HistogramBucket`].
-    pub fn build(self) -> HistogramBucket {
+    pub fn build(self) -> HistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<histogram_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<histogram_bucket_members::key>,
+    {
         HistogramBucket {
             doc_count: self.doc_count.unwrap(),
             key_as_string: self.key_as_string,
@@ -22328,26 +23116,26 @@ impl HistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<HistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for HistogramBucket
+impl<S0, S1> crate::typed::builder::Build for HistogramBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<histogram_bucket_members::key>,
 {
-    fn from(
-        builder: HistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = HistogramBucket;
+
+    fn build(self) -> HistogramBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> HistogramBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> HistogramBucket { match doc_count {} }
-}
-
-impl HistogramBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> HistogramBucket { match key {} }
+impl<S0, S1> From<HistogramBucketBuilder<(S0, S1)>> for HistogramBucket
+where
+    S0: crate::typed::builder::IsSet<histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<histogram_bucket_members::key>,
+{
+    fn from(builder: HistogramBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22365,8 +23153,8 @@ impl HoltLinearModelSettings {
     }
 
     /// Creates a [`HoltLinearModelSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HoltLinearModelSettingsBuilder) -> HoltLinearModelSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = HoltLinearModelSettings>>(
+        f: impl FnOnce(HoltLinearModelSettingsBuilder) -> B,
     ) -> HoltLinearModelSettings {
         f(Self::builder()).build()
     }
@@ -22422,6 +23210,14 @@ impl HoltLinearModelSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HoltLinearModelSettingsBuilder {
+    type Output = HoltLinearModelSettings;
+
+    fn build(self) -> HoltLinearModelSettings {
+        Self::build(self)
+    }
+}
+
 impl From<HoltLinearModelSettingsBuilder> for HoltLinearModelSettings {
     fn from(builder: HoltLinearModelSettingsBuilder) -> Self {
         builder.build()
@@ -22452,21 +23248,28 @@ pub struct HoltMovingAverageAggregation {
 
 impl HoltMovingAverageAggregation {
     /// Creates a builder for [`HoltMovingAverageAggregation`].
+    ///
+    /// Required: `model`, `settings`.
     pub fn builder() -> HoltMovingAverageAggregationBuilder {
         HoltMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`HoltMovingAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HoltMovingAverageAggregationBuilder,
-        ) -> HoltMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = HoltMovingAverageAggregation>>(
+        f: impl FnOnce(HoltMovingAverageAggregationBuilder) -> B,
     ) -> HoltMovingAverageAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HoltMovingAverageAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod holt_moving_average_aggregation_members {
+    pub struct model;
+    pub struct settings;
 }
 
 /// Builder for [`HoltMovingAverageAggregation`].
@@ -22593,6 +23396,7 @@ impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -22604,6 +23408,7 @@ impl<S1> HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<HoltLinearModelSettings>,
@@ -22614,17 +23419,21 @@ impl<S0> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = HoltLinearModelSettings>>(
         self,
-        f: impl FnOnce(HoltLinearModelSettingsBuilder) -> HoltLinearModelSettingsBuilder,
+        f: impl FnOnce(HoltLinearModelSettingsBuilder) -> B,
     ) -> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(HoltLinearModelSettingsBuilder::new()).build())
     }
 }
 
-impl HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
     /// Builds a [`HoltMovingAverageAggregation`].
-    pub fn build(self) -> HoltMovingAverageAggregation {
+    pub fn build(self) -> HoltMovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
+        S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
+    {
         HoltMovingAverageAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -22638,36 +23447,26 @@ impl HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        HoltMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HoltMovingAverageAggregation
+impl<S0, S1> crate::typed::builder::Build for HoltMovingAverageAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
 {
-    fn from(
-        builder: HoltMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HoltMovingAverageAggregation;
+
+    fn build(self) -> HoltMovingAverageAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> HoltMovingAverageAggregation { match model {} }
-}
-
-impl
-    HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<HoltMovingAverageAggregationBuilder<(S0, S1)>> for HoltMovingAverageAggregation
+where
+    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> HoltMovingAverageAggregation { match settings {} }
+    fn from(builder: HoltMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22693,8 +23492,8 @@ impl HoltWintersModelSettings {
     }
 
     /// Creates a [`HoltWintersModelSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HoltWintersModelSettingsBuilder) -> HoltWintersModelSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = HoltWintersModelSettings>>(
+        f: impl FnOnce(HoltWintersModelSettingsBuilder) -> B,
     ) -> HoltWintersModelSettings {
         f(Self::builder()).build()
     }
@@ -22806,6 +23605,14 @@ impl HoltWintersModelSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HoltWintersModelSettingsBuilder {
+    type Output = HoltWintersModelSettings;
+
+    fn build(self) -> HoltWintersModelSettings {
+        Self::build(self)
+    }
+}
+
 impl From<HoltWintersModelSettingsBuilder> for HoltWintersModelSettings {
     fn from(builder: HoltWintersModelSettingsBuilder) -> Self {
         builder.build()
@@ -22836,21 +23643,28 @@ pub struct HoltWintersMovingAverageAggregation {
 
 impl HoltWintersMovingAverageAggregation {
     /// Creates a builder for [`HoltWintersMovingAverageAggregation`].
+    ///
+    /// Required: `model`, `settings`.
     pub fn builder() -> HoltWintersMovingAverageAggregationBuilder {
         HoltWintersMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`HoltWintersMovingAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HoltWintersMovingAverageAggregationBuilder,
-        ) -> HoltWintersMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = HoltWintersMovingAverageAggregation>>(
+        f: impl FnOnce(HoltWintersMovingAverageAggregationBuilder) -> B,
     ) -> HoltWintersMovingAverageAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HoltWintersMovingAverageAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod holt_winters_moving_average_aggregation_members {
+    pub struct model;
+    pub struct settings;
 }
 
 /// Builder for [`HoltWintersMovingAverageAggregation`].
@@ -22977,6 +23791,7 @@ impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -22988,6 +23803,7 @@ impl<S1> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<HoltWintersModelSettings>,
@@ -22998,22 +23814,21 @@ impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = HoltWintersModelSettings>>(
         self,
-        f: impl FnOnce(HoltWintersModelSettingsBuilder) -> HoltWintersModelSettingsBuilder,
+        f: impl FnOnce(HoltWintersModelSettingsBuilder) -> B,
     ) -> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(HoltWintersModelSettingsBuilder::new()).build())
     }
 }
 
-impl
-    HoltWintersMovingAverageAggregationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
     /// Builds a [`HoltWintersMovingAverageAggregation`].
-    pub fn build(self) -> HoltWintersMovingAverageAggregation {
+    pub fn build(self) -> HoltWintersMovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
+        S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
+    {
         HoltWintersMovingAverageAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -23027,39 +23842,27 @@ impl
     }
 }
 
-impl
-    From<
-        HoltWintersMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for HoltWintersMovingAverageAggregation
+impl<S0, S1> crate::typed::builder::Build for HoltWintersMovingAverageAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
 {
-    fn from(
-        builder: HoltWintersMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HoltWintersMovingAverageAggregation;
+
+    fn build(self) -> HoltWintersMovingAverageAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> HoltWintersMovingAverageAggregation { match model {} }
-}
-
-impl
-    HoltWintersMovingAverageAggregationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<HoltWintersMovingAverageAggregationBuilder<(S0, S1)>>
+    for HoltWintersMovingAverageAggregation
+where
+    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> HoltWintersMovingAverageAggregation { match settings {} }
+    fn from(builder: HoltWintersMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -23077,16 +23880,27 @@ pub struct Indeterminable {
 
 impl Indeterminable {
     /// Creates a builder for [`Indeterminable`].
+    ///
+    /// Required: `reason`.
     pub fn builder() -> IndeterminableBuilder {
         IndeterminableBuilder::new()
     }
 
     /// Creates a [`Indeterminable`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndeterminableBuilder) -> IndeterminableBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `reason`.
+    pub fn of<B: crate::typed::builder::Build<Output = Indeterminable>>(
+        f: impl FnOnce(IndeterminableBuilder) -> B,
     ) -> Indeterminable {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndeterminableBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indeterminable_members {
+    pub struct reason;
 }
 
 /// Builder for [`Indeterminable`].
@@ -23115,6 +23929,7 @@ impl<S0> IndeterminableBuilder<(S0,)> {
 }
 
 impl IndeterminableBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<String>,
@@ -23125,25 +23940,36 @@ impl IndeterminableBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndeterminableBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndeterminableBuilder<(S0,)> {
     /// Builds a [`Indeterminable`].
-    pub fn build(self) -> Indeterminable {
+    pub fn build(self) -> Indeterminable
+    where
+        S0: crate::typed::builder::IsSet<indeterminable_members::reason>,
+    {
         Indeterminable {
             reason: self.reason.unwrap(),
         }
     }
 }
 
-impl From<IndeterminableBuilder<(crate::typed::builder::Set,)>> for Indeterminable {
-    fn from(builder: IndeterminableBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndeterminableBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indeterminable_members::reason>,
+{
+    type Output = Indeterminable;
+
+    fn build(self) -> Indeterminable {
+        Self::build(self)
     }
 }
 
-impl IndeterminableBuilder<(crate::typed::builder::NotSet,)> {
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> Indeterminable { match reason {} }
+impl<S0> From<IndeterminableBuilder<(S0,)>> for Indeterminable
+where
+    S0: crate::typed::builder::IsSet<indeterminable_members::reason>,
+{
+    fn from(builder: IndeterminableBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23170,8 +23996,8 @@ impl InferenceAggregate {
     }
 
     /// Creates a [`InferenceAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceAggregateBuilder) -> InferenceAggregateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceAggregate>>(
+        f: impl FnOnce(InferenceAggregateBuilder) -> B,
     ) -> InferenceAggregate {
         f(Self::builder()).build()
     }
@@ -23255,11 +24081,11 @@ impl InferenceAggregateBuilder {
     }
 
     /// Adds an element to [`feature_importance`](Self::feature_importance), with a builder.
-    pub fn add_feature_importance_with(
+    pub fn add_feature_importance_with<
+        B: crate::typed::builder::Build<Output = InferenceFeatureImportance>,
+    >(
         self,
-        f: impl FnOnce(
-            InferenceFeatureImportanceBuilder,
-        ) -> InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceFeatureImportanceBuilder) -> B,
     ) -> Self {
         self.add_feature_importance(f(InferenceFeatureImportanceBuilder::new()).build())
     }
@@ -23284,15 +24110,11 @@ impl InferenceAggregateBuilder {
     }
 
     /// Adds an element to [`top_classes`](Self::top_classes), with a builder.
-    pub fn add_top_classes_with(
+    pub fn add_top_classes_with<
+        B: crate::typed::builder::Build<Output = InferenceTopClassEntry>,
+    >(
         self,
-        f: impl FnOnce(
-            InferenceTopClassEntryBuilder,
-        ) -> InferenceTopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(InferenceTopClassEntryBuilder) -> B,
     ) -> Self {
         self.add_top_classes(f(InferenceTopClassEntryBuilder::new()).build())
     }
@@ -23342,6 +24164,14 @@ impl InferenceAggregateBuilder {
     }
 }
 
+impl crate::typed::builder::Build for InferenceAggregateBuilder {
+    type Output = InferenceAggregate;
+
+    fn build(self) -> InferenceAggregate {
+        Self::build(self)
+    }
+}
+
 impl From<InferenceAggregateBuilder> for InferenceAggregate {
     fn from(builder: InferenceAggregateBuilder) -> Self {
         builder.build()
@@ -23369,18 +24199,27 @@ pub struct InferenceAggregation {
 
 impl InferenceAggregation {
     /// Creates a builder for [`InferenceAggregation`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> InferenceAggregationBuilder {
         InferenceAggregationBuilder::new()
     }
 
     /// Creates a [`InferenceAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceAggregationBuilder,
-        ) -> InferenceAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceAggregation>>(
+        f: impl FnOnce(InferenceAggregationBuilder) -> B,
     ) -> InferenceAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_aggregation_members {
+    pub struct model_id;
 }
 
 /// Builder for [`InferenceAggregation`].
@@ -23469,18 +24308,18 @@ impl<S0> InferenceAggregationBuilder<(S0,)> {
     }
 
     /// Sets [`inference_config`](Self::inference_config) with a builder.
-    pub fn inference_config_with(
+    pub fn inference_config_with<
+        B: crate::typed::builder::Build<Output = InferenceConfigContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            InferenceConfigContainerBuilder,
-        ) -> InferenceConfigContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InferenceConfigContainerBuilder) -> B,
     ) -> Self {
         self.inference_config(f(InferenceConfigContainerBuilder::new()).build())
     }
 }
 
 impl InferenceAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The ID or alias for the trained model.
+    /// **Required.** The ID or alias for the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -23491,9 +24330,12 @@ impl InferenceAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InferenceAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceAggregationBuilder<(S0,)> {
     /// Builds a [`InferenceAggregation`].
-    pub fn build(self) -> InferenceAggregation {
+    pub fn build(self) -> InferenceAggregation
+    where
+        S0: crate::typed::builder::IsSet<inference_aggregation_members::model_id>,
+    {
         InferenceAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -23504,16 +24346,24 @@ impl InferenceAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<InferenceAggregationBuilder<(crate::typed::builder::Set,)>> for InferenceAggregation {
-    fn from(builder: InferenceAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for InferenceAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<inference_aggregation_members::model_id>,
+{
+    type Output = InferenceAggregation;
+
+    fn build(self) -> InferenceAggregation {
+        Self::build(self)
     }
 }
 
-impl InferenceAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> InferenceAggregation { match model_id {} }
+impl<S0> From<InferenceAggregationBuilder<(S0,)>> for InferenceAggregation
+where
+    S0: crate::typed::builder::IsSet<inference_aggregation_members::model_id>,
+{
+    fn from(builder: InferenceAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23524,21 +24374,28 @@ pub struct InferenceClassImportance {
 
 impl InferenceClassImportance {
     /// Creates a builder for [`InferenceClassImportance`].
+    ///
+    /// Required: `class_name`, `importance`.
     pub fn builder() -> InferenceClassImportanceBuilder {
         InferenceClassImportanceBuilder::new()
     }
 
     /// Creates a [`InferenceClassImportance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceClassImportanceBuilder,
-        ) -> InferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `importance`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceClassImportance>>(
+        f: impl FnOnce(InferenceClassImportanceBuilder) -> B,
     ) -> InferenceClassImportance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceClassImportanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_class_importance_members {
+    pub struct class_name;
+    pub struct importance;
 }
 
 /// Builder for [`InferenceClassImportance`].
@@ -23574,6 +24431,7 @@ impl<S0, S1> InferenceClassImportanceBuilder<(S0, S1)> {
 }
 
 impl<S1> InferenceClassImportanceBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<String>,
@@ -23585,6 +24443,7 @@ impl<S1> InferenceClassImportanceBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InferenceClassImportanceBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn importance(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -23595,9 +24454,13 @@ impl<S0> InferenceClassImportanceBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl InferenceClassImportanceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InferenceClassImportanceBuilder<(S0, S1)> {
     /// Builds a [`InferenceClassImportance`].
-    pub fn build(self) -> InferenceClassImportance {
+    pub fn build(self) -> InferenceClassImportance
+    where
+        S0: crate::typed::builder::IsSet<inference_class_importance_members::class_name>,
+        S1: crate::typed::builder::IsSet<inference_class_importance_members::importance>,
+    {
         InferenceClassImportance {
             class_name: self.class_name.unwrap(),
             importance: self.importance.unwrap(),
@@ -23605,29 +24468,26 @@ impl InferenceClassImportanceBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<InferenceClassImportanceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for InferenceClassImportance
+impl<S0, S1> crate::typed::builder::Build for InferenceClassImportanceBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<inference_class_importance_members::class_name>,
+    S1: crate::typed::builder::IsSet<inference_class_importance_members::importance>,
 {
-    fn from(
-        builder: InferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceClassImportance;
+
+    fn build(self) -> InferenceClassImportance {
+        Self::build(self)
     }
 }
 
-impl<S1> InferenceClassImportanceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> InferenceClassImportance { match class_name {} }
-}
-
-impl InferenceClassImportanceBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `importance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, importance: crate::typed::builder::MissingRequiredField) -> InferenceClassImportance { match importance {} }
+impl<S0, S1> From<InferenceClassImportanceBuilder<(S0, S1)>> for InferenceClassImportance
+where
+    S0: crate::typed::builder::IsSet<inference_class_importance_members::class_name>,
+    S1: crate::typed::builder::IsSet<inference_class_importance_members::importance>,
+{
+    fn from(builder: InferenceClassImportanceBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23670,15 +24530,17 @@ impl From<crate::typed::ml::_types::ClassificationInferenceOptionsBuilder>
 
 impl InferenceConfigContainer {
     /// Creates a builder for [`InferenceConfigContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> InferenceConfigContainerBuilder {
         InferenceConfigContainerBuilder::new()
     }
 
     /// Creates a [`InferenceConfigContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceConfigContainerBuilder,
-        ) -> InferenceConfigContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceConfigContainer>>(
+        f: impl FnOnce(InferenceConfigContainerBuilder) -> B,
     ) -> InferenceConfigContainer {
         f(Self::builder()).build()
     }
@@ -23721,11 +24583,11 @@ impl InferenceConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regression`](Self::regression) with a builder.
-    pub fn regression_with(
+    pub fn regression_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::RegressionInferenceOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::RegressionInferenceOptionsBuilder,
-        ) -> crate::typed::ml::_types::RegressionInferenceOptionsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::RegressionInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.regression(
             f(crate::typed::ml::_types::RegressionInferenceOptionsBuilder::new()).build(),
@@ -23743,11 +24605,13 @@ impl InferenceConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`classification`](Self::classification) with a builder.
-    pub fn classification_with(
+    pub fn classification_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::ClassificationInferenceOptions,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::ClassificationInferenceOptionsBuilder,
-        ) -> crate::typed::ml::_types::ClassificationInferenceOptionsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::ClassificationInferenceOptionsBuilder) -> B,
     ) -> InferenceConfigContainerBuilder<(crate::typed::builder::Set,)> {
         self.classification(
             f(crate::typed::ml::_types::ClassificationInferenceOptionsBuilder::new()).build(),
@@ -23755,25 +24619,34 @@ impl InferenceConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InferenceConfigContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceConfigContainerBuilder<(S0,)> {
     /// Builds a [`InferenceConfigContainer`].
-    pub fn build(self) -> InferenceConfigContainer {
+    pub fn build(self) -> InferenceConfigContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<InferenceConfigContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<InferenceConfigContainerBuilder<(crate::typed::builder::Set,)>>
-    for InferenceConfigContainer
+impl<S0> crate::typed::builder::Build for InferenceConfigContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigContainer>,
 {
-    fn from(builder: InferenceConfigContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = InferenceConfigContainer;
+
+    fn build(self) -> InferenceConfigContainer {
+        Self::build(self)
     }
 }
 
-impl InferenceConfigContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> InferenceConfigContainer { match variant {} }
+impl<S0> From<InferenceConfigContainerBuilder<(S0,)>> for InferenceConfigContainer
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceConfigContainer>,
+{
+    fn from(builder: InferenceConfigContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23787,18 +24660,27 @@ pub struct InferenceFeatureImportance {
 
 impl InferenceFeatureImportance {
     /// Creates a builder for [`InferenceFeatureImportance`].
+    ///
+    /// Required: `feature_name`.
     pub fn builder() -> InferenceFeatureImportanceBuilder {
         InferenceFeatureImportanceBuilder::new()
     }
 
     /// Creates a [`InferenceFeatureImportance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceFeatureImportanceBuilder,
-        ) -> InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `feature_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceFeatureImportance>>(
+        f: impl FnOnce(InferenceFeatureImportanceBuilder) -> B,
     ) -> InferenceFeatureImportance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceFeatureImportanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_feature_importance_members {
+    pub struct feature_name;
 }
 
 /// Builder for [`InferenceFeatureImportance`].
@@ -23862,20 +24744,16 @@ impl<S0> InferenceFeatureImportanceBuilder<(S0,)> {
     }
 
     /// Adds an element to [`classes`](Self::classes), with a builder.
-    pub fn add_classes_with(
+    pub fn add_classes_with<B: crate::typed::builder::Build<Output = InferenceClassImportance>>(
         self,
-        f: impl FnOnce(
-            InferenceClassImportanceBuilder,
-        ) -> InferenceClassImportanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(InferenceClassImportanceBuilder) -> B,
     ) -> Self {
         self.add_classes(f(InferenceClassImportanceBuilder::new()).build())
     }
 }
 
 impl InferenceFeatureImportanceBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -23886,9 +24764,12 @@ impl InferenceFeatureImportanceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceFeatureImportanceBuilder<(S0,)> {
     /// Builds a [`InferenceFeatureImportance`].
-    pub fn build(self) -> InferenceFeatureImportance {
+    pub fn build(self) -> InferenceFeatureImportance
+    where
+        S0: crate::typed::builder::IsSet<inference_feature_importance_members::feature_name>,
+    {
         InferenceFeatureImportance {
             feature_name: self.feature_name.unwrap(),
             importance: self.importance,
@@ -23897,18 +24778,24 @@ impl InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>>
-    for InferenceFeatureImportance
+impl<S0> crate::typed::builder::Build for InferenceFeatureImportanceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<inference_feature_importance_members::feature_name>,
 {
-    fn from(builder: InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = InferenceFeatureImportance;
+
+    fn build(self) -> InferenceFeatureImportance {
+        Self::build(self)
     }
 }
 
-impl InferenceFeatureImportanceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> InferenceFeatureImportance { match feature_name {} }
+impl<S0> From<InferenceFeatureImportanceBuilder<(S0,)>> for InferenceFeatureImportance
+where
+    S0: crate::typed::builder::IsSet<inference_feature_importance_members::feature_name>,
+{
+    fn from(builder: InferenceFeatureImportanceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23920,22 +24807,29 @@ pub struct InferenceTopClassEntry {
 
 impl InferenceTopClassEntry {
     /// Creates a builder for [`InferenceTopClassEntry`].
+    ///
+    /// Required: `class_name`, `class_probability`, `class_score`.
     pub fn builder() -> InferenceTopClassEntryBuilder {
         InferenceTopClassEntryBuilder::new()
     }
 
     /// Creates a [`InferenceTopClassEntry`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceTopClassEntryBuilder,
-        ) -> InferenceTopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `class_name`, `class_probability`, `class_score`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceTopClassEntry>>(
+        f: impl FnOnce(InferenceTopClassEntryBuilder) -> B,
     ) -> InferenceTopClassEntry {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceTopClassEntryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_top_class_entry_members {
+    pub struct class_name;
+    pub struct class_probability;
+    pub struct class_score;
 }
 
 /// Builder for [`InferenceTopClassEntry`].
@@ -23982,6 +24876,7 @@ impl<S0, S1, S2> InferenceTopClassEntryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> InferenceTopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn class_name(
         self,
         value: impl Into<crate::typed::_types::FieldValue>,
@@ -23993,6 +24888,7 @@ impl<S1, S2> InferenceTopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2> InferenceTopClassEntryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn class_probability(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -24004,6 +24900,7 @@ impl<S0, S2> InferenceTopClassEntryBuilder<(S0, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1> InferenceTopClassEntryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn class_score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -24014,15 +24911,14 @@ impl<S0, S1> InferenceTopClassEntryBuilder<(S0, S1, crate::typed::builder::NotSe
     }
 }
 
-impl
-    InferenceTopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> InferenceTopClassEntryBuilder<(S0, S1, S2)> {
     /// Builds a [`InferenceTopClassEntry`].
-    pub fn build(self) -> InferenceTopClassEntry {
+    pub fn build(self) -> InferenceTopClassEntry
+    where
+        S0: crate::typed::builder::IsSet<inference_top_class_entry_members::class_name>,
+        S1: crate::typed::builder::IsSet<inference_top_class_entry_members::class_probability>,
+        S2: crate::typed::builder::IsSet<inference_top_class_entry_members::class_score>,
+    {
         InferenceTopClassEntry {
             class_name: self.class_name.unwrap(),
             class_probability: self.class_probability.unwrap(),
@@ -24031,54 +24927,28 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceTopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceTopClassEntry
+impl<S0, S1, S2> crate::typed::builder::Build for InferenceTopClassEntryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<inference_top_class_entry_members::class_name>,
+    S1: crate::typed::builder::IsSet<inference_top_class_entry_members::class_probability>,
+    S2: crate::typed::builder::IsSet<inference_top_class_entry_members::class_score>,
 {
-    fn from(
-        builder: InferenceTopClassEntryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceTopClassEntry;
+
+    fn build(self) -> InferenceTopClassEntry {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> InferenceTopClassEntryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `class_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_name: crate::typed::builder::MissingRequiredField) -> InferenceTopClassEntry { match class_name {} }
-}
-
-impl<S2>
-    InferenceTopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<InferenceTopClassEntryBuilder<(S0, S1, S2)>> for InferenceTopClassEntry
+where
+    S0: crate::typed::builder::IsSet<inference_top_class_entry_members::class_name>,
+    S1: crate::typed::builder::IsSet<inference_top_class_entry_members::class_probability>,
+    S2: crate::typed::builder::IsSet<inference_top_class_entry_members::class_score>,
 {
-    /// `class_probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_probability: crate::typed::builder::MissingRequiredField) -> InferenceTopClassEntry { match class_probability {} }
-}
-
-impl
-    InferenceTopClassEntryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `class_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, class_score: crate::typed::builder::MissingRequiredField) -> InferenceTopClassEntry { match class_score {} }
+    fn from(builder: InferenceTopClassEntryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24090,18 +24960,27 @@ pub struct IpPrefixAggregate {
 
 impl IpPrefixAggregate {
     /// Creates a builder for [`IpPrefixAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> IpPrefixAggregateBuilder {
         IpPrefixAggregateBuilder::new()
     }
 
     /// Creates a [`IpPrefixAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IpPrefixAggregateBuilder,
-        ) -> IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpPrefixAggregate>>(
+        f: impl FnOnce(IpPrefixAggregateBuilder) -> B,
     ) -> IpPrefixAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpPrefixAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_prefix_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`IpPrefixAggregate`].
@@ -24152,6 +25031,7 @@ impl<S0> IpPrefixAggregateBuilder<(S0,)> {
 }
 
 impl IpPrefixAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsIpPrefixBucket>,
@@ -24162,9 +25042,12 @@ impl IpPrefixAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpPrefixAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpPrefixAggregateBuilder<(S0,)> {
     /// Builds a [`IpPrefixAggregate`].
-    pub fn build(self) -> IpPrefixAggregate {
+    pub fn build(self) -> IpPrefixAggregate
+    where
+        S0: crate::typed::builder::IsSet<ip_prefix_aggregate_members::buckets>,
+    {
         IpPrefixAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -24172,16 +25055,24 @@ impl IpPrefixAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>> for IpPrefixAggregate {
-    fn from(builder: IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpPrefixAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_aggregate_members::buckets>,
+{
+    type Output = IpPrefixAggregate;
+
+    fn build(self) -> IpPrefixAggregate {
+        Self::build(self)
     }
 }
 
-impl IpPrefixAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> IpPrefixAggregate { match buckets {} }
+impl<S0> From<IpPrefixAggregateBuilder<(S0,)>> for IpPrefixAggregate
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_aggregate_members::buckets>,
+{
+    fn from(builder: IpPrefixAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24207,21 +25098,28 @@ pub struct IpPrefixAggregation {
 
 impl IpPrefixAggregation {
     /// Creates a builder for [`IpPrefixAggregation`].
+    ///
+    /// Required: `field`, `prefix_length`.
     pub fn builder() -> IpPrefixAggregationBuilder {
         IpPrefixAggregationBuilder::new()
     }
 
     /// Creates a [`IpPrefixAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IpPrefixAggregationBuilder,
-        ) -> IpPrefixAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `prefix_length`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpPrefixAggregation>>(
+        f: impl FnOnce(IpPrefixAggregationBuilder) -> B,
     ) -> IpPrefixAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpPrefixAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_prefix_aggregation_members {
+    pub struct field;
+    pub struct prefix_length;
 }
 
 /// Builder for [`IpPrefixAggregation`].
@@ -24315,7 +25213,7 @@ impl<S0, S1> IpPrefixAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> IpPrefixAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The IP address field to aggregation on. The field mapping type must be `ip`.
+    /// **Required.** The IP address field to aggregation on. The field mapping type must be `ip`.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -24327,7 +25225,7 @@ impl<S1> IpPrefixAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IpPrefixAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Length of the network prefix. For IPv4 addresses the accepted range is [0, 32].
+    /// **Required.** Length of the network prefix. For IPv4 addresses the accepted range is [0, 32].
     /// For IPv6 addresses the accepted range is [0, 128].
     pub fn prefix_length(
         self,
@@ -24339,9 +25237,13 @@ impl<S0> IpPrefixAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IpPrefixAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IpPrefixAggregationBuilder<(S0, S1)> {
     /// Builds a [`IpPrefixAggregation`].
-    pub fn build(self) -> IpPrefixAggregation {
+    pub fn build(self) -> IpPrefixAggregation
+    where
+        S0: crate::typed::builder::IsSet<ip_prefix_aggregation_members::field>,
+        S1: crate::typed::builder::IsSet<ip_prefix_aggregation_members::prefix_length>,
+    {
         IpPrefixAggregation {
             field: self.field.unwrap(),
             prefix_length: self.prefix_length.unwrap(),
@@ -24353,29 +25255,26 @@ impl IpPrefixAggregationBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<IpPrefixAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IpPrefixAggregation
+impl<S0, S1> crate::typed::builder::Build for IpPrefixAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_aggregation_members::field>,
+    S1: crate::typed::builder::IsSet<ip_prefix_aggregation_members::prefix_length>,
 {
-    fn from(
-        builder: IpPrefixAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IpPrefixAggregation;
+
+    fn build(self) -> IpPrefixAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> IpPrefixAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> IpPrefixAggregation { match field {} }
-}
-
-impl IpPrefixAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `prefix_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, prefix_length: crate::typed::builder::MissingRequiredField) -> IpPrefixAggregation { match prefix_length {} }
+impl<S0, S1> From<IpPrefixAggregationBuilder<(S0, S1)>> for IpPrefixAggregation
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_aggregation_members::field>,
+    S1: crate::typed::builder::IsSet<ip_prefix_aggregation_members::prefix_length>,
+{
+    fn from(builder: IpPrefixAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24393,23 +25292,30 @@ pub struct IpPrefixBucket {
 
 impl IpPrefixBucket {
     /// Creates a builder for [`IpPrefixBucket`].
+    ///
+    /// Required: `doc_count`, `is_ipv6`, `key`, `prefix_length`.
     pub fn builder() -> IpPrefixBucketBuilder {
         IpPrefixBucketBuilder::new()
     }
 
     /// Creates a [`IpPrefixBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IpPrefixBucketBuilder,
-        ) -> IpPrefixBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `is_ipv6`, `key`, `prefix_length`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpPrefixBucket>>(
+        f: impl FnOnce(IpPrefixBucketBuilder) -> B,
     ) -> IpPrefixBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpPrefixBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_prefix_bucket_members {
+    pub struct doc_count;
+    pub struct is_ipv6;
+    pub struct key;
+    pub struct prefix_length;
 }
 
 /// Builder for [`IpPrefixBucket`].
@@ -24497,6 +25403,7 @@ impl<S0, S1, S2, S3> IpPrefixBucketBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> IpPrefixBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -24508,6 +25415,7 @@ impl<S1, S2, S3> IpPrefixBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3> IpPrefixBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn is_ipv6(
         self,
         value: bool,
@@ -24519,6 +25427,7 @@ impl<S0, S2, S3> IpPrefixBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3> IpPrefixBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<String>,
@@ -24530,6 +25439,7 @@ impl<S0, S1, S3> IpPrefixBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2> IpPrefixBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn prefix_length(
         self,
         value: i32,
@@ -24540,16 +25450,15 @@ impl<S0, S1, S2> IpPrefixBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSe
     }
 }
 
-impl
-    IpPrefixBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> IpPrefixBucketBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`IpPrefixBucket`].
-    pub fn build(self) -> IpPrefixBucket {
+    pub fn build(self) -> IpPrefixBucket
+    where
+        S0: crate::typed::builder::IsSet<ip_prefix_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<ip_prefix_bucket_members::is_ipv6>,
+        S2: crate::typed::builder::IsSet<ip_prefix_bucket_members::key>,
+        S3: crate::typed::builder::IsSet<ip_prefix_bucket_members::prefix_length>,
+    {
         IpPrefixBucket {
             doc_count: self.doc_count.unwrap(),
             is_ipv6: self.is_ipv6.unwrap(),
@@ -24561,71 +25470,30 @@ impl
     }
 }
 
-impl
-    From<
-        IpPrefixBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IpPrefixBucket
+impl<S0, S1, S2, S3> crate::typed::builder::Build for IpPrefixBucketBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<ip_prefix_bucket_members::is_ipv6>,
+    S2: crate::typed::builder::IsSet<ip_prefix_bucket_members::key>,
+    S3: crate::typed::builder::IsSet<ip_prefix_bucket_members::prefix_length>,
 {
-    fn from(
-        builder: IpPrefixBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IpPrefixBucket;
+
+    fn build(self) -> IpPrefixBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> IpPrefixBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> IpPrefixBucket { match doc_count {} }
-}
-
-impl<S2, S3>
-    IpPrefixBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<IpPrefixBucketBuilder<(S0, S1, S2, S3)>> for IpPrefixBucket
+where
+    S0: crate::typed::builder::IsSet<ip_prefix_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<ip_prefix_bucket_members::is_ipv6>,
+    S2: crate::typed::builder::IsSet<ip_prefix_bucket_members::key>,
+    S3: crate::typed::builder::IsSet<ip_prefix_bucket_members::prefix_length>,
 {
-    /// `is_ipv6` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_ipv6: crate::typed::builder::MissingRequiredField) -> IpPrefixBucket { match is_ipv6 {} }
-}
-
-impl<S3>
-    IpPrefixBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> IpPrefixBucket { match key {} }
-}
-
-impl
-    IpPrefixBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `prefix_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, prefix_length: crate::typed::builder::MissingRequiredField) -> IpPrefixBucket { match prefix_length {} }
+    fn from(builder: IpPrefixBucketBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24637,18 +25505,27 @@ pub struct IpRangeAggregate {
 
 impl IpRangeAggregate {
     /// Creates a builder for [`IpRangeAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> IpRangeAggregateBuilder {
         IpRangeAggregateBuilder::new()
     }
 
     /// Creates a [`IpRangeAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IpRangeAggregateBuilder,
-        ) -> IpRangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpRangeAggregate>>(
+        f: impl FnOnce(IpRangeAggregateBuilder) -> B,
     ) -> IpRangeAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpRangeAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_range_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`IpRangeAggregate`].
@@ -24699,6 +25576,7 @@ impl<S0> IpRangeAggregateBuilder<(S0,)> {
 }
 
 impl IpRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsIpRangeBucket>,
@@ -24709,9 +25587,12 @@ impl IpRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpRangeAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpRangeAggregateBuilder<(S0,)> {
     /// Builds a [`IpRangeAggregate`].
-    pub fn build(self) -> IpRangeAggregate {
+    pub fn build(self) -> IpRangeAggregate
+    where
+        S0: crate::typed::builder::IsSet<ip_range_aggregate_members::buckets>,
+    {
         IpRangeAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -24719,16 +25600,24 @@ impl IpRangeAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpRangeAggregateBuilder<(crate::typed::builder::Set,)>> for IpRangeAggregate {
-    fn from(builder: IpRangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpRangeAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_range_aggregate_members::buckets>,
+{
+    type Output = IpRangeAggregate;
+
+    fn build(self) -> IpRangeAggregate {
+        Self::build(self)
     }
 }
 
-impl IpRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> IpRangeAggregate { match buckets {} }
+impl<S0> From<IpRangeAggregateBuilder<(S0,)>> for IpRangeAggregate
+where
+    S0: crate::typed::builder::IsSet<ip_range_aggregate_members::buckets>,
+{
+    fn from(builder: IpRangeAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -24748,8 +25637,8 @@ impl IpRangeAggregation {
     }
 
     /// Creates a [`IpRangeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IpRangeAggregationBuilder) -> IpRangeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IpRangeAggregation>>(
+        f: impl FnOnce(IpRangeAggregationBuilder) -> B,
     ) -> IpRangeAggregation {
         f(Self::builder()).build()
     }
@@ -24805,9 +25694,9 @@ impl IpRangeAggregationBuilder {
     }
 
     /// Adds an element to [`ranges`](Self::ranges), with a builder.
-    pub fn add_ranges_with(
+    pub fn add_ranges_with<B: crate::typed::builder::Build<Output = IpRangeAggregationRange>>(
         self,
-        f: impl FnOnce(IpRangeAggregationRangeBuilder) -> IpRangeAggregationRangeBuilder,
+        f: impl FnOnce(IpRangeAggregationRangeBuilder) -> B,
     ) -> Self {
         self.add_ranges(f(IpRangeAggregationRangeBuilder::new()).build())
     }
@@ -24820,6 +25709,14 @@ impl IpRangeAggregationBuilder {
             field: self.field,
             ranges: self.ranges,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IpRangeAggregationBuilder {
+    type Output = IpRangeAggregation;
+
+    fn build(self) -> IpRangeAggregation {
+        Self::build(self)
     }
 }
 
@@ -24887,8 +25784,8 @@ impl IpRangeAggregationRange {
     }
 
     /// Creates a [`IpRangeAggregationRange`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IpRangeAggregationRangeBuilder) -> IpRangeAggregationRangeBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IpRangeAggregationRange>>(
+        f: impl FnOnce(IpRangeAggregationRangeBuilder) -> B,
     ) -> IpRangeAggregationRange {
         f(Self::builder()).build()
     }
@@ -24961,6 +25858,14 @@ impl IpRangeAggregationRangeBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IpRangeAggregationRangeBuilder {
+    type Output = IpRangeAggregationRange;
+
+    fn build(self) -> IpRangeAggregationRange {
+        Self::build(self)
+    }
+}
+
 impl From<IpRangeAggregationRangeBuilder> for IpRangeAggregationRange {
     fn from(builder: IpRangeAggregationRangeBuilder) -> Self {
         builder.build()
@@ -24983,16 +25888,27 @@ pub struct IpRangeBucket {
 
 impl IpRangeBucket {
     /// Creates a builder for [`IpRangeBucket`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> IpRangeBucketBuilder {
         IpRangeBucketBuilder::new()
     }
 
     /// Creates a [`IpRangeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IpRangeBucketBuilder) -> IpRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = IpRangeBucket>>(
+        f: impl FnOnce(IpRangeBucketBuilder) -> B,
     ) -> IpRangeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IpRangeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ip_range_bucket_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`IpRangeBucket`].
@@ -25085,6 +26001,7 @@ impl<S0> IpRangeBucketBuilder<(S0,)> {
 }
 
 impl IpRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> IpRangeBucketBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -25092,9 +26009,12 @@ impl IpRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IpRangeBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IpRangeBucketBuilder<(S0,)> {
     /// Builds a [`IpRangeBucket`].
-    pub fn build(self) -> IpRangeBucket {
+    pub fn build(self) -> IpRangeBucket
+    where
+        S0: crate::typed::builder::IsSet<ip_range_bucket_members::doc_count>,
+    {
         IpRangeBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key,
@@ -25105,16 +26025,24 @@ impl IpRangeBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IpRangeBucketBuilder<(crate::typed::builder::Set,)>> for IpRangeBucket {
-    fn from(builder: IpRangeBucketBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IpRangeBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ip_range_bucket_members::doc_count>,
+{
+    type Output = IpRangeBucket;
+
+    fn build(self) -> IpRangeBucket {
+        Self::build(self)
     }
 }
 
-impl IpRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> IpRangeBucket { match doc_count {} }
+impl<S0> From<IpRangeBucketBuilder<(S0,)>> for IpRangeBucket
+where
+    S0: crate::typed::builder::IsSet<ip_range_bucket_members::doc_count>,
+{
+    fn from(builder: IpRangeBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type KeyedPercentiles = indexmap::IndexMap<String, KeyedPercentilesValue>;
@@ -25175,21 +26103,28 @@ pub struct LinearMovingAverageAggregation {
 
 impl LinearMovingAverageAggregation {
     /// Creates a builder for [`LinearMovingAverageAggregation`].
+    ///
+    /// Required: `model`, `settings`.
     pub fn builder() -> LinearMovingAverageAggregationBuilder {
         LinearMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`LinearMovingAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LinearMovingAverageAggregationBuilder,
-        ) -> LinearMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = LinearMovingAverageAggregation>>(
+        f: impl FnOnce(LinearMovingAverageAggregationBuilder) -> B,
     ) -> LinearMovingAverageAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LinearMovingAverageAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod linear_moving_average_aggregation_members {
+    pub struct model;
+    pub struct settings;
 }
 
 /// Builder for [`LinearMovingAverageAggregation`].
@@ -25316,6 +26251,7 @@ impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -25327,6 +26263,7 @@ impl<S1> LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<crate::typed::_types::EmptyObject>,
@@ -25337,21 +26274,23 @@ impl<S0> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
 }
 
-impl
-    LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
     /// Builds a [`LinearMovingAverageAggregation`].
-    pub fn build(self) -> LinearMovingAverageAggregation {
+    pub fn build(self) -> LinearMovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
+        S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
+    {
         LinearMovingAverageAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -25365,39 +26304,27 @@ impl
     }
 }
 
-impl
-    From<
-        LinearMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for LinearMovingAverageAggregation
+impl<S0, S1> crate::typed::builder::Build for LinearMovingAverageAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
 {
-    fn from(
-        builder: LinearMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LinearMovingAverageAggregation;
+
+    fn build(self) -> LinearMovingAverageAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> LinearMovingAverageAggregation { match model {} }
-}
-
-impl
-    LinearMovingAverageAggregationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<LinearMovingAverageAggregationBuilder<(S0, S1)>>
+    for LinearMovingAverageAggregation
+where
+    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> LinearMovingAverageAggregation { match settings {} }
+    fn from(builder: LinearMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of the `rare_terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
@@ -25410,18 +26337,27 @@ pub struct LongRareTermsAggregate {
 
 impl LongRareTermsAggregate {
     /// Creates a builder for [`LongRareTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> LongRareTermsAggregateBuilder {
         LongRareTermsAggregateBuilder::new()
     }
 
     /// Creates a [`LongRareTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongRareTermsAggregateBuilder,
-        ) -> LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongRareTermsAggregate>>(
+        f: impl FnOnce(LongRareTermsAggregateBuilder) -> B,
     ) -> LongRareTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongRareTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_rare_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`LongRareTermsAggregate`].
@@ -25472,6 +26408,7 @@ impl<S0> LongRareTermsAggregateBuilder<(S0,)> {
 }
 
 impl LongRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsLongRareTermsBucket>,
@@ -25482,9 +26419,12 @@ impl LongRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LongRareTermsAggregateBuilder<(S0,)> {
     /// Builds a [`LongRareTermsAggregate`].
-    pub fn build(self) -> LongRareTermsAggregate {
+    pub fn build(self) -> LongRareTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<long_rare_terms_aggregate_members::buckets>,
+    {
         LongRareTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -25492,16 +26432,24 @@ impl LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>> for LongRareTermsAggregate {
-    fn from(builder: LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LongRareTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<long_rare_terms_aggregate_members::buckets>,
+{
+    type Output = LongRareTermsAggregate;
+
+    fn build(self) -> LongRareTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl LongRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> LongRareTermsAggregate { match buckets {} }
+impl<S0> From<LongRareTermsAggregateBuilder<(S0,)>> for LongRareTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<long_rare_terms_aggregate_members::buckets>,
+{
+    fn from(builder: LongRareTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -25517,21 +26465,28 @@ pub struct LongRareTermsBucket {
 
 impl LongRareTermsBucket {
     /// Creates a builder for [`LongRareTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> LongRareTermsBucketBuilder {
         LongRareTermsBucketBuilder::new()
     }
 
     /// Creates a [`LongRareTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongRareTermsBucketBuilder,
-        ) -> LongRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongRareTermsBucket>>(
+        f: impl FnOnce(LongRareTermsBucketBuilder) -> B,
     ) -> LongRareTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongRareTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_rare_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`LongRareTermsBucket`].
@@ -25601,6 +26556,7 @@ impl<S0, S1> LongRareTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> LongRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -25612,6 +26568,7 @@ impl<S1> LongRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LongRareTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(self, value: i64) -> LongRareTermsBucketBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.key = Some(value);
@@ -25619,9 +26576,13 @@ impl<S0> LongRareTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LongRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LongRareTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`LongRareTermsBucket`].
-    pub fn build(self) -> LongRareTermsBucket {
+    pub fn build(self) -> LongRareTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<long_rare_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<long_rare_terms_bucket_members::key>,
+    {
         LongRareTermsBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -25631,29 +26592,26 @@ impl LongRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<LongRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LongRareTermsBucket
+impl<S0, S1> crate::typed::builder::Build for LongRareTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<long_rare_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<long_rare_terms_bucket_members::key>,
 {
-    fn from(
-        builder: LongRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LongRareTermsBucket;
+
+    fn build(self) -> LongRareTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> LongRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> LongRareTermsBucket { match doc_count {} }
-}
-
-impl LongRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> LongRareTermsBucket { match key {} }
+impl<S0, S1> From<LongRareTermsBucketBuilder<(S0, S1)>> for LongRareTermsBucket
+where
+    S0: crate::typed::builder::IsSet<long_rare_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<long_rare_terms_bucket_members::key>,
+{
+    fn from(builder: LongRareTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of a `terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
@@ -25670,18 +26628,27 @@ pub struct LongTermsAggregate {
 
 impl LongTermsAggregate {
     /// Creates a builder for [`LongTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> LongTermsAggregateBuilder {
         LongTermsAggregateBuilder::new()
     }
 
     /// Creates a [`LongTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongTermsAggregateBuilder,
-        ) -> LongTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongTermsAggregate>>(
+        f: impl FnOnce(LongTermsAggregateBuilder) -> B,
     ) -> LongTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`LongTermsAggregate`].
@@ -25760,6 +26727,7 @@ impl<S0> LongTermsAggregateBuilder<(S0,)> {
 }
 
 impl LongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsLongTermsBucket>,
@@ -25770,9 +26738,12 @@ impl LongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl LongTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> LongTermsAggregateBuilder<(S0,)> {
     /// Builds a [`LongTermsAggregate`].
-    pub fn build(self) -> LongTermsAggregate {
+    pub fn build(self) -> LongTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<long_terms_aggregate_members::buckets>,
+    {
         LongTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -25782,16 +26753,24 @@ impl LongTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<LongTermsAggregateBuilder<(crate::typed::builder::Set,)>> for LongTermsAggregate {
-    fn from(builder: LongTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for LongTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<long_terms_aggregate_members::buckets>,
+{
+    type Output = LongTermsAggregate;
+
+    fn build(self) -> LongTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl LongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> LongTermsAggregate { match buckets {} }
+impl<S0> From<LongTermsAggregateBuilder<(S0,)>> for LongTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<long_terms_aggregate_members::buckets>,
+{
+    fn from(builder: LongTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -25809,21 +26788,28 @@ pub struct LongTermsBucket {
 
 impl LongTermsBucket {
     /// Creates a builder for [`LongTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> LongTermsBucketBuilder {
         LongTermsBucketBuilder::new()
     }
 
     /// Creates a [`LongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LongTermsBucketBuilder,
-        ) -> LongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = LongTermsBucket>>(
+        f: impl FnOnce(LongTermsBucketBuilder) -> B,
     ) -> LongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod long_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`LongTermsBucket`].
@@ -25907,6 +26893,7 @@ impl<S0, S1> LongTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> LongTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> LongTermsBucketBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -25915,6 +26902,7 @@ impl<S1> LongTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LongTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(self, value: i64) -> LongTermsBucketBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.key = Some(value);
@@ -25922,9 +26910,13 @@ impl<S0> LongTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LongTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LongTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`LongTermsBucket`].
-    pub fn build(self) -> LongTermsBucket {
+    pub fn build(self) -> LongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<long_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<long_terms_bucket_members::key>,
+    {
         LongTermsBucket {
             doc_count: self.doc_count.unwrap(),
             doc_count_error_upper_bound: self.doc_count_error_upper_bound,
@@ -25935,26 +26927,26 @@ impl LongTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<LongTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LongTermsBucket
+impl<S0, S1> crate::typed::builder::Build for LongTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<long_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<long_terms_bucket_members::key>,
 {
-    fn from(
-        builder: LongTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = LongTermsBucket;
+
+    fn build(self) -> LongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> LongTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> LongTermsBucket { match doc_count {} }
-}
-
-impl LongTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> LongTermsBucket { match key {} }
+impl<S0, S1> From<LongTermsBucketBuilder<(S0, S1)>> for LongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<long_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<long_terms_bucket_members::key>,
+{
+    fn from(builder: LongTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -25976,8 +26968,8 @@ impl MatrixAggregation {
     }
 
     /// Creates a [`MatrixAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MatrixAggregationBuilder) -> MatrixAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MatrixAggregation>>(
+        f: impl FnOnce(MatrixAggregationBuilder) -> B,
     ) -> MatrixAggregation {
         f(Self::builder()).build()
     }
@@ -26059,6 +27051,14 @@ impl MatrixAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MatrixAggregationBuilder {
+    type Output = MatrixAggregation;
+
+    fn build(self) -> MatrixAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MatrixAggregationBuilder> for MatrixAggregation {
     fn from(builder: MatrixAggregationBuilder) -> Self {
         builder.build()
@@ -26076,18 +27076,27 @@ pub struct MatrixStatsAggregate {
 
 impl MatrixStatsAggregate {
     /// Creates a builder for [`MatrixStatsAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> MatrixStatsAggregateBuilder {
         MatrixStatsAggregateBuilder::new()
     }
 
     /// Creates a [`MatrixStatsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatrixStatsAggregateBuilder,
-        ) -> MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatrixStatsAggregate>>(
+        f: impl FnOnce(MatrixStatsAggregateBuilder) -> B,
     ) -> MatrixStatsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatrixStatsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod matrix_stats_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`MatrixStatsAggregate`].
@@ -26159,26 +27168,16 @@ impl<S0> MatrixStatsAggregateBuilder<(S0,)> {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = MatrixStatsFields>>(
         self,
-        f: impl FnOnce(
-            MatrixStatsFieldsBuilder,
-        ) -> MatrixStatsFieldsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MatrixStatsFieldsBuilder) -> B,
     ) -> Self {
         self.add_fields(f(MatrixStatsFieldsBuilder::new()).build())
     }
 }
 
 impl MatrixStatsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -26189,9 +27188,12 @@ impl MatrixStatsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatrixStatsAggregateBuilder<(S0,)> {
     /// Builds a [`MatrixStatsAggregate`].
-    pub fn build(self) -> MatrixStatsAggregate {
+    pub fn build(self) -> MatrixStatsAggregate
+    where
+        S0: crate::typed::builder::IsSet<matrix_stats_aggregate_members::doc_count>,
+    {
         MatrixStatsAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -26200,16 +27202,24 @@ impl MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>> for MatrixStatsAggregate {
-    fn from(builder: MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatrixStatsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<matrix_stats_aggregate_members::doc_count>,
+{
+    type Output = MatrixStatsAggregate;
+
+    fn build(self) -> MatrixStatsAggregate {
+        Self::build(self)
     }
 }
 
-impl MatrixStatsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> MatrixStatsAggregate { match doc_count {} }
+impl<S0> From<MatrixStatsAggregateBuilder<(S0,)>> for MatrixStatsAggregate
+where
+    S0: crate::typed::builder::IsSet<matrix_stats_aggregate_members::doc_count>,
+{
+    fn from(builder: MatrixStatsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -26234,8 +27244,8 @@ impl MatrixStatsAggregation {
     }
 
     /// Creates a [`MatrixStatsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MatrixStatsAggregationBuilder) -> MatrixStatsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MatrixStatsAggregation>>(
+        f: impl FnOnce(MatrixStatsAggregationBuilder) -> B,
     ) -> MatrixStatsAggregation {
         f(Self::builder()).build()
     }
@@ -26332,6 +27342,14 @@ impl MatrixStatsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MatrixStatsAggregationBuilder {
+    type Output = MatrixStatsAggregation;
+
+    fn build(self) -> MatrixStatsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MatrixStatsAggregationBuilder> for MatrixStatsAggregation {
     fn from(builder: MatrixStatsAggregationBuilder) -> Self {
         builder.build()
@@ -26353,27 +27371,34 @@ pub struct MatrixStatsFields {
 
 impl MatrixStatsFields {
     /// Creates a builder for [`MatrixStatsFields`].
+    ///
+    /// Required: `name`, `count`, `mean`, `variance`, `skewness`, `kurtosis`, `covariance`, `correlation`.
     pub fn builder() -> MatrixStatsFieldsBuilder {
         MatrixStatsFieldsBuilder::new()
     }
 
     /// Creates a [`MatrixStatsFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatrixStatsFieldsBuilder,
-        ) -> MatrixStatsFieldsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `count`, `mean`, `variance`, `skewness`, `kurtosis`, `covariance`, `correlation`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatrixStatsFields>>(
+        f: impl FnOnce(MatrixStatsFieldsBuilder) -> B,
     ) -> MatrixStatsFields {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatrixStatsFieldsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod matrix_stats_fields_members {
+    pub struct name;
+    pub struct count;
+    pub struct mean;
+    pub struct variance;
+    pub struct skewness;
+    pub struct kurtosis;
+    pub struct covariance;
+    pub struct correlation;
 }
 
 /// Builder for [`MatrixStatsFields`].
@@ -26449,6 +27474,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S
 impl<S1, S2, S3, S4, S5, S6, S7>
     MatrixStatsFieldsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -26462,6 +27488,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     MatrixStatsFieldsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -26475,6 +27502,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     MatrixStatsFieldsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn mean(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -26488,6 +27516,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     MatrixStatsFieldsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn variance(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -26501,6 +27530,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     MatrixStatsFieldsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn skewness(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -26514,6 +27544,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn kurtosis(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -26527,6 +27558,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn covariance(
         self,
         value: impl Into<
@@ -26572,6 +27604,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn correlation(
         self,
         value: impl Into<
@@ -26614,20 +27647,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`MatrixStatsFields`].
-    pub fn build(self) -> MatrixStatsFields {
+    pub fn build(self) -> MatrixStatsFields
+    where
+        S0: crate::typed::builder::IsSet<matrix_stats_fields_members::name>,
+        S1: crate::typed::builder::IsSet<matrix_stats_fields_members::count>,
+        S2: crate::typed::builder::IsSet<matrix_stats_fields_members::mean>,
+        S3: crate::typed::builder::IsSet<matrix_stats_fields_members::variance>,
+        S4: crate::typed::builder::IsSet<matrix_stats_fields_members::skewness>,
+        S5: crate::typed::builder::IsSet<matrix_stats_fields_members::kurtosis>,
+        S6: crate::typed::builder::IsSet<matrix_stats_fields_members::covariance>,
+        S7: crate::typed::builder::IsSet<matrix_stats_fields_members::correlation>,
+    {
         MatrixStatsFields {
             name: self.name.unwrap(),
             count: self.count.unwrap(),
@@ -26641,161 +27673,40 @@ impl
     }
 }
 
-impl
-    From<
-        MatrixStatsFieldsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MatrixStatsFields
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<matrix_stats_fields_members::name>,
+    S1: crate::typed::builder::IsSet<matrix_stats_fields_members::count>,
+    S2: crate::typed::builder::IsSet<matrix_stats_fields_members::mean>,
+    S3: crate::typed::builder::IsSet<matrix_stats_fields_members::variance>,
+    S4: crate::typed::builder::IsSet<matrix_stats_fields_members::skewness>,
+    S5: crate::typed::builder::IsSet<matrix_stats_fields_members::kurtosis>,
+    S6: crate::typed::builder::IsSet<matrix_stats_fields_members::covariance>,
+    S7: crate::typed::builder::IsSet<matrix_stats_fields_members::correlation>,
 {
-    fn from(
-        builder: MatrixStatsFieldsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MatrixStatsFields;
+
+    fn build(self) -> MatrixStatsFields {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    MatrixStatsFieldsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for MatrixStatsFields
+where
+    S0: crate::typed::builder::IsSet<matrix_stats_fields_members::name>,
+    S1: crate::typed::builder::IsSet<matrix_stats_fields_members::count>,
+    S2: crate::typed::builder::IsSet<matrix_stats_fields_members::mean>,
+    S3: crate::typed::builder::IsSet<matrix_stats_fields_members::variance>,
+    S4: crate::typed::builder::IsSet<matrix_stats_fields_members::skewness>,
+    S5: crate::typed::builder::IsSet<matrix_stats_fields_members::kurtosis>,
+    S6: crate::typed::builder::IsSet<matrix_stats_fields_members::covariance>,
+    S7: crate::typed::builder::IsSet<matrix_stats_fields_members::correlation>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match name {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match count {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `mean` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mean: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match mean {} }
-}
-
-impl<S4, S5, S6, S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `variance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variance: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match variance {} }
-}
-
-impl<S5, S6, S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `skewness` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skewness: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match skewness {} }
-}
-
-impl<S6, S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `kurtosis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, kurtosis: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match kurtosis {} }
-}
-
-impl<S7>
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `covariance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, covariance: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match covariance {} }
-}
-
-impl
-    MatrixStatsFieldsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `correlation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, correlation: crate::typed::builder::MissingRequiredField) -> MatrixStatsFields { match correlation {} }
+    fn from(builder: MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -26830,16 +27741,27 @@ impl From<f64> for MaxAggregateValue {
 
 impl MaxAggregate {
     /// Creates a builder for [`MaxAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> MaxAggregateBuilder {
         MaxAggregateBuilder::new()
     }
 
     /// Creates a [`MaxAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MaxAggregateBuilder) -> MaxAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = MaxAggregate>>(
+        f: impl FnOnce(MaxAggregateBuilder) -> B,
     ) -> MaxAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MaxAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod max_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`MaxAggregate`].
@@ -26904,7 +27826,7 @@ impl<S0> MaxAggregateBuilder<(S0,)> {
 }
 
 impl MaxAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -26916,9 +27838,12 @@ impl MaxAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MaxAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MaxAggregateBuilder<(S0,)> {
     /// Builds a [`MaxAggregate`].
-    pub fn build(self) -> MaxAggregate {
+    pub fn build(self) -> MaxAggregate
+    where
+        S0: crate::typed::builder::IsSet<max_aggregate_members::value>,
+    {
         MaxAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -26927,16 +27852,24 @@ impl MaxAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MaxAggregateBuilder<(crate::typed::builder::Set,)>> for MaxAggregate {
-    fn from(builder: MaxAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MaxAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<max_aggregate_members::value>,
+{
+    type Output = MaxAggregate;
+
+    fn build(self) -> MaxAggregate {
+        Self::build(self)
     }
 }
 
-impl MaxAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> MaxAggregate { match value {} }
+impl<S0> From<MaxAggregateBuilder<(S0,)>> for MaxAggregate
+where
+    S0: crate::typed::builder::IsSet<max_aggregate_members::value>,
+{
+    fn from(builder: MaxAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -26961,7 +27894,9 @@ impl MaxAggregation {
     }
 
     /// Creates a [`MaxAggregation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MaxAggregationBuilder) -> MaxAggregationBuilder) -> MaxAggregation {
+    pub fn of<B: crate::typed::builder::Build<Output = MaxAggregation>>(
+        f: impl FnOnce(MaxAggregationBuilder) -> B,
+    ) -> MaxAggregation {
         f(Self::builder()).build()
     }
 }
@@ -27024,9 +27959,9 @@ impl MaxAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -27052,6 +27987,14 @@ impl MaxAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MaxAggregationBuilder {
+    type Output = MaxAggregation;
+
+    fn build(self) -> MaxAggregation {
+        Self::build(self)
     }
 }
 
@@ -27082,8 +28025,8 @@ impl MaxBucketAggregation {
     }
 
     /// Creates a [`MaxBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MaxBucketAggregationBuilder) -> MaxBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MaxBucketAggregation>>(
+        f: impl FnOnce(MaxBucketAggregationBuilder) -> B,
     ) -> MaxBucketAggregation {
         f(Self::builder()).build()
     }
@@ -27157,6 +28100,14 @@ impl MaxBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MaxBucketAggregationBuilder {
+    type Output = MaxBucketAggregation;
+
+    fn build(self) -> MaxBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MaxBucketAggregationBuilder> for MaxBucketAggregation {
     fn from(builder: MaxBucketAggregationBuilder) -> Self {
         builder.build()
@@ -27195,19 +28146,27 @@ impl From<f64> for MedianAbsoluteDeviationAggregateValue {
 
 impl MedianAbsoluteDeviationAggregate {
     /// Creates a builder for [`MedianAbsoluteDeviationAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> MedianAbsoluteDeviationAggregateBuilder {
         MedianAbsoluteDeviationAggregateBuilder::new()
     }
 
     /// Creates a [`MedianAbsoluteDeviationAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MedianAbsoluteDeviationAggregateBuilder,
-        )
-            -> MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = MedianAbsoluteDeviationAggregate>>(
+        f: impl FnOnce(MedianAbsoluteDeviationAggregateBuilder) -> B,
     ) -> MedianAbsoluteDeviationAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MedianAbsoluteDeviationAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod median_absolute_deviation_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`MedianAbsoluteDeviationAggregate`].
@@ -27272,7 +28231,7 @@ impl<S0> MedianAbsoluteDeviationAggregateBuilder<(S0,)> {
 }
 
 impl MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -27284,9 +28243,12 @@ impl MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MedianAbsoluteDeviationAggregateBuilder<(S0,)> {
     /// Builds a [`MedianAbsoluteDeviationAggregate`].
-    pub fn build(self) -> MedianAbsoluteDeviationAggregate {
+    pub fn build(self) -> MedianAbsoluteDeviationAggregate
+    where
+        S0: crate::typed::builder::IsSet<median_absolute_deviation_aggregate_members::value>,
+    {
         MedianAbsoluteDeviationAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -27295,20 +28257,24 @@ impl MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>>
-    for MedianAbsoluteDeviationAggregate
+impl<S0> crate::typed::builder::Build for MedianAbsoluteDeviationAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<median_absolute_deviation_aggregate_members::value>,
 {
-    fn from(
-        builder: MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MedianAbsoluteDeviationAggregate;
+
+    fn build(self) -> MedianAbsoluteDeviationAggregate {
+        Self::build(self)
     }
 }
 
-impl MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> MedianAbsoluteDeviationAggregate { match value {} }
+impl<S0> From<MedianAbsoluteDeviationAggregateBuilder<(S0,)>> for MedianAbsoluteDeviationAggregate
+where
+    S0: crate::typed::builder::IsSet<median_absolute_deviation_aggregate_members::value>,
+{
+    fn from(builder: MedianAbsoluteDeviationAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -27340,10 +28306,8 @@ impl MedianAbsoluteDeviationAggregation {
     }
 
     /// Creates a [`MedianAbsoluteDeviationAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MedianAbsoluteDeviationAggregationBuilder,
-        ) -> MedianAbsoluteDeviationAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MedianAbsoluteDeviationAggregation>>(
+        f: impl FnOnce(MedianAbsoluteDeviationAggregationBuilder) -> B,
     ) -> MedianAbsoluteDeviationAggregation {
         f(Self::builder()).build()
     }
@@ -27411,9 +28375,9 @@ impl MedianAbsoluteDeviationAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -27469,6 +28433,14 @@ impl MedianAbsoluteDeviationAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MedianAbsoluteDeviationAggregationBuilder {
+    type Output = MedianAbsoluteDeviationAggregation;
+
+    fn build(self) -> MedianAbsoluteDeviationAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MedianAbsoluteDeviationAggregationBuilder> for MedianAbsoluteDeviationAggregation {
     fn from(builder: MedianAbsoluteDeviationAggregationBuilder) -> Self {
         builder.build()
@@ -27495,8 +28467,8 @@ impl MetricAggregationBase {
     }
 
     /// Creates a [`MetricAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MetricAggregationBaseBuilder) -> MetricAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MetricAggregationBase>>(
+        f: impl FnOnce(MetricAggregationBaseBuilder) -> B,
     ) -> MetricAggregationBase {
         f(Self::builder()).build()
     }
@@ -27558,9 +28530,9 @@ impl MetricAggregationBaseBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -27574,6 +28546,14 @@ impl MetricAggregationBaseBuilder {
             missing: self.missing,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MetricAggregationBaseBuilder {
+    type Output = MetricAggregationBase;
+
+    fn build(self) -> MetricAggregationBase {
+        Self::build(self)
     }
 }
 
@@ -27615,16 +28595,27 @@ impl From<f64> for MinAggregateValue {
 
 impl MinAggregate {
     /// Creates a builder for [`MinAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> MinAggregateBuilder {
         MinAggregateBuilder::new()
     }
 
     /// Creates a [`MinAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MinAggregateBuilder) -> MinAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = MinAggregate>>(
+        f: impl FnOnce(MinAggregateBuilder) -> B,
     ) -> MinAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MinAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod min_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`MinAggregate`].
@@ -27689,7 +28680,7 @@ impl<S0> MinAggregateBuilder<(S0,)> {
 }
 
 impl MinAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -27701,9 +28692,12 @@ impl MinAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MinAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MinAggregateBuilder<(S0,)> {
     /// Builds a [`MinAggregate`].
-    pub fn build(self) -> MinAggregate {
+    pub fn build(self) -> MinAggregate
+    where
+        S0: crate::typed::builder::IsSet<min_aggregate_members::value>,
+    {
         MinAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -27712,16 +28706,24 @@ impl MinAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MinAggregateBuilder<(crate::typed::builder::Set,)>> for MinAggregate {
-    fn from(builder: MinAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MinAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<min_aggregate_members::value>,
+{
+    type Output = MinAggregate;
+
+    fn build(self) -> MinAggregate {
+        Self::build(self)
     }
 }
 
-impl MinAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> MinAggregate { match value {} }
+impl<S0> From<MinAggregateBuilder<(S0,)>> for MinAggregate
+where
+    S0: crate::typed::builder::IsSet<min_aggregate_members::value>,
+{
+    fn from(builder: MinAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -27746,7 +28748,9 @@ impl MinAggregation {
     }
 
     /// Creates a [`MinAggregation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MinAggregationBuilder) -> MinAggregationBuilder) -> MinAggregation {
+    pub fn of<B: crate::typed::builder::Build<Output = MinAggregation>>(
+        f: impl FnOnce(MinAggregationBuilder) -> B,
+    ) -> MinAggregation {
         f(Self::builder()).build()
     }
 }
@@ -27809,9 +28813,9 @@ impl MinAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -27837,6 +28841,14 @@ impl MinAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MinAggregationBuilder {
+    type Output = MinAggregation;
+
+    fn build(self) -> MinAggregation {
+        Self::build(self)
     }
 }
 
@@ -27867,8 +28879,8 @@ impl MinBucketAggregation {
     }
 
     /// Creates a [`MinBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MinBucketAggregationBuilder) -> MinBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MinBucketAggregation>>(
+        f: impl FnOnce(MinBucketAggregationBuilder) -> B,
     ) -> MinBucketAggregation {
         f(Self::builder()).build()
     }
@@ -27939,6 +28951,14 @@ impl MinBucketAggregationBuilder {
             format: self.format,
             gap_policy: self.gap_policy,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MinBucketAggregationBuilder {
+    type Output = MinBucketAggregation;
+
+    fn build(self) -> MinBucketAggregation {
+        Self::build(self)
     }
 }
 
@@ -28021,18 +29041,27 @@ pub struct MissingAggregate {
 
 impl MissingAggregate {
     /// Creates a builder for [`MissingAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> MissingAggregateBuilder {
         MissingAggregateBuilder::new()
     }
 
     /// Creates a [`MissingAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MissingAggregateBuilder,
-        ) -> MissingAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = MissingAggregate>>(
+        f: impl FnOnce(MissingAggregateBuilder) -> B,
     ) -> MissingAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MissingAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod missing_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`MissingAggregate`].
@@ -28105,6 +29134,7 @@ impl<S0> MissingAggregateBuilder<(S0,)> {
 }
 
 impl MissingAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> MissingAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -28112,9 +29142,12 @@ impl MissingAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MissingAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MissingAggregateBuilder<(S0,)> {
     /// Builds a [`MissingAggregate`].
-    pub fn build(self) -> MissingAggregate {
+    pub fn build(self) -> MissingAggregate
+    where
+        S0: crate::typed::builder::IsSet<missing_aggregate_members::doc_count>,
+    {
         MissingAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -28123,16 +29156,24 @@ impl MissingAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MissingAggregateBuilder<(crate::typed::builder::Set,)>> for MissingAggregate {
-    fn from(builder: MissingAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MissingAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<missing_aggregate_members::doc_count>,
+{
+    type Output = MissingAggregate;
+
+    fn build(self) -> MissingAggregate {
+        Self::build(self)
     }
 }
 
-impl MissingAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> MissingAggregate { match doc_count {} }
+impl<S0> From<MissingAggregateBuilder<(S0,)>> for MissingAggregate
+where
+    S0: crate::typed::builder::IsSet<missing_aggregate_members::doc_count>,
+{
+    fn from(builder: MissingAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -28151,8 +29192,8 @@ impl MissingAggregation {
     }
 
     /// Creates a [`MissingAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MissingAggregationBuilder) -> MissingAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MissingAggregation>>(
+        f: impl FnOnce(MissingAggregationBuilder) -> B,
     ) -> MissingAggregation {
         f(Self::builder()).build()
     }
@@ -28206,6 +29247,14 @@ impl MissingAggregationBuilder {
             field: self.field,
             missing: self.missing,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MissingAggregationBuilder {
+    type Output = MissingAggregation;
+
+    fn build(self) -> MissingAggregation {
+        Self::build(self)
     }
 }
 
@@ -28263,8 +29312,8 @@ impl MovingAverageAggregationBase {
     }
 
     /// Creates a [`MovingAverageAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MovingAverageAggregationBaseBuilder) -> MovingAverageAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MovingAverageAggregationBase>>(
+        f: impl FnOnce(MovingAverageAggregationBaseBuilder) -> B,
     ) -> MovingAverageAggregationBase {
         f(Self::builder()).build()
     }
@@ -28380,6 +29429,14 @@ impl MovingAverageAggregationBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MovingAverageAggregationBaseBuilder {
+    type Output = MovingAverageAggregationBase;
+
+    fn build(self) -> MovingAverageAggregationBase {
+        Self::build(self)
+    }
+}
+
 impl From<MovingAverageAggregationBaseBuilder> for MovingAverageAggregationBase {
     fn from(builder: MovingAverageAggregationBaseBuilder) -> Self {
         builder.build()
@@ -28417,8 +29474,8 @@ impl MovingFunctionAggregation {
     }
 
     /// Creates a [`MovingFunctionAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MovingFunctionAggregationBuilder) -> MovingFunctionAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MovingFunctionAggregation>>(
+        f: impl FnOnce(MovingFunctionAggregationBuilder) -> B,
     ) -> MovingFunctionAggregation {
         f(Self::builder()).build()
     }
@@ -28538,6 +29595,14 @@ impl MovingFunctionAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MovingFunctionAggregationBuilder {
+    type Output = MovingFunctionAggregation;
+
+    fn build(self) -> MovingFunctionAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MovingFunctionAggregationBuilder> for MovingFunctionAggregation {
     fn from(builder: MovingFunctionAggregationBuilder) -> Self {
         builder.build()
@@ -28574,8 +29639,8 @@ impl MovingPercentilesAggregation {
     }
 
     /// Creates a [`MovingPercentilesAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MovingPercentilesAggregationBuilder) -> MovingPercentilesAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MovingPercentilesAggregation>>(
+        f: impl FnOnce(MovingPercentilesAggregationBuilder) -> B,
     ) -> MovingPercentilesAggregation {
         f(Self::builder()).build()
     }
@@ -28694,6 +29759,14 @@ impl MovingPercentilesAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MovingPercentilesAggregationBuilder {
+    type Output = MovingPercentilesAggregation;
+
+    fn build(self) -> MovingPercentilesAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<MovingPercentilesAggregationBuilder> for MovingPercentilesAggregation {
     fn from(builder: MovingPercentilesAggregationBuilder) -> Self {
         builder.build()
@@ -28709,20 +29782,29 @@ pub struct MultiBucketAggregateBaseAdjacencyMatrixBucket {
 
 impl MultiBucketAggregateBaseAdjacencyMatrixBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseAdjacencyMatrixBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder {
         MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseAdjacencyMatrixBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder,
-        ) -> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseAdjacencyMatrixBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseAdjacencyMatrixBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_adjacency_matrix_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseAdjacencyMatrixBucket`].
@@ -28775,6 +29857,7 @@ impl<S0> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsAdjacencyMatrixBucket>,
@@ -28785,9 +29868,14 @@ impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder
     }
 }
 
-impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseAdjacencyMatrixBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseAdjacencyMatrixBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseAdjacencyMatrixBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_adjacency_matrix_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseAdjacencyMatrixBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -28795,22 +29883,30 @@ impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder
     }
 }
 
-impl From<MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseAdjacencyMatrixBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_adjacency_matrix_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseAdjacencyMatrixBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseAdjacencyMatrixBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseAdjacencyMatrixBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseAdjacencyMatrixBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_adjacency_matrix_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -28822,19 +29918,27 @@ pub struct MultiBucketAggregateBaseCompositeBucket {
 
 impl MultiBucketAggregateBaseCompositeBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseCompositeBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseCompositeBucketBuilder {
         MultiBucketAggregateBaseCompositeBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseCompositeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseCompositeBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseCompositeBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseCompositeBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseCompositeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseCompositeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_composite_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseCompositeBucket`].
@@ -28885,6 +29989,7 @@ impl<S0> MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsCompositeBucket>,
@@ -28895,9 +30000,14 @@ impl MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::NotS
     }
 }
 
-impl MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseCompositeBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseCompositeBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseCompositeBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_composite_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseCompositeBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -28905,20 +30015,25 @@ impl MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,
     }
 }
 
-impl From<MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseCompositeBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_composite_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseCompositeBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseCompositeBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseCompositeBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseCompositeBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_composite_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -28930,20 +30045,29 @@ pub struct MultiBucketAggregateBaseDateHistogramBucket {
 
 impl MultiBucketAggregateBaseDateHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseDateHistogramBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseDateHistogramBucketBuilder {
         MultiBucketAggregateBaseDateHistogramBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseDateHistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseDateHistogramBucketBuilder,
-        ) -> MultiBucketAggregateBaseDateHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseDateHistogramBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseDateHistogramBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseDateHistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseDateHistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_date_histogram_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseDateHistogramBucket`].
@@ -28995,6 +30119,7 @@ impl<S0> MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDateHistogramBucket>,
@@ -29005,9 +30130,14 @@ impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::
     }
 }
 
-impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseDateHistogramBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseDateHistogramBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseDateHistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_date_histogram_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseDateHistogramBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29015,20 +30145,29 @@ impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::
     }
 }
 
-impl From<MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseDateHistogramBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_date_histogram_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseDateHistogramBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseDateHistogramBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseDateHistogramBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseDateHistogramBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_date_histogram_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29040,20 +30179,29 @@ pub struct MultiBucketAggregateBaseDoubleTermsBucket {
 
 impl MultiBucketAggregateBaseDoubleTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseDoubleTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseDoubleTermsBucketBuilder {
         MultiBucketAggregateBaseDoubleTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseDoubleTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseDoubleTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseDoubleTermsBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseDoubleTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseDoubleTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseDoubleTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseDoubleTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_double_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseDoubleTermsBucket`].
@@ -29104,6 +30252,7 @@ impl<S0> MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDoubleTermsBucket>,
@@ -29114,9 +30263,14 @@ impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::No
     }
 }
 
-impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseDoubleTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseDoubleTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseDoubleTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_double_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseDoubleTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29124,20 +30278,29 @@ impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Se
     }
 }
 
-impl From<MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseDoubleTermsBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_double_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseDoubleTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseDoubleTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseDoubleTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseDoubleTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_double_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29149,19 +30312,27 @@ pub struct MultiBucketAggregateBaseFiltersBucket {
 
 impl MultiBucketAggregateBaseFiltersBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseFiltersBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseFiltersBucketBuilder {
         MultiBucketAggregateBaseFiltersBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseFiltersBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseFiltersBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseFiltersBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseFiltersBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseFiltersBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseFiltersBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_filters_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseFiltersBucket`].
@@ -29212,6 +30383,7 @@ impl<S0> MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsFiltersBucket>,
@@ -29222,9 +30394,14 @@ impl MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::NotSet
     }
 }
 
-impl MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseFiltersBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseFiltersBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseFiltersBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_filters_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseFiltersBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29232,20 +30409,25 @@ impl MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)>
     }
 }
 
-impl From<MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseFiltersBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_filters_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseFiltersBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseFiltersBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseFiltersBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseFiltersBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_filters_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29257,20 +30439,29 @@ pub struct MultiBucketAggregateBaseFrequentItemSetsBucket {
 
 impl MultiBucketAggregateBaseFrequentItemSetsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseFrequentItemSetsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder {
         MultiBucketAggregateBaseFrequentItemSetsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseFrequentItemSetsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseFrequentItemSetsBucketBuilder,
-        ) -> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseFrequentItemSetsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseFrequentItemSetsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseFrequentItemSetsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseFrequentItemSetsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_frequent_item_sets_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseFrequentItemSetsBucket`].
@@ -29323,6 +30514,7 @@ impl<S0> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsFrequentItemSetsBucket>,
@@ -29333,9 +30525,14 @@ impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builde
     }
 }
 
-impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseFrequentItemSetsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseFrequentItemSetsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseFrequentItemSetsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_frequent_item_sets_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseFrequentItemSetsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29343,22 +30540,30 @@ impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builde
     }
 }
 
-impl From<MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseFrequentItemSetsBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_frequent_item_sets_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseFrequentItemSetsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseFrequentItemSetsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseFrequentItemSetsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseFrequentItemSetsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_frequent_item_sets_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29370,20 +30575,29 @@ pub struct MultiBucketAggregateBaseGeoHashGridBucket {
 
 impl MultiBucketAggregateBaseGeoHashGridBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseGeoHashGridBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseGeoHashGridBucketBuilder {
         MultiBucketAggregateBaseGeoHashGridBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseGeoHashGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseGeoHashGridBucketBuilder,
-        ) -> MultiBucketAggregateBaseGeoHashGridBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseGeoHashGridBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseGeoHashGridBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseGeoHashGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseGeoHashGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_geo_hash_grid_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseGeoHashGridBucket`].
@@ -29434,6 +30648,7 @@ impl<S0> MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoHashGridBucket>,
@@ -29444,9 +30659,14 @@ impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::No
     }
 }
 
-impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseGeoHashGridBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseGeoHashGridBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseGeoHashGridBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_geo_hash_grid_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseGeoHashGridBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29454,20 +30674,29 @@ impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::Se
     }
 }
 
-impl From<MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseGeoHashGridBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_hash_grid_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseGeoHashGridBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseGeoHashGridBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseGeoHashGridBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseGeoHashGridBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_hash_grid_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29479,19 +30708,29 @@ pub struct MultiBucketAggregateBaseGeoHexGridBucket {
 
 impl MultiBucketAggregateBaseGeoHexGridBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseGeoHexGridBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseGeoHexGridBucketBuilder {
         MultiBucketAggregateBaseGeoHexGridBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseGeoHexGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseGeoHexGridBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseGeoHexGridBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseGeoHexGridBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseGeoHexGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseGeoHexGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_geo_hex_grid_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseGeoHexGridBucket`].
@@ -29542,6 +30781,7 @@ impl<S0> MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoHexGridBucket>,
@@ -29552,9 +30792,14 @@ impl MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Not
     }
 }
 
-impl MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseGeoHexGridBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseGeoHexGridBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseGeoHexGridBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_geo_hex_grid_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseGeoHexGridBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29562,20 +30807,29 @@ impl MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set
     }
 }
 
-impl From<MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseGeoHexGridBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_hex_grid_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseGeoHexGridBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseGeoHexGridBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseGeoHexGridBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseGeoHexGridBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_hex_grid_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29587,20 +30841,29 @@ pub struct MultiBucketAggregateBaseGeoTileGridBucket {
 
 impl MultiBucketAggregateBaseGeoTileGridBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseGeoTileGridBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseGeoTileGridBucketBuilder {
         MultiBucketAggregateBaseGeoTileGridBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseGeoTileGridBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseGeoTileGridBucketBuilder,
-        ) -> MultiBucketAggregateBaseGeoTileGridBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseGeoTileGridBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseGeoTileGridBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseGeoTileGridBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseGeoTileGridBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_geo_tile_grid_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseGeoTileGridBucket`].
@@ -29651,6 +30914,7 @@ impl<S0> MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsGeoTileGridBucket>,
@@ -29661,9 +30925,14 @@ impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::No
     }
 }
 
-impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseGeoTileGridBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseGeoTileGridBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseGeoTileGridBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_geo_tile_grid_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseGeoTileGridBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29671,20 +30940,29 @@ impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::Se
     }
 }
 
-impl From<MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseGeoTileGridBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_tile_grid_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseGeoTileGridBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseGeoTileGridBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseGeoTileGridBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseGeoTileGridBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_geo_tile_grid_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29696,19 +30974,27 @@ pub struct MultiBucketAggregateBaseHistogramBucket {
 
 impl MultiBucketAggregateBaseHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseHistogramBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseHistogramBucketBuilder {
         MultiBucketAggregateBaseHistogramBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseHistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseHistogramBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseHistogramBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseHistogramBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseHistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseHistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_histogram_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseHistogramBucket`].
@@ -29759,6 +31045,7 @@ impl<S0> MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsHistogramBucket>,
@@ -29769,9 +31056,14 @@ impl MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::NotS
     }
 }
 
-impl MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseHistogramBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseHistogramBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseHistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_histogram_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseHistogramBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29779,20 +31071,25 @@ impl MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,
     }
 }
 
-impl From<MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseHistogramBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_histogram_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseHistogramBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseHistogramBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseHistogramBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseHistogramBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_histogram_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29804,19 +31101,27 @@ pub struct MultiBucketAggregateBaseIpPrefixBucket {
 
 impl MultiBucketAggregateBaseIpPrefixBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseIpPrefixBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseIpPrefixBucketBuilder {
         MultiBucketAggregateBaseIpPrefixBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseIpPrefixBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseIpPrefixBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseIpPrefixBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseIpPrefixBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseIpPrefixBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseIpPrefixBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_ip_prefix_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseIpPrefixBucket`].
@@ -29867,6 +31172,7 @@ impl<S0> MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsIpPrefixBucket>,
@@ -29877,9 +31183,14 @@ impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::NotSe
     }
 }
 
-impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseIpPrefixBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseIpPrefixBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseIpPrefixBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_ip_prefix_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseIpPrefixBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29887,20 +31198,25 @@ impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)
     }
 }
 
-impl From<MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseIpPrefixBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_ip_prefix_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseIpPrefixBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseIpPrefixBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseIpPrefixBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseIpPrefixBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_ip_prefix_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -29912,19 +31228,27 @@ pub struct MultiBucketAggregateBaseIpRangeBucket {
 
 impl MultiBucketAggregateBaseIpRangeBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseIpRangeBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseIpRangeBucketBuilder {
         MultiBucketAggregateBaseIpRangeBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseIpRangeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseIpRangeBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseIpRangeBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseIpRangeBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseIpRangeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseIpRangeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_ip_range_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseIpRangeBucket`].
@@ -29975,6 +31299,7 @@ impl<S0> MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsIpRangeBucket>,
@@ -29985,9 +31310,14 @@ impl MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::NotSet
     }
 }
 
-impl MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseIpRangeBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseIpRangeBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseIpRangeBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_ip_range_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseIpRangeBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -29995,20 +31325,25 @@ impl MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)>
     }
 }
 
-impl From<MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseIpRangeBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_ip_range_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseIpRangeBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseIpRangeBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseIpRangeBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseIpRangeBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_ip_range_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30020,20 +31355,29 @@ pub struct MultiBucketAggregateBaseLongRareTermsBucket {
 
 impl MultiBucketAggregateBaseLongRareTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseLongRareTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseLongRareTermsBucketBuilder {
         MultiBucketAggregateBaseLongRareTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseLongRareTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseLongRareTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseLongRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseLongRareTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseLongRareTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseLongRareTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseLongRareTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_long_rare_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseLongRareTermsBucket`].
@@ -30085,6 +31429,7 @@ impl<S0> MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsLongRareTermsBucket>,
@@ -30095,9 +31440,14 @@ impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::
     }
 }
 
-impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseLongRareTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseLongRareTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseLongRareTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_long_rare_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseLongRareTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30105,20 +31455,29 @@ impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::
     }
 }
 
-impl From<MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseLongRareTermsBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_long_rare_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseLongRareTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseLongRareTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseLongRareTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseLongRareTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_long_rare_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30130,19 +31489,27 @@ pub struct MultiBucketAggregateBaseLongTermsBucket {
 
 impl MultiBucketAggregateBaseLongTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseLongTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseLongTermsBucketBuilder {
         MultiBucketAggregateBaseLongTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseLongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseLongTermsBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseLongTermsBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseLongTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseLongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseLongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_long_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseLongTermsBucket`].
@@ -30193,6 +31560,7 @@ impl<S0> MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsLongTermsBucket>,
@@ -30203,9 +31571,14 @@ impl MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotS
     }
 }
 
-impl MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseLongTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseLongTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseLongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_long_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseLongTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30213,20 +31586,29 @@ impl MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,
     }
 }
 
-impl From<MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseLongTermsBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_long_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseLongTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseLongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseLongTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseLongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_long_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30238,19 +31620,29 @@ pub struct MultiBucketAggregateBaseMultiTermsBucket {
 
 impl MultiBucketAggregateBaseMultiTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseMultiTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseMultiTermsBucketBuilder {
         MultiBucketAggregateBaseMultiTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseMultiTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseMultiTermsBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseMultiTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseMultiTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseMultiTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseMultiTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_multi_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseMultiTermsBucket`].
@@ -30301,6 +31693,7 @@ impl<S0> MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsMultiTermsBucket>,
@@ -30311,9 +31704,14 @@ impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Not
     }
 }
 
-impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseMultiTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseMultiTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseMultiTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_multi_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseMultiTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30321,20 +31719,29 @@ impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set
     }
 }
 
-impl From<MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseMultiTermsBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_multi_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseMultiTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseMultiTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseMultiTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseMultiTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_multi_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30346,19 +31753,27 @@ pub struct MultiBucketAggregateBaseRangeBucket {
 
 impl MultiBucketAggregateBaseRangeBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseRangeBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseRangeBucketBuilder {
         MultiBucketAggregateBaseRangeBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseRangeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseRangeBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseRangeBucket>>(
+        f: impl FnOnce(MultiBucketAggregateBaseRangeBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseRangeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseRangeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_range_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseRangeBucket`].
@@ -30409,6 +31824,7 @@ impl<S0> MultiBucketAggregateBaseRangeBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsRangeBucket>,
@@ -30419,9 +31835,12 @@ impl MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::NotSet,)
     }
 }
 
-impl MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseRangeBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseRangeBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseRangeBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseRangeBucket
+    where
+        S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_range_bucket_members::buckets>,
+    {
         MultiBucketAggregateBaseRangeBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30429,20 +31848,25 @@ impl MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseRangeBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseRangeBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_range_bucket_members::buckets>,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseRangeBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseRangeBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseRangeBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseRangeBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseRangeBucket
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_range_bucket_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseRangeBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30454,20 +31878,29 @@ pub struct MultiBucketAggregateBaseSignificantLongTermsBucket {
 
 impl MultiBucketAggregateBaseSignificantLongTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseSignificantLongTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder {
         MultiBucketAggregateBaseSignificantLongTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseSignificantLongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseSignificantLongTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseSignificantLongTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseSignificantLongTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseSignificantLongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseSignificantLongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_significant_long_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseSignificantLongTermsBucket`].
@@ -30520,6 +31953,7 @@ impl<S0> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantLongTermsBucket>,
@@ -30531,9 +31965,14 @@ impl MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::bu
     }
 }
 
-impl MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseSignificantLongTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseSignificantLongTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseSignificantLongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_significant_long_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseSignificantLongTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30541,22 +31980,30 @@ impl MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::bu
     }
 }
 
-impl From<MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseSignificantLongTermsBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_significant_long_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseSignificantLongTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseSignificantLongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseSignificantLongTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseSignificantLongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_significant_long_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30568,20 +32015,29 @@ pub struct MultiBucketAggregateBaseSignificantStringTermsBucket {
 
 impl MultiBucketAggregateBaseSignificantStringTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseSignificantStringTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder {
         MultiBucketAggregateBaseSignificantStringTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseSignificantStringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseSignificantStringTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseSignificantStringTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseSignificantStringTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseSignificantStringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseSignificantStringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_significant_string_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseSignificantStringTermsBucket`].
@@ -30634,6 +32090,7 @@ impl<S0> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantStringTermsBucket>,
@@ -30645,9 +32102,14 @@ impl MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::
     }
 }
 
-impl MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseSignificantStringTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseSignificantStringTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseSignificantStringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_significant_string_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseSignificantStringTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30655,23 +32117,30 @@ impl MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::
     }
 }
 
-impl
-    From<MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseSignificantStringTermsBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_significant_string_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseSignificantStringTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseSignificantStringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseSignificantStringTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseSignificantStringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_significant_string_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30683,20 +32152,29 @@ pub struct MultiBucketAggregateBaseStringRareTermsBucket {
 
 impl MultiBucketAggregateBaseStringRareTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseStringRareTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseStringRareTermsBucketBuilder {
         MultiBucketAggregateBaseStringRareTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseStringRareTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseStringRareTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseStringRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseStringRareTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseStringRareTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseStringRareTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseStringRareTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_string_rare_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseStringRareTermsBucket`].
@@ -30749,6 +32227,7 @@ impl<S0> MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsStringRareTermsBucket>,
@@ -30759,9 +32238,14 @@ impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder
     }
 }
 
-impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseStringRareTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseStringRareTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseStringRareTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_string_rare_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseStringRareTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30769,22 +32253,30 @@ impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder
     }
 }
 
-impl From<MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseStringRareTermsBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_string_rare_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseStringRareTermsBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseStringRareTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseStringRareTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseStringRareTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseStringRareTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_string_rare_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30796,20 +32288,29 @@ pub struct MultiBucketAggregateBaseStringTermsBucket {
 
 impl MultiBucketAggregateBaseStringTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseStringTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseStringTermsBucketBuilder {
         MultiBucketAggregateBaseStringTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseStringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseStringTermsBucketBuilder,
-        ) -> MultiBucketAggregateBaseStringTermsBucketBuilder<
-            (crate::typed::builder::Set,),
-        >,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseStringTermsBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseStringTermsBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseStringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseStringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_string_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseStringTermsBucket`].
@@ -30860,6 +32361,7 @@ impl<S0> MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsStringTermsBucket>,
@@ -30870,9 +32372,14 @@ impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::No
     }
 }
 
-impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseStringTermsBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseStringTermsBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseStringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_string_terms_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseStringTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30880,20 +32387,29 @@ impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Se
     }
 }
 
-impl From<MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseStringTermsBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_string_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseStringTermsBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseStringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseStringTermsBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseStringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_string_terms_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -30905,19 +32421,29 @@ pub struct MultiBucketAggregateBaseTimeSeriesBucket {
 
 impl MultiBucketAggregateBaseTimeSeriesBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseTimeSeriesBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseTimeSeriesBucketBuilder {
         MultiBucketAggregateBaseTimeSeriesBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseTimeSeriesBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseTimeSeriesBucketBuilder,
-        )
-            -> MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseTimeSeriesBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseTimeSeriesBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseTimeSeriesBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseTimeSeriesBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_time_series_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseTimeSeriesBucket`].
@@ -30968,6 +32494,7 @@ impl<S0> MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsTimeSeriesBucket>,
@@ -30978,9 +32505,14 @@ impl MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Not
     }
 }
 
-impl MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseTimeSeriesBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseTimeSeriesBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseTimeSeriesBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_time_series_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseTimeSeriesBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -30988,20 +32520,29 @@ impl MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set
     }
 }
 
-impl From<MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseTimeSeriesBucket
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_time_series_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseTimeSeriesBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseTimeSeriesBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseTimeSeriesBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseTimeSeriesBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_time_series_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31013,20 +32554,29 @@ pub struct MultiBucketAggregateBaseVariableWidthHistogramBucket {
 
 impl MultiBucketAggregateBaseVariableWidthHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseVariableWidthHistogramBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder {
         MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseVariableWidthHistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder,
-        ) -> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseVariableWidthHistogramBucket>,
+    >(
+        f: impl FnOnce(MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder) -> B,
     ) -> MultiBucketAggregateBaseVariableWidthHistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_variable_width_histogram_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseVariableWidthHistogramBucket`].
@@ -31079,6 +32629,7 @@ impl<S0> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVariableWidthHistogramBucket>,
@@ -31090,9 +32641,14 @@ impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::
     }
 }
 
-impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseVariableWidthHistogramBucket`].
-    pub fn build(self) -> MultiBucketAggregateBaseVariableWidthHistogramBucket {
+    pub fn build(self) -> MultiBucketAggregateBaseVariableWidthHistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            multi_bucket_aggregate_base_variable_width_histogram_bucket_members::buckets,
+        >,
+    {
         MultiBucketAggregateBaseVariableWidthHistogramBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -31100,23 +32656,30 @@ impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::
     }
 }
 
-impl
-    From<MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseVariableWidthHistogramBucket
+impl<S0> crate::typed::builder::Build
+    for MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_variable_width_histogram_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseVariableWidthHistogramBucket;
+
+    fn build(self) -> MultiBucketAggregateBaseVariableWidthHistogramBucket {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseVariableWidthHistogramBucket { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)>>
+    for MultiBucketAggregateBaseVariableWidthHistogramBucket
+where
+    S0: crate::typed::builder::IsSet<
+        multi_bucket_aggregate_base_variable_width_histogram_bucket_members::buckets,
+    >,
+{
+    fn from(builder: MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31128,18 +32691,27 @@ pub struct MultiBucketAggregateBaseVoid {
 
 impl MultiBucketAggregateBaseVoid {
     /// Creates a builder for [`MultiBucketAggregateBaseVoid`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiBucketAggregateBaseVoidBuilder {
         MultiBucketAggregateBaseVoidBuilder::new()
     }
 
     /// Creates a [`MultiBucketAggregateBaseVoid`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiBucketAggregateBaseVoidBuilder,
-        ) -> MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketAggregateBaseVoid>>(
+        f: impl FnOnce(MultiBucketAggregateBaseVoidBuilder) -> B,
     ) -> MultiBucketAggregateBaseVoid {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketAggregateBaseVoidBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_aggregate_base_void_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiBucketAggregateBaseVoid`].
@@ -31190,6 +32762,7 @@ impl<S0> MultiBucketAggregateBaseVoidBuilder<(S0,)> {
 }
 
 impl MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -31200,9 +32773,12 @@ impl MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketAggregateBaseVoidBuilder<(S0,)> {
     /// Builds a [`MultiBucketAggregateBaseVoid`].
-    pub fn build(self) -> MultiBucketAggregateBaseVoid {
+    pub fn build(self) -> MultiBucketAggregateBaseVoid
+    where
+        S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_void_members::buckets>,
+    {
         MultiBucketAggregateBaseVoid {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -31210,18 +32786,24 @@ impl MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>>
-    for MultiBucketAggregateBaseVoid
+impl<S0> crate::typed::builder::Build for MultiBucketAggregateBaseVoidBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_void_members::buckets>,
 {
-    fn from(builder: MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = MultiBucketAggregateBaseVoid;
+
+    fn build(self) -> MultiBucketAggregateBaseVoid {
+        Self::build(self)
     }
 }
 
-impl MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiBucketAggregateBaseVoid { match buckets {} }
+impl<S0> From<MultiBucketAggregateBaseVoidBuilder<(S0,)>> for MultiBucketAggregateBaseVoid
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_aggregate_base_void_members::buckets>,
+{
+    fn from(builder: MultiBucketAggregateBaseVoidBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Base type for multi-bucket aggregation results that can hold sub-aggregations results.
@@ -31235,16 +32817,27 @@ pub struct MultiBucketBase {
 
 impl MultiBucketBase {
     /// Creates a builder for [`MultiBucketBase`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> MultiBucketBaseBuilder {
         MultiBucketBaseBuilder::new()
     }
 
     /// Creates a [`MultiBucketBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MultiBucketBaseBuilder) -> MultiBucketBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiBucketBase>>(
+        f: impl FnOnce(MultiBucketBaseBuilder) -> B,
     ) -> MultiBucketBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiBucketBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_bucket_base_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`MultiBucketBase`].
@@ -31295,6 +32888,7 @@ impl<S0> MultiBucketBaseBuilder<(S0,)> {
 }
 
 impl MultiBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> MultiBucketBaseBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -31302,9 +32896,12 @@ impl MultiBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MultiBucketBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiBucketBaseBuilder<(S0,)> {
     /// Builds a [`MultiBucketBase`].
-    pub fn build(self) -> MultiBucketBase {
+    pub fn build(self) -> MultiBucketBase
+    where
+        S0: crate::typed::builder::IsSet<multi_bucket_base_members::doc_count>,
+    {
         MultiBucketBase {
             doc_count: self.doc_count.unwrap(),
             additional_properties: self.additional_properties,
@@ -31312,16 +32909,24 @@ impl MultiBucketBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiBucketBaseBuilder<(crate::typed::builder::Set,)>> for MultiBucketBase {
-    fn from(builder: MultiBucketBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MultiBucketBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_base_members::doc_count>,
+{
+    type Output = MultiBucketBase;
+
+    fn build(self) -> MultiBucketBase {
+        Self::build(self)
     }
 }
 
-impl MultiBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> MultiBucketBase { match doc_count {} }
+impl<S0> From<MultiBucketBaseBuilder<(S0,)>> for MultiBucketBase
+where
+    S0: crate::typed::builder::IsSet<multi_bucket_base_members::doc_count>,
+{
+    fn from(builder: MultiBucketBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31370,13 +32975,17 @@ impl From<crate::typed::_types::ScriptBuilder> for MultiTermLookup {
 
 impl MultiTermLookup {
     /// Creates a builder for [`MultiTermLookup`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> MultiTermLookupBuilder {
         MultiTermLookupBuilder::new()
     }
 
     /// Creates a [`MultiTermLookup`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiTermLookup>>(
+        f: impl FnOnce(MultiTermLookupBuilder) -> B,
     ) -> MultiTermLookup {
         f(Self::builder()).build()
     }
@@ -31447,17 +33056,20 @@ impl MultiTermLookupBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl MultiTermLookupBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiTermLookupBuilder<(S0,)> {
     /// Builds a [`MultiTermLookup`].
-    pub fn build(self) -> MultiTermLookup {
+    pub fn build(self) -> MultiTermLookup
+    where
+        S0: crate::typed::builder::IsVariantSet<MultiTermLookup>,
+    {
         MultiTermLookup {
             missing: self.missing,
             kind: self.variant.unwrap(),
@@ -31465,16 +33077,24 @@ impl MultiTermLookupBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiTermLookupBuilder<(crate::typed::builder::Set,)>> for MultiTermLookup {
-    fn from(builder: MultiTermLookupBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MultiTermLookupBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<MultiTermLookup>,
+{
+    type Output = MultiTermLookup;
+
+    fn build(self) -> MultiTermLookup {
+        Self::build(self)
     }
 }
 
-impl MultiTermLookupBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> MultiTermLookup { match variant {} }
+impl<S0> From<MultiTermLookupBuilder<(S0,)>> for MultiTermLookup
+where
+    S0: crate::typed::builder::IsVariantSet<MultiTermLookup>,
+{
+    fn from(builder: MultiTermLookupBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31490,18 +33110,27 @@ pub struct MultiTermsAggregate {
 
 impl MultiTermsAggregate {
     /// Creates a builder for [`MultiTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> MultiTermsAggregateBuilder {
         MultiTermsAggregateBuilder::new()
     }
 
     /// Creates a [`MultiTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiTermsAggregateBuilder,
-        ) -> MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiTermsAggregate>>(
+        f: impl FnOnce(MultiTermsAggregateBuilder) -> B,
     ) -> MultiTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`MultiTermsAggregate`].
@@ -31580,6 +33209,7 @@ impl<S0> MultiTermsAggregateBuilder<(S0,)> {
 }
 
 impl MultiTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsMultiTermsBucket>,
@@ -31590,9 +33220,12 @@ impl MultiTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MultiTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiTermsAggregateBuilder<(S0,)> {
     /// Builds a [`MultiTermsAggregate`].
-    pub fn build(self) -> MultiTermsAggregate {
+    pub fn build(self) -> MultiTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<multi_terms_aggregate_members::buckets>,
+    {
         MultiTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -31602,16 +33235,24 @@ impl MultiTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>> for MultiTermsAggregate {
-    fn from(builder: MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MultiTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_terms_aggregate_members::buckets>,
+{
+    type Output = MultiTermsAggregate;
+
+    fn build(self) -> MultiTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl MultiTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> MultiTermsAggregate { match buckets {} }
+impl<S0> From<MultiTermsAggregateBuilder<(S0,)>> for MultiTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<multi_terms_aggregate_members::buckets>,
+{
+    fn from(builder: MultiTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31645,18 +33286,27 @@ pub struct MultiTermsAggregation {
 
 impl MultiTermsAggregation {
     /// Creates a builder for [`MultiTermsAggregation`].
+    ///
+    /// Required: `terms`.
     pub fn builder() -> MultiTermsAggregationBuilder {
         MultiTermsAggregationBuilder::new()
     }
 
     /// Creates a [`MultiTermsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiTermsAggregationBuilder,
-        ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `terms`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiTermsAggregation>>(
+        f: impl FnOnce(MultiTermsAggregationBuilder) -> B,
     ) -> MultiTermsAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiTermsAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_terms_aggregation_members {
+    pub struct terms;
 }
 
 /// Builder for [`MultiTermsAggregation`].
@@ -31792,7 +33442,7 @@ impl<S0> MultiTermsAggregationBuilder<(S0,)> {
 }
 
 impl MultiTermsAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field from which to generate sets of terms.
+    /// **Required.** The field from which to generate sets of terms.
     pub fn terms(
         self,
         value: impl Into<Vec<MultiTermLookup>>,
@@ -31816,9 +33466,9 @@ impl MultiTermsAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`terms`](Self::terms), with a builder.
-    pub fn add_terms_with(
+    pub fn add_terms_with<B: crate::typed::builder::Build<Output = MultiTermLookup>>(
         self,
-        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MultiTermLookupBuilder) -> B,
     ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
         self.add_terms(f(MultiTermLookupBuilder::new()).build())
     }
@@ -31834,17 +33484,20 @@ impl MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`terms`](Self::terms), with a builder.
-    pub fn add_terms_with(
+    pub fn add_terms_with<B: crate::typed::builder::Build<Output = MultiTermLookup>>(
         self,
-        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MultiTermLookupBuilder) -> B,
     ) -> Self {
         self.add_terms(f(MultiTermLookupBuilder::new()).build())
     }
 }
 
-impl MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiTermsAggregationBuilder<(S0,)> {
     /// Builds a [`MultiTermsAggregation`].
-    pub fn build(self) -> MultiTermsAggregation {
+    pub fn build(self) -> MultiTermsAggregation
+    where
+        S0: crate::typed::builder::IsSet<multi_terms_aggregation_members::terms>,
+    {
         MultiTermsAggregation {
             collect_mode: self.collect_mode,
             order: self.order,
@@ -31858,16 +33511,24 @@ impl MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiTermsAggregationBuilder<(crate::typed::builder::Set,)>> for MultiTermsAggregation {
-    fn from(builder: MultiTermsAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MultiTermsAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_terms_aggregation_members::terms>,
+{
+    type Output = MultiTermsAggregation;
+
+    fn build(self) -> MultiTermsAggregation {
+        Self::build(self)
     }
 }
 
-impl MultiTermsAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `terms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, terms: crate::typed::builder::MissingRequiredField) -> MultiTermsAggregation { match terms {} }
+impl<S0> From<MultiTermsAggregationBuilder<(S0,)>> for MultiTermsAggregation
+where
+    S0: crate::typed::builder::IsSet<multi_terms_aggregation_members::terms>,
+{
+    fn from(builder: MultiTermsAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -31885,21 +33546,28 @@ pub struct MultiTermsBucket {
 
 impl MultiTermsBucket {
     /// Creates a builder for [`MultiTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> MultiTermsBucketBuilder {
         MultiTermsBucketBuilder::new()
     }
 
     /// Creates a [`MultiTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MultiTermsBucketBuilder,
-        ) -> MultiTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiTermsBucket>>(
+        f: impl FnOnce(MultiTermsBucketBuilder) -> B,
     ) -> MultiTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`MultiTermsBucket`].
@@ -31983,6 +33651,7 @@ impl<S0, S1> MultiTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> MultiTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -31994,6 +33663,7 @@ impl<S1> MultiTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MultiTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<Vec<crate::typed::_types::FieldValue>>,
@@ -32027,9 +33697,13 @@ impl<S0> MultiTermsBucketBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl MultiTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MultiTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`MultiTermsBucket`].
-    pub fn build(self) -> MultiTermsBucket {
+    pub fn build(self) -> MultiTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<multi_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<multi_terms_bucket_members::key>,
+    {
         MultiTermsBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -32040,26 +33714,26 @@ impl MultiTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<MultiTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MultiTermsBucket
+impl<S0, S1> crate::typed::builder::Build for MultiTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<multi_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<multi_terms_bucket_members::key>,
 {
-    fn from(
-        builder: MultiTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = MultiTermsBucket;
+
+    fn build(self) -> MultiTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> MultiTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> MultiTermsBucket { match doc_count {} }
-}
-
-impl MultiTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> MultiTermsBucket { match key {} }
+impl<S0, S1> From<MultiTermsBucketBuilder<(S0, S1)>> for MultiTermsBucket
+where
+    S0: crate::typed::builder::IsSet<multi_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<multi_terms_bucket_members::key>,
+{
+    fn from(builder: MultiTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32079,8 +33753,8 @@ impl MutualInformationHeuristic {
     }
 
     /// Creates a [`MutualInformationHeuristic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MutualInformationHeuristicBuilder) -> MutualInformationHeuristicBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MutualInformationHeuristic>>(
+        f: impl FnOnce(MutualInformationHeuristicBuilder) -> B,
     ) -> MutualInformationHeuristic {
         f(Self::builder()).build()
     }
@@ -32138,6 +33812,14 @@ impl MutualInformationHeuristicBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MutualInformationHeuristicBuilder {
+    type Output = MutualInformationHeuristic;
+
+    fn build(self) -> MutualInformationHeuristic {
+        Self::build(self)
+    }
+}
+
 impl From<MutualInformationHeuristicBuilder> for MutualInformationHeuristic {
     fn from(builder: MutualInformationHeuristicBuilder) -> Self {
         builder.build()
@@ -32156,16 +33838,27 @@ pub struct NestedAggregate {
 
 impl NestedAggregate {
     /// Creates a builder for [`NestedAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> NestedAggregateBuilder {
         NestedAggregateBuilder::new()
     }
 
     /// Creates a [`NestedAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NestedAggregateBuilder) -> NestedAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = NestedAggregate>>(
+        f: impl FnOnce(NestedAggregateBuilder) -> B,
     ) -> NestedAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NestedAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nested_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`NestedAggregate`].
@@ -32238,6 +33931,7 @@ impl<S0> NestedAggregateBuilder<(S0,)> {
 }
 
 impl NestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> NestedAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -32245,9 +33939,12 @@ impl NestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NestedAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NestedAggregateBuilder<(S0,)> {
     /// Builds a [`NestedAggregate`].
-    pub fn build(self) -> NestedAggregate {
+    pub fn build(self) -> NestedAggregate
+    where
+        S0: crate::typed::builder::IsSet<nested_aggregate_members::doc_count>,
+    {
         NestedAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -32256,16 +33953,24 @@ impl NestedAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<NestedAggregateBuilder<(crate::typed::builder::Set,)>> for NestedAggregate {
-    fn from(builder: NestedAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NestedAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<nested_aggregate_members::doc_count>,
+{
+    type Output = NestedAggregate;
+
+    fn build(self) -> NestedAggregate {
+        Self::build(self)
     }
 }
 
-impl NestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> NestedAggregate { match doc_count {} }
+impl<S0> From<NestedAggregateBuilder<(S0,)>> for NestedAggregate
+where
+    S0: crate::typed::builder::IsSet<nested_aggregate_members::doc_count>,
+{
+    fn from(builder: NestedAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32282,8 +33987,8 @@ impl NestedAggregation {
     }
 
     /// Creates a [`NestedAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NestedAggregationBuilder) -> NestedAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NestedAggregation>>(
+        f: impl FnOnce(NestedAggregationBuilder) -> B,
     ) -> NestedAggregation {
         f(Self::builder()).build()
     }
@@ -32322,6 +34027,14 @@ impl NestedAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NestedAggregationBuilder {
+    type Output = NestedAggregation;
+
+    fn build(self) -> NestedAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<NestedAggregationBuilder> for NestedAggregation {
     fn from(builder: NestedAggregationBuilder) -> Self {
         builder.build()
@@ -32337,22 +34050,29 @@ pub struct NonStationary {
 
 impl NonStationary {
     /// Creates a builder for [`NonStationary`].
+    ///
+    /// Required: `p_value`, `r_value`, `trend`.
     pub fn builder() -> NonStationaryBuilder {
         NonStationaryBuilder::new()
     }
 
     /// Creates a [`NonStationary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NonStationaryBuilder,
-        ) -> NonStationaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `p_value`, `r_value`, `trend`.
+    pub fn of<B: crate::typed::builder::Build<Output = NonStationary>>(
+        f: impl FnOnce(NonStationaryBuilder) -> B,
     ) -> NonStationary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NonStationaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod non_stationary_members {
+    pub struct p_value;
+    pub struct r_value;
+    pub struct trend;
 }
 
 /// Builder for [`NonStationary`].
@@ -32399,6 +34119,7 @@ impl<S0, S1, S2> NonStationaryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NonStationaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -32410,6 +34131,7 @@ impl<S1, S2> NonStationaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> NonStationaryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn r_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -32421,6 +34143,7 @@ impl<S0, S2> NonStationaryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> NonStationaryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn trend(
         self,
         value: impl Into<String>,
@@ -32431,15 +34154,14 @@ impl<S0, S1> NonStationaryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    NonStationaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NonStationaryBuilder<(S0, S1, S2)> {
     /// Builds a [`NonStationary`].
-    pub fn build(self) -> NonStationary {
+    pub fn build(self) -> NonStationary
+    where
+        S0: crate::typed::builder::IsSet<non_stationary_members::p_value>,
+        S1: crate::typed::builder::IsSet<non_stationary_members::r_value>,
+        S2: crate::typed::builder::IsSet<non_stationary_members::trend>,
+    {
         NonStationary {
             p_value: self.p_value.unwrap(),
             r_value: self.r_value.unwrap(),
@@ -32448,54 +34170,28 @@ impl
     }
 }
 
-impl
-    From<
-        NonStationaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NonStationary
+impl<S0, S1, S2> crate::typed::builder::Build for NonStationaryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<non_stationary_members::p_value>,
+    S1: crate::typed::builder::IsSet<non_stationary_members::r_value>,
+    S2: crate::typed::builder::IsSet<non_stationary_members::trend>,
 {
-    fn from(
-        builder: NonStationaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NonStationary;
+
+    fn build(self) -> NonStationary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NonStationaryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> NonStationary { match p_value {} }
-}
-
-impl<S2>
-    NonStationaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NonStationaryBuilder<(S0, S1, S2)>> for NonStationary
+where
+    S0: crate::typed::builder::IsSet<non_stationary_members::p_value>,
+    S1: crate::typed::builder::IsSet<non_stationary_members::r_value>,
+    S2: crate::typed::builder::IsSet<non_stationary_members::trend>,
 {
-    /// `r_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r_value: crate::typed::builder::MissingRequiredField) -> NonStationary { match r_value {} }
-}
-
-impl
-    NonStationaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `trend` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trend: crate::typed::builder::MissingRequiredField) -> NonStationary { match trend {} }
+    fn from(builder: NonStationaryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32522,8 +34218,8 @@ impl NormalizeAggregation {
     }
 
     /// Creates a [`NormalizeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NormalizeAggregationBuilder) -> NormalizeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NormalizeAggregation>>(
+        f: impl FnOnce(NormalizeAggregationBuilder) -> B,
     ) -> NormalizeAggregation {
         f(Self::builder()).build()
     }
@@ -32612,6 +34308,14 @@ impl NormalizeAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NormalizeAggregationBuilder {
+    type Output = NormalizeAggregation;
+
+    fn build(self) -> NormalizeAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<NormalizeAggregationBuilder> for NormalizeAggregation {
     fn from(builder: NormalizeAggregationBuilder) -> Self {
         builder.build()
@@ -32658,7 +34362,9 @@ impl PValueHeuristic {
     }
 
     /// Creates a [`PValueHeuristic`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(PValueHeuristicBuilder) -> PValueHeuristicBuilder) -> PValueHeuristic {
+    pub fn of<B: crate::typed::builder::Build<Output = PValueHeuristic>>(
+        f: impl FnOnce(PValueHeuristicBuilder) -> B,
+    ) -> PValueHeuristic {
         f(Self::builder()).build()
     }
 }
@@ -32716,6 +34422,14 @@ impl PValueHeuristicBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PValueHeuristicBuilder {
+    type Output = PValueHeuristic;
+
+    fn build(self) -> PValueHeuristic {
+        Self::build(self)
+    }
+}
+
 impl From<PValueHeuristicBuilder> for PValueHeuristic {
     fn from(builder: PValueHeuristicBuilder) -> Self {
         builder.build()
@@ -32734,16 +34448,27 @@ pub struct ParentAggregate {
 
 impl ParentAggregate {
     /// Creates a builder for [`ParentAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> ParentAggregateBuilder {
         ParentAggregateBuilder::new()
     }
 
     /// Creates a [`ParentAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ParentAggregateBuilder) -> ParentAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ParentAggregate>>(
+        f: impl FnOnce(ParentAggregateBuilder) -> B,
     ) -> ParentAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ParentAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod parent_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`ParentAggregate`].
@@ -32816,6 +34541,7 @@ impl<S0> ParentAggregateBuilder<(S0,)> {
 }
 
 impl ParentAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> ParentAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -32823,9 +34549,12 @@ impl ParentAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ParentAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ParentAggregateBuilder<(S0,)> {
     /// Builds a [`ParentAggregate`].
-    pub fn build(self) -> ParentAggregate {
+    pub fn build(self) -> ParentAggregate
+    where
+        S0: crate::typed::builder::IsSet<parent_aggregate_members::doc_count>,
+    {
         ParentAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -32834,16 +34563,24 @@ impl ParentAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ParentAggregateBuilder<(crate::typed::builder::Set,)>> for ParentAggregate {
-    fn from(builder: ParentAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ParentAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<parent_aggregate_members::doc_count>,
+{
+    type Output = ParentAggregate;
+
+    fn build(self) -> ParentAggregate {
+        Self::build(self)
     }
 }
 
-impl ParentAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> ParentAggregate { match doc_count {} }
+impl<S0> From<ParentAggregateBuilder<(S0,)>> for ParentAggregate
+where
+    S0: crate::typed::builder::IsSet<parent_aggregate_members::doc_count>,
+{
+    fn from(builder: ParentAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -32860,8 +34597,8 @@ impl ParentAggregation {
     }
 
     /// Creates a [`ParentAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ParentAggregationBuilder) -> ParentAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ParentAggregation>>(
+        f: impl FnOnce(ParentAggregationBuilder) -> B,
     ) -> ParentAggregation {
         f(Self::builder()).build()
     }
@@ -32902,6 +34639,14 @@ impl ParentAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ParentAggregationBuilder {
+    type Output = ParentAggregation;
+
+    fn build(self) -> ParentAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<ParentAggregationBuilder> for ParentAggregation {
     fn from(builder: ParentAggregationBuilder) -> Self {
         builder.build()
@@ -32918,8 +34663,8 @@ impl PercentageScoreHeuristic {
     }
 
     /// Creates a [`PercentageScoreHeuristic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> PercentageScoreHeuristicBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PercentageScoreHeuristic>>(
+        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> B,
     ) -> PercentageScoreHeuristic {
         f(Self::builder()).build()
     }
@@ -32941,6 +34686,14 @@ impl PercentageScoreHeuristicBuilder {
     /// Builds a [`PercentageScoreHeuristic`].
     pub fn build(self) -> PercentageScoreHeuristic {
         PercentageScoreHeuristic {}
+    }
+}
+
+impl crate::typed::builder::Build for PercentageScoreHeuristicBuilder {
+    type Output = PercentageScoreHeuristic;
+
+    fn build(self) -> PercentageScoreHeuristic {
+        Self::build(self)
     }
 }
 
@@ -32998,8 +34751,8 @@ impl PercentileRanksAggregation {
     }
 
     /// Creates a [`PercentileRanksAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PercentileRanksAggregationBuilder) -> PercentileRanksAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PercentileRanksAggregation>>(
+        f: impl FnOnce(PercentileRanksAggregationBuilder) -> B,
     ) -> PercentileRanksAggregation {
         f(Self::builder()).build()
     }
@@ -33071,9 +34824,9 @@ impl PercentileRanksAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -33127,7 +34880,10 @@ impl PercentileRanksAggregationBuilder {
     }
 
     /// Sets [`hdr`](Self::hdr) with a builder.
-    pub fn hdr_with(self, f: impl FnOnce(HdrMethodBuilder) -> HdrMethodBuilder) -> Self {
+    pub fn hdr_with<B: crate::typed::builder::Build<Output = HdrMethod>>(
+        self,
+        f: impl FnOnce(HdrMethodBuilder) -> B,
+    ) -> Self {
         self.hdr(f(HdrMethodBuilder::new()).build())
     }
 
@@ -33144,7 +34900,10 @@ impl PercentileRanksAggregationBuilder {
     }
 
     /// Sets [`tdigest`](Self::tdigest) with a builder.
-    pub fn tdigest_with(self, f: impl FnOnce(TDigestBuilder) -> TDigestBuilder) -> Self {
+    pub fn tdigest_with<B: crate::typed::builder::Build<Output = TDigest>>(
+        self,
+        f: impl FnOnce(TDigestBuilder) -> B,
+    ) -> Self {
         self.tdigest(f(TDigestBuilder::new()).build())
     }
 }
@@ -33162,6 +34921,14 @@ impl PercentileRanksAggregationBuilder {
             hdr: self.hdr,
             tdigest: self.tdigest,
         }
+    }
+}
+
+impl crate::typed::builder::Build for PercentileRanksAggregationBuilder {
+    type Output = PercentileRanksAggregation;
+
+    fn build(self) -> PercentileRanksAggregation {
+        Self::build(self)
     }
 }
 
@@ -33199,18 +34966,27 @@ pub struct PercentilesAggregateBase {
 
 impl PercentilesAggregateBase {
     /// Creates a builder for [`PercentilesAggregateBase`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> PercentilesAggregateBaseBuilder {
         PercentilesAggregateBaseBuilder::new()
     }
 
     /// Creates a [`PercentilesAggregateBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PercentilesAggregateBaseBuilder,
-        ) -> PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = PercentilesAggregateBase>>(
+        f: impl FnOnce(PercentilesAggregateBaseBuilder) -> B,
     ) -> PercentilesAggregateBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PercentilesAggregateBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod percentiles_aggregate_base_members {
+    pub struct values;
 }
 
 /// Builder for [`PercentilesAggregateBase`].
@@ -33261,6 +35037,7 @@ impl<S0> PercentilesAggregateBaseBuilder<(S0,)> {
 }
 
 impl PercentilesAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -33271,9 +35048,12 @@ impl PercentilesAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PercentilesAggregateBaseBuilder<(S0,)> {
     /// Builds a [`PercentilesAggregateBase`].
-    pub fn build(self) -> PercentilesAggregateBase {
+    pub fn build(self) -> PercentilesAggregateBase
+    where
+        S0: crate::typed::builder::IsSet<percentiles_aggregate_base_members::values>,
+    {
         PercentilesAggregateBase {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -33281,18 +35061,24 @@ impl PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)>>
-    for PercentilesAggregateBase
+impl<S0> crate::typed::builder::Build for PercentilesAggregateBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<percentiles_aggregate_base_members::values>,
 {
-    fn from(builder: PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = PercentilesAggregateBase;
+
+    fn build(self) -> PercentilesAggregateBase {
+        Self::build(self)
     }
 }
 
-impl PercentilesAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> PercentilesAggregateBase { match values {} }
+impl<S0> From<PercentilesAggregateBaseBuilder<(S0,)>> for PercentilesAggregateBase
+where
+    S0: crate::typed::builder::IsSet<percentiles_aggregate_base_members::values>,
+{
+    fn from(builder: PercentilesAggregateBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33355,8 +35141,8 @@ impl PercentilesAggregation {
     }
 
     /// Creates a [`PercentilesAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PercentilesAggregationBuilder) -> PercentilesAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PercentilesAggregation>>(
+        f: impl FnOnce(PercentilesAggregationBuilder) -> B,
     ) -> PercentilesAggregation {
         f(Self::builder()).build()
     }
@@ -33428,9 +35214,9 @@ impl PercentilesAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -33484,7 +35270,10 @@ impl PercentilesAggregationBuilder {
     }
 
     /// Sets [`hdr`](Self::hdr) with a builder.
-    pub fn hdr_with(self, f: impl FnOnce(HdrMethodBuilder) -> HdrMethodBuilder) -> Self {
+    pub fn hdr_with<B: crate::typed::builder::Build<Output = HdrMethod>>(
+        self,
+        f: impl FnOnce(HdrMethodBuilder) -> B,
+    ) -> Self {
         self.hdr(f(HdrMethodBuilder::new()).build())
     }
 
@@ -33501,7 +35290,10 @@ impl PercentilesAggregationBuilder {
     }
 
     /// Sets [`tdigest`](Self::tdigest) with a builder.
-    pub fn tdigest_with(self, f: impl FnOnce(TDigestBuilder) -> TDigestBuilder) -> Self {
+    pub fn tdigest_with<B: crate::typed::builder::Build<Output = TDigest>>(
+        self,
+        f: impl FnOnce(TDigestBuilder) -> B,
+    ) -> Self {
         self.tdigest(f(TDigestBuilder::new()).build())
     }
 }
@@ -33522,6 +35314,14 @@ impl PercentilesAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PercentilesAggregationBuilder {
+    type Output = PercentilesAggregation;
+
+    fn build(self) -> PercentilesAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<PercentilesAggregationBuilder> for PercentilesAggregation {
     fn from(builder: PercentilesAggregationBuilder) -> Self {
         builder.build()
@@ -33537,18 +35337,27 @@ pub struct PercentilesBucketAggregate {
 
 impl PercentilesBucketAggregate {
     /// Creates a builder for [`PercentilesBucketAggregate`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> PercentilesBucketAggregateBuilder {
         PercentilesBucketAggregateBuilder::new()
     }
 
     /// Creates a [`PercentilesBucketAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PercentilesBucketAggregateBuilder,
-        ) -> PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = PercentilesBucketAggregate>>(
+        f: impl FnOnce(PercentilesBucketAggregateBuilder) -> B,
     ) -> PercentilesBucketAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PercentilesBucketAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod percentiles_bucket_aggregate_members {
+    pub struct values;
 }
 
 /// Builder for [`PercentilesBucketAggregate`].
@@ -33599,6 +35408,7 @@ impl<S0> PercentilesBucketAggregateBuilder<(S0,)> {
 }
 
 impl PercentilesBucketAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -33609,9 +35419,12 @@ impl PercentilesBucketAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PercentilesBucketAggregateBuilder<(S0,)> {
     /// Builds a [`PercentilesBucketAggregate`].
-    pub fn build(self) -> PercentilesBucketAggregate {
+    pub fn build(self) -> PercentilesBucketAggregate
+    where
+        S0: crate::typed::builder::IsSet<percentiles_bucket_aggregate_members::values>,
+    {
         PercentilesBucketAggregate {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -33619,18 +35432,24 @@ impl PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>>
-    for PercentilesBucketAggregate
+impl<S0> crate::typed::builder::Build for PercentilesBucketAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<percentiles_bucket_aggregate_members::values>,
 {
-    fn from(builder: PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = PercentilesBucketAggregate;
+
+    fn build(self) -> PercentilesBucketAggregate {
+        Self::build(self)
     }
 }
 
-impl PercentilesBucketAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> PercentilesBucketAggregate { match values {} }
+impl<S0> From<PercentilesBucketAggregateBuilder<(S0,)>> for PercentilesBucketAggregate
+where
+    S0: crate::typed::builder::IsSet<percentiles_bucket_aggregate_members::values>,
+{
+    fn from(builder: PercentilesBucketAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33657,8 +35476,8 @@ impl PercentilesBucketAggregation {
     }
 
     /// Creates a [`PercentilesBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PercentilesBucketAggregationBuilder) -> PercentilesBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PercentilesBucketAggregation>>(
+        f: impl FnOnce(PercentilesBucketAggregationBuilder) -> B,
     ) -> PercentilesBucketAggregation {
         f(Self::builder()).build()
     }
@@ -33755,6 +35574,14 @@ impl PercentilesBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PercentilesBucketAggregationBuilder {
+    type Output = PercentilesBucketAggregation;
+
+    fn build(self) -> PercentilesBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<PercentilesBucketAggregationBuilder> for PercentilesBucketAggregation {
     fn from(builder: PercentilesBucketAggregationBuilder) -> Self {
         builder.build()
@@ -33782,8 +35609,8 @@ impl PipelineAggregationBase {
     }
 
     /// Creates a [`PipelineAggregationBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PipelineAggregationBaseBuilder) -> PipelineAggregationBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PipelineAggregationBase>>(
+        f: impl FnOnce(PipelineAggregationBaseBuilder) -> B,
     ) -> PipelineAggregationBase {
         f(Self::builder()).build()
     }
@@ -33857,6 +35684,14 @@ impl PipelineAggregationBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PipelineAggregationBaseBuilder {
+    type Output = PipelineAggregationBase;
+
+    fn build(self) -> PipelineAggregationBase {
+        Self::build(self)
+    }
+}
+
 impl From<PipelineAggregationBaseBuilder> for PipelineAggregationBase {
     fn from(builder: PipelineAggregationBaseBuilder) -> Self {
         builder.build()
@@ -33880,18 +35715,27 @@ pub struct RandomSamplerAggregation {
 
 impl RandomSamplerAggregation {
     /// Creates a builder for [`RandomSamplerAggregation`].
+    ///
+    /// Required: `probability`.
     pub fn builder() -> RandomSamplerAggregationBuilder {
         RandomSamplerAggregationBuilder::new()
     }
 
     /// Creates a [`RandomSamplerAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RandomSamplerAggregationBuilder,
-        ) -> RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `probability`.
+    pub fn of<B: crate::typed::builder::Build<Output = RandomSamplerAggregation>>(
+        f: impl FnOnce(RandomSamplerAggregationBuilder) -> B,
     ) -> RandomSamplerAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RandomSamplerAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod random_sampler_aggregation_members {
+    pub struct probability;
 }
 
 /// Builder for [`RandomSamplerAggregation`].
@@ -33951,7 +35795,7 @@ impl<S0> RandomSamplerAggregationBuilder<(S0,)> {
 }
 
 impl RandomSamplerAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The probability that a document will be included in the aggregated data.
+    /// **Required.** The probability that a document will be included in the aggregated data.
     /// Must be greater than 0, less than 0.5, or exactly 1.
     /// The lower the probability, the fewer documents are matched.
     pub fn probability(
@@ -33964,9 +35808,12 @@ impl RandomSamplerAggregationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RandomSamplerAggregationBuilder<(S0,)> {
     /// Builds a [`RandomSamplerAggregation`].
-    pub fn build(self) -> RandomSamplerAggregation {
+    pub fn build(self) -> RandomSamplerAggregation
+    where
+        S0: crate::typed::builder::IsSet<random_sampler_aggregation_members::probability>,
+    {
         RandomSamplerAggregation {
             probability: self.probability.unwrap(),
             seed: self.seed,
@@ -33975,18 +35822,24 @@ impl RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)>>
-    for RandomSamplerAggregation
+impl<S0> crate::typed::builder::Build for RandomSamplerAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<random_sampler_aggregation_members::probability>,
 {
-    fn from(builder: RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RandomSamplerAggregation;
+
+    fn build(self) -> RandomSamplerAggregation {
+        Self::build(self)
     }
 }
 
-impl RandomSamplerAggregationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `probability` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, probability: crate::typed::builder::MissingRequiredField) -> RandomSamplerAggregation { match probability {} }
+impl<S0> From<RandomSamplerAggregationBuilder<(S0,)>> for RandomSamplerAggregation
+where
+    S0: crate::typed::builder::IsSet<random_sampler_aggregation_members::probability>,
+{
+    fn from(builder: RandomSamplerAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -33998,16 +35851,27 @@ pub struct RangeAggregate {
 
 impl RangeAggregate {
     /// Creates a builder for [`RangeAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> RangeAggregateBuilder {
         RangeAggregateBuilder::new()
     }
 
     /// Creates a [`RangeAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeAggregateBuilder) -> RangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = RangeAggregate>>(
+        f: impl FnOnce(RangeAggregateBuilder) -> B,
     ) -> RangeAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RangeAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod range_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`RangeAggregate`].
@@ -34058,6 +35922,7 @@ impl<S0> RangeAggregateBuilder<(S0,)> {
 }
 
 impl RangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsRangeBucket>,
@@ -34068,9 +35933,12 @@ impl RangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RangeAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RangeAggregateBuilder<(S0,)> {
     /// Builds a [`RangeAggregate`].
-    pub fn build(self) -> RangeAggregate {
+    pub fn build(self) -> RangeAggregate
+    where
+        S0: crate::typed::builder::IsSet<range_aggregate_members::buckets>,
+    {
         RangeAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -34078,16 +35946,24 @@ impl RangeAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RangeAggregateBuilder<(crate::typed::builder::Set,)>> for RangeAggregate {
-    fn from(builder: RangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RangeAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<range_aggregate_members::buckets>,
+{
+    type Output = RangeAggregate;
+
+    fn build(self) -> RangeAggregate {
+        Self::build(self)
     }
 }
 
-impl RangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> RangeAggregate { match buckets {} }
+impl<S0> From<RangeAggregateBuilder<(S0,)>> for RangeAggregate
+where
+    S0: crate::typed::builder::IsSet<range_aggregate_members::buckets>,
+{
+    fn from(builder: RangeAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -34118,8 +35994,8 @@ impl RangeAggregation {
     }
 
     /// Creates a [`RangeAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeAggregationBuilder) -> RangeAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangeAggregation>>(
+        f: impl FnOnce(RangeAggregationBuilder) -> B,
     ) -> RangeAggregation {
         f(Self::builder()).build()
     }
@@ -34196,9 +36072,9 @@ impl RangeAggregationBuilder {
     }
 
     /// Adds an element to [`ranges`](Self::ranges), with a builder.
-    pub fn add_ranges_with(
+    pub fn add_ranges_with<B: crate::typed::builder::Build<Output = AggregationRange>>(
         self,
-        f: impl FnOnce(AggregationRangeBuilder) -> AggregationRangeBuilder,
+        f: impl FnOnce(AggregationRangeBuilder) -> B,
     ) -> Self {
         self.add_ranges(f(AggregationRangeBuilder::new()).build())
     }
@@ -34215,9 +36091,9 @@ impl RangeAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -34260,6 +36136,14 @@ impl RangeAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeAggregationBuilder {
+    type Output = RangeAggregation;
+
+    fn build(self) -> RangeAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<RangeAggregationBuilder> for RangeAggregation {
     fn from(builder: RangeAggregationBuilder) -> Self {
         builder.build()
@@ -34287,16 +36171,27 @@ pub struct RangeBucket {
 
 impl RangeBucket {
     /// Creates a builder for [`RangeBucket`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> RangeBucketBuilder {
         RangeBucketBuilder::new()
     }
 
     /// Creates a [`RangeBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeBucketBuilder) -> RangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = RangeBucket>>(
+        f: impl FnOnce(RangeBucketBuilder) -> B,
     ) -> RangeBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RangeBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod range_bucket_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`RangeBucket`].
@@ -34418,6 +36313,7 @@ impl<S0> RangeBucketBuilder<(S0,)> {
 }
 
 impl RangeBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> RangeBucketBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -34425,9 +36321,12 @@ impl RangeBucketBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RangeBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RangeBucketBuilder<(S0,)> {
     /// Builds a [`RangeBucket`].
-    pub fn build(self) -> RangeBucket {
+    pub fn build(self) -> RangeBucket
+    where
+        S0: crate::typed::builder::IsSet<range_bucket_members::doc_count>,
+    {
         RangeBucket {
             doc_count: self.doc_count.unwrap(),
             from: self.from,
@@ -34440,16 +36339,24 @@ impl RangeBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RangeBucketBuilder<(crate::typed::builder::Set,)>> for RangeBucket {
-    fn from(builder: RangeBucketBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RangeBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<range_bucket_members::doc_count>,
+{
+    type Output = RangeBucket;
+
+    fn build(self) -> RangeBucket {
+        Self::build(self)
     }
 }
 
-impl RangeBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> RangeBucket { match doc_count {} }
+impl<S0> From<RangeBucketBuilder<(S0,)>> for RangeBucket
+where
+    S0: crate::typed::builder::IsSet<range_bucket_members::doc_count>,
+{
+    fn from(builder: RangeBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -34485,8 +36392,8 @@ impl RareTermsAggregation {
     }
 
     /// Creates a [`RareTermsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RareTermsAggregationBuilder) -> RareTermsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RareTermsAggregation>>(
+        f: impl FnOnce(RareTermsAggregationBuilder) -> B,
     ) -> RareTermsAggregation {
         f(Self::builder()).build()
     }
@@ -34620,6 +36527,14 @@ impl RareTermsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RareTermsAggregationBuilder {
+    type Output = RareTermsAggregation;
+
+    fn build(self) -> RareTermsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<RareTermsAggregationBuilder> for RareTermsAggregation {
     fn from(builder: RareTermsAggregationBuilder) -> Self {
         builder.build()
@@ -34637,16 +36552,27 @@ pub struct RateAggregate {
 
 impl RateAggregate {
     /// Creates a builder for [`RateAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> RateAggregateBuilder {
         RateAggregateBuilder::new()
     }
 
     /// Creates a [`RateAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RateAggregateBuilder) -> RateAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = RateAggregate>>(
+        f: impl FnOnce(RateAggregateBuilder) -> B,
     ) -> RateAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RateAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rate_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`RateAggregate`].
@@ -34711,6 +36637,7 @@ impl<S0> RateAggregateBuilder<(S0,)> {
 }
 
 impl RateAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -34721,9 +36648,12 @@ impl RateAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RateAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RateAggregateBuilder<(S0,)> {
     /// Builds a [`RateAggregate`].
-    pub fn build(self) -> RateAggregate {
+    pub fn build(self) -> RateAggregate
+    where
+        S0: crate::typed::builder::IsSet<rate_aggregate_members::value>,
+    {
         RateAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -34732,16 +36662,24 @@ impl RateAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RateAggregateBuilder<(crate::typed::builder::Set,)>> for RateAggregate {
-    fn from(builder: RateAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RateAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rate_aggregate_members::value>,
+{
+    type Output = RateAggregate;
+
+    fn build(self) -> RateAggregate {
+        Self::build(self)
     }
 }
 
-impl RateAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> RateAggregate { match value {} }
+impl<S0> From<RateAggregateBuilder<(S0,)>> for RateAggregate
+where
+    S0: crate::typed::builder::IsSet<rate_aggregate_members::value>,
+{
+    fn from(builder: RateAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -34773,7 +36711,9 @@ impl RateAggregation {
     }
 
     /// Creates a [`RateAggregation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RateAggregationBuilder) -> RateAggregationBuilder) -> RateAggregation {
+    pub fn of<B: crate::typed::builder::Build<Output = RateAggregation>>(
+        f: impl FnOnce(RateAggregationBuilder) -> B,
+    ) -> RateAggregation {
         f(Self::builder()).build()
     }
 }
@@ -34840,9 +36780,9 @@ impl RateAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -34898,6 +36838,14 @@ impl RateAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RateAggregationBuilder {
+    type Output = RateAggregation;
+
+    fn build(self) -> RateAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<RateAggregationBuilder> for RateAggregation {
     fn from(builder: RateAggregationBuilder) -> Self {
         builder.build()
@@ -34926,18 +36874,27 @@ pub struct ReverseNestedAggregate {
 
 impl ReverseNestedAggregate {
     /// Creates a builder for [`ReverseNestedAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> ReverseNestedAggregateBuilder {
         ReverseNestedAggregateBuilder::new()
     }
 
     /// Creates a [`ReverseNestedAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReverseNestedAggregateBuilder,
-        ) -> ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReverseNestedAggregate>>(
+        f: impl FnOnce(ReverseNestedAggregateBuilder) -> B,
     ) -> ReverseNestedAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReverseNestedAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reverse_nested_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`ReverseNestedAggregate`].
@@ -35010,6 +36967,7 @@ impl<S0> ReverseNestedAggregateBuilder<(S0,)> {
 }
 
 impl ReverseNestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -35020,9 +36978,12 @@ impl ReverseNestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ReverseNestedAggregateBuilder<(S0,)> {
     /// Builds a [`ReverseNestedAggregate`].
-    pub fn build(self) -> ReverseNestedAggregate {
+    pub fn build(self) -> ReverseNestedAggregate
+    where
+        S0: crate::typed::builder::IsSet<reverse_nested_aggregate_members::doc_count>,
+    {
         ReverseNestedAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -35031,16 +36992,24 @@ impl ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>> for ReverseNestedAggregate {
-    fn from(builder: ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ReverseNestedAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<reverse_nested_aggregate_members::doc_count>,
+{
+    type Output = ReverseNestedAggregate;
+
+    fn build(self) -> ReverseNestedAggregate {
+        Self::build(self)
     }
 }
 
-impl ReverseNestedAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> ReverseNestedAggregate { match doc_count {} }
+impl<S0> From<ReverseNestedAggregateBuilder<(S0,)>> for ReverseNestedAggregate
+where
+    S0: crate::typed::builder::IsSet<reverse_nested_aggregate_members::doc_count>,
+{
+    fn from(builder: ReverseNestedAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35058,8 +37027,8 @@ impl ReverseNestedAggregation {
     }
 
     /// Creates a [`ReverseNestedAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ReverseNestedAggregationBuilder) -> ReverseNestedAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ReverseNestedAggregation>>(
+        f: impl FnOnce(ReverseNestedAggregationBuilder) -> B,
     ) -> ReverseNestedAggregation {
         f(Self::builder()).build()
     }
@@ -35099,6 +37068,14 @@ impl ReverseNestedAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ReverseNestedAggregationBuilder {
+    type Output = ReverseNestedAggregation;
+
+    fn build(self) -> ReverseNestedAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<ReverseNestedAggregationBuilder> for ReverseNestedAggregation {
     fn from(builder: ReverseNestedAggregationBuilder) -> Self {
         builder.build()
@@ -35117,18 +37094,27 @@ pub struct SamplerAggregate {
 
 impl SamplerAggregate {
     /// Creates a builder for [`SamplerAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> SamplerAggregateBuilder {
         SamplerAggregateBuilder::new()
     }
 
     /// Creates a [`SamplerAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SamplerAggregateBuilder,
-        ) -> SamplerAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SamplerAggregate>>(
+        f: impl FnOnce(SamplerAggregateBuilder) -> B,
     ) -> SamplerAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SamplerAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sampler_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`SamplerAggregate`].
@@ -35201,6 +37187,7 @@ impl<S0> SamplerAggregateBuilder<(S0,)> {
 }
 
 impl SamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> SamplerAggregateBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -35208,9 +37195,12 @@ impl SamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SamplerAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SamplerAggregateBuilder<(S0,)> {
     /// Builds a [`SamplerAggregate`].
-    pub fn build(self) -> SamplerAggregate {
+    pub fn build(self) -> SamplerAggregate
+    where
+        S0: crate::typed::builder::IsSet<sampler_aggregate_members::doc_count>,
+    {
         SamplerAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -35219,16 +37209,24 @@ impl SamplerAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SamplerAggregateBuilder<(crate::typed::builder::Set,)>> for SamplerAggregate {
-    fn from(builder: SamplerAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SamplerAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sampler_aggregate_members::doc_count>,
+{
+    type Output = SamplerAggregate;
+
+    fn build(self) -> SamplerAggregate {
+        Self::build(self)
     }
 }
 
-impl SamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> SamplerAggregate { match doc_count {} }
+impl<S0> From<SamplerAggregateBuilder<(S0,)>> for SamplerAggregate
+where
+    S0: crate::typed::builder::IsSet<sampler_aggregate_members::doc_count>,
+{
+    fn from(builder: SamplerAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35245,8 +37243,8 @@ impl SamplerAggregation {
     }
 
     /// Creates a [`SamplerAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SamplerAggregationBuilder) -> SamplerAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SamplerAggregation>>(
+        f: impl FnOnce(SamplerAggregationBuilder) -> B,
     ) -> SamplerAggregation {
         f(Self::builder()).build()
     }
@@ -35287,6 +37285,14 @@ impl SamplerAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SamplerAggregationBuilder {
+    type Output = SamplerAggregation;
+
+    fn build(self) -> SamplerAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<SamplerAggregationBuilder> for SamplerAggregation {
     fn from(builder: SamplerAggregationBuilder) -> Self {
         builder.build()
@@ -35313,18 +37319,27 @@ pub struct ScriptedHeuristic {
 
 impl ScriptedHeuristic {
     /// Creates a builder for [`ScriptedHeuristic`].
+    ///
+    /// Required: `script`.
     pub fn builder() -> ScriptedHeuristicBuilder {
         ScriptedHeuristicBuilder::new()
     }
 
     /// Creates a [`ScriptedHeuristic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScriptedHeuristicBuilder,
-        ) -> ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptedHeuristic>>(
+        f: impl FnOnce(ScriptedHeuristicBuilder) -> B,
     ) -> ScriptedHeuristic {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScriptedHeuristicBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod scripted_heuristic_members {
+    pub struct script;
 }
 
 /// Builder for [`ScriptedHeuristic`].
@@ -35353,6 +37368,7 @@ impl<S0> ScriptedHeuristicBuilder<(S0,)> {
 }
 
 impl ScriptedHeuristicBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -35363,33 +37379,44 @@ impl ScriptedHeuristicBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> ScriptedHeuristicBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl ScriptedHeuristicBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScriptedHeuristicBuilder<(S0,)> {
     /// Builds a [`ScriptedHeuristic`].
-    pub fn build(self) -> ScriptedHeuristic {
+    pub fn build(self) -> ScriptedHeuristic
+    where
+        S0: crate::typed::builder::IsSet<scripted_heuristic_members::script>,
+    {
         ScriptedHeuristic {
             script: self.script.unwrap(),
         }
     }
 }
 
-impl From<ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>> for ScriptedHeuristic {
-    fn from(builder: ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ScriptedHeuristicBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<scripted_heuristic_members::script>,
+{
+    type Output = ScriptedHeuristic;
+
+    fn build(self) -> ScriptedHeuristic {
+        Self::build(self)
     }
 }
 
-impl ScriptedHeuristicBuilder<(crate::typed::builder::NotSet,)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> ScriptedHeuristic { match script {} }
+impl<S0> From<ScriptedHeuristicBuilder<(S0,)>> for ScriptedHeuristic
+where
+    S0: crate::typed::builder::IsSet<scripted_heuristic_members::script>,
+{
+    fn from(builder: ScriptedHeuristicBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35401,18 +37428,27 @@ pub struct ScriptedMetricAggregate {
 
 impl ScriptedMetricAggregate {
     /// Creates a builder for [`ScriptedMetricAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> ScriptedMetricAggregateBuilder {
         ScriptedMetricAggregateBuilder::new()
     }
 
     /// Creates a [`ScriptedMetricAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScriptedMetricAggregateBuilder,
-        ) -> ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptedMetricAggregate>>(
+        f: impl FnOnce(ScriptedMetricAggregateBuilder) -> B,
     ) -> ScriptedMetricAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScriptedMetricAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod scripted_metric_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`ScriptedMetricAggregate`].
@@ -35463,6 +37499,7 @@ impl<S0> ScriptedMetricAggregateBuilder<(S0,)> {
 }
 
 impl ScriptedMetricAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<serde_json::Value>,
@@ -35473,9 +37510,12 @@ impl ScriptedMetricAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScriptedMetricAggregateBuilder<(S0,)> {
     /// Builds a [`ScriptedMetricAggregate`].
-    pub fn build(self) -> ScriptedMetricAggregate {
+    pub fn build(self) -> ScriptedMetricAggregate
+    where
+        S0: crate::typed::builder::IsSet<scripted_metric_aggregate_members::value>,
+    {
         ScriptedMetricAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -35483,18 +37523,24 @@ impl ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>>
-    for ScriptedMetricAggregate
+impl<S0> crate::typed::builder::Build for ScriptedMetricAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<scripted_metric_aggregate_members::value>,
 {
-    fn from(builder: ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ScriptedMetricAggregate;
+
+    fn build(self) -> ScriptedMetricAggregate {
+        Self::build(self)
     }
 }
 
-impl ScriptedMetricAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> ScriptedMetricAggregate { match value {} }
+impl<S0> From<ScriptedMetricAggregateBuilder<(S0,)>> for ScriptedMetricAggregate
+where
+    S0: crate::typed::builder::IsSet<scripted_metric_aggregate_members::value>,
+{
+    fn from(builder: ScriptedMetricAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -35537,8 +37583,8 @@ impl ScriptedMetricAggregation {
     }
 
     /// Creates a [`ScriptedMetricAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ScriptedMetricAggregationBuilder) -> ScriptedMetricAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptedMetricAggregation>>(
+        f: impl FnOnce(ScriptedMetricAggregationBuilder) -> B,
     ) -> ScriptedMetricAggregation {
         f(Self::builder()).build()
     }
@@ -35610,9 +37656,9 @@ impl ScriptedMetricAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -35631,9 +37677,11 @@ impl ScriptedMetricAggregationBuilder {
     }
 
     /// Sets [`combine_script`](Self::combine_script) with a builder.
-    pub fn combine_script_with(
+    pub fn combine_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.combine_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -35652,9 +37700,11 @@ impl ScriptedMetricAggregationBuilder {
     }
 
     /// Sets [`init_script`](Self::init_script) with a builder.
-    pub fn init_script_with(
+    pub fn init_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.init_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -35673,9 +37723,11 @@ impl ScriptedMetricAggregationBuilder {
     }
 
     /// Sets [`map_script`](Self::map_script) with a builder.
-    pub fn map_script_with(
+    pub fn map_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.map_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -35725,9 +37777,11 @@ impl ScriptedMetricAggregationBuilder {
     }
 
     /// Sets [`reduce_script`](Self::reduce_script) with a builder.
-    pub fn reduce_script_with(
+    pub fn reduce_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.reduce_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -35746,6 +37800,14 @@ impl ScriptedMetricAggregationBuilder {
             params: self.params,
             reduce_script: self.reduce_script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ScriptedMetricAggregationBuilder {
+    type Output = ScriptedMetricAggregation;
+
+    fn build(self) -> ScriptedMetricAggregation {
+        Self::build(self)
     }
 }
 
@@ -35780,8 +37842,8 @@ impl SerialDifferencingAggregation {
     }
 
     /// Creates a [`SerialDifferencingAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SerialDifferencingAggregationBuilder) -> SerialDifferencingAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SerialDifferencingAggregation>>(
+        f: impl FnOnce(SerialDifferencingAggregationBuilder) -> B,
     ) -> SerialDifferencingAggregation {
         f(Self::builder()).build()
     }
@@ -35871,6 +37933,14 @@ impl SerialDifferencingAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SerialDifferencingAggregationBuilder {
+    type Output = SerialDifferencingAggregation;
+
+    fn build(self) -> SerialDifferencingAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<SerialDifferencingAggregationBuilder> for SerialDifferencingAggregation {
     fn from(builder: SerialDifferencingAggregationBuilder) -> Self {
         builder.build()
@@ -35890,18 +37960,27 @@ pub struct SignificantLongTermsAggregate {
 
 impl SignificantLongTermsAggregate {
     /// Creates a builder for [`SignificantLongTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> SignificantLongTermsAggregateBuilder {
         SignificantLongTermsAggregateBuilder::new()
     }
 
     /// Creates a [`SignificantLongTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantLongTermsAggregateBuilder,
-        ) -> SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantLongTermsAggregate>>(
+        f: impl FnOnce(SignificantLongTermsAggregateBuilder) -> B,
     ) -> SignificantLongTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantLongTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_long_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`SignificantLongTermsAggregate`].
@@ -35980,6 +38059,7 @@ impl<S0> SignificantLongTermsAggregateBuilder<(S0,)> {
 }
 
 impl SignificantLongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantLongTermsBucket>,
@@ -35990,9 +38070,12 @@ impl SignificantLongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SignificantLongTermsAggregateBuilder<(S0,)> {
     /// Builds a [`SignificantLongTermsAggregate`].
-    pub fn build(self) -> SignificantLongTermsAggregate {
+    pub fn build(self) -> SignificantLongTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<significant_long_terms_aggregate_members::buckets>,
+    {
         SignificantLongTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -36002,18 +38085,24 @@ impl SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for SignificantLongTermsAggregate
+impl<S0> crate::typed::builder::Build for SignificantLongTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<significant_long_terms_aggregate_members::buckets>,
 {
-    fn from(builder: SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SignificantLongTermsAggregate;
+
+    fn build(self) -> SignificantLongTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl SignificantLongTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> SignificantLongTermsAggregate { match buckets {} }
+impl<S0> From<SignificantLongTermsAggregateBuilder<(S0,)>> for SignificantLongTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<significant_long_terms_aggregate_members::buckets>,
+{
+    fn from(builder: SignificantLongTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36031,23 +38120,30 @@ pub struct SignificantLongTermsBucket {
 
 impl SignificantLongTermsBucket {
     /// Creates a builder for [`SignificantLongTermsBucket`].
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`, `key`.
     pub fn builder() -> SignificantLongTermsBucketBuilder {
         SignificantLongTermsBucketBuilder::new()
     }
 
     /// Creates a [`SignificantLongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantLongTermsBucketBuilder,
-        ) -> SignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantLongTermsBucket>>(
+        f: impl FnOnce(SignificantLongTermsBucketBuilder) -> B,
     ) -> SignificantLongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantLongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_long_terms_bucket_members {
+    pub struct doc_count;
+    pub struct score;
+    pub struct bg_count;
+    pub struct key;
 }
 
 /// Builder for [`SignificantLongTermsBucket`].
@@ -36135,6 +38231,7 @@ impl<S0, S1, S2, S3> SignificantLongTermsBucketBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> SignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -36146,6 +38243,7 @@ impl<S1, S2, S3> SignificantLongTermsBucketBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0, S2, S3> SignificantLongTermsBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -36157,6 +38255,7 @@ impl<S0, S2, S3> SignificantLongTermsBucketBuilder<(S0, crate::typed::builder::N
 }
 
 impl<S0, S1, S3> SignificantLongTermsBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn bg_count(
         self,
         value: i64,
@@ -36168,6 +38267,7 @@ impl<S0, S1, S3> SignificantLongTermsBucketBuilder<(S0, S1, crate::typed::builde
 }
 
 impl<S0, S1, S2> SignificantLongTermsBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: i64,
@@ -36178,16 +38278,15 @@ impl<S0, S1, S2> SignificantLongTermsBucketBuilder<(S0, S1, S2, crate::typed::bu
     }
 }
 
-impl
-    SignificantLongTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> SignificantLongTermsBucketBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`SignificantLongTermsBucket`].
-    pub fn build(self) -> SignificantLongTermsBucket {
+    pub fn build(self) -> SignificantLongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<significant_long_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<significant_long_terms_bucket_members::score>,
+        S2: crate::typed::builder::IsSet<significant_long_terms_bucket_members::bg_count>,
+        S3: crate::typed::builder::IsSet<significant_long_terms_bucket_members::key>,
+    {
         SignificantLongTermsBucket {
             doc_count: self.doc_count.unwrap(),
             score: self.score.unwrap(),
@@ -36199,71 +38298,32 @@ impl
     }
 }
 
-impl
-    From<
-        SignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SignificantLongTermsBucket
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for SignificantLongTermsBucketBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<significant_long_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_long_terms_bucket_members::score>,
+    S2: crate::typed::builder::IsSet<significant_long_terms_bucket_members::bg_count>,
+    S3: crate::typed::builder::IsSet<significant_long_terms_bucket_members::key>,
 {
-    fn from(
-        builder: SignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantLongTermsBucket;
+
+    fn build(self) -> SignificantLongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> SignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> SignificantLongTermsBucket { match doc_count {} }
-}
-
-impl<S2, S3>
-    SignificantLongTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<SignificantLongTermsBucketBuilder<(S0, S1, S2, S3)>>
+    for SignificantLongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<significant_long_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_long_terms_bucket_members::score>,
+    S2: crate::typed::builder::IsSet<significant_long_terms_bucket_members::bg_count>,
+    S3: crate::typed::builder::IsSet<significant_long_terms_bucket_members::key>,
 {
-    /// `score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, score: crate::typed::builder::MissingRequiredField) -> SignificantLongTermsBucket { match score {} }
-}
-
-impl<S3>
-    SignificantLongTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `bg_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bg_count: crate::typed::builder::MissingRequiredField) -> SignificantLongTermsBucket { match bg_count {} }
-}
-
-impl
-    SignificantLongTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> SignificantLongTermsBucket { match key {} }
+    fn from(builder: SignificantLongTermsBucketBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36279,18 +38339,27 @@ pub struct SignificantStringTermsAggregate {
 
 impl SignificantStringTermsAggregate {
     /// Creates a builder for [`SignificantStringTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> SignificantStringTermsAggregateBuilder {
         SignificantStringTermsAggregateBuilder::new()
     }
 
     /// Creates a [`SignificantStringTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantStringTermsAggregateBuilder,
-        ) -> SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantStringTermsAggregate>>(
+        f: impl FnOnce(SignificantStringTermsAggregateBuilder) -> B,
     ) -> SignificantStringTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantStringTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_string_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`SignificantStringTermsAggregate`].
@@ -36369,6 +38438,7 @@ impl<S0> SignificantStringTermsAggregateBuilder<(S0,)> {
 }
 
 impl SignificantStringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantStringTermsBucket>,
@@ -36379,9 +38449,12 @@ impl SignificantStringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SignificantStringTermsAggregateBuilder<(S0,)> {
     /// Builds a [`SignificantStringTermsAggregate`].
-    pub fn build(self) -> SignificantStringTermsAggregate {
+    pub fn build(self) -> SignificantStringTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<significant_string_terms_aggregate_members::buckets>,
+    {
         SignificantStringTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -36391,20 +38464,24 @@ impl SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for SignificantStringTermsAggregate
+impl<S0> crate::typed::builder::Build for SignificantStringTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<significant_string_terms_aggregate_members::buckets>,
 {
-    fn from(
-        builder: SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantStringTermsAggregate;
+
+    fn build(self) -> SignificantStringTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl SignificantStringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> SignificantStringTermsAggregate { match buckets {} }
+impl<S0> From<SignificantStringTermsAggregateBuilder<(S0,)>> for SignificantStringTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<significant_string_terms_aggregate_members::buckets>,
+{
+    fn from(builder: SignificantStringTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36420,23 +38497,30 @@ pub struct SignificantStringTermsBucket {
 
 impl SignificantStringTermsBucket {
     /// Creates a builder for [`SignificantStringTermsBucket`].
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`, `key`.
     pub fn builder() -> SignificantStringTermsBucketBuilder {
         SignificantStringTermsBucketBuilder::new()
     }
 
     /// Creates a [`SignificantStringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantStringTermsBucketBuilder,
-        ) -> SignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantStringTermsBucket>>(
+        f: impl FnOnce(SignificantStringTermsBucketBuilder) -> B,
     ) -> SignificantStringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantStringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_string_terms_bucket_members {
+    pub struct doc_count;
+    pub struct score;
+    pub struct bg_count;
+    pub struct key;
 }
 
 /// Builder for [`SignificantStringTermsBucket`].
@@ -36510,6 +38594,7 @@ impl<S0, S1, S2, S3> SignificantStringTermsBucketBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> SignificantStringTermsBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -36521,6 +38606,7 @@ impl<S1, S2, S3> SignificantStringTermsBucketBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> SignificantStringTermsBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -36532,6 +38618,7 @@ impl<S0, S2, S3> SignificantStringTermsBucketBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> SignificantStringTermsBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn bg_count(
         self,
         value: i64,
@@ -36543,6 +38630,7 @@ impl<S0, S1, S3> SignificantStringTermsBucketBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> SignificantStringTermsBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<String>,
@@ -36553,16 +38641,15 @@ impl<S0, S1, S2> SignificantStringTermsBucketBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    SignificantStringTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> SignificantStringTermsBucketBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`SignificantStringTermsBucket`].
-    pub fn build(self) -> SignificantStringTermsBucket {
+    pub fn build(self) -> SignificantStringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<significant_string_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<significant_string_terms_bucket_members::score>,
+        S2: crate::typed::builder::IsSet<significant_string_terms_bucket_members::bg_count>,
+        S3: crate::typed::builder::IsSet<significant_string_terms_bucket_members::key>,
+    {
         SignificantStringTermsBucket {
             doc_count: self.doc_count.unwrap(),
             score: self.score.unwrap(),
@@ -36573,71 +38660,32 @@ impl
     }
 }
 
-impl
-    From<
-        SignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SignificantStringTermsBucket
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for SignificantStringTermsBucketBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<significant_string_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_string_terms_bucket_members::score>,
+    S2: crate::typed::builder::IsSet<significant_string_terms_bucket_members::bg_count>,
+    S3: crate::typed::builder::IsSet<significant_string_terms_bucket_members::key>,
 {
-    fn from(
-        builder: SignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantStringTermsBucket;
+
+    fn build(self) -> SignificantStringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> SignificantStringTermsBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> SignificantStringTermsBucket { match doc_count {} }
-}
-
-impl<S2, S3>
-    SignificantStringTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<SignificantStringTermsBucketBuilder<(S0, S1, S2, S3)>>
+    for SignificantStringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<significant_string_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_string_terms_bucket_members::score>,
+    S2: crate::typed::builder::IsSet<significant_string_terms_bucket_members::bg_count>,
+    S3: crate::typed::builder::IsSet<significant_string_terms_bucket_members::key>,
 {
-    /// `score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, score: crate::typed::builder::MissingRequiredField) -> SignificantStringTermsBucket { match score {} }
-}
-
-impl<S3>
-    SignificantStringTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `bg_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bg_count: crate::typed::builder::MissingRequiredField) -> SignificantStringTermsBucket { match bg_count {} }
-}
-
-impl
-    SignificantStringTermsBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> SignificantStringTermsBucket { match key {} }
+    fn from(builder: SignificantStringTermsBucketBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36653,20 +38701,31 @@ pub struct SignificantTermsAggregateBaseSignificantLongTermsBucket {
 
 impl SignificantTermsAggregateBaseSignificantLongTermsBucket {
     /// Creates a builder for [`SignificantTermsAggregateBaseSignificantLongTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder {
         SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder::new()
     }
 
     /// Creates a [`SignificantTermsAggregateBaseSignificantLongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder,
-        ) -> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<
+            Output = SignificantTermsAggregateBaseSignificantLongTermsBucket,
+        >,
+    >(
+        f: impl FnOnce(SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder) -> B,
     ) -> SignificantTermsAggregateBaseSignificantLongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_terms_aggregate_base_significant_long_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`SignificantTermsAggregateBaseSignificantLongTermsBucket`].
@@ -36751,6 +38810,7 @@ impl<S0> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
 impl
     SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet,)>
 {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantLongTermsBucket>,
@@ -36762,9 +38822,14 @@ impl
     }
 }
 
-impl SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
     /// Builds a [`SignificantTermsAggregateBaseSignificantLongTermsBucket`].
-    pub fn build(self) -> SignificantTermsAggregateBaseSignificantLongTermsBucket {
+    pub fn build(self) -> SignificantTermsAggregateBaseSignificantLongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            significant_terms_aggregate_base_significant_long_terms_bucket_members::buckets,
+        >,
+    {
         SignificantTermsAggregateBaseSignificantLongTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -36774,28 +38839,32 @@ impl SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(crate::type
     }
 }
 
-impl
-    From<
-        SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    > for SignificantTermsAggregateBaseSignificantLongTermsBucket
+impl<S0> crate::typed::builder::Build
+    for SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        significant_terms_aggregate_base_significant_long_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantTermsAggregateBaseSignificantLongTermsBucket;
+
+    fn build(self) -> SignificantTermsAggregateBaseSignificantLongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl
-    SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(crate::typed::builder::NotSet,)>
+impl<S0> From<SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>>
+    for SignificantTermsAggregateBaseSignificantLongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        significant_terms_aggregate_base_significant_long_terms_bucket_members::buckets,
+    >,
 {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> SignificantTermsAggregateBaseSignificantLongTermsBucket { match buckets {} }
+    fn from(
+        builder: SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36811,20 +38880,31 @@ pub struct SignificantTermsAggregateBaseSignificantStringTermsBucket {
 
 impl SignificantTermsAggregateBaseSignificantStringTermsBucket {
     /// Creates a builder for [`SignificantTermsAggregateBaseSignificantStringTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder {
         SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder::new()
     }
 
     /// Creates a [`SignificantTermsAggregateBaseSignificantStringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder,
-        ) -> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<
+        B: crate::typed::builder::Build<
+            Output = SignificantTermsAggregateBaseSignificantStringTermsBucket,
+        >,
+    >(
+        f: impl FnOnce(SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder) -> B,
     ) -> SignificantTermsAggregateBaseSignificantStringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_terms_aggregate_base_significant_string_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`SignificantTermsAggregateBaseSignificantStringTermsBucket`].
@@ -36913,6 +38993,7 @@ impl
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsSignificantStringTermsBucket>,
@@ -36925,11 +39006,14 @@ impl
     }
 }
 
-impl
-    SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(crate::typed::builder::Set,)>
-{
+impl<S0> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(S0,)> {
     /// Builds a [`SignificantTermsAggregateBaseSignificantStringTermsBucket`].
-    pub fn build(self) -> SignificantTermsAggregateBaseSignificantStringTermsBucket {
+    pub fn build(self) -> SignificantTermsAggregateBaseSignificantStringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<
+            significant_terms_aggregate_base_significant_string_terms_bucket_members::buckets,
+        >,
+    {
         SignificantTermsAggregateBaseSignificantStringTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -36939,30 +39023,32 @@ impl
     }
 }
 
-impl
-    From<
-        SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    > for SignificantTermsAggregateBaseSignificantStringTermsBucket
+impl<S0> crate::typed::builder::Build
+    for SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        significant_terms_aggregate_base_significant_string_terms_bucket_members::buckets,
+    >,
 {
-    fn from(
-        builder: SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantTermsAggregateBaseSignificantStringTermsBucket;
+
+    fn build(self) -> SignificantTermsAggregateBaseSignificantStringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl
-    SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(
-        crate::typed::builder::NotSet,
-    )>
+impl<S0> From<SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>>
+    for SignificantTermsAggregateBaseSignificantStringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<
+        significant_terms_aggregate_base_significant_string_terms_bucket_members::buckets,
+    >,
 {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> SignificantTermsAggregateBaseSignificantStringTermsBucket { match buckets {} }
+    fn from(
+        builder: SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -36978,19 +39064,27 @@ pub struct SignificantTermsAggregateBaseVoid {
 
 impl SignificantTermsAggregateBaseVoid {
     /// Creates a builder for [`SignificantTermsAggregateBaseVoid`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> SignificantTermsAggregateBaseVoidBuilder {
         SignificantTermsAggregateBaseVoidBuilder::new()
     }
 
     /// Creates a [`SignificantTermsAggregateBaseVoid`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantTermsAggregateBaseVoidBuilder,
-        )
-            -> SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantTermsAggregateBaseVoid>>(
+        f: impl FnOnce(SignificantTermsAggregateBaseVoidBuilder) -> B,
     ) -> SignificantTermsAggregateBaseVoid {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantTermsAggregateBaseVoidBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_terms_aggregate_base_void_members {
+    pub struct buckets;
 }
 
 /// Builder for [`SignificantTermsAggregateBaseVoid`].
@@ -37069,6 +39163,7 @@ impl<S0> SignificantTermsAggregateBaseVoidBuilder<(S0,)> {
 }
 
 impl SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -37079,9 +39174,12 @@ impl SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SignificantTermsAggregateBaseVoidBuilder<(S0,)> {
     /// Builds a [`SignificantTermsAggregateBaseVoid`].
-    pub fn build(self) -> SignificantTermsAggregateBaseVoid {
+    pub fn build(self) -> SignificantTermsAggregateBaseVoid
+    where
+        S0: crate::typed::builder::IsSet<significant_terms_aggregate_base_void_members::buckets>,
+    {
         SignificantTermsAggregateBaseVoid {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -37091,20 +39189,24 @@ impl SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>>
-    for SignificantTermsAggregateBaseVoid
+impl<S0> crate::typed::builder::Build for SignificantTermsAggregateBaseVoidBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<significant_terms_aggregate_base_void_members::buckets>,
 {
-    fn from(
-        builder: SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantTermsAggregateBaseVoid;
+
+    fn build(self) -> SignificantTermsAggregateBaseVoid {
+        Self::build(self)
     }
 }
 
-impl SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> SignificantTermsAggregateBaseVoid { match buckets {} }
+impl<S0> From<SignificantTermsAggregateBaseVoidBuilder<(S0,)>> for SignificantTermsAggregateBaseVoid
+where
+    S0: crate::typed::builder::IsSet<significant_terms_aggregate_base_void_members::buckets>,
+{
+    fn from(builder: SignificantTermsAggregateBaseVoidBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -37174,8 +39276,8 @@ impl SignificantTermsAggregation {
     }
 
     /// Creates a [`SignificantTermsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SignificantTermsAggregationBuilder) -> SignificantTermsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantTermsAggregation>>(
+        f: impl FnOnce(SignificantTermsAggregationBuilder) -> B,
     ) -> SignificantTermsAggregation {
         f(Self::builder()).build()
     }
@@ -37245,13 +39347,11 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`background_filter`](Self::background_filter) with a builder.
-    pub fn background_filter_with(
+    pub fn background_filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.background_filter(
             f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build(),
@@ -37271,14 +39371,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`chi_square`](Self::chi_square) with a builder.
-    pub fn chi_square_with(
+    pub fn chi_square_with<B: crate::typed::builder::Build<Output = ChiSquareHeuristic>>(
         self,
-        f: impl FnOnce(
-            ChiSquareHeuristicBuilder,
-        ) -> ChiSquareHeuristicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChiSquareHeuristicBuilder) -> B,
     ) -> Self {
         self.chi_square(f(ChiSquareHeuristicBuilder::new()).build())
     }
@@ -37332,11 +39427,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`gnd`](Self::gnd) with a builder.
-    pub fn gnd_with(
+    pub fn gnd_with<B: crate::typed::builder::Build<Output = GoogleNormalizedDistanceHeuristic>>(
         self,
-        f: impl FnOnce(
-            GoogleNormalizedDistanceHeuristicBuilder,
-        ) -> GoogleNormalizedDistanceHeuristicBuilder,
+        f: impl FnOnce(GoogleNormalizedDistanceHeuristicBuilder) -> B,
     ) -> Self {
         self.gnd(f(GoogleNormalizedDistanceHeuristicBuilder::new()).build())
     }
@@ -37366,11 +39459,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`jlh`](Self::jlh) with a builder.
-    pub fn jlh_with(
+    pub fn jlh_with<B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> Self {
         self.jlh(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
@@ -37400,9 +39491,11 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`mutual_information`](Self::mutual_information) with a builder.
-    pub fn mutual_information_with(
+    pub fn mutual_information_with<
+        B: crate::typed::builder::Build<Output = MutualInformationHeuristic>,
+    >(
         self,
-        f: impl FnOnce(MutualInformationHeuristicBuilder) -> MutualInformationHeuristicBuilder,
+        f: impl FnOnce(MutualInformationHeuristicBuilder) -> B,
     ) -> Self {
         self.mutual_information(f(MutualInformationHeuristicBuilder::new()).build())
     }
@@ -37420,9 +39513,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`percentage`](Self::percentage) with a builder.
-    pub fn percentage_with(
+    pub fn percentage_with<B: crate::typed::builder::Build<Output = PercentageScoreHeuristic>>(
         self,
-        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> PercentageScoreHeuristicBuilder,
+        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> B,
     ) -> Self {
         self.percentage(f(PercentageScoreHeuristicBuilder::new()).build())
     }
@@ -37440,11 +39533,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`script_heuristic`](Self::script_heuristic) with a builder.
-    pub fn script_heuristic_with(
+    pub fn script_heuristic_with<B: crate::typed::builder::Build<Output = ScriptedHeuristic>>(
         self,
-        f: impl FnOnce(
-            ScriptedHeuristicBuilder,
-        ) -> ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ScriptedHeuristicBuilder) -> B,
     ) -> Self {
         self.script_heuristic(f(ScriptedHeuristicBuilder::new()).build())
     }
@@ -37468,9 +39559,9 @@ impl SignificantTermsAggregationBuilder {
     }
 
     /// Sets [`p_value`](Self::p_value) with a builder.
-    pub fn p_value_with(
+    pub fn p_value_with<B: crate::typed::builder::Build<Output = PValueHeuristic>>(
         self,
-        f: impl FnOnce(PValueHeuristicBuilder) -> PValueHeuristicBuilder,
+        f: impl FnOnce(PValueHeuristicBuilder) -> B,
     ) -> Self {
         self.p_value(f(PValueHeuristicBuilder::new()).build())
     }
@@ -37538,6 +39629,14 @@ impl SignificantTermsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SignificantTermsAggregationBuilder {
+    type Output = SignificantTermsAggregation;
+
+    fn build(self) -> SignificantTermsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<SignificantTermsAggregationBuilder> for SignificantTermsAggregation {
     fn from(builder: SignificantTermsAggregationBuilder) -> Self {
         builder.build()
@@ -37556,22 +39655,29 @@ pub struct SignificantTermsBucketBase {
 
 impl SignificantTermsBucketBase {
     /// Creates a builder for [`SignificantTermsBucketBase`].
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`.
     pub fn builder() -> SignificantTermsBucketBaseBuilder {
         SignificantTermsBucketBaseBuilder::new()
     }
 
     /// Creates a [`SignificantTermsBucketBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SignificantTermsBucketBaseBuilder,
-        ) -> SignificantTermsBucketBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `score`, `bg_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantTermsBucketBase>>(
+        f: impl FnOnce(SignificantTermsBucketBaseBuilder) -> B,
     ) -> SignificantTermsBucketBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SignificantTermsBucketBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod significant_terms_bucket_base_members {
+    pub struct doc_count;
+    pub struct score;
+    pub struct bg_count;
 }
 
 /// Builder for [`SignificantTermsBucketBase`].
@@ -37640,6 +39746,7 @@ impl<S0, S1, S2> SignificantTermsBucketBaseBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> SignificantTermsBucketBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -37651,6 +39758,7 @@ impl<S1, S2> SignificantTermsBucketBaseBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0, S2> SignificantTermsBucketBaseBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn score(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -37662,6 +39770,7 @@ impl<S0, S2> SignificantTermsBucketBaseBuilder<(S0, crate::typed::builder::NotSe
 }
 
 impl<S0, S1> SignificantTermsBucketBaseBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn bg_count(
         self,
         value: i64,
@@ -37672,15 +39781,14 @@ impl<S0, S1> SignificantTermsBucketBaseBuilder<(S0, S1, crate::typed::builder::N
     }
 }
 
-impl
-    SignificantTermsBucketBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> SignificantTermsBucketBaseBuilder<(S0, S1, S2)> {
     /// Builds a [`SignificantTermsBucketBase`].
-    pub fn build(self) -> SignificantTermsBucketBase {
+    pub fn build(self) -> SignificantTermsBucketBase
+    where
+        S0: crate::typed::builder::IsSet<significant_terms_bucket_base_members::doc_count>,
+        S1: crate::typed::builder::IsSet<significant_terms_bucket_base_members::score>,
+        S2: crate::typed::builder::IsSet<significant_terms_bucket_base_members::bg_count>,
+    {
         SignificantTermsBucketBase {
             doc_count: self.doc_count.unwrap(),
             score: self.score.unwrap(),
@@ -37690,54 +39798,29 @@ impl
     }
 }
 
-impl
-    From<
-        SignificantTermsBucketBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SignificantTermsBucketBase
+impl<S0, S1, S2> crate::typed::builder::Build for SignificantTermsBucketBaseBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<significant_terms_bucket_base_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_terms_bucket_base_members::score>,
+    S2: crate::typed::builder::IsSet<significant_terms_bucket_base_members::bg_count>,
 {
-    fn from(
-        builder: SignificantTermsBucketBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SignificantTermsBucketBase;
+
+    fn build(self) -> SignificantTermsBucketBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> SignificantTermsBucketBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> SignificantTermsBucketBase { match doc_count {} }
-}
-
-impl<S2>
-    SignificantTermsBucketBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<SignificantTermsBucketBaseBuilder<(S0, S1, S2)>>
+    for SignificantTermsBucketBase
+where
+    S0: crate::typed::builder::IsSet<significant_terms_bucket_base_members::doc_count>,
+    S1: crate::typed::builder::IsSet<significant_terms_bucket_base_members::score>,
+    S2: crate::typed::builder::IsSet<significant_terms_bucket_base_members::bg_count>,
 {
-    /// `score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, score: crate::typed::builder::MissingRequiredField) -> SignificantTermsBucketBase { match score {} }
-}
-
-impl
-    SignificantTermsBucketBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `bg_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bg_count: crate::typed::builder::MissingRequiredField) -> SignificantTermsBucketBase { match bg_count {} }
+    fn from(builder: SignificantTermsBucketBaseBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -37804,8 +39887,8 @@ impl SignificantTextAggregation {
     }
 
     /// Creates a [`SignificantTextAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SignificantTextAggregationBuilder) -> SignificantTextAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SignificantTextAggregation>>(
+        f: impl FnOnce(SignificantTextAggregationBuilder) -> B,
     ) -> SignificantTextAggregation {
         f(Self::builder()).build()
     }
@@ -37877,13 +39960,11 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`background_filter`](Self::background_filter) with a builder.
-    pub fn background_filter_with(
+    pub fn background_filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.background_filter(
             f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build(),
@@ -37903,14 +39984,9 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`chi_square`](Self::chi_square) with a builder.
-    pub fn chi_square_with(
+    pub fn chi_square_with<B: crate::typed::builder::Build<Output = ChiSquareHeuristic>>(
         self,
-        f: impl FnOnce(
-            ChiSquareHeuristicBuilder,
-        ) -> ChiSquareHeuristicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChiSquareHeuristicBuilder) -> B,
     ) -> Self {
         self.chi_square(f(ChiSquareHeuristicBuilder::new()).build())
     }
@@ -37976,11 +40052,9 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`gnd`](Self::gnd) with a builder.
-    pub fn gnd_with(
+    pub fn gnd_with<B: crate::typed::builder::Build<Output = GoogleNormalizedDistanceHeuristic>>(
         self,
-        f: impl FnOnce(
-            GoogleNormalizedDistanceHeuristicBuilder,
-        ) -> GoogleNormalizedDistanceHeuristicBuilder,
+        f: impl FnOnce(GoogleNormalizedDistanceHeuristicBuilder) -> B,
     ) -> Self {
         self.gnd(f(GoogleNormalizedDistanceHeuristicBuilder::new()).build())
     }
@@ -38010,11 +40084,9 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`jlh`](Self::jlh) with a builder.
-    pub fn jlh_with(
+    pub fn jlh_with<B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> Self {
         self.jlh(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
@@ -38044,9 +40116,11 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`mutual_information`](Self::mutual_information) with a builder.
-    pub fn mutual_information_with(
+    pub fn mutual_information_with<
+        B: crate::typed::builder::Build<Output = MutualInformationHeuristic>,
+    >(
         self,
-        f: impl FnOnce(MutualInformationHeuristicBuilder) -> MutualInformationHeuristicBuilder,
+        f: impl FnOnce(MutualInformationHeuristicBuilder) -> B,
     ) -> Self {
         self.mutual_information(f(MutualInformationHeuristicBuilder::new()).build())
     }
@@ -38064,9 +40138,9 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`percentage`](Self::percentage) with a builder.
-    pub fn percentage_with(
+    pub fn percentage_with<B: crate::typed::builder::Build<Output = PercentageScoreHeuristic>>(
         self,
-        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> PercentageScoreHeuristicBuilder,
+        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> B,
     ) -> Self {
         self.percentage(f(PercentageScoreHeuristicBuilder::new()).build())
     }
@@ -38084,11 +40158,9 @@ impl SignificantTextAggregationBuilder {
     }
 
     /// Sets [`script_heuristic`](Self::script_heuristic) with a builder.
-    pub fn script_heuristic_with(
+    pub fn script_heuristic_with<B: crate::typed::builder::Build<Output = ScriptedHeuristic>>(
         self,
-        f: impl FnOnce(
-            ScriptedHeuristicBuilder,
-        ) -> ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ScriptedHeuristicBuilder) -> B,
     ) -> Self {
         self.script_heuristic(f(ScriptedHeuristicBuilder::new()).build())
     }
@@ -38169,6 +40241,14 @@ impl SignificantTextAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SignificantTextAggregationBuilder {
+    type Output = SignificantTextAggregation;
+
+    fn build(self) -> SignificantTextAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<SignificantTextAggregationBuilder> for SignificantTextAggregation {
     fn from(builder: SignificantTextAggregationBuilder) -> Self {
         builder.build()
@@ -38199,21 +40279,28 @@ pub struct SimpleMovingAverageAggregation {
 
 impl SimpleMovingAverageAggregation {
     /// Creates a builder for [`SimpleMovingAverageAggregation`].
+    ///
+    /// Required: `model`, `settings`.
     pub fn builder() -> SimpleMovingAverageAggregationBuilder {
         SimpleMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`SimpleMovingAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SimpleMovingAverageAggregationBuilder,
-        ) -> SimpleMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimpleMovingAverageAggregation>>(
+        f: impl FnOnce(SimpleMovingAverageAggregationBuilder) -> B,
     ) -> SimpleMovingAverageAggregation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimpleMovingAverageAggregationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_moving_average_aggregation_members {
+    pub struct model;
+    pub struct settings;
 }
 
 /// Builder for [`SimpleMovingAverageAggregation`].
@@ -38340,6 +40427,7 @@ impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
 }
 
 impl<S1> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn model(
         self,
         value: impl Into<String>,
@@ -38351,6 +40439,7 @@ impl<S1> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<crate::typed::_types::EmptyObject>,
@@ -38361,21 +40450,23 @@ impl<S0> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSe
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::EmptyObject>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::EmptyObjectBuilder,
-        ) -> crate::typed::_types::EmptyObjectBuilder,
+        f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
     ) -> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
 }
 
-impl
-    SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
     /// Builds a [`SimpleMovingAverageAggregation`].
-    pub fn build(self) -> SimpleMovingAverageAggregation {
+    pub fn build(self) -> SimpleMovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
+        S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
+    {
         SimpleMovingAverageAggregation {
             buckets_path: self.buckets_path,
             format: self.format,
@@ -38389,39 +40480,27 @@ impl
     }
 }
 
-impl
-    From<
-        SimpleMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SimpleMovingAverageAggregation
+impl<S0, S1> crate::typed::builder::Build for SimpleMovingAverageAggregationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
 {
-    fn from(
-        builder: SimpleMovingAverageAggregationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SimpleMovingAverageAggregation;
+
+    fn build(self) -> SimpleMovingAverageAggregation {
+        Self::build(self)
     }
 }
 
-impl<S1> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> SimpleMovingAverageAggregation { match model {} }
-}
-
-impl
-    SimpleMovingAverageAggregationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<SimpleMovingAverageAggregationBuilder<(S0, S1)>>
+    for SimpleMovingAverageAggregation
+where
+    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
+    S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> SimpleMovingAverageAggregation { match settings {} }
+    fn from(builder: SimpleMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -38456,18 +40535,27 @@ impl From<f64> for SimpleValueAggregateValue {
 
 impl SimpleValueAggregate {
     /// Creates a builder for [`SimpleValueAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> SimpleValueAggregateBuilder {
         SimpleValueAggregateBuilder::new()
     }
 
     /// Creates a [`SimpleValueAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SimpleValueAggregateBuilder,
-        ) -> SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimpleValueAggregate>>(
+        f: impl FnOnce(SimpleValueAggregateBuilder) -> B,
     ) -> SimpleValueAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimpleValueAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_value_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`SimpleValueAggregate`].
@@ -38532,7 +40620,7 @@ impl<S0> SimpleValueAggregateBuilder<(S0,)> {
 }
 
 impl SimpleValueAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -38544,9 +40632,12 @@ impl SimpleValueAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SimpleValueAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SimpleValueAggregateBuilder<(S0,)> {
     /// Builds a [`SimpleValueAggregate`].
-    pub fn build(self) -> SimpleValueAggregate {
+    pub fn build(self) -> SimpleValueAggregate
+    where
+        S0: crate::typed::builder::IsSet<simple_value_aggregate_members::value>,
+    {
         SimpleValueAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -38555,16 +40646,24 @@ impl SimpleValueAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>> for SimpleValueAggregate {
-    fn from(builder: SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SimpleValueAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<simple_value_aggregate_members::value>,
+{
+    type Output = SimpleValueAggregate;
+
+    fn build(self) -> SimpleValueAggregate {
+        Self::build(self)
     }
 }
 
-impl SimpleValueAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> SimpleValueAggregate { match value {} }
+impl<S0> From<SimpleValueAggregateBuilder<(S0,)>> for SimpleValueAggregate
+where
+    S0: crate::typed::builder::IsSet<simple_value_aggregate_members::value>,
+{
+    fn from(builder: SimpleValueAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Base type for single-bucket aggregation results that can hold sub-aggregations results.
@@ -38580,18 +40679,27 @@ pub struct SingleBucketAggregateBase {
 
 impl SingleBucketAggregateBase {
     /// Creates a builder for [`SingleBucketAggregateBase`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> SingleBucketAggregateBaseBuilder {
         SingleBucketAggregateBaseBuilder::new()
     }
 
     /// Creates a [`SingleBucketAggregateBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SingleBucketAggregateBaseBuilder,
-        ) -> SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = SingleBucketAggregateBase>>(
+        f: impl FnOnce(SingleBucketAggregateBaseBuilder) -> B,
     ) -> SingleBucketAggregateBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SingleBucketAggregateBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod single_bucket_aggregate_base_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`SingleBucketAggregateBase`].
@@ -38664,6 +40772,7 @@ impl<S0> SingleBucketAggregateBaseBuilder<(S0,)> {
 }
 
 impl SingleBucketAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -38674,9 +40783,12 @@ impl SingleBucketAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SingleBucketAggregateBaseBuilder<(S0,)> {
     /// Builds a [`SingleBucketAggregateBase`].
-    pub fn build(self) -> SingleBucketAggregateBase {
+    pub fn build(self) -> SingleBucketAggregateBase
+    where
+        S0: crate::typed::builder::IsSet<single_bucket_aggregate_base_members::doc_count>,
+    {
         SingleBucketAggregateBase {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -38685,18 +40797,24 @@ impl SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)>>
-    for SingleBucketAggregateBase
+impl<S0> crate::typed::builder::Build for SingleBucketAggregateBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<single_bucket_aggregate_base_members::doc_count>,
 {
-    fn from(builder: SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SingleBucketAggregateBase;
+
+    fn build(self) -> SingleBucketAggregateBase {
+        Self::build(self)
     }
 }
 
-impl SingleBucketAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> SingleBucketAggregateBase { match doc_count {} }
+impl<S0> From<SingleBucketAggregateBaseBuilder<(S0,)>> for SingleBucketAggregateBase
+where
+    S0: crate::typed::builder::IsSet<single_bucket_aggregate_base_members::doc_count>,
+{
+    fn from(builder: SingleBucketAggregateBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -38731,18 +40849,27 @@ impl From<f64> for SingleMetricAggregateBaseValue {
 
 impl SingleMetricAggregateBase {
     /// Creates a builder for [`SingleMetricAggregateBase`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> SingleMetricAggregateBaseBuilder {
         SingleMetricAggregateBaseBuilder::new()
     }
 
     /// Creates a [`SingleMetricAggregateBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SingleMetricAggregateBaseBuilder,
-        ) -> SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SingleMetricAggregateBase>>(
+        f: impl FnOnce(SingleMetricAggregateBaseBuilder) -> B,
     ) -> SingleMetricAggregateBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SingleMetricAggregateBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod single_metric_aggregate_base_members {
+    pub struct value;
 }
 
 /// Builder for [`SingleMetricAggregateBase`].
@@ -38807,7 +40934,7 @@ impl<S0> SingleMetricAggregateBaseBuilder<(S0,)> {
 }
 
 impl SingleMetricAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -38819,9 +40946,12 @@ impl SingleMetricAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SingleMetricAggregateBaseBuilder<(S0,)> {
     /// Builds a [`SingleMetricAggregateBase`].
-    pub fn build(self) -> SingleMetricAggregateBase {
+    pub fn build(self) -> SingleMetricAggregateBase
+    where
+        S0: crate::typed::builder::IsSet<single_metric_aggregate_base_members::value>,
+    {
         SingleMetricAggregateBase {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -38830,18 +40960,24 @@ impl SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)>>
-    for SingleMetricAggregateBase
+impl<S0> crate::typed::builder::Build for SingleMetricAggregateBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<single_metric_aggregate_base_members::value>,
 {
-    fn from(builder: SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SingleMetricAggregateBase;
+
+    fn build(self) -> SingleMetricAggregateBase {
+        Self::build(self)
     }
 }
 
-impl SingleMetricAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> SingleMetricAggregateBase { match value {} }
+impl<S0> From<SingleMetricAggregateBaseBuilder<(S0,)>> for SingleMetricAggregateBase
+where
+    S0: crate::typed::builder::IsSet<single_metric_aggregate_base_members::value>,
+{
+    fn from(builder: SingleMetricAggregateBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -38852,19 +40988,28 @@ pub struct Spike {
 
 impl Spike {
     /// Creates a builder for [`Spike`].
+    ///
+    /// Required: `p_value`, `change_point`.
     pub fn builder() -> SpikeBuilder {
         SpikeBuilder::new()
     }
 
     /// Creates a [`Spike`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpikeBuilder,
-        )
-            -> SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `p_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = Spike>>(
+        f: impl FnOnce(SpikeBuilder) -> B,
     ) -> Spike {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpikeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod spike_members {
+    pub struct p_value;
+    pub struct change_point;
 }
 
 /// Builder for [`Spike`].
@@ -38896,6 +41041,7 @@ impl<S0, S1> SpikeBuilder<(S0, S1)> {
 }
 
 impl<S1> SpikeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -38907,6 +41053,7 @@ impl<S1> SpikeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SpikeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(self, value: i32) -> SpikeBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.change_point = Some(value);
@@ -38914,9 +41061,13 @@ impl<S0> SpikeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpikeBuilder<(S0, S1)> {
     /// Builds a [`Spike`].
-    pub fn build(self) -> Spike {
+    pub fn build(self) -> Spike
+    where
+        S0: crate::typed::builder::IsSet<spike_members::p_value>,
+        S1: crate::typed::builder::IsSet<spike_members::change_point>,
+    {
         Spike {
             p_value: self.p_value.unwrap(),
             change_point: self.change_point.unwrap(),
@@ -38924,24 +41075,26 @@ impl SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Spike {
-    fn from(
-        builder: SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for SpikeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<spike_members::p_value>,
+    S1: crate::typed::builder::IsSet<spike_members::change_point>,
+{
+    type Output = Spike;
+
+    fn build(self) -> Spike {
+        Self::build(self)
     }
 }
 
-impl<S1> SpikeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> Spike { match p_value {} }
-}
-
-impl SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> Spike { match change_point {} }
+impl<S0, S1> From<SpikeBuilder<(S0, S1)>> for Spike
+where
+    S0: crate::typed::builder::IsSet<spike_members::p_value>,
+    S1: crate::typed::builder::IsSet<spike_members::change_point>,
+{
+    fn from(builder: SpikeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -39070,25 +41223,32 @@ impl From<f64> for StandardDeviationBoundsLowerSampling {
 
 impl StandardDeviationBounds {
     /// Creates a builder for [`StandardDeviationBounds`].
+    ///
+    /// Required: `upper`, `lower`, `upper_population`, `lower_population`, `upper_sampling`, `lower_sampling`.
     pub fn builder() -> StandardDeviationBoundsBuilder {
         StandardDeviationBoundsBuilder::new()
     }
 
     /// Creates a [`StandardDeviationBounds`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StandardDeviationBoundsBuilder,
-        ) -> StandardDeviationBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `upper`, `lower`, `upper_population`, `lower_population`, `upper_sampling`, `lower_sampling`.
+    pub fn of<B: crate::typed::builder::Build<Output = StandardDeviationBounds>>(
+        f: impl FnOnce(StandardDeviationBoundsBuilder) -> B,
     ) -> StandardDeviationBounds {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StandardDeviationBoundsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod standard_deviation_bounds_members {
+    pub struct upper;
+    pub struct lower;
+    pub struct upper_population;
+    pub struct lower_population;
+    pub struct upper_sampling;
+    pub struct lower_sampling;
 }
 
 /// Builder for [`StandardDeviationBounds`].
@@ -39152,6 +41312,7 @@ impl<S0, S1, S2, S3, S4, S5> StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4,
 impl<S1, S2, S3, S4, S5>
     StandardDeviationBoundsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn upper(
         self,
         value: impl Into<StandardDeviationBoundsUpper>,
@@ -39165,6 +41326,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     StandardDeviationBoundsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn lower(
         self,
         value: impl Into<StandardDeviationBoundsLower>,
@@ -39178,6 +41340,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     StandardDeviationBoundsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn upper_population(
         self,
         value: impl Into<StandardDeviationBoundsUpperPopulation>,
@@ -39191,6 +41354,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     StandardDeviationBoundsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn lower_population(
         self,
         value: impl Into<StandardDeviationBoundsLowerPopulation>,
@@ -39204,6 +41368,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     StandardDeviationBoundsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn upper_sampling(
         self,
         value: impl Into<StandardDeviationBoundsUpperSampling>,
@@ -39217,6 +41382,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn lower_sampling(
         self,
         value: impl Into<StandardDeviationBoundsLowerSampling>,
@@ -39227,18 +41393,17 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`StandardDeviationBounds`].
-    pub fn build(self) -> StandardDeviationBounds {
+    pub fn build(self) -> StandardDeviationBounds
+    where
+        S0: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper>,
+        S1: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower>,
+        S2: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_population>,
+        S3: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_population>,
+        S4: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_sampling>,
+        S5: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_sampling>,
+    {
         StandardDeviationBounds {
             upper: self.upper.unwrap(),
             lower: self.lower.unwrap(),
@@ -39250,113 +41415,36 @@ impl
     }
 }
 
-impl
-    From<
-        StandardDeviationBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StandardDeviationBounds
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper>,
+    S1: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower>,
+    S2: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_population>,
+    S3: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_population>,
+    S4: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_sampling>,
+    S5: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_sampling>,
 {
-    fn from(
-        builder: StandardDeviationBoundsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StandardDeviationBounds;
+
+    fn build(self) -> StandardDeviationBounds {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    StandardDeviationBoundsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for StandardDeviationBounds
+where
+    S0: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper>,
+    S1: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower>,
+    S2: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_population>,
+    S3: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_population>,
+    S4: crate::typed::builder::IsSet<standard_deviation_bounds_members::upper_sampling>,
+    S5: crate::typed::builder::IsSet<standard_deviation_bounds_members::lower_sampling>,
 {
-    /// `upper` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match upper {} }
-}
-
-impl<S2, S3, S4, S5>
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `lower` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match lower {} }
-}
-
-impl<S3, S4, S5>
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `upper_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper_population: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match upper_population {} }
-}
-
-impl<S4, S5>
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `lower_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower_population: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match lower_population {} }
-}
-
-impl<S5>
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `upper_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper_sampling: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match upper_sampling {} }
-}
-
-impl
-    StandardDeviationBoundsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `lower_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower_sampling: crate::typed::builder::MissingRequiredField) -> StandardDeviationBounds { match lower_sampling {} }
+    fn from(builder: StandardDeviationBoundsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -39371,25 +41459,32 @@ pub struct StandardDeviationBoundsAsString {
 
 impl StandardDeviationBoundsAsString {
     /// Creates a builder for [`StandardDeviationBoundsAsString`].
+    ///
+    /// Required: `upper`, `lower`, `upper_population`, `lower_population`, `upper_sampling`, `lower_sampling`.
     pub fn builder() -> StandardDeviationBoundsAsStringBuilder {
         StandardDeviationBoundsAsStringBuilder::new()
     }
 
     /// Creates a [`StandardDeviationBoundsAsString`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StandardDeviationBoundsAsStringBuilder,
-        ) -> StandardDeviationBoundsAsStringBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `upper`, `lower`, `upper_population`, `lower_population`, `upper_sampling`, `lower_sampling`.
+    pub fn of<B: crate::typed::builder::Build<Output = StandardDeviationBoundsAsString>>(
+        f: impl FnOnce(StandardDeviationBoundsAsStringBuilder) -> B,
     ) -> StandardDeviationBoundsAsString {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StandardDeviationBoundsAsStringBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod standard_deviation_bounds_as_string_members {
+    pub struct upper;
+    pub struct lower;
+    pub struct upper_population;
+    pub struct lower_population;
+    pub struct upper_sampling;
+    pub struct lower_sampling;
 }
 
 /// Builder for [`StandardDeviationBoundsAsString`].
@@ -39453,6 +41548,7 @@ impl<S0, S1, S2, S3, S4, S5> StandardDeviationBoundsAsStringBuilder<(S0, S1, S2,
 impl<S1, S2, S3, S4, S5>
     StandardDeviationBoundsAsStringBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn upper(
         self,
         value: impl Into<String>,
@@ -39467,6 +41563,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     StandardDeviationBoundsAsStringBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn lower(
         self,
         value: impl Into<String>,
@@ -39481,6 +41578,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     StandardDeviationBoundsAsStringBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn upper_population(
         self,
         value: impl Into<String>,
@@ -39495,6 +41593,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn lower_population(
         self,
         value: impl Into<String>,
@@ -39509,6 +41608,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn upper_sampling(
         self,
         value: impl Into<String>,
@@ -39523,6 +41623,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn lower_sampling(
         self,
         value: impl Into<String>,
@@ -39534,18 +41635,25 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`StandardDeviationBoundsAsString`].
-    pub fn build(self) -> StandardDeviationBoundsAsString {
+    pub fn build(self) -> StandardDeviationBoundsAsString
+    where
+        S0: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper>,
+        S1: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower>,
+        S2: crate::typed::builder::IsSet<
+            standard_deviation_bounds_as_string_members::upper_population,
+        >,
+        S3: crate::typed::builder::IsSet<
+            standard_deviation_bounds_as_string_members::lower_population,
+        >,
+        S4: crate::typed::builder::IsSet<
+            standard_deviation_bounds_as_string_members::upper_sampling,
+        >,
+        S5: crate::typed::builder::IsSet<
+            standard_deviation_bounds_as_string_members::lower_sampling,
+        >,
+    {
         StandardDeviationBoundsAsString {
             upper: self.upper.unwrap(),
             lower: self.lower.unwrap(),
@@ -39557,113 +41665,36 @@ impl
     }
 }
 
-impl
-    From<
-        StandardDeviationBoundsAsStringBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StandardDeviationBoundsAsString
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper>,
+    S1: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower>,
+    S2: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper_population>,
+    S3: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower_population>,
+    S4: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper_sampling>,
+    S5: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower_sampling>,
 {
-    fn from(
-        builder: StandardDeviationBoundsAsStringBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StandardDeviationBoundsAsString;
+
+    fn build(self) -> StandardDeviationBoundsAsString {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    StandardDeviationBoundsAsStringBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for StandardDeviationBoundsAsString
+where
+    S0: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper>,
+    S1: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower>,
+    S2: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper_population>,
+    S3: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower_population>,
+    S4: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::upper_sampling>,
+    S5: crate::typed::builder::IsSet<standard_deviation_bounds_as_string_members::lower_sampling>,
 {
-    /// `upper` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match upper {} }
-}
-
-impl<S2, S3, S4, S5>
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `lower` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match lower {} }
-}
-
-impl<S3, S4, S5>
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `upper_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper_population: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match upper_population {} }
-}
-
-impl<S4, S5>
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `lower_population` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower_population: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match lower_population {} }
-}
-
-impl<S5>
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `upper_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, upper_sampling: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match upper_sampling {} }
-}
-
-impl
-    StandardDeviationBoundsAsStringBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `lower_sampling` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lower_sampling: crate::typed::builder::MissingRequiredField) -> StandardDeviationBoundsAsString { match lower_sampling {} }
+    fn from(builder: StandardDeviationBoundsAsStringBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -39676,7 +41707,9 @@ impl Stationary {
     }
 
     /// Creates a [`Stationary`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(StationaryBuilder) -> StationaryBuilder) -> Stationary {
+    pub fn of<B: crate::typed::builder::Build<Output = Stationary>>(
+        f: impl FnOnce(StationaryBuilder) -> B,
+    ) -> Stationary {
         f(Self::builder()).build()
     }
 }
@@ -39697,6 +41730,14 @@ impl StationaryBuilder {
     /// Builds a [`Stationary`].
     pub fn build(self) -> Stationary {
         Stationary {}
+    }
+}
+
+impl crate::typed::builder::Build for StationaryBuilder {
+    type Output = Stationary;
+
+    fn build(self) -> Stationary {
+        Self::build(self)
     }
 }
 
@@ -39786,24 +41827,31 @@ impl From<f64> for StatsAggregateAvg {
 
 impl StatsAggregate {
     /// Creates a builder for [`StatsAggregate`].
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`.
     pub fn builder() -> StatsAggregateBuilder {
         StatsAggregateBuilder::new()
     }
 
     /// Creates a [`StatsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatsAggregateBuilder,
-        ) -> StatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatsAggregate>>(
+        f: impl FnOnce(StatsAggregateBuilder) -> B,
     ) -> StatsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stats_aggregate_members {
+    pub struct count;
+    pub struct min;
+    pub struct max;
+    pub struct avg;
+    pub struct sum;
 }
 
 /// Builder for [`StatsAggregate`].
@@ -39938,6 +41986,7 @@ impl<S0, S1, S2, S3, S4> StatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> StatsAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -39949,6 +41998,7 @@ impl<S1, S2, S3, S4> StatsAggregateBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2, S3, S4> StatsAggregateBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<StatsAggregateMin>,
@@ -39960,6 +42010,7 @@ impl<S0, S2, S3, S4> StatsAggregateBuilder<(S0, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S3, S4> StatsAggregateBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<StatsAggregateMax>,
@@ -39971,6 +42022,7 @@ impl<S0, S1, S3, S4> StatsAggregateBuilder<(S0, S1, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S4> StatsAggregateBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn avg(
         self,
         value: impl Into<StatsAggregateAvg>,
@@ -39982,6 +42034,7 @@ impl<S0, S1, S2, S4> StatsAggregateBuilder<(S0, S1, S2, crate::typed::builder::N
 }
 
 impl<S0, S1, S2, S3> StatsAggregateBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn sum(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -39992,17 +42045,16 @@ impl<S0, S1, S2, S3> StatsAggregateBuilder<(S0, S1, S2, S3, crate::typed::builde
     }
 }
 
-impl
-    StatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> StatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`StatsAggregate`].
-    pub fn build(self) -> StatsAggregate {
+    pub fn build(self) -> StatsAggregate
+    where
+        S0: crate::typed::builder::IsSet<stats_aggregate_members::count>,
+        S1: crate::typed::builder::IsSet<stats_aggregate_members::min>,
+        S2: crate::typed::builder::IsSet<stats_aggregate_members::max>,
+        S3: crate::typed::builder::IsSet<stats_aggregate_members::avg>,
+        S4: crate::typed::builder::IsSet<stats_aggregate_members::sum>,
+    {
         StatsAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -40018,90 +42070,33 @@ impl
     }
 }
 
-impl
-    From<
-        StatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StatsAggregate
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for StatsAggregateBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<stats_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<stats_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<stats_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<stats_aggregate_members::sum>,
 {
-    fn from(
-        builder: StatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StatsAggregate;
+
+    fn build(self) -> StatsAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> StatsAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> StatsAggregate { match count {} }
-}
-
-impl<S2, S3, S4>
-    StatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<StatsAggregateBuilder<(S0, S1, S2, S3, S4)>> for StatsAggregate
+where
+    S0: crate::typed::builder::IsSet<stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<stats_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<stats_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<stats_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<stats_aggregate_members::sum>,
 {
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> StatsAggregate { match min {} }
-}
-
-impl<S3, S4>
-    StatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> StatsAggregate { match max {} }
-}
-
-impl<S4>
-    StatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> StatsAggregate { match avg {} }
-}
-
-impl
-    StatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sum` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum: crate::typed::builder::MissingRequiredField) -> StatsAggregate { match sum {} }
+    fn from(builder: StatsAggregateBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -40126,8 +42121,8 @@ impl StatsAggregation {
     }
 
     /// Creates a [`StatsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StatsAggregationBuilder) -> StatsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = StatsAggregation>>(
+        f: impl FnOnce(StatsAggregationBuilder) -> B,
     ) -> StatsAggregation {
         f(Self::builder()).build()
     }
@@ -40191,9 +42186,9 @@ impl StatsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -40219,6 +42214,14 @@ impl StatsAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for StatsAggregationBuilder {
+    type Output = StatsAggregation;
+
+    fn build(self) -> StatsAggregation {
+        Self::build(self)
     }
 }
 
@@ -40306,24 +42309,31 @@ impl From<f64> for StatsBucketAggregateAvg {
 
 impl StatsBucketAggregate {
     /// Creates a builder for [`StatsBucketAggregate`].
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`.
     pub fn builder() -> StatsBucketAggregateBuilder {
         StatsBucketAggregateBuilder::new()
     }
 
     /// Creates a [`StatsBucketAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatsBucketAggregateBuilder,
-        ) -> StatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `min`, `max`, `avg`, `sum`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatsBucketAggregate>>(
+        f: impl FnOnce(StatsBucketAggregateBuilder) -> B,
     ) -> StatsBucketAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatsBucketAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod stats_bucket_aggregate_members {
+    pub struct count;
+    pub struct min;
+    pub struct max;
+    pub struct avg;
+    pub struct sum;
 }
 
 /// Builder for [`StatsBucketAggregate`].
@@ -40458,6 +42468,7 @@ impl<S0, S1, S2, S3, S4> StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> StatsBucketAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -40469,6 +42480,7 @@ impl<S1, S2, S3, S4> StatsBucketAggregateBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> StatsBucketAggregateBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<StatsBucketAggregateMin>,
@@ -40480,6 +42492,7 @@ impl<S0, S2, S3, S4> StatsBucketAggregateBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> StatsBucketAggregateBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<StatsBucketAggregateMax>,
@@ -40491,6 +42504,7 @@ impl<S0, S1, S3, S4> StatsBucketAggregateBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> StatsBucketAggregateBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn avg(
         self,
         value: impl Into<StatsBucketAggregateAvg>,
@@ -40502,6 +42516,7 @@ impl<S0, S1, S2, S4> StatsBucketAggregateBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> StatsBucketAggregateBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn sum(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -40512,17 +42527,16 @@ impl<S0, S1, S2, S3> StatsBucketAggregateBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    StatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`StatsBucketAggregate`].
-    pub fn build(self) -> StatsBucketAggregate {
+    pub fn build(self) -> StatsBucketAggregate
+    where
+        S0: crate::typed::builder::IsSet<stats_bucket_aggregate_members::count>,
+        S1: crate::typed::builder::IsSet<stats_bucket_aggregate_members::min>,
+        S2: crate::typed::builder::IsSet<stats_bucket_aggregate_members::max>,
+        S3: crate::typed::builder::IsSet<stats_bucket_aggregate_members::avg>,
+        S4: crate::typed::builder::IsSet<stats_bucket_aggregate_members::sum>,
+    {
         StatsBucketAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -40538,90 +42552,34 @@ impl
     }
 }
 
-impl
-    From<
-        StatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StatsBucketAggregate
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<stats_bucket_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<stats_bucket_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<stats_bucket_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<stats_bucket_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<stats_bucket_aggregate_members::sum>,
 {
-    fn from(
-        builder: StatsBucketAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StatsBucketAggregate;
+
+    fn build(self) -> StatsBucketAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> StatsBucketAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> StatsBucketAggregate { match count {} }
-}
-
-impl<S2, S3, S4>
-    StatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)>>
+    for StatsBucketAggregate
+where
+    S0: crate::typed::builder::IsSet<stats_bucket_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<stats_bucket_aggregate_members::min>,
+    S2: crate::typed::builder::IsSet<stats_bucket_aggregate_members::max>,
+    S3: crate::typed::builder::IsSet<stats_bucket_aggregate_members::avg>,
+    S4: crate::typed::builder::IsSet<stats_bucket_aggregate_members::sum>,
 {
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> StatsBucketAggregate { match min {} }
-}
-
-impl<S3, S4>
-    StatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> StatsBucketAggregate { match max {} }
-}
-
-impl<S4>
-    StatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `avg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg: crate::typed::builder::MissingRequiredField) -> StatsBucketAggregate { match avg {} }
-}
-
-impl
-    StatsBucketAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sum` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum: crate::typed::builder::MissingRequiredField) -> StatsBucketAggregate { match sum {} }
+    fn from(builder: StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -40645,8 +42603,8 @@ impl StatsBucketAggregation {
     }
 
     /// Creates a [`StatsBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StatsBucketAggregationBuilder) -> StatsBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = StatsBucketAggregation>>(
+        f: impl FnOnce(StatsBucketAggregationBuilder) -> B,
     ) -> StatsBucketAggregation {
         f(Self::builder()).build()
     }
@@ -40720,6 +42678,14 @@ impl StatsBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for StatsBucketAggregationBuilder {
+    type Output = StatsBucketAggregation;
+
+    fn build(self) -> StatsBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<StatsBucketAggregationBuilder> for StatsBucketAggregation {
     fn from(builder: StatsBucketAggregationBuilder) -> Self {
         builder.build()
@@ -40734,19 +42700,28 @@ pub struct StepChange {
 
 impl StepChange {
     /// Creates a builder for [`StepChange`].
+    ///
+    /// Required: `p_value`, `change_point`.
     pub fn builder() -> StepChangeBuilder {
         StepChangeBuilder::new()
     }
 
     /// Creates a [`StepChange`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StepChangeBuilder,
-        )
-            -> StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `p_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = StepChange>>(
+        f: impl FnOnce(StepChangeBuilder) -> B,
     ) -> StepChange {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StepChangeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod step_change_members {
+    pub struct p_value;
+    pub struct change_point;
 }
 
 /// Builder for [`StepChange`].
@@ -40778,6 +42753,7 @@ impl<S0, S1> StepChangeBuilder<(S0, S1)> {
 }
 
 impl<S1> StepChangeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -40789,6 +42765,7 @@ impl<S1> StepChangeBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> StepChangeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(self, value: i32) -> StepChangeBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.change_point = Some(value);
@@ -40796,9 +42773,13 @@ impl<S0> StepChangeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> StepChangeBuilder<(S0, S1)> {
     /// Builds a [`StepChange`].
-    pub fn build(self) -> StepChange {
+    pub fn build(self) -> StepChange
+    where
+        S0: crate::typed::builder::IsSet<step_change_members::p_value>,
+        S1: crate::typed::builder::IsSet<step_change_members::change_point>,
+    {
         StepChange {
             p_value: self.p_value.unwrap(),
             change_point: self.change_point.unwrap(),
@@ -40806,26 +42787,26 @@ impl StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for StepChange
+impl<S0, S1> crate::typed::builder::Build for StepChangeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<step_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<step_change_members::change_point>,
 {
-    fn from(
-        builder: StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = StepChange;
+
+    fn build(self) -> StepChange {
+        Self::build(self)
     }
 }
 
-impl<S1> StepChangeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> StepChange { match p_value {} }
-}
-
-impl StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> StepChange { match change_point {} }
+impl<S0, S1> From<StepChangeBuilder<(S0, S1)>> for StepChange
+where
+    S0: crate::typed::builder::IsSet<step_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<step_change_members::change_point>,
+{
+    fn from(builder: StepChangeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of the `rare_terms` aggregation when the field is a string.
@@ -40838,18 +42819,27 @@ pub struct StringRareTermsAggregate {
 
 impl StringRareTermsAggregate {
     /// Creates a builder for [`StringRareTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> StringRareTermsAggregateBuilder {
         StringRareTermsAggregateBuilder::new()
     }
 
     /// Creates a [`StringRareTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StringRareTermsAggregateBuilder,
-        ) -> StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = StringRareTermsAggregate>>(
+        f: impl FnOnce(StringRareTermsAggregateBuilder) -> B,
     ) -> StringRareTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StringRareTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod string_rare_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`StringRareTermsAggregate`].
@@ -40900,6 +42890,7 @@ impl<S0> StringRareTermsAggregateBuilder<(S0,)> {
 }
 
 impl StringRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsStringRareTermsBucket>,
@@ -40910,9 +42901,12 @@ impl StringRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StringRareTermsAggregateBuilder<(S0,)> {
     /// Builds a [`StringRareTermsAggregate`].
-    pub fn build(self) -> StringRareTermsAggregate {
+    pub fn build(self) -> StringRareTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<string_rare_terms_aggregate_members::buckets>,
+    {
         StringRareTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -40920,18 +42914,24 @@ impl StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for StringRareTermsAggregate
+impl<S0> crate::typed::builder::Build for StringRareTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<string_rare_terms_aggregate_members::buckets>,
 {
-    fn from(builder: StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = StringRareTermsAggregate;
+
+    fn build(self) -> StringRareTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl StringRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> StringRareTermsAggregate { match buckets {} }
+impl<S0> From<StringRareTermsAggregateBuilder<(S0,)>> for StringRareTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<string_rare_terms_aggregate_members::buckets>,
+{
+    fn from(builder: StringRareTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -40945,21 +42945,28 @@ pub struct StringRareTermsBucket {
 
 impl StringRareTermsBucket {
     /// Creates a builder for [`StringRareTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> StringRareTermsBucketBuilder {
         StringRareTermsBucketBuilder::new()
     }
 
     /// Creates a [`StringRareTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StringRareTermsBucketBuilder,
-        ) -> StringRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = StringRareTermsBucket>>(
+        f: impl FnOnce(StringRareTermsBucketBuilder) -> B,
     ) -> StringRareTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StringRareTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod string_rare_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`StringRareTermsBucket`].
@@ -41015,6 +43022,7 @@ impl<S0, S1> StringRareTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> StringRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -41026,6 +43034,7 @@ impl<S1> StringRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> StringRareTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<String>,
@@ -41036,9 +43045,13 @@ impl<S0> StringRareTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl StringRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> StringRareTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`StringRareTermsBucket`].
-    pub fn build(self) -> StringRareTermsBucket {
+    pub fn build(self) -> StringRareTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<string_rare_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<string_rare_terms_bucket_members::key>,
+    {
         StringRareTermsBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -41047,29 +43060,26 @@ impl StringRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<StringRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for StringRareTermsBucket
+impl<S0, S1> crate::typed::builder::Build for StringRareTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<string_rare_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<string_rare_terms_bucket_members::key>,
 {
-    fn from(
-        builder: StringRareTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StringRareTermsBucket;
+
+    fn build(self) -> StringRareTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> StringRareTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> StringRareTermsBucket { match doc_count {} }
-}
-
-impl StringRareTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> StringRareTermsBucket { match key {} }
+impl<S0, S1> From<StringRareTermsBucketBuilder<(S0, S1)>> for StringRareTermsBucket
+where
+    S0: crate::typed::builder::IsSet<string_rare_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<string_rare_terms_bucket_members::key>,
+{
+    fn from(builder: StringRareTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -41172,24 +43182,31 @@ impl From<indexmap::IndexMap<String, crate::typed::support::Float64>>
 
 impl StringStatsAggregate {
     /// Creates a builder for [`StringStatsAggregate`].
+    ///
+    /// Required: `count`, `min_length`, `max_length`, `avg_length`, `entropy`.
     pub fn builder() -> StringStatsAggregateBuilder {
         StringStatsAggregateBuilder::new()
     }
 
     /// Creates a [`StringStatsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StringStatsAggregateBuilder,
-        ) -> StringStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `min_length`, `max_length`, `avg_length`, `entropy`.
+    pub fn of<B: crate::typed::builder::Build<Output = StringStatsAggregate>>(
+        f: impl FnOnce(StringStatsAggregateBuilder) -> B,
     ) -> StringStatsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StringStatsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod string_stats_aggregate_members {
+    pub struct count;
+    pub struct min_length;
+    pub struct max_length;
+    pub struct avg_length;
+    pub struct entropy;
 }
 
 /// Builder for [`StringStatsAggregate`].
@@ -41324,6 +43341,7 @@ impl<S0, S1, S2, S3, S4> StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> StringStatsAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn count(
         self,
         value: i64,
@@ -41335,6 +43353,7 @@ impl<S1, S2, S3, S4> StringStatsAggregateBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> StringStatsAggregateBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn min_length(
         self,
         value: impl Into<StringStatsAggregateMinLength>,
@@ -41346,6 +43365,7 @@ impl<S0, S2, S3, S4> StringStatsAggregateBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> StringStatsAggregateBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn max_length(
         self,
         value: impl Into<StringStatsAggregateMaxLength>,
@@ -41357,6 +43377,7 @@ impl<S0, S1, S3, S4> StringStatsAggregateBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> StringStatsAggregateBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn avg_length(
         self,
         value: impl Into<StringStatsAggregateAvgLength>,
@@ -41368,6 +43389,7 @@ impl<S0, S1, S2, S4> StringStatsAggregateBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> StringStatsAggregateBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn entropy(
         self,
         value: impl Into<StringStatsAggregateEntropy>,
@@ -41378,17 +43400,16 @@ impl<S0, S1, S2, S3> StringStatsAggregateBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    StringStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`StringStatsAggregate`].
-    pub fn build(self) -> StringStatsAggregate {
+    pub fn build(self) -> StringStatsAggregate
+    where
+        S0: crate::typed::builder::IsSet<string_stats_aggregate_members::count>,
+        S1: crate::typed::builder::IsSet<string_stats_aggregate_members::min_length>,
+        S2: crate::typed::builder::IsSet<string_stats_aggregate_members::max_length>,
+        S3: crate::typed::builder::IsSet<string_stats_aggregate_members::avg_length>,
+        S4: crate::typed::builder::IsSet<string_stats_aggregate_members::entropy>,
+    {
         StringStatsAggregate {
             meta: self.meta,
             count: self.count.unwrap(),
@@ -41404,90 +43425,34 @@ impl
     }
 }
 
-impl
-    From<
-        StringStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StringStatsAggregate
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<string_stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<string_stats_aggregate_members::min_length>,
+    S2: crate::typed::builder::IsSet<string_stats_aggregate_members::max_length>,
+    S3: crate::typed::builder::IsSet<string_stats_aggregate_members::avg_length>,
+    S4: crate::typed::builder::IsSet<string_stats_aggregate_members::entropy>,
 {
-    fn from(
-        builder: StringStatsAggregateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StringStatsAggregate;
+
+    fn build(self) -> StringStatsAggregate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> StringStatsAggregateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> StringStatsAggregate { match count {} }
-}
-
-impl<S2, S3, S4>
-    StringStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)>>
+    for StringStatsAggregate
+where
+    S0: crate::typed::builder::IsSet<string_stats_aggregate_members::count>,
+    S1: crate::typed::builder::IsSet<string_stats_aggregate_members::min_length>,
+    S2: crate::typed::builder::IsSet<string_stats_aggregate_members::max_length>,
+    S3: crate::typed::builder::IsSet<string_stats_aggregate_members::avg_length>,
+    S4: crate::typed::builder::IsSet<string_stats_aggregate_members::entropy>,
 {
-    /// `min_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_length: crate::typed::builder::MissingRequiredField) -> StringStatsAggregate { match min_length {} }
-}
-
-impl<S3, S4>
-    StringStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `max_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_length: crate::typed::builder::MissingRequiredField) -> StringStatsAggregate { match max_length {} }
-}
-
-impl<S4>
-    StringStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `avg_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, avg_length: crate::typed::builder::MissingRequiredField) -> StringStatsAggregate { match avg_length {} }
-}
-
-impl
-    StringStatsAggregateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `entropy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, entropy: crate::typed::builder::MissingRequiredField) -> StringStatsAggregate { match entropy {} }
+    fn from(builder: StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -41513,8 +43478,8 @@ impl StringStatsAggregation {
     }
 
     /// Creates a [`StringStatsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StringStatsAggregationBuilder) -> StringStatsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = StringStatsAggregation>>(
+        f: impl FnOnce(StringStatsAggregationBuilder) -> B,
     ) -> StringStatsAggregation {
         f(Self::builder()).build()
     }
@@ -41578,9 +43543,9 @@ impl StringStatsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -41610,6 +43575,14 @@ impl StringStatsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for StringStatsAggregationBuilder {
+    type Output = StringStatsAggregation;
+
+    fn build(self) -> StringStatsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<StringStatsAggregationBuilder> for StringStatsAggregation {
     fn from(builder: StringStatsAggregationBuilder) -> Self {
         builder.build()
@@ -41630,18 +43603,27 @@ pub struct StringTermsAggregate {
 
 impl StringTermsAggregate {
     /// Creates a builder for [`StringTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> StringTermsAggregateBuilder {
         StringTermsAggregateBuilder::new()
     }
 
     /// Creates a [`StringTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StringTermsAggregateBuilder,
-        ) -> StringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = StringTermsAggregate>>(
+        f: impl FnOnce(StringTermsAggregateBuilder) -> B,
     ) -> StringTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StringTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod string_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`StringTermsAggregate`].
@@ -41720,6 +43702,7 @@ impl<S0> StringTermsAggregateBuilder<(S0,)> {
 }
 
 impl StringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsStringTermsBucket>,
@@ -41730,9 +43713,12 @@ impl StringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StringTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StringTermsAggregateBuilder<(S0,)> {
     /// Builds a [`StringTermsAggregate`].
-    pub fn build(self) -> StringTermsAggregate {
+    pub fn build(self) -> StringTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<string_terms_aggregate_members::buckets>,
+    {
         StringTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -41742,16 +43728,24 @@ impl StringTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StringTermsAggregateBuilder<(crate::typed::builder::Set,)>> for StringTermsAggregate {
-    fn from(builder: StringTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StringTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<string_terms_aggregate_members::buckets>,
+{
+    type Output = StringTermsAggregate;
+
+    fn build(self) -> StringTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl StringTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> StringTermsAggregate { match buckets {} }
+impl<S0> From<StringTermsAggregateBuilder<(S0,)>> for StringTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<string_terms_aggregate_members::buckets>,
+{
+    fn from(builder: StringTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -41767,21 +43761,28 @@ pub struct StringTermsBucket {
 
 impl StringTermsBucket {
     /// Creates a builder for [`StringTermsBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> StringTermsBucketBuilder {
         StringTermsBucketBuilder::new()
     }
 
     /// Creates a [`StringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StringTermsBucketBuilder,
-        ) -> StringTermsBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = StringTermsBucket>>(
+        f: impl FnOnce(StringTermsBucketBuilder) -> B,
     ) -> StringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod string_terms_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`StringTermsBucket`].
@@ -41851,6 +43852,7 @@ impl<S0, S1> StringTermsBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> StringTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -41862,6 +43864,7 @@ impl<S1> StringTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> StringTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::_types::FieldValue>,
@@ -41872,9 +43875,13 @@ impl<S0> StringTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl StringTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> StringTermsBucketBuilder<(S0, S1)> {
     /// Builds a [`StringTermsBucket`].
-    pub fn build(self) -> StringTermsBucket {
+    pub fn build(self) -> StringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<string_terms_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<string_terms_bucket_members::key>,
+    {
         StringTermsBucket {
             doc_count: self.doc_count.unwrap(),
             doc_count_error_upper_bound: self.doc_count_error_upper_bound,
@@ -41884,26 +43891,26 @@ impl StringTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<StringTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for StringTermsBucket
+impl<S0, S1> crate::typed::builder::Build for StringTermsBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<string_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<string_terms_bucket_members::key>,
 {
-    fn from(
-        builder: StringTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = StringTermsBucket;
+
+    fn build(self) -> StringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> StringTermsBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> StringTermsBucket { match doc_count {} }
-}
-
-impl StringTermsBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> StringTermsBucket { match key {} }
+impl<S0, S1> From<StringTermsBucketBuilder<(S0, S1)>> for StringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<string_terms_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<string_terms_bucket_members::key>,
+{
+    fn from(builder: StringTermsBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Sum aggregation result. `value` is always present and is zero if there were no values to process.
@@ -41939,16 +43946,27 @@ impl From<f64> for SumAggregateValue {
 
 impl SumAggregate {
     /// Creates a builder for [`SumAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> SumAggregateBuilder {
         SumAggregateBuilder::new()
     }
 
     /// Creates a [`SumAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SumAggregateBuilder) -> SumAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SumAggregate>>(
+        f: impl FnOnce(SumAggregateBuilder) -> B,
     ) -> SumAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SumAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sum_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`SumAggregate`].
@@ -42013,7 +44031,7 @@ impl<S0> SumAggregateBuilder<(S0,)> {
 }
 
 impl SumAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -42025,9 +44043,12 @@ impl SumAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SumAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SumAggregateBuilder<(S0,)> {
     /// Builds a [`SumAggregate`].
-    pub fn build(self) -> SumAggregate {
+    pub fn build(self) -> SumAggregate
+    where
+        S0: crate::typed::builder::IsSet<sum_aggregate_members::value>,
+    {
         SumAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -42036,16 +44057,24 @@ impl SumAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SumAggregateBuilder<(crate::typed::builder::Set,)>> for SumAggregate {
-    fn from(builder: SumAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SumAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sum_aggregate_members::value>,
+{
+    type Output = SumAggregate;
+
+    fn build(self) -> SumAggregate {
+        Self::build(self)
     }
 }
 
-impl SumAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> SumAggregate { match value {} }
+impl<S0> From<SumAggregateBuilder<(S0,)>> for SumAggregate
+where
+    S0: crate::typed::builder::IsSet<sum_aggregate_members::value>,
+{
+    fn from(builder: SumAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -42070,7 +44099,9 @@ impl SumAggregation {
     }
 
     /// Creates a [`SumAggregation`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SumAggregationBuilder) -> SumAggregationBuilder) -> SumAggregation {
+    pub fn of<B: crate::typed::builder::Build<Output = SumAggregation>>(
+        f: impl FnOnce(SumAggregationBuilder) -> B,
+    ) -> SumAggregation {
         f(Self::builder()).build()
     }
 }
@@ -42133,9 +44164,9 @@ impl SumAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -42161,6 +44192,14 @@ impl SumAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SumAggregationBuilder {
+    type Output = SumAggregation;
+
+    fn build(self) -> SumAggregation {
+        Self::build(self)
     }
 }
 
@@ -42191,8 +44230,8 @@ impl SumBucketAggregation {
     }
 
     /// Creates a [`SumBucketAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SumBucketAggregationBuilder) -> SumBucketAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SumBucketAggregation>>(
+        f: impl FnOnce(SumBucketAggregationBuilder) -> B,
     ) -> SumBucketAggregation {
         f(Self::builder()).build()
     }
@@ -42266,6 +44305,14 @@ impl SumBucketAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SumBucketAggregationBuilder {
+    type Output = SumBucketAggregation;
+
+    fn build(self) -> SumBucketAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<SumBucketAggregationBuilder> for SumBucketAggregation {
     fn from(builder: SumBucketAggregationBuilder) -> Self {
         builder.build()
@@ -42290,7 +44337,9 @@ impl TDigest {
     }
 
     /// Creates a [`TDigest`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TDigestBuilder) -> TDigestBuilder) -> TDigest {
+    pub fn of<B: crate::typed::builder::Build<Output = TDigest>>(
+        f: impl FnOnce(TDigestBuilder) -> B,
+    ) -> TDigest {
         f(Self::builder()).build()
     }
 }
@@ -42348,6 +44397,14 @@ impl TDigestBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TDigestBuilder {
+    type Output = TDigest;
+
+    fn build(self) -> TDigest {
+        Self::build(self)
+    }
+}
+
 impl From<TDigestBuilder> for TDigest {
     fn from(builder: TDigestBuilder) -> Self {
         builder.build()
@@ -42371,18 +44428,27 @@ pub struct TDigestPercentileRanksAggregate {
 
 impl TDigestPercentileRanksAggregate {
     /// Creates a builder for [`TDigestPercentileRanksAggregate`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> TDigestPercentileRanksAggregateBuilder {
         TDigestPercentileRanksAggregateBuilder::new()
     }
 
     /// Creates a [`TDigestPercentileRanksAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TDigestPercentileRanksAggregateBuilder,
-        ) -> TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = TDigestPercentileRanksAggregate>>(
+        f: impl FnOnce(TDigestPercentileRanksAggregateBuilder) -> B,
     ) -> TDigestPercentileRanksAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TDigestPercentileRanksAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod t_digest_percentile_ranks_aggregate_members {
+    pub struct values;
 }
 
 /// Builder for [`TDigestPercentileRanksAggregate`].
@@ -42433,6 +44499,7 @@ impl<S0> TDigestPercentileRanksAggregateBuilder<(S0,)> {
 }
 
 impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -42443,9 +44510,12 @@ impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TDigestPercentileRanksAggregateBuilder<(S0,)> {
     /// Builds a [`TDigestPercentileRanksAggregate`].
-    pub fn build(self) -> TDigestPercentileRanksAggregate {
+    pub fn build(self) -> TDigestPercentileRanksAggregate
+    where
+        S0: crate::typed::builder::IsSet<t_digest_percentile_ranks_aggregate_members::values>,
+    {
         TDigestPercentileRanksAggregate {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -42453,20 +44523,24 @@ impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>>
-    for TDigestPercentileRanksAggregate
+impl<S0> crate::typed::builder::Build for TDigestPercentileRanksAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<t_digest_percentile_ranks_aggregate_members::values>,
 {
-    fn from(
-        builder: TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TDigestPercentileRanksAggregate;
+
+    fn build(self) -> TDigestPercentileRanksAggregate {
+        Self::build(self)
     }
 }
 
-impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> TDigestPercentileRanksAggregate { match values {} }
+impl<S0> From<TDigestPercentileRanksAggregateBuilder<(S0,)>> for TDigestPercentileRanksAggregate
+where
+    S0: crate::typed::builder::IsSet<t_digest_percentile_ranks_aggregate_members::values>,
+{
+    fn from(builder: TDigestPercentileRanksAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -42478,18 +44552,27 @@ pub struct TDigestPercentilesAggregate {
 
 impl TDigestPercentilesAggregate {
     /// Creates a builder for [`TDigestPercentilesAggregate`].
+    ///
+    /// Required: `values`.
     pub fn builder() -> TDigestPercentilesAggregateBuilder {
         TDigestPercentilesAggregateBuilder::new()
     }
 
     /// Creates a [`TDigestPercentilesAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TDigestPercentilesAggregateBuilder,
-        ) -> TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `values`.
+    pub fn of<B: crate::typed::builder::Build<Output = TDigestPercentilesAggregate>>(
+        f: impl FnOnce(TDigestPercentilesAggregateBuilder) -> B,
     ) -> TDigestPercentilesAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TDigestPercentilesAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod t_digest_percentiles_aggregate_members {
+    pub struct values;
 }
 
 /// Builder for [`TDigestPercentilesAggregate`].
@@ -42540,6 +44623,7 @@ impl<S0> TDigestPercentilesAggregateBuilder<(S0,)> {
 }
 
 impl TDigestPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn values(
         self,
         value: impl Into<Percentiles>,
@@ -42550,9 +44634,12 @@ impl TDigestPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TDigestPercentilesAggregateBuilder<(S0,)> {
     /// Builds a [`TDigestPercentilesAggregate`].
-    pub fn build(self) -> TDigestPercentilesAggregate {
+    pub fn build(self) -> TDigestPercentilesAggregate
+    where
+        S0: crate::typed::builder::IsSet<t_digest_percentiles_aggregate_members::values>,
+    {
         TDigestPercentilesAggregate {
             meta: self.meta,
             values: self.values.unwrap(),
@@ -42560,18 +44647,24 @@ impl TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>>
-    for TDigestPercentilesAggregate
+impl<S0> crate::typed::builder::Build for TDigestPercentilesAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<t_digest_percentiles_aggregate_members::values>,
 {
-    fn from(builder: TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TDigestPercentilesAggregate;
+
+    fn build(self) -> TDigestPercentilesAggregate {
+        Self::build(self)
     }
 }
 
-impl TDigestPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, values: crate::typed::builder::MissingRequiredField) -> TDigestPercentilesAggregate { match values {} }
+impl<S0> From<TDigestPercentilesAggregateBuilder<(S0,)>> for TDigestPercentilesAggregate
+where
+    S0: crate::typed::builder::IsSet<t_digest_percentiles_aggregate_members::values>,
+{
+    fn from(builder: TDigestPercentilesAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -42604,16 +44697,27 @@ impl From<f64> for TTestAggregateValue {
 
 impl TTestAggregate {
     /// Creates a builder for [`TTestAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> TTestAggregateBuilder {
         TTestAggregateBuilder::new()
     }
 
     /// Creates a [`TTestAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TTestAggregateBuilder) -> TTestAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = TTestAggregate>>(
+        f: impl FnOnce(TTestAggregateBuilder) -> B,
     ) -> TTestAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TTestAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod t_test_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`TTestAggregate`].
@@ -42678,6 +44782,7 @@ impl<S0> TTestAggregateBuilder<(S0,)> {
 }
 
 impl TTestAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<TTestAggregateValue>,
@@ -42688,9 +44793,12 @@ impl TTestAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TTestAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TTestAggregateBuilder<(S0,)> {
     /// Builds a [`TTestAggregate`].
-    pub fn build(self) -> TTestAggregate {
+    pub fn build(self) -> TTestAggregate
+    where
+        S0: crate::typed::builder::IsSet<t_test_aggregate_members::value>,
+    {
         TTestAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -42699,16 +44807,24 @@ impl TTestAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TTestAggregateBuilder<(crate::typed::builder::Set,)>> for TTestAggregate {
-    fn from(builder: TTestAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TTestAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<t_test_aggregate_members::value>,
+{
+    type Output = TTestAggregate;
+
+    fn build(self) -> TTestAggregate {
+        Self::build(self)
     }
 }
 
-impl TTestAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> TTestAggregate { match value {} }
+impl<S0> From<TTestAggregateBuilder<(S0,)>> for TTestAggregate
+where
+    S0: crate::typed::builder::IsSet<t_test_aggregate_members::value>,
+{
+    fn from(builder: TTestAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -42731,8 +44847,8 @@ impl TTestAggregation {
     }
 
     /// Creates a [`TTestAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TTestAggregationBuilder) -> TTestAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TTestAggregation>>(
+        f: impl FnOnce(TTestAggregationBuilder) -> B,
     ) -> TTestAggregation {
         f(Self::builder()).build()
     }
@@ -42770,9 +44886,9 @@ impl TTestAggregationBuilder {
     }
 
     /// Sets [`a`](Self::a) with a builder.
-    pub fn a_with(
+    pub fn a_with<B: crate::typed::builder::Build<Output = TestPopulation>>(
         self,
-        f: impl FnOnce(TestPopulationBuilder) -> TestPopulationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TestPopulationBuilder) -> B,
     ) -> Self {
         self.a(f(TestPopulationBuilder::new()).build())
     }
@@ -42790,9 +44906,9 @@ impl TTestAggregationBuilder {
     }
 
     /// Sets [`b`](Self::b) with a builder.
-    pub fn b_with(
+    pub fn b_with<B: crate::typed::builder::Build<Output = TestPopulation>>(
         self,
-        f: impl FnOnce(TestPopulationBuilder) -> TestPopulationBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TestPopulationBuilder) -> B,
     ) -> Self {
         self.b(f(TestPopulationBuilder::new()).build())
     }
@@ -42818,6 +44934,14 @@ impl TTestAggregationBuilder {
             b: self.b,
             r#type: self.r#type,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TTestAggregationBuilder {
+    type Output = TTestAggregation;
+
+    fn build(self) -> TTestAggregation {
+        Self::build(self)
     }
 }
 
@@ -42853,19 +44977,27 @@ pub struct TermsAggregateBaseDoubleTermsBucket {
 
 impl TermsAggregateBaseDoubleTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseDoubleTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TermsAggregateBaseDoubleTermsBucketBuilder {
         TermsAggregateBaseDoubleTermsBucketBuilder::new()
     }
 
     /// Creates a [`TermsAggregateBaseDoubleTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsAggregateBaseDoubleTermsBucketBuilder,
-        )
-            -> TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregateBaseDoubleTermsBucket>>(
+        f: impl FnOnce(TermsAggregateBaseDoubleTermsBucketBuilder) -> B,
     ) -> TermsAggregateBaseDoubleTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsAggregateBaseDoubleTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_aggregate_base_double_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TermsAggregateBaseDoubleTermsBucket`].
@@ -42944,6 +45076,7 @@ impl<S0> TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
 }
 
 impl TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsDoubleTermsBucket>,
@@ -42954,9 +45087,12 @@ impl TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)
     }
 }
 
-impl TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
     /// Builds a [`TermsAggregateBaseDoubleTermsBucket`].
-    pub fn build(self) -> TermsAggregateBaseDoubleTermsBucket {
+    pub fn build(self) -> TermsAggregateBaseDoubleTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<terms_aggregate_base_double_terms_bucket_members::buckets>,
+    {
         TermsAggregateBaseDoubleTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -42966,20 +45102,25 @@ impl TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for TermsAggregateBaseDoubleTermsBucket
+impl<S0> crate::typed::builder::Build for TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_double_terms_bucket_members::buckets>,
 {
-    fn from(
-        builder: TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsAggregateBaseDoubleTermsBucket;
+
+    fn build(self) -> TermsAggregateBaseDoubleTermsBucket {
+        Self::build(self)
     }
 }
 
-impl TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TermsAggregateBaseDoubleTermsBucket { match buckets {} }
+impl<S0> From<TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)>>
+    for TermsAggregateBaseDoubleTermsBucket
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_double_terms_bucket_members::buckets>,
+{
+    fn from(builder: TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -42995,19 +45136,27 @@ pub struct TermsAggregateBaseLongTermsBucket {
 
 impl TermsAggregateBaseLongTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseLongTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TermsAggregateBaseLongTermsBucketBuilder {
         TermsAggregateBaseLongTermsBucketBuilder::new()
     }
 
     /// Creates a [`TermsAggregateBaseLongTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsAggregateBaseLongTermsBucketBuilder,
-        )
-            -> TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregateBaseLongTermsBucket>>(
+        f: impl FnOnce(TermsAggregateBaseLongTermsBucketBuilder) -> B,
     ) -> TermsAggregateBaseLongTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsAggregateBaseLongTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_aggregate_base_long_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TermsAggregateBaseLongTermsBucket`].
@@ -43086,6 +45235,7 @@ impl<S0> TermsAggregateBaseLongTermsBucketBuilder<(S0,)> {
 }
 
 impl TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsLongTermsBucket>,
@@ -43096,9 +45246,12 @@ impl TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsAggregateBaseLongTermsBucketBuilder<(S0,)> {
     /// Builds a [`TermsAggregateBaseLongTermsBucket`].
-    pub fn build(self) -> TermsAggregateBaseLongTermsBucket {
+    pub fn build(self) -> TermsAggregateBaseLongTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<terms_aggregate_base_long_terms_bucket_members::buckets>,
+    {
         TermsAggregateBaseLongTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -43108,20 +45261,24 @@ impl TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for TermsAggregateBaseLongTermsBucket
+impl<S0> crate::typed::builder::Build for TermsAggregateBaseLongTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_long_terms_bucket_members::buckets>,
 {
-    fn from(
-        builder: TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsAggregateBaseLongTermsBucket;
+
+    fn build(self) -> TermsAggregateBaseLongTermsBucket {
+        Self::build(self)
     }
 }
 
-impl TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TermsAggregateBaseLongTermsBucket { match buckets {} }
+impl<S0> From<TermsAggregateBaseLongTermsBucketBuilder<(S0,)>> for TermsAggregateBaseLongTermsBucket
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_long_terms_bucket_members::buckets>,
+{
+    fn from(builder: TermsAggregateBaseLongTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -43137,19 +45294,27 @@ pub struct TermsAggregateBaseMultiTermsBucket {
 
 impl TermsAggregateBaseMultiTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseMultiTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TermsAggregateBaseMultiTermsBucketBuilder {
         TermsAggregateBaseMultiTermsBucketBuilder::new()
     }
 
     /// Creates a [`TermsAggregateBaseMultiTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsAggregateBaseMultiTermsBucketBuilder,
-        )
-            -> TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregateBaseMultiTermsBucket>>(
+        f: impl FnOnce(TermsAggregateBaseMultiTermsBucketBuilder) -> B,
     ) -> TermsAggregateBaseMultiTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsAggregateBaseMultiTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_aggregate_base_multi_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TermsAggregateBaseMultiTermsBucket`].
@@ -43228,6 +45393,7 @@ impl<S0> TermsAggregateBaseMultiTermsBucketBuilder<(S0,)> {
 }
 
 impl TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsMultiTermsBucket>,
@@ -43238,9 +45404,12 @@ impl TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)>
     }
 }
 
-impl TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsAggregateBaseMultiTermsBucketBuilder<(S0,)> {
     /// Builds a [`TermsAggregateBaseMultiTermsBucket`].
-    pub fn build(self) -> TermsAggregateBaseMultiTermsBucket {
+    pub fn build(self) -> TermsAggregateBaseMultiTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<terms_aggregate_base_multi_terms_bucket_members::buckets>,
+    {
         TermsAggregateBaseMultiTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -43250,20 +45419,25 @@ impl TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for TermsAggregateBaseMultiTermsBucket
+impl<S0> crate::typed::builder::Build for TermsAggregateBaseMultiTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_multi_terms_bucket_members::buckets>,
 {
-    fn from(
-        builder: TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsAggregateBaseMultiTermsBucket;
+
+    fn build(self) -> TermsAggregateBaseMultiTermsBucket {
+        Self::build(self)
     }
 }
 
-impl TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TermsAggregateBaseMultiTermsBucket { match buckets {} }
+impl<S0> From<TermsAggregateBaseMultiTermsBucketBuilder<(S0,)>>
+    for TermsAggregateBaseMultiTermsBucket
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_multi_terms_bucket_members::buckets>,
+{
+    fn from(builder: TermsAggregateBaseMultiTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -43279,19 +45453,27 @@ pub struct TermsAggregateBaseStringTermsBucket {
 
 impl TermsAggregateBaseStringTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseStringTermsBucket`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TermsAggregateBaseStringTermsBucketBuilder {
         TermsAggregateBaseStringTermsBucketBuilder::new()
     }
 
     /// Creates a [`TermsAggregateBaseStringTermsBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsAggregateBaseStringTermsBucketBuilder,
-        )
-            -> TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregateBaseStringTermsBucket>>(
+        f: impl FnOnce(TermsAggregateBaseStringTermsBucketBuilder) -> B,
     ) -> TermsAggregateBaseStringTermsBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsAggregateBaseStringTermsBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_aggregate_base_string_terms_bucket_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TermsAggregateBaseStringTermsBucket`].
@@ -43370,6 +45552,7 @@ impl<S0> TermsAggregateBaseStringTermsBucketBuilder<(S0,)> {
 }
 
 impl TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsStringTermsBucket>,
@@ -43380,9 +45563,12 @@ impl TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)
     }
 }
 
-impl TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsAggregateBaseStringTermsBucketBuilder<(S0,)> {
     /// Builds a [`TermsAggregateBaseStringTermsBucket`].
-    pub fn build(self) -> TermsAggregateBaseStringTermsBucket {
+    pub fn build(self) -> TermsAggregateBaseStringTermsBucket
+    where
+        S0: crate::typed::builder::IsSet<terms_aggregate_base_string_terms_bucket_members::buckets>,
+    {
         TermsAggregateBaseStringTermsBucket {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -43392,20 +45578,25 @@ impl TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>>
-    for TermsAggregateBaseStringTermsBucket
+impl<S0> crate::typed::builder::Build for TermsAggregateBaseStringTermsBucketBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_string_terms_bucket_members::buckets>,
 {
-    fn from(
-        builder: TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsAggregateBaseStringTermsBucket;
+
+    fn build(self) -> TermsAggregateBaseStringTermsBucket {
+        Self::build(self)
     }
 }
 
-impl TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TermsAggregateBaseStringTermsBucket { match buckets {} }
+impl<S0> From<TermsAggregateBaseStringTermsBucketBuilder<(S0,)>>
+    for TermsAggregateBaseStringTermsBucket
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_string_terms_bucket_members::buckets>,
+{
+    fn from(builder: TermsAggregateBaseStringTermsBucketBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -43421,18 +45612,27 @@ pub struct TermsAggregateBaseVoid {
 
 impl TermsAggregateBaseVoid {
     /// Creates a builder for [`TermsAggregateBaseVoid`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TermsAggregateBaseVoidBuilder {
         TermsAggregateBaseVoidBuilder::new()
     }
 
     /// Creates a [`TermsAggregateBaseVoid`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsAggregateBaseVoidBuilder,
-        ) -> TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregateBaseVoid>>(
+        f: impl FnOnce(TermsAggregateBaseVoidBuilder) -> B,
     ) -> TermsAggregateBaseVoid {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsAggregateBaseVoidBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_aggregate_base_void_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TermsAggregateBaseVoid`].
@@ -43511,6 +45711,7 @@ impl<S0> TermsAggregateBaseVoidBuilder<(S0,)> {
 }
 
 impl TermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -43521,9 +45722,12 @@ impl TermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsAggregateBaseVoidBuilder<(S0,)> {
     /// Builds a [`TermsAggregateBaseVoid`].
-    pub fn build(self) -> TermsAggregateBaseVoid {
+    pub fn build(self) -> TermsAggregateBaseVoid
+    where
+        S0: crate::typed::builder::IsSet<terms_aggregate_base_void_members::buckets>,
+    {
         TermsAggregateBaseVoid {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -43533,16 +45737,24 @@ impl TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>> for TermsAggregateBaseVoid {
-    fn from(builder: TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermsAggregateBaseVoidBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_void_members::buckets>,
+{
+    type Output = TermsAggregateBaseVoid;
+
+    fn build(self) -> TermsAggregateBaseVoid {
+        Self::build(self)
     }
 }
 
-impl TermsAggregateBaseVoidBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TermsAggregateBaseVoid { match buckets {} }
+impl<S0> From<TermsAggregateBaseVoidBuilder<(S0,)>> for TermsAggregateBaseVoid
+where
+    S0: crate::typed::builder::IsSet<terms_aggregate_base_void_members::buckets>,
+{
+    fn from(builder: TermsAggregateBaseVoidBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -43609,8 +45821,8 @@ impl TermsAggregation {
     }
 
     /// Creates a [`TermsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermsAggregationBuilder) -> TermsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TermsAggregation>>(
+        f: impl FnOnce(TermsAggregationBuilder) -> B,
     ) -> TermsAggregation {
         f(Self::builder()).build()
     }
@@ -43809,9 +46021,9 @@ impl TermsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -43903,6 +46115,14 @@ impl TermsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TermsAggregationBuilder {
+    type Output = TermsAggregation;
+
+    fn build(self) -> TermsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<TermsAggregationBuilder> for TermsAggregation {
     fn from(builder: TermsAggregationBuilder) -> Self {
         builder.build()
@@ -43943,16 +46163,27 @@ pub struct TermsBucketBase {
 
 impl TermsBucketBase {
     /// Creates a builder for [`TermsBucketBase`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> TermsBucketBaseBuilder {
         TermsBucketBaseBuilder::new()
     }
 
     /// Creates a [`TermsBucketBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermsBucketBaseBuilder) -> TermsBucketBaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsBucketBase>>(
+        f: impl FnOnce(TermsBucketBaseBuilder) -> B,
     ) -> TermsBucketBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsBucketBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_bucket_base_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`TermsBucketBase`].
@@ -44017,6 +46248,7 @@ impl<S0> TermsBucketBaseBuilder<(S0,)> {
 }
 
 impl TermsBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(self, value: i64) -> TermsBucketBaseBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.doc_count = Some(value);
@@ -44024,9 +46256,12 @@ impl TermsBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermsBucketBaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsBucketBaseBuilder<(S0,)> {
     /// Builds a [`TermsBucketBase`].
-    pub fn build(self) -> TermsBucketBase {
+    pub fn build(self) -> TermsBucketBase
+    where
+        S0: crate::typed::builder::IsSet<terms_bucket_base_members::doc_count>,
+    {
         TermsBucketBase {
             doc_count: self.doc_count.unwrap(),
             doc_count_error_upper_bound: self.doc_count_error_upper_bound,
@@ -44035,16 +46270,24 @@ impl TermsBucketBaseBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsBucketBaseBuilder<(crate::typed::builder::Set,)>> for TermsBucketBase {
-    fn from(builder: TermsBucketBaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermsBucketBaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_bucket_base_members::doc_count>,
+{
+    type Output = TermsBucketBase;
+
+    fn build(self) -> TermsBucketBase {
+        Self::build(self)
     }
 }
 
-impl TermsBucketBaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> TermsBucketBase { match doc_count {} }
+impl<S0> From<TermsBucketBaseBuilder<(S0,)>> for TermsBucketBase
+where
+    S0: crate::typed::builder::IsSet<terms_bucket_base_members::doc_count>,
+{
+    fn from(builder: TermsBucketBaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44114,21 +46357,28 @@ pub struct TermsPartition {
 
 impl TermsPartition {
     /// Creates a builder for [`TermsPartition`].
+    ///
+    /// Required: `num_partitions`, `partition`.
     pub fn builder() -> TermsPartitionBuilder {
         TermsPartitionBuilder::new()
     }
 
     /// Creates a [`TermsPartition`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsPartitionBuilder,
-        ) -> TermsPartitionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `num_partitions`, `partition`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
     ) -> TermsPartition {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsPartitionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_partition_members {
+    pub struct num_partitions;
+    pub struct partition;
 }
 
 /// Builder for [`TermsPartition`].
@@ -44161,7 +46411,7 @@ impl<S0, S1> TermsPartitionBuilder<(S0, S1)> {
 }
 
 impl<S1> TermsPartitionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The number of partitions.
+    /// **Required.** The number of partitions.
     pub fn num_partitions(
         self,
         value: i64,
@@ -44173,7 +46423,7 @@ impl<S1> TermsPartitionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TermsPartitionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The partition number for this request.
+    /// **Required.** The partition number for this request.
     pub fn partition(self, value: i64) -> TermsPartitionBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.partition = Some(value);
@@ -44181,9 +46431,13 @@ impl<S0> TermsPartitionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TermsPartitionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TermsPartitionBuilder<(S0, S1)> {
     /// Builds a [`TermsPartition`].
-    pub fn build(self) -> TermsPartition {
+    pub fn build(self) -> TermsPartition
+    where
+        S0: crate::typed::builder::IsSet<terms_partition_members::num_partitions>,
+        S1: crate::typed::builder::IsSet<terms_partition_members::partition>,
+    {
         TermsPartition {
             num_partitions: self.num_partitions.unwrap(),
             partition: self.partition.unwrap(),
@@ -44191,26 +46445,26 @@ impl TermsPartitionBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<TermsPartitionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TermsPartition
+impl<S0, S1> crate::typed::builder::Build for TermsPartitionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<terms_partition_members::num_partitions>,
+    S1: crate::typed::builder::IsSet<terms_partition_members::partition>,
 {
-    fn from(
-        builder: TermsPartitionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsPartition;
+
+    fn build(self) -> TermsPartition {
+        Self::build(self)
     }
 }
 
-impl<S1> TermsPartitionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `num_partitions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_partitions: crate::typed::builder::MissingRequiredField) -> TermsPartition { match num_partitions {} }
-}
-
-impl TermsPartitionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `partition` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, partition: crate::typed::builder::MissingRequiredField) -> TermsPartition { match partition {} }
+impl<S0, S1> From<TermsPartitionBuilder<(S0, S1)>> for TermsPartition
+where
+    S0: crate::typed::builder::IsSet<terms_partition_members::num_partitions>,
+    S1: crate::typed::builder::IsSet<terms_partition_members::partition>,
+{
+    fn from(builder: TermsPartitionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44226,16 +46480,27 @@ pub struct TestPopulation {
 
 impl TestPopulation {
     /// Creates a builder for [`TestPopulation`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> TestPopulationBuilder {
         TestPopulationBuilder::new()
     }
 
     /// Creates a [`TestPopulation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TestPopulationBuilder) -> TestPopulationBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = TestPopulation>>(
+        f: impl FnOnce(TestPopulationBuilder) -> B,
     ) -> TestPopulation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TestPopulationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod test_population_members {
+    pub struct field;
 }
 
 /// Builder for [`TestPopulation`].
@@ -44280,9 +46545,9 @@ impl<S0> TestPopulationBuilder<(S0,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -44306,20 +46571,18 @@ impl<S0> TestPopulationBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl TestPopulationBuilder<(crate::typed::builder::NotSet,)> {
-    /// The field to aggregate.
+    /// **Required.** The field to aggregate.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -44330,9 +46593,12 @@ impl TestPopulationBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TestPopulationBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TestPopulationBuilder<(S0,)> {
     /// Builds a [`TestPopulation`].
-    pub fn build(self) -> TestPopulation {
+    pub fn build(self) -> TestPopulation
+    where
+        S0: crate::typed::builder::IsSet<test_population_members::field>,
+    {
         TestPopulation {
             field: self.field.unwrap(),
             script: self.script,
@@ -44341,16 +46607,24 @@ impl TestPopulationBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TestPopulationBuilder<(crate::typed::builder::Set,)>> for TestPopulation {
-    fn from(builder: TestPopulationBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TestPopulationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<test_population_members::field>,
+{
+    type Output = TestPopulation;
+
+    fn build(self) -> TestPopulation {
+        Self::build(self)
     }
 }
 
-impl TestPopulationBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> TestPopulation { match field {} }
+impl<S0> From<TestPopulationBuilder<(S0,)>> for TestPopulation
+where
+    S0: crate::typed::builder::IsSet<test_population_members::field>,
+{
+    fn from(builder: TestPopulationBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44362,18 +46636,27 @@ pub struct TimeSeriesAggregate {
 
 impl TimeSeriesAggregate {
     /// Creates a builder for [`TimeSeriesAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> TimeSeriesAggregateBuilder {
         TimeSeriesAggregateBuilder::new()
     }
 
     /// Creates a [`TimeSeriesAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TimeSeriesAggregateBuilder,
-        ) -> TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = TimeSeriesAggregate>>(
+        f: impl FnOnce(TimeSeriesAggregateBuilder) -> B,
     ) -> TimeSeriesAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TimeSeriesAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod time_series_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`TimeSeriesAggregate`].
@@ -44424,6 +46707,7 @@ impl<S0> TimeSeriesAggregateBuilder<(S0,)> {
 }
 
 impl TimeSeriesAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsTimeSeriesBucket>,
@@ -44434,9 +46718,12 @@ impl TimeSeriesAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TimeSeriesAggregateBuilder<(S0,)> {
     /// Builds a [`TimeSeriesAggregate`].
-    pub fn build(self) -> TimeSeriesAggregate {
+    pub fn build(self) -> TimeSeriesAggregate
+    where
+        S0: crate::typed::builder::IsSet<time_series_aggregate_members::buckets>,
+    {
         TimeSeriesAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -44444,16 +46731,24 @@ impl TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>> for TimeSeriesAggregate {
-    fn from(builder: TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TimeSeriesAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<time_series_aggregate_members::buckets>,
+{
+    type Output = TimeSeriesAggregate;
+
+    fn build(self) -> TimeSeriesAggregate {
+        Self::build(self)
     }
 }
 
-impl TimeSeriesAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> TimeSeriesAggregate { match buckets {} }
+impl<S0> From<TimeSeriesAggregateBuilder<(S0,)>> for TimeSeriesAggregate
+where
+    S0: crate::typed::builder::IsSet<time_series_aggregate_members::buckets>,
+{
+    fn from(builder: TimeSeriesAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44473,8 +46768,8 @@ impl TimeSeriesAggregation {
     }
 
     /// Creates a [`TimeSeriesAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TimeSeriesAggregationBuilder) -> TimeSeriesAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TimeSeriesAggregation>>(
+        f: impl FnOnce(TimeSeriesAggregationBuilder) -> B,
     ) -> TimeSeriesAggregation {
         f(Self::builder()).build()
     }
@@ -44532,6 +46827,14 @@ impl TimeSeriesAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TimeSeriesAggregationBuilder {
+    type Output = TimeSeriesAggregation;
+
+    fn build(self) -> TimeSeriesAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<TimeSeriesAggregationBuilder> for TimeSeriesAggregation {
     fn from(builder: TimeSeriesAggregationBuilder) -> Self {
         builder.build()
@@ -44549,21 +46852,28 @@ pub struct TimeSeriesBucket {
 
 impl TimeSeriesBucket {
     /// Creates a builder for [`TimeSeriesBucket`].
+    ///
+    /// Required: `doc_count`, `key`.
     pub fn builder() -> TimeSeriesBucketBuilder {
         TimeSeriesBucketBuilder::new()
     }
 
     /// Creates a [`TimeSeriesBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TimeSeriesBucketBuilder,
-        ) -> TimeSeriesBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `key`.
+    pub fn of<B: crate::typed::builder::Build<Output = TimeSeriesBucket>>(
+        f: impl FnOnce(TimeSeriesBucketBuilder) -> B,
     ) -> TimeSeriesBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TimeSeriesBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod time_series_bucket_members {
+    pub struct doc_count;
+    pub struct key;
 }
 
 /// Builder for [`TimeSeriesBucket`].
@@ -44619,6 +46929,7 @@ impl<S0, S1> TimeSeriesBucketBuilder<(S0, S1)> {
 }
 
 impl<S1> TimeSeriesBucketBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -44630,6 +46941,7 @@ impl<S1> TimeSeriesBucketBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TimeSeriesBucketBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<
@@ -44670,9 +46982,13 @@ impl<S0> TimeSeriesBucketBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TimeSeriesBucketBuilder<(S0, S1)> {
     /// Builds a [`TimeSeriesBucket`].
-    pub fn build(self) -> TimeSeriesBucket {
+    pub fn build(self) -> TimeSeriesBucket
+    where
+        S0: crate::typed::builder::IsSet<time_series_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<time_series_bucket_members::key>,
+    {
         TimeSeriesBucket {
             doc_count: self.doc_count.unwrap(),
             key: self.key.unwrap(),
@@ -44681,26 +46997,26 @@ impl TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TimeSeriesBucket
+impl<S0, S1> crate::typed::builder::Build for TimeSeriesBucketBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<time_series_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<time_series_bucket_members::key>,
 {
-    fn from(
-        builder: TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TimeSeriesBucket;
+
+    fn build(self) -> TimeSeriesBucket {
+        Self::build(self)
     }
 }
 
-impl<S1> TimeSeriesBucketBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> TimeSeriesBucket { match doc_count {} }
-}
-
-impl TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> TimeSeriesBucket { match key {} }
+impl<S0, S1> From<TimeSeriesBucketBuilder<(S0, S1)>> for TimeSeriesBucket
+where
+    S0: crate::typed::builder::IsSet<time_series_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<time_series_bucket_members::key>,
+{
+    fn from(builder: TimeSeriesBucketBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44712,18 +47028,27 @@ pub struct TopHitsAggregate {
 
 impl TopHitsAggregate {
     /// Creates a builder for [`TopHitsAggregate`].
+    ///
+    /// Required: `hits`.
     pub fn builder() -> TopHitsAggregateBuilder {
         TopHitsAggregateBuilder::new()
     }
 
     /// Creates a [`TopHitsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TopHitsAggregateBuilder,
-        ) -> TopHitsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `hits`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopHitsAggregate>>(
+        f: impl FnOnce(TopHitsAggregateBuilder) -> B,
     ) -> TopHitsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopHitsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_hits_aggregate_members {
+    pub struct hits;
 }
 
 /// Builder for [`TopHitsAggregate`].
@@ -44774,6 +47099,7 @@ impl<S0> TopHitsAggregateBuilder<(S0,)> {
 }
 
 impl TopHitsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn hits(
         self,
         value: impl Into<crate::typed::_global::search::_types::HitsMetadata>,
@@ -44784,21 +47110,22 @@ impl TopHitsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`hits`](Self::hits) with a builder.
-    pub fn hits_with(
+    pub fn hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::HitsMetadata>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::HitsMetadataBuilder,
-        ) -> crate::typed::_global::search::_types::HitsMetadataBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::HitsMetadataBuilder) -> B,
     ) -> TopHitsAggregateBuilder<(crate::typed::builder::Set,)> {
         self.hits(f(crate::typed::_global::search::_types::HitsMetadataBuilder::new()).build())
     }
 }
 
-impl TopHitsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TopHitsAggregateBuilder<(S0,)> {
     /// Builds a [`TopHitsAggregate`].
-    pub fn build(self) -> TopHitsAggregate {
+    pub fn build(self) -> TopHitsAggregate
+    where
+        S0: crate::typed::builder::IsSet<top_hits_aggregate_members::hits>,
+    {
         TopHitsAggregate {
             meta: self.meta,
             hits: self.hits.unwrap(),
@@ -44806,16 +47133,24 @@ impl TopHitsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TopHitsAggregateBuilder<(crate::typed::builder::Set,)>> for TopHitsAggregate {
-    fn from(builder: TopHitsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TopHitsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<top_hits_aggregate_members::hits>,
+{
+    type Output = TopHitsAggregate;
+
+    fn build(self) -> TopHitsAggregate {
+        Self::build(self)
     }
 }
 
-impl TopHitsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `hits` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hits: crate::typed::builder::MissingRequiredField) -> TopHitsAggregate { match hits {} }
+impl<S0> From<TopHitsAggregateBuilder<(S0,)>> for TopHitsAggregate
+where
+    S0: crate::typed::builder::IsSet<top_hits_aggregate_members::hits>,
+{
+    fn from(builder: TopHitsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -44879,8 +47214,8 @@ impl TopHitsAggregation {
     }
 
     /// Creates a [`TopHitsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TopHitsAggregationBuilder) -> TopHitsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TopHitsAggregation>>(
+        f: impl FnOnce(TopHitsAggregationBuilder) -> B,
     ) -> TopHitsAggregation {
         f(Self::builder()).build()
     }
@@ -44968,9 +47303,9 @@ impl TopHitsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -45005,13 +47340,11 @@ impl TopHitsAggregationBuilder {
     }
 
     /// Adds an element to [`docvalue_fields`](Self::docvalue_fields), with a builder.
-    pub fn add_docvalue_fields_with(
+    pub fn add_docvalue_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_docvalue_fields(
             f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build(),
@@ -45061,13 +47394,11 @@ impl TopHitsAggregationBuilder {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_fields(f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build())
     }
@@ -45103,13 +47434,11 @@ impl TopHitsAggregationBuilder {
     }
 
     /// Sets [`highlight`](Self::highlight) with a builder.
-    pub fn highlight_with(
+    pub fn highlight_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Highlight>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::HighlightBuilder,
-        ) -> crate::typed::_global::search::_types::HighlightBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::HighlightBuilder) -> B,
     ) -> Self {
         self.highlight(f(crate::typed::_global::search::_types::HighlightBuilder::new()).build())
     }
@@ -45145,13 +47474,12 @@ impl TopHitsAggregationBuilder {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -45275,6 +47603,14 @@ impl TopHitsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TopHitsAggregationBuilder {
+    type Output = TopHitsAggregation;
+
+    fn build(self) -> TopHitsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<TopHitsAggregationBuilder> for TopHitsAggregation {
     fn from(builder: TopHitsAggregationBuilder) -> Self {
         builder.build()
@@ -45315,19 +47651,28 @@ impl From<crate::typed::_types::FieldValue> for TopMetricsMetrics {
 
 impl TopMetrics {
     /// Creates a builder for [`TopMetrics`].
+    ///
+    /// Required: `sort`, `metrics`.
     pub fn builder() -> TopMetricsBuilder {
         TopMetricsBuilder::new()
     }
 
     /// Creates a [`TopMetrics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TopMetricsBuilder,
-        )
-            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `sort`, `metrics`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopMetrics>>(
+        f: impl FnOnce(TopMetricsBuilder) -> B,
     ) -> TopMetrics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopMetricsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_metrics_members {
+    pub struct sort;
+    pub struct metrics;
 }
 
 /// Builder for [`TopMetrics`].
@@ -45359,6 +47704,7 @@ impl<S0, S1> TopMetricsBuilder<(S0, S1)> {
 }
 
 impl<S1> TopMetricsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn sort(
         self,
         value: impl Into<Vec<TopMetricsSort>>,
@@ -45393,6 +47739,7 @@ impl<S1> TopMetricsBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> TopMetricsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn metrics(
         self,
         value: impl Into<indexmap::IndexMap<String, TopMetricsMetrics>>,
@@ -45431,9 +47778,13 @@ impl<S0> TopMetricsBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TopMetricsBuilder<(S0, S1)> {
     /// Builds a [`TopMetrics`].
-    pub fn build(self) -> TopMetrics {
+    pub fn build(self) -> TopMetrics
+    where
+        S0: crate::typed::builder::IsSet<top_metrics_members::sort>,
+        S1: crate::typed::builder::IsSet<top_metrics_members::metrics>,
+    {
         TopMetrics {
             sort: self.sort.unwrap(),
             metrics: self.metrics.unwrap(),
@@ -45441,26 +47792,26 @@ impl TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
     }
 }
 
-impl From<TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TopMetrics
+impl<S0, S1> crate::typed::builder::Build for TopMetricsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<top_metrics_members::sort>,
+    S1: crate::typed::builder::IsSet<top_metrics_members::metrics>,
 {
-    fn from(
-        builder: TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TopMetrics;
+
+    fn build(self) -> TopMetrics {
+        Self::build(self)
     }
 }
 
-impl<S1> TopMetricsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `sort` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sort: crate::typed::builder::MissingRequiredField) -> TopMetrics { match sort {} }
-}
-
-impl TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `metrics` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metrics: crate::typed::builder::MissingRequiredField) -> TopMetrics { match metrics {} }
+impl<S0, S1> From<TopMetricsBuilder<(S0, S1)>> for TopMetrics
+where
+    S0: crate::typed::builder::IsSet<top_metrics_members::sort>,
+    S1: crate::typed::builder::IsSet<top_metrics_members::metrics>,
+{
+    fn from(builder: TopMetricsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -45472,18 +47823,27 @@ pub struct TopMetricsAggregate {
 
 impl TopMetricsAggregate {
     /// Creates a builder for [`TopMetricsAggregate`].
+    ///
+    /// Required: `top`.
     pub fn builder() -> TopMetricsAggregateBuilder {
         TopMetricsAggregateBuilder::new()
     }
 
     /// Creates a [`TopMetricsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TopMetricsAggregateBuilder,
-        ) -> TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `top`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopMetricsAggregate>>(
+        f: impl FnOnce(TopMetricsAggregateBuilder) -> B,
     ) -> TopMetricsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopMetricsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_metrics_aggregate_members {
+    pub struct top;
 }
 
 /// Builder for [`TopMetricsAggregate`].
@@ -45534,6 +47894,7 @@ impl<S0> TopMetricsAggregateBuilder<(S0,)> {
 }
 
 impl TopMetricsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn top(
         self,
         value: impl Into<Vec<TopMetrics>>,
@@ -45557,12 +47918,9 @@ impl TopMetricsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`top`](Self::top), with a builder.
-    pub fn add_top_with(
+    pub fn add_top_with<B: crate::typed::builder::Build<Output = TopMetrics>>(
         self,
-        f: impl FnOnce(
-            TopMetricsBuilder,
-        )
-            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TopMetricsBuilder) -> B,
     ) -> TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
         self.add_top(f(TopMetricsBuilder::new()).build())
     }
@@ -45578,20 +47936,20 @@ impl TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`top`](Self::top), with a builder.
-    pub fn add_top_with(
+    pub fn add_top_with<B: crate::typed::builder::Build<Output = TopMetrics>>(
         self,
-        f: impl FnOnce(
-            TopMetricsBuilder,
-        )
-            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(TopMetricsBuilder) -> B,
     ) -> Self {
         self.add_top(f(TopMetricsBuilder::new()).build())
     }
 }
 
-impl TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TopMetricsAggregateBuilder<(S0,)> {
     /// Builds a [`TopMetricsAggregate`].
-    pub fn build(self) -> TopMetricsAggregate {
+    pub fn build(self) -> TopMetricsAggregate
+    where
+        S0: crate::typed::builder::IsSet<top_metrics_aggregate_members::top>,
+    {
         TopMetricsAggregate {
             meta: self.meta,
             top: self.top.unwrap(),
@@ -45599,16 +47957,24 @@ impl TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>> for TopMetricsAggregate {
-    fn from(builder: TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TopMetricsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<top_metrics_aggregate_members::top>,
+{
+    type Output = TopMetricsAggregate;
+
+    fn build(self) -> TopMetricsAggregate {
+        Self::build(self)
     }
 }
 
-impl TopMetricsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `top` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, top: crate::typed::builder::MissingRequiredField) -> TopMetricsAggregate { match top {} }
+impl<S0> From<TopMetricsAggregateBuilder<(S0,)>> for TopMetricsAggregate
+where
+    S0: crate::typed::builder::IsSet<top_metrics_aggregate_members::top>,
+{
+    fn from(builder: TopMetricsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -45659,8 +48025,8 @@ impl TopMetricsAggregation {
     }
 
     /// Creates a [`TopMetricsAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TopMetricsAggregationBuilder) -> TopMetricsAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TopMetricsAggregation>>(
+        f: impl FnOnce(TopMetricsAggregationBuilder) -> B,
     ) -> TopMetricsAggregation {
         f(Self::builder()).build()
     }
@@ -45728,9 +48094,9 @@ impl TopMetricsAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -45786,6 +48152,14 @@ impl TopMetricsAggregationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TopMetricsAggregationBuilder {
+    type Output = TopMetricsAggregation;
+
+    fn build(self) -> TopMetricsAggregation {
+        Self::build(self)
+    }
+}
+
 impl From<TopMetricsAggregationBuilder> for TopMetricsAggregation {
     fn from(builder: TopMetricsAggregationBuilder) -> Self {
         builder.build()
@@ -45800,16 +48174,27 @@ pub struct TopMetricsValue {
 
 impl TopMetricsValue {
     /// Creates a builder for [`TopMetricsValue`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> TopMetricsValueBuilder {
         TopMetricsValueBuilder::new()
     }
 
     /// Creates a [`TopMetricsValue`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TopMetricsValueBuilder) -> TopMetricsValueBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = TopMetricsValue>>(
+        f: impl FnOnce(TopMetricsValueBuilder) -> B,
     ) -> TopMetricsValue {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TopMetricsValueBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod top_metrics_value_members {
+    pub struct field;
 }
 
 /// Builder for [`TopMetricsValue`].
@@ -45838,7 +48223,7 @@ impl<S0> TopMetricsValueBuilder<(S0,)> {
 }
 
 impl TopMetricsValueBuilder<(crate::typed::builder::NotSet,)> {
-    /// A field to return as a metric.
+    /// **Required.** A field to return as a metric.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -45849,25 +48234,36 @@ impl TopMetricsValueBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TopMetricsValueBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TopMetricsValueBuilder<(S0,)> {
     /// Builds a [`TopMetricsValue`].
-    pub fn build(self) -> TopMetricsValue {
+    pub fn build(self) -> TopMetricsValue
+    where
+        S0: crate::typed::builder::IsSet<top_metrics_value_members::field>,
+    {
         TopMetricsValue {
             field: self.field.unwrap(),
         }
     }
 }
 
-impl From<TopMetricsValueBuilder<(crate::typed::builder::Set,)>> for TopMetricsValue {
-    fn from(builder: TopMetricsValueBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TopMetricsValueBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<top_metrics_value_members::field>,
+{
+    type Output = TopMetricsValue;
+
+    fn build(self) -> TopMetricsValue {
+        Self::build(self)
     }
 }
 
-impl TopMetricsValueBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> TopMetricsValue { match field {} }
+impl<S0> From<TopMetricsValueBuilder<(S0,)>> for TopMetricsValue
+where
+    S0: crate::typed::builder::IsSet<top_metrics_value_members::field>,
+{
+    fn from(builder: TopMetricsValueBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -45879,22 +48275,29 @@ pub struct TrendChange {
 
 impl TrendChange {
     /// Creates a builder for [`TrendChange`].
+    ///
+    /// Required: `p_value`, `r_value`, `change_point`.
     pub fn builder() -> TrendChangeBuilder {
         TrendChangeBuilder::new()
     }
 
     /// Creates a [`TrendChange`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrendChangeBuilder,
-        ) -> TrendChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `p_value`, `r_value`, `change_point`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrendChange>>(
+        f: impl FnOnce(TrendChangeBuilder) -> B,
     ) -> TrendChange {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrendChangeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trend_change_members {
+    pub struct p_value;
+    pub struct r_value;
+    pub struct change_point;
 }
 
 /// Builder for [`TrendChange`].
@@ -45941,6 +48344,7 @@ impl<S0, S1, S2> TrendChangeBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TrendChangeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn p_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -45952,6 +48356,7 @@ impl<S1, S2> TrendChangeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> TrendChangeBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn r_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -45963,6 +48368,7 @@ impl<S0, S2> TrendChangeBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> TrendChangeBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn change_point(
         self,
         value: i32,
@@ -45973,15 +48379,14 @@ impl<S0, S1> TrendChangeBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    TrendChangeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TrendChangeBuilder<(S0, S1, S2)> {
     /// Builds a [`TrendChange`].
-    pub fn build(self) -> TrendChange {
+    pub fn build(self) -> TrendChange
+    where
+        S0: crate::typed::builder::IsSet<trend_change_members::p_value>,
+        S1: crate::typed::builder::IsSet<trend_change_members::r_value>,
+        S2: crate::typed::builder::IsSet<trend_change_members::change_point>,
+    {
         TrendChange {
             p_value: self.p_value.unwrap(),
             r_value: self.r_value.unwrap(),
@@ -45990,54 +48395,28 @@ impl
     }
 }
 
-impl
-    From<
-        TrendChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TrendChange
+impl<S0, S1, S2> crate::typed::builder::Build for TrendChangeBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<trend_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<trend_change_members::r_value>,
+    S2: crate::typed::builder::IsSet<trend_change_members::change_point>,
 {
-    fn from(
-        builder: TrendChangeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TrendChange;
+
+    fn build(self) -> TrendChange {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TrendChangeBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `p_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, p_value: crate::typed::builder::MissingRequiredField) -> TrendChange { match p_value {} }
-}
-
-impl<S2>
-    TrendChangeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TrendChangeBuilder<(S0, S1, S2)>> for TrendChange
+where
+    S0: crate::typed::builder::IsSet<trend_change_members::p_value>,
+    S1: crate::typed::builder::IsSet<trend_change_members::r_value>,
+    S2: crate::typed::builder::IsSet<trend_change_members::change_point>,
 {
-    /// `r_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r_value: crate::typed::builder::MissingRequiredField) -> TrendChange { match r_value {} }
-}
-
-impl
-    TrendChangeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `change_point` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, change_point: crate::typed::builder::MissingRequiredField) -> TrendChange { match change_point {} }
+    fn from(builder: TrendChangeBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of a `rare_terms` aggregation when the field is unmapped. `buckets` is always empty.
@@ -46050,18 +48429,27 @@ pub struct UnmappedRareTermsAggregate {
 
 impl UnmappedRareTermsAggregate {
     /// Creates a builder for [`UnmappedRareTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> UnmappedRareTermsAggregateBuilder {
         UnmappedRareTermsAggregateBuilder::new()
     }
 
     /// Creates a [`UnmappedRareTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnmappedRareTermsAggregateBuilder,
-        ) -> UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnmappedRareTermsAggregate>>(
+        f: impl FnOnce(UnmappedRareTermsAggregateBuilder) -> B,
     ) -> UnmappedRareTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnmappedRareTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unmapped_rare_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`UnmappedRareTermsAggregate`].
@@ -46112,6 +48500,7 @@ impl<S0> UnmappedRareTermsAggregateBuilder<(S0,)> {
 }
 
 impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -46122,9 +48511,12 @@ impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UnmappedRareTermsAggregateBuilder<(S0,)> {
     /// Builds a [`UnmappedRareTermsAggregate`].
-    pub fn build(self) -> UnmappedRareTermsAggregate {
+    pub fn build(self) -> UnmappedRareTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<unmapped_rare_terms_aggregate_members::buckets>,
+    {
         UnmappedRareTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -46132,18 +48524,24 @@ impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for UnmappedRareTermsAggregate
+impl<S0> crate::typed::builder::Build for UnmappedRareTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unmapped_rare_terms_aggregate_members::buckets>,
 {
-    fn from(builder: UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = UnmappedRareTermsAggregate;
+
+    fn build(self) -> UnmappedRareTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> UnmappedRareTermsAggregate { match buckets {} }
+impl<S0> From<UnmappedRareTermsAggregateBuilder<(S0,)>> for UnmappedRareTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<unmapped_rare_terms_aggregate_members::buckets>,
+{
+    fn from(builder: UnmappedRareTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -46158,18 +48556,27 @@ pub struct UnmappedSamplerAggregate {
 
 impl UnmappedSamplerAggregate {
     /// Creates a builder for [`UnmappedSamplerAggregate`].
+    ///
+    /// Required: `doc_count`.
     pub fn builder() -> UnmappedSamplerAggregateBuilder {
         UnmappedSamplerAggregateBuilder::new()
     }
 
     /// Creates a [`UnmappedSamplerAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnmappedSamplerAggregateBuilder,
-        ) -> UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `doc_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnmappedSamplerAggregate>>(
+        f: impl FnOnce(UnmappedSamplerAggregateBuilder) -> B,
     ) -> UnmappedSamplerAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnmappedSamplerAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unmapped_sampler_aggregate_members {
+    pub struct doc_count;
 }
 
 /// Builder for [`UnmappedSamplerAggregate`].
@@ -46242,6 +48649,7 @@ impl<S0> UnmappedSamplerAggregateBuilder<(S0,)> {
 }
 
 impl UnmappedSamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -46252,9 +48660,12 @@ impl UnmappedSamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UnmappedSamplerAggregateBuilder<(S0,)> {
     /// Builds a [`UnmappedSamplerAggregate`].
-    pub fn build(self) -> UnmappedSamplerAggregate {
+    pub fn build(self) -> UnmappedSamplerAggregate
+    where
+        S0: crate::typed::builder::IsSet<unmapped_sampler_aggregate_members::doc_count>,
+    {
         UnmappedSamplerAggregate {
             meta: self.meta,
             doc_count: self.doc_count.unwrap(),
@@ -46263,18 +48674,24 @@ impl UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>>
-    for UnmappedSamplerAggregate
+impl<S0> crate::typed::builder::Build for UnmappedSamplerAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unmapped_sampler_aggregate_members::doc_count>,
 {
-    fn from(builder: UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = UnmappedSamplerAggregate;
+
+    fn build(self) -> UnmappedSamplerAggregate {
+        Self::build(self)
     }
 }
 
-impl UnmappedSamplerAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> UnmappedSamplerAggregate { match doc_count {} }
+impl<S0> From<UnmappedSamplerAggregateBuilder<(S0,)>> for UnmappedSamplerAggregate
+where
+    S0: crate::typed::builder::IsSet<unmapped_sampler_aggregate_members::doc_count>,
+{
+    fn from(builder: UnmappedSamplerAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of the `significant_terms` aggregation on an unmapped field. `buckets` is always empty.
@@ -46291,19 +48708,27 @@ pub struct UnmappedSignificantTermsAggregate {
 
 impl UnmappedSignificantTermsAggregate {
     /// Creates a builder for [`UnmappedSignificantTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> UnmappedSignificantTermsAggregateBuilder {
         UnmappedSignificantTermsAggregateBuilder::new()
     }
 
     /// Creates a [`UnmappedSignificantTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnmappedSignificantTermsAggregateBuilder,
-        )
-            -> UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnmappedSignificantTermsAggregate>>(
+        f: impl FnOnce(UnmappedSignificantTermsAggregateBuilder) -> B,
     ) -> UnmappedSignificantTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnmappedSignificantTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unmapped_significant_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`UnmappedSignificantTermsAggregate`].
@@ -46382,6 +48807,7 @@ impl<S0> UnmappedSignificantTermsAggregateBuilder<(S0,)> {
 }
 
 impl UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -46392,9 +48818,12 @@ impl UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::NotSet,)> 
     }
 }
 
-impl UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UnmappedSignificantTermsAggregateBuilder<(S0,)> {
     /// Builds a [`UnmappedSignificantTermsAggregate`].
-    pub fn build(self) -> UnmappedSignificantTermsAggregate {
+    pub fn build(self) -> UnmappedSignificantTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<unmapped_significant_terms_aggregate_members::buckets>,
+    {
         UnmappedSignificantTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -46404,20 +48833,24 @@ impl UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>>
-    for UnmappedSignificantTermsAggregate
+impl<S0> crate::typed::builder::Build for UnmappedSignificantTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unmapped_significant_terms_aggregate_members::buckets>,
 {
-    fn from(
-        builder: UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = UnmappedSignificantTermsAggregate;
+
+    fn build(self) -> UnmappedSignificantTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> UnmappedSignificantTermsAggregate { match buckets {} }
+impl<S0> From<UnmappedSignificantTermsAggregateBuilder<(S0,)>> for UnmappedSignificantTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<unmapped_significant_terms_aggregate_members::buckets>,
+{
+    fn from(builder: UnmappedSignificantTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Result of a `terms` aggregation when the field is unmapped. `buckets` is always empty.
@@ -46434,18 +48867,27 @@ pub struct UnmappedTermsAggregate {
 
 impl UnmappedTermsAggregate {
     /// Creates a builder for [`UnmappedTermsAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> UnmappedTermsAggregateBuilder {
         UnmappedTermsAggregateBuilder::new()
     }
 
     /// Creates a [`UnmappedTermsAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnmappedTermsAggregateBuilder,
-        ) -> UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnmappedTermsAggregate>>(
+        f: impl FnOnce(UnmappedTermsAggregateBuilder) -> B,
     ) -> UnmappedTermsAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnmappedTermsAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unmapped_terms_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`UnmappedTermsAggregate`].
@@ -46524,6 +48966,7 @@ impl<S0> UnmappedTermsAggregateBuilder<(S0,)> {
 }
 
 impl UnmappedTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVoid>,
@@ -46534,9 +48977,12 @@ impl UnmappedTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UnmappedTermsAggregateBuilder<(S0,)> {
     /// Builds a [`UnmappedTermsAggregate`].
-    pub fn build(self) -> UnmappedTermsAggregate {
+    pub fn build(self) -> UnmappedTermsAggregate
+    where
+        S0: crate::typed::builder::IsSet<unmapped_terms_aggregate_members::buckets>,
+    {
         UnmappedTermsAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -46546,16 +48992,24 @@ impl UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>> for UnmappedTermsAggregate {
-    fn from(builder: UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UnmappedTermsAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<unmapped_terms_aggregate_members::buckets>,
+{
+    type Output = UnmappedTermsAggregate;
+
+    fn build(self) -> UnmappedTermsAggregate {
+        Self::build(self)
     }
 }
 
-impl UnmappedTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> UnmappedTermsAggregate { match buckets {} }
+impl<S0> From<UnmappedTermsAggregateBuilder<(S0,)>> for UnmappedTermsAggregate
+where
+    S0: crate::typed::builder::IsSet<unmapped_terms_aggregate_members::buckets>,
+{
+    fn from(builder: UnmappedTermsAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Value count aggregation result. `value` is always present.
@@ -46591,18 +49045,27 @@ impl From<f64> for ValueCountAggregateValue {
 
 impl ValueCountAggregate {
     /// Creates a builder for [`ValueCountAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> ValueCountAggregateBuilder {
         ValueCountAggregateBuilder::new()
     }
 
     /// Creates a [`ValueCountAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ValueCountAggregateBuilder,
-        ) -> ValueCountAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = ValueCountAggregate>>(
+        f: impl FnOnce(ValueCountAggregateBuilder) -> B,
     ) -> ValueCountAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ValueCountAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod value_count_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`ValueCountAggregate`].
@@ -46667,7 +49130,7 @@ impl<S0> ValueCountAggregateBuilder<(S0,)> {
 }
 
 impl ValueCountAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -46679,9 +49142,12 @@ impl ValueCountAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ValueCountAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ValueCountAggregateBuilder<(S0,)> {
     /// Builds a [`ValueCountAggregate`].
-    pub fn build(self) -> ValueCountAggregate {
+    pub fn build(self) -> ValueCountAggregate
+    where
+        S0: crate::typed::builder::IsSet<value_count_aggregate_members::value>,
+    {
         ValueCountAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -46690,16 +49156,24 @@ impl ValueCountAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ValueCountAggregateBuilder<(crate::typed::builder::Set,)>> for ValueCountAggregate {
-    fn from(builder: ValueCountAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ValueCountAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<value_count_aggregate_members::value>,
+{
+    type Output = ValueCountAggregate;
+
+    fn build(self) -> ValueCountAggregate {
+        Self::build(self)
     }
 }
 
-impl ValueCountAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> ValueCountAggregate { match value {} }
+impl<S0> From<ValueCountAggregateBuilder<(S0,)>> for ValueCountAggregate
+where
+    S0: crate::typed::builder::IsSet<value_count_aggregate_members::value>,
+{
+    fn from(builder: ValueCountAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -46724,8 +49198,8 @@ impl ValueCountAggregation {
     }
 
     /// Creates a [`ValueCountAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ValueCountAggregationBuilder) -> ValueCountAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ValueCountAggregation>>(
+        f: impl FnOnce(ValueCountAggregationBuilder) -> B,
     ) -> ValueCountAggregation {
         f(Self::builder()).build()
     }
@@ -46789,9 +49263,9 @@ impl ValueCountAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -46817,6 +49291,14 @@ impl ValueCountAggregationBuilder {
             script: self.script,
             format: self.format,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ValueCountAggregationBuilder {
+    type Output = ValueCountAggregation;
+
+    fn build(self) -> ValueCountAggregation {
+        Self::build(self)
     }
 }
 
@@ -46859,18 +49341,27 @@ pub struct VariableWidthHistogramAggregate {
 
 impl VariableWidthHistogramAggregate {
     /// Creates a builder for [`VariableWidthHistogramAggregate`].
+    ///
+    /// Required: `buckets`.
     pub fn builder() -> VariableWidthHistogramAggregateBuilder {
         VariableWidthHistogramAggregateBuilder::new()
     }
 
     /// Creates a [`VariableWidthHistogramAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VariableWidthHistogramAggregateBuilder,
-        ) -> VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `buckets`.
+    pub fn of<B: crate::typed::builder::Build<Output = VariableWidthHistogramAggregate>>(
+        f: impl FnOnce(VariableWidthHistogramAggregateBuilder) -> B,
     ) -> VariableWidthHistogramAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VariableWidthHistogramAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod variable_width_histogram_aggregate_members {
+    pub struct buckets;
 }
 
 /// Builder for [`VariableWidthHistogramAggregate`].
@@ -46921,6 +49412,7 @@ impl<S0> VariableWidthHistogramAggregateBuilder<(S0,)> {
 }
 
 impl VariableWidthHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn buckets(
         self,
         value: impl Into<BucketsVariableWidthHistogramBucket>,
@@ -46931,9 +49423,12 @@ impl VariableWidthHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VariableWidthHistogramAggregateBuilder<(S0,)> {
     /// Builds a [`VariableWidthHistogramAggregate`].
-    pub fn build(self) -> VariableWidthHistogramAggregate {
+    pub fn build(self) -> VariableWidthHistogramAggregate
+    where
+        S0: crate::typed::builder::IsSet<variable_width_histogram_aggregate_members::buckets>,
+    {
         VariableWidthHistogramAggregate {
             meta: self.meta,
             buckets: self.buckets.unwrap(),
@@ -46941,20 +49436,24 @@ impl VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>>
-    for VariableWidthHistogramAggregate
+impl<S0> crate::typed::builder::Build for VariableWidthHistogramAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<variable_width_histogram_aggregate_members::buckets>,
 {
-    fn from(
-        builder: VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = VariableWidthHistogramAggregate;
+
+    fn build(self) -> VariableWidthHistogramAggregate {
+        Self::build(self)
     }
 }
 
-impl VariableWidthHistogramAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `buckets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, buckets: crate::typed::builder::MissingRequiredField) -> VariableWidthHistogramAggregate { match buckets {} }
+impl<S0> From<VariableWidthHistogramAggregateBuilder<(S0,)>> for VariableWidthHistogramAggregate
+where
+    S0: crate::typed::builder::IsSet<variable_width_histogram_aggregate_members::buckets>,
+{
+    fn from(builder: VariableWidthHistogramAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -46984,10 +49483,8 @@ impl VariableWidthHistogramAggregation {
     }
 
     /// Creates a [`VariableWidthHistogramAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VariableWidthHistogramAggregationBuilder,
-        ) -> VariableWidthHistogramAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = VariableWidthHistogramAggregation>>(
+        f: impl FnOnce(VariableWidthHistogramAggregationBuilder) -> B,
     ) -> VariableWidthHistogramAggregation {
         f(Self::builder()).build()
     }
@@ -47078,9 +49575,9 @@ impl VariableWidthHistogramAggregationBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -47096,6 +49593,14 @@ impl VariableWidthHistogramAggregationBuilder {
             initial_buffer: self.initial_buffer,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for VariableWidthHistogramAggregationBuilder {
+    type Output = VariableWidthHistogramAggregation;
+
+    fn build(self) -> VariableWidthHistogramAggregation {
+        Self::build(self)
     }
 }
 
@@ -47124,23 +49629,30 @@ pub struct VariableWidthHistogramBucket {
 
 impl VariableWidthHistogramBucket {
     /// Creates a builder for [`VariableWidthHistogramBucket`].
+    ///
+    /// Required: `doc_count`, `min`, `key`, `max`.
     pub fn builder() -> VariableWidthHistogramBucketBuilder {
         VariableWidthHistogramBucketBuilder::new()
     }
 
     /// Creates a [`VariableWidthHistogramBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VariableWidthHistogramBucketBuilder,
-        ) -> VariableWidthHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `min`, `key`, `max`.
+    pub fn of<B: crate::typed::builder::Build<Output = VariableWidthHistogramBucket>>(
+        f: impl FnOnce(VariableWidthHistogramBucketBuilder) -> B,
     ) -> VariableWidthHistogramBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VariableWidthHistogramBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod variable_width_histogram_bucket_members {
+    pub struct doc_count;
+    pub struct min;
+    pub struct key;
+    pub struct max;
 }
 
 /// Builder for [`VariableWidthHistogramBucket`].
@@ -47256,6 +49768,7 @@ impl<S0, S1, S2, S3> VariableWidthHistogramBucketBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> VariableWidthHistogramBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -47267,6 +49780,7 @@ impl<S1, S2, S3> VariableWidthHistogramBucketBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> VariableWidthHistogramBucketBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -47278,6 +49792,7 @@ impl<S0, S2, S3> VariableWidthHistogramBucketBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> VariableWidthHistogramBucketBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn key(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -47289,6 +49804,7 @@ impl<S0, S1, S3> VariableWidthHistogramBucketBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> VariableWidthHistogramBucketBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -47299,16 +49815,15 @@ impl<S0, S1, S2> VariableWidthHistogramBucketBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    VariableWidthHistogramBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> VariableWidthHistogramBucketBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`VariableWidthHistogramBucket`].
-    pub fn build(self) -> VariableWidthHistogramBucket {
+    pub fn build(self) -> VariableWidthHistogramBucket
+    where
+        S0: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::doc_count>,
+        S1: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::min>,
+        S2: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::key>,
+        S3: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::max>,
+    {
         VariableWidthHistogramBucket {
             doc_count: self.doc_count.unwrap(),
             min: self.min.unwrap(),
@@ -47322,71 +49837,32 @@ impl
     }
 }
 
-impl
-    From<
-        VariableWidthHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for VariableWidthHistogramBucket
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for VariableWidthHistogramBucketBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::min>,
+    S2: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::key>,
+    S3: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::max>,
 {
-    fn from(
-        builder: VariableWidthHistogramBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = VariableWidthHistogramBucket;
+
+    fn build(self) -> VariableWidthHistogramBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> VariableWidthHistogramBucketBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> VariableWidthHistogramBucket { match doc_count {} }
-}
-
-impl<S2, S3>
-    VariableWidthHistogramBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<VariableWidthHistogramBucketBuilder<(S0, S1, S2, S3)>>
+    for VariableWidthHistogramBucket
+where
+    S0: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::doc_count>,
+    S1: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::min>,
+    S2: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::key>,
+    S3: crate::typed::builder::IsSet<variable_width_histogram_bucket_members::max>,
 {
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> VariableWidthHistogramBucket { match min {} }
-}
-
-impl<S3>
-    VariableWidthHistogramBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, key: crate::typed::builder::MissingRequiredField) -> VariableWidthHistogramBucket { match key {} }
-}
-
-impl
-    VariableWidthHistogramBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> VariableWidthHistogramBucket { match max {} }
+    fn from(builder: VariableWidthHistogramBucketBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -47411,8 +49887,8 @@ impl WeightedAverageAggregation {
     }
 
     /// Creates a [`WeightedAverageAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(WeightedAverageAggregationBuilder) -> WeightedAverageAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = WeightedAverageAggregation>>(
+        f: impl FnOnce(WeightedAverageAggregationBuilder) -> B,
     ) -> WeightedAverageAggregation {
         f(Self::builder()).build()
     }
@@ -47464,9 +49940,9 @@ impl WeightedAverageAggregationBuilder {
     }
 
     /// Sets [`value`](Self::value) with a builder.
-    pub fn value_with(
+    pub fn value_with<B: crate::typed::builder::Build<Output = WeightedAverageValue>>(
         self,
-        f: impl FnOnce(WeightedAverageValueBuilder) -> WeightedAverageValueBuilder,
+        f: impl FnOnce(WeightedAverageValueBuilder) -> B,
     ) -> Self {
         self.value(f(WeightedAverageValueBuilder::new()).build())
     }
@@ -47495,9 +49971,9 @@ impl WeightedAverageAggregationBuilder {
     }
 
     /// Sets [`weight`](Self::weight) with a builder.
-    pub fn weight_with(
+    pub fn weight_with<B: crate::typed::builder::Build<Output = WeightedAverageValue>>(
         self,
-        f: impl FnOnce(WeightedAverageValueBuilder) -> WeightedAverageValueBuilder,
+        f: impl FnOnce(WeightedAverageValueBuilder) -> B,
     ) -> Self {
         self.weight(f(WeightedAverageValueBuilder::new()).build())
     }
@@ -47512,6 +49988,14 @@ impl WeightedAverageAggregationBuilder {
             value_type: self.value_type,
             weight: self.weight,
         }
+    }
+}
+
+impl crate::typed::builder::Build for WeightedAverageAggregationBuilder {
+    type Output = WeightedAverageAggregation;
+
+    fn build(self) -> WeightedAverageAggregation {
+        Self::build(self)
     }
 }
 
@@ -47540,8 +50024,8 @@ impl WeightedAverageValue {
     }
 
     /// Creates a [`WeightedAverageValue`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(WeightedAverageValueBuilder) -> WeightedAverageValueBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = WeightedAverageValue>>(
+        f: impl FnOnce(WeightedAverageValueBuilder) -> B,
     ) -> WeightedAverageValue {
         f(Self::builder()).build()
     }
@@ -47602,9 +50086,9 @@ impl WeightedAverageValueBuilder {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -47618,6 +50102,14 @@ impl WeightedAverageValueBuilder {
             missing: self.missing,
             script: self.script,
         }
+    }
+}
+
+impl crate::typed::builder::Build for WeightedAverageValueBuilder {
+    type Output = WeightedAverageValue;
+
+    fn build(self) -> WeightedAverageValue {
+        Self::build(self)
     }
 }
 
@@ -47660,18 +50152,27 @@ impl From<f64> for WeightedAvgAggregateValue {
 
 impl WeightedAvgAggregate {
     /// Creates a builder for [`WeightedAvgAggregate`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> WeightedAvgAggregateBuilder {
         WeightedAvgAggregateBuilder::new()
     }
 
     /// Creates a [`WeightedAvgAggregate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WeightedAvgAggregateBuilder,
-        ) -> WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = WeightedAvgAggregate>>(
+        f: impl FnOnce(WeightedAvgAggregateBuilder) -> B,
     ) -> WeightedAvgAggregate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WeightedAvgAggregateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod weighted_avg_aggregate_members {
+    pub struct value;
 }
 
 /// Builder for [`WeightedAvgAggregate`].
@@ -47736,7 +50237,7 @@ impl<S0> WeightedAvgAggregateBuilder<(S0,)> {
 }
 
 impl WeightedAvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// The metric value. A missing value generally means that there was no data to aggregate,
+    /// **Required.** The metric value. A missing value generally means that there was no data to aggregate,
     /// unless specified otherwise.
     pub fn value(
         self,
@@ -47748,9 +50249,12 @@ impl WeightedAvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WeightedAvgAggregateBuilder<(S0,)> {
     /// Builds a [`WeightedAvgAggregate`].
-    pub fn build(self) -> WeightedAvgAggregate {
+    pub fn build(self) -> WeightedAvgAggregate
+    where
+        S0: crate::typed::builder::IsSet<weighted_avg_aggregate_members::value>,
+    {
         WeightedAvgAggregate {
             meta: self.meta,
             value: self.value.unwrap(),
@@ -47759,14 +50263,22 @@ impl WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>> for WeightedAvgAggregate {
-    fn from(builder: WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WeightedAvgAggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<weighted_avg_aggregate_members::value>,
+{
+    type Output = WeightedAvgAggregate;
+
+    fn build(self) -> WeightedAvgAggregate {
+        Self::build(self)
     }
 }
 
-impl WeightedAvgAggregateBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> WeightedAvgAggregate { match value {} }
+impl<S0> From<WeightedAvgAggregateBuilder<(S0,)>> for WeightedAvgAggregate
+where
+    S0: crate::typed::builder::IsSet<weighted_avg_aggregate_members::value>,
+{
+    fn from(builder: WeightedAvgAggregateBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

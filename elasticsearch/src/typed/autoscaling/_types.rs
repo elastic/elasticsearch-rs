@@ -10,21 +10,28 @@ pub struct AutoscalingPolicy {
 
 impl AutoscalingPolicy {
     /// Creates a builder for [`AutoscalingPolicy`].
+    ///
+    /// Required: `roles`, `deciders`.
     pub fn builder() -> AutoscalingPolicyBuilder {
         AutoscalingPolicyBuilder::new()
     }
 
     /// Creates a [`AutoscalingPolicy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoscalingPolicyBuilder,
-        ) -> AutoscalingPolicyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `roles`, `deciders`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingPolicy>>(
+        f: impl FnOnce(AutoscalingPolicyBuilder) -> B,
     ) -> AutoscalingPolicy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingPolicyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_policy_members {
+    pub struct roles;
+    pub struct deciders;
 }
 
 /// Builder for [`AutoscalingPolicy`].
@@ -58,6 +65,7 @@ impl<S0, S1> AutoscalingPolicyBuilder<(S0, S1)> {
 }
 
 impl<S1> AutoscalingPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -92,7 +100,7 @@ impl<S1> AutoscalingPolicyBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> AutoscalingPolicyBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Decider settings.
+    /// **Required.** Decider settings.
     pub fn deciders(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -131,9 +139,13 @@ impl<S0> AutoscalingPolicyBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl AutoscalingPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AutoscalingPolicyBuilder<(S0, S1)> {
     /// Builds a [`AutoscalingPolicy`].
-    pub fn build(self) -> AutoscalingPolicy {
+    pub fn build(self) -> AutoscalingPolicy
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_policy_members::roles>,
+        S1: crate::typed::builder::IsSet<autoscaling_policy_members::deciders>,
+    {
         AutoscalingPolicy {
             roles: self.roles.unwrap(),
             deciders: self.deciders.unwrap(),
@@ -141,24 +153,24 @@ impl AutoscalingPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<AutoscalingPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AutoscalingPolicy
+impl<S0, S1> crate::typed::builder::Build for AutoscalingPolicyBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_policy_members::roles>,
+    S1: crate::typed::builder::IsSet<autoscaling_policy_members::deciders>,
 {
-    fn from(
-        builder: AutoscalingPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoscalingPolicy;
+
+    fn build(self) -> AutoscalingPolicy {
+        Self::build(self)
     }
 }
 
-impl<S1> AutoscalingPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> AutoscalingPolicy { match roles {} }
-}
-
-impl AutoscalingPolicyBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `deciders` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deciders: crate::typed::builder::MissingRequiredField) -> AutoscalingPolicy { match deciders {} }
+impl<S0, S1> From<AutoscalingPolicyBuilder<(S0, S1)>> for AutoscalingPolicy
+where
+    S0: crate::typed::builder::IsSet<autoscaling_policy_members::roles>,
+    S1: crate::typed::builder::IsSet<autoscaling_policy_members::deciders>,
+{
+    fn from(builder: AutoscalingPolicyBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

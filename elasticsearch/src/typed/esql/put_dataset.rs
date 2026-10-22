@@ -52,25 +52,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`, `data_source`, `resource`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `name`, `data_source`, `resource`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
+    pub struct data_source;
+    pub struct resource;
 }
 
 /// Builder for [`Request`].
@@ -259,11 +263,11 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::esql::_types::DatasetMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::esql::_types::DatasetMappingBuilder,
-        ) -> crate::typed::esql::_types::DatasetMappingBuilder,
+        f: impl FnOnce(crate::typed::esql::_types::DatasetMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::esql::_types::DatasetMappingBuilder::new()).build())
     }
@@ -303,7 +307,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The dataset name to create or update.
+    /// **Required.** The dataset name to create or update.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -315,7 +319,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The name of the referenced data source. The data source must already exist.
+    /// **Required.** The name of the referenced data source. The data source must already exist.
     pub fn data_source(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -327,7 +331,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The URI that identifies the data to read, resolved against the referenced data source.
+    /// **Required.** The URI that identifies the data to read, resolved against the referenced data source.
     /// It can include glob patterns. For example, a recursive pattern can match
     /// all Parquet files under the `s3://logs-bucket/access` prefix.
     pub fn resource(
@@ -340,18 +344,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::data_source>,
+        S2: crate::typed::builder::IsSet<request_members::resource>,
+    {
         Request {
             name: self.name.unwrap(),
             master_timeout: self.master_timeout,
@@ -369,90 +369,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+    S1: crate::typed::builder::IsSet<request_members::data_source>,
+    S2: crate::typed::builder::IsSet<request_members::resource>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `data_source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_source: crate::typed::builder::MissingRequiredField) -> Request { match data_source {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `data_source` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, data_source: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match data_source {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `resource` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resource: crate::typed::builder::MissingRequiredField) -> Request { match resource {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `resource` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, resource: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match resource {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+        S1: crate::typed::builder::IsSet<request_members::data_source>,
+        S2: crate::typed::builder::IsSet<request_members::resource>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

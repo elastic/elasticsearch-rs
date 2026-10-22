@@ -41,7 +41,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -173,12 +175,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`analysis_config`](Self::analysis_config) with a builder.
-    pub fn analysis_config_with(
+    pub fn analysis_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::AnalysisConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AnalysisConfigBuilder,
-        )
-            -> crate::typed::ml::_types::AnalysisConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ml::_types::AnalysisConfigBuilder) -> B,
     ) -> Self {
         self.analysis_config(f(crate::typed::ml::_types::AnalysisConfigBuilder::new()).build())
     }
@@ -201,11 +202,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`analysis_limits`](Self::analysis_limits) with a builder.
-    pub fn analysis_limits_with(
+    pub fn analysis_limits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::AnalysisLimits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AnalysisLimitsBuilder,
-        ) -> crate::typed::ml::_types::AnalysisLimitsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::AnalysisLimitsBuilder) -> B,
     ) -> Self {
         self.analysis_limits(f(crate::typed::ml::_types::AnalysisLimitsBuilder::new()).build())
     }
@@ -228,11 +229,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`data_description`](Self::data_description) with a builder.
-    pub fn data_description_with(
+    pub fn data_description_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataDescription>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataDescriptionBuilder,
-        ) -> crate::typed::ml::_types::DataDescriptionBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DataDescriptionBuilder) -> B,
     ) -> Self {
         self.data_description(f(crate::typed::ml::_types::DataDescriptionBuilder::new()).build())
     }
@@ -266,11 +267,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`model_plot`](Self::model_plot) with a builder.
-    pub fn model_plot_with(
+    pub fn model_plot_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::ModelPlotConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::ModelPlotConfigBuilder,
-        ) -> crate::typed::ml::_types::ModelPlotConfigBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::ModelPlotConfigBuilder) -> B,
     ) -> Self {
         self.model_plot(f(crate::typed::ml::_types::ModelPlotConfigBuilder::new()).build())
     }
@@ -330,6 +331,14 @@ impl<C> RequestBuilder<(), C> {
             model_snapshot_retention_days: self.model_snapshot_retention_days,
             results_index_name: self.results_index_name,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

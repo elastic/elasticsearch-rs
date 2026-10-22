@@ -9,19 +9,28 @@ pub struct Overlapping {
 
 impl Overlapping {
     /// Creates a builder for [`Overlapping`].
+    ///
+    /// Required: `name`, `index_patterns`.
     pub fn builder() -> OverlappingBuilder {
         OverlappingBuilder::new()
     }
 
     /// Creates a [`Overlapping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OverlappingBuilder,
-        )
-            -> OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `index_patterns`.
+    pub fn of<B: crate::typed::builder::Build<Output = Overlapping>>(
+        f: impl FnOnce(OverlappingBuilder) -> B,
     ) -> Overlapping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OverlappingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod overlapping_members {
+    pub struct name;
+    pub struct index_patterns;
 }
 
 /// Builder for [`Overlapping`].
@@ -53,6 +62,7 @@ impl<S0, S1> OverlappingBuilder<(S0, S1)> {
 }
 
 impl<S1> OverlappingBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -64,6 +74,7 @@ impl<S1> OverlappingBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> OverlappingBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn index_patterns(
         self,
         value: impl Into<Vec<String>>,
@@ -97,9 +108,13 @@ impl<S0> OverlappingBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> OverlappingBuilder<(S0, S1)> {
     /// Builds a [`Overlapping`].
-    pub fn build(self) -> Overlapping {
+    pub fn build(self) -> Overlapping
+    where
+        S0: crate::typed::builder::IsSet<overlapping_members::name>,
+        S1: crate::typed::builder::IsSet<overlapping_members::index_patterns>,
+    {
         Overlapping {
             name: self.name.unwrap(),
             index_patterns: self.index_patterns.unwrap(),
@@ -107,26 +122,26 @@ impl OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for Overlapping
+impl<S0, S1> crate::typed::builder::Build for OverlappingBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<overlapping_members::name>,
+    S1: crate::typed::builder::IsSet<overlapping_members::index_patterns>,
 {
-    fn from(
-        builder: OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = Overlapping;
+
+    fn build(self) -> Overlapping {
+        Self::build(self)
     }
 }
 
-impl<S1> OverlappingBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Overlapping { match name {} }
-}
-
-impl OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_patterns: crate::typed::builder::MissingRequiredField) -> Overlapping { match index_patterns {} }
+impl<S0, S1> From<OverlappingBuilder<(S0, S1)>> for Overlapping
+where
+    S0: crate::typed::builder::IsSet<overlapping_members::name>,
+    S1: crate::typed::builder::IsSet<overlapping_members::index_patterns>,
+{
+    fn from(builder: OverlappingBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.simulate_template`](crate::typed::indices::IndicesClient::simulate_template).
@@ -207,7 +222,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -450,12 +467,13 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::put_index_template::IndexTemplateMapping,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::put_index_template::IndexTemplateMappingBuilder,
-        )
-            -> crate::typed::indices::put_index_template::IndexTemplateMappingBuilder,
+        f: impl FnOnce(crate::typed::indices::put_index_template::IndexTemplateMappingBuilder) -> B,
     ) -> Self {
         self.template(
             f(crate::typed::indices::put_index_template::IndexTemplateMappingBuilder::new())
@@ -484,11 +502,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`data_stream`](Self::data_stream) with a builder.
-    pub fn data_stream_with(
+    pub fn data_stream_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::DataStreamVisibility>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamVisibilityBuilder,
-        ) -> crate::typed::indices::_types::DataStreamVisibilityBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamVisibilityBuilder) -> B,
     ) -> Self {
         self.data_stream(
             f(crate::typed::indices::_types::DataStreamVisibilityBuilder::new()).build(),
@@ -604,6 +622,14 @@ impl<C> RequestBuilder<(), C> {
             ignore_missing_component_templates: self.ignore_missing_component_templates,
             deprecated: self.deprecated,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -783,22 +809,29 @@ pub struct Template {
 
 impl Template {
     /// Creates a builder for [`Template`].
+    ///
+    /// Required: `aliases`, `mappings`, `settings`.
     pub fn builder() -> TemplateBuilder {
         TemplateBuilder::new()
     }
 
     /// Creates a [`Template`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TemplateBuilder,
-        ) -> TemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `aliases`, `mappings`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = Template>>(
+        f: impl FnOnce(TemplateBuilder) -> B,
     ) -> Template {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod template_members {
+    pub struct aliases;
+    pub struct mappings;
+    pub struct settings;
 }
 
 /// Builder for [`Template`].
@@ -847,6 +880,7 @@ impl<S0, S1, S2> TemplateBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TemplateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn aliases(
         self,
         value: impl Into<
@@ -876,12 +910,12 @@ impl<S1, S2> TemplateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::Alias>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasBuilder,
-        ) -> crate::typed::indices::_types::AliasBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasBuilder) -> B,
     ) -> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.add_aliases(
             key,
@@ -904,12 +938,12 @@ impl<S1, S2> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::Alias>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasBuilder,
-        ) -> crate::typed::indices::_types::AliasBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -919,6 +953,7 @@ impl<S1, S2> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> TemplateBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn mappings(
         self,
         value: impl Into<crate::typed::_types::mapping::TypeMapping>,
@@ -929,17 +964,18 @@ impl<S0, S2> TemplateBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> TemplateBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
 impl<S0, S1> TemplateBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<crate::typed::indices::_types::IndexSettings>,
@@ -950,25 +986,24 @@ impl<S0, S1> TemplateBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> TemplateBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.settings(f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build())
     }
 }
 
-impl
-    TemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TemplateBuilder<(S0, S1, S2)> {
     /// Builds a [`Template`].
-    pub fn build(self) -> Template {
+    pub fn build(self) -> Template
+    where
+        S0: crate::typed::builder::IsSet<template_members::aliases>,
+        S1: crate::typed::builder::IsSet<template_members::mappings>,
+        S2: crate::typed::builder::IsSet<template_members::settings>,
+    {
         Template {
             aliases: self.aliases.unwrap(),
             mappings: self.mappings.unwrap(),
@@ -977,52 +1012,26 @@ impl
     }
 }
 
-impl
-    From<
-        TemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Template
+impl<S0, S1, S2> crate::typed::builder::Build for TemplateBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<template_members::aliases>,
+    S1: crate::typed::builder::IsSet<template_members::mappings>,
+    S2: crate::typed::builder::IsSet<template_members::settings>,
 {
-    fn from(
-        builder: TemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Template;
+
+    fn build(self) -> Template {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TemplateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `aliases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aliases: crate::typed::builder::MissingRequiredField) -> Template { match aliases {} }
-}
-
-impl<S2>
-    TemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TemplateBuilder<(S0, S1, S2)>> for Template
+where
+    S0: crate::typed::builder::IsSet<template_members::aliases>,
+    S1: crate::typed::builder::IsSet<template_members::mappings>,
+    S2: crate::typed::builder::IsSet<template_members::settings>,
 {
-    /// `mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mappings: crate::typed::builder::MissingRequiredField) -> Template { match mappings {} }
-}
-
-impl
-    TemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> Template { match settings {} }
+    fn from(builder: TemplateBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

@@ -69,28 +69,32 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `cron`, `groups`, `index_pattern`, `page_size`, `rollup_index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `id`, `cron`, `groups`, `index_pattern`, `page_size`, `rollup_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct cron;
+    pub struct groups;
+    pub struct index_pattern;
+    pub struct page_size;
+    pub struct rollup_index;
 }
 
 /// Builder for [`Request`].
@@ -265,14 +269,11 @@ impl<S0, S1, S2, S3, S4, S5, C> RequestBuilder<(S0, S1, S2, S3, S4, S5), C> {
     }
 
     /// Adds an element to [`metrics`](Self::metrics), with a builder.
-    pub fn add_metrics_with(
+    pub fn add_metrics_with<
+        B: crate::typed::builder::Build<Output = crate::typed::rollup::_types::FieldMetric>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::rollup::_types::FieldMetricBuilder,
-        ) -> crate::typed::rollup::_types::FieldMetricBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::rollup::_types::FieldMetricBuilder) -> B,
     ) -> Self {
         self.add_metrics(f(crate::typed::rollup::_types::FieldMetricBuilder::new()).build())
     }
@@ -302,7 +303,7 @@ impl<S0, S1, S2, S3, S4, S5, C> RequestBuilder<(S0, S1, S2, S3, S4, S5), C> {
 }
 
 impl<S1, S2, S3, S4, S5, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5), C> {
-    /// Identifier for the rollup job. This can be any alphanumeric string and uniquely identifies the
+    /// **Required.** Identifier for the rollup job. This can be any alphanumeric string and uniquely identifies the
     /// data that is associated with the rollup job. The ID is persistent; it is stored with the rolled
     /// up data. If you create a job, let it run for a while, then delete the job, the data that the job
     /// rolled up is still be associated with this job ID. You cannot create a new job with the same ID
@@ -318,7 +319,7 @@ impl<S1, S2, S3, S4, S5, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2, S3, S4, S5, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5), C> {
-    /// A cron string which defines the intervals when the rollup job should be executed. When the interval
+    /// **Required.** A cron string which defines the intervals when the rollup job should be executed. When the interval
     /// triggers, the indexer attempts to rollup the data in the index pattern. The cron pattern is unrelated
     /// to the time interval of the data being rolled up. For example, you may wish to create hourly rollups
     /// of your document but to only run the indexer on a daily basis at midnight, as defined by the cron. The
@@ -334,7 +335,7 @@ impl<S0, S2, S3, S4, S5, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S3, S4, S5, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5), C> {
-    /// Defines the grouping fields and aggregations that are defined for this rollup job. These fields will then be
+    /// **Required.** Defines the grouping fields and aggregations that are defined for this rollup job. These fields will then be
     /// available later for aggregating into buckets. These aggs and fields can be used in any combination. Think of
     /// the groups configuration as defining a set of tools that can later be used in aggregations to partition the
     /// data. Unlike raw data, we have to think ahead to which fields and aggregations might be used. Rollups provide
@@ -349,18 +350,18 @@ impl<S0, S1, S3, S4, S5, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSe
     }
 
     /// Sets [`groups`](Self::groups) with a builder.
-    pub fn groups_with(
+    pub fn groups_with<
+        B: crate::typed::builder::Build<Output = crate::typed::rollup::_types::Groupings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::rollup::_types::GroupingsBuilder,
-        ) -> crate::typed::rollup::_types::GroupingsBuilder,
+        f: impl FnOnce(crate::typed::rollup::_types::GroupingsBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5), C> {
         self.groups(f(crate::typed::rollup::_types::GroupingsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4, S5, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5), C> {
-    /// The index or index pattern to roll up. Supports wildcard-style patterns (`logstash-*`). The job attempts to
+    /// **Required.** The index or index pattern to roll up. Supports wildcard-style patterns (`logstash-*`). The job attempts to
     /// rollup the entire index or index-pattern.
     pub fn index_pattern(
         self,
@@ -373,7 +374,7 @@ impl<S0, S1, S2, S4, S5, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::N
 }
 
 impl<S0, S1, S2, S3, S5, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5), C> {
-    /// The number of bucket results that are processed on each iteration of the rollup indexer. A larger value tends
+    /// **Required.** The number of bucket results that are processed on each iteration of the rollup indexer. A larger value tends
     /// to execute faster, but requires more memory during processing. This value has no effect on how the data is
     /// rolled up; it is merely used for tweaking the speed or memory cost of the indexer.
     pub fn page_size(
@@ -387,7 +388,7 @@ impl<S0, S1, S2, S3, S5, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builde
 }
 
 impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet), C> {
-    /// The index that contains the rollup results. The index can be shared with other rollup jobs. The data is stored so that it doesn’t interfere with unrelated jobs.
+    /// **Required.** The index that contains the rollup results. The index can be shared with other rollup jobs. The data is stored so that it doesn’t interfere with unrelated jobs.
     pub fn rollup_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -398,21 +399,17 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4, crate::typed::bu
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, S4, S5, C> RequestBuilder<(S0, S1, S2, S3, S4, S5), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::cron>,
+        S2: crate::typed::builder::IsSet<request_members::groups>,
+        S3: crate::typed::builder::IsSet<request_members::index_pattern>,
+        S4: crate::typed::builder::IsSet<request_members::page_size>,
+        S5: crate::typed::builder::IsSet<request_members::rollup_index>,
+    {
         Request {
             id: self.id.unwrap(),
             error_trace: self.error_trace,
@@ -431,212 +428,37 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, S4, S5, C> crate::typed::builder::Build
+    for RequestBuilder<(S0, S1, S2, S3, S4, S5), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::cron>,
+    S2: crate::typed::builder::IsSet<request_members::groups>,
+    S3: crate::typed::builder::IsSet<request_members::index_pattern>,
+    S4: crate::typed::builder::IsSet<request_members::page_size>,
+    S5: crate::typed::builder::IsSet<request_members::rollup_index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl<S1, S2, S3, S4, S5>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5), &crate::Elasticsearch>
-{
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<S2, S3, S4, S5, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-            S5,
-        ),
-        C,
-    >
-{
-    /// `cron` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cron: crate::typed::builder::MissingRequiredField) -> Request { match cron {} }
-}
-impl<S2, S3, S4, S5>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-            S5,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `cron` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, cron: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match cron {} }
-}
-
-impl<S3, S4, S5, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-            S5,
-        ),
-        C,
-    >
-{
-    /// `groups` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, groups: crate::typed::builder::MissingRequiredField) -> Request { match groups {} }
-}
-impl<S3, S4, S5>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-            S5,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `groups` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, groups: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match groups {} }
-}
-
-impl<S4, S5, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-            S5,
-        ),
-        C,
-    >
-{
-    /// `index_pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_pattern: crate::typed::builder::MissingRequiredField) -> Request { match index_pattern {} }
-}
-impl<S4, S5>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-            S5,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `index_pattern` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index_pattern: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index_pattern {} }
-}
-
-impl<S5, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S5,
-        ),
-        C,
-    >
-{
-    /// `page_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, page_size: crate::typed::builder::MissingRequiredField) -> Request { match page_size {} }
-}
-impl<S5>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S5,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `page_size` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, page_size: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match page_size {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `rollup_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollup_index: crate::typed::builder::MissingRequiredField) -> Request { match rollup_index {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `rollup_index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, rollup_index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match rollup_index {} }
+impl<S0, S1, S2, S3, S4, S5> RequestBuilder<(S0, S1, S2, S3, S4, S5), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::cron>,
+        S2: crate::typed::builder::IsSet<request_members::groups>,
+        S3: crate::typed::builder::IsSet<request_members::index_pattern>,
+        S4: crate::typed::builder::IsSet<request_members::page_size>,
+        S5: crate::typed::builder::IsSet<request_members::rollup_index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -12,21 +12,28 @@ pub struct CleanupRepositoryResults {
 
 impl CleanupRepositoryResults {
     /// Creates a builder for [`CleanupRepositoryResults`].
+    ///
+    /// Required: `deleted_blobs`, `deleted_bytes`.
     pub fn builder() -> CleanupRepositoryResultsBuilder {
         CleanupRepositoryResultsBuilder::new()
     }
 
     /// Creates a [`CleanupRepositoryResults`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CleanupRepositoryResultsBuilder,
-        ) -> CleanupRepositoryResultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `deleted_blobs`, `deleted_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = CleanupRepositoryResults>>(
+        f: impl FnOnce(CleanupRepositoryResultsBuilder) -> B,
     ) -> CleanupRepositoryResults {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CleanupRepositoryResultsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cleanup_repository_results_members {
+    pub struct deleted_blobs;
+    pub struct deleted_bytes;
 }
 
 /// Builder for [`CleanupRepositoryResults`].
@@ -62,7 +69,7 @@ impl<S0, S1> CleanupRepositoryResultsBuilder<(S0, S1)> {
 }
 
 impl<S1> CleanupRepositoryResultsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The number of binary large objects (blobs) removed from the snapshot repository during cleanup operations.
+    /// **Required.** The number of binary large objects (blobs) removed from the snapshot repository during cleanup operations.
     /// A non-zero value indicates that unreferenced blobs were found and subsequently cleaned up.
     pub fn deleted_blobs(
         self,
@@ -75,7 +82,7 @@ impl<S1> CleanupRepositoryResultsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CleanupRepositoryResultsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The number of bytes freed by cleanup operations.
+    /// **Required.** The number of bytes freed by cleanup operations.
     pub fn deleted_bytes(
         self,
         value: i64,
@@ -86,9 +93,13 @@ impl<S0> CleanupRepositoryResultsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CleanupRepositoryResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CleanupRepositoryResultsBuilder<(S0, S1)> {
     /// Builds a [`CleanupRepositoryResults`].
-    pub fn build(self) -> CleanupRepositoryResults {
+    pub fn build(self) -> CleanupRepositoryResults
+    where
+        S0: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_blobs>,
+        S1: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_bytes>,
+    {
         CleanupRepositoryResults {
             deleted_blobs: self.deleted_blobs.unwrap(),
             deleted_bytes: self.deleted_bytes.unwrap(),
@@ -96,29 +107,26 @@ impl CleanupRepositoryResultsBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<CleanupRepositoryResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CleanupRepositoryResults
+impl<S0, S1> crate::typed::builder::Build for CleanupRepositoryResultsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_blobs>,
+    S1: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_bytes>,
 {
-    fn from(
-        builder: CleanupRepositoryResultsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CleanupRepositoryResults;
+
+    fn build(self) -> CleanupRepositoryResults {
+        Self::build(self)
     }
 }
 
-impl<S1> CleanupRepositoryResultsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `deleted_blobs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted_blobs: crate::typed::builder::MissingRequiredField) -> CleanupRepositoryResults { match deleted_blobs {} }
-}
-
-impl CleanupRepositoryResultsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `deleted_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted_bytes: crate::typed::builder::MissingRequiredField) -> CleanupRepositoryResults { match deleted_bytes {} }
+impl<S0, S1> From<CleanupRepositoryResultsBuilder<(S0, S1)>> for CleanupRepositoryResults
+where
+    S0: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_blobs>,
+    S1: crate::typed::builder::IsSet<cleanup_repository_results_members::deleted_bytes>,
+{
+    fn from(builder: CleanupRepositoryResultsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`snapshot.cleanup_repository`](crate::typed::snapshot::SnapshotClient::cleanup_repository).
@@ -159,16 +167,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -301,7 +320,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The name of the snapshot repository to clean up.
+    /// **Required.** The name of the snapshot repository to clean up.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -312,9 +331,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             master_timeout: self.master_timeout,
@@ -327,23 +349,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

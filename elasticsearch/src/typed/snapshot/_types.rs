@@ -14,16 +14,27 @@ pub struct AzureRepository {
 
 impl AzureRepository {
     /// Creates a builder for [`AzureRepository`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> AzureRepositoryBuilder {
         AzureRepositoryBuilder::new()
     }
 
     /// Creates a [`AzureRepository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AzureRepositoryBuilder) -> AzureRepositoryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = AzureRepository>>(
+        f: impl FnOnce(AzureRepositoryBuilder) -> B,
     ) -> AzureRepository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AzureRepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod azure_repository_members {
+    pub struct r#type;
 }
 
 /// Builder for [`AzureRepository`].
@@ -80,16 +91,16 @@ impl<S0> AzureRepositoryBuilder<(S0,)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = AzureRepositorySettings>>(
         self,
-        f: impl FnOnce(AzureRepositorySettingsBuilder) -> AzureRepositorySettingsBuilder,
+        f: impl FnOnce(AzureRepositorySettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(AzureRepositorySettingsBuilder::new()).build())
     }
 }
 
 impl AzureRepositoryBuilder<(crate::typed::builder::NotSet,)> {
-    /// The Azure repository type.
+    /// **Required.** The Azure repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -100,9 +111,12 @@ impl AzureRepositoryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AzureRepositoryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AzureRepositoryBuilder<(S0,)> {
     /// Builds a [`AzureRepository`].
-    pub fn build(self) -> AzureRepository {
+    pub fn build(self) -> AzureRepository
+    where
+        S0: crate::typed::builder::IsSet<azure_repository_members::r#type>,
+    {
         AzureRepository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -111,16 +125,24 @@ impl AzureRepositoryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AzureRepositoryBuilder<(crate::typed::builder::Set,)>> for AzureRepository {
-    fn from(builder: AzureRepositoryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AzureRepositoryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<azure_repository_members::r#type>,
+{
+    type Output = AzureRepository;
+
+    fn build(self) -> AzureRepository {
+        Self::build(self)
     }
 }
 
-impl AzureRepositoryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> AzureRepository { match r#type {} }
+impl<S0> From<AzureRepositoryBuilder<(S0,)>> for AzureRepository
+where
+    S0: crate::typed::builder::IsSet<azure_repository_members::r#type>,
+{
+    fn from(builder: AzureRepositoryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -192,8 +214,8 @@ impl AzureRepositorySettings {
     }
 
     /// Creates a [`AzureRepositorySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AzureRepositorySettingsBuilder) -> AzureRepositorySettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AzureRepositorySettings>>(
+        f: impl FnOnce(AzureRepositorySettingsBuilder) -> B,
     ) -> AzureRepositorySettings {
         f(Self::builder()).build()
     }
@@ -423,6 +445,14 @@ impl AzureRepositorySettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AzureRepositorySettingsBuilder {
+    type Output = AzureRepositorySettings;
+
+    fn build(self) -> AzureRepositorySettings {
+        Self::build(self)
+    }
+}
+
 impl From<AzureRepositorySettingsBuilder> for AzureRepositorySettings {
     fn from(builder: AzureRepositorySettingsBuilder) -> Self {
         builder.build()
@@ -437,21 +467,28 @@ pub struct FileCountSnapshotStats {
 
 impl FileCountSnapshotStats {
     /// Creates a builder for [`FileCountSnapshotStats`].
+    ///
+    /// Required: `file_count`, `size_in_bytes`.
     pub fn builder() -> FileCountSnapshotStatsBuilder {
         FileCountSnapshotStatsBuilder::new()
     }
 
     /// Creates a [`FileCountSnapshotStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FileCountSnapshotStatsBuilder,
-        ) -> FileCountSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `file_count`, `size_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = FileCountSnapshotStats>>(
+        f: impl FnOnce(FileCountSnapshotStatsBuilder) -> B,
     ) -> FileCountSnapshotStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FileCountSnapshotStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod file_count_snapshot_stats_members {
+    pub struct file_count;
+    pub struct size_in_bytes;
 }
 
 /// Builder for [`FileCountSnapshotStats`].
@@ -485,6 +522,7 @@ impl<S0, S1> FileCountSnapshotStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> FileCountSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn file_count(
         self,
         value: i32,
@@ -496,6 +534,7 @@ impl<S1> FileCountSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FileCountSnapshotStatsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn size_in_bytes(
         self,
         value: i64,
@@ -506,9 +545,13 @@ impl<S0> FileCountSnapshotStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FileCountSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FileCountSnapshotStatsBuilder<(S0, S1)> {
     /// Builds a [`FileCountSnapshotStats`].
-    pub fn build(self) -> FileCountSnapshotStats {
+    pub fn build(self) -> FileCountSnapshotStats
+    where
+        S0: crate::typed::builder::IsSet<file_count_snapshot_stats_members::file_count>,
+        S1: crate::typed::builder::IsSet<file_count_snapshot_stats_members::size_in_bytes>,
+    {
         FileCountSnapshotStats {
             file_count: self.file_count.unwrap(),
             size_in_bytes: self.size_in_bytes.unwrap(),
@@ -516,29 +559,26 @@ impl FileCountSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<FileCountSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FileCountSnapshotStats
+impl<S0, S1> crate::typed::builder::Build for FileCountSnapshotStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<file_count_snapshot_stats_members::file_count>,
+    S1: crate::typed::builder::IsSet<file_count_snapshot_stats_members::size_in_bytes>,
 {
-    fn from(
-        builder: FileCountSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FileCountSnapshotStats;
+
+    fn build(self) -> FileCountSnapshotStats {
+        Self::build(self)
     }
 }
 
-impl<S1> FileCountSnapshotStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `file_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, file_count: crate::typed::builder::MissingRequiredField) -> FileCountSnapshotStats { match file_count {} }
-}
-
-impl FileCountSnapshotStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_in_bytes: crate::typed::builder::MissingRequiredField) -> FileCountSnapshotStats { match size_in_bytes {} }
+impl<S0, S1> From<FileCountSnapshotStatsBuilder<(S0, S1)>> for FileCountSnapshotStats
+where
+    S0: crate::typed::builder::IsSet<file_count_snapshot_stats_members::file_count>,
+    S1: crate::typed::builder::IsSet<file_count_snapshot_stats_members::size_in_bytes>,
+{
+    fn from(builder: FileCountSnapshotStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -553,19 +593,28 @@ pub struct GcsRepository {
 
 impl GcsRepository {
     /// Creates a builder for [`GcsRepository`].
+    ///
+    /// Required: `type`, `settings`.
     pub fn builder() -> GcsRepositoryBuilder {
         GcsRepositoryBuilder::new()
     }
 
     /// Creates a [`GcsRepository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GcsRepositoryBuilder,
-        )
-            -> GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = GcsRepository>>(
+        f: impl FnOnce(GcsRepositoryBuilder) -> B,
     ) -> GcsRepository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GcsRepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod gcs_repository_members {
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`GcsRepository`].
@@ -612,7 +661,7 @@ impl<S0, S1> GcsRepositoryBuilder<(S0, S1)> {
 }
 
 impl<S1> GcsRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The Google Cloud Storage repository type.
+    /// **Required.** The Google Cloud Storage repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -624,7 +673,7 @@ impl<S1> GcsRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> GcsRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The repository settings.
+    /// **Required.** The repository settings.
     pub fn settings(
         self,
         value: impl Into<GcsRepositorySettings>,
@@ -635,19 +684,21 @@ impl<S0> GcsRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = GcsRepositorySettings>>(
         self,
-        f: impl FnOnce(
-            GcsRepositorySettingsBuilder,
-        ) -> GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GcsRepositorySettingsBuilder) -> B,
     ) -> GcsRepositoryBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(GcsRepositorySettingsBuilder::new()).build())
     }
 }
 
-impl GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> GcsRepositoryBuilder<(S0, S1)> {
     /// Builds a [`GcsRepository`].
-    pub fn build(self) -> GcsRepository {
+    pub fn build(self) -> GcsRepository
+    where
+        S0: crate::typed::builder::IsSet<gcs_repository_members::r#type>,
+        S1: crate::typed::builder::IsSet<gcs_repository_members::settings>,
+    {
         GcsRepository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -656,26 +707,26 @@ impl GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for GcsRepository
+impl<S0, S1> crate::typed::builder::Build for GcsRepositoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<gcs_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<gcs_repository_members::settings>,
 {
-    fn from(
-        builder: GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = GcsRepository;
+
+    fn build(self) -> GcsRepository {
+        Self::build(self)
     }
 }
 
-impl<S1> GcsRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> GcsRepository { match r#type {} }
-}
-
-impl GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> GcsRepository { match settings {} }
+impl<S0, S1> From<GcsRepositoryBuilder<(S0, S1)>> for GcsRepository
+where
+    S0: crate::typed::builder::IsSet<gcs_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<gcs_repository_members::settings>,
+{
+    fn from(builder: GcsRepositoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -732,18 +783,27 @@ pub struct GcsRepositorySettings {
 
 impl GcsRepositorySettings {
     /// Creates a builder for [`GcsRepositorySettings`].
+    ///
+    /// Required: `bucket`.
     pub fn builder() -> GcsRepositorySettingsBuilder {
         GcsRepositorySettingsBuilder::new()
     }
 
     /// Creates a [`GcsRepositorySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GcsRepositorySettingsBuilder,
-        ) -> GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `bucket`.
+    pub fn of<B: crate::typed::builder::Build<Output = GcsRepositorySettings>>(
+        f: impl FnOnce(GcsRepositorySettingsBuilder) -> B,
     ) -> GcsRepositorySettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GcsRepositorySettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod gcs_repository_settings_members {
+    pub struct bucket;
 }
 
 /// Builder for [`GcsRepositorySettings`].
@@ -926,7 +986,7 @@ impl<S0> GcsRepositorySettingsBuilder<(S0,)> {
 }
 
 impl GcsRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the bucket to be used for snapshots.
+    /// **Required.** The name of the bucket to be used for snapshots.
     pub fn bucket(
         self,
         value: impl Into<String>,
@@ -937,9 +997,12 @@ impl GcsRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GcsRepositorySettingsBuilder<(S0,)> {
     /// Builds a [`GcsRepositorySettings`].
-    pub fn build(self) -> GcsRepositorySettings {
+    pub fn build(self) -> GcsRepositorySettings
+    where
+        S0: crate::typed::builder::IsSet<gcs_repository_settings_members::bucket>,
+    {
         GcsRepositorySettings {
             chunk_size: self.chunk_size,
             compress: self.compress,
@@ -954,16 +1017,24 @@ impl GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)>> for GcsRepositorySettings {
-    fn from(builder: GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GcsRepositorySettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<gcs_repository_settings_members::bucket>,
+{
+    type Output = GcsRepositorySettings;
+
+    fn build(self) -> GcsRepositorySettings {
+        Self::build(self)
     }
 }
 
-impl GcsRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `bucket` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket: crate::typed::builder::MissingRequiredField) -> GcsRepositorySettings { match bucket {} }
+impl<S0> From<GcsRepositorySettingsBuilder<(S0,)>> for GcsRepositorySettings
+where
+    S0: crate::typed::builder::IsSet<gcs_repository_settings_members::bucket>,
+{
+    fn from(builder: GcsRepositorySettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -977,22 +1048,29 @@ pub struct IndexDetails {
 
 impl IndexDetails {
     /// Creates a builder for [`IndexDetails`].
+    ///
+    /// Required: `shard_count`, `size_in_bytes`, `max_segments_per_shard`.
     pub fn builder() -> IndexDetailsBuilder {
         IndexDetailsBuilder::new()
     }
 
     /// Creates a [`IndexDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexDetailsBuilder,
-        ) -> IndexDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `shard_count`, `size_in_bytes`, `max_segments_per_shard`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexDetails>>(
+        f: impl FnOnce(IndexDetailsBuilder) -> B,
     ) -> IndexDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_details_members {
+    pub struct shard_count;
+    pub struct size_in_bytes;
+    pub struct max_segments_per_shard;
 }
 
 /// Builder for [`IndexDetails`].
@@ -1053,6 +1131,7 @@ impl<S0, S1, S2> IndexDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> IndexDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn shard_count(
         self,
         value: i32,
@@ -1064,6 +1143,7 @@ impl<S1, S2> IndexDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> IndexDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn size_in_bytes(
         self,
         value: i64,
@@ -1075,6 +1155,7 @@ impl<S0, S2> IndexDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> IndexDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn max_segments_per_shard(
         self,
         value: i64,
@@ -1085,15 +1166,14 @@ impl<S0, S1> IndexDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    IndexDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> IndexDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`IndexDetails`].
-    pub fn build(self) -> IndexDetails {
+    pub fn build(self) -> IndexDetails
+    where
+        S0: crate::typed::builder::IsSet<index_details_members::shard_count>,
+        S1: crate::typed::builder::IsSet<index_details_members::size_in_bytes>,
+        S2: crate::typed::builder::IsSet<index_details_members::max_segments_per_shard>,
+    {
         IndexDetails {
             shard_count: self.shard_count.unwrap(),
             size: self.size,
@@ -1103,54 +1183,28 @@ impl
     }
 }
 
-impl
-    From<
-        IndexDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for IndexDetails
+impl<S0, S1, S2> crate::typed::builder::Build for IndexDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<index_details_members::shard_count>,
+    S1: crate::typed::builder::IsSet<index_details_members::size_in_bytes>,
+    S2: crate::typed::builder::IsSet<index_details_members::max_segments_per_shard>,
 {
-    fn from(
-        builder: IndexDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexDetails;
+
+    fn build(self) -> IndexDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> IndexDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `shard_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_count: crate::typed::builder::MissingRequiredField) -> IndexDetails { match shard_count {} }
-}
-
-impl<S2>
-    IndexDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<IndexDetailsBuilder<(S0, S1, S2)>> for IndexDetails
+where
+    S0: crate::typed::builder::IsSet<index_details_members::shard_count>,
+    S1: crate::typed::builder::IsSet<index_details_members::size_in_bytes>,
+    S2: crate::typed::builder::IsSet<index_details_members::max_segments_per_shard>,
 {
-    /// `size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_in_bytes: crate::typed::builder::MissingRequiredField) -> IndexDetails { match size_in_bytes {} }
-}
-
-impl
-    IndexDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_segments_per_shard` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_segments_per_shard: crate::typed::builder::MissingRequiredField) -> IndexDetails { match max_segments_per_shard {} }
+    fn from(builder: IndexDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1161,21 +1215,28 @@ pub struct InfoFeatureState {
 
 impl InfoFeatureState {
     /// Creates a builder for [`InfoFeatureState`].
+    ///
+    /// Required: `feature_name`, `indices`.
     pub fn builder() -> InfoFeatureStateBuilder {
         InfoFeatureStateBuilder::new()
     }
 
     /// Creates a [`InfoFeatureState`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InfoFeatureStateBuilder,
-        ) -> InfoFeatureStateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_name`, `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = InfoFeatureState>>(
+        f: impl FnOnce(InfoFeatureStateBuilder) -> B,
     ) -> InfoFeatureState {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InfoFeatureStateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod info_feature_state_members {
+    pub struct feature_name;
+    pub struct indices;
 }
 
 /// Builder for [`InfoFeatureState`].
@@ -1209,6 +1270,7 @@ impl<S0, S1> InfoFeatureStateBuilder<(S0, S1)> {
 }
 
 impl<S1> InfoFeatureStateBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -1220,6 +1282,7 @@ impl<S1> InfoFeatureStateBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InfoFeatureStateBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -1230,9 +1293,13 @@ impl<S0> InfoFeatureStateBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl InfoFeatureStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InfoFeatureStateBuilder<(S0, S1)> {
     /// Builds a [`InfoFeatureState`].
-    pub fn build(self) -> InfoFeatureState {
+    pub fn build(self) -> InfoFeatureState
+    where
+        S0: crate::typed::builder::IsSet<info_feature_state_members::feature_name>,
+        S1: crate::typed::builder::IsSet<info_feature_state_members::indices>,
+    {
         InfoFeatureState {
             feature_name: self.feature_name.unwrap(),
             indices: self.indices.unwrap(),
@@ -1240,26 +1307,26 @@ impl InfoFeatureStateBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<InfoFeatureStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for InfoFeatureState
+impl<S0, S1> crate::typed::builder::Build for InfoFeatureStateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<info_feature_state_members::feature_name>,
+    S1: crate::typed::builder::IsSet<info_feature_state_members::indices>,
 {
-    fn from(
-        builder: InfoFeatureStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = InfoFeatureState;
+
+    fn build(self) -> InfoFeatureState {
+        Self::build(self)
     }
 }
 
-impl<S1> InfoFeatureStateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> InfoFeatureState { match feature_name {} }
-}
-
-impl InfoFeatureStateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> InfoFeatureState { match indices {} }
+impl<S0, S1> From<InfoFeatureStateBuilder<(S0, S1)>> for InfoFeatureState
+where
+    S0: crate::typed::builder::IsSet<info_feature_state_members::feature_name>,
+    S1: crate::typed::builder::IsSet<info_feature_state_members::indices>,
+{
+    fn from(builder: InfoFeatureStateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1274,21 +1341,28 @@ pub struct ReadOnlyUrlRepository {
 
 impl ReadOnlyUrlRepository {
     /// Creates a builder for [`ReadOnlyUrlRepository`].
+    ///
+    /// Required: `type`, `settings`.
     pub fn builder() -> ReadOnlyUrlRepositoryBuilder {
         ReadOnlyUrlRepositoryBuilder::new()
     }
 
     /// Creates a [`ReadOnlyUrlRepository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReadOnlyUrlRepositoryBuilder,
-        ) -> ReadOnlyUrlRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReadOnlyUrlRepository>>(
+        f: impl FnOnce(ReadOnlyUrlRepositoryBuilder) -> B,
     ) -> ReadOnlyUrlRepository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReadOnlyUrlRepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod read_only_url_repository_members {
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`ReadOnlyUrlRepository`].
@@ -1336,7 +1410,7 @@ impl<S0, S1> ReadOnlyUrlRepositoryBuilder<(S0, S1)> {
 }
 
 impl<S1> ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The read-only URL repository type.
+    /// **Required.** The read-only URL repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1348,7 +1422,7 @@ impl<S1> ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ReadOnlyUrlRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The repository settings.
+    /// **Required.** The repository settings.
     pub fn settings(
         self,
         value: impl Into<ReadOnlyUrlRepositorySettings>,
@@ -1359,19 +1433,23 @@ impl<S0> ReadOnlyUrlRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = ReadOnlyUrlRepositorySettings>,
+    >(
         self,
-        f: impl FnOnce(
-            ReadOnlyUrlRepositorySettingsBuilder,
-        ) -> ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ReadOnlyUrlRepositorySettingsBuilder) -> B,
     ) -> ReadOnlyUrlRepositoryBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(ReadOnlyUrlRepositorySettingsBuilder::new()).build())
     }
 }
 
-impl ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ReadOnlyUrlRepositoryBuilder<(S0, S1)> {
     /// Builds a [`ReadOnlyUrlRepository`].
-    pub fn build(self) -> ReadOnlyUrlRepository {
+    pub fn build(self) -> ReadOnlyUrlRepository
+    where
+        S0: crate::typed::builder::IsSet<read_only_url_repository_members::r#type>,
+        S1: crate::typed::builder::IsSet<read_only_url_repository_members::settings>,
+    {
         ReadOnlyUrlRepository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -1380,29 +1458,26 @@ impl ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ReadOnlyUrlRepository
+impl<S0, S1> crate::typed::builder::Build for ReadOnlyUrlRepositoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<read_only_url_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<read_only_url_repository_members::settings>,
 {
-    fn from(
-        builder: ReadOnlyUrlRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReadOnlyUrlRepository;
+
+    fn build(self) -> ReadOnlyUrlRepository {
+        Self::build(self)
     }
 }
 
-impl<S1> ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ReadOnlyUrlRepository { match r#type {} }
-}
-
-impl ReadOnlyUrlRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> ReadOnlyUrlRepository { match settings {} }
+impl<S0, S1> From<ReadOnlyUrlRepositoryBuilder<(S0, S1)>> for ReadOnlyUrlRepository
+where
+    S0: crate::typed::builder::IsSet<read_only_url_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<read_only_url_repository_members::settings>,
+{
+    fn from(builder: ReadOnlyUrlRepositoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1458,18 +1533,27 @@ pub struct ReadOnlyUrlRepositorySettings {
 
 impl ReadOnlyUrlRepositorySettings {
     /// Creates a builder for [`ReadOnlyUrlRepositorySettings`].
+    ///
+    /// Required: `url`.
     pub fn builder() -> ReadOnlyUrlRepositorySettingsBuilder {
         ReadOnlyUrlRepositorySettingsBuilder::new()
     }
 
     /// Creates a [`ReadOnlyUrlRepositorySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReadOnlyUrlRepositorySettingsBuilder,
-        ) -> ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReadOnlyUrlRepositorySettings>>(
+        f: impl FnOnce(ReadOnlyUrlRepositorySettingsBuilder) -> B,
     ) -> ReadOnlyUrlRepositorySettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReadOnlyUrlRepositorySettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod read_only_url_repository_settings_members {
+    pub struct url;
 }
 
 /// Builder for [`ReadOnlyUrlRepositorySettings`].
@@ -1628,7 +1712,7 @@ impl<S0> ReadOnlyUrlRepositorySettingsBuilder<(S0,)> {
 }
 
 impl ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The URL location of the root of the shared filesystem repository.
+    /// **Required.** The URL location of the root of the shared filesystem repository.
     /// The following protocols are supported:
     ///
     /// * `file`
@@ -1653,9 +1737,12 @@ impl ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ReadOnlyUrlRepositorySettingsBuilder<(S0,)> {
     /// Builds a [`ReadOnlyUrlRepositorySettings`].
-    pub fn build(self) -> ReadOnlyUrlRepositorySettings {
+    pub fn build(self) -> ReadOnlyUrlRepositorySettings
+    where
+        S0: crate::typed::builder::IsSet<read_only_url_repository_settings_members::url>,
+    {
         ReadOnlyUrlRepositorySettings {
             chunk_size: self.chunk_size,
             compress: self.compress,
@@ -1669,18 +1756,24 @@ impl ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)>>
-    for ReadOnlyUrlRepositorySettings
+impl<S0> crate::typed::builder::Build for ReadOnlyUrlRepositorySettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<read_only_url_repository_settings_members::url>,
 {
-    fn from(builder: ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ReadOnlyUrlRepositorySettings;
+
+    fn build(self) -> ReadOnlyUrlRepositorySettings {
+        Self::build(self)
     }
 }
 
-impl ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> ReadOnlyUrlRepositorySettings { match url {} }
+impl<S0> From<ReadOnlyUrlRepositorySettingsBuilder<(S0,)>> for ReadOnlyUrlRepositorySettings
+where
+    S0: crate::typed::builder::IsSet<read_only_url_repository_settings_members::url>,
+{
+    fn from(builder: ReadOnlyUrlRepositorySettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
@@ -1707,7 +1800,9 @@ impl RepositoryBase {
     }
 
     /// Creates a [`RepositoryBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RepositoryBaseBuilder) -> RepositoryBaseBuilder) -> RepositoryBase {
+    pub fn of<B: crate::typed::builder::Build<Output = RepositoryBase>>(
+        f: impl FnOnce(RepositoryBaseBuilder) -> B,
+    ) -> RepositoryBase {
         f(Self::builder()).build()
     }
 }
@@ -1741,6 +1836,14 @@ impl RepositoryBaseBuilder {
     /// Builds a [`RepositoryBase`].
     pub fn build(self) -> RepositoryBase {
         RepositoryBase { uuid: self.uuid }
+    }
+}
+
+impl crate::typed::builder::Build for RepositoryBaseBuilder {
+    type Output = RepositoryBase;
+
+    fn build(self) -> RepositoryBase {
+        Self::build(self)
     }
 }
 
@@ -1782,8 +1885,8 @@ impl RepositorySettingsBase {
     }
 
     /// Creates a [`RepositorySettingsBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RepositorySettingsBaseBuilder) -> RepositorySettingsBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RepositorySettingsBase>>(
+        f: impl FnOnce(RepositorySettingsBaseBuilder) -> B,
     ) -> RepositorySettingsBase {
         f(Self::builder()).build()
     }
@@ -1892,6 +1995,14 @@ impl RepositorySettingsBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RepositorySettingsBaseBuilder {
+    type Output = RepositorySettingsBase;
+
+    fn build(self) -> RepositorySettingsBase {
+        Self::build(self)
+    }
+}
+
 impl From<RepositorySettingsBaseBuilder> for RepositorySettingsBase {
     fn from(builder: RepositorySettingsBaseBuilder) -> Self {
         builder.build()
@@ -1914,19 +2025,28 @@ pub struct S3Repository {
 
 impl S3Repository {
     /// Creates a builder for [`S3Repository`].
+    ///
+    /// Required: `type`, `settings`.
     pub fn builder() -> S3RepositoryBuilder {
         S3RepositoryBuilder::new()
     }
 
     /// Creates a [`S3Repository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            S3RepositoryBuilder,
-        )
-            -> S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = S3Repository>>(
+        f: impl FnOnce(S3RepositoryBuilder) -> B,
     ) -> S3Repository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`S3RepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod s3_repository_members {
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`S3Repository`].
@@ -1972,7 +2092,7 @@ impl<S0, S1> S3RepositoryBuilder<(S0, S1)> {
 }
 
 impl<S1> S3RepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The S3 repository type.
+    /// **Required.** The S3 repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1984,7 +2104,7 @@ impl<S1> S3RepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> S3RepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The repository settings.
+    /// **Required.** The repository settings.
     ///
     /// NOTE: In addition to the specified settings, you can also use all non-secure client settings in the repository settings.
     /// In this case, the client settings found in the repository settings will be merged with those of the named client used by the repository.
@@ -1999,19 +2119,21 @@ impl<S0> S3RepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = S3RepositorySettings>>(
         self,
-        f: impl FnOnce(
-            S3RepositorySettingsBuilder,
-        ) -> S3RepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(S3RepositorySettingsBuilder) -> B,
     ) -> S3RepositoryBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(S3RepositorySettingsBuilder::new()).build())
     }
 }
 
-impl S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> S3RepositoryBuilder<(S0, S1)> {
     /// Builds a [`S3Repository`].
-    pub fn build(self) -> S3Repository {
+    pub fn build(self) -> S3Repository
+    where
+        S0: crate::typed::builder::IsSet<s3_repository_members::r#type>,
+        S1: crate::typed::builder::IsSet<s3_repository_members::settings>,
+    {
         S3Repository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -2020,26 +2142,26 @@ impl S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for S3Repository
+impl<S0, S1> crate::typed::builder::Build for S3RepositoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<s3_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<s3_repository_members::settings>,
 {
-    fn from(
-        builder: S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = S3Repository;
+
+    fn build(self) -> S3Repository {
+        Self::build(self)
     }
 }
 
-impl<S1> S3RepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> S3Repository { match r#type {} }
-}
-
-impl S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> S3Repository { match settings {} }
+impl<S0, S1> From<S3RepositoryBuilder<(S0, S1)>> for S3Repository
+where
+    S0: crate::typed::builder::IsSet<s3_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<s3_repository_members::settings>,
+{
+    fn from(builder: S3RepositoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2157,18 +2279,27 @@ pub struct S3RepositorySettings {
 
 impl S3RepositorySettings {
     /// Creates a builder for [`S3RepositorySettings`].
+    ///
+    /// Required: `bucket`.
     pub fn builder() -> S3RepositorySettingsBuilder {
         S3RepositorySettingsBuilder::new()
     }
 
     /// Creates a [`S3RepositorySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            S3RepositorySettingsBuilder,
-        ) -> S3RepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `bucket`.
+    pub fn of<B: crate::typed::builder::Build<Output = S3RepositorySettings>>(
+        f: impl FnOnce(S3RepositorySettingsBuilder) -> B,
     ) -> S3RepositorySettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`S3RepositorySettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod s3_repository_settings_members {
+    pub struct bucket;
 }
 
 /// Builder for [`S3RepositorySettings`].
@@ -2541,7 +2672,7 @@ impl<S0> S3RepositorySettingsBuilder<(S0,)> {
 }
 
 impl S3RepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the S3 bucket to use for snapshots.
+    /// **Required.** The name of the S3 bucket to use for snapshots.
     /// The bucket name must adhere to Amazon's S3 bucket naming rules.
     pub fn bucket(
         self,
@@ -2553,9 +2684,12 @@ impl S3RepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl S3RepositorySettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> S3RepositorySettingsBuilder<(S0,)> {
     /// Builds a [`S3RepositorySettings`].
-    pub fn build(self) -> S3RepositorySettings {
+    pub fn build(self) -> S3RepositorySettings
+    where
+        S0: crate::typed::builder::IsSet<s3_repository_settings_members::bucket>,
+    {
         S3RepositorySettings {
             chunk_size: self.chunk_size,
             compress: self.compress,
@@ -2581,16 +2715,24 @@ impl S3RepositorySettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<S3RepositorySettingsBuilder<(crate::typed::builder::Set,)>> for S3RepositorySettings {
-    fn from(builder: S3RepositorySettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for S3RepositorySettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<s3_repository_settings_members::bucket>,
+{
+    type Output = S3RepositorySettings;
+
+    fn build(self) -> S3RepositorySettings {
+        Self::build(self)
     }
 }
 
-impl S3RepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `bucket` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket: crate::typed::builder::MissingRequiredField) -> S3RepositorySettings { match bucket {} }
+impl<S0> From<S3RepositorySettingsBuilder<(S0,)>> for S3RepositorySettings
+where
+    S0: crate::typed::builder::IsSet<s3_repository_settings_members::bucket>,
+{
+    fn from(builder: S3RepositorySettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2611,25 +2753,32 @@ pub struct ShardsStats {
 
 impl ShardsStats {
     /// Creates a builder for [`ShardsStats`].
+    ///
+    /// Required: `done`, `failed`, `finalizing`, `initializing`, `started`, `total`.
     pub fn builder() -> ShardsStatsBuilder {
         ShardsStatsBuilder::new()
     }
 
     /// Creates a [`ShardsStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsStatsBuilder,
-        ) -> ShardsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `done`, `failed`, `finalizing`, `initializing`, `started`, `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsStats>>(
+        f: impl FnOnce(ShardsStatsBuilder) -> B,
     ) -> ShardsStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_stats_members {
+    pub struct done;
+    pub struct failed;
+    pub struct finalizing;
+    pub struct initializing;
+    pub struct started;
+    pub struct total;
 }
 
 /// Builder for [`ShardsStats`].
@@ -2691,7 +2840,7 @@ impl<S0, S1, S2, S3, S4, S5> ShardsStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// The number of shards that initialized, started, and finalized successfully.
+    /// **Required.** The number of shards that initialized, started, and finalized successfully.
     pub fn done(
         self,
         value: i64,
@@ -2703,7 +2852,7 @@ impl<S1, S2, S3, S4, S5> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2, S3, S4, S5> ShardsStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// The number of shards that failed to be included in the snapshot.
+    /// **Required.** The number of shards that failed to be included in the snapshot.
     pub fn failed(
         self,
         value: i64,
@@ -2715,7 +2864,7 @@ impl<S0, S2, S3, S4, S5> ShardsStatsBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3, S4, S5> ShardsStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// The number of shards that are finalizing but are not done.
+    /// **Required.** The number of shards that are finalizing but are not done.
     pub fn finalizing(
         self,
         value: i64,
@@ -2727,7 +2876,7 @@ impl<S0, S1, S3, S4, S5> ShardsStatsBuilder<(S0, S1, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S4, S5> ShardsStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// The number of shards that are still initializing.
+    /// **Required.** The number of shards that are still initializing.
     pub fn initializing(
         self,
         value: i64,
@@ -2739,7 +2888,7 @@ impl<S0, S1, S2, S4, S5> ShardsStatsBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3, S5> ShardsStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// The number of shards that have started but are not finalized.
+    /// **Required.** The number of shards that have started but are not finalized.
     pub fn started(
         self,
         value: i64,
@@ -2751,7 +2900,7 @@ impl<S0, S1, S2, S3, S5> ShardsStatsBuilder<(S0, S1, S2, S3, crate::typed::build
 }
 
 impl<S0, S1, S2, S3, S4> ShardsStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// The total number of shards included in the snapshot.
+    /// **Required.** The total number of shards included in the snapshot.
     pub fn total(
         self,
         value: i64,
@@ -2762,18 +2911,17 @@ impl<S0, S1, S2, S3, S4> ShardsStatsBuilder<(S0, S1, S2, S3, S4, crate::typed::b
     }
 }
 
-impl
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> ShardsStatsBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`ShardsStats`].
-    pub fn build(self) -> ShardsStats {
+    pub fn build(self) -> ShardsStats
+    where
+        S0: crate::typed::builder::IsSet<shards_stats_members::done>,
+        S1: crate::typed::builder::IsSet<shards_stats_members::failed>,
+        S2: crate::typed::builder::IsSet<shards_stats_members::finalizing>,
+        S3: crate::typed::builder::IsSet<shards_stats_members::initializing>,
+        S4: crate::typed::builder::IsSet<shards_stats_members::started>,
+        S5: crate::typed::builder::IsSet<shards_stats_members::total>,
+    {
         ShardsStats {
             done: self.done.unwrap(),
             failed: self.failed.unwrap(),
@@ -2785,111 +2933,35 @@ impl
     }
 }
 
-impl
-    From<
-        ShardsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsStats
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for ShardsStatsBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<shards_stats_members::done>,
+    S1: crate::typed::builder::IsSet<shards_stats_members::failed>,
+    S2: crate::typed::builder::IsSet<shards_stats_members::finalizing>,
+    S3: crate::typed::builder::IsSet<shards_stats_members::initializing>,
+    S4: crate::typed::builder::IsSet<shards_stats_members::started>,
+    S5: crate::typed::builder::IsSet<shards_stats_members::total>,
 {
-    fn from(
-        builder: ShardsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsStats;
+
+    fn build(self) -> ShardsStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `done` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, done: crate::typed::builder::MissingRequiredField) -> ShardsStats { match done {} }
-}
-
-impl<S2, S3, S4, S5>
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<ShardsStatsBuilder<(S0, S1, S2, S3, S4, S5)>> for ShardsStats
+where
+    S0: crate::typed::builder::IsSet<shards_stats_members::done>,
+    S1: crate::typed::builder::IsSet<shards_stats_members::failed>,
+    S2: crate::typed::builder::IsSet<shards_stats_members::finalizing>,
+    S3: crate::typed::builder::IsSet<shards_stats_members::initializing>,
+    S4: crate::typed::builder::IsSet<shards_stats_members::started>,
+    S5: crate::typed::builder::IsSet<shards_stats_members::total>,
 {
-    /// `failed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed: crate::typed::builder::MissingRequiredField) -> ShardsStats { match failed {} }
-}
-
-impl<S3, S4, S5>
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `finalizing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, finalizing: crate::typed::builder::MissingRequiredField) -> ShardsStats { match finalizing {} }
-}
-
-impl<S4, S5>
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `initializing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initializing: crate::typed::builder::MissingRequiredField) -> ShardsStats { match initializing {} }
-}
-
-impl<S5>
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `started` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, started: crate::typed::builder::MissingRequiredField) -> ShardsStats { match started {} }
-}
-
-impl
-    ShardsStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> ShardsStats { match total {} }
+    fn from(builder: ShardsStatsBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2923,23 +2995,30 @@ pub struct ShardsStatsSummary {
 
 impl ShardsStatsSummary {
     /// Creates a builder for [`ShardsStatsSummary`].
+    ///
+    /// Required: `incremental`, `total`, `start_time_in_millis`, `time_in_millis`.
     pub fn builder() -> ShardsStatsSummaryBuilder {
         ShardsStatsSummaryBuilder::new()
     }
 
     /// Creates a [`ShardsStatsSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsStatsSummaryBuilder,
-        ) -> ShardsStatsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `incremental`, `total`, `start_time_in_millis`, `time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsStatsSummary>>(
+        f: impl FnOnce(ShardsStatsSummaryBuilder) -> B,
     ) -> ShardsStatsSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsStatsSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_stats_summary_members {
+    pub struct incremental;
+    pub struct total;
+    pub struct start_time_in_millis;
+    pub struct time_in_millis;
 }
 
 /// Builder for [`ShardsStatsSummary`].
@@ -3005,6 +3084,7 @@ impl<S0, S1, S2, S3> ShardsStatsSummaryBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ShardsStatsSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn incremental(
         self,
         value: impl Into<ShardsStatsSummaryItem>,
@@ -3015,20 +3095,16 @@ impl<S1, S2, S3> ShardsStatsSummaryBuilder<(crate::typed::builder::NotSet, S1, S
     }
 
     /// Sets [`incremental`](Self::incremental) with a builder.
-    pub fn incremental_with(
+    pub fn incremental_with<B: crate::typed::builder::Build<Output = ShardsStatsSummaryItem>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsSummaryItemBuilder,
-        ) -> ShardsStatsSummaryItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsStatsSummaryItemBuilder) -> B,
     ) -> ShardsStatsSummaryBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.incremental(f(ShardsStatsSummaryItemBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> ShardsStatsSummaryBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn total(
         self,
         value: impl Into<ShardsStatsSummaryItem>,
@@ -3039,20 +3115,16 @@ impl<S0, S2, S3> ShardsStatsSummaryBuilder<(S0, crate::typed::builder::NotSet, S
     }
 
     /// Sets [`total`](Self::total) with a builder.
-    pub fn total_with(
+    pub fn total_with<B: crate::typed::builder::Build<Output = ShardsStatsSummaryItem>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsSummaryItemBuilder,
-        ) -> ShardsStatsSummaryItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsStatsSummaryItemBuilder) -> B,
     ) -> ShardsStatsSummaryBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.total(f(ShardsStatsSummaryItemBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> ShardsStatsSummaryBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -3064,6 +3136,7 @@ impl<S0, S1, S3> ShardsStatsSummaryBuilder<(S0, S1, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2> ShardsStatsSummaryBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3074,16 +3147,15 @@ impl<S0, S1, S2> ShardsStatsSummaryBuilder<(S0, S1, S2, crate::typed::builder::N
     }
 }
 
-impl
-    ShardsStatsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ShardsStatsSummaryBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ShardsStatsSummary`].
-    pub fn build(self) -> ShardsStatsSummary {
+    pub fn build(self) -> ShardsStatsSummary
+    where
+        S0: crate::typed::builder::IsSet<shards_stats_summary_members::incremental>,
+        S1: crate::typed::builder::IsSet<shards_stats_summary_members::total>,
+        S2: crate::typed::builder::IsSet<shards_stats_summary_members::start_time_in_millis>,
+        S3: crate::typed::builder::IsSet<shards_stats_summary_members::time_in_millis>,
+    {
         ShardsStatsSummary {
             incremental: self.incremental.unwrap(),
             total: self.total.unwrap(),
@@ -3094,71 +3166,30 @@ impl
     }
 }
 
-impl
-    From<
-        ShardsStatsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsStatsSummary
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ShardsStatsSummaryBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<shards_stats_summary_members::incremental>,
+    S1: crate::typed::builder::IsSet<shards_stats_summary_members::total>,
+    S2: crate::typed::builder::IsSet<shards_stats_summary_members::start_time_in_millis>,
+    S3: crate::typed::builder::IsSet<shards_stats_summary_members::time_in_millis>,
 {
-    fn from(
-        builder: ShardsStatsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsStatsSummary;
+
+    fn build(self) -> ShardsStatsSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ShardsStatsSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `incremental` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, incremental: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummary { match incremental {} }
-}
-
-impl<S2, S3>
-    ShardsStatsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ShardsStatsSummaryBuilder<(S0, S1, S2, S3)>> for ShardsStatsSummary
+where
+    S0: crate::typed::builder::IsSet<shards_stats_summary_members::incremental>,
+    S1: crate::typed::builder::IsSet<shards_stats_summary_members::total>,
+    S2: crate::typed::builder::IsSet<shards_stats_summary_members::start_time_in_millis>,
+    S3: crate::typed::builder::IsSet<shards_stats_summary_members::time_in_millis>,
 {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummary { match total {} }
-}
-
-impl<S3>
-    ShardsStatsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummary { match start_time_in_millis {} }
-}
-
-impl
-    ShardsStatsSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_in_millis: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummary { match time_in_millis {} }
+    fn from(builder: ShardsStatsSummaryBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3169,21 +3200,28 @@ pub struct ShardsStatsSummaryItem {
 
 impl ShardsStatsSummaryItem {
     /// Creates a builder for [`ShardsStatsSummaryItem`].
+    ///
+    /// Required: `file_count`, `size_in_bytes`.
     pub fn builder() -> ShardsStatsSummaryItemBuilder {
         ShardsStatsSummaryItemBuilder::new()
     }
 
     /// Creates a [`ShardsStatsSummaryItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsStatsSummaryItemBuilder,
-        ) -> ShardsStatsSummaryItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `file_count`, `size_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsStatsSummaryItem>>(
+        f: impl FnOnce(ShardsStatsSummaryItemBuilder) -> B,
     ) -> ShardsStatsSummaryItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsStatsSummaryItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_stats_summary_item_members {
+    pub struct file_count;
+    pub struct size_in_bytes;
 }
 
 /// Builder for [`ShardsStatsSummaryItem`].
@@ -3217,6 +3255,7 @@ impl<S0, S1> ShardsStatsSummaryItemBuilder<(S0, S1)> {
 }
 
 impl<S1> ShardsStatsSummaryItemBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn file_count(
         self,
         value: i64,
@@ -3228,6 +3267,7 @@ impl<S1> ShardsStatsSummaryItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ShardsStatsSummaryItemBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn size_in_bytes(
         self,
         value: i64,
@@ -3238,9 +3278,13 @@ impl<S0> ShardsStatsSummaryItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ShardsStatsSummaryItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ShardsStatsSummaryItemBuilder<(S0, S1)> {
     /// Builds a [`ShardsStatsSummaryItem`].
-    pub fn build(self) -> ShardsStatsSummaryItem {
+    pub fn build(self) -> ShardsStatsSummaryItem
+    where
+        S0: crate::typed::builder::IsSet<shards_stats_summary_item_members::file_count>,
+        S1: crate::typed::builder::IsSet<shards_stats_summary_item_members::size_in_bytes>,
+    {
         ShardsStatsSummaryItem {
             file_count: self.file_count.unwrap(),
             size_in_bytes: self.size_in_bytes.unwrap(),
@@ -3248,29 +3292,26 @@ impl ShardsStatsSummaryItemBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<ShardsStatsSummaryItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ShardsStatsSummaryItem
+impl<S0, S1> crate::typed::builder::Build for ShardsStatsSummaryItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shards_stats_summary_item_members::file_count>,
+    S1: crate::typed::builder::IsSet<shards_stats_summary_item_members::size_in_bytes>,
 {
-    fn from(
-        builder: ShardsStatsSummaryItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsStatsSummaryItem;
+
+    fn build(self) -> ShardsStatsSummaryItem {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardsStatsSummaryItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `file_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, file_count: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummaryItem { match file_count {} }
-}
-
-impl ShardsStatsSummaryItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_in_bytes: crate::typed::builder::MissingRequiredField) -> ShardsStatsSummaryItem { match size_in_bytes {} }
+impl<S0, S1> From<ShardsStatsSummaryItemBuilder<(S0, S1)>> for ShardsStatsSummaryItem
+where
+    S0: crate::typed::builder::IsSet<shards_stats_summary_item_members::file_count>,
+    S1: crate::typed::builder::IsSet<shards_stats_summary_item_members::size_in_bytes>,
+{
+    fn from(builder: ShardsStatsSummaryItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3285,21 +3326,28 @@ pub struct SharedFileSystemRepository {
 
 impl SharedFileSystemRepository {
     /// Creates a builder for [`SharedFileSystemRepository`].
+    ///
+    /// Required: `type`, `settings`.
     pub fn builder() -> SharedFileSystemRepositoryBuilder {
         SharedFileSystemRepositoryBuilder::new()
     }
 
     /// Creates a [`SharedFileSystemRepository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SharedFileSystemRepositoryBuilder,
-        ) -> SharedFileSystemRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = SharedFileSystemRepository>>(
+        f: impl FnOnce(SharedFileSystemRepositoryBuilder) -> B,
     ) -> SharedFileSystemRepository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SharedFileSystemRepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shared_file_system_repository_members {
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`SharedFileSystemRepository`].
@@ -3352,7 +3400,7 @@ impl<S0, S1> SharedFileSystemRepositoryBuilder<(S0, S1)> {
 }
 
 impl<S1> SharedFileSystemRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The shared file system repository type.
+    /// **Required.** The shared file system repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3364,7 +3412,7 @@ impl<S1> SharedFileSystemRepositoryBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> SharedFileSystemRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The repository settings.
+    /// **Required.** The repository settings.
     pub fn settings(
         self,
         value: impl Into<SharedFileSystemRepositorySettings>,
@@ -3375,20 +3423,23 @@ impl<S0> SharedFileSystemRepositoryBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = SharedFileSystemRepositorySettings>,
+    >(
         self,
-        f: impl FnOnce(
-            SharedFileSystemRepositorySettingsBuilder,
-        )
-            -> SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SharedFileSystemRepositorySettingsBuilder) -> B,
     ) -> SharedFileSystemRepositoryBuilder<(S0, crate::typed::builder::Set)> {
         self.settings(f(SharedFileSystemRepositorySettingsBuilder::new()).build())
     }
 }
 
-impl SharedFileSystemRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SharedFileSystemRepositoryBuilder<(S0, S1)> {
     /// Builds a [`SharedFileSystemRepository`].
-    pub fn build(self) -> SharedFileSystemRepository {
+    pub fn build(self) -> SharedFileSystemRepository
+    where
+        S0: crate::typed::builder::IsSet<shared_file_system_repository_members::r#type>,
+        S1: crate::typed::builder::IsSet<shared_file_system_repository_members::settings>,
+    {
         SharedFileSystemRepository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -3397,33 +3448,26 @@ impl SharedFileSystemRepositoryBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        SharedFileSystemRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for SharedFileSystemRepository
+impl<S0, S1> crate::typed::builder::Build for SharedFileSystemRepositoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shared_file_system_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<shared_file_system_repository_members::settings>,
 {
-    fn from(
-        builder: SharedFileSystemRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SharedFileSystemRepository;
+
+    fn build(self) -> SharedFileSystemRepository {
+        Self::build(self)
     }
 }
 
-impl<S1> SharedFileSystemRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SharedFileSystemRepository { match r#type {} }
-}
-
-impl
-    SharedFileSystemRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<SharedFileSystemRepositoryBuilder<(S0, S1)>> for SharedFileSystemRepository
+where
+    S0: crate::typed::builder::IsSet<shared_file_system_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<shared_file_system_repository_members::settings>,
 {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> SharedFileSystemRepository { match settings {} }
+    fn from(builder: SharedFileSystemRepositoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3473,19 +3517,27 @@ pub struct SharedFileSystemRepositorySettings {
 
 impl SharedFileSystemRepositorySettings {
     /// Creates a builder for [`SharedFileSystemRepositorySettings`].
+    ///
+    /// Required: `location`.
     pub fn builder() -> SharedFileSystemRepositorySettingsBuilder {
         SharedFileSystemRepositorySettingsBuilder::new()
     }
 
     /// Creates a [`SharedFileSystemRepositorySettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SharedFileSystemRepositorySettingsBuilder,
-        )
-            -> SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `location`.
+    pub fn of<B: crate::typed::builder::Build<Output = SharedFileSystemRepositorySettings>>(
+        f: impl FnOnce(SharedFileSystemRepositorySettingsBuilder) -> B,
     ) -> SharedFileSystemRepositorySettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SharedFileSystemRepositorySettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shared_file_system_repository_settings_members {
+    pub struct location;
 }
 
 /// Builder for [`SharedFileSystemRepositorySettings`].
@@ -3635,7 +3687,7 @@ impl<S0> SharedFileSystemRepositorySettingsBuilder<(S0,)> {
 }
 
 impl SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The location of the shared filesystem used to store and retrieve snapshots.
+    /// **Required.** The location of the shared filesystem used to store and retrieve snapshots.
     /// This location must be registered in the `path.repo` setting on all master and data nodes in the cluster.
     /// Unlike `path.repo`, this setting supports only a single file path.
     pub fn location(
@@ -3648,9 +3700,12 @@ impl SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::NotSet,)>
     }
 }
 
-impl SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SharedFileSystemRepositorySettingsBuilder<(S0,)> {
     /// Builds a [`SharedFileSystemRepositorySettings`].
-    pub fn build(self) -> SharedFileSystemRepositorySettings {
+    pub fn build(self) -> SharedFileSystemRepositorySettings
+    where
+        S0: crate::typed::builder::IsSet<shared_file_system_repository_settings_members::location>,
+    {
         SharedFileSystemRepositorySettings {
             chunk_size: self.chunk_size,
             compress: self.compress,
@@ -3663,20 +3718,25 @@ impl SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)>>
-    for SharedFileSystemRepositorySettings
+impl<S0> crate::typed::builder::Build for SharedFileSystemRepositorySettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<shared_file_system_repository_settings_members::location>,
 {
-    fn from(
-        builder: SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = SharedFileSystemRepositorySettings;
+
+    fn build(self) -> SharedFileSystemRepositorySettings {
+        Self::build(self)
     }
 }
 
-impl SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `location` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, location: crate::typed::builder::MissingRequiredField) -> SharedFileSystemRepositorySettings { match location {} }
+impl<S0> From<SharedFileSystemRepositorySettingsBuilder<(S0,)>>
+    for SharedFileSystemRepositorySettings
+where
+    S0: crate::typed::builder::IsSet<shared_file_system_repository_settings_members::location>,
+{
+    fn from(builder: SharedFileSystemRepositorySettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3688,22 +3748,29 @@ pub struct SnapshotIndexStats {
 
 impl SnapshotIndexStats {
     /// Creates a builder for [`SnapshotIndexStats`].
+    ///
+    /// Required: `shards`, `shards_stats`, `stats`.
     pub fn builder() -> SnapshotIndexStatsBuilder {
         SnapshotIndexStatsBuilder::new()
     }
 
     /// Creates a [`SnapshotIndexStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotIndexStatsBuilder,
-        ) -> SnapshotIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `shards`, `shards_stats`, `stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotIndexStats>>(
+        f: impl FnOnce(SnapshotIndexStatsBuilder) -> B,
     ) -> SnapshotIndexStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotIndexStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_index_stats_members {
+    pub struct shards;
+    pub struct shards_stats;
+    pub struct stats;
 }
 
 /// Builder for [`SnapshotIndexStats`].
@@ -3750,6 +3817,7 @@ impl<S0, S1, S2> SnapshotIndexStatsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<indexmap::IndexMap<String, SnapshotShardsStatus>>,
@@ -3774,15 +3842,10 @@ impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = SnapshotShardsStatus>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SnapshotShardsStatusBuilder,
-        ) -> SnapshotShardsStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotShardsStatusBuilder) -> B,
     ) -> SnapshotIndexStatsBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.add_shards(key, f(SnapshotShardsStatusBuilder::new()).build())
     }
@@ -3802,21 +3865,17 @@ impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::Set, S1, S2)> {
     }
 
     /// Adds an entry to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = SnapshotShardsStatus>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SnapshotShardsStatusBuilder,
-        ) -> SnapshotShardsStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotShardsStatusBuilder) -> B,
     ) -> Self {
         self.add_shards(key, f(SnapshotShardsStatusBuilder::new()).build())
     }
 }
 
 impl<S0, S2> SnapshotIndexStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn shards_stats(
         self,
         value: impl Into<ShardsStats>,
@@ -3827,24 +3886,16 @@ impl<S0, S2> SnapshotIndexStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> 
     }
 
     /// Sets [`shards_stats`](Self::shards_stats) with a builder.
-    pub fn shards_stats_with(
+    pub fn shards_stats_with<B: crate::typed::builder::Build<Output = ShardsStats>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsBuilder,
-        ) -> ShardsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsStatsBuilder) -> B,
     ) -> SnapshotIndexStatsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.shards_stats(f(ShardsStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> SnapshotIndexStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stats(
         self,
         value: impl Into<SnapshotStats>,
@@ -3855,30 +3906,22 @@ impl<S0, S1> SnapshotIndexStatsBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = SnapshotStats>>(
         self,
-        f: impl FnOnce(
-            SnapshotStatsBuilder,
-        ) -> SnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotStatsBuilder) -> B,
     ) -> SnapshotIndexStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.stats(f(SnapshotStatsBuilder::new()).build())
     }
 }
 
-impl
-    SnapshotIndexStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> SnapshotIndexStatsBuilder<(S0, S1, S2)> {
     /// Builds a [`SnapshotIndexStats`].
-    pub fn build(self) -> SnapshotIndexStats {
+    pub fn build(self) -> SnapshotIndexStats
+    where
+        S0: crate::typed::builder::IsSet<snapshot_index_stats_members::shards>,
+        S1: crate::typed::builder::IsSet<snapshot_index_stats_members::shards_stats>,
+        S2: crate::typed::builder::IsSet<snapshot_index_stats_members::stats>,
+    {
         SnapshotIndexStats {
             shards: self.shards.unwrap(),
             shards_stats: self.shards_stats.unwrap(),
@@ -3887,54 +3930,28 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotIndexStats
+impl<S0, S1, S2> crate::typed::builder::Build for SnapshotIndexStatsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_index_stats_members::shards>,
+    S1: crate::typed::builder::IsSet<snapshot_index_stats_members::shards_stats>,
+    S2: crate::typed::builder::IsSet<snapshot_index_stats_members::stats>,
 {
-    fn from(
-        builder: SnapshotIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotIndexStats;
+
+    fn build(self) -> SnapshotIndexStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> SnapshotIndexStats { match shards {} }
-}
-
-impl<S2>
-    SnapshotIndexStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<SnapshotIndexStatsBuilder<(S0, S1, S2)>> for SnapshotIndexStats
+where
+    S0: crate::typed::builder::IsSet<snapshot_index_stats_members::shards>,
+    S1: crate::typed::builder::IsSet<snapshot_index_stats_members::shards_stats>,
+    S2: crate::typed::builder::IsSet<snapshot_index_stats_members::stats>,
 {
-    /// `shards_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards_stats: crate::typed::builder::MissingRequiredField) -> SnapshotIndexStats { match shards_stats {} }
-}
-
-impl
-    SnapshotIndexStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> SnapshotIndexStats { match stats {} }
+    fn from(builder: SnapshotIndexStatsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3982,22 +3999,29 @@ pub struct SnapshotInfo {
 
 impl SnapshotInfo {
     /// Creates a builder for [`SnapshotInfo`].
+    ///
+    /// Required: `data_streams`, `snapshot`, `uuid`.
     pub fn builder() -> SnapshotInfoBuilder {
         SnapshotInfoBuilder::new()
     }
 
     /// Creates a [`SnapshotInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotInfoBuilder,
-        ) -> SnapshotInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `data_streams`, `snapshot`, `uuid`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotInfo>>(
+        f: impl FnOnce(SnapshotInfoBuilder) -> B,
     ) -> SnapshotInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_info_members {
+    pub struct data_streams;
+    pub struct snapshot;
+    pub struct uuid;
 }
 
 /// Builder for [`SnapshotInfo`].
@@ -4172,17 +4196,9 @@ impl<S0, S1, S2> SnapshotInfoBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`failures`](Self::failures), with a builder.
-    pub fn add_failures_with(
+    pub fn add_failures_with<B: crate::typed::builder::Build<Output = SnapshotShardFailure>>(
         self,
-        f: impl FnOnce(
-            SnapshotShardFailureBuilder,
-        ) -> SnapshotShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotShardFailureBuilder) -> B,
     ) -> Self {
         self.add_failures(f(SnapshotShardFailureBuilder::new()).build())
     }
@@ -4247,16 +4263,10 @@ impl<S0, S1, S2> SnapshotInfoBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an entry to [`index_details`](Self::index_details), with a builder.
-    pub fn add_index_details_with(
+    pub fn add_index_details_with<B: crate::typed::builder::Build<Output = IndexDetails>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            IndexDetailsBuilder,
-        ) -> IndexDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexDetailsBuilder) -> B,
     ) -> Self {
         self.add_index_details(key, f(IndexDetailsBuilder::new()).build())
     }
@@ -4318,15 +4328,11 @@ impl<S0, S1, S2> SnapshotInfoBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> Self {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
@@ -4412,20 +4418,16 @@ impl<S0, S1, S2> SnapshotInfoBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`feature_states`](Self::feature_states), with a builder.
-    pub fn add_feature_states_with(
+    pub fn add_feature_states_with<B: crate::typed::builder::Build<Output = InfoFeatureState>>(
         self,
-        f: impl FnOnce(
-            InfoFeatureStateBuilder,
-        ) -> InfoFeatureStateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(InfoFeatureStateBuilder) -> B,
     ) -> Self {
         self.add_feature_states(f(InfoFeatureStateBuilder::new()).build())
     }
 }
 
 impl<S1, S2> SnapshotInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn data_streams(
         self,
         value: impl Into<Vec<String>>,
@@ -4460,6 +4462,7 @@ impl<S1, S2> SnapshotInfoBuilder<(crate::typed::builder::Set, S1, S2)> {
 }
 
 impl<S0, S2> SnapshotInfoBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn snapshot(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -4471,6 +4474,7 @@ impl<S0, S2> SnapshotInfoBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> SnapshotInfoBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn uuid(
         self,
         value: impl Into<crate::typed::_types::Uuid>,
@@ -4481,15 +4485,14 @@ impl<S0, S1> SnapshotInfoBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    SnapshotInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> SnapshotInfoBuilder<(S0, S1, S2)> {
     /// Builds a [`SnapshotInfo`].
-    pub fn build(self) -> SnapshotInfo {
+    pub fn build(self) -> SnapshotInfo
+    where
+        S0: crate::typed::builder::IsSet<snapshot_info_members::data_streams>,
+        S1: crate::typed::builder::IsSet<snapshot_info_members::snapshot>,
+        S2: crate::typed::builder::IsSet<snapshot_info_members::uuid>,
+    {
         SnapshotInfo {
             data_streams: self.data_streams.unwrap(),
             duration: self.duration,
@@ -4516,54 +4519,28 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotInfo
+impl<S0, S1, S2> crate::typed::builder::Build for SnapshotInfoBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_info_members::data_streams>,
+    S1: crate::typed::builder::IsSet<snapshot_info_members::snapshot>,
+    S2: crate::typed::builder::IsSet<snapshot_info_members::uuid>,
 {
-    fn from(
-        builder: SnapshotInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotInfo;
+
+    fn build(self) -> SnapshotInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> SnapshotInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `data_streams` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_streams: crate::typed::builder::MissingRequiredField) -> SnapshotInfo { match data_streams {} }
-}
-
-impl<S2>
-    SnapshotInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<SnapshotInfoBuilder<(S0, S1, S2)>> for SnapshotInfo
+where
+    S0: crate::typed::builder::IsSet<snapshot_info_members::data_streams>,
+    S1: crate::typed::builder::IsSet<snapshot_info_members::snapshot>,
+    S2: crate::typed::builder::IsSet<snapshot_info_members::uuid>,
 {
-    /// `snapshot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot: crate::typed::builder::MissingRequiredField) -> SnapshotInfo { match snapshot {} }
-}
-
-impl
-    SnapshotInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uuid: crate::typed::builder::MissingRequiredField) -> SnapshotInfo { match uuid {} }
+    fn from(builder: SnapshotInfoBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4579,24 +4556,31 @@ pub struct SnapshotShardFailure {
 
 impl SnapshotShardFailure {
     /// Creates a builder for [`SnapshotShardFailure`].
+    ///
+    /// Required: `index`, `reason`, `shard_id`, `index_uuid`, `status`.
     pub fn builder() -> SnapshotShardFailureBuilder {
         SnapshotShardFailureBuilder::new()
     }
 
     /// Creates a [`SnapshotShardFailure`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotShardFailureBuilder,
-        ) -> SnapshotShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `reason`, `shard_id`, `index_uuid`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotShardFailure>>(
+        f: impl FnOnce(SnapshotShardFailureBuilder) -> B,
     ) -> SnapshotShardFailure {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotShardFailureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_shard_failure_members {
+    pub struct index;
+    pub struct reason;
+    pub struct shard_id;
+    pub struct index_uuid;
+    pub struct status;
 }
 
 /// Builder for [`SnapshotShardFailure`].
@@ -4667,6 +4651,7 @@ impl<S0, S1, S2, S3, S4> SnapshotShardFailureBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> SnapshotShardFailureBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -4678,6 +4663,7 @@ impl<S1, S2, S3, S4> SnapshotShardFailureBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0, S2, S3, S4> SnapshotShardFailureBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<String>,
@@ -4689,6 +4675,7 @@ impl<S0, S2, S3, S4> SnapshotShardFailureBuilder<(S0, crate::typed::builder::Not
 }
 
 impl<S0, S1, S3, S4> SnapshotShardFailureBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn shard_id(
         self,
         value: i32,
@@ -4700,6 +4687,7 @@ impl<S0, S1, S3, S4> SnapshotShardFailureBuilder<(S0, S1, crate::typed::builder:
 }
 
 impl<S0, S1, S2, S4> SnapshotShardFailureBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn index_uuid(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -4711,6 +4699,7 @@ impl<S0, S1, S2, S4> SnapshotShardFailureBuilder<(S0, S1, S2, crate::typed::buil
 }
 
 impl<S0, S1, S2, S3> SnapshotShardFailureBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<String>,
@@ -4721,17 +4710,16 @@ impl<S0, S1, S2, S3> SnapshotShardFailureBuilder<(S0, S1, S2, S3, crate::typed::
     }
 }
 
-impl
-    SnapshotShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> SnapshotShardFailureBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`SnapshotShardFailure`].
-    pub fn build(self) -> SnapshotShardFailure {
+    pub fn build(self) -> SnapshotShardFailure
+    where
+        S0: crate::typed::builder::IsSet<snapshot_shard_failure_members::index>,
+        S1: crate::typed::builder::IsSet<snapshot_shard_failure_members::reason>,
+        S2: crate::typed::builder::IsSet<snapshot_shard_failure_members::shard_id>,
+        S3: crate::typed::builder::IsSet<snapshot_shard_failure_members::index_uuid>,
+        S4: crate::typed::builder::IsSet<snapshot_shard_failure_members::status>,
+    {
         SnapshotShardFailure {
             index: self.index.unwrap(),
             node_id: self.node_id,
@@ -4743,90 +4731,34 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotShardFailure
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for SnapshotShardFailureBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_shard_failure_members::index>,
+    S1: crate::typed::builder::IsSet<snapshot_shard_failure_members::reason>,
+    S2: crate::typed::builder::IsSet<snapshot_shard_failure_members::shard_id>,
+    S3: crate::typed::builder::IsSet<snapshot_shard_failure_members::index_uuid>,
+    S4: crate::typed::builder::IsSet<snapshot_shard_failure_members::status>,
 {
-    fn from(
-        builder: SnapshotShardFailureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotShardFailure;
+
+    fn build(self) -> SnapshotShardFailure {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> SnapshotShardFailureBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> SnapshotShardFailure { match index {} }
-}
-
-impl<S2, S3, S4>
-    SnapshotShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<SnapshotShardFailureBuilder<(S0, S1, S2, S3, S4)>>
+    for SnapshotShardFailure
+where
+    S0: crate::typed::builder::IsSet<snapshot_shard_failure_members::index>,
+    S1: crate::typed::builder::IsSet<snapshot_shard_failure_members::reason>,
+    S2: crate::typed::builder::IsSet<snapshot_shard_failure_members::shard_id>,
+    S3: crate::typed::builder::IsSet<snapshot_shard_failure_members::index_uuid>,
+    S4: crate::typed::builder::IsSet<snapshot_shard_failure_members::status>,
 {
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> SnapshotShardFailure { match reason {} }
-}
-
-impl<S3, S4>
-    SnapshotShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `shard_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_id: crate::typed::builder::MissingRequiredField) -> SnapshotShardFailure { match shard_id {} }
-}
-
-impl<S4>
-    SnapshotShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `index_uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_uuid: crate::typed::builder::MissingRequiredField) -> SnapshotShardFailure { match index_uuid {} }
-}
-
-impl
-    SnapshotShardFailureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> SnapshotShardFailure { match status {} }
+    fn from(builder: SnapshotShardFailureBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4837,21 +4769,28 @@ pub struct SnapshotShardsStatus {
 
 impl SnapshotShardsStatus {
     /// Creates a builder for [`SnapshotShardsStatus`].
+    ///
+    /// Required: `stage`, `stats`.
     pub fn builder() -> SnapshotShardsStatusBuilder {
         SnapshotShardsStatusBuilder::new()
     }
 
     /// Creates a [`SnapshotShardsStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotShardsStatusBuilder,
-        ) -> SnapshotShardsStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `stage`, `stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotShardsStatus>>(
+        f: impl FnOnce(SnapshotShardsStatusBuilder) -> B,
     ) -> SnapshotShardsStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotShardsStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_shards_status_members {
+    pub struct stage;
+    pub struct stats;
 }
 
 /// Builder for [`SnapshotShardsStatus`].
@@ -4885,6 +4824,7 @@ impl<S0, S1> SnapshotShardsStatusBuilder<(S0, S1)> {
 }
 
 impl<S1> SnapshotShardsStatusBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn stage(
         self,
         value: impl Into<ShardsStatsStage>,
@@ -4896,6 +4836,7 @@ impl<S1> SnapshotShardsStatusBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SnapshotShardsStatusBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stats(
         self,
         value: impl Into<ShardsStatsSummary>,
@@ -4906,24 +4847,21 @@ impl<S0> SnapshotShardsStatusBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = ShardsStatsSummary>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsSummaryBuilder,
-        ) -> ShardsStatsSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsStatsSummaryBuilder) -> B,
     ) -> SnapshotShardsStatusBuilder<(S0, crate::typed::builder::Set)> {
         self.stats(f(ShardsStatsSummaryBuilder::new()).build())
     }
 }
 
-impl SnapshotShardsStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SnapshotShardsStatusBuilder<(S0, S1)> {
     /// Builds a [`SnapshotShardsStatus`].
-    pub fn build(self) -> SnapshotShardsStatus {
+    pub fn build(self) -> SnapshotShardsStatus
+    where
+        S0: crate::typed::builder::IsSet<snapshot_shards_status_members::stage>,
+        S1: crate::typed::builder::IsSet<snapshot_shards_status_members::stats>,
+    {
         SnapshotShardsStatus {
             stage: self.stage.unwrap(),
             stats: self.stats.unwrap(),
@@ -4931,29 +4869,26 @@ impl SnapshotShardsStatusBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<SnapshotShardsStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SnapshotShardsStatus
+impl<S0, S1> crate::typed::builder::Build for SnapshotShardsStatusBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_shards_status_members::stage>,
+    S1: crate::typed::builder::IsSet<snapshot_shards_status_members::stats>,
 {
-    fn from(
-        builder: SnapshotShardsStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotShardsStatus;
+
+    fn build(self) -> SnapshotShardsStatus {
+        Self::build(self)
     }
 }
 
-impl<S1> SnapshotShardsStatusBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `stage` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stage: crate::typed::builder::MissingRequiredField) -> SnapshotShardsStatus { match stage {} }
-}
-
-impl SnapshotShardsStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> SnapshotShardsStatus { match stats {} }
+impl<S0, S1> From<SnapshotShardsStatusBuilder<(S0, S1)>> for SnapshotShardsStatus
+where
+    S0: crate::typed::builder::IsSet<snapshot_shards_status_members::stage>,
+    S1: crate::typed::builder::IsSet<snapshot_shards_status_members::stats>,
+{
+    fn from(builder: SnapshotShardsStatusBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5010,23 +4945,30 @@ pub struct SnapshotStats {
 
 impl SnapshotStats {
     /// Creates a builder for [`SnapshotStats`].
+    ///
+    /// Required: `incremental`, `start_time_in_millis`, `time_in_millis`, `total`.
     pub fn builder() -> SnapshotStatsBuilder {
         SnapshotStatsBuilder::new()
     }
 
     /// Creates a [`SnapshotStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotStatsBuilder,
-        ) -> SnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `incremental`, `start_time_in_millis`, `time_in_millis`, `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotStats>>(
+        f: impl FnOnce(SnapshotStatsBuilder) -> B,
     ) -> SnapshotStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_stats_members {
+    pub struct incremental;
+    pub struct start_time_in_millis;
+    pub struct time_in_millis;
+    pub struct total;
 }
 
 /// Builder for [`SnapshotStats`].
@@ -5092,7 +5034,7 @@ impl<S0, S1, S2, S3> SnapshotStatsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> SnapshotStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The number and size of files that still need to be copied as part of the incremental snapshot.
+    /// **Required.** The number and size of files that still need to be copied as part of the incremental snapshot.
     /// For completed snapshots, this property indicates the number and size of files that were not already in the repository and were copied as part of the incremental snapshot.
     pub fn incremental(
         self,
@@ -5104,21 +5046,16 @@ impl<S1, S2, S3> SnapshotStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3
     }
 
     /// Sets [`incremental`](Self::incremental) with a builder.
-    pub fn incremental_with(
+    pub fn incremental_with<B: crate::typed::builder::Build<Output = FileCountSnapshotStats>>(
         self,
-        f: impl FnOnce(
-            FileCountSnapshotStatsBuilder,
-        ) -> FileCountSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FileCountSnapshotStatsBuilder) -> B,
     ) -> SnapshotStatsBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.incremental(f(FileCountSnapshotStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> SnapshotStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The time, in milliseconds, when the snapshot creation process started.
+    /// **Required.** The time, in milliseconds, when the snapshot creation process started.
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -5130,7 +5067,7 @@ impl<S0, S2, S3> SnapshotStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> SnapshotStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The total time, in milliseconds, that it took for the snapshot process to complete.
+    /// **Required.** The total time, in milliseconds, that it took for the snapshot process to complete.
     pub fn time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -5142,7 +5079,7 @@ impl<S0, S1, S3> SnapshotStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> SnapshotStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The total number and size of files that are referenced by the snapshot.
+    /// **Required.** The total number and size of files that are referenced by the snapshot.
     pub fn total(
         self,
         value: impl Into<FileCountSnapshotStats>,
@@ -5153,29 +5090,23 @@ impl<S0, S1, S2> SnapshotStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 
     /// Sets [`total`](Self::total) with a builder.
-    pub fn total_with(
+    pub fn total_with<B: crate::typed::builder::Build<Output = FileCountSnapshotStats>>(
         self,
-        f: impl FnOnce(
-            FileCountSnapshotStatsBuilder,
-        ) -> FileCountSnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FileCountSnapshotStatsBuilder) -> B,
     ) -> SnapshotStatsBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.total(f(FileCountSnapshotStatsBuilder::new()).build())
     }
 }
 
-impl
-    SnapshotStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> SnapshotStatsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`SnapshotStats`].
-    pub fn build(self) -> SnapshotStats {
+    pub fn build(self) -> SnapshotStats
+    where
+        S0: crate::typed::builder::IsSet<snapshot_stats_members::incremental>,
+        S1: crate::typed::builder::IsSet<snapshot_stats_members::start_time_in_millis>,
+        S2: crate::typed::builder::IsSet<snapshot_stats_members::time_in_millis>,
+        S3: crate::typed::builder::IsSet<snapshot_stats_members::total>,
+    {
         SnapshotStats {
             incremental: self.incremental.unwrap(),
             start_time_in_millis: self.start_time_in_millis.unwrap(),
@@ -5186,71 +5117,30 @@ impl
     }
 }
 
-impl
-    From<
-        SnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SnapshotStats
+impl<S0, S1, S2, S3> crate::typed::builder::Build for SnapshotStatsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_stats_members::incremental>,
+    S1: crate::typed::builder::IsSet<snapshot_stats_members::start_time_in_millis>,
+    S2: crate::typed::builder::IsSet<snapshot_stats_members::time_in_millis>,
+    S3: crate::typed::builder::IsSet<snapshot_stats_members::total>,
 {
-    fn from(
-        builder: SnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotStats;
+
+    fn build(self) -> SnapshotStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> SnapshotStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `incremental` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, incremental: crate::typed::builder::MissingRequiredField) -> SnapshotStats { match incremental {} }
-}
-
-impl<S2, S3>
-    SnapshotStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<SnapshotStatsBuilder<(S0, S1, S2, S3)>> for SnapshotStats
+where
+    S0: crate::typed::builder::IsSet<snapshot_stats_members::incremental>,
+    S1: crate::typed::builder::IsSet<snapshot_stats_members::start_time_in_millis>,
+    S2: crate::typed::builder::IsSet<snapshot_stats_members::time_in_millis>,
+    S3: crate::typed::builder::IsSet<snapshot_stats_members::total>,
 {
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> SnapshotStats { match start_time_in_millis {} }
-}
-
-impl<S3>
-    SnapshotStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_in_millis: crate::typed::builder::MissingRequiredField) -> SnapshotStats { match time_in_millis {} }
-}
-
-impl
-    SnapshotStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> SnapshotStats { match total {} }
+    fn from(builder: SnapshotStatsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5265,21 +5155,28 @@ pub struct SourceOnlyRepository {
 
 impl SourceOnlyRepository {
     /// Creates a builder for [`SourceOnlyRepository`].
+    ///
+    /// Required: `type`, `settings`.
     pub fn builder() -> SourceOnlyRepositoryBuilder {
         SourceOnlyRepositoryBuilder::new()
     }
 
     /// Creates a [`SourceOnlyRepository`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositoryBuilder,
-        ) -> SourceOnlyRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = SourceOnlyRepository>>(
+        f: impl FnOnce(SourceOnlyRepositoryBuilder) -> B,
     ) -> SourceOnlyRepository {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositoryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_members {
+    pub struct r#type;
+    pub struct settings;
 }
 
 /// Builder for [`SourceOnlyRepository`].
@@ -5327,7 +5224,7 @@ impl<S0, S1> SourceOnlyRepositoryBuilder<(S0, S1)> {
 }
 
 impl<S1> SourceOnlyRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The source-only repository type.
+    /// **Required.** The source-only repository type.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5339,7 +5236,7 @@ impl<S1> SourceOnlyRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SourceOnlyRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The repository settings.
+    /// **Required.** The repository settings.
     pub fn settings(
         self,
         value: impl Into<SourceOnlyRepositorySettings>,
@@ -5350,9 +5247,13 @@ impl<S0> SourceOnlyRepositoryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SourceOnlyRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SourceOnlyRepositoryBuilder<(S0, S1)> {
     /// Builds a [`SourceOnlyRepository`].
-    pub fn build(self) -> SourceOnlyRepository {
+    pub fn build(self) -> SourceOnlyRepository
+    where
+        S0: crate::typed::builder::IsSet<source_only_repository_members::r#type>,
+        S1: crate::typed::builder::IsSet<source_only_repository_members::settings>,
+    {
         SourceOnlyRepository {
             uuid: self.uuid,
             r#type: self.r#type.unwrap(),
@@ -5361,29 +5262,26 @@ impl SourceOnlyRepositoryBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<SourceOnlyRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SourceOnlyRepository
+impl<S0, S1> crate::typed::builder::Build for SourceOnlyRepositoryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<source_only_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<source_only_repository_members::settings>,
 {
-    fn from(
-        builder: SourceOnlyRepositoryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepository;
+
+    fn build(self) -> SourceOnlyRepository {
+        Self::build(self)
     }
 }
 
-impl<S1> SourceOnlyRepositoryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepository { match r#type {} }
-}
-
-impl SourceOnlyRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepository { match settings {} }
+impl<S0, S1> From<SourceOnlyRepositoryBuilder<(S0, S1)>> for SourceOnlyRepository
+where
+    S0: crate::typed::builder::IsSet<source_only_repository_members::r#type>,
+    S1: crate::typed::builder::IsSet<source_only_repository_members::settings>,
+{
+    fn from(builder: SourceOnlyRepositoryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The delegated repository type.
@@ -5444,19 +5342,27 @@ pub struct SourceOnlyRepositorySettingsForAzure {
 
 impl SourceOnlyRepositorySettingsForAzure {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForAzure`].
+    ///
+    /// Required: `delegate_type`.
     pub fn builder() -> SourceOnlyRepositorySettingsForAzureBuilder {
         SourceOnlyRepositorySettingsForAzureBuilder::new()
     }
 
     /// Creates a [`SourceOnlyRepositorySettingsForAzure`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositorySettingsForAzureBuilder,
-        )
-            -> SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `delegate_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SourceOnlyRepositorySettingsForAzure>>(
+        f: impl FnOnce(SourceOnlyRepositorySettingsForAzureBuilder) -> B,
     ) -> SourceOnlyRepositorySettingsForAzure {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositorySettingsForAzureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_settings_for_azure_members {
+    pub struct delegate_type;
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForAzure`].
@@ -5606,6 +5512,7 @@ impl<S0> SourceOnlyRepositorySettingsForAzureBuilder<(S0,)> {
 }
 
 impl SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn delegate_type(
         self,
         value: impl Into<String>,
@@ -5616,9 +5523,14 @@ impl SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::NotSet,
     }
 }
 
-impl SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SourceOnlyRepositorySettingsForAzureBuilder<(S0,)> {
     /// Builds a [`SourceOnlyRepositorySettingsForAzure`].
-    pub fn build(self) -> SourceOnlyRepositorySettingsForAzure {
+    pub fn build(self) -> SourceOnlyRepositorySettingsForAzure
+    where
+        S0: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_azure_members::delegate_type,
+        >,
+    {
         SourceOnlyRepositorySettingsForAzure {
             delegate_type: self.delegate_type.unwrap(),
             base_path: self.base_path,
@@ -5632,20 +5544,29 @@ impl SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)> 
     }
 }
 
-impl From<SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)>>
-    for SourceOnlyRepositorySettingsForAzure
+impl<S0> crate::typed::builder::Build for SourceOnlyRepositorySettingsForAzureBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_azure_members::delegate_type,
+    >,
 {
-    fn from(
-        builder: SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepositorySettingsForAzure;
+
+    fn build(self) -> SourceOnlyRepositorySettingsForAzure {
+        Self::build(self)
     }
 }
 
-impl SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::NotSet,)> {
-    /// `delegate_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delegate_type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForAzure { match delegate_type {} }
+impl<S0> From<SourceOnlyRepositorySettingsForAzureBuilder<(S0,)>>
+    for SourceOnlyRepositorySettingsForAzure
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_azure_members::delegate_type,
+    >,
+{
+    fn from(builder: SourceOnlyRepositorySettingsForAzureBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5682,21 +5603,28 @@ pub struct SourceOnlyRepositorySettingsForGcs {
 
 impl SourceOnlyRepositorySettingsForGcs {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForGcs`].
+    ///
+    /// Required: `delegate_type`, `bucket`.
     pub fn builder() -> SourceOnlyRepositorySettingsForGcsBuilder {
         SourceOnlyRepositorySettingsForGcsBuilder::new()
     }
 
     /// Creates a [`SourceOnlyRepositorySettingsForGcs`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositorySettingsForGcsBuilder,
-        ) -> SourceOnlyRepositorySettingsForGcsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `delegate_type`, `bucket`.
+    pub fn of<B: crate::typed::builder::Build<Output = SourceOnlyRepositorySettingsForGcs>>(
+        f: impl FnOnce(SourceOnlyRepositorySettingsForGcsBuilder) -> B,
     ) -> SourceOnlyRepositorySettingsForGcs {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositorySettingsForGcsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_settings_for_gcs_members {
+    pub struct delegate_type;
+    pub struct bucket;
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForGcs`].
@@ -5808,6 +5736,7 @@ impl<S0, S1> SourceOnlyRepositorySettingsForGcsBuilder<(S0, S1)> {
 }
 
 impl<S1> SourceOnlyRepositorySettingsForGcsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn delegate_type(
         self,
         value: impl Into<String>,
@@ -5819,7 +5748,7 @@ impl<S1> SourceOnlyRepositorySettingsForGcsBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0> SourceOnlyRepositorySettingsForGcsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the bucket to be used for snapshots.
+    /// **Required.** The name of the bucket to be used for snapshots.
     pub fn bucket(
         self,
         value: impl Into<String>,
@@ -5830,14 +5759,15 @@ impl<S0> SourceOnlyRepositorySettingsForGcsBuilder<(S0, crate::typed::builder::N
     }
 }
 
-impl
-    SourceOnlyRepositorySettingsForGcsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> SourceOnlyRepositorySettingsForGcsBuilder<(S0, S1)> {
     /// Builds a [`SourceOnlyRepositorySettingsForGcs`].
-    pub fn build(self) -> SourceOnlyRepositorySettingsForGcs {
+    pub fn build(self) -> SourceOnlyRepositorySettingsForGcs
+    where
+        S0: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_gcs_members::delegate_type,
+        >,
+        S1: crate::typed::builder::IsSet<source_only_repository_settings_for_gcs_members::bucket>,
+    {
         SourceOnlyRepositorySettingsForGcs {
             delegate_type: self.delegate_type.unwrap(),
             bucket: self.bucket.unwrap(),
@@ -5849,39 +5779,31 @@ impl
     }
 }
 
-impl
-    From<
-        SourceOnlyRepositorySettingsForGcsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SourceOnlyRepositorySettingsForGcs
+impl<S0, S1> crate::typed::builder::Build for SourceOnlyRepositorySettingsForGcsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_gcs_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<source_only_repository_settings_for_gcs_members::bucket>,
 {
-    fn from(
-        builder: SourceOnlyRepositorySettingsForGcsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepositorySettingsForGcs;
+
+    fn build(self) -> SourceOnlyRepositorySettingsForGcs {
+        Self::build(self)
     }
 }
 
-impl<S1> SourceOnlyRepositorySettingsForGcsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `delegate_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delegate_type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForGcs { match delegate_type {} }
-}
-
-impl
-    SourceOnlyRepositorySettingsForGcsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<SourceOnlyRepositorySettingsForGcsBuilder<(S0, S1)>>
+    for SourceOnlyRepositorySettingsForGcs
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_gcs_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<source_only_repository_settings_for_gcs_members::bucket>,
 {
-    /// `bucket` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForGcs { match bucket {} }
+    fn from(builder: SourceOnlyRepositorySettingsForGcsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5917,21 +5839,30 @@ pub struct SourceOnlyRepositorySettingsForReadOnlyUrl {
 
 impl SourceOnlyRepositorySettingsForReadOnlyUrl {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForReadOnlyUrl`].
+    ///
+    /// Required: `delegate_type`, `url`.
     pub fn builder() -> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder {
         SourceOnlyRepositorySettingsForReadOnlyUrlBuilder::new()
     }
 
     /// Creates a [`SourceOnlyRepositorySettingsForReadOnlyUrl`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositorySettingsForReadOnlyUrlBuilder,
-        ) -> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `delegate_type`, `url`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = SourceOnlyRepositorySettingsForReadOnlyUrl>,
+    >(
+        f: impl FnOnce(SourceOnlyRepositorySettingsForReadOnlyUrlBuilder) -> B,
     ) -> SourceOnlyRepositorySettingsForReadOnlyUrl {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositorySettingsForReadOnlyUrlBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_settings_for_read_only_url_members {
+    pub struct delegate_type;
+    pub struct url;
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForReadOnlyUrl`].
@@ -6019,6 +5950,7 @@ impl<S0, S1> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, S1)> {
 }
 
 impl<S1> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn delegate_type(
         self,
         value: impl Into<String>,
@@ -6030,7 +5962,7 @@ impl<S1> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(crate::typed::builde
 }
 
 impl<S0> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The URL location of the root of the shared filesystem repository.
+    /// **Required.** The URL location of the root of the shared filesystem repository.
     /// The following protocols are supported:
     ///
     /// * `file`
@@ -6055,14 +5987,17 @@ impl<S0> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, crate::typed::bu
     }
 }
 
-impl
-    SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, S1)> {
     /// Builds a [`SourceOnlyRepositorySettingsForReadOnlyUrl`].
-    pub fn build(self) -> SourceOnlyRepositorySettingsForReadOnlyUrl {
+    pub fn build(self) -> SourceOnlyRepositorySettingsForReadOnlyUrl
+    where
+        S0: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_read_only_url_members::delegate_type,
+        >,
+        S1: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_read_only_url_members::url,
+        >,
+    {
         SourceOnlyRepositorySettingsForReadOnlyUrl {
             delegate_type: self.delegate_type.unwrap(),
             http_max_retries: self.http_max_retries,
@@ -6073,39 +6008,36 @@ impl
     }
 }
 
-impl
-    From<
-        SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SourceOnlyRepositorySettingsForReadOnlyUrl
+impl<S0, S1> crate::typed::builder::Build
+    for SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_read_only_url_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_read_only_url_members::url,
+    >,
 {
-    fn from(
-        builder: SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepositorySettingsForReadOnlyUrl;
+
+    fn build(self) -> SourceOnlyRepositorySettingsForReadOnlyUrl {
+        Self::build(self)
     }
 }
 
-impl<S1> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `delegate_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delegate_type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForReadOnlyUrl { match delegate_type {} }
-}
-
-impl
-    SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, S1)>>
+    for SourceOnlyRepositorySettingsForReadOnlyUrl
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_read_only_url_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_read_only_url_members::url,
+    >,
 {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForReadOnlyUrl { match url {} }
+    fn from(builder: SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6203,21 +6135,28 @@ pub struct SourceOnlyRepositorySettingsForS3 {
 
 impl SourceOnlyRepositorySettingsForS3 {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForS3`].
+    ///
+    /// Required: `delegate_type`, `bucket`.
     pub fn builder() -> SourceOnlyRepositorySettingsForS3Builder {
         SourceOnlyRepositorySettingsForS3Builder::new()
     }
 
     /// Creates a [`SourceOnlyRepositorySettingsForS3`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositorySettingsForS3Builder,
-        ) -> SourceOnlyRepositorySettingsForS3Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `delegate_type`, `bucket`.
+    pub fn of<B: crate::typed::builder::Build<Output = SourceOnlyRepositorySettingsForS3>>(
+        f: impl FnOnce(SourceOnlyRepositorySettingsForS3Builder) -> B,
     ) -> SourceOnlyRepositorySettingsForS3 {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositorySettingsForS3Builder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_settings_for_s3_members {
+    pub struct delegate_type;
+    pub struct bucket;
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForS3`].
@@ -6519,6 +6458,7 @@ impl<S0, S1> SourceOnlyRepositorySettingsForS3Builder<(S0, S1)> {
 }
 
 impl<S1> SourceOnlyRepositorySettingsForS3Builder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn delegate_type(
         self,
         value: impl Into<String>,
@@ -6530,7 +6470,7 @@ impl<S1> SourceOnlyRepositorySettingsForS3Builder<(crate::typed::builder::NotSet
 }
 
 impl<S0> SourceOnlyRepositorySettingsForS3Builder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the S3 bucket to use for snapshots.
+    /// **Required.** The name of the S3 bucket to use for snapshots.
     /// The bucket name must adhere to Amazon's S3 bucket naming rules.
     pub fn bucket(
         self,
@@ -6542,14 +6482,15 @@ impl<S0> SourceOnlyRepositorySettingsForS3Builder<(S0, crate::typed::builder::No
     }
 }
 
-impl
-    SourceOnlyRepositorySettingsForS3Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> SourceOnlyRepositorySettingsForS3Builder<(S0, S1)> {
     /// Builds a [`SourceOnlyRepositorySettingsForS3`].
-    pub fn build(self) -> SourceOnlyRepositorySettingsForS3 {
+    pub fn build(self) -> SourceOnlyRepositorySettingsForS3
+    where
+        S0: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_s3_members::delegate_type,
+        >,
+        S1: crate::typed::builder::IsSet<source_only_repository_settings_for_s3_members::bucket>,
+    {
         SourceOnlyRepositorySettingsForS3 {
             delegate_type: self.delegate_type.unwrap(),
             bucket: self.bucket.unwrap(),
@@ -6572,39 +6513,27 @@ impl
     }
 }
 
-impl
-    From<
-        SourceOnlyRepositorySettingsForS3Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SourceOnlyRepositorySettingsForS3
+impl<S0, S1> crate::typed::builder::Build for SourceOnlyRepositorySettingsForS3Builder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<source_only_repository_settings_for_s3_members::delegate_type>,
+    S1: crate::typed::builder::IsSet<source_only_repository_settings_for_s3_members::bucket>,
 {
-    fn from(
-        builder: SourceOnlyRepositorySettingsForS3Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepositorySettingsForS3;
+
+    fn build(self) -> SourceOnlyRepositorySettingsForS3 {
+        Self::build(self)
     }
 }
 
-impl<S1> SourceOnlyRepositorySettingsForS3Builder<(crate::typed::builder::NotSet, S1)> {
-    /// `delegate_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delegate_type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForS3 { match delegate_type {} }
-}
-
-impl
-    SourceOnlyRepositorySettingsForS3Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<SourceOnlyRepositorySettingsForS3Builder<(S0, S1)>>
+    for SourceOnlyRepositorySettingsForS3
+where
+    S0: crate::typed::builder::IsSet<source_only_repository_settings_for_s3_members::delegate_type>,
+    S1: crate::typed::builder::IsSet<source_only_repository_settings_for_s3_members::bucket>,
 {
-    /// `bucket` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bucket: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForS3 { match bucket {} }
+    fn from(builder: SourceOnlyRepositorySettingsForS3Builder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6634,21 +6563,30 @@ pub struct SourceOnlyRepositorySettingsForSharedFileSystem {
 
 impl SourceOnlyRepositorySettingsForSharedFileSystem {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForSharedFileSystem`].
+    ///
+    /// Required: `delegate_type`, `location`.
     pub fn builder() -> SourceOnlyRepositorySettingsForSharedFileSystemBuilder {
         SourceOnlyRepositorySettingsForSharedFileSystemBuilder::new()
     }
 
     /// Creates a [`SourceOnlyRepositorySettingsForSharedFileSystem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SourceOnlyRepositorySettingsForSharedFileSystemBuilder,
-        ) -> SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `delegate_type`, `location`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = SourceOnlyRepositorySettingsForSharedFileSystem>,
+    >(
+        f: impl FnOnce(SourceOnlyRepositorySettingsForSharedFileSystemBuilder) -> B,
     ) -> SourceOnlyRepositorySettingsForSharedFileSystem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SourceOnlyRepositorySettingsForSharedFileSystemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod source_only_repository_settings_for_shared_file_system_members {
+    pub struct delegate_type;
+    pub struct location;
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForSharedFileSystem`].
@@ -6729,6 +6667,7 @@ impl<S0, S1> SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, S1)> {
 impl<S1>
     SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(crate::typed::builder::NotSet, S1)>
 {
+    /// **Required.**
     pub fn delegate_type(
         self,
         value: impl Into<String>,
@@ -6743,7 +6682,7 @@ impl<S1>
 impl<S0>
     SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, crate::typed::builder::NotSet)>
 {
-    /// The location of the shared filesystem used to store and retrieve snapshots.
+    /// **Required.** The location of the shared filesystem used to store and retrieve snapshots.
     /// This location must be registered in the `path.repo` setting on all master and data nodes in the cluster.
     /// Unlike `path.repo`, this setting supports only a single file path.
     pub fn location(
@@ -6757,14 +6696,17 @@ impl<S0>
     }
 }
 
-impl
-    SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, S1)> {
     /// Builds a [`SourceOnlyRepositorySettingsForSharedFileSystem`].
-    pub fn build(self) -> SourceOnlyRepositorySettingsForSharedFileSystem {
+    pub fn build(self) -> SourceOnlyRepositorySettingsForSharedFileSystem
+    where
+        S0: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_shared_file_system_members::delegate_type,
+        >,
+        S1: crate::typed::builder::IsSet<
+            source_only_repository_settings_for_shared_file_system_members::location,
+        >,
+    {
         SourceOnlyRepositorySettingsForSharedFileSystem {
             delegate_type: self.delegate_type.unwrap(),
             location: self.location.unwrap(),
@@ -6774,41 +6716,36 @@ impl
     }
 }
 
-impl
-    From<
-        SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SourceOnlyRepositorySettingsForSharedFileSystem
+impl<S0, S1> crate::typed::builder::Build
+    for SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_shared_file_system_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_shared_file_system_members::location,
+    >,
 {
-    fn from(
-        builder: SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SourceOnlyRepositorySettingsForSharedFileSystem;
+
+    fn build(self) -> SourceOnlyRepositorySettingsForSharedFileSystem {
+        Self::build(self)
     }
 }
 
-impl<S1>
-    SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(crate::typed::builder::NotSet, S1)>
+impl<S0, S1> From<SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, S1)>>
+    for SourceOnlyRepositorySettingsForSharedFileSystem
+where
+    S0: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_shared_file_system_members::delegate_type,
+    >,
+    S1: crate::typed::builder::IsSet<
+        source_only_repository_settings_for_shared_file_system_members::location,
+    >,
 {
-    /// `delegate_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, delegate_type: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForSharedFileSystem { match delegate_type {} }
-}
-
-impl
-    SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `location` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, location: crate::typed::builder::MissingRequiredField) -> SourceOnlyRepositorySettingsForSharedFileSystem { match location {} }
+    fn from(builder: SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6836,27 +6773,34 @@ pub struct Status {
 
 impl Status {
     /// Creates a builder for [`Status`].
+    ///
+    /// Required: `include_global_state`, `indices`, `repository`, `shards_stats`, `snapshot`, `state`, `stats`, `uuid`.
     pub fn builder() -> StatusBuilder {
         StatusBuilder::new()
     }
 
     /// Creates a [`Status`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatusBuilder,
-        ) -> StatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `include_global_state`, `indices`, `repository`, `shards_stats`, `snapshot`, `state`, `stats`, `uuid`.
+    pub fn of<B: crate::typed::builder::Build<Output = Status>>(
+        f: impl FnOnce(StatusBuilder) -> B,
     ) -> Status {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod status_members {
+    pub struct include_global_state;
+    pub struct indices;
+    pub struct repository;
+    pub struct shards_stats;
+    pub struct snapshot;
+    pub struct state;
+    pub struct stats;
+    pub struct uuid;
 }
 
 /// Builder for [`Status`].
@@ -6930,7 +6874,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, 
 impl<S1, S2, S3, S4, S5, S6, S7>
     StatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// Indicates whether the current cluster state is included in the snapshot.
+    /// **Required.** Indicates whether the current cluster state is included in the snapshot.
     pub fn include_global_state(
         self,
         value: bool,
@@ -6944,6 +6888,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     StatusBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<indexmap::IndexMap<String, SnapshotIndexStats>>,
@@ -6968,16 +6913,10 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = SnapshotIndexStats>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SnapshotIndexStatsBuilder,
-        ) -> SnapshotIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotIndexStatsBuilder) -> B,
     ) -> StatusBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
         self.add_indices(key, f(SnapshotIndexStatsBuilder::new()).build())
     }
@@ -6999,16 +6938,10 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Adds an entry to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = SnapshotIndexStats>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SnapshotIndexStatsBuilder,
-        ) -> SnapshotIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotIndexStatsBuilder) -> B,
     ) -> Self {
         self.add_indices(key, f(SnapshotIndexStatsBuilder::new()).build())
     }
@@ -7017,7 +6950,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     StatusBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
-    /// The name of the repository that includes the snapshot.
+    /// **Required.** The name of the repository that includes the snapshot.
     pub fn repository(
         self,
         value: impl Into<String>,
@@ -7031,7 +6964,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     StatusBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// Statistics for the shards in the snapshot.
+    /// **Required.** Statistics for the shards in the snapshot.
     pub fn shards_stats(
         self,
         value: impl Into<ShardsStats>,
@@ -7042,18 +6975,9 @@ impl<S0, S1, S2, S4, S5, S6, S7>
     }
 
     /// Sets [`shards_stats`](Self::shards_stats) with a builder.
-    pub fn shards_stats_with(
+    pub fn shards_stats_with<B: crate::typed::builder::Build<Output = ShardsStats>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsBuilder,
-        ) -> ShardsStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardsStatsBuilder) -> B,
     ) -> StatusBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)> {
         self.shards_stats(f(ShardsStatsBuilder::new()).build())
     }
@@ -7062,7 +6986,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     StatusBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// The name of the snapshot.
+    /// **Required.** The name of the snapshot.
     pub fn snapshot(
         self,
         value: impl Into<String>,
@@ -7076,7 +7000,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     StatusBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
-    /// The current snapshot state:
+    /// **Required.** The current snapshot state:
     ///
     /// * `STARTED`: The snapshot is currently running.
     /// * `SUCCESS`: All shard snapshots have completed. The snapshot may or may not have completed finalization.
@@ -7094,7 +7018,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     StatusBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
-    /// Details about the number (`file_count`) and size (`size_in_bytes`) of files included in the snapshot.
+    /// **Required.** Details about the number (`file_count`) and size (`size_in_bytes`) of files included in the snapshot.
     pub fn stats(
         self,
         value: impl Into<SnapshotStats>,
@@ -7105,16 +7029,9 @@ impl<S0, S1, S2, S3, S4, S5, S7>
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = SnapshotStats>>(
         self,
-        f: impl FnOnce(
-            SnapshotStatsBuilder,
-        ) -> SnapshotStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotStatsBuilder) -> B,
     ) -> StatusBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7)> {
         self.stats(f(SnapshotStatsBuilder::new()).build())
     }
@@ -7123,7 +7040,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
-    /// The universally unique identifier (UUID) for the snapshot.
+    /// **Required.** The universally unique identifier (UUID) for the snapshot.
     pub fn uuid(
         self,
         value: impl Into<crate::typed::_types::Uuid>,
@@ -7134,20 +7051,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`Status`].
-    pub fn build(self) -> Status {
+    pub fn build(self) -> Status
+    where
+        S0: crate::typed::builder::IsSet<status_members::include_global_state>,
+        S1: crate::typed::builder::IsSet<status_members::indices>,
+        S2: crate::typed::builder::IsSet<status_members::repository>,
+        S3: crate::typed::builder::IsSet<status_members::shards_stats>,
+        S4: crate::typed::builder::IsSet<status_members::snapshot>,
+        S5: crate::typed::builder::IsSet<status_members::state>,
+        S6: crate::typed::builder::IsSet<status_members::stats>,
+        S7: crate::typed::builder::IsSet<status_members::uuid>,
+    {
         Status {
             include_global_state: self.include_global_state.unwrap(),
             indices: self.indices.unwrap(),
@@ -7161,159 +7077,38 @@ impl
     }
 }
 
-impl
-    From<
-        StatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Status
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<status_members::include_global_state>,
+    S1: crate::typed::builder::IsSet<status_members::indices>,
+    S2: crate::typed::builder::IsSet<status_members::repository>,
+    S3: crate::typed::builder::IsSet<status_members::shards_stats>,
+    S4: crate::typed::builder::IsSet<status_members::snapshot>,
+    S5: crate::typed::builder::IsSet<status_members::state>,
+    S6: crate::typed::builder::IsSet<status_members::stats>,
+    S7: crate::typed::builder::IsSet<status_members::uuid>,
 {
-    fn from(
-        builder: StatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Status;
+
+    fn build(self) -> Status {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    StatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for Status
+where
+    S0: crate::typed::builder::IsSet<status_members::include_global_state>,
+    S1: crate::typed::builder::IsSet<status_members::indices>,
+    S2: crate::typed::builder::IsSet<status_members::repository>,
+    S3: crate::typed::builder::IsSet<status_members::shards_stats>,
+    S4: crate::typed::builder::IsSet<status_members::snapshot>,
+    S5: crate::typed::builder::IsSet<status_members::state>,
+    S6: crate::typed::builder::IsSet<status_members::stats>,
+    S7: crate::typed::builder::IsSet<status_members::uuid>,
 {
-    /// `include_global_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, include_global_state: crate::typed::builder::MissingRequiredField) -> Status { match include_global_state {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> Status { match indices {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `repository` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, repository: crate::typed::builder::MissingRequiredField) -> Status { match repository {} }
-}
-
-impl<S4, S5, S6, S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `shards_stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards_stats: crate::typed::builder::MissingRequiredField) -> Status { match shards_stats {} }
-}
-
-impl<S5, S6, S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `snapshot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot: crate::typed::builder::MissingRequiredField) -> Status { match snapshot {} }
-}
-
-impl<S6, S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> Status { match state {} }
-}
-
-impl<S7>
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> Status { match stats {} }
-}
-
-impl
-    StatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, uuid: crate::typed::builder::MissingRequiredField) -> Status { match uuid {} }
+    fn from(builder: StatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }

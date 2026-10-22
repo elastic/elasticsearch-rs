@@ -58,28 +58,35 @@ impl From<&str> for AuthenticationEmail {
 
 impl Authentication {
     /// Creates a builder for [`Authentication`].
+    ///
+    /// Required: `username`, `roles`, `full_name`, `email`, `metadata`, `enabled`, `authentication_realm`, `lookup_realm`, `authentication_type`.
     pub fn builder() -> AuthenticationBuilder {
         AuthenticationBuilder::new()
     }
 
     /// Creates a [`Authentication`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AuthenticationBuilder,
-        ) -> AuthenticationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `username`, `roles`, `full_name`, `email`, `metadata`, `enabled`, `authentication_realm`, `lookup_realm`, `authentication_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Authentication>>(
+        f: impl FnOnce(AuthenticationBuilder) -> B,
     ) -> Authentication {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AuthenticationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod authentication_members {
+    pub struct username;
+    pub struct roles;
+    pub struct full_name;
+    pub struct email;
+    pub struct metadata;
+    pub struct enabled;
+    pub struct authentication_realm;
+    pub struct lookup_realm;
+    pub struct authentication_type;
 }
 
 /// Builder for [`Authentication`].
@@ -214,6 +221,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn username(
         self,
         value: impl Into<String>,
@@ -237,6 +245,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
@@ -285,6 +294,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn full_name(
         self,
         value: impl Into<AuthenticationFullName>,
@@ -308,6 +318,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn email(
         self,
         value: impl Into<AuthenticationEmail>,
@@ -331,6 +342,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn metadata(
         self,
         value: impl Into<crate::typed::_types::Metadata>,
@@ -384,6 +396,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn enabled(
         self,
         value: bool,
@@ -407,6 +420,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn authentication_realm(
         self,
         value: impl Into<AuthenticationRealm>,
@@ -417,14 +431,11 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
     }
 
     /// Sets [`authentication_realm`](Self::authentication_realm) with a builder.
-    pub fn authentication_realm_with(
+    pub fn authentication_realm_with<
+        B: crate::typed::builder::Build<Output = AuthenticationRealm>,
+    >(
         self,
-        f: impl FnOnce(
-            AuthenticationRealmBuilder,
-        ) -> AuthenticationRealmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AuthenticationRealmBuilder) -> B,
     ) -> AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7, S8)> {
         self.authentication_realm(f(AuthenticationRealmBuilder::new()).build())
     }
@@ -443,6 +454,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn lookup_realm(
         self,
         value: impl Into<AuthenticationRealm>,
@@ -453,14 +465,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
     }
 
     /// Sets [`lookup_realm`](Self::lookup_realm) with a builder.
-    pub fn lookup_realm_with(
+    pub fn lookup_realm_with<B: crate::typed::builder::Build<Output = AuthenticationRealm>>(
         self,
-        f: impl FnOnce(
-            AuthenticationRealmBuilder,
-        ) -> AuthenticationRealmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AuthenticationRealmBuilder) -> B,
     ) -> AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set, S8)> {
         self.lookup_realm(f(AuthenticationRealmBuilder::new()).build())
     }
@@ -479,6 +486,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn authentication_type(
         self,
         value: impl Into<String>,
@@ -489,21 +497,22 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`Authentication`].
-    pub fn build(self) -> Authentication {
+    pub fn build(self) -> Authentication
+    where
+        S0: crate::typed::builder::IsSet<authentication_members::username>,
+        S1: crate::typed::builder::IsSet<authentication_members::roles>,
+        S2: crate::typed::builder::IsSet<authentication_members::full_name>,
+        S3: crate::typed::builder::IsSet<authentication_members::email>,
+        S4: crate::typed::builder::IsSet<authentication_members::metadata>,
+        S5: crate::typed::builder::IsSet<authentication_members::enabled>,
+        S6: crate::typed::builder::IsSet<authentication_members::authentication_realm>,
+        S7: crate::typed::builder::IsSet<authentication_members::lookup_realm>,
+        S8: crate::typed::builder::IsSet<authentication_members::authentication_type>,
+    {
         Authentication {
             username: self.username.unwrap(),
             roles: self.roles.unwrap(),
@@ -520,198 +529,42 @@ impl
     }
 }
 
-impl
-    From<
-        AuthenticationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Authentication
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<authentication_members::username>,
+    S1: crate::typed::builder::IsSet<authentication_members::roles>,
+    S2: crate::typed::builder::IsSet<authentication_members::full_name>,
+    S3: crate::typed::builder::IsSet<authentication_members::email>,
+    S4: crate::typed::builder::IsSet<authentication_members::metadata>,
+    S5: crate::typed::builder::IsSet<authentication_members::enabled>,
+    S6: crate::typed::builder::IsSet<authentication_members::authentication_realm>,
+    S7: crate::typed::builder::IsSet<authentication_members::lookup_realm>,
+    S8: crate::typed::builder::IsSet<authentication_members::authentication_type>,
 {
-    fn from(
-        builder: AuthenticationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Authentication;
+
+    fn build(self) -> Authentication {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>> for Authentication
+where
+    S0: crate::typed::builder::IsSet<authentication_members::username>,
+    S1: crate::typed::builder::IsSet<authentication_members::roles>,
+    S2: crate::typed::builder::IsSet<authentication_members::full_name>,
+    S3: crate::typed::builder::IsSet<authentication_members::email>,
+    S4: crate::typed::builder::IsSet<authentication_members::metadata>,
+    S5: crate::typed::builder::IsSet<authentication_members::enabled>,
+    S6: crate::typed::builder::IsSet<authentication_members::authentication_realm>,
+    S7: crate::typed::builder::IsSet<authentication_members::lookup_realm>,
+    S8: crate::typed::builder::IsSet<authentication_members::authentication_type>,
 {
-    /// `username` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, username: crate::typed::builder::MissingRequiredField) -> Authentication { match username {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> Authentication { match roles {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `full_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, full_name: crate::typed::builder::MissingRequiredField) -> Authentication { match full_name {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `email` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, email: crate::typed::builder::MissingRequiredField) -> Authentication { match email {} }
-}
-
-impl<S5, S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> Authentication { match metadata {} }
-}
-
-impl<S6, S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> Authentication { match enabled {} }
-}
-
-impl<S7, S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `authentication_realm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, authentication_realm: crate::typed::builder::MissingRequiredField) -> Authentication { match authentication_realm {} }
-}
-
-impl<S8>
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `lookup_realm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lookup_realm: crate::typed::builder::MissingRequiredField) -> Authentication { match lookup_realm {} }
-}
-
-impl
-    AuthenticationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `authentication_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, authentication_type: crate::typed::builder::MissingRequiredField) -> Authentication { match authentication_type {} }
+    fn from(builder: AuthenticationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -724,21 +577,28 @@ pub struct AuthenticationRealm {
 
 impl AuthenticationRealm {
     /// Creates a builder for [`AuthenticationRealm`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> AuthenticationRealmBuilder {
         AuthenticationRealmBuilder::new()
     }
 
     /// Creates a [`AuthenticationRealm`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AuthenticationRealmBuilder,
-        ) -> AuthenticationRealmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = AuthenticationRealm>>(
+        f: impl FnOnce(AuthenticationRealmBuilder) -> B,
     ) -> AuthenticationRealm {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AuthenticationRealmBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod authentication_realm_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`AuthenticationRealm`].
@@ -786,6 +646,7 @@ impl<S0, S1> AuthenticationRealmBuilder<(S0, S1)> {
 }
 
 impl<S1> AuthenticationRealmBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -797,6 +658,7 @@ impl<S1> AuthenticationRealmBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AuthenticationRealmBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -807,9 +669,13 @@ impl<S0> AuthenticationRealmBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AuthenticationRealmBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AuthenticationRealmBuilder<(S0, S1)> {
     /// Builds a [`AuthenticationRealm`].
-    pub fn build(self) -> AuthenticationRealm {
+    pub fn build(self) -> AuthenticationRealm
+    where
+        S0: crate::typed::builder::IsSet<authentication_realm_members::name>,
+        S1: crate::typed::builder::IsSet<authentication_realm_members::r#type>,
+    {
         AuthenticationRealm {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -818,29 +684,26 @@ impl AuthenticationRealmBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<AuthenticationRealmBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AuthenticationRealm
+impl<S0, S1> crate::typed::builder::Build for AuthenticationRealmBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<authentication_realm_members::name>,
+    S1: crate::typed::builder::IsSet<authentication_realm_members::r#type>,
 {
-    fn from(
-        builder: AuthenticationRealmBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AuthenticationRealm;
+
+    fn build(self) -> AuthenticationRealm {
+        Self::build(self)
     }
 }
 
-impl<S1> AuthenticationRealmBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> AuthenticationRealm { match name {} }
-}
-
-impl AuthenticationRealmBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> AuthenticationRealm { match r#type {} }
+impl<S0, S1> From<AuthenticationRealmBuilder<(S0, S1)>> for AuthenticationRealm
+where
+    S0: crate::typed::builder::IsSet<authentication_realm_members::name>,
+    S1: crate::typed::builder::IsSet<authentication_realm_members::r#type>,
+{
+    fn from(builder: AuthenticationRealmBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.delegate_pki`](crate::typed::security::SecurityClient::delegate_pki).
@@ -885,16 +748,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `x509_certificate_chain`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `x509_certificate_chain`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct x509_certificate_chain;
 }
 
 /// Builder for [`Request`].
@@ -993,7 +867,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The X509Certificate chain, which is represented as an ordered string array.
+    /// **Required.** The X509Certificate chain, which is represented as an ordered string array.
     /// Each string in the array is a base64-encoded (Section 4 of RFC4648 - not base64url-encoded) of the certificate's DER encoding.
     ///
     /// The first element is the target certificate that contains the subject distinguished name that is requesting access.
@@ -1031,9 +905,12 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::x509_certificate_chain>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -1044,23 +921,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::x509_certificate_chain>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `x509_certificate_chain` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, x509_certificate_chain: crate::typed::builder::MissingRequiredField) -> Request { match x509_certificate_chain {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `x509_certificate_chain` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, x509_certificate_chain: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match x509_certificate_chain {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::x509_certificate_chain>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

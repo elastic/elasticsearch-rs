@@ -41,25 +41,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `name`, `maxmind`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `id`, `name`, `maxmind`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct name;
+    pub struct maxmind;
 }
 
 /// Builder for [`Request`].
@@ -211,7 +215,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// ID of the database configuration to create or update.
+    /// **Required.** ID of the database configuration to create or update.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -223,7 +227,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The provider-assigned name of the IP geolocation database to download.
+    /// **Required.** The provider-assigned name of the IP geolocation database to download.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -235,7 +239,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The configuration necessary to identify which IP geolocation provider to use to download the database, as well as any provider-specific configuration necessary for such downloading.
+    /// **Required.** The configuration necessary to identify which IP geolocation provider to use to download the database, as well as any provider-specific configuration necessary for such downloading.
     /// At present, the only supported provider is maxmind, and the maxmind provider requires that an account_id (string) is configured.
     pub fn maxmind(
         self,
@@ -247,29 +251,24 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`maxmind`](Self::maxmind) with a builder.
-    pub fn maxmind_with(
+    pub fn maxmind_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ingest::_types::Maxmind>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ingest::_types::MaxmindBuilder,
-        )
-            -> crate::typed::ingest::_types::MaxmindBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ingest::_types::MaxmindBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
         self.maxmind(f(crate::typed::ingest::_types::MaxmindBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::name>,
+        S2: crate::typed::builder::IsSet<request_members::maxmind>,
+    {
         Request {
             id: self.id.unwrap(),
             master_timeout: self.master_timeout,
@@ -284,90 +283,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::name>,
+    S2: crate::typed::builder::IsSet<request_members::maxmind>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `maxmind` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, maxmind: crate::typed::builder::MissingRequiredField) -> Request { match maxmind {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `maxmind` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, maxmind: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match maxmind {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::name>,
+        S2: crate::typed::builder::IsSet<request_members::maxmind>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

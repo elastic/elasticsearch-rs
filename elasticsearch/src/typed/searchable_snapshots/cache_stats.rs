@@ -8,14 +8,27 @@ pub struct Node {
 
 impl Node {
     /// Creates a builder for [`Node`].
+    ///
+    /// Required: `shared_cache`.
     pub fn builder() -> NodeBuilder {
         NodeBuilder::new()
     }
 
     /// Creates a [`Node`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(NodeBuilder) -> NodeBuilder<(crate::typed::builder::Set,)>) -> Node {
+    ///
+    /// Required: `shared_cache`.
+    pub fn of<B: crate::typed::builder::Build<Output = Node>>(
+        f: impl FnOnce(NodeBuilder) -> B,
+    ) -> Node {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_members {
+    pub struct shared_cache;
 }
 
 /// Builder for [`Node`].
@@ -44,6 +57,7 @@ impl<S0> NodeBuilder<(S0,)> {
 }
 
 impl NodeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shared_cache(
         self,
         value: impl Into<Shared>,
@@ -54,44 +68,44 @@ impl NodeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`shared_cache`](Self::shared_cache) with a builder.
-    pub fn shared_cache_with(
+    pub fn shared_cache_with<B: crate::typed::builder::Build<Output = Shared>>(
         self,
-        f: impl FnOnce(
-            SharedBuilder,
-        ) -> SharedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SharedBuilder) -> B,
     ) -> NodeBuilder<(crate::typed::builder::Set,)> {
         self.shared_cache(f(SharedBuilder::new()).build())
     }
 }
 
-impl NodeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NodeBuilder<(S0,)> {
     /// Builds a [`Node`].
-    pub fn build(self) -> Node {
+    pub fn build(self) -> Node
+    where
+        S0: crate::typed::builder::IsSet<node_members::shared_cache>,
+    {
         Node {
             shared_cache: self.shared_cache.unwrap(),
         }
     }
 }
 
-impl From<NodeBuilder<(crate::typed::builder::Set,)>> for Node {
-    fn from(builder: NodeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NodeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<node_members::shared_cache>,
+{
+    type Output = Node;
+
+    fn build(self) -> Node {
+        Self::build(self)
     }
 }
 
-impl NodeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shared_cache` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shared_cache: crate::typed::builder::MissingRequiredField) -> Node { match shared_cache {} }
+impl<S0> From<NodeBuilder<(S0,)>> for Node
+where
+    S0: crate::typed::builder::IsSet<node_members::shared_cache>,
+{
+    fn from(builder: NodeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`searchable_snapshots.cache_stats`](crate::typed::searchable_snapshots::SearchableSnapshotsClient::cache_stats).
@@ -129,7 +143,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -239,6 +255,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -364,27 +388,34 @@ pub struct Shared {
 
 impl Shared {
     /// Creates a builder for [`Shared`].
+    ///
+    /// Required: `reads`, `bytes_read_in_bytes`, `writes`, `bytes_written_in_bytes`, `evictions`, `num_regions`, `size_in_bytes`, `region_size_in_bytes`.
     pub fn builder() -> SharedBuilder {
         SharedBuilder::new()
     }
 
     /// Creates a [`Shared`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SharedBuilder,
-        ) -> SharedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `reads`, `bytes_read_in_bytes`, `writes`, `bytes_written_in_bytes`, `evictions`, `num_regions`, `size_in_bytes`, `region_size_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = Shared>>(
+        f: impl FnOnce(SharedBuilder) -> B,
     ) -> Shared {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SharedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shared_members {
+    pub struct reads;
+    pub struct bytes_read_in_bytes;
+    pub struct writes;
+    pub struct bytes_written_in_bytes;
+    pub struct evictions;
+    pub struct num_regions;
+    pub struct size_in_bytes;
+    pub struct region_size_in_bytes;
 }
 
 /// Builder for [`Shared`].
@@ -458,6 +489,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, 
 impl<S1, S2, S3, S4, S5, S6, S7>
     SharedBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn reads(
         self,
         value: i64,
@@ -471,6 +503,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     SharedBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn bytes_read_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -484,6 +517,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     SharedBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn writes(
         self,
         value: i64,
@@ -497,6 +531,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     SharedBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn bytes_written_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -510,6 +545,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     SharedBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn evictions(
         self,
         value: i64,
@@ -523,6 +559,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     SharedBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn num_regions(
         self,
         value: i32,
@@ -536,6 +573,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     SharedBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn size_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -549,6 +587,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn region_size_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -559,20 +598,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`Shared`].
-    pub fn build(self) -> Shared {
+    pub fn build(self) -> Shared
+    where
+        S0: crate::typed::builder::IsSet<shared_members::reads>,
+        S1: crate::typed::builder::IsSet<shared_members::bytes_read_in_bytes>,
+        S2: crate::typed::builder::IsSet<shared_members::writes>,
+        S3: crate::typed::builder::IsSet<shared_members::bytes_written_in_bytes>,
+        S4: crate::typed::builder::IsSet<shared_members::evictions>,
+        S5: crate::typed::builder::IsSet<shared_members::num_regions>,
+        S6: crate::typed::builder::IsSet<shared_members::size_in_bytes>,
+        S7: crate::typed::builder::IsSet<shared_members::region_size_in_bytes>,
+    {
         Shared {
             reads: self.reads.unwrap(),
             bytes_read_in_bytes: self.bytes_read_in_bytes.unwrap(),
@@ -586,159 +624,38 @@ impl
     }
 }
 
-impl
-    From<
-        SharedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Shared
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<shared_members::reads>,
+    S1: crate::typed::builder::IsSet<shared_members::bytes_read_in_bytes>,
+    S2: crate::typed::builder::IsSet<shared_members::writes>,
+    S3: crate::typed::builder::IsSet<shared_members::bytes_written_in_bytes>,
+    S4: crate::typed::builder::IsSet<shared_members::evictions>,
+    S5: crate::typed::builder::IsSet<shared_members::num_regions>,
+    S6: crate::typed::builder::IsSet<shared_members::size_in_bytes>,
+    S7: crate::typed::builder::IsSet<shared_members::region_size_in_bytes>,
 {
-    fn from(
-        builder: SharedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Shared;
+
+    fn build(self) -> Shared {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    SharedBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for Shared
+where
+    S0: crate::typed::builder::IsSet<shared_members::reads>,
+    S1: crate::typed::builder::IsSet<shared_members::bytes_read_in_bytes>,
+    S2: crate::typed::builder::IsSet<shared_members::writes>,
+    S3: crate::typed::builder::IsSet<shared_members::bytes_written_in_bytes>,
+    S4: crate::typed::builder::IsSet<shared_members::evictions>,
+    S5: crate::typed::builder::IsSet<shared_members::num_regions>,
+    S6: crate::typed::builder::IsSet<shared_members::size_in_bytes>,
+    S7: crate::typed::builder::IsSet<shared_members::region_size_in_bytes>,
 {
-    /// `reads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reads: crate::typed::builder::MissingRequiredField) -> Shared { match reads {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `bytes_read_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bytes_read_in_bytes: crate::typed::builder::MissingRequiredField) -> Shared { match bytes_read_in_bytes {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `writes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, writes: crate::typed::builder::MissingRequiredField) -> Shared { match writes {} }
-}
-
-impl<S4, S5, S6, S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `bytes_written_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bytes_written_in_bytes: crate::typed::builder::MissingRequiredField) -> Shared { match bytes_written_in_bytes {} }
-}
-
-impl<S5, S6, S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `evictions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, evictions: crate::typed::builder::MissingRequiredField) -> Shared { match evictions {} }
-}
-
-impl<S6, S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `num_regions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_regions: crate::typed::builder::MissingRequiredField) -> Shared { match num_regions {} }
-}
-
-impl<S7>
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_in_bytes: crate::typed::builder::MissingRequiredField) -> Shared { match size_in_bytes {} }
-}
-
-impl
-    SharedBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `region_size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, region_size_in_bytes: crate::typed::builder::MissingRequiredField) -> Shared { match region_size_in_bytes {} }
+    fn from(builder: SharedBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }

@@ -47,27 +47,31 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `ruleset_id`, `rule_id`, `type`, `criteria`, `actions`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `ruleset_id`, `rule_id`, `type`, `criteria`, `actions`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct ruleset_id;
+    pub struct rule_id;
+    pub struct r#type;
+    pub struct criteria;
+    pub struct actions;
 }
 
 /// Builder for [`Request`].
@@ -212,7 +216,7 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
 }
 
 impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// The unique identifier of the query ruleset containing the rule to be created or updated.
+    /// **Required.** The unique identifier of the query ruleset containing the rule to be created or updated.
     pub fn ruleset_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -224,7 +228,7 @@ impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4), C> {
-    /// The unique identifier of the query rule within the specified ruleset to be created or updated.
+    /// **Required.** The unique identifier of the query rule within the specified ruleset to be created or updated.
     pub fn rule_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -236,7 +240,7 @@ impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4), C> {
-    /// The type of rule.
+    /// **Required.** The type of rule.
     pub fn r#type(
         self,
         value: impl Into<crate::typed::query_rules::_types::QueryRuleType>,
@@ -248,7 +252,7 @@ impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4), C> {
-    /// The criteria that must be met for the rule to be applied.
+    /// **Required.** The criteria that must be met for the rule to be applied.
     /// If multiple criteria are specified for a rule, all criteria must be met for the rule to be applied.
     pub fn criteria(
         self,
@@ -261,7 +265,7 @@ impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet), C> {
-    /// The actions to take when the rule is matched.
+    /// **Required.** The actions to take when the rule is matched.
     /// The format of this action depends on the rule type.
     pub fn actions(
         self,
@@ -273,30 +277,26 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::N
     }
 
     /// Sets [`actions`](Self::actions) with a builder.
-    pub fn actions_with(
+    pub fn actions_with<
+        B: crate::typed::builder::Build<Output = crate::typed::query_rules::_types::QueryRuleActions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::query_rules::_types::QueryRuleActionsBuilder,
-        ) -> crate::typed::query_rules::_types::QueryRuleActionsBuilder,
+        f: impl FnOnce(crate::typed::query_rules::_types::QueryRuleActionsBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::Set), C> {
         self.actions(f(crate::typed::query_rules::_types::QueryRuleActionsBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::ruleset_id>,
+        S1: crate::typed::builder::IsSet<request_members::rule_id>,
+        S2: crate::typed::builder::IsSet<request_members::r#type>,
+        S3: crate::typed::builder::IsSet<request_members::criteria>,
+        S4: crate::typed::builder::IsSet<request_members::actions>,
+    {
         Request {
             ruleset_id: self.ruleset_id.unwrap(),
             rule_id: self.rule_id.unwrap(),
@@ -312,168 +312,34 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, S4, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3, S4), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::ruleset_id>,
+    S1: crate::typed::builder::IsSet<request_members::rule_id>,
+    S2: crate::typed::builder::IsSet<request_members::r#type>,
+    S3: crate::typed::builder::IsSet<request_members::criteria>,
+    S4: crate::typed::builder::IsSet<request_members::actions>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// `ruleset_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ruleset_id: crate::typed::builder::MissingRequiredField) -> Request { match ruleset_id {} }
-}
-impl<S1, S2, S3, S4>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), &crate::Elasticsearch>
-{
-    /// `ruleset_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, ruleset_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match ruleset_id {} }
-}
-
-impl<S2, S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `rule_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_id: crate::typed::builder::MissingRequiredField) -> Request { match rule_id {} }
-}
-impl<S2, S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `rule_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, rule_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match rule_id {} }
-}
-
-impl<S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Request { match r#type {} }
-}
-impl<S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `type` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, r#type: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match r#type {} }
-}
-
-impl<S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `criteria` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, criteria: crate::typed::builder::MissingRequiredField) -> Request { match criteria {} }
-}
-impl<S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `criteria` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, criteria: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match criteria {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `actions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actions: crate::typed::builder::MissingRequiredField) -> Request { match actions {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `actions` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, actions: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match actions {} }
+impl<S0, S1, S2, S3, S4> RequestBuilder<(S0, S1, S2, S3, S4), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::ruleset_id>,
+        S1: crate::typed::builder::IsSet<request_members::rule_id>,
+        S2: crate::typed::builder::IsSet<request_members::r#type>,
+        S3: crate::typed::builder::IsSet<request_members::criteria>,
+        S4: crate::typed::builder::IsSet<request_members::actions>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

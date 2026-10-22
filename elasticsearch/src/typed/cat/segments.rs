@@ -74,7 +74,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -346,6 +348,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -605,7 +615,9 @@ impl SegmentsRecord {
     }
 
     /// Creates a [`SegmentsRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SegmentsRecordBuilder) -> SegmentsRecordBuilder) -> SegmentsRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = SegmentsRecord>>(
+        f: impl FnOnce(SegmentsRecordBuilder) -> B,
+    ) -> SegmentsRecord {
         f(Self::builder()).build()
     }
 }
@@ -865,6 +877,14 @@ impl SegmentsRecordBuilder {
             version: self.version,
             compound: self.compound,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SegmentsRecordBuilder {
+    type Output = SegmentsRecord;
+
+    fn build(self) -> SegmentsRecord {
+        Self::build(self)
     }
 }
 

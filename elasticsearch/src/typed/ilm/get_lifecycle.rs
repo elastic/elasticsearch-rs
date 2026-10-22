@@ -10,22 +10,29 @@ pub struct Lifecycle {
 
 impl Lifecycle {
     /// Creates a builder for [`Lifecycle`].
+    ///
+    /// Required: `modified_date`, `policy`, `version`.
     pub fn builder() -> LifecycleBuilder {
         LifecycleBuilder::new()
     }
 
     /// Creates a [`Lifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LifecycleBuilder,
-        ) -> LifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `modified_date`, `policy`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = Lifecycle>>(
+        f: impl FnOnce(LifecycleBuilder) -> B,
     ) -> Lifecycle {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LifecycleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod lifecycle_members {
+    pub struct modified_date;
+    pub struct policy;
+    pub struct version;
 }
 
 /// Builder for [`Lifecycle`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> LifecycleBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> LifecycleBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn modified_date(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -83,6 +91,7 @@ impl<S1, S2> LifecycleBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> LifecycleBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn policy(
         self,
         value: impl Into<crate::typed::ilm::_types::Policy>,
@@ -93,18 +102,18 @@ impl<S0, S2> LifecycleBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`policy`](Self::policy) with a builder.
-    pub fn policy_with(
+    pub fn policy_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ilm::_types::Policy>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ilm::_types::PolicyBuilder,
-        )
-            -> crate::typed::ilm::_types::PolicyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ilm::_types::PolicyBuilder) -> B,
     ) -> LifecycleBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.policy(f(crate::typed::ilm::_types::PolicyBuilder::new()).build())
     }
 }
 
 impl<S0, S1> LifecycleBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -115,15 +124,14 @@ impl<S0, S1> LifecycleBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    LifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> LifecycleBuilder<(S0, S1, S2)> {
     /// Builds a [`Lifecycle`].
-    pub fn build(self) -> Lifecycle {
+    pub fn build(self) -> Lifecycle
+    where
+        S0: crate::typed::builder::IsSet<lifecycle_members::modified_date>,
+        S1: crate::typed::builder::IsSet<lifecycle_members::policy>,
+        S2: crate::typed::builder::IsSet<lifecycle_members::version>,
+    {
         Lifecycle {
             modified_date: self.modified_date.unwrap(),
             policy: self.policy.unwrap(),
@@ -132,54 +140,28 @@ impl
     }
 }
 
-impl
-    From<
-        LifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Lifecycle
+impl<S0, S1, S2> crate::typed::builder::Build for LifecycleBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<lifecycle_members::modified_date>,
+    S1: crate::typed::builder::IsSet<lifecycle_members::policy>,
+    S2: crate::typed::builder::IsSet<lifecycle_members::version>,
 {
-    fn from(
-        builder: LifecycleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Lifecycle;
+
+    fn build(self) -> Lifecycle {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> LifecycleBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `modified_date` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, modified_date: crate::typed::builder::MissingRequiredField) -> Lifecycle { match modified_date {} }
-}
-
-impl<S2>
-    LifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<LifecycleBuilder<(S0, S1, S2)>> for Lifecycle
+where
+    S0: crate::typed::builder::IsSet<lifecycle_members::modified_date>,
+    S1: crate::typed::builder::IsSet<lifecycle_members::policy>,
+    S2: crate::typed::builder::IsSet<lifecycle_members::version>,
 {
-    /// `policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy: crate::typed::builder::MissingRequiredField) -> Lifecycle { match policy {} }
-}
-
-impl
-    LifecycleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> Lifecycle { match version {} }
+    fn from(builder: LifecycleBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ilm.get_lifecycle`](crate::typed::ilm::IlmClient::get_lifecycle).
@@ -219,7 +201,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -359,6 +343,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

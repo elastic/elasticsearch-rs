@@ -44,28 +44,35 @@ pub struct ParentReindexStatus {
 
 impl ParentReindexStatus {
     /// Creates a builder for [`ParentReindexStatus`].
+    ///
+    /// Required: `batches`, `deleted`, `noops`, `requests_per_second`, `retries`, `throttled_millis`, `throttled_until_millis`, `total`, `version_conflicts`.
     pub fn builder() -> ParentReindexStatusBuilder {
         ParentReindexStatusBuilder::new()
     }
 
     /// Creates a [`ParentReindexStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ParentReindexStatusBuilder,
-        ) -> ParentReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `batches`, `deleted`, `noops`, `requests_per_second`, `retries`, `throttled_millis`, `throttled_until_millis`, `total`, `version_conflicts`.
+    pub fn of<B: crate::typed::builder::Build<Output = ParentReindexStatus>>(
+        f: impl FnOnce(ParentReindexStatusBuilder) -> B,
     ) -> ParentReindexStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ParentReindexStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod parent_reindex_status_members {
+    pub struct batches;
+    pub struct deleted;
+    pub struct noops;
+    pub struct requests_per_second;
+    pub struct retries;
+    pub struct throttled_millis;
+    pub struct throttled_until_millis;
+    pub struct total;
+    pub struct version_conflicts;
 }
 
 /// Builder for [`ParentReindexStatus`].
@@ -183,21 +190,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
     }
 
     /// Adds an element to [`slices`](Self::slices), with a builder.
-    pub fn add_slices_with(
+    pub fn add_slices_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ReindexStatus>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ReindexStatusBuilder,
-        ) -> crate::typed::_types::ReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ReindexStatusBuilder) -> B,
     ) -> Self {
         self.add_slices(f(crate::typed::_types::ReindexStatusBuilder::new()).build())
     }
@@ -286,7 +283,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of scroll responses pulled back by the reindex.
+    /// **Required.** The number of scroll responses pulled back by the reindex.
     pub fn batches(
         self,
         value: i64,
@@ -311,7 +308,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of documents that were successfully deleted.
+    /// **Required.** The number of documents that were successfully deleted.
     pub fn deleted(
         self,
         value: i64,
@@ -336,7 +333,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of documents that were ignored because the script used for the reindex returned a `noop` value for `ctx.op`.
+    /// **Required.** The number of documents that were ignored because the script used for the reindex returned a `noop` value for `ctx.op`.
     pub fn noops(
         self,
         value: i64,
@@ -361,7 +358,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of requests per second effectively executed during the reindex.
+    /// **Required.** The number of requests per second effectively executed during the reindex.
     pub fn requests_per_second(
         self,
         value: f32,
@@ -386,7 +383,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of retries attempted by reindex. `bulk` is the number of bulk actions retried and `search` is the number of search actions retried.
+    /// **Required.** The number of retries attempted by reindex. `bulk` is the number of bulk actions retried and `search` is the number of search actions retried.
     pub fn retries(
         self,
         value: impl Into<crate::typed::_types::Retries>,
@@ -398,14 +395,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
     }
 
     /// Sets [`retries`](Self::retries) with a builder.
-    pub fn retries_with(
+    pub fn retries_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Retries>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::RetriesBuilder,
-        ) -> crate::typed::_types::RetriesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::RetriesBuilder) -> B,
     ) -> ParentReindexStatusBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)>
     {
         self.retries(f(crate::typed::_types::RetriesBuilder::new()).build())
@@ -425,7 +417,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
-    /// Number of milliseconds the request slept to conform to `requests_per_second`.
+    /// **Required.** Number of milliseconds the request slept to conform to `requests_per_second`.
     pub fn throttled_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -450,7 +442,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
-    /// This field should always be equal to zero in a `_reindex` response.
+    /// **Required.** This field should always be equal to zero in a `_reindex` response.
     /// It only has meaning when using the Task API, where it indicates the next time (in milliseconds since epoch) a throttled request will be executed again in order to conform to `requests_per_second`.
     pub fn throttled_until_millis(
         self,
@@ -476,7 +468,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
-    /// The number of documents that were successfully processed.
+    /// **Required.** The number of documents that were successfully processed.
     pub fn total(
         self,
         value: i64,
@@ -501,7 +493,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The number of version conflicts that reindex hits.
+    /// **Required.** The number of version conflicts that reindex hits.
     pub fn version_conflicts(
         self,
         value: i64,
@@ -513,21 +505,22 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    ParentReindexStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`ParentReindexStatus`].
-    pub fn build(self) -> ParentReindexStatus {
+    pub fn build(self) -> ParentReindexStatus
+    where
+        S0: crate::typed::builder::IsSet<parent_reindex_status_members::batches>,
+        S1: crate::typed::builder::IsSet<parent_reindex_status_members::deleted>,
+        S2: crate::typed::builder::IsSet<parent_reindex_status_members::noops>,
+        S3: crate::typed::builder::IsSet<parent_reindex_status_members::requests_per_second>,
+        S4: crate::typed::builder::IsSet<parent_reindex_status_members::retries>,
+        S5: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_millis>,
+        S6: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_until_millis>,
+        S7: crate::typed::builder::IsSet<parent_reindex_status_members::total>,
+        S8: crate::typed::builder::IsSet<parent_reindex_status_members::version_conflicts>,
+    {
         ParentReindexStatus {
             slices: self.slices,
             slice_id: self.slice_id,
@@ -549,198 +542,42 @@ impl
     }
 }
 
-impl
-    From<
-        ParentReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ParentReindexStatus
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for ParentReindexStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<parent_reindex_status_members::batches>,
+    S1: crate::typed::builder::IsSet<parent_reindex_status_members::deleted>,
+    S2: crate::typed::builder::IsSet<parent_reindex_status_members::noops>,
+    S3: crate::typed::builder::IsSet<parent_reindex_status_members::requests_per_second>,
+    S4: crate::typed::builder::IsSet<parent_reindex_status_members::retries>,
+    S5: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_millis>,
+    S6: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_until_millis>,
+    S7: crate::typed::builder::IsSet<parent_reindex_status_members::total>,
+    S8: crate::typed::builder::IsSet<parent_reindex_status_members::version_conflicts>,
 {
-    fn from(
-        builder: ParentReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ParentReindexStatus;
+
+    fn build(self) -> ParentReindexStatus {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<ParentReindexStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>> for ParentReindexStatus
+where
+    S0: crate::typed::builder::IsSet<parent_reindex_status_members::batches>,
+    S1: crate::typed::builder::IsSet<parent_reindex_status_members::deleted>,
+    S2: crate::typed::builder::IsSet<parent_reindex_status_members::noops>,
+    S3: crate::typed::builder::IsSet<parent_reindex_status_members::requests_per_second>,
+    S4: crate::typed::builder::IsSet<parent_reindex_status_members::retries>,
+    S5: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_millis>,
+    S6: crate::typed::builder::IsSet<parent_reindex_status_members::throttled_until_millis>,
+    S7: crate::typed::builder::IsSet<parent_reindex_status_members::total>,
+    S8: crate::typed::builder::IsSet<parent_reindex_status_members::version_conflicts>,
 {
-    /// `batches` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, batches: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match batches {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `deleted` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match deleted {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `noops` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, noops: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match noops {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `requests_per_second` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match requests_per_second {} }
-}
-
-impl<S5, S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `retries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, retries: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match retries {} }
-}
-
-impl<S6, S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `throttled_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, throttled_millis: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match throttled_millis {} }
-}
-
-impl<S7, S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `throttled_until_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, throttled_until_millis: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match throttled_until_millis {} }
-}
-
-impl<S8>
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match total {} }
-}
-
-impl
-    ParentReindexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version_conflicts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version_conflicts: crate::typed::builder::MissingRequiredField) -> ParentReindexStatus { match version_conflicts {} }
+    fn from(builder: ParentReindexStatusBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -762,30 +599,37 @@ pub struct ParentReindexTask {
 
 impl ParentReindexTask {
     /// Creates a builder for [`ParentReindexTask`].
+    ///
+    /// Required: `action`, `cancellable`, `cancelled`, `description`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `status`, `type`, `headers`.
     pub fn builder() -> ParentReindexTaskBuilder {
         ParentReindexTaskBuilder::new()
     }
 
     /// Creates a [`ParentReindexTask`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ParentReindexTaskBuilder,
-        ) -> ParentReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `action`, `cancellable`, `cancelled`, `description`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `status`, `type`, `headers`.
+    pub fn of<B: crate::typed::builder::Build<Output = ParentReindexTask>>(
+        f: impl FnOnce(ParentReindexTaskBuilder) -> B,
     ) -> ParentReindexTask {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ParentReindexTaskBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod parent_reindex_task_members {
+    pub struct action;
+    pub struct cancellable;
+    pub struct cancelled;
+    pub struct description;
+    pub struct id;
+    pub struct node;
+    pub struct running_time_in_nanos;
+    pub struct start_time_in_millis;
+    pub struct status;
+    pub struct r#type;
+    pub struct headers;
 }
 
 /// Builder for [`ParentReindexTask`].
@@ -895,23 +739,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Adds an element to [`children`](Self::children), with a builder.
-    pub fn add_children_with(
+    pub fn add_children_with<B: crate::typed::builder::Build<Output = ReindexTask>>(
         self,
-        f: impl FnOnce(
-            ReindexTaskBuilder,
-        ) -> ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReindexTaskBuilder) -> B,
     ) -> Self {
         self.add_children(f(ReindexTaskBuilder::new()).build())
     }
@@ -932,6 +762,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn action(
         self,
         value: impl Into<String>,
@@ -969,6 +800,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn cancellable(
         self,
         value: bool,
@@ -1006,6 +838,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn cancelled(
         self,
         value: bool,
@@ -1043,6 +876,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -1080,6 +914,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: i64,
@@ -1117,6 +952,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1154,6 +990,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn running_time_in_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1191,6 +1028,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1228,6 +1066,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ParentReindexStatus>,
@@ -1250,21 +1089,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
     }
 
     /// Sets [`status`](Self::status) with a builder.
-    pub fn status_with(
+    pub fn status_with<B: crate::typed::builder::Build<Output = ParentReindexStatus>>(
         self,
-        f: impl FnOnce(
-            ParentReindexStatusBuilder,
-        ) -> ParentReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ParentReindexStatusBuilder) -> B,
     ) -> ParentReindexTaskBuilder<(
         S0,
         S1,
@@ -1297,6 +1124,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -1334,6 +1162,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn headers(
         self,
         value: impl Into<crate::typed::_types::HttpHeaders>,
@@ -1356,23 +1185,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ParentReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ParentReindexTask`].
-    pub fn build(self) -> ParentReindexTask {
+    pub fn build(self) -> ParentReindexTask
+    where
+        S0: crate::typed::builder::IsSet<parent_reindex_task_members::action>,
+        S1: crate::typed::builder::IsSet<parent_reindex_task_members::cancellable>,
+        S2: crate::typed::builder::IsSet<parent_reindex_task_members::cancelled>,
+        S3: crate::typed::builder::IsSet<parent_reindex_task_members::description>,
+        S4: crate::typed::builder::IsSet<parent_reindex_task_members::id>,
+        S5: crate::typed::builder::IsSet<parent_reindex_task_members::node>,
+        S6: crate::typed::builder::IsSet<parent_reindex_task_members::running_time_in_nanos>,
+        S7: crate::typed::builder::IsSet<parent_reindex_task_members::start_time_in_millis>,
+        S8: crate::typed::builder::IsSet<parent_reindex_task_members::status>,
+        S9: crate::typed::builder::IsSet<parent_reindex_task_members::r#type>,
+        S10: crate::typed::builder::IsSet<parent_reindex_task_members::headers>,
+    {
         ParentReindexTask {
             action: self.action.unwrap(),
             cancellable: self.cancellable.unwrap(),
@@ -1390,260 +1220,49 @@ impl
     }
 }
 
-impl
-    From<
-        ParentReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ParentReindexTask
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ParentReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<parent_reindex_task_members::action>,
+    S1: crate::typed::builder::IsSet<parent_reindex_task_members::cancellable>,
+    S2: crate::typed::builder::IsSet<parent_reindex_task_members::cancelled>,
+    S3: crate::typed::builder::IsSet<parent_reindex_task_members::description>,
+    S4: crate::typed::builder::IsSet<parent_reindex_task_members::id>,
+    S5: crate::typed::builder::IsSet<parent_reindex_task_members::node>,
+    S6: crate::typed::builder::IsSet<parent_reindex_task_members::running_time_in_nanos>,
+    S7: crate::typed::builder::IsSet<parent_reindex_task_members::start_time_in_millis>,
+    S8: crate::typed::builder::IsSet<parent_reindex_task_members::status>,
+    S9: crate::typed::builder::IsSet<parent_reindex_task_members::r#type>,
+    S10: crate::typed::builder::IsSet<parent_reindex_task_members::headers>,
 {
-    fn from(
-        builder: ParentReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ParentReindexTask;
+
+    fn build(self) -> ParentReindexTask {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ParentReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>>
+    for ParentReindexTask
+where
+    S0: crate::typed::builder::IsSet<parent_reindex_task_members::action>,
+    S1: crate::typed::builder::IsSet<parent_reindex_task_members::cancellable>,
+    S2: crate::typed::builder::IsSet<parent_reindex_task_members::cancelled>,
+    S3: crate::typed::builder::IsSet<parent_reindex_task_members::description>,
+    S4: crate::typed::builder::IsSet<parent_reindex_task_members::id>,
+    S5: crate::typed::builder::IsSet<parent_reindex_task_members::node>,
+    S6: crate::typed::builder::IsSet<parent_reindex_task_members::running_time_in_nanos>,
+    S7: crate::typed::builder::IsSet<parent_reindex_task_members::start_time_in_millis>,
+    S8: crate::typed::builder::IsSet<parent_reindex_task_members::status>,
+    S9: crate::typed::builder::IsSet<parent_reindex_task_members::r#type>,
+    S10: crate::typed::builder::IsSet<parent_reindex_task_members::headers>,
 {
-    /// `action` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, action: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match action {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `cancellable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancellable: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match cancellable {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `cancelled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancelled: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match cancelled {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match description {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match id {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match node {} }
-}
-
-impl<S7, S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `running_time_in_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running_time_in_nanos: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match running_time_in_nanos {} }
-}
-
-impl<S8, S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match start_time_in_millis {} }
-}
-
-impl<S9, S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match status {} }
-}
-
-impl<S10>
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match r#type {} }
-}
-
-impl
-    ParentReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `headers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, headers: crate::typed::builder::MissingRequiredField) -> ParentReindexTask { match headers {} }
+    fn from(
+        builder: ParentReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1660,25 +1279,32 @@ pub struct ReindexNode {
 
 impl ReindexNode {
     /// Creates a builder for [`ReindexNode`].
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`, `tasks`.
     pub fn builder() -> ReindexNodeBuilder {
         ReindexNodeBuilder::new()
     }
 
     /// Creates a [`ReindexNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReindexNodeBuilder,
-        ) -> ReindexNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`, `tasks`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReindexNode>>(
+        f: impl FnOnce(ReindexNodeBuilder) -> B,
     ) -> ReindexNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReindexNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reindex_node_members {
+    pub struct attributes;
+    pub struct host;
+    pub struct ip;
+    pub struct name;
+    pub struct transport_address;
+    pub struct tasks;
 }
 
 /// Builder for [`ReindexNode`].
@@ -1762,6 +1388,7 @@ impl<S0, S1, S2, S3, S4, S5> ReindexNodeBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> ReindexNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -1797,6 +1424,7 @@ impl<S1, S2, S3, S4, S5> ReindexNodeBuilder<(crate::typed::builder::Set, S1, S2,
 }
 
 impl<S0, S2, S3, S4, S5> ReindexNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn host(
         self,
         value: impl Into<crate::typed::_types::Host>,
@@ -1808,6 +1436,7 @@ impl<S0, S2, S3, S4, S5> ReindexNodeBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3, S4, S5> ReindexNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
+    /// **Required.**
     pub fn ip(
         self,
         value: impl Into<crate::typed::_types::Ip>,
@@ -1819,6 +1448,7 @@ impl<S0, S1, S3, S4, S5> ReindexNodeBuilder<(S0, S1, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S4, S5> ReindexNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1830,6 +1460,7 @@ impl<S0, S1, S2, S4, S5> ReindexNodeBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3, S5> ReindexNodeBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -1841,6 +1472,7 @@ impl<S0, S1, S2, S3, S5> ReindexNodeBuilder<(S0, S1, S2, S3, crate::typed::build
 }
 
 impl<S0, S1, S2, S3, S4> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tasks(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::TaskId, ReindexTask>>,
@@ -1865,24 +1497,10 @@ impl<S0, S1, S2, S3, S4> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::b
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<B: crate::typed::builder::Build<Output = ReindexTask>>(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            ReindexTaskBuilder,
-        ) -> ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReindexTaskBuilder) -> B,
     ) -> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.add_tasks(key, f(ReindexTaskBuilder::new()).build())
     }
@@ -1902,41 +1520,26 @@ impl<S0, S1, S2, S3, S4> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::b
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<B: crate::typed::builder::Build<Output = ReindexTask>>(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            ReindexTaskBuilder,
-        ) -> ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReindexTaskBuilder) -> B,
     ) -> Self {
         self.add_tasks(key, f(ReindexTaskBuilder::new()).build())
     }
 }
 
-impl
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> ReindexNodeBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`ReindexNode`].
-    pub fn build(self) -> ReindexNode {
+    pub fn build(self) -> ReindexNode
+    where
+        S0: crate::typed::builder::IsSet<reindex_node_members::attributes>,
+        S1: crate::typed::builder::IsSet<reindex_node_members::host>,
+        S2: crate::typed::builder::IsSet<reindex_node_members::ip>,
+        S3: crate::typed::builder::IsSet<reindex_node_members::name>,
+        S4: crate::typed::builder::IsSet<reindex_node_members::transport_address>,
+        S5: crate::typed::builder::IsSet<reindex_node_members::tasks>,
+    {
         ReindexNode {
             attributes: self.attributes.unwrap(),
             host: self.host.unwrap(),
@@ -1949,111 +1552,35 @@ impl
     }
 }
 
-impl
-    From<
-        ReindexNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReindexNode
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for ReindexNodeBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<reindex_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<reindex_node_members::host>,
+    S2: crate::typed::builder::IsSet<reindex_node_members::ip>,
+    S3: crate::typed::builder::IsSet<reindex_node_members::name>,
+    S4: crate::typed::builder::IsSet<reindex_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<reindex_node_members::tasks>,
 {
-    fn from(
-        builder: ReindexNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReindexNode;
+
+    fn build(self) -> ReindexNode {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> ReindexNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> ReindexNode { match attributes {} }
-}
-
-impl<S2, S3, S4, S5>
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<ReindexNodeBuilder<(S0, S1, S2, S3, S4, S5)>> for ReindexNode
+where
+    S0: crate::typed::builder::IsSet<reindex_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<reindex_node_members::host>,
+    S2: crate::typed::builder::IsSet<reindex_node_members::ip>,
+    S3: crate::typed::builder::IsSet<reindex_node_members::name>,
+    S4: crate::typed::builder::IsSet<reindex_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<reindex_node_members::tasks>,
 {
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> ReindexNode { match host {} }
-}
-
-impl<S3, S4, S5>
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `ip` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ip: crate::typed::builder::MissingRequiredField) -> ReindexNode { match ip {} }
-}
-
-impl<S4, S5>
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ReindexNode { match name {} }
-}
-
-impl<S5>
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> ReindexNode { match transport_address {} }
-}
-
-impl
-    ReindexNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `tasks` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tasks: crate::typed::builder::MissingRequiredField) -> ReindexNode { match tasks {} }
+    fn from(builder: ReindexNodeBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2073,30 +1600,37 @@ pub struct ReindexTask {
 
 impl ReindexTask {
     /// Creates a builder for [`ReindexTask`].
+    ///
+    /// Required: `action`, `cancellable`, `cancelled`, `description`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `status`, `type`, `headers`.
     pub fn builder() -> ReindexTaskBuilder {
         ReindexTaskBuilder::new()
     }
 
     /// Creates a [`ReindexTask`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReindexTaskBuilder,
-        ) -> ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `action`, `cancellable`, `cancelled`, `description`, `id`, `node`, `running_time_in_nanos`, `start_time_in_millis`, `status`, `type`, `headers`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReindexTask>>(
+        f: impl FnOnce(ReindexTaskBuilder) -> B,
     ) -> ReindexTask {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReindexTaskBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reindex_task_members {
+    pub struct action;
+    pub struct cancellable;
+    pub struct cancelled;
+    pub struct description;
+    pub struct id;
+    pub struct node;
+    pub struct running_time_in_nanos;
+    pub struct start_time_in_millis;
+    pub struct status;
+    pub struct r#type;
+    pub struct headers;
 }
 
 /// Builder for [`ReindexTask`].
@@ -2199,6 +1733,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn action(
         self,
         value: impl Into<String>,
@@ -2236,6 +1771,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn cancellable(
         self,
         value: bool,
@@ -2273,6 +1809,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn cancelled(
         self,
         value: bool,
@@ -2310,6 +1847,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn description(
         self,
         value: impl Into<String>,
@@ -2347,6 +1885,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: i64,
@@ -2384,6 +1923,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2421,6 +1961,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn running_time_in_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -2458,6 +1999,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -2495,6 +2037,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<ParentReindexStatus>,
@@ -2517,21 +2060,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
     }
 
     /// Sets [`status`](Self::status) with a builder.
-    pub fn status_with(
+    pub fn status_with<B: crate::typed::builder::Build<Output = ParentReindexStatus>>(
         self,
-        f: impl FnOnce(
-            ParentReindexStatusBuilder,
-        ) -> ParentReindexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ParentReindexStatusBuilder) -> B,
     ) -> ReindexTaskBuilder<(
         S0,
         S1,
@@ -2564,6 +2095,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -2601,6 +2133,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn headers(
         self,
         value: impl Into<crate::typed::_types::HttpHeaders>,
@@ -2623,23 +2156,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ReindexTask`].
-    pub fn build(self) -> ReindexTask {
+    pub fn build(self) -> ReindexTask
+    where
+        S0: crate::typed::builder::IsSet<reindex_task_members::action>,
+        S1: crate::typed::builder::IsSet<reindex_task_members::cancellable>,
+        S2: crate::typed::builder::IsSet<reindex_task_members::cancelled>,
+        S3: crate::typed::builder::IsSet<reindex_task_members::description>,
+        S4: crate::typed::builder::IsSet<reindex_task_members::id>,
+        S5: crate::typed::builder::IsSet<reindex_task_members::node>,
+        S6: crate::typed::builder::IsSet<reindex_task_members::running_time_in_nanos>,
+        S7: crate::typed::builder::IsSet<reindex_task_members::start_time_in_millis>,
+        S8: crate::typed::builder::IsSet<reindex_task_members::status>,
+        S9: crate::typed::builder::IsSet<reindex_task_members::r#type>,
+        S10: crate::typed::builder::IsSet<reindex_task_members::headers>,
+    {
         ReindexTask {
             action: self.action.unwrap(),
             cancellable: self.cancellable.unwrap(),
@@ -2656,260 +2190,46 @@ impl
     }
 }
 
-impl
-    From<
-        ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReindexTask
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<reindex_task_members::action>,
+    S1: crate::typed::builder::IsSet<reindex_task_members::cancellable>,
+    S2: crate::typed::builder::IsSet<reindex_task_members::cancelled>,
+    S3: crate::typed::builder::IsSet<reindex_task_members::description>,
+    S4: crate::typed::builder::IsSet<reindex_task_members::id>,
+    S5: crate::typed::builder::IsSet<reindex_task_members::node>,
+    S6: crate::typed::builder::IsSet<reindex_task_members::running_time_in_nanos>,
+    S7: crate::typed::builder::IsSet<reindex_task_members::start_time_in_millis>,
+    S8: crate::typed::builder::IsSet<reindex_task_members::status>,
+    S9: crate::typed::builder::IsSet<reindex_task_members::r#type>,
+    S10: crate::typed::builder::IsSet<reindex_task_members::headers>,
 {
-    fn from(
-        builder: ReindexTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReindexTask;
+
+    fn build(self) -> ReindexTask {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for ReindexTask
+where
+    S0: crate::typed::builder::IsSet<reindex_task_members::action>,
+    S1: crate::typed::builder::IsSet<reindex_task_members::cancellable>,
+    S2: crate::typed::builder::IsSet<reindex_task_members::cancelled>,
+    S3: crate::typed::builder::IsSet<reindex_task_members::description>,
+    S4: crate::typed::builder::IsSet<reindex_task_members::id>,
+    S5: crate::typed::builder::IsSet<reindex_task_members::node>,
+    S6: crate::typed::builder::IsSet<reindex_task_members::running_time_in_nanos>,
+    S7: crate::typed::builder::IsSet<reindex_task_members::start_time_in_millis>,
+    S8: crate::typed::builder::IsSet<reindex_task_members::status>,
+    S9: crate::typed::builder::IsSet<reindex_task_members::r#type>,
+    S10: crate::typed::builder::IsSet<reindex_task_members::headers>,
 {
-    /// `action` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, action: crate::typed::builder::MissingRequiredField) -> ReindexTask { match action {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `cancellable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancellable: crate::typed::builder::MissingRequiredField) -> ReindexTask { match cancellable {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `cancelled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cancelled: crate::typed::builder::MissingRequiredField) -> ReindexTask { match cancelled {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, description: crate::typed::builder::MissingRequiredField) -> ReindexTask { match description {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ReindexTask { match id {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ReindexTask { match node {} }
-}
-
-impl<S7, S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `running_time_in_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, running_time_in_nanos: crate::typed::builder::MissingRequiredField) -> ReindexTask { match running_time_in_nanos {} }
-}
-
-impl<S8, S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> ReindexTask { match start_time_in_millis {} }
-}
-
-impl<S9, S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> ReindexTask { match status {} }
-}
-
-impl<S10>
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ReindexTask { match r#type {} }
-}
-
-impl
-    ReindexTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `headers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, headers: crate::typed::builder::MissingRequiredField) -> ReindexTask { match headers {} }
+    fn from(builder: ReindexTaskBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2988,19 +2308,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `task_id`, `requests_per_second`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `task_id`, `requests_per_second`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct task_id;
+    pub struct requests_per_second;
 }
 
 /// Builder for [`Request`].
@@ -3121,7 +2450,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The task identifier, returned when creating a reindex task, or by listing tasks via
+    /// **Required.** The task identifier, returned when creating a reindex task, or by listing tasks via
     /// `GET /_reindex` or `GET /_tasks`.
     /// In stack, can be either the original task ID or the task ID of the relocated task.
     pub fn task_id(
@@ -3135,7 +2464,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The maximum number of documents to index per second, across the entire reindex operation (including slices).
+    /// **Required.** The maximum number of documents to index per second, across the entire reindex operation (including slices).
     /// It can be either `-1` to turn off throttling or any decimal number like `1.7` or `12` to throttle to that level.
     pub fn requests_per_second(
         self,
@@ -3147,9 +2476,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
         Request {
             task_id: self.task_id.unwrap(),
             requests_per_second: self.requests_per_second.unwrap(),
@@ -3162,41 +2495,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::task_id>,
+    S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `task_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_id: crate::typed::builder::MissingRequiredField) -> Request { match task_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `task_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, task_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match task_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `requests_per_second` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> Request { match requests_per_second {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `requests_per_second` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match requests_per_second {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

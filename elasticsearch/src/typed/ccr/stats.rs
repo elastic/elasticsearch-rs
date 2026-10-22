@@ -17,24 +17,31 @@ pub struct AutoFollowStats {
 
 impl AutoFollowStats {
     /// Creates a builder for [`AutoFollowStats`].
+    ///
+    /// Required: `auto_followed_clusters`, `number_of_failed_follow_indices`, `number_of_failed_remote_cluster_state_requests`, `number_of_successful_follow_indices`, `recent_auto_follow_errors`.
     pub fn builder() -> AutoFollowStatsBuilder {
         AutoFollowStatsBuilder::new()
     }
 
     /// Creates a [`AutoFollowStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoFollowStatsBuilder,
-        ) -> AutoFollowStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `auto_followed_clusters`, `number_of_failed_follow_indices`, `number_of_failed_remote_cluster_state_requests`, `number_of_successful_follow_indices`, `recent_auto_follow_errors`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoFollowStats>>(
+        f: impl FnOnce(AutoFollowStatsBuilder) -> B,
     ) -> AutoFollowStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoFollowStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod auto_follow_stats_members {
+    pub struct auto_followed_clusters;
+    pub struct number_of_failed_follow_indices;
+    pub struct number_of_failed_remote_cluster_state_requests;
+    pub struct number_of_successful_follow_indices;
+    pub struct recent_auto_follow_errors;
 }
 
 /// Builder for [`AutoFollowStats`].
@@ -92,6 +99,7 @@ impl<S0, S1, S2, S3, S4> AutoFollowStatsBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn auto_followed_clusters(
         self,
         value: impl Into<Vec<AutoFollowedCluster>>,
@@ -115,15 +123,11 @@ impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::NotSet, S1, 
     }
 
     /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters), with a builder.
-    pub fn add_auto_followed_clusters_with(
+    pub fn add_auto_followed_clusters_with<
+        B: crate::typed::builder::Build<Output = AutoFollowedCluster>,
+    >(
         self,
-        f: impl FnOnce(
-            AutoFollowedClusterBuilder,
-        ) -> AutoFollowedClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoFollowedClusterBuilder) -> B,
     ) -> AutoFollowStatsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         self.add_auto_followed_clusters(f(AutoFollowedClusterBuilder::new()).build())
     }
@@ -139,22 +143,18 @@ impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::Set, S1, S2,
     }
 
     /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters), with a builder.
-    pub fn add_auto_followed_clusters_with(
+    pub fn add_auto_followed_clusters_with<
+        B: crate::typed::builder::Build<Output = AutoFollowedCluster>,
+    >(
         self,
-        f: impl FnOnce(
-            AutoFollowedClusterBuilder,
-        ) -> AutoFollowedClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoFollowedClusterBuilder) -> B,
     ) -> Self {
         self.add_auto_followed_clusters(f(AutoFollowedClusterBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4> AutoFollowStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The number of indices that the auto-follow coordinator failed to automatically follow.
+    /// **Required.** The number of indices that the auto-follow coordinator failed to automatically follow.
     /// The causes of recent failures are captured in the logs of the elected master node and in the `auto_follow_stats.recent_auto_follow_errors` field.
     pub fn number_of_failed_follow_indices(
         self,
@@ -167,7 +167,7 @@ impl<S0, S2, S3, S4> AutoFollowStatsBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3, S4> AutoFollowStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// The number of times that the auto-follow coordinator failed to retrieve the cluster state from a remote cluster registered in a collection of auto-follow patterns.
+    /// **Required.** The number of times that the auto-follow coordinator failed to retrieve the cluster state from a remote cluster registered in a collection of auto-follow patterns.
     pub fn number_of_failed_remote_cluster_state_requests(
         self,
         value: i64,
@@ -179,7 +179,7 @@ impl<S0, S1, S3, S4> AutoFollowStatsBuilder<(S0, S1, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S4> AutoFollowStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// The number of indices that the auto-follow coordinator successfully followed.
+    /// **Required.** The number of indices that the auto-follow coordinator successfully followed.
     pub fn number_of_successful_follow_indices(
         self,
         value: i64,
@@ -191,7 +191,7 @@ impl<S0, S1, S2, S4> AutoFollowStatsBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// An array of objects representing failures by the auto-follow coordinator.
+    /// **Required.** An array of objects representing failures by the auto-follow coordinator.
     pub fn recent_auto_follow_errors(
         self,
         value: impl Into<Vec<crate::typed::_types::ErrorCause>>,
@@ -215,12 +215,11 @@ impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::build
     }
 
     /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors), with a builder.
-    pub fn add_recent_auto_follow_errors_with(
+    pub fn add_recent_auto_follow_errors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.add_recent_auto_follow_errors(
             f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
@@ -241,12 +240,11 @@ impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::build
     }
 
     /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors), with a builder.
-    pub fn add_recent_auto_follow_errors_with(
+    pub fn add_recent_auto_follow_errors_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.add_recent_auto_follow_errors(
             f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
@@ -254,17 +252,22 @@ impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::build
     }
 }
 
-impl
-    AutoFollowStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AutoFollowStatsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AutoFollowStats`].
-    pub fn build(self) -> AutoFollowStats {
+    pub fn build(self) -> AutoFollowStats
+    where
+        S0: crate::typed::builder::IsSet<auto_follow_stats_members::auto_followed_clusters>,
+        S1: crate::typed::builder::IsSet<
+            auto_follow_stats_members::number_of_failed_follow_indices,
+        >,
+        S2: crate::typed::builder::IsSet<
+            auto_follow_stats_members::number_of_failed_remote_cluster_state_requests,
+        >,
+        S3: crate::typed::builder::IsSet<
+            auto_follow_stats_members::number_of_successful_follow_indices,
+        >,
+        S4: crate::typed::builder::IsSet<auto_follow_stats_members::recent_auto_follow_errors>,
+    {
         AutoFollowStats {
             auto_followed_clusters: self.auto_followed_clusters.unwrap(),
             number_of_failed_follow_indices: self.number_of_failed_follow_indices.unwrap(),
@@ -277,90 +280,41 @@ impl
     }
 }
 
-impl
-    From<
-        AutoFollowStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AutoFollowStats
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for AutoFollowStatsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<auto_follow_stats_members::auto_followed_clusters>,
+    S1: crate::typed::builder::IsSet<auto_follow_stats_members::number_of_failed_follow_indices>,
+    S2: crate::typed::builder::IsSet<
+        auto_follow_stats_members::number_of_failed_remote_cluster_state_requests,
+    >,
+    S3: crate::typed::builder::IsSet<
+        auto_follow_stats_members::number_of_successful_follow_indices,
+    >,
+    S4: crate::typed::builder::IsSet<auto_follow_stats_members::recent_auto_follow_errors>,
 {
-    fn from(
-        builder: AutoFollowStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoFollowStats;
+
+    fn build(self) -> AutoFollowStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `auto_followed_clusters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, auto_followed_clusters: crate::typed::builder::MissingRequiredField) -> AutoFollowStats { match auto_followed_clusters {} }
-}
-
-impl<S2, S3, S4>
-    AutoFollowStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<AutoFollowStatsBuilder<(S0, S1, S2, S3, S4)>> for AutoFollowStats
+where
+    S0: crate::typed::builder::IsSet<auto_follow_stats_members::auto_followed_clusters>,
+    S1: crate::typed::builder::IsSet<auto_follow_stats_members::number_of_failed_follow_indices>,
+    S2: crate::typed::builder::IsSet<
+        auto_follow_stats_members::number_of_failed_remote_cluster_state_requests,
+    >,
+    S3: crate::typed::builder::IsSet<
+        auto_follow_stats_members::number_of_successful_follow_indices,
+    >,
+    S4: crate::typed::builder::IsSet<auto_follow_stats_members::recent_auto_follow_errors>,
 {
-    /// `number_of_failed_follow_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_failed_follow_indices: crate::typed::builder::MissingRequiredField) -> AutoFollowStats { match number_of_failed_follow_indices {} }
-}
-
-impl<S3, S4>
-    AutoFollowStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `number_of_failed_remote_cluster_state_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_failed_remote_cluster_state_requests: crate::typed::builder::MissingRequiredField) -> AutoFollowStats { match number_of_failed_remote_cluster_state_requests {} }
-}
-
-impl<S4>
-    AutoFollowStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `number_of_successful_follow_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, number_of_successful_follow_indices: crate::typed::builder::MissingRequiredField) -> AutoFollowStats { match number_of_successful_follow_indices {} }
-}
-
-impl
-    AutoFollowStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `recent_auto_follow_errors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recent_auto_follow_errors: crate::typed::builder::MissingRequiredField) -> AutoFollowStats { match recent_auto_follow_errors {} }
+    fn from(builder: AutoFollowStatsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -372,22 +326,29 @@ pub struct AutoFollowedCluster {
 
 impl AutoFollowedCluster {
     /// Creates a builder for [`AutoFollowedCluster`].
+    ///
+    /// Required: `cluster_name`, `last_seen_metadata_version`, `time_since_last_check_millis`.
     pub fn builder() -> AutoFollowedClusterBuilder {
         AutoFollowedClusterBuilder::new()
     }
 
     /// Creates a [`AutoFollowedCluster`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoFollowedClusterBuilder,
-        ) -> AutoFollowedClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster_name`, `last_seen_metadata_version`, `time_since_last_check_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoFollowedCluster>>(
+        f: impl FnOnce(AutoFollowedClusterBuilder) -> B,
     ) -> AutoFollowedCluster {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoFollowedClusterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod auto_followed_cluster_members {
+    pub struct cluster_name;
+    pub struct last_seen_metadata_version;
+    pub struct time_since_last_check_millis;
 }
 
 /// Builder for [`AutoFollowedCluster`].
@@ -434,6 +395,7 @@ impl<S0, S1, S2> AutoFollowedClusterBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AutoFollowedClusterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -445,6 +407,7 @@ impl<S1, S2> AutoFollowedClusterBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> AutoFollowedClusterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn last_seen_metadata_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -456,6 +419,7 @@ impl<S0, S2> AutoFollowedClusterBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> AutoFollowedClusterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn time_since_last_check_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -466,15 +430,16 @@ impl<S0, S1> AutoFollowedClusterBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    AutoFollowedClusterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AutoFollowedClusterBuilder<(S0, S1, S2)> {
     /// Builds a [`AutoFollowedCluster`].
-    pub fn build(self) -> AutoFollowedCluster {
+    pub fn build(self) -> AutoFollowedCluster
+    where
+        S0: crate::typed::builder::IsSet<auto_followed_cluster_members::cluster_name>,
+        S1: crate::typed::builder::IsSet<auto_followed_cluster_members::last_seen_metadata_version>,
+        S2: crate::typed::builder::IsSet<
+            auto_followed_cluster_members::time_since_last_check_millis,
+        >,
+    {
         AutoFollowedCluster {
             cluster_name: self.cluster_name.unwrap(),
             last_seen_metadata_version: self.last_seen_metadata_version.unwrap(),
@@ -483,54 +448,28 @@ impl
     }
 }
 
-impl
-    From<
-        AutoFollowedClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AutoFollowedCluster
+impl<S0, S1, S2> crate::typed::builder::Build for AutoFollowedClusterBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<auto_followed_cluster_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<auto_followed_cluster_members::last_seen_metadata_version>,
+    S2: crate::typed::builder::IsSet<auto_followed_cluster_members::time_since_last_check_millis>,
 {
-    fn from(
-        builder: AutoFollowedClusterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoFollowedCluster;
+
+    fn build(self) -> AutoFollowedCluster {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AutoFollowedClusterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> AutoFollowedCluster { match cluster_name {} }
-}
-
-impl<S2>
-    AutoFollowedClusterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AutoFollowedClusterBuilder<(S0, S1, S2)>> for AutoFollowedCluster
+where
+    S0: crate::typed::builder::IsSet<auto_followed_cluster_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<auto_followed_cluster_members::last_seen_metadata_version>,
+    S2: crate::typed::builder::IsSet<auto_followed_cluster_members::time_since_last_check_millis>,
 {
-    /// `last_seen_metadata_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, last_seen_metadata_version: crate::typed::builder::MissingRequiredField) -> AutoFollowedCluster { match last_seen_metadata_version {} }
-}
-
-impl
-    AutoFollowedClusterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `time_since_last_check_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_since_last_check_millis: crate::typed::builder::MissingRequiredField) -> AutoFollowedCluster { match time_since_last_check_millis {} }
+    fn from(builder: AutoFollowedClusterBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -540,16 +479,27 @@ pub struct FollowStats {
 
 impl FollowStats {
     /// Creates a builder for [`FollowStats`].
+    ///
+    /// Required: `indices`.
     pub fn builder() -> FollowStatsBuilder {
         FollowStatsBuilder::new()
     }
 
     /// Creates a [`FollowStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FollowStatsBuilder) -> FollowStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = FollowStats>>(
+        f: impl FnOnce(FollowStatsBuilder) -> B,
     ) -> FollowStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FollowStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod follow_stats_members {
+    pub struct indices;
 }
 
 /// Builder for [`FollowStats`].
@@ -578,6 +528,7 @@ impl<S0> FollowStatsBuilder<(S0,)> {
 }
 
 impl FollowStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<crate::typed::ccr::_types::FollowIndexStats>>,
@@ -601,14 +552,11 @@ impl FollowStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ccr::_types::FollowIndexStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ccr::_types::FollowIndexStatsBuilder,
-        ) -> crate::typed::ccr::_types::FollowIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ccr::_types::FollowIndexStatsBuilder) -> B,
     ) -> FollowStatsBuilder<(crate::typed::builder::Set,)> {
         self.add_indices(f(crate::typed::ccr::_types::FollowIndexStatsBuilder::new()).build())
     }
@@ -627,38 +575,46 @@ impl FollowStatsBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ccr::_types::FollowIndexStats>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ccr::_types::FollowIndexStatsBuilder,
-        ) -> crate::typed::ccr::_types::FollowIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ccr::_types::FollowIndexStatsBuilder) -> B,
     ) -> Self {
         self.add_indices(f(crate::typed::ccr::_types::FollowIndexStatsBuilder::new()).build())
     }
 }
 
-impl FollowStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FollowStatsBuilder<(S0,)> {
     /// Builds a [`FollowStats`].
-    pub fn build(self) -> FollowStats {
+    pub fn build(self) -> FollowStats
+    where
+        S0: crate::typed::builder::IsSet<follow_stats_members::indices>,
+    {
         FollowStats {
             indices: self.indices.unwrap(),
         }
     }
 }
 
-impl From<FollowStatsBuilder<(crate::typed::builder::Set,)>> for FollowStats {
-    fn from(builder: FollowStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FollowStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<follow_stats_members::indices>,
+{
+    type Output = FollowStats;
+
+    fn build(self) -> FollowStats {
+        Self::build(self)
     }
 }
 
-impl FollowStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> FollowStats { match indices {} }
+impl<S0> From<FollowStatsBuilder<(S0,)>> for FollowStats
+where
+    S0: crate::typed::builder::IsSet<follow_stats_members::indices>,
+{
+    fn from(builder: FollowStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ccr.stats`](crate::typed::ccr::CcrClient::stats).
@@ -700,7 +656,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -827,6 +785,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

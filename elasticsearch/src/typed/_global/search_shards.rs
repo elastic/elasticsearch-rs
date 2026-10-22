@@ -74,7 +74,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -331,6 +333,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -490,28 +500,35 @@ pub struct SearchShardsNodeAttributes {
 
 impl SearchShardsNodeAttributes {
     /// Creates a builder for [`SearchShardsNodeAttributes`].
+    ///
+    /// Required: `name`, `ephemeral_id`, `transport_address`, `external_id`, `attributes`, `roles`, `version`, `min_index_version`, `max_index_version`.
     pub fn builder() -> SearchShardsNodeAttributesBuilder {
         SearchShardsNodeAttributesBuilder::new()
     }
 
     /// Creates a [`SearchShardsNodeAttributes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SearchShardsNodeAttributesBuilder,
-        ) -> SearchShardsNodeAttributesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `ephemeral_id`, `transport_address`, `external_id`, `attributes`, `roles`, `version`, `min_index_version`, `max_index_version`.
+    pub fn of<B: crate::typed::builder::Build<Output = SearchShardsNodeAttributes>>(
+        f: impl FnOnce(SearchShardsNodeAttributesBuilder) -> B,
     ) -> SearchShardsNodeAttributes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SearchShardsNodeAttributesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod search_shards_node_attributes_members {
+    pub struct name;
+    pub struct ephemeral_id;
+    pub struct transport_address;
+    pub struct external_id;
+    pub struct attributes;
+    pub struct roles;
+    pub struct version;
+    pub struct min_index_version;
+    pub struct max_index_version;
 }
 
 /// Builder for [`SearchShardsNodeAttributes`].
@@ -602,7 +619,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The human-readable identifier of the node.
+    /// **Required.** The human-readable identifier of the node.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::NodeName>,
@@ -636,7 +653,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The ephemeral ID of the node.
+    /// **Required.** The ephemeral ID of the node.
     pub fn ephemeral_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -670,7 +687,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The host and port where transport HTTP connections are accepted.
+    /// **Required.** The host and port where transport HTTP connections are accepted.
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -704,6 +721,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn external_id(
         self,
         value: impl Into<String>,
@@ -737,7 +755,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Lists node attributes.
+    /// **Required.** Lists node attributes.
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -807,6 +825,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<crate::typed::_types::NodeRoles>,
@@ -875,6 +894,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -908,6 +928,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
+    /// **Required.**
     pub fn min_index_version(
         self,
         value: i32,
@@ -941,6 +962,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn max_index_version(
         self,
         value: i32,
@@ -961,21 +983,22 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    SearchShardsNodeAttributesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
 {
     /// Builds a [`SearchShardsNodeAttributes`].
-    pub fn build(self) -> SearchShardsNodeAttributes {
+    pub fn build(self) -> SearchShardsNodeAttributes
+    where
+        S0: crate::typed::builder::IsSet<search_shards_node_attributes_members::name>,
+        S1: crate::typed::builder::IsSet<search_shards_node_attributes_members::ephemeral_id>,
+        S2: crate::typed::builder::IsSet<search_shards_node_attributes_members::transport_address>,
+        S3: crate::typed::builder::IsSet<search_shards_node_attributes_members::external_id>,
+        S4: crate::typed::builder::IsSet<search_shards_node_attributes_members::attributes>,
+        S5: crate::typed::builder::IsSet<search_shards_node_attributes_members::roles>,
+        S6: crate::typed::builder::IsSet<search_shards_node_attributes_members::version>,
+        S7: crate::typed::builder::IsSet<search_shards_node_attributes_members::min_index_version>,
+        S8: crate::typed::builder::IsSet<search_shards_node_attributes_members::max_index_version>,
+    {
         SearchShardsNodeAttributes {
             name: self.name.unwrap(),
             ephemeral_id: self.ephemeral_id.unwrap(),
@@ -990,198 +1013,45 @@ impl
     }
 }
 
-impl
-    From<
-        SearchShardsNodeAttributesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SearchShardsNodeAttributes
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for SearchShardsNodeAttributesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<search_shards_node_attributes_members::name>,
+    S1: crate::typed::builder::IsSet<search_shards_node_attributes_members::ephemeral_id>,
+    S2: crate::typed::builder::IsSet<search_shards_node_attributes_members::transport_address>,
+    S3: crate::typed::builder::IsSet<search_shards_node_attributes_members::external_id>,
+    S4: crate::typed::builder::IsSet<search_shards_node_attributes_members::attributes>,
+    S5: crate::typed::builder::IsSet<search_shards_node_attributes_members::roles>,
+    S6: crate::typed::builder::IsSet<search_shards_node_attributes_members::version>,
+    S7: crate::typed::builder::IsSet<search_shards_node_attributes_members::min_index_version>,
+    S8: crate::typed::builder::IsSet<search_shards_node_attributes_members::max_index_version>,
 {
-    fn from(
-        builder: SearchShardsNodeAttributesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SearchShardsNodeAttributes;
+
+    fn build(self) -> SearchShardsNodeAttributes {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    From<SearchShardsNodeAttributesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>>
+    for SearchShardsNodeAttributes
+where
+    S0: crate::typed::builder::IsSet<search_shards_node_attributes_members::name>,
+    S1: crate::typed::builder::IsSet<search_shards_node_attributes_members::ephemeral_id>,
+    S2: crate::typed::builder::IsSet<search_shards_node_attributes_members::transport_address>,
+    S3: crate::typed::builder::IsSet<search_shards_node_attributes_members::external_id>,
+    S4: crate::typed::builder::IsSet<search_shards_node_attributes_members::attributes>,
+    S5: crate::typed::builder::IsSet<search_shards_node_attributes_members::roles>,
+    S6: crate::typed::builder::IsSet<search_shards_node_attributes_members::version>,
+    S7: crate::typed::builder::IsSet<search_shards_node_attributes_members::min_index_version>,
+    S8: crate::typed::builder::IsSet<search_shards_node_attributes_members::max_index_version>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match name {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `ephemeral_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ephemeral_id: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match ephemeral_id {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match transport_address {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `external_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, external_id: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match external_id {} }
-}
-
-impl<S5, S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match attributes {} }
-}
-
-impl<S6, S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match roles {} }
-}
-
-impl<S7, S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match version {} }
-}
-
-impl<S8>
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `min_index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_index_version: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match min_index_version {} }
-}
-
-impl
-    SearchShardsNodeAttributesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_index_version: crate::typed::builder::MissingRequiredField) -> SearchShardsNodeAttributes { match max_index_version {} }
+    fn from(
+        builder: SearchShardsNodeAttributesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1199,7 +1069,9 @@ impl ShardStoreIndex {
     }
 
     /// Creates a [`ShardStoreIndex`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ShardStoreIndexBuilder) -> ShardStoreIndexBuilder) -> ShardStoreIndex {
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStoreIndex>>(
+        f: impl FnOnce(ShardStoreIndexBuilder) -> B,
+    ) -> ShardStoreIndex {
         f(Self::builder()).build()
     }
 }
@@ -1258,13 +1130,11 @@ impl ShardStoreIndexBuilder {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1277,6 +1147,14 @@ impl ShardStoreIndexBuilder {
             aliases: self.aliases,
             filter: self.filter,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ShardStoreIndexBuilder {
+    type Output = ShardStoreIndex;
+
+    fn build(self) -> ShardStoreIndex {
+        Self::build(self)
     }
 }
 

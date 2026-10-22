@@ -10,22 +10,29 @@ pub struct MatchedField {
 
 impl MatchedField {
     /// Creates a builder for [`MatchedField`].
+    ///
+    /// Required: `match`, `offset`, `length`.
     pub fn builder() -> MatchedFieldBuilder {
         MatchedFieldBuilder::new()
     }
 
     /// Creates a [`MatchedField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatchedFieldBuilder,
-        ) -> MatchedFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `match`, `offset`, `length`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchedField>>(
+        f: impl FnOnce(MatchedFieldBuilder) -> B,
     ) -> MatchedField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchedFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod matched_field_members {
+    pub struct r#match;
+    pub struct offset;
+    pub struct length;
 }
 
 /// Builder for [`MatchedField`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> MatchedFieldBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> MatchedFieldBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn r#match(
         self,
         value: impl Into<String>,
@@ -83,6 +91,7 @@ impl<S1, S2> MatchedFieldBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> MatchedFieldBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn offset(self, value: i32) -> MatchedFieldBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.offset = Some(value);
@@ -91,6 +100,7 @@ impl<S0, S2> MatchedFieldBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> MatchedFieldBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn length(self, value: i32) -> MatchedFieldBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.length = Some(value);
@@ -98,15 +108,14 @@ impl<S0, S1> MatchedFieldBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    MatchedFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> MatchedFieldBuilder<(S0, S1, S2)> {
     /// Builds a [`MatchedField`].
-    pub fn build(self) -> MatchedField {
+    pub fn build(self) -> MatchedField
+    where
+        S0: crate::typed::builder::IsSet<matched_field_members::r#match>,
+        S1: crate::typed::builder::IsSet<matched_field_members::offset>,
+        S2: crate::typed::builder::IsSet<matched_field_members::length>,
+    {
         MatchedField {
             r#match: self.r#match.unwrap(),
             offset: self.offset.unwrap(),
@@ -115,54 +124,28 @@ impl
     }
 }
 
-impl
-    From<
-        MatchedFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MatchedField
+impl<S0, S1, S2> crate::typed::builder::Build for MatchedFieldBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<matched_field_members::r#match>,
+    S1: crate::typed::builder::IsSet<matched_field_members::offset>,
+    S2: crate::typed::builder::IsSet<matched_field_members::length>,
 {
-    fn from(
-        builder: MatchedFieldBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MatchedField;
+
+    fn build(self) -> MatchedField {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> MatchedFieldBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `match` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#match: crate::typed::builder::MissingRequiredField) -> MatchedField { match r#match {} }
-}
-
-impl<S2>
-    MatchedFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<MatchedFieldBuilder<(S0, S1, S2)>> for MatchedField
+where
+    S0: crate::typed::builder::IsSet<matched_field_members::r#match>,
+    S1: crate::typed::builder::IsSet<matched_field_members::offset>,
+    S2: crate::typed::builder::IsSet<matched_field_members::length>,
 {
-    /// `offset` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, offset: crate::typed::builder::MissingRequiredField) -> MatchedField { match offset {} }
-}
-
-impl
-    MatchedFieldBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, length: crate::typed::builder::MissingRequiredField) -> MatchedField { match length {} }
+    fn from(builder: MatchedFieldBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -174,16 +157,27 @@ pub struct MatchedText {
 
 impl MatchedText {
     /// Creates a builder for [`MatchedText`].
+    ///
+    /// Required: `matched`.
     pub fn builder() -> MatchedTextBuilder {
         MatchedTextBuilder::new()
     }
 
     /// Creates a [`MatchedText`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MatchedTextBuilder) -> MatchedTextBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `matched`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchedText>>(
+        f: impl FnOnce(MatchedTextBuilder) -> B,
     ) -> MatchedText {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchedTextBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod matched_text_members {
+    pub struct matched;
 }
 
 /// Builder for [`MatchedText`].
@@ -244,6 +238,7 @@ impl<S0> MatchedTextBuilder<(S0,)> {
 }
 
 impl MatchedTextBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn matched(self, value: bool) -> MatchedTextBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.matched = Some(value);
@@ -251,9 +246,12 @@ impl MatchedTextBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchedTextBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchedTextBuilder<(S0,)> {
     /// Builds a [`MatchedText`].
-    pub fn build(self) -> MatchedText {
+    pub fn build(self) -> MatchedText
+    where
+        S0: crate::typed::builder::IsSet<matched_text_members::matched>,
+    {
         MatchedText {
             matched: self.matched.unwrap(),
             fields: self.fields,
@@ -261,16 +259,24 @@ impl MatchedTextBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchedTextBuilder<(crate::typed::builder::Set,)>> for MatchedText {
-    fn from(builder: MatchedTextBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchedTextBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<matched_text_members::matched>,
+{
+    type Output = MatchedText;
+
+    fn build(self) -> MatchedText {
+        Self::build(self)
     }
 }
 
-impl MatchedTextBuilder<(crate::typed::builder::NotSet,)> {
-    /// `matched` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, matched: crate::typed::builder::MissingRequiredField) -> MatchedText { match matched {} }
+impl<S0> From<MatchedTextBuilder<(S0,)>> for MatchedText
+where
+    S0: crate::typed::builder::IsSet<matched_text_members::matched>,
+{
+    fn from(builder: MatchedTextBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`text_structure.test_grok_pattern`](crate::typed::text_structure::TextStructureClient::test_grok_pattern).
@@ -310,19 +316,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `grok_pattern`, `text`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `grok_pattern`, `text`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct grok_pattern;
+    pub struct text;
 }
 
 /// Builder for [`Request`].
@@ -444,7 +459,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The Grok pattern to run on the text.
+    /// **Required.** The Grok pattern to run on the text.
     pub fn grok_pattern(
         self,
         value: impl Into<crate::typed::_types::GrokPattern>,
@@ -456,7 +471,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The lines of text to run the Grok pattern on.
+    /// **Required.** The lines of text to run the Grok pattern on.
     pub fn text(
         self,
         value: impl Into<Vec<String>>,
@@ -490,9 +505,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::grok_pattern>,
+        S1: crate::typed::builder::IsSet<request_members::text>,
+    {
         Request {
             ecs_compatibility: self.ecs_compatibility,
             error_trace: self.error_trace,
@@ -505,41 +524,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::grok_pattern>,
+    S1: crate::typed::builder::IsSet<request_members::text>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `grok_pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, grok_pattern: crate::typed::builder::MissingRequiredField) -> Request { match grok_pattern {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `grok_pattern` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, grok_pattern: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match grok_pattern {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `text` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, text: crate::typed::builder::MissingRequiredField) -> Request { match text {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `text` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, text: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match text {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::grok_pattern>,
+        S1: crate::typed::builder::IsSet<request_members::text>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

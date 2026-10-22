@@ -10,18 +10,27 @@ pub struct ProjectRoutingExpression {
 
 impl ProjectRoutingExpression {
     /// Creates a builder for [`ProjectRoutingExpression`].
+    ///
+    /// Required: `expression`.
     pub fn builder() -> ProjectRoutingExpressionBuilder {
         ProjectRoutingExpressionBuilder::new()
     }
 
     /// Creates a [`ProjectRoutingExpression`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ProjectRoutingExpressionBuilder,
-        ) -> ProjectRoutingExpressionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `expression`.
+    pub fn of<B: crate::typed::builder::Build<Output = ProjectRoutingExpression>>(
+        f: impl FnOnce(ProjectRoutingExpressionBuilder) -> B,
     ) -> ProjectRoutingExpression {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ProjectRoutingExpressionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod project_routing_expression_members {
+    pub struct expression;
 }
 
 /// Builder for [`ProjectRoutingExpression`].
@@ -50,6 +59,7 @@ impl<S0> ProjectRoutingExpressionBuilder<(S0,)> {
 }
 
 impl ProjectRoutingExpressionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn expression(
         self,
         value: impl Into<RoutingExpression>,
@@ -60,27 +70,36 @@ impl ProjectRoutingExpressionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ProjectRoutingExpressionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ProjectRoutingExpressionBuilder<(S0,)> {
     /// Builds a [`ProjectRoutingExpression`].
-    pub fn build(self) -> ProjectRoutingExpression {
+    pub fn build(self) -> ProjectRoutingExpression
+    where
+        S0: crate::typed::builder::IsSet<project_routing_expression_members::expression>,
+    {
         ProjectRoutingExpression {
             expression: self.expression.unwrap(),
         }
     }
 }
 
-impl From<ProjectRoutingExpressionBuilder<(crate::typed::builder::Set,)>>
-    for ProjectRoutingExpression
+impl<S0> crate::typed::builder::Build for ProjectRoutingExpressionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<project_routing_expression_members::expression>,
 {
-    fn from(builder: ProjectRoutingExpressionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ProjectRoutingExpression;
+
+    fn build(self) -> ProjectRoutingExpression {
+        Self::build(self)
     }
 }
 
-impl ProjectRoutingExpressionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `expression` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expression: crate::typed::builder::MissingRequiredField) -> ProjectRoutingExpression { match expression {} }
+impl<S0> From<ProjectRoutingExpressionBuilder<(S0,)>> for ProjectRoutingExpression
+where
+    S0: crate::typed::builder::IsSet<project_routing_expression_members::expression>,
+{
+    fn from(builder: ProjectRoutingExpressionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type RoutingExpression = String;

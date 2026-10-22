@@ -35,19 +35,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `task_id`, `requests_per_second`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `task_id`, `requests_per_second`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct task_id;
+    pub struct requests_per_second;
 }
 
 /// Builder for [`Request`].
@@ -152,7 +161,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The ID for the task.
+    /// **Required.** The ID for the task.
     pub fn task_id(
         self,
         value: impl Into<crate::typed::_types::TaskId>,
@@ -164,7 +173,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The maximum number of documents to delete per second, across the entire delete-by-query operation (including slices).
+    /// **Required.** The maximum number of documents to delete per second, across the entire delete-by-query operation (including slices).
     /// It can be either `-1` to turn off throttling or any decimal number like `1.7` or `12` to throttle to that level.
     pub fn requests_per_second(
         self,
@@ -176,9 +185,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
         Request {
             task_id: self.task_id.unwrap(),
             requests_per_second: self.requests_per_second.unwrap(),
@@ -190,41 +203,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::task_id>,
+    S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `task_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_id: crate::typed::builder::MissingRequiredField) -> Request { match task_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `task_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, task_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match task_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `requests_per_second` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> Request { match requests_per_second {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `requests_per_second` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match requests_per_second {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -11,23 +11,30 @@ pub struct Connection {
 
 impl Connection {
     /// Creates a builder for [`Connection`].
+    ///
+    /// Required: `doc_count`, `source`, `target`, `weight`.
     pub fn builder() -> ConnectionBuilder {
         ConnectionBuilder::new()
     }
 
     /// Creates a [`Connection`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConnectionBuilder,
-        ) -> ConnectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `source`, `target`, `weight`.
+    pub fn of<B: crate::typed::builder::Build<Output = Connection>>(
+        f: impl FnOnce(ConnectionBuilder) -> B,
     ) -> Connection {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConnectionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod connection_members {
+    pub struct doc_count;
+    pub struct source;
+    pub struct target;
+    pub struct weight;
 }
 
 /// Builder for [`Connection`].
@@ -79,6 +86,7 @@ impl<S0, S1, S2, S3> ConnectionBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ConnectionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i64,
@@ -90,6 +98,7 @@ impl<S1, S2, S3> ConnectionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> 
 }
 
 impl<S0, S2, S3> ConnectionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn source(self, value: i64) -> ConnectionBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         let mut builder = self.with_state();
         builder.source = Some(value);
@@ -98,6 +107,7 @@ impl<S0, S2, S3> ConnectionBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> 
 }
 
 impl<S0, S1, S3> ConnectionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn target(self, value: i64) -> ConnectionBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         let mut builder = self.with_state();
         builder.target = Some(value);
@@ -106,6 +116,7 @@ impl<S0, S1, S3> ConnectionBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> 
 }
 
 impl<S0, S1, S2> ConnectionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn weight(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -116,16 +127,15 @@ impl<S0, S1, S2> ConnectionBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> 
     }
 }
 
-impl
-    ConnectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ConnectionBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Connection`].
-    pub fn build(self) -> Connection {
+    pub fn build(self) -> Connection
+    where
+        S0: crate::typed::builder::IsSet<connection_members::doc_count>,
+        S1: crate::typed::builder::IsSet<connection_members::source>,
+        S2: crate::typed::builder::IsSet<connection_members::target>,
+        S3: crate::typed::builder::IsSet<connection_members::weight>,
+    {
         Connection {
             doc_count: self.doc_count.unwrap(),
             source: self.source.unwrap(),
@@ -135,71 +145,30 @@ impl
     }
 }
 
-impl
-    From<
-        ConnectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Connection
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ConnectionBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<connection_members::doc_count>,
+    S1: crate::typed::builder::IsSet<connection_members::source>,
+    S2: crate::typed::builder::IsSet<connection_members::target>,
+    S3: crate::typed::builder::IsSet<connection_members::weight>,
 {
-    fn from(
-        builder: ConnectionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Connection;
+
+    fn build(self) -> Connection {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ConnectionBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> Connection { match doc_count {} }
-}
-
-impl<S2, S3>
-    ConnectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ConnectionBuilder<(S0, S1, S2, S3)>> for Connection
+where
+    S0: crate::typed::builder::IsSet<connection_members::doc_count>,
+    S1: crate::typed::builder::IsSet<connection_members::source>,
+    S2: crate::typed::builder::IsSet<connection_members::target>,
+    S3: crate::typed::builder::IsSet<connection_members::weight>,
 {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> Connection { match source {} }
-}
-
-impl<S3>
-    ConnectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `target` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target: crate::typed::builder::MissingRequiredField) -> Connection { match target {} }
-}
-
-impl
-    ConnectionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `weight` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, weight: crate::typed::builder::MissingRequiredField) -> Connection { match weight {} }
+    fn from(builder: ConnectionBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -225,16 +194,27 @@ pub struct ExploreControls {
 
 impl ExploreControls {
     /// Creates a builder for [`ExploreControls`].
+    ///
+    /// Required: `use_significance`.
     pub fn builder() -> ExploreControlsBuilder {
         ExploreControlsBuilder::new()
     }
 
     /// Creates a [`ExploreControls`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExploreControlsBuilder) -> ExploreControlsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `use_significance`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExploreControls>>(
+        f: impl FnOnce(ExploreControlsBuilder) -> B,
     ) -> ExploreControls {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExploreControlsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod explore_controls_members {
+    pub struct use_significance;
 }
 
 /// Builder for [`ExploreControls`].
@@ -284,14 +264,9 @@ impl<S0> ExploreControlsBuilder<(S0,)> {
     }
 
     /// Sets [`sample_diversity`](Self::sample_diversity) with a builder.
-    pub fn sample_diversity_with(
+    pub fn sample_diversity_with<B: crate::typed::builder::Build<Output = SampleDiversity>>(
         self,
-        f: impl FnOnce(
-            SampleDiversityBuilder,
-        ) -> SampleDiversityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SampleDiversityBuilder) -> B,
     ) -> Self {
         self.sample_diversity(f(SampleDiversityBuilder::new()).build())
     }
@@ -327,7 +302,7 @@ impl<S0> ExploreControlsBuilder<(S0,)> {
 }
 
 impl ExploreControlsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Filters associated terms so only those that are significantly associated with your query are included.
+    /// **Required.** Filters associated terms so only those that are significantly associated with your query are included.
     pub fn use_significance(
         self,
         value: bool,
@@ -338,9 +313,12 @@ impl ExploreControlsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ExploreControlsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ExploreControlsBuilder<(S0,)> {
     /// Builds a [`ExploreControls`].
-    pub fn build(self) -> ExploreControls {
+    pub fn build(self) -> ExploreControls
+    where
+        S0: crate::typed::builder::IsSet<explore_controls_members::use_significance>,
+    {
         ExploreControls {
             sample_diversity: self.sample_diversity,
             sample_size: self.sample_size,
@@ -350,16 +328,24 @@ impl ExploreControlsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ExploreControlsBuilder<(crate::typed::builder::Set,)>> for ExploreControls {
-    fn from(builder: ExploreControlsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ExploreControlsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<explore_controls_members::use_significance>,
+{
+    type Output = ExploreControls;
+
+    fn build(self) -> ExploreControls {
+        Self::build(self)
     }
 }
 
-impl ExploreControlsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `use_significance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, use_significance: crate::typed::builder::MissingRequiredField) -> ExploreControls { match use_significance {} }
+impl<S0> From<ExploreControlsBuilder<(S0,)>> for ExploreControls
+where
+    S0: crate::typed::builder::IsSet<explore_controls_members::use_significance>,
+{
+    fn from(builder: ExploreControlsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -376,14 +362,27 @@ pub struct Hop {
 
 impl Hop {
     /// Creates a builder for [`Hop`].
+    ///
+    /// Required: `vertices`.
     pub fn builder() -> HopBuilder {
         HopBuilder::new()
     }
 
     /// Creates a [`Hop`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(HopBuilder) -> HopBuilder<(crate::typed::builder::Set,)>) -> Hop {
+    ///
+    /// Required: `vertices`.
+    pub fn of<B: crate::typed::builder::Build<Output = Hop>>(
+        f: impl FnOnce(HopBuilder) -> B,
+    ) -> Hop {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HopBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hop_members {
+    pub struct vertices;
 }
 
 /// Builder for [`Hop`].
@@ -429,9 +428,9 @@ impl<S0> HopBuilder<(S0,)> {
     }
 
     /// Sets [`connections`](Self::connections) with a builder.
-    pub fn connections_with(
+    pub fn connections_with<B: crate::typed::builder::Build<Output = Hop>>(
         self,
-        f: impl FnOnce(HopBuilder) -> HopBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(HopBuilder) -> B,
     ) -> Self {
         self.connections(f(HopBuilder::new()).build())
     }
@@ -455,20 +454,18 @@ impl<S0> HopBuilder<(S0,)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 
 impl HopBuilder<(crate::typed::builder::NotSet,)> {
-    /// Contains the fields you are interested in.
+    /// **Required.** Contains the fields you are interested in.
     pub fn vertices(
         self,
         value: impl Into<Vec<VertexDefinition>>,
@@ -492,11 +489,9 @@ impl HopBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`vertices`](Self::vertices), with a builder.
-    pub fn add_vertices_with(
+    pub fn add_vertices_with<B: crate::typed::builder::Build<Output = VertexDefinition>>(
         self,
-        f: impl FnOnce(
-            VertexDefinitionBuilder,
-        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VertexDefinitionBuilder) -> B,
     ) -> HopBuilder<(crate::typed::builder::Set,)> {
         self.add_vertices(f(VertexDefinitionBuilder::new()).build())
     }
@@ -512,19 +507,20 @@ impl HopBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`vertices`](Self::vertices), with a builder.
-    pub fn add_vertices_with(
+    pub fn add_vertices_with<B: crate::typed::builder::Build<Output = VertexDefinition>>(
         self,
-        f: impl FnOnce(
-            VertexDefinitionBuilder,
-        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VertexDefinitionBuilder) -> B,
     ) -> Self {
         self.add_vertices(f(VertexDefinitionBuilder::new()).build())
     }
 }
 
-impl HopBuilder<(crate::typed::builder::Set,)> {
+impl<S0> HopBuilder<(S0,)> {
     /// Builds a [`Hop`].
-    pub fn build(self) -> Hop {
+    pub fn build(self) -> Hop
+    where
+        S0: crate::typed::builder::IsSet<hop_members::vertices>,
+    {
         Hop {
             connections: self.connections,
             query: self.query,
@@ -533,16 +529,24 @@ impl HopBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<HopBuilder<(crate::typed::builder::Set,)>> for Hop {
-    fn from(builder: HopBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for HopBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<hop_members::vertices>,
+{
+    type Output = Hop;
+
+    fn build(self) -> Hop {
+        Self::build(self)
     }
 }
 
-impl HopBuilder<(crate::typed::builder::NotSet,)> {
-    /// `vertices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, vertices: crate::typed::builder::MissingRequiredField) -> Hop { match vertices {} }
+impl<S0> From<HopBuilder<(S0,)>> for Hop
+where
+    S0: crate::typed::builder::IsSet<hop_members::vertices>,
+{
+    fn from(builder: HopBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -553,21 +557,28 @@ pub struct SampleDiversity {
 
 impl SampleDiversity {
     /// Creates a builder for [`SampleDiversity`].
+    ///
+    /// Required: `field`, `max_docs_per_value`.
     pub fn builder() -> SampleDiversityBuilder {
         SampleDiversityBuilder::new()
     }
 
     /// Creates a [`SampleDiversity`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SampleDiversityBuilder,
-        ) -> SampleDiversityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `max_docs_per_value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SampleDiversity>>(
+        f: impl FnOnce(SampleDiversityBuilder) -> B,
     ) -> SampleDiversity {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SampleDiversityBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sample_diversity_members {
+    pub struct field;
+    pub struct max_docs_per_value;
 }
 
 /// Builder for [`SampleDiversity`].
@@ -601,6 +612,7 @@ impl<S0, S1> SampleDiversityBuilder<(S0, S1)> {
 }
 
 impl<S1> SampleDiversityBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -612,6 +624,7 @@ impl<S1> SampleDiversityBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SampleDiversityBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn max_docs_per_value(
         self,
         value: i32,
@@ -622,9 +635,13 @@ impl<S0> SampleDiversityBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SampleDiversityBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SampleDiversityBuilder<(S0, S1)> {
     /// Builds a [`SampleDiversity`].
-    pub fn build(self) -> SampleDiversity {
+    pub fn build(self) -> SampleDiversity
+    where
+        S0: crate::typed::builder::IsSet<sample_diversity_members::field>,
+        S1: crate::typed::builder::IsSet<sample_diversity_members::max_docs_per_value>,
+    {
         SampleDiversity {
             field: self.field.unwrap(),
             max_docs_per_value: self.max_docs_per_value.unwrap(),
@@ -632,26 +649,26 @@ impl SampleDiversityBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<SampleDiversityBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SampleDiversity
+impl<S0, S1> crate::typed::builder::Build for SampleDiversityBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<sample_diversity_members::field>,
+    S1: crate::typed::builder::IsSet<sample_diversity_members::max_docs_per_value>,
 {
-    fn from(
-        builder: SampleDiversityBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SampleDiversity;
+
+    fn build(self) -> SampleDiversity {
+        Self::build(self)
     }
 }
 
-impl<S1> SampleDiversityBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SampleDiversity { match field {} }
-}
-
-impl SampleDiversityBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `max_docs_per_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_docs_per_value: crate::typed::builder::MissingRequiredField) -> SampleDiversity { match max_docs_per_value {} }
+impl<S0, S1> From<SampleDiversityBuilder<(S0, S1)>> for SampleDiversity
+where
+    S0: crate::typed::builder::IsSet<sample_diversity_members::field>,
+    S1: crate::typed::builder::IsSet<sample_diversity_members::max_docs_per_value>,
+{
+    fn from(builder: SampleDiversityBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -664,23 +681,30 @@ pub struct Vertex {
 
 impl Vertex {
     /// Creates a builder for [`Vertex`].
+    ///
+    /// Required: `depth`, `field`, `term`, `weight`.
     pub fn builder() -> VertexBuilder {
         VertexBuilder::new()
     }
 
     /// Creates a [`Vertex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VertexBuilder,
-        ) -> VertexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `depth`, `field`, `term`, `weight`.
+    pub fn of<B: crate::typed::builder::Build<Output = Vertex>>(
+        f: impl FnOnce(VertexBuilder) -> B,
     ) -> Vertex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VertexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod vertex_members {
+    pub struct depth;
+    pub struct field;
+    pub struct term;
+    pub struct weight;
 }
 
 /// Builder for [`Vertex`].
@@ -732,6 +756,7 @@ impl<S0, S1, S2, S3> VertexBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> VertexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn depth(self, value: i64) -> VertexBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         let mut builder = self.with_state();
         builder.depth = Some(value);
@@ -740,6 +765,7 @@ impl<S1, S2, S3> VertexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> VertexBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -751,6 +777,7 @@ impl<S0, S2, S3> VertexBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
 }
 
 impl<S0, S1, S3> VertexBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn term(
         self,
         value: impl Into<String>,
@@ -762,6 +789,7 @@ impl<S0, S1, S3> VertexBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
 }
 
 impl<S0, S1, S2> VertexBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn weight(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -772,16 +800,15 @@ impl<S0, S1, S2> VertexBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    VertexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> VertexBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Vertex`].
-    pub fn build(self) -> Vertex {
+    pub fn build(self) -> Vertex
+    where
+        S0: crate::typed::builder::IsSet<vertex_members::depth>,
+        S1: crate::typed::builder::IsSet<vertex_members::field>,
+        S2: crate::typed::builder::IsSet<vertex_members::term>,
+        S3: crate::typed::builder::IsSet<vertex_members::weight>,
+    {
         Vertex {
             depth: self.depth.unwrap(),
             field: self.field.unwrap(),
@@ -791,71 +818,30 @@ impl
     }
 }
 
-impl
-    From<
-        VertexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Vertex
+impl<S0, S1, S2, S3> crate::typed::builder::Build for VertexBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<vertex_members::depth>,
+    S1: crate::typed::builder::IsSet<vertex_members::field>,
+    S2: crate::typed::builder::IsSet<vertex_members::term>,
+    S3: crate::typed::builder::IsSet<vertex_members::weight>,
 {
-    fn from(
-        builder: VertexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Vertex;
+
+    fn build(self) -> Vertex {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> VertexBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `depth` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, depth: crate::typed::builder::MissingRequiredField) -> Vertex { match depth {} }
-}
-
-impl<S2, S3>
-    VertexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<VertexBuilder<(S0, S1, S2, S3)>> for Vertex
+where
+    S0: crate::typed::builder::IsSet<vertex_members::depth>,
+    S1: crate::typed::builder::IsSet<vertex_members::field>,
+    S2: crate::typed::builder::IsSet<vertex_members::term>,
+    S3: crate::typed::builder::IsSet<vertex_members::weight>,
 {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> Vertex { match field {} }
-}
-
-impl<S3>
-    VertexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `term` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term: crate::typed::builder::MissingRequiredField) -> Vertex { match term {} }
-}
-
-impl
-    VertexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `weight` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, weight: crate::typed::builder::MissingRequiredField) -> Vertex { match weight {} }
+    fn from(builder: VertexBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -882,18 +868,27 @@ pub struct VertexDefinition {
 
 impl VertexDefinition {
     /// Creates a builder for [`VertexDefinition`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> VertexDefinitionBuilder {
         VertexDefinitionBuilder::new()
     }
 
     /// Creates a [`VertexDefinition`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VertexDefinitionBuilder,
-        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = VertexDefinition>>(
+        f: impl FnOnce(VertexDefinitionBuilder) -> B,
     ) -> VertexDefinition {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VertexDefinitionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod vertex_definition_members {
+    pub struct field;
 }
 
 /// Builder for [`VertexDefinition`].
@@ -976,9 +971,9 @@ impl<S0> VertexDefinitionBuilder<(S0,)> {
     }
 
     /// Adds an element to [`include`](Self::include), with a builder.
-    pub fn add_include_with(
+    pub fn add_include_with<B: crate::typed::builder::Build<Output = VertexInclude>>(
         self,
-        f: impl FnOnce(VertexIncludeBuilder) -> VertexIncludeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(VertexIncludeBuilder) -> B,
     ) -> Self {
         self.add_include(f(VertexIncludeBuilder::new()).build())
     }
@@ -1022,7 +1017,7 @@ impl<S0> VertexDefinitionBuilder<(S0,)> {
 }
 
 impl VertexDefinitionBuilder<(crate::typed::builder::NotSet,)> {
-    /// Identifies a field in the documents of interest.
+    /// **Required.** Identifies a field in the documents of interest.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -1033,9 +1028,12 @@ impl VertexDefinitionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VertexDefinitionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VertexDefinitionBuilder<(S0,)> {
     /// Builds a [`VertexDefinition`].
-    pub fn build(self) -> VertexDefinition {
+    pub fn build(self) -> VertexDefinition
+    where
+        S0: crate::typed::builder::IsSet<vertex_definition_members::field>,
+    {
         VertexDefinition {
             exclude: self.exclude,
             field: self.field.unwrap(),
@@ -1047,16 +1045,24 @@ impl VertexDefinitionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<VertexDefinitionBuilder<(crate::typed::builder::Set,)>> for VertexDefinition {
-    fn from(builder: VertexDefinitionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for VertexDefinitionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<vertex_definition_members::field>,
+{
+    type Output = VertexDefinition;
+
+    fn build(self) -> VertexDefinition {
+        Self::build(self)
     }
 }
 
-impl VertexDefinitionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> VertexDefinition { match field {} }
+impl<S0> From<VertexDefinitionBuilder<(S0,)>> for VertexDefinition
+where
+    S0: crate::typed::builder::IsSet<vertex_definition_members::field>,
+{
+    fn from(builder: VertexDefinitionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1068,16 +1074,27 @@ pub struct VertexInclude {
 
 impl VertexInclude {
     /// Creates a builder for [`VertexInclude`].
+    ///
+    /// Required: `term`.
     pub fn builder() -> VertexIncludeBuilder {
         VertexIncludeBuilder::new()
     }
 
     /// Creates a [`VertexInclude`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(VertexIncludeBuilder) -> VertexIncludeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `term`.
+    pub fn of<B: crate::typed::builder::Build<Output = VertexInclude>>(
+        f: impl FnOnce(VertexIncludeBuilder) -> B,
     ) -> VertexInclude {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VertexIncludeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod vertex_include_members {
+    pub struct term;
 }
 
 /// Builder for [`VertexInclude`].
@@ -1120,6 +1137,7 @@ impl<S0> VertexIncludeBuilder<(S0,)> {
 }
 
 impl VertexIncludeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn term(
         self,
         value: impl Into<String>,
@@ -1130,9 +1148,12 @@ impl VertexIncludeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VertexIncludeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VertexIncludeBuilder<(S0,)> {
     /// Builds a [`VertexInclude`].
-    pub fn build(self) -> VertexInclude {
+    pub fn build(self) -> VertexInclude
+    where
+        S0: crate::typed::builder::IsSet<vertex_include_members::term>,
+    {
         VertexInclude {
             boost: self.boost,
             term: self.term.unwrap(),
@@ -1140,14 +1161,22 @@ impl VertexIncludeBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<VertexIncludeBuilder<(crate::typed::builder::Set,)>> for VertexInclude {
-    fn from(builder: VertexIncludeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for VertexIncludeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<vertex_include_members::term>,
+{
+    type Output = VertexInclude;
+
+    fn build(self) -> VertexInclude {
+        Self::build(self)
     }
 }
 
-impl VertexIncludeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `term` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term: crate::typed::builder::MissingRequiredField) -> VertexInclude { match term {} }
+impl<S0> From<VertexIncludeBuilder<(S0,)>> for VertexInclude
+where
+    S0: crate::typed::builder::IsSet<vertex_include_members::term>,
+{
+    fn from(builder: VertexIncludeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

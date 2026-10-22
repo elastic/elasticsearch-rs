@@ -101,26 +101,30 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `analysis`, `dest`, `source`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `id`, `analysis`, `dest`, `source`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct analysis;
+    pub struct dest;
+    pub struct source;
 }
 
 /// Builder for [`Request`].
@@ -333,11 +337,13 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     }
 
     /// Sets [`analyzed_fields`](Self::analyzed_fields) with a builder.
-    pub fn analyzed_fields_with(
+    pub fn analyzed_fields_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeAnalysisAnalyzedFields,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder) -> B,
     ) -> Self {
         self.analyzed_fields(
             f(crate::typed::ml::_types::DataframeAnalysisAnalyzedFieldsBuilder::new()).build(),
@@ -430,7 +436,7 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
 }
 
 impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// Identifier for the data frame analytics job. This identifier can contain
+    /// **Required.** Identifier for the data frame analytics job. This identifier can contain
     /// lowercase alphanumeric characters (a-z and 0-9), hyphens, and
     /// underscores. It must start and end with alphanumeric characters.
     pub fn id(
@@ -444,7 +450,7 @@ impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), 
 }
 
 impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), C> {
-    /// The analysis configuration, which contains the information necessary to
+    /// **Required.** The analysis configuration, which contains the information necessary to
     /// perform one of the following types of analysis: classification, outlier
     /// detection, or regression.
     pub fn analysis(
@@ -457,20 +463,18 @@ impl<S0, S2, S3, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3), 
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalysisContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalysisContainerBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalysisContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalysisContainerBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set, S2, S3), C> {
         self.analysis(f(crate::typed::ml::_types::DataframeAnalysisContainerBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), C> {
-    /// The destination configuration.
+    /// **Required.** The destination configuration.
     pub fn dest(
         self,
         value: impl Into<crate::typed::ml::_types::DataframeAnalyticsDestination>,
@@ -481,20 +485,20 @@ impl<S0, S1, S3, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3), 
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::DataframeAnalyticsDestination,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set, S3), C> {
         self.dest(f(crate::typed::ml::_types::DataframeAnalyticsDestinationBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), C> {
-    /// The configuration of how to source the analysis data.
+    /// **Required.** The configuration of how to source the analysis data.
     pub fn source(
         self,
         value: impl Into<crate::typed::ml::_types::DataframeAnalyticsSource>,
@@ -505,31 +509,25 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), 
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataframeAnalyticsSource>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataframeAnalyticsSourceBuilder,
-        ) -> crate::typed::ml::_types::DataframeAnalyticsSourceBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, S2, crate::typed::builder::Set), C> {
         self.source(f(crate::typed::ml::_types::DataframeAnalyticsSourceBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::analysis>,
+        S2: crate::typed::builder::IsSet<request_members::dest>,
+        S3: crate::typed::builder::IsSet<request_members::source>,
+    {
         Request {
             id: self.id.unwrap(),
             error_trace: self.error_trace,
@@ -551,128 +549,32 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::analysis>,
+    S2: crate::typed::builder::IsSet<request_members::dest>,
+    S3: crate::typed::builder::IsSet<request_members::source>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl<S1, S2, S3>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3), &crate::Elasticsearch>
-{
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<S2, S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `analysis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis: crate::typed::builder::MissingRequiredField) -> Request { match analysis {} }
-}
-impl<S2, S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `analysis` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, analysis: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match analysis {} }
-}
-
-impl<S3, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        C,
-    >
-{
-    /// `dest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dest: crate::typed::builder::MissingRequiredField) -> Request { match dest {} }
-}
-impl<S3>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `dest` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, dest: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match dest {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> Request { match source {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `source` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, source: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match source {} }
+impl<S0, S1, S2, S3> RequestBuilder<(S0, S1, S2, S3), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::analysis>,
+        S2: crate::typed::builder::IsSet<request_members::dest>,
+        S3: crate::typed::builder::IsSet<request_members::source>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

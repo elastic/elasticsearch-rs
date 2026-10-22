@@ -114,8 +114,8 @@ impl DataFrameAnalyticsRecord {
     }
 
     /// Creates a [`DataFrameAnalyticsRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataFrameAnalyticsRecordBuilder) -> DataFrameAnalyticsRecordBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataFrameAnalyticsRecord>>(
+        f: impl FnOnce(DataFrameAnalyticsRecordBuilder) -> B,
     ) -> DataFrameAnalyticsRecord {
         f(Self::builder()).build()
     }
@@ -383,6 +383,14 @@ impl DataFrameAnalyticsRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataFrameAnalyticsRecordBuilder {
+    type Output = DataFrameAnalyticsRecord;
+
+    fn build(self) -> DataFrameAnalyticsRecord {
+        Self::build(self)
+    }
+}
+
 impl From<DataFrameAnalyticsRecordBuilder> for DataFrameAnalyticsRecord {
     fn from(builder: DataFrameAnalyticsRecordBuilder) -> Self {
         builder.build()
@@ -436,7 +444,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -593,6 +603,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

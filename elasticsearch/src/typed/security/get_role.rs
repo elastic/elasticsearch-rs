@@ -54,21 +54,28 @@ impl From<&str> for IndicesPrivilegesReadNames {
 
 impl IndicesPrivilegesRead {
     /// Creates a builder for [`IndicesPrivilegesRead`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> IndicesPrivilegesReadBuilder {
         IndicesPrivilegesReadBuilder::new()
     }
 
     /// Creates a [`IndicesPrivilegesRead`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndicesPrivilegesReadBuilder,
-        ) -> IndicesPrivilegesReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesPrivilegesRead>>(
+        f: impl FnOnce(IndicesPrivilegesReadBuilder) -> B,
     ) -> IndicesPrivilegesRead {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndicesPrivilegesReadBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indices_privileges_read_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`IndicesPrivilegesRead`].
@@ -146,11 +153,11 @@ impl<S0, S1> IndicesPrivilegesReadBuilder<(S0, S1)> {
     }
 
     /// Sets [`field_security`](Self::field_security) with a builder.
-    pub fn field_security_with(
+    pub fn field_security_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::FieldSecurity>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::FieldSecurityBuilder,
-        ) -> crate::typed::security::_types::FieldSecurityBuilder,
+        f: impl FnOnce(crate::typed::security::_types::FieldSecurityBuilder) -> B,
     ) -> Self {
         self.field_security(f(crate::typed::security::_types::FieldSecurityBuilder::new()).build())
     }
@@ -187,7 +194,7 @@ impl<S0, S1> IndicesPrivilegesReadBuilder<(S0, S1)> {
 }
 
 impl<S1> IndicesPrivilegesReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of indices (or index name patterns) to which the permissions in this entry apply.
+    /// **Required.** A list of indices (or index name patterns) to which the permissions in this entry apply.
     pub fn names(
         self,
         value: impl Into<IndicesPrivilegesReadNames>,
@@ -199,7 +206,7 @@ impl<S1> IndicesPrivilegesReadBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndicesPrivilegesReadBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The index level privileges that owners of the role have on the specified indices.
+    /// **Required.** The index level privileges that owners of the role have on the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<crate::typed::security::_types::IndexPrivilege>>,
@@ -236,9 +243,13 @@ impl<S0> IndicesPrivilegesReadBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndicesPrivilegesReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndicesPrivilegesReadBuilder<(S0, S1)> {
     /// Builds a [`IndicesPrivilegesRead`].
-    pub fn build(self) -> IndicesPrivilegesRead {
+    pub fn build(self) -> IndicesPrivilegesRead
+    where
+        S0: crate::typed::builder::IsSet<indices_privileges_read_members::names>,
+        S1: crate::typed::builder::IsSet<indices_privileges_read_members::privileges>,
+    {
         IndicesPrivilegesRead {
             implicitly_granted: self.implicitly_granted,
             field_security: self.field_security,
@@ -250,29 +261,26 @@ impl IndicesPrivilegesReadBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<IndicesPrivilegesReadBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndicesPrivilegesRead
+impl<S0, S1> crate::typed::builder::Build for IndicesPrivilegesReadBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_read_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_read_members::privileges>,
 {
-    fn from(
-        builder: IndicesPrivilegesReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndicesPrivilegesRead;
+
+    fn build(self) -> IndicesPrivilegesRead {
+        Self::build(self)
     }
 }
 
-impl<S1> IndicesPrivilegesReadBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> IndicesPrivilegesRead { match names {} }
-}
-
-impl IndicesPrivilegesReadBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> IndicesPrivilegesRead { match privileges {} }
+impl<S0, S1> From<IndicesPrivilegesReadBuilder<(S0, S1)>> for IndicesPrivilegesRead
+where
+    S0: crate::typed::builder::IsSet<indices_privileges_read_members::names>,
+    S1: crate::typed::builder::IsSet<indices_privileges_read_members::privileges>,
+{
+    fn from(builder: IndicesPrivilegesReadBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.get_role`](crate::typed::security::SecurityClient::get_role).
@@ -317,7 +325,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -445,6 +455,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -582,23 +600,30 @@ pub struct Role {
 
 impl Role {
     /// Creates a builder for [`Role`].
+    ///
+    /// Required: `cluster`, `indices`, `metadata`, `applications`.
     pub fn builder() -> RoleBuilder {
         RoleBuilder::new()
     }
 
     /// Creates a [`Role`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RoleBuilder,
-        ) -> RoleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cluster`, `indices`, `metadata`, `applications`.
+    pub fn of<B: crate::typed::builder::Build<Output = Role>>(
+        f: impl FnOnce(RoleBuilder) -> B,
     ) -> Role {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RoleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod role_members {
+    pub struct cluster;
+    pub struct indices;
+    pub struct metadata;
+    pub struct applications;
 }
 
 /// Builder for [`Role`].
@@ -703,15 +728,13 @@ impl<S0, S1, S2, S3> RoleBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`remote_indices`](Self::remote_indices), with a builder.
-    pub fn add_remote_indices_with(
+    pub fn add_remote_indices_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteIndicesPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteIndicesPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_indices(
             f(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder::new()).build(),
@@ -747,14 +770,13 @@ impl<S0, S1, S2, S3> RoleBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`remote_cluster`](Self::remote_cluster), with a builder.
-    pub fn add_remote_cluster_with(
+    pub fn add_remote_cluster_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteClusterPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteClusterPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteClusterPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_cluster(
             f(crate::typed::security::_types::RemoteClusterPrivilegesBuilder::new()).build(),
@@ -849,13 +871,11 @@ impl<S0, S1, S2, S3> RoleBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`role_templates`](Self::role_templates), with a builder.
-    pub fn add_role_templates_with(
+    pub fn add_role_templates_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::RoleTemplate>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RoleTemplateBuilder,
-        ) -> crate::typed::security::_types::RoleTemplateBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RoleTemplateBuilder) -> B,
     ) -> Self {
         self.add_role_templates(
             f(crate::typed::security::_types::RoleTemplateBuilder::new()).build(),
@@ -903,6 +923,7 @@ impl<S0, S1, S2, S3> RoleBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RoleBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn cluster(
         self,
         value: impl Into<Vec<crate::typed::security::_types::ClusterPrivilege>>,
@@ -940,6 +961,7 @@ impl<S1, S2, S3> RoleBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> RoleBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<IndicesPrivilegesRead>>,
@@ -963,14 +985,9 @@ impl<S0, S2, S3> RoleBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndicesPrivilegesRead>>(
         self,
-        f: impl FnOnce(
-            IndicesPrivilegesReadBuilder,
-        ) -> IndicesPrivilegesReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesPrivilegesReadBuilder) -> B,
     ) -> RoleBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.add_indices(f(IndicesPrivilegesReadBuilder::new()).build())
     }
@@ -986,20 +1003,16 @@ impl<S0, S2, S3> RoleBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = IndicesPrivilegesRead>>(
         self,
-        f: impl FnOnce(
-            IndicesPrivilegesReadBuilder,
-        ) -> IndicesPrivilegesReadBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndicesPrivilegesReadBuilder) -> B,
     ) -> Self {
         self.add_indices(f(IndicesPrivilegesReadBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> RoleBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn metadata(
         self,
         value: impl Into<crate::typed::_types::Metadata>,
@@ -1039,6 +1052,7 @@ impl<S0, S1, S3> RoleBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
 }
 
 impl<S0, S1, S2> RoleBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn applications(
         self,
         value: impl Into<Vec<crate::typed::security::_types::ApplicationPrivileges>>,
@@ -1062,15 +1076,13 @@ impl<S0, S1, S2> RoleBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::ApplicationPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::ApplicationPrivilegesBuilder,
-        ) -> crate::typed::security::_types::ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::ApplicationPrivilegesBuilder) -> B,
     ) -> RoleBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_applications(
             f(crate::typed::security::_types::ApplicationPrivilegesBuilder::new()).build(),
@@ -1091,15 +1103,13 @@ impl<S0, S1, S2> RoleBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::ApplicationPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::ApplicationPrivilegesBuilder,
-        ) -> crate::typed::security::_types::ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::ApplicationPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_applications(
             f(crate::typed::security::_types::ApplicationPrivilegesBuilder::new()).build(),
@@ -1107,16 +1117,15 @@ impl<S0, S1, S2> RoleBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    RoleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RoleBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Role`].
-    pub fn build(self) -> Role {
+    pub fn build(self) -> Role
+    where
+        S0: crate::typed::builder::IsSet<role_members::cluster>,
+        S1: crate::typed::builder::IsSet<role_members::indices>,
+        S2: crate::typed::builder::IsSet<role_members::metadata>,
+        S3: crate::typed::builder::IsSet<role_members::applications>,
+    {
         Role {
             cluster: self.cluster.unwrap(),
             indices: self.indices.unwrap(),
@@ -1133,69 +1142,28 @@ impl
     }
 }
 
-impl
-    From<
-        RoleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Role
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RoleBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<role_members::cluster>,
+    S1: crate::typed::builder::IsSet<role_members::indices>,
+    S2: crate::typed::builder::IsSet<role_members::metadata>,
+    S3: crate::typed::builder::IsSet<role_members::applications>,
 {
-    fn from(
-        builder: RoleBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Role;
+
+    fn build(self) -> Role {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RoleBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster: crate::typed::builder::MissingRequiredField) -> Role { match cluster {} }
-}
-
-impl<S2, S3>
-    RoleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RoleBuilder<(S0, S1, S2, S3)>> for Role
+where
+    S0: crate::typed::builder::IsSet<role_members::cluster>,
+    S1: crate::typed::builder::IsSet<role_members::indices>,
+    S2: crate::typed::builder::IsSet<role_members::metadata>,
+    S3: crate::typed::builder::IsSet<role_members::applications>,
 {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> Role { match indices {} }
-}
-
-impl<S3>
-    RoleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `metadata` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata: crate::typed::builder::MissingRequiredField) -> Role { match metadata {} }
-}
-
-impl
-    RoleBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `applications` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, applications: crate::typed::builder::MissingRequiredField) -> Role { match applications {} }
+    fn from(builder: RoleBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

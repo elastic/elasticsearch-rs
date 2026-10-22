@@ -50,19 +50,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `job_id`, `snapshot_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `job_id`, `snapshot_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct job_id;
+    pub struct snapshot_id;
 }
 
 /// Builder for [`Request`].
@@ -202,7 +211,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// Identifier for the anomaly detection job.
+    /// **Required.** Identifier for the anomaly detection job.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -214,7 +223,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// You can specify `empty` as the <snapshot_id>. Reverting to the empty
+    /// **Required.** You can specify `empty` as the <snapshot_id>. Reverting to the empty
     /// snapshot means the anomaly detection job starts learning a new model from
     /// scratch when it is started.
     pub fn snapshot_id(
@@ -227,9 +236,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot_id>,
+    {
         Request {
             job_id: self.job_id.unwrap(),
             snapshot_id: self.snapshot_id.unwrap(),
@@ -243,41 +256,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::job_id>,
+    S1: crate::typed::builder::IsSet<request_members::snapshot_id>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Request { match job_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `job_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, job_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match job_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `snapshot_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, snapshot_id: crate::typed::builder::MissingRequiredField) -> Request { match snapshot_id {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `snapshot_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, snapshot_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match snapshot_id {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+        S1: crate::typed::builder::IsSet<request_members::snapshot_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

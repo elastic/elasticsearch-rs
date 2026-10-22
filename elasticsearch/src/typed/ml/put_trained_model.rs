@@ -20,7 +20,9 @@ impl AggregateOutput {
     }
 
     /// Creates a [`AggregateOutput`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AggregateOutputBuilder) -> AggregateOutputBuilder) -> AggregateOutput {
+    pub fn of<B: crate::typed::builder::Build<Output = AggregateOutput>>(
+        f: impl FnOnce(AggregateOutputBuilder) -> B,
+    ) -> AggregateOutput {
         f(Self::builder()).build()
     }
 }
@@ -58,9 +60,9 @@ impl AggregateOutputBuilder {
     }
 
     /// Sets [`logistic_regression`](Self::logistic_regression) with a builder.
-    pub fn logistic_regression_with(
+    pub fn logistic_regression_with<B: crate::typed::builder::Build<Output = Weights>>(
         self,
-        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WeightsBuilder) -> B,
     ) -> Self {
         self.logistic_regression(f(WeightsBuilder::new()).build())
     }
@@ -77,9 +79,9 @@ impl AggregateOutputBuilder {
     }
 
     /// Sets [`weighted_sum`](Self::weighted_sum) with a builder.
-    pub fn weighted_sum_with(
+    pub fn weighted_sum_with<B: crate::typed::builder::Build<Output = Weights>>(
         self,
-        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WeightsBuilder) -> B,
     ) -> Self {
         self.weighted_sum(f(WeightsBuilder::new()).build())
     }
@@ -96,9 +98,9 @@ impl AggregateOutputBuilder {
     }
 
     /// Sets [`weighted_mode`](Self::weighted_mode) with a builder.
-    pub fn weighted_mode_with(
+    pub fn weighted_mode_with<B: crate::typed::builder::Build<Output = Weights>>(
         self,
-        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WeightsBuilder) -> B,
     ) -> Self {
         self.weighted_mode(f(WeightsBuilder::new()).build())
     }
@@ -115,9 +117,9 @@ impl AggregateOutputBuilder {
     }
 
     /// Sets [`exponent`](Self::exponent) with a builder.
-    pub fn exponent_with(
+    pub fn exponent_with<B: crate::typed::builder::Build<Output = Weights>>(
         self,
-        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WeightsBuilder) -> B,
     ) -> Self {
         self.exponent(f(WeightsBuilder::new()).build())
     }
@@ -132,6 +134,14 @@ impl AggregateOutputBuilder {
             weighted_mode: self.weighted_mode,
             exponent: self.exponent,
         }
+    }
+}
+
+impl crate::typed::builder::Build for AggregateOutputBuilder {
+    type Output = AggregateOutput;
+
+    fn build(self) -> AggregateOutput {
+        Self::build(self)
     }
 }
 
@@ -152,16 +162,27 @@ pub struct Definition {
 
 impl Definition {
     /// Creates a builder for [`Definition`].
+    ///
+    /// Required: `trained_model`.
     pub fn builder() -> DefinitionBuilder {
         DefinitionBuilder::new()
     }
 
     /// Creates a [`Definition`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DefinitionBuilder) -> DefinitionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `trained_model`.
+    pub fn of<B: crate::typed::builder::Build<Output = Definition>>(
+        f: impl FnOnce(DefinitionBuilder) -> B,
     ) -> Definition {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DefinitionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod definition_members {
+    pub struct trained_model;
 }
 
 /// Builder for [`Definition`].
@@ -212,16 +233,16 @@ impl<S0> DefinitionBuilder<(S0,)> {
     }
 
     /// Adds an element to [`preprocessors`](Self::preprocessors), with a builder.
-    pub fn add_preprocessors_with(
+    pub fn add_preprocessors_with<B: crate::typed::builder::Build<Output = Preprocessor>>(
         self,
-        f: impl FnOnce(PreprocessorBuilder) -> PreprocessorBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PreprocessorBuilder) -> B,
     ) -> Self {
         self.add_preprocessors(f(PreprocessorBuilder::new()).build())
     }
 }
 
 impl DefinitionBuilder<(crate::typed::builder::NotSet,)> {
-    /// The definition of the trained model.
+    /// **Required.** The definition of the trained model.
     pub fn trained_model(
         self,
         value: impl Into<TrainedModel>,
@@ -232,17 +253,20 @@ impl DefinitionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`trained_model`](Self::trained_model) with a builder.
-    pub fn trained_model_with(
+    pub fn trained_model_with<B: crate::typed::builder::Build<Output = TrainedModel>>(
         self,
-        f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder,
+        f: impl FnOnce(TrainedModelBuilder) -> B,
     ) -> DefinitionBuilder<(crate::typed::builder::Set,)> {
         self.trained_model(f(TrainedModelBuilder::new()).build())
     }
 }
 
-impl DefinitionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DefinitionBuilder<(S0,)> {
     /// Builds a [`Definition`].
-    pub fn build(self) -> Definition {
+    pub fn build(self) -> Definition
+    where
+        S0: crate::typed::builder::IsSet<definition_members::trained_model>,
+    {
         Definition {
             preprocessors: self.preprocessors,
             trained_model: self.trained_model.unwrap(),
@@ -250,16 +274,24 @@ impl DefinitionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DefinitionBuilder<(crate::typed::builder::Set,)>> for Definition {
-    fn from(builder: DefinitionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DefinitionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<definition_members::trained_model>,
+{
+    type Output = Definition;
+
+    fn build(self) -> Definition {
+        Self::build(self)
     }
 }
 
-impl DefinitionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `trained_model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trained_model: crate::typed::builder::MissingRequiredField) -> Definition { match trained_model {} }
+impl<S0> From<DefinitionBuilder<(S0,)>> for Definition
+where
+    S0: crate::typed::builder::IsSet<definition_members::trained_model>,
+{
+    fn from(builder: DefinitionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -277,16 +309,27 @@ pub struct Ensemble {
 
 impl Ensemble {
     /// Creates a builder for [`Ensemble`].
+    ///
+    /// Required: `trained_models`.
     pub fn builder() -> EnsembleBuilder {
         EnsembleBuilder::new()
     }
 
     /// Creates a [`Ensemble`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(EnsembleBuilder) -> EnsembleBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `trained_models`.
+    pub fn of<B: crate::typed::builder::Build<Output = Ensemble>>(
+        f: impl FnOnce(EnsembleBuilder) -> B,
     ) -> Ensemble {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EnsembleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ensemble_members {
+    pub struct trained_models;
 }
 
 /// Builder for [`Ensemble`].
@@ -337,9 +380,9 @@ impl<S0> EnsembleBuilder<(S0,)> {
     }
 
     /// Sets [`aggregate_output`](Self::aggregate_output) with a builder.
-    pub fn aggregate_output_with(
+    pub fn aggregate_output_with<B: crate::typed::builder::Build<Output = AggregateOutput>>(
         self,
-        f: impl FnOnce(AggregateOutputBuilder) -> AggregateOutputBuilder,
+        f: impl FnOnce(AggregateOutputBuilder) -> B,
     ) -> Self {
         self.aggregate_output(f(AggregateOutputBuilder::new()).build())
     }
@@ -395,6 +438,7 @@ impl<S0> EnsembleBuilder<(S0,)> {
 }
 
 impl EnsembleBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn trained_models(
         self,
         value: impl Into<Vec<TrainedModel>>,
@@ -418,9 +462,9 @@ impl EnsembleBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`trained_models`](Self::trained_models), with a builder.
-    pub fn add_trained_models_with(
+    pub fn add_trained_models_with<B: crate::typed::builder::Build<Output = TrainedModel>>(
         self,
-        f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder,
+        f: impl FnOnce(TrainedModelBuilder) -> B,
     ) -> EnsembleBuilder<(crate::typed::builder::Set,)> {
         self.add_trained_models(f(TrainedModelBuilder::new()).build())
     }
@@ -436,17 +480,20 @@ impl EnsembleBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`trained_models`](Self::trained_models), with a builder.
-    pub fn add_trained_models_with(
+    pub fn add_trained_models_with<B: crate::typed::builder::Build<Output = TrainedModel>>(
         self,
-        f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder,
+        f: impl FnOnce(TrainedModelBuilder) -> B,
     ) -> Self {
         self.add_trained_models(f(TrainedModelBuilder::new()).build())
     }
 }
 
-impl EnsembleBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EnsembleBuilder<(S0,)> {
     /// Builds a [`Ensemble`].
-    pub fn build(self) -> Ensemble {
+    pub fn build(self) -> Ensemble
+    where
+        S0: crate::typed::builder::IsSet<ensemble_members::trained_models>,
+    {
         Ensemble {
             aggregate_output: self.aggregate_output,
             classification_labels: self.classification_labels,
@@ -457,16 +504,24 @@ impl EnsembleBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<EnsembleBuilder<(crate::typed::builder::Set,)>> for Ensemble {
-    fn from(builder: EnsembleBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EnsembleBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ensemble_members::trained_models>,
+{
+    type Output = Ensemble;
+
+    fn build(self) -> Ensemble {
+        Self::build(self)
     }
 }
 
-impl EnsembleBuilder<(crate::typed::builder::NotSet,)> {
-    /// `trained_models` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trained_models: crate::typed::builder::MissingRequiredField) -> Ensemble { match trained_models {} }
+impl<S0> From<EnsembleBuilder<(S0,)>> for Ensemble
+where
+    S0: crate::typed::builder::IsSet<ensemble_members::trained_models>,
+{
+    fn from(builder: EnsembleBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -478,22 +533,29 @@ pub struct FrequencyEncodingPreprocessor {
 
 impl FrequencyEncodingPreprocessor {
     /// Creates a builder for [`FrequencyEncodingPreprocessor`].
+    ///
+    /// Required: `field`, `feature_name`, `frequency_map`.
     pub fn builder() -> FrequencyEncodingPreprocessorBuilder {
         FrequencyEncodingPreprocessorBuilder::new()
     }
 
     /// Creates a [`FrequencyEncodingPreprocessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FrequencyEncodingPreprocessorBuilder,
-        ) -> FrequencyEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `feature_name`, `frequency_map`.
+    pub fn of<B: crate::typed::builder::Build<Output = FrequencyEncodingPreprocessor>>(
+        f: impl FnOnce(FrequencyEncodingPreprocessorBuilder) -> B,
     ) -> FrequencyEncodingPreprocessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FrequencyEncodingPreprocessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod frequency_encoding_preprocessor_members {
+    pub struct field;
+    pub struct feature_name;
+    pub struct frequency_map;
 }
 
 /// Builder for [`FrequencyEncodingPreprocessor`].
@@ -540,6 +602,7 @@ impl<S0, S1, S2> FrequencyEncodingPreprocessorBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FrequencyEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<String>,
@@ -551,6 +614,7 @@ impl<S1, S2> FrequencyEncodingPreprocessorBuilder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2> FrequencyEncodingPreprocessorBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -562,6 +626,7 @@ impl<S0, S2> FrequencyEncodingPreprocessorBuilder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1> FrequencyEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn frequency_map(
         self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::support::Float64>>,
@@ -600,15 +665,14 @@ impl<S0, S1> FrequencyEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder
     }
 }
 
-impl
-    FrequencyEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FrequencyEncodingPreprocessorBuilder<(S0, S1, S2)> {
     /// Builds a [`FrequencyEncodingPreprocessor`].
-    pub fn build(self) -> FrequencyEncodingPreprocessor {
+    pub fn build(self) -> FrequencyEncodingPreprocessor
+    where
+        S0: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::field>,
+        S1: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::feature_name>,
+        S2: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::frequency_map>,
+    {
         FrequencyEncodingPreprocessor {
             field: self.field.unwrap(),
             feature_name: self.feature_name.unwrap(),
@@ -617,54 +681,29 @@ impl
     }
 }
 
-impl
-    From<
-        FrequencyEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FrequencyEncodingPreprocessor
+impl<S0, S1, S2> crate::typed::builder::Build for FrequencyEncodingPreprocessorBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::feature_name>,
+    S2: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::frequency_map>,
 {
-    fn from(
-        builder: FrequencyEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FrequencyEncodingPreprocessor;
+
+    fn build(self) -> FrequencyEncodingPreprocessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FrequencyEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FrequencyEncodingPreprocessor { match field {} }
-}
-
-impl<S2>
-    FrequencyEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FrequencyEncodingPreprocessorBuilder<(S0, S1, S2)>>
+    for FrequencyEncodingPreprocessor
+where
+    S0: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::feature_name>,
+    S2: crate::typed::builder::IsSet<frequency_encoding_preprocessor_members::frequency_map>,
 {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> FrequencyEncodingPreprocessor { match feature_name {} }
-}
-
-impl
-    FrequencyEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `frequency_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, frequency_map: crate::typed::builder::MissingRequiredField) -> FrequencyEncodingPreprocessor { match frequency_map {} }
+    fn from(builder: FrequencyEncodingPreprocessorBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -674,16 +713,27 @@ pub struct Input {
 
 impl Input {
     /// Creates a builder for [`Input`].
+    ///
+    /// Required: `field_names`.
     pub fn builder() -> InputBuilder {
         InputBuilder::new()
     }
 
     /// Creates a [`Input`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InputBuilder) -> InputBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field_names`.
+    pub fn of<B: crate::typed::builder::Build<Output = Input>>(
+        f: impl FnOnce(InputBuilder) -> B,
     ) -> Input {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InputBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod input_members {
+    pub struct field_names;
 }
 
 /// Builder for [`Input`].
@@ -712,6 +762,7 @@ impl<S0> InputBuilder<(S0,)> {
 }
 
 impl InputBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn field_names(
         self,
         value: impl Into<crate::typed::_types::Names>,
@@ -722,25 +773,36 @@ impl InputBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InputBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InputBuilder<(S0,)> {
     /// Builds a [`Input`].
-    pub fn build(self) -> Input {
+    pub fn build(self) -> Input
+    where
+        S0: crate::typed::builder::IsSet<input_members::field_names>,
+    {
         Input {
             field_names: self.field_names.unwrap(),
         }
     }
 }
 
-impl From<InputBuilder<(crate::typed::builder::Set,)>> for Input {
-    fn from(builder: InputBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for InputBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<input_members::field_names>,
+{
+    type Output = Input;
+
+    fn build(self) -> Input {
+        Self::build(self)
     }
 }
 
-impl InputBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field_names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field_names: crate::typed::builder::MissingRequiredField) -> Input { match field_names {} }
+impl<S0> From<InputBuilder<(S0,)>> for Input
+where
+    S0: crate::typed::builder::IsSet<input_members::field_names>,
+{
+    fn from(builder: InputBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -751,21 +813,28 @@ pub struct OneHotEncodingPreprocessor {
 
 impl OneHotEncodingPreprocessor {
     /// Creates a builder for [`OneHotEncodingPreprocessor`].
+    ///
+    /// Required: `field`, `hot_map`.
     pub fn builder() -> OneHotEncodingPreprocessorBuilder {
         OneHotEncodingPreprocessorBuilder::new()
     }
 
     /// Creates a [`OneHotEncodingPreprocessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OneHotEncodingPreprocessorBuilder,
-        ) -> OneHotEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `hot_map`.
+    pub fn of<B: crate::typed::builder::Build<Output = OneHotEncodingPreprocessor>>(
+        f: impl FnOnce(OneHotEncodingPreprocessorBuilder) -> B,
     ) -> OneHotEncodingPreprocessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OneHotEncodingPreprocessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod one_hot_encoding_preprocessor_members {
+    pub struct field;
+    pub struct hot_map;
 }
 
 /// Builder for [`OneHotEncodingPreprocessor`].
@@ -804,6 +873,7 @@ impl<S0, S1> OneHotEncodingPreprocessorBuilder<(S0, S1)> {
 }
 
 impl<S1> OneHotEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<String>,
@@ -815,6 +885,7 @@ impl<S1> OneHotEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> OneHotEncodingPreprocessorBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn hot_map(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -849,9 +920,13 @@ impl<S0> OneHotEncodingPreprocessorBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl OneHotEncodingPreprocessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> OneHotEncodingPreprocessorBuilder<(S0, S1)> {
     /// Builds a [`OneHotEncodingPreprocessor`].
-    pub fn build(self) -> OneHotEncodingPreprocessor {
+    pub fn build(self) -> OneHotEncodingPreprocessor
+    where
+        S0: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::field>,
+        S1: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::hot_map>,
+    {
         OneHotEncodingPreprocessor {
             field: self.field.unwrap(),
             hot_map: self.hot_map.unwrap(),
@@ -859,33 +934,26 @@ impl OneHotEncodingPreprocessorBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        OneHotEncodingPreprocessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for OneHotEncodingPreprocessor
+impl<S0, S1> crate::typed::builder::Build for OneHotEncodingPreprocessorBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::hot_map>,
 {
-    fn from(
-        builder: OneHotEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = OneHotEncodingPreprocessor;
+
+    fn build(self) -> OneHotEncodingPreprocessor {
+        Self::build(self)
     }
 }
 
-impl<S1> OneHotEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> OneHotEncodingPreprocessor { match field {} }
-}
-
-impl
-    OneHotEncodingPreprocessorBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<OneHotEncodingPreprocessorBuilder<(S0, S1)>> for OneHotEncodingPreprocessor
+where
+    S0: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<one_hot_encoding_preprocessor_members::hot_map>,
 {
-    /// `hot_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hot_map: crate::typed::builder::MissingRequiredField) -> OneHotEncodingPreprocessor { match hot_map {} }
+    fn from(builder: OneHotEncodingPreprocessorBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -975,13 +1043,17 @@ impl
 
 impl Preprocessor {
     /// Creates a builder for [`Preprocessor`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> PreprocessorBuilder {
         PreprocessorBuilder::new()
     }
 
     /// Creates a [`Preprocessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PreprocessorBuilder) -> PreprocessorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Preprocessor>>(
+        f: impl FnOnce(PreprocessorBuilder) -> B,
     ) -> Preprocessor {
         f(Self::builder()).build()
     }
@@ -1023,15 +1095,11 @@ impl PreprocessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`frequency_encoding`](Self::frequency_encoding) with a builder.
-    pub fn frequency_encoding_with(
+    pub fn frequency_encoding_with<
+        B: crate::typed::builder::Build<Output = FrequencyEncodingPreprocessor>,
+    >(
         self,
-        f: impl FnOnce(
-            FrequencyEncodingPreprocessorBuilder,
-        ) -> FrequencyEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FrequencyEncodingPreprocessorBuilder) -> B,
     ) -> PreprocessorBuilder<(crate::typed::builder::Set,)> {
         self.frequency_encoding(f(FrequencyEncodingPreprocessorBuilder::new()).build())
     }
@@ -1046,14 +1114,11 @@ impl PreprocessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`one_hot_encoding`](Self::one_hot_encoding) with a builder.
-    pub fn one_hot_encoding_with(
+    pub fn one_hot_encoding_with<
+        B: crate::typed::builder::Build<Output = OneHotEncodingPreprocessor>,
+    >(
         self,
-        f: impl FnOnce(
-            OneHotEncodingPreprocessorBuilder,
-        ) -> OneHotEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(OneHotEncodingPreprocessorBuilder) -> B,
     ) -> PreprocessorBuilder<(crate::typed::builder::Set,)> {
         self.one_hot_encoding(f(OneHotEncodingPreprocessorBuilder::new()).build())
     }
@@ -1068,38 +1133,44 @@ impl PreprocessorBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`target_mean_encoding`](Self::target_mean_encoding) with a builder.
-    pub fn target_mean_encoding_with(
+    pub fn target_mean_encoding_with<
+        B: crate::typed::builder::Build<Output = TargetMeanEncodingPreprocessor>,
+    >(
         self,
-        f: impl FnOnce(
-            TargetMeanEncodingPreprocessorBuilder,
-        ) -> TargetMeanEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TargetMeanEncodingPreprocessorBuilder) -> B,
     ) -> PreprocessorBuilder<(crate::typed::builder::Set,)> {
         self.target_mean_encoding(f(TargetMeanEncodingPreprocessorBuilder::new()).build())
     }
 }
 
-impl PreprocessorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PreprocessorBuilder<(S0,)> {
     /// Builds a [`Preprocessor`].
-    pub fn build(self) -> Preprocessor {
+    pub fn build(self) -> Preprocessor
+    where
+        S0: crate::typed::builder::IsVariantSet<Preprocessor>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<PreprocessorBuilder<(crate::typed::builder::Set,)>> for Preprocessor {
-    fn from(builder: PreprocessorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PreprocessorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Preprocessor>,
+{
+    type Output = Preprocessor;
+
+    fn build(self) -> Preprocessor {
+        Self::build(self)
     }
 }
 
-impl PreprocessorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> Preprocessor { match variant {} }
+impl<S0> From<PreprocessorBuilder<(S0,)>> for Preprocessor
+where
+    S0: crate::typed::builder::IsVariantSet<Preprocessor>,
+{
+    fn from(builder: PreprocessorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`ml.put_trained_model`](crate::typed::ml::MlClient::put_trained_model).
@@ -1175,16 +1246,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct model_id;
 }
 
 /// Builder for [`Request`].
@@ -1375,9 +1457,9 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`definition`](Self::definition) with a builder.
-    pub fn definition_with(
+    pub fn definition_with<B: crate::typed::builder::Build<Output = Definition>>(
         self,
-        f: impl FnOnce(DefinitionBuilder) -> DefinitionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DefinitionBuilder) -> B,
     ) -> Self {
         self.definition(f(DefinitionBuilder::new()).build())
     }
@@ -1416,13 +1498,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`inference_config`](Self::inference_config) with a builder.
-    pub fn inference_config_with(
+    pub fn inference_config_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::InferenceConfigCreateContainer,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::InferenceConfigCreateContainerBuilder,
-        ) -> crate::typed::ml::_types::InferenceConfigCreateContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::InferenceConfigCreateContainerBuilder) -> B,
     ) -> Self {
         self.inference_config(
             f(crate::typed::ml::_types::InferenceConfigCreateContainerBuilder::new()).build(),
@@ -1442,9 +1524,9 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`input`](Self::input) with a builder.
-    pub fn input_with(
+    pub fn input_with<B: crate::typed::builder::Build<Output = Input>>(
         self,
-        f: impl FnOnce(InputBuilder) -> InputBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(InputBuilder) -> B,
     ) -> Self {
         self.input(f(InputBuilder::new()).build())
     }
@@ -1550,11 +1632,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`prefix_strings`](Self::prefix_strings) with a builder.
-    pub fn prefix_strings_with(
+    pub fn prefix_strings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::TrainedModelPrefixStrings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::TrainedModelPrefixStringsBuilder,
-        ) -> crate::typed::ml::_types::TrainedModelPrefixStringsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::TrainedModelPrefixStringsBuilder) -> B,
     ) -> Self {
         self.prefix_strings(
             f(crate::typed::ml::_types::TrainedModelPrefixStringsBuilder::new()).build(),
@@ -1563,7 +1645,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The unique identifier of the trained model.
+    /// **Required.** The unique identifier of the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -1574,9 +1656,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+    {
         Request {
             model_id: self.model_id.unwrap(),
             defer_definition_decompression: self.defer_definition_decompression,
@@ -1600,23 +1685,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::model_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> Request { match model_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `model_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, model_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match model_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -1776,23 +1864,30 @@ pub struct TargetMeanEncodingPreprocessor {
 
 impl TargetMeanEncodingPreprocessor {
     /// Creates a builder for [`TargetMeanEncodingPreprocessor`].
+    ///
+    /// Required: `field`, `feature_name`, `target_map`, `default_value`.
     pub fn builder() -> TargetMeanEncodingPreprocessorBuilder {
         TargetMeanEncodingPreprocessorBuilder::new()
     }
 
     /// Creates a [`TargetMeanEncodingPreprocessor`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TargetMeanEncodingPreprocessorBuilder,
-        ) -> TargetMeanEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `feature_name`, `target_map`, `default_value`.
+    pub fn of<B: crate::typed::builder::Build<Output = TargetMeanEncodingPreprocessor>>(
+        f: impl FnOnce(TargetMeanEncodingPreprocessorBuilder) -> B,
     ) -> TargetMeanEncodingPreprocessor {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TargetMeanEncodingPreprocessorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod target_mean_encoding_preprocessor_members {
+    pub struct field;
+    pub struct feature_name;
+    pub struct target_map;
+    pub struct default_value;
 }
 
 /// Builder for [`TargetMeanEncodingPreprocessor`].
@@ -1846,6 +1941,7 @@ impl<S0, S1, S2, S3> TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     TargetMeanEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<String>,
@@ -1859,6 +1955,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     TargetMeanEncodingPreprocessorBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -1872,6 +1969,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     TargetMeanEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
+    /// **Required.**
     pub fn target_map(
         self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::support::Float64>>,
@@ -1913,6 +2011,7 @@ impl<S0, S1, S3> TargetMeanEncodingPreprocessorBuilder<(S0, S1, crate::typed::bu
 impl<S0, S1, S2>
     TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn default_value(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1923,16 +2022,15 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    TargetMeanEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`TargetMeanEncodingPreprocessor`].
-    pub fn build(self) -> TargetMeanEncodingPreprocessor {
+    pub fn build(self) -> TargetMeanEncodingPreprocessor
+    where
+        S0: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::field>,
+        S1: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::feature_name>,
+        S2: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::target_map>,
+        S3: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::default_value>,
+    {
         TargetMeanEncodingPreprocessor {
             field: self.field.unwrap(),
             feature_name: self.feature_name.unwrap(),
@@ -1942,73 +2040,32 @@ impl
     }
 }
 
-impl
-    From<
-        TargetMeanEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TargetMeanEncodingPreprocessor
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::feature_name>,
+    S2: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::target_map>,
+    S3: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::default_value>,
 {
-    fn from(
-        builder: TargetMeanEncodingPreprocessorBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TargetMeanEncodingPreprocessor;
+
+    fn build(self) -> TargetMeanEncodingPreprocessor {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    TargetMeanEncodingPreprocessorBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, S3)>>
+    for TargetMeanEncodingPreprocessor
+where
+    S0: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::field>,
+    S1: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::feature_name>,
+    S2: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::target_map>,
+    S3: crate::typed::builder::IsSet<target_mean_encoding_preprocessor_members::default_value>,
 {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> TargetMeanEncodingPreprocessor { match field {} }
-}
-
-impl<S2, S3>
-    TargetMeanEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> TargetMeanEncodingPreprocessor { match feature_name {} }
-}
-
-impl<S3>
-    TargetMeanEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `target_map` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_map: crate::typed::builder::MissingRequiredField) -> TargetMeanEncodingPreprocessor { match target_map {} }
-}
-
-impl
-    TargetMeanEncodingPreprocessorBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `default_value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, default_value: crate::typed::builder::MissingRequiredField) -> TargetMeanEncodingPreprocessor { match default_value {} }
+    fn from(builder: TargetMeanEncodingPreprocessorBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2034,7 +2091,9 @@ impl TrainedModel {
     }
 
     /// Creates a [`TrainedModel`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder) -> TrainedModel {
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModel>>(
+        f: impl FnOnce(TrainedModelBuilder) -> B,
+    ) -> TrainedModel {
         f(Self::builder()).build()
     }
 }
@@ -2071,14 +2130,9 @@ impl TrainedModelBuilder {
     }
 
     /// Sets [`tree`](Self::tree) with a builder.
-    pub fn tree_with(
+    pub fn tree_with<B: crate::typed::builder::Build<Output = TrainedModelTree>>(
         self,
-        f: impl FnOnce(
-            TrainedModelTreeBuilder,
-        ) -> TrainedModelTreeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TrainedModelTreeBuilder) -> B,
     ) -> Self {
         self.tree(f(TrainedModelTreeBuilder::new()).build())
     }
@@ -2099,11 +2153,9 @@ impl TrainedModelBuilder {
     }
 
     /// Sets [`tree_node`](Self::tree_node) with a builder.
-    pub fn tree_node_with(
+    pub fn tree_node_with<B: crate::typed::builder::Build<Output = TrainedModelTreeNode>>(
         self,
-        f: impl FnOnce(
-            TrainedModelTreeNodeBuilder,
-        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelTreeNodeBuilder) -> B,
     ) -> Self {
         self.tree_node(f(TrainedModelTreeNodeBuilder::new()).build())
     }
@@ -2121,9 +2173,9 @@ impl TrainedModelBuilder {
     }
 
     /// Sets [`ensemble`](Self::ensemble) with a builder.
-    pub fn ensemble_with(
+    pub fn ensemble_with<B: crate::typed::builder::Build<Output = Ensemble>>(
         self,
-        f: impl FnOnce(EnsembleBuilder) -> EnsembleBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(EnsembleBuilder) -> B,
     ) -> Self {
         self.ensemble(f(EnsembleBuilder::new()).build())
     }
@@ -2137,6 +2189,14 @@ impl TrainedModelBuilder {
             tree_node: self.tree_node,
             ensemble: self.ensemble,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TrainedModelBuilder {
+    type Output = TrainedModel;
+
+    fn build(self) -> TrainedModel {
+        Self::build(self)
     }
 }
 
@@ -2158,21 +2218,28 @@ pub struct TrainedModelTree {
 
 impl TrainedModelTree {
     /// Creates a builder for [`TrainedModelTree`].
+    ///
+    /// Required: `feature_names`, `tree_structure`.
     pub fn builder() -> TrainedModelTreeBuilder {
         TrainedModelTreeBuilder::new()
     }
 
     /// Creates a [`TrainedModelTree`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelTreeBuilder,
-        ) -> TrainedModelTreeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_names`, `tree_structure`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelTree>>(
+        f: impl FnOnce(TrainedModelTreeBuilder) -> B,
     ) -> TrainedModelTree {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelTreeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_tree_members {
+    pub struct feature_names;
+    pub struct tree_structure;
 }
 
 /// Builder for [`TrainedModelTree`].
@@ -2242,6 +2309,7 @@ impl<S0, S1> TrainedModelTreeBuilder<(S0, S1)> {
 }
 
 impl<S1> TrainedModelTreeBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn feature_names(
         self,
         value: impl Into<Vec<String>>,
@@ -2276,6 +2344,7 @@ impl<S1> TrainedModelTreeBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tree_structure(
         self,
         value: impl Into<Vec<TrainedModelTreeNode>>,
@@ -2299,11 +2368,11 @@ impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`tree_structure`](Self::tree_structure), with a builder.
-    pub fn add_tree_structure_with(
+    pub fn add_tree_structure_with<
+        B: crate::typed::builder::Build<Output = TrainedModelTreeNode>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelTreeNodeBuilder,
-        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelTreeNodeBuilder) -> B,
     ) -> TrainedModelTreeBuilder<(S0, crate::typed::builder::Set)> {
         self.add_tree_structure(f(TrainedModelTreeNodeBuilder::new()).build())
     }
@@ -2319,19 +2388,23 @@ impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`tree_structure`](Self::tree_structure), with a builder.
-    pub fn add_tree_structure_with(
+    pub fn add_tree_structure_with<
+        B: crate::typed::builder::Build<Output = TrainedModelTreeNode>,
+    >(
         self,
-        f: impl FnOnce(
-            TrainedModelTreeNodeBuilder,
-        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TrainedModelTreeNodeBuilder) -> B,
     ) -> Self {
         self.add_tree_structure(f(TrainedModelTreeNodeBuilder::new()).build())
     }
 }
 
-impl TrainedModelTreeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TrainedModelTreeBuilder<(S0, S1)> {
     /// Builds a [`TrainedModelTree`].
-    pub fn build(self) -> TrainedModelTree {
+    pub fn build(self) -> TrainedModelTree
+    where
+        S0: crate::typed::builder::IsSet<trained_model_tree_members::feature_names>,
+        S1: crate::typed::builder::IsSet<trained_model_tree_members::tree_structure>,
+    {
         TrainedModelTree {
             classification_labels: self.classification_labels,
             feature_names: self.feature_names.unwrap(),
@@ -2341,26 +2414,26 @@ impl TrainedModelTreeBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<TrainedModelTreeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TrainedModelTree
+impl<S0, S1> crate::typed::builder::Build for TrainedModelTreeBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_tree_members::feature_names>,
+    S1: crate::typed::builder::IsSet<trained_model_tree_members::tree_structure>,
 {
-    fn from(
-        builder: TrainedModelTreeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TrainedModelTree;
+
+    fn build(self) -> TrainedModelTree {
+        Self::build(self)
     }
 }
 
-impl<S1> TrainedModelTreeBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `feature_names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_names: crate::typed::builder::MissingRequiredField) -> TrainedModelTree { match feature_names {} }
-}
-
-impl TrainedModelTreeBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `tree_structure` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tree_structure: crate::typed::builder::MissingRequiredField) -> TrainedModelTree { match tree_structure {} }
+impl<S0, S1> From<TrainedModelTreeBuilder<(S0, S1)>> for TrainedModelTree
+where
+    S0: crate::typed::builder::IsSet<trained_model_tree_members::feature_names>,
+    S1: crate::typed::builder::IsSet<trained_model_tree_members::tree_structure>,
+{
+    fn from(builder: TrainedModelTreeBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2386,18 +2459,27 @@ pub struct TrainedModelTreeNode {
 
 impl TrainedModelTreeNode {
     /// Creates a builder for [`TrainedModelTreeNode`].
+    ///
+    /// Required: `node_index`.
     pub fn builder() -> TrainedModelTreeNodeBuilder {
         TrainedModelTreeNodeBuilder::new()
     }
 
     /// Creates a [`TrainedModelTreeNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TrainedModelTreeNodeBuilder,
-        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `node_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = TrainedModelTreeNode>>(
+        f: impl FnOnce(TrainedModelTreeNodeBuilder) -> B,
     ) -> TrainedModelTreeNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TrainedModelTreeNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod trained_model_tree_node_members {
+    pub struct node_index;
 }
 
 /// Builder for [`TrainedModelTreeNode`].
@@ -2538,6 +2620,7 @@ impl<S0> TrainedModelTreeNodeBuilder<(S0,)> {
 }
 
 impl TrainedModelTreeNodeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn node_index(
         self,
         value: i32,
@@ -2548,9 +2631,12 @@ impl TrainedModelTreeNodeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TrainedModelTreeNodeBuilder<(S0,)> {
     /// Builds a [`TrainedModelTreeNode`].
-    pub fn build(self) -> TrainedModelTreeNode {
+    pub fn build(self) -> TrainedModelTreeNode
+    where
+        S0: crate::typed::builder::IsSet<trained_model_tree_node_members::node_index>,
+    {
         TrainedModelTreeNode {
             decision_type: self.decision_type,
             default_left: self.default_left,
@@ -2565,16 +2651,24 @@ impl TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>> for TrainedModelTreeNode {
-    fn from(builder: TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TrainedModelTreeNodeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<trained_model_tree_node_members::node_index>,
+{
+    type Output = TrainedModelTreeNode;
+
+    fn build(self) -> TrainedModelTreeNode {
+        Self::build(self)
     }
 }
 
-impl TrainedModelTreeNodeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `node_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_index: crate::typed::builder::MissingRequiredField) -> TrainedModelTreeNode { match node_index {} }
+impl<S0> From<TrainedModelTreeNodeBuilder<(S0,)>> for TrainedModelTreeNode
+where
+    S0: crate::typed::builder::IsSet<trained_model_tree_node_members::node_index>,
+{
+    fn from(builder: TrainedModelTreeNodeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2584,16 +2678,27 @@ pub struct Weights {
 
 impl Weights {
     /// Creates a builder for [`Weights`].
+    ///
+    /// Required: `weights`.
     pub fn builder() -> WeightsBuilder {
         WeightsBuilder::new()
     }
 
     /// Creates a [`Weights`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `weights`.
+    pub fn of<B: crate::typed::builder::Build<Output = Weights>>(
+        f: impl FnOnce(WeightsBuilder) -> B,
     ) -> Weights {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WeightsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod weights_members {
+    pub struct weights;
 }
 
 /// Builder for [`Weights`].
@@ -2622,6 +2727,7 @@ impl<S0> WeightsBuilder<(S0,)> {
 }
 
 impl WeightsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn weights(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -2632,23 +2738,34 @@ impl WeightsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WeightsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WeightsBuilder<(S0,)> {
     /// Builds a [`Weights`].
-    pub fn build(self) -> Weights {
+    pub fn build(self) -> Weights
+    where
+        S0: crate::typed::builder::IsSet<weights_members::weights>,
+    {
         Weights {
             weights: self.weights.unwrap(),
         }
     }
 }
 
-impl From<WeightsBuilder<(crate::typed::builder::Set,)>> for Weights {
-    fn from(builder: WeightsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WeightsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<weights_members::weights>,
+{
+    type Output = Weights;
+
+    fn build(self) -> Weights {
+        Self::build(self)
     }
 }
 
-impl WeightsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `weights` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, weights: crate::typed::builder::MissingRequiredField) -> Weights { match weights {} }
+impl<S0> From<WeightsBuilder<(S0,)>> for Weights
+where
+    S0: crate::typed::builder::IsSet<weights_members::weights>,
+{
+    fn from(builder: WeightsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

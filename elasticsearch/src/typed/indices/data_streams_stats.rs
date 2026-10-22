@@ -23,23 +23,30 @@ pub struct DataStreamsStatsItem {
 
 impl DataStreamsStatsItem {
     /// Creates a builder for [`DataStreamsStatsItem`].
+    ///
+    /// Required: `backing_indices`, `data_stream`, `maximum_timestamp`, `store_size_bytes`.
     pub fn builder() -> DataStreamsStatsItemBuilder {
         DataStreamsStatsItemBuilder::new()
     }
 
     /// Creates a [`DataStreamsStatsItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamsStatsItemBuilder,
-        ) -> DataStreamsStatsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `backing_indices`, `data_stream`, `maximum_timestamp`, `store_size_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamsStatsItem>>(
+        f: impl FnOnce(DataStreamsStatsItemBuilder) -> B,
     ) -> DataStreamsStatsItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamsStatsItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_streams_stats_item_members {
+    pub struct backing_indices;
+    pub struct data_stream;
+    pub struct maximum_timestamp;
+    pub struct store_size_bytes;
 }
 
 /// Builder for [`DataStreamsStatsItem`].
@@ -107,7 +114,7 @@ impl<S0, S1, S2, S3> DataStreamsStatsItemBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DataStreamsStatsItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// Current number of backing indices for the data stream.
+    /// **Required.** Current number of backing indices for the data stream.
     pub fn backing_indices(
         self,
         value: i32,
@@ -119,7 +126,7 @@ impl<S1, S2, S3> DataStreamsStatsItemBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3> DataStreamsStatsItemBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Name of the data stream.
+    /// **Required.** Name of the data stream.
     pub fn data_stream(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -131,7 +138,7 @@ impl<S0, S2, S3> DataStreamsStatsItemBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3> DataStreamsStatsItemBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The data stream’s highest `@timestamp` value, converted to milliseconds since the Unix epoch.
+    /// **Required.** The data stream’s highest `@timestamp` value, converted to milliseconds since the Unix epoch.
     /// NOTE: This timestamp is provided as a best effort.
     /// The data stream may contain `@timestamp` values higher than this if one or more of the following conditions are met:
     /// The stream contains closed backing indices;
@@ -147,7 +154,7 @@ impl<S0, S1, S3> DataStreamsStatsItemBuilder<(S0, S1, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2> DataStreamsStatsItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// Total size, in bytes, of all shards for the data stream’s backing indices.
+    /// **Required.** Total size, in bytes, of all shards for the data stream’s backing indices.
     pub fn store_size_bytes(
         self,
         value: i64,
@@ -158,16 +165,15 @@ impl<S0, S1, S2> DataStreamsStatsItemBuilder<(S0, S1, S2, crate::typed::builder:
     }
 }
 
-impl
-    DataStreamsStatsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DataStreamsStatsItemBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`DataStreamsStatsItem`].
-    pub fn build(self) -> DataStreamsStatsItem {
+    pub fn build(self) -> DataStreamsStatsItem
+    where
+        S0: crate::typed::builder::IsSet<data_streams_stats_item_members::backing_indices>,
+        S1: crate::typed::builder::IsSet<data_streams_stats_item_members::data_stream>,
+        S2: crate::typed::builder::IsSet<data_streams_stats_item_members::maximum_timestamp>,
+        S3: crate::typed::builder::IsSet<data_streams_stats_item_members::store_size_bytes>,
+    {
         DataStreamsStatsItem {
             backing_indices: self.backing_indices.unwrap(),
             data_stream: self.data_stream.unwrap(),
@@ -178,71 +184,30 @@ impl
     }
 }
 
-impl
-    From<
-        DataStreamsStatsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataStreamsStatsItem
+impl<S0, S1, S2, S3> crate::typed::builder::Build for DataStreamsStatsItemBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<data_streams_stats_item_members::backing_indices>,
+    S1: crate::typed::builder::IsSet<data_streams_stats_item_members::data_stream>,
+    S2: crate::typed::builder::IsSet<data_streams_stats_item_members::maximum_timestamp>,
+    S3: crate::typed::builder::IsSet<data_streams_stats_item_members::store_size_bytes>,
 {
-    fn from(
-        builder: DataStreamsStatsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamsStatsItem;
+
+    fn build(self) -> DataStreamsStatsItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DataStreamsStatsItemBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `backing_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, backing_indices: crate::typed::builder::MissingRequiredField) -> DataStreamsStatsItem { match backing_indices {} }
-}
-
-impl<S2, S3>
-    DataStreamsStatsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DataStreamsStatsItemBuilder<(S0, S1, S2, S3)>> for DataStreamsStatsItem
+where
+    S0: crate::typed::builder::IsSet<data_streams_stats_item_members::backing_indices>,
+    S1: crate::typed::builder::IsSet<data_streams_stats_item_members::data_stream>,
+    S2: crate::typed::builder::IsSet<data_streams_stats_item_members::maximum_timestamp>,
+    S3: crate::typed::builder::IsSet<data_streams_stats_item_members::store_size_bytes>,
 {
-    /// `data_stream` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_stream: crate::typed::builder::MissingRequiredField) -> DataStreamsStatsItem { match data_stream {} }
-}
-
-impl<S3>
-    DataStreamsStatsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `maximum_timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, maximum_timestamp: crate::typed::builder::MissingRequiredField) -> DataStreamsStatsItem { match maximum_timestamp {} }
-}
-
-impl
-    DataStreamsStatsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `store_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_size_bytes: crate::typed::builder::MissingRequiredField) -> DataStreamsStatsItem { match store_size_bytes {} }
+    fn from(builder: DataStreamsStatsItemBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.data_streams_stats`](crate::typed::indices::IndicesClient::data_streams_stats).
@@ -285,7 +250,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -419,6 +386,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

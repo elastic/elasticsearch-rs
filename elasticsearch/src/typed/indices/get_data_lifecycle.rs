@@ -13,18 +13,27 @@ pub struct DataStreamWithLifecycle {
 
 impl DataStreamWithLifecycle {
     /// Creates a builder for [`DataStreamWithLifecycle`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> DataStreamWithLifecycleBuilder {
         DataStreamWithLifecycleBuilder::new()
     }
 
     /// Creates a [`DataStreamWithLifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamWithLifecycleBuilder,
-        ) -> DataStreamWithLifecycleBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamWithLifecycle>>(
+        f: impl FnOnce(DataStreamWithLifecycleBuilder) -> B,
     ) -> DataStreamWithLifecycle {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamWithLifecycleBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_with_lifecycle_members {
+    pub struct name;
 }
 
 /// Builder for [`DataStreamWithLifecycle`].
@@ -72,11 +81,13 @@ impl<S0> DataStreamWithLifecycleBuilder<(S0,)> {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::_types::DataStreamLifecycleWithRollover,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder,
-        ) -> crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder) -> B,
     ) -> Self {
         self.lifecycle(
             f(crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder::new()).build(),
@@ -85,6 +96,7 @@ impl<S0> DataStreamWithLifecycleBuilder<(S0,)> {
 }
 
 impl DataStreamWithLifecycleBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::DataStreamName>,
@@ -95,9 +107,12 @@ impl DataStreamWithLifecycleBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataStreamWithLifecycleBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataStreamWithLifecycleBuilder<(S0,)> {
     /// Builds a [`DataStreamWithLifecycle`].
-    pub fn build(self) -> DataStreamWithLifecycle {
+    pub fn build(self) -> DataStreamWithLifecycle
+    where
+        S0: crate::typed::builder::IsSet<data_stream_with_lifecycle_members::name>,
+    {
         DataStreamWithLifecycle {
             name: self.name.unwrap(),
             lifecycle: self.lifecycle,
@@ -105,18 +120,24 @@ impl DataStreamWithLifecycleBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DataStreamWithLifecycleBuilder<(crate::typed::builder::Set,)>>
-    for DataStreamWithLifecycle
+impl<S0> crate::typed::builder::Build for DataStreamWithLifecycleBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_with_lifecycle_members::name>,
 {
-    fn from(builder: DataStreamWithLifecycleBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataStreamWithLifecycle;
+
+    fn build(self) -> DataStreamWithLifecycle {
+        Self::build(self)
     }
 }
 
-impl DataStreamWithLifecycleBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataStreamWithLifecycle { match name {} }
+impl<S0> From<DataStreamWithLifecycleBuilder<(S0,)>> for DataStreamWithLifecycle
+where
+    S0: crate::typed::builder::IsSet<data_stream_with_lifecycle_members::name>,
+{
+    fn from(builder: DataStreamWithLifecycleBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.get_data_lifecycle`](crate::typed::indices::IndicesClient::get_data_lifecycle).
@@ -158,16 +179,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -318,7 +350,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list of data streams to limit the request.
+    /// **Required.** Comma-separated list of data streams to limit the request.
     /// Supports wildcards (`*`).
     /// To target all data streams, omit this parameter or use `*` or `_all`.
     pub fn name(
@@ -331,9 +363,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             expand_wildcards: self.expand_wildcards,
@@ -347,23 +382,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

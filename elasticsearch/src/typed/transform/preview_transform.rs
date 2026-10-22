@@ -69,7 +69,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -218,11 +220,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`dest`](Self::dest) with a builder.
-    pub fn dest_with(
+    pub fn dest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Destination>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::DestinationBuilder,
-        ) -> crate::typed::transform::_types::DestinationBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::DestinationBuilder) -> B,
     ) -> Self {
         self.dest(f(crate::typed::transform::_types::DestinationBuilder::new()).build())
     }
@@ -269,11 +271,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`pivot`](Self::pivot) with a builder.
-    pub fn pivot_with(
+    pub fn pivot_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Pivot>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::PivotBuilder,
-        ) -> crate::typed::transform::_types::PivotBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::PivotBuilder) -> B,
     ) -> Self {
         self.pivot(f(crate::typed::transform::_types::PivotBuilder::new()).build())
     }
@@ -291,12 +293,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Source>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SourceBuilder,
-        )
-            -> crate::typed::transform::_types::SourceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::transform::_types::SourceBuilder) -> B,
     ) -> Self {
         self.source(f(crate::typed::transform::_types::SourceBuilder::new()).build())
     }
@@ -317,11 +318,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Settings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SettingsBuilder,
-        ) -> crate::typed::transform::_types::SettingsBuilder,
+        f: impl FnOnce(crate::typed::transform::_types::SettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(crate::typed::transform::_types::SettingsBuilder::new()).build())
     }
@@ -345,13 +346,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`sync`](Self::sync) with a builder.
-    pub fn sync_with(
+    pub fn sync_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::SyncContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::SyncContainerBuilder,
-        ) -> crate::typed::transform::_types::SyncContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::SyncContainerBuilder) -> B,
     ) -> Self {
         self.sync(f(crate::typed::transform::_types::SyncContainerBuilder::new()).build())
     }
@@ -376,13 +375,13 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`retention_policy`](Self::retention_policy) with a builder.
-    pub fn retention_policy_with(
+    pub fn retention_policy_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::transform::_types::RetentionPolicyContainer,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::RetentionPolicyContainerBuilder,
-        ) -> crate::typed::transform::_types::RetentionPolicyContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::RetentionPolicyContainerBuilder) -> B,
     ) -> Self {
         self.retention_policy(
             f(crate::typed::transform::_types::RetentionPolicyContainerBuilder::new()).build(),
@@ -403,14 +402,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`latest`](Self::latest) with a builder.
-    pub fn latest_with(
+    pub fn latest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::transform::_types::Latest>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::transform::_types::LatestBuilder,
-        ) -> crate::typed::transform::_types::LatestBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::transform::_types::LatestBuilder) -> B,
     ) -> Self {
         self.latest(f(crate::typed::transform::_types::LatestBuilder::new()).build())
     }
@@ -436,6 +432,14 @@ impl<C> RequestBuilder<(), C> {
             retention_policy: self.retention_policy,
             latest: self.latest,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

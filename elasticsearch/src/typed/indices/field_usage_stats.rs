@@ -15,27 +15,34 @@ pub struct FieldSummary {
 
 impl FieldSummary {
     /// Creates a builder for [`FieldSummary`].
+    ///
+    /// Required: `any`, `stored_fields`, `doc_values`, `points`, `norms`, `term_vectors`, `knn_vectors`, `inverted_index`.
     pub fn builder() -> FieldSummaryBuilder {
         FieldSummaryBuilder::new()
     }
 
     /// Creates a [`FieldSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldSummaryBuilder,
-        ) -> FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `any`, `stored_fields`, `doc_values`, `points`, `norms`, `term_vectors`, `knn_vectors`, `inverted_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldSummary>>(
+        f: impl FnOnce(FieldSummaryBuilder) -> B,
     ) -> FieldSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_summary_members {
+    pub struct any;
+    pub struct stored_fields;
+    pub struct doc_values;
+    pub struct points;
+    pub struct norms;
+    pub struct term_vectors;
+    pub struct knn_vectors;
+    pub struct inverted_index;
 }
 
 /// Builder for [`FieldSummary`].
@@ -109,6 +116,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5
 impl<S1, S2, S3, S4, S5, S6, S7>
     FieldSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn any(
         self,
         value: u32,
@@ -122,6 +130,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     FieldSummaryBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn stored_fields(
         self,
         value: u32,
@@ -135,6 +144,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     FieldSummaryBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn doc_values(
         self,
         value: u32,
@@ -148,6 +158,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     FieldSummaryBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn points(
         self,
         value: u32,
@@ -161,6 +172,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     FieldSummaryBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn norms(
         self,
         value: u32,
@@ -174,6 +186,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     FieldSummaryBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn term_vectors(
         self,
         value: u32,
@@ -187,6 +200,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn knn_vectors(
         self,
         value: u32,
@@ -200,6 +214,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn inverted_index(
         self,
         value: impl Into<InvertedIndex>,
@@ -210,38 +225,27 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 
     /// Sets [`inverted_index`](Self::inverted_index) with a builder.
-    pub fn inverted_index_with(
+    pub fn inverted_index_with<B: crate::typed::builder::Build<Output = InvertedIndex>>(
         self,
-        f: impl FnOnce(
-            InvertedIndexBuilder,
-        ) -> InvertedIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(InvertedIndexBuilder) -> B,
     ) -> FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)> {
         self.inverted_index(f(InvertedIndexBuilder::new()).build())
     }
 }
 
-impl
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`FieldSummary`].
-    pub fn build(self) -> FieldSummary {
+    pub fn build(self) -> FieldSummary
+    where
+        S0: crate::typed::builder::IsSet<field_summary_members::any>,
+        S1: crate::typed::builder::IsSet<field_summary_members::stored_fields>,
+        S2: crate::typed::builder::IsSet<field_summary_members::doc_values>,
+        S3: crate::typed::builder::IsSet<field_summary_members::points>,
+        S4: crate::typed::builder::IsSet<field_summary_members::norms>,
+        S5: crate::typed::builder::IsSet<field_summary_members::term_vectors>,
+        S6: crate::typed::builder::IsSet<field_summary_members::knn_vectors>,
+        S7: crate::typed::builder::IsSet<field_summary_members::inverted_index>,
+    {
         FieldSummary {
             any: self.any.unwrap(),
             stored_fields: self.stored_fields.unwrap(),
@@ -255,161 +259,40 @@ impl
     }
 }
 
-impl
-    From<
-        FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldSummary
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<field_summary_members::any>,
+    S1: crate::typed::builder::IsSet<field_summary_members::stored_fields>,
+    S2: crate::typed::builder::IsSet<field_summary_members::doc_values>,
+    S3: crate::typed::builder::IsSet<field_summary_members::points>,
+    S4: crate::typed::builder::IsSet<field_summary_members::norms>,
+    S5: crate::typed::builder::IsSet<field_summary_members::term_vectors>,
+    S6: crate::typed::builder::IsSet<field_summary_members::knn_vectors>,
+    S7: crate::typed::builder::IsSet<field_summary_members::inverted_index>,
 {
-    fn from(
-        builder: FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldSummary;
+
+    fn build(self) -> FieldSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    FieldSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for FieldSummary
+where
+    S0: crate::typed::builder::IsSet<field_summary_members::any>,
+    S1: crate::typed::builder::IsSet<field_summary_members::stored_fields>,
+    S2: crate::typed::builder::IsSet<field_summary_members::doc_values>,
+    S3: crate::typed::builder::IsSet<field_summary_members::points>,
+    S4: crate::typed::builder::IsSet<field_summary_members::norms>,
+    S5: crate::typed::builder::IsSet<field_summary_members::term_vectors>,
+    S6: crate::typed::builder::IsSet<field_summary_members::knn_vectors>,
+    S7: crate::typed::builder::IsSet<field_summary_members::inverted_index>,
 {
-    /// `any` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, any: crate::typed::builder::MissingRequiredField) -> FieldSummary { match any {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `stored_fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stored_fields: crate::typed::builder::MissingRequiredField) -> FieldSummary { match stored_fields {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `doc_values` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_values: crate::typed::builder::MissingRequiredField) -> FieldSummary { match doc_values {} }
-}
-
-impl<S4, S5, S6, S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `points` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, points: crate::typed::builder::MissingRequiredField) -> FieldSummary { match points {} }
-}
-
-impl<S5, S6, S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `norms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, norms: crate::typed::builder::MissingRequiredField) -> FieldSummary { match norms {} }
-}
-
-impl<S6, S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `term_vectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term_vectors: crate::typed::builder::MissingRequiredField) -> FieldSummary { match term_vectors {} }
-}
-
-impl<S7>
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `knn_vectors` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, knn_vectors: crate::typed::builder::MissingRequiredField) -> FieldSummary { match knn_vectors {} }
-}
-
-impl
-    FieldSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `inverted_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inverted_index: crate::typed::builder::MissingRequiredField) -> FieldSummary { match inverted_index {} }
+    fn from(builder: FieldSummaryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -423,16 +306,27 @@ pub struct FieldsUsageBody {
 
 impl FieldsUsageBody {
     /// Creates a builder for [`FieldsUsageBody`].
+    ///
+    /// Required: `shards`.
     pub fn builder() -> FieldsUsageBodyBuilder {
         FieldsUsageBodyBuilder::new()
     }
 
     /// Creates a [`FieldsUsageBody`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FieldsUsageBodyBuilder) -> FieldsUsageBodyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldsUsageBody>>(
+        f: impl FnOnce(FieldsUsageBodyBuilder) -> B,
     ) -> FieldsUsageBody {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldsUsageBodyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fields_usage_body_members {
+    pub struct shards;
 }
 
 /// Builder for [`FieldsUsageBody`].
@@ -483,6 +377,7 @@ impl<S0> FieldsUsageBodyBuilder<(S0,)> {
 }
 
 impl FieldsUsageBodyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -493,23 +388,22 @@ impl FieldsUsageBodyBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> FieldsUsageBodyBuilder<(crate::typed::builder::Set,)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
-impl FieldsUsageBodyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldsUsageBodyBuilder<(S0,)> {
     /// Builds a [`FieldsUsageBody`].
-    pub fn build(self) -> FieldsUsageBody {
+    pub fn build(self) -> FieldsUsageBody
+    where
+        S0: crate::typed::builder::IsSet<fields_usage_body_members::shards>,
+    {
         FieldsUsageBody {
             shards: self.shards.unwrap(),
             additional_properties: self.additional_properties,
@@ -517,16 +411,24 @@ impl FieldsUsageBodyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FieldsUsageBodyBuilder<(crate::typed::builder::Set,)>> for FieldsUsageBody {
-    fn from(builder: FieldsUsageBodyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FieldsUsageBodyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fields_usage_body_members::shards>,
+{
+    type Output = FieldsUsageBody;
+
+    fn build(self) -> FieldsUsageBody {
+        Self::build(self)
     }
 }
 
-impl FieldsUsageBodyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> FieldsUsageBody { match shards {} }
+impl<S0> From<FieldsUsageBodyBuilder<(S0,)>> for FieldsUsageBody
+where
+    S0: crate::typed::builder::IsSet<fields_usage_body_members::shards>,
+{
+    fn from(builder: FieldsUsageBodyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -542,26 +444,33 @@ pub struct InvertedIndex {
 
 impl InvertedIndex {
     /// Creates a builder for [`InvertedIndex`].
+    ///
+    /// Required: `terms`, `postings`, `proximity`, `positions`, `term_frequencies`, `offsets`, `payloads`.
     pub fn builder() -> InvertedIndexBuilder {
         InvertedIndexBuilder::new()
     }
 
     /// Creates a [`InvertedIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InvertedIndexBuilder,
-        ) -> InvertedIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `terms`, `postings`, `proximity`, `positions`, `term_frequencies`, `offsets`, `payloads`.
+    pub fn of<B: crate::typed::builder::Build<Output = InvertedIndex>>(
+        f: impl FnOnce(InvertedIndexBuilder) -> B,
     ) -> InvertedIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InvertedIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inverted_index_members {
+    pub struct terms;
+    pub struct postings;
+    pub struct proximity;
+    pub struct positions;
+    pub struct term_frequencies;
+    pub struct offsets;
+    pub struct payloads;
 }
 
 /// Builder for [`InvertedIndex`].
@@ -630,6 +539,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, S
 impl<S1, S2, S3, S4, S5, S6>
     InvertedIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn terms(
         self,
         value: u32,
@@ -643,6 +553,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     InvertedIndexBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn postings(
         self,
         value: u32,
@@ -656,6 +567,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     InvertedIndexBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn proximity(
         self,
         value: u32,
@@ -669,6 +581,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     InvertedIndexBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn positions(
         self,
         value: u32,
@@ -682,6 +595,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     InvertedIndexBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn term_frequencies(
         self,
         value: u32,
@@ -695,6 +609,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     InvertedIndexBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn offsets(
         self,
         value: u32,
@@ -708,6 +623,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn payloads(
         self,
         value: u32,
@@ -718,19 +634,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`InvertedIndex`].
-    pub fn build(self) -> InvertedIndex {
+    pub fn build(self) -> InvertedIndex
+    where
+        S0: crate::typed::builder::IsSet<inverted_index_members::terms>,
+        S1: crate::typed::builder::IsSet<inverted_index_members::postings>,
+        S2: crate::typed::builder::IsSet<inverted_index_members::proximity>,
+        S3: crate::typed::builder::IsSet<inverted_index_members::positions>,
+        S4: crate::typed::builder::IsSet<inverted_index_members::term_frequencies>,
+        S5: crate::typed::builder::IsSet<inverted_index_members::offsets>,
+        S6: crate::typed::builder::IsSet<inverted_index_members::payloads>,
+    {
         InvertedIndex {
             terms: self.terms.unwrap(),
             postings: self.postings.unwrap(),
@@ -743,136 +658,38 @@ impl
     }
 }
 
-impl
-    From<
-        InvertedIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InvertedIndex
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<inverted_index_members::terms>,
+    S1: crate::typed::builder::IsSet<inverted_index_members::postings>,
+    S2: crate::typed::builder::IsSet<inverted_index_members::proximity>,
+    S3: crate::typed::builder::IsSet<inverted_index_members::positions>,
+    S4: crate::typed::builder::IsSet<inverted_index_members::term_frequencies>,
+    S5: crate::typed::builder::IsSet<inverted_index_members::offsets>,
+    S6: crate::typed::builder::IsSet<inverted_index_members::payloads>,
 {
-    fn from(
-        builder: InvertedIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InvertedIndex;
+
+    fn build(self) -> InvertedIndex {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    InvertedIndexBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for InvertedIndex
+where
+    S0: crate::typed::builder::IsSet<inverted_index_members::terms>,
+    S1: crate::typed::builder::IsSet<inverted_index_members::postings>,
+    S2: crate::typed::builder::IsSet<inverted_index_members::proximity>,
+    S3: crate::typed::builder::IsSet<inverted_index_members::positions>,
+    S4: crate::typed::builder::IsSet<inverted_index_members::term_frequencies>,
+    S5: crate::typed::builder::IsSet<inverted_index_members::offsets>,
+    S6: crate::typed::builder::IsSet<inverted_index_members::payloads>,
 {
-    /// `terms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, terms: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match terms {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `postings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, postings: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match postings {} }
-}
-
-impl<S3, S4, S5, S6>
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `proximity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, proximity: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match proximity {} }
-}
-
-impl<S4, S5, S6>
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `positions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, positions: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match positions {} }
-}
-
-impl<S5, S6>
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `term_frequencies` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term_frequencies: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match term_frequencies {} }
-}
-
-impl<S6>
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `offsets` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, offsets: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match offsets {} }
-}
-
-impl
-    InvertedIndexBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `payloads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, payloads: crate::typed::builder::MissingRequiredField) -> InvertedIndex { match payloads {} }
+    fn from(builder: InvertedIndexBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.field_usage_stats`](crate::typed::indices::IndicesClient::field_usage_stats).
@@ -927,16 +744,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -1110,7 +938,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated list or wildcard expression of index names used to limit the request.
+    /// **Required.** Comma-separated list or wildcard expression of index names used to limit the request.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -1121,9 +949,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -1138,23 +969,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -1277,19 +1111,28 @@ pub struct ShardsStats {
 
 impl ShardsStats {
     /// Creates a builder for [`ShardsStats`].
+    ///
+    /// Required: `all_fields`, `fields`.
     pub fn builder() -> ShardsStatsBuilder {
         ShardsStatsBuilder::new()
     }
 
     /// Creates a [`ShardsStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsStatsBuilder,
-        )
-            -> ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `all_fields`, `fields`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsStats>>(
+        f: impl FnOnce(ShardsStatsBuilder) -> B,
     ) -> ShardsStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_stats_members {
+    pub struct all_fields;
+    pub struct fields;
 }
 
 /// Builder for [`ShardsStats`].
@@ -1321,6 +1164,7 @@ impl<S0, S1> ShardsStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn all_fields(
         self,
         value: impl Into<FieldSummary>,
@@ -1331,26 +1175,16 @@ impl<S1> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`all_fields`](Self::all_fields) with a builder.
-    pub fn all_fields_with(
+    pub fn all_fields_with<B: crate::typed::builder::Build<Output = FieldSummary>>(
         self,
-        f: impl FnOnce(
-            FieldSummaryBuilder,
-        ) -> FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldSummaryBuilder) -> B,
     ) -> ShardsStatsBuilder<(crate::typed::builder::Set, S1)> {
         self.all_fields(f(FieldSummaryBuilder::new()).build())
     }
 }
 
 impl<S0> ShardsStatsBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn fields(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Field, FieldSummary>>,
@@ -1375,21 +1209,10 @@ impl<S0> ShardsStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = FieldSummary>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            FieldSummaryBuilder,
-        ) -> FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldSummaryBuilder) -> B,
     ) -> ShardsStatsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_fields(key, f(FieldSummaryBuilder::new()).build())
     }
@@ -1409,29 +1232,22 @@ impl<S0> ShardsStatsBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = FieldSummary>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            FieldSummaryBuilder,
-        ) -> FieldSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldSummaryBuilder) -> B,
     ) -> Self {
         self.add_fields(key, f(FieldSummaryBuilder::new()).build())
     }
 }
 
-impl ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ShardsStatsBuilder<(S0, S1)> {
     /// Builds a [`ShardsStats`].
-    pub fn build(self) -> ShardsStats {
+    pub fn build(self) -> ShardsStats
+    where
+        S0: crate::typed::builder::IsSet<shards_stats_members::all_fields>,
+        S1: crate::typed::builder::IsSet<shards_stats_members::fields>,
+    {
         ShardsStats {
             all_fields: self.all_fields.unwrap(),
             fields: self.fields.unwrap(),
@@ -1439,26 +1255,26 @@ impl ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ShardsStats
+impl<S0, S1> crate::typed::builder::Build for ShardsStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<shards_stats_members::all_fields>,
+    S1: crate::typed::builder::IsSet<shards_stats_members::fields>,
 {
-    fn from(
-        builder: ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsStats;
+
+    fn build(self) -> ShardsStats {
+        Self::build(self)
     }
 }
 
-impl<S1> ShardsStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `all_fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, all_fields: crate::typed::builder::MissingRequiredField) -> ShardsStats { match all_fields {} }
-}
-
-impl ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> ShardsStats { match fields {} }
+impl<S0, S1> From<ShardsStatsBuilder<(S0, S1)>> for ShardsStats
+where
+    S0: crate::typed::builder::IsSet<shards_stats_members::all_fields>,
+    S1: crate::typed::builder::IsSet<shards_stats_members::fields>,
+{
+    fn from(builder: ShardsStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1468,16 +1284,27 @@ pub struct UsageStatsIndex {
 
 impl UsageStatsIndex {
     /// Creates a builder for [`UsageStatsIndex`].
+    ///
+    /// Required: `shards`.
     pub fn builder() -> UsageStatsIndexBuilder {
         UsageStatsIndexBuilder::new()
     }
 
     /// Creates a [`UsageStatsIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(UsageStatsIndexBuilder) -> UsageStatsIndexBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = UsageStatsIndex>>(
+        f: impl FnOnce(UsageStatsIndexBuilder) -> B,
     ) -> UsageStatsIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UsageStatsIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod usage_stats_index_members {
+    pub struct shards;
 }
 
 /// Builder for [`UsageStatsIndex`].
@@ -1506,6 +1333,7 @@ impl<S0> UsageStatsIndexBuilder<(S0,)> {
 }
 
 impl UsageStatsIndexBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<Vec<UsageStatsShards>>,
@@ -1529,16 +1357,9 @@ impl UsageStatsIndexBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = UsageStatsShards>>(
         self,
-        f: impl FnOnce(
-            UsageStatsShardsBuilder,
-        ) -> UsageStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UsageStatsShardsBuilder) -> B,
     ) -> UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
         self.add_shards(f(UsageStatsShardsBuilder::new()).build())
     }
@@ -1554,40 +1375,44 @@ impl UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = UsageStatsShards>>(
         self,
-        f: impl FnOnce(
-            UsageStatsShardsBuilder,
-        ) -> UsageStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(UsageStatsShardsBuilder) -> B,
     ) -> Self {
         self.add_shards(f(UsageStatsShardsBuilder::new()).build())
     }
 }
 
-impl UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
+impl<S0> UsageStatsIndexBuilder<(S0,)> {
     /// Builds a [`UsageStatsIndex`].
-    pub fn build(self) -> UsageStatsIndex {
+    pub fn build(self) -> UsageStatsIndex
+    where
+        S0: crate::typed::builder::IsSet<usage_stats_index_members::shards>,
+    {
         UsageStatsIndex {
             shards: self.shards.unwrap(),
         }
     }
 }
 
-impl From<UsageStatsIndexBuilder<(crate::typed::builder::Set,)>> for UsageStatsIndex {
-    fn from(builder: UsageStatsIndexBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for UsageStatsIndexBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<usage_stats_index_members::shards>,
+{
+    type Output = UsageStatsIndex;
+
+    fn build(self) -> UsageStatsIndex {
+        Self::build(self)
     }
 }
 
-impl UsageStatsIndexBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> UsageStatsIndex { match shards {} }
+impl<S0> From<UsageStatsIndexBuilder<(S0,)>> for UsageStatsIndex
+where
+    S0: crate::typed::builder::IsSet<usage_stats_index_members::shards>,
+{
+    fn from(builder: UsageStatsIndexBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1600,23 +1425,30 @@ pub struct UsageStatsShards {
 
 impl UsageStatsShards {
     /// Creates a builder for [`UsageStatsShards`].
+    ///
+    /// Required: `routing`, `stats`, `tracking_id`, `tracking_started_at_millis`.
     pub fn builder() -> UsageStatsShardsBuilder {
         UsageStatsShardsBuilder::new()
     }
 
     /// Creates a [`UsageStatsShards`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UsageStatsShardsBuilder,
-        ) -> UsageStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `routing`, `stats`, `tracking_id`, `tracking_started_at_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = UsageStatsShards>>(
+        f: impl FnOnce(UsageStatsShardsBuilder) -> B,
     ) -> UsageStatsShards {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UsageStatsShardsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod usage_stats_shards_members {
+    pub struct routing;
+    pub struct stats;
+    pub struct tracking_id;
+    pub struct tracking_started_at_millis;
 }
 
 /// Builder for [`UsageStatsShards`].
@@ -1668,6 +1500,7 @@ impl<S0, S1, S2, S3> UsageStatsShardsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> UsageStatsShardsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn routing(
         self,
         value: impl Into<crate::typed::indices::stats::ShardRouting>,
@@ -1678,21 +1511,18 @@ impl<S1, S2, S3> UsageStatsShardsBuilder<(crate::typed::builder::NotSet, S1, S2,
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(
+    pub fn routing_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::stats::ShardRouting>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::stats::ShardRoutingBuilder,
-        ) -> crate::typed::indices::stats::ShardRoutingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::stats::ShardRoutingBuilder) -> B,
     ) -> UsageStatsShardsBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.routing(f(crate::typed::indices::stats::ShardRoutingBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> UsageStatsShardsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn stats(
         self,
         value: impl Into<ShardsStats>,
@@ -1703,18 +1533,16 @@ impl<S0, S2, S3> UsageStatsShardsBuilder<(S0, crate::typed::builder::NotSet, S2,
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = ShardsStats>>(
         self,
-        f: impl FnOnce(
-            ShardsStatsBuilder,
-        )
-            -> ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(ShardsStatsBuilder) -> B,
     ) -> UsageStatsShardsBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.stats(f(ShardsStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> UsageStatsShardsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn tracking_id(
         self,
         value: impl Into<String>,
@@ -1726,6 +1554,7 @@ impl<S0, S1, S3> UsageStatsShardsBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> UsageStatsShardsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn tracking_started_at_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -1736,16 +1565,15 @@ impl<S0, S1, S2> UsageStatsShardsBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 }
 
-impl
-    UsageStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> UsageStatsShardsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`UsageStatsShards`].
-    pub fn build(self) -> UsageStatsShards {
+    pub fn build(self) -> UsageStatsShards
+    where
+        S0: crate::typed::builder::IsSet<usage_stats_shards_members::routing>,
+        S1: crate::typed::builder::IsSet<usage_stats_shards_members::stats>,
+        S2: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_id>,
+        S3: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_started_at_millis>,
+    {
         UsageStatsShards {
             routing: self.routing.unwrap(),
             stats: self.stats.unwrap(),
@@ -1755,69 +1583,28 @@ impl
     }
 }
 
-impl
-    From<
-        UsageStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UsageStatsShards
+impl<S0, S1, S2, S3> crate::typed::builder::Build for UsageStatsShardsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<usage_stats_shards_members::routing>,
+    S1: crate::typed::builder::IsSet<usage_stats_shards_members::stats>,
+    S2: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_id>,
+    S3: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_started_at_millis>,
 {
-    fn from(
-        builder: UsageStatsShardsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UsageStatsShards;
+
+    fn build(self) -> UsageStatsShards {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> UsageStatsShardsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `routing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing: crate::typed::builder::MissingRequiredField) -> UsageStatsShards { match routing {} }
-}
-
-impl<S2, S3>
-    UsageStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<UsageStatsShardsBuilder<(S0, S1, S2, S3)>> for UsageStatsShards
+where
+    S0: crate::typed::builder::IsSet<usage_stats_shards_members::routing>,
+    S1: crate::typed::builder::IsSet<usage_stats_shards_members::stats>,
+    S2: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_id>,
+    S3: crate::typed::builder::IsSet<usage_stats_shards_members::tracking_started_at_millis>,
 {
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> UsageStatsShards { match stats {} }
-}
-
-impl<S3>
-    UsageStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `tracking_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tracking_id: crate::typed::builder::MissingRequiredField) -> UsageStatsShards { match tracking_id {} }
-}
-
-impl
-    UsageStatsShardsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `tracking_started_at_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tracking_started_at_millis: crate::typed::builder::MissingRequiredField) -> UsageStatsShards { match tracking_started_at_millis {} }
+    fn from(builder: UsageStatsShardsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }

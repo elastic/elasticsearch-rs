@@ -59,16 +59,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -270,7 +281,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Comma-separated name(s) or index pattern(s) of the indices, aliases, and data streams to resolve.
+    /// **Required.** Comma-separated name(s) or index pattern(s) of the indices, aliases, and data streams to resolve.
     /// Resources on remote clusters can be specified using the `<cluster>`:`<name>` syntax.
     pub fn name(
         self,
@@ -282,9 +293,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             expand_wildcards: self.expand_wildcards,
@@ -300,23 +314,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -469,21 +486,28 @@ pub struct ResolveIndexAliasItem {
 
 impl ResolveIndexAliasItem {
     /// Creates a builder for [`ResolveIndexAliasItem`].
+    ///
+    /// Required: `name`, `indices`.
     pub fn builder() -> ResolveIndexAliasItemBuilder {
         ResolveIndexAliasItemBuilder::new()
     }
 
     /// Creates a [`ResolveIndexAliasItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResolveIndexAliasItemBuilder,
-        ) -> ResolveIndexAliasItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResolveIndexAliasItem>>(
+        f: impl FnOnce(ResolveIndexAliasItemBuilder) -> B,
     ) -> ResolveIndexAliasItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResolveIndexAliasItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod resolve_index_alias_item_members {
+    pub struct name;
+    pub struct indices;
 }
 
 /// Builder for [`ResolveIndexAliasItem`].
@@ -517,6 +541,7 @@ impl<S0, S1> ResolveIndexAliasItemBuilder<(S0, S1)> {
 }
 
 impl<S1> ResolveIndexAliasItemBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -528,6 +553,7 @@ impl<S1> ResolveIndexAliasItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResolveIndexAliasItemBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -538,9 +564,13 @@ impl<S0> ResolveIndexAliasItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ResolveIndexAliasItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResolveIndexAliasItemBuilder<(S0, S1)> {
     /// Builds a [`ResolveIndexAliasItem`].
-    pub fn build(self) -> ResolveIndexAliasItem {
+    pub fn build(self) -> ResolveIndexAliasItem
+    where
+        S0: crate::typed::builder::IsSet<resolve_index_alias_item_members::name>,
+        S1: crate::typed::builder::IsSet<resolve_index_alias_item_members::indices>,
+    {
         ResolveIndexAliasItem {
             name: self.name.unwrap(),
             indices: self.indices.unwrap(),
@@ -548,29 +578,26 @@ impl ResolveIndexAliasItemBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<ResolveIndexAliasItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResolveIndexAliasItem
+impl<S0, S1> crate::typed::builder::Build for ResolveIndexAliasItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<resolve_index_alias_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_alias_item_members::indices>,
 {
-    fn from(
-        builder: ResolveIndexAliasItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ResolveIndexAliasItem;
+
+    fn build(self) -> ResolveIndexAliasItem {
+        Self::build(self)
     }
 }
 
-impl<S1> ResolveIndexAliasItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ResolveIndexAliasItem { match name {} }
-}
-
-impl ResolveIndexAliasItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> ResolveIndexAliasItem { match indices {} }
+impl<S0, S1> From<ResolveIndexAliasItemBuilder<(S0, S1)>> for ResolveIndexAliasItem
+where
+    S0: crate::typed::builder::IsSet<resolve_index_alias_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_alias_item_members::indices>,
+{
+    fn from(builder: ResolveIndexAliasItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -582,22 +609,29 @@ pub struct ResolveIndexDataStreamsItem {
 
 impl ResolveIndexDataStreamsItem {
     /// Creates a builder for [`ResolveIndexDataStreamsItem`].
+    ///
+    /// Required: `name`, `timestamp_field`, `backing_indices`.
     pub fn builder() -> ResolveIndexDataStreamsItemBuilder {
         ResolveIndexDataStreamsItemBuilder::new()
     }
 
     /// Creates a [`ResolveIndexDataStreamsItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResolveIndexDataStreamsItemBuilder,
-        ) -> ResolveIndexDataStreamsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `timestamp_field`, `backing_indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResolveIndexDataStreamsItem>>(
+        f: impl FnOnce(ResolveIndexDataStreamsItemBuilder) -> B,
     ) -> ResolveIndexDataStreamsItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResolveIndexDataStreamsItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod resolve_index_data_streams_item_members {
+    pub struct name;
+    pub struct timestamp_field;
+    pub struct backing_indices;
 }
 
 /// Builder for [`ResolveIndexDataStreamsItem`].
@@ -644,6 +678,7 @@ impl<S0, S1, S2> ResolveIndexDataStreamsItemBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ResolveIndexDataStreamsItemBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::DataStreamName>,
@@ -655,6 +690,7 @@ impl<S1, S2> ResolveIndexDataStreamsItemBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2> ResolveIndexDataStreamsItemBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn timestamp_field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -666,6 +702,7 @@ impl<S0, S2> ResolveIndexDataStreamsItemBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1> ResolveIndexDataStreamsItemBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn backing_indices(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -676,15 +713,14 @@ impl<S0, S1> ResolveIndexDataStreamsItemBuilder<(S0, S1, crate::typed::builder::
     }
 }
 
-impl
-    ResolveIndexDataStreamsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ResolveIndexDataStreamsItemBuilder<(S0, S1, S2)> {
     /// Builds a [`ResolveIndexDataStreamsItem`].
-    pub fn build(self) -> ResolveIndexDataStreamsItem {
+    pub fn build(self) -> ResolveIndexDataStreamsItem
+    where
+        S0: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::name>,
+        S1: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::timestamp_field>,
+        S2: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::backing_indices>,
+    {
         ResolveIndexDataStreamsItem {
             name: self.name.unwrap(),
             timestamp_field: self.timestamp_field.unwrap(),
@@ -693,54 +729,29 @@ impl
     }
 }
 
-impl
-    From<
-        ResolveIndexDataStreamsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ResolveIndexDataStreamsItem
+impl<S0, S1, S2> crate::typed::builder::Build for ResolveIndexDataStreamsItemBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::timestamp_field>,
+    S2: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::backing_indices>,
 {
-    fn from(
-        builder: ResolveIndexDataStreamsItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ResolveIndexDataStreamsItem;
+
+    fn build(self) -> ResolveIndexDataStreamsItem {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ResolveIndexDataStreamsItemBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ResolveIndexDataStreamsItem { match name {} }
-}
-
-impl<S2>
-    ResolveIndexDataStreamsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ResolveIndexDataStreamsItemBuilder<(S0, S1, S2)>>
+    for ResolveIndexDataStreamsItem
+where
+    S0: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::timestamp_field>,
+    S2: crate::typed::builder::IsSet<resolve_index_data_streams_item_members::backing_indices>,
 {
-    /// `timestamp_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp_field: crate::typed::builder::MissingRequiredField) -> ResolveIndexDataStreamsItem { match timestamp_field {} }
-}
-
-impl
-    ResolveIndexDataStreamsItemBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `backing_indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, backing_indices: crate::typed::builder::MissingRequiredField) -> ResolveIndexDataStreamsItem { match backing_indices {} }
+    fn from(builder: ResolveIndexDataStreamsItemBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -757,21 +768,28 @@ pub struct ResolveIndexItem {
 
 impl ResolveIndexItem {
     /// Creates a builder for [`ResolveIndexItem`].
+    ///
+    /// Required: `name`, `attributes`.
     pub fn builder() -> ResolveIndexItemBuilder {
         ResolveIndexItemBuilder::new()
     }
 
     /// Creates a [`ResolveIndexItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResolveIndexItemBuilder,
-        ) -> ResolveIndexItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `attributes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResolveIndexItem>>(
+        f: impl FnOnce(ResolveIndexItemBuilder) -> B,
     ) -> ResolveIndexItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResolveIndexItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod resolve_index_item_members {
+    pub struct name;
+    pub struct attributes;
 }
 
 /// Builder for [`ResolveIndexItem`].
@@ -858,6 +876,7 @@ impl<S0, S1> ResolveIndexItemBuilder<(S0, S1)> {
 }
 
 impl<S1> ResolveIndexItemBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -869,6 +888,7 @@ impl<S1> ResolveIndexItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResolveIndexItemBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<Vec<String>>,
@@ -902,9 +922,13 @@ impl<S0> ResolveIndexItemBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResolveIndexItemBuilder<(S0, S1)> {
     /// Builds a [`ResolveIndexItem`].
-    pub fn build(self) -> ResolveIndexItem {
+    pub fn build(self) -> ResolveIndexItem
+    where
+        S0: crate::typed::builder::IsSet<resolve_index_item_members::name>,
+        S1: crate::typed::builder::IsSet<resolve_index_item_members::attributes>,
+    {
         ResolveIndexItem {
             name: self.name.unwrap(),
             aliases: self.aliases,
@@ -915,26 +939,26 @@ impl ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResolveIndexItem
+impl<S0, S1> crate::typed::builder::Build for ResolveIndexItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<resolve_index_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_item_members::attributes>,
 {
-    fn from(
-        builder: ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ResolveIndexItem;
+
+    fn build(self) -> ResolveIndexItem {
+        Self::build(self)
     }
 }
 
-impl<S1> ResolveIndexItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ResolveIndexItem { match name {} }
-}
-
-impl ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> ResolveIndexItem { match attributes {} }
+impl<S0, S1> From<ResolveIndexItemBuilder<(S0, S1)>> for ResolveIndexItem
+where
+    S0: crate::typed::builder::IsSet<resolve_index_item_members::name>,
+    S1: crate::typed::builder::IsSet<resolve_index_item_members::attributes>,
+{
+    fn from(builder: ResolveIndexItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Response of [`indices.resolve_index`](crate::typed::indices::IndicesClient::resolve_index).

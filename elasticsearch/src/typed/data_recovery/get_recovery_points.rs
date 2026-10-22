@@ -11,19 +11,28 @@ pub struct RecoveryPoint {
 
 impl RecoveryPoint {
     /// Creates a builder for [`RecoveryPoint`].
+    ///
+    /// Required: `start_time`, `end_time`.
     pub fn builder() -> RecoveryPointBuilder {
         RecoveryPointBuilder::new()
     }
 
     /// Creates a [`RecoveryPoint`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoveryPointBuilder,
-        )
-            -> RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `start_time`, `end_time`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryPoint>>(
+        f: impl FnOnce(RecoveryPointBuilder) -> B,
     ) -> RecoveryPoint {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryPointBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_point_members {
+    pub struct start_time;
+    pub struct end_time;
 }
 
 /// Builder for [`RecoveryPoint`].
@@ -56,7 +65,7 @@ impl<S0, S1> RecoveryPointBuilder<(S0, S1)> {
 }
 
 impl<S1> RecoveryPointBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The time when creation of the recovery point started.
+    /// **Required.** The time when creation of the recovery point started.
     pub fn start_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -68,7 +77,7 @@ impl<S1> RecoveryPointBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RecoveryPointBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The time when creation of the recovery point completed.
+    /// **Required.** The time when creation of the recovery point completed.
     pub fn end_time(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -79,9 +88,13 @@ impl<S0> RecoveryPointBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RecoveryPointBuilder<(S0, S1)> {
     /// Builds a [`RecoveryPoint`].
-    pub fn build(self) -> RecoveryPoint {
+    pub fn build(self) -> RecoveryPoint
+    where
+        S0: crate::typed::builder::IsSet<recovery_point_members::start_time>,
+        S1: crate::typed::builder::IsSet<recovery_point_members::end_time>,
+    {
         RecoveryPoint {
             start_time: self.start_time.unwrap(),
             end_time: self.end_time.unwrap(),
@@ -89,26 +102,26 @@ impl RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RecoveryPoint
+impl<S0, S1> crate::typed::builder::Build for RecoveryPointBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<recovery_point_members::start_time>,
+    S1: crate::typed::builder::IsSet<recovery_point_members::end_time>,
 {
-    fn from(
-        builder: RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoveryPoint;
+
+    fn build(self) -> RecoveryPoint {
+        Self::build(self)
     }
 }
 
-impl<S1> RecoveryPointBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `start_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time: crate::typed::builder::MissingRequiredField) -> RecoveryPoint { match start_time {} }
-}
-
-impl RecoveryPointBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `end_time` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end_time: crate::typed::builder::MissingRequiredField) -> RecoveryPoint { match end_time {} }
+impl<S0, S1> From<RecoveryPointBuilder<(S0, S1)>> for RecoveryPoint
+where
+    S0: crate::typed::builder::IsSet<recovery_point_members::start_time>,
+    S1: crate::typed::builder::IsSet<recovery_point_members::end_time>,
+{
+    fn from(builder: RecoveryPointBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`data_recovery.get_recovery_points`](crate::typed::data_recovery::DataRecoveryClient::get_recovery_points).
@@ -156,7 +169,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -299,6 +314,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

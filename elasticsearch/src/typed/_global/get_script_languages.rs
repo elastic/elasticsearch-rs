@@ -9,21 +9,28 @@ pub struct LanguageContext {
 
 impl LanguageContext {
     /// Creates a builder for [`LanguageContext`].
+    ///
+    /// Required: `contexts`, `language`.
     pub fn builder() -> LanguageContextBuilder {
         LanguageContextBuilder::new()
     }
 
     /// Creates a [`LanguageContext`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LanguageContextBuilder,
-        ) -> LanguageContextBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `contexts`, `language`.
+    pub fn of<B: crate::typed::builder::Build<Output = LanguageContext>>(
+        f: impl FnOnce(LanguageContextBuilder) -> B,
     ) -> LanguageContext {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LanguageContextBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod language_context_members {
+    pub struct contexts;
+    pub struct language;
 }
 
 /// Builder for [`LanguageContext`].
@@ -57,6 +64,7 @@ impl<S0, S1> LanguageContextBuilder<(S0, S1)> {
 }
 
 impl<S1> LanguageContextBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn contexts(
         self,
         value: impl Into<Vec<String>>,
@@ -91,6 +99,7 @@ impl<S1> LanguageContextBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> LanguageContextBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn language(
         self,
         value: impl Into<crate::typed::_types::ScriptLanguage>,
@@ -101,9 +110,13 @@ impl<S0> LanguageContextBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LanguageContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LanguageContextBuilder<(S0, S1)> {
     /// Builds a [`LanguageContext`].
-    pub fn build(self) -> LanguageContext {
+    pub fn build(self) -> LanguageContext
+    where
+        S0: crate::typed::builder::IsSet<language_context_members::contexts>,
+        S1: crate::typed::builder::IsSet<language_context_members::language>,
+    {
         LanguageContext {
             contexts: self.contexts.unwrap(),
             language: self.language.unwrap(),
@@ -111,26 +124,26 @@ impl LanguageContextBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<LanguageContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LanguageContext
+impl<S0, S1> crate::typed::builder::Build for LanguageContextBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<language_context_members::contexts>,
+    S1: crate::typed::builder::IsSet<language_context_members::language>,
 {
-    fn from(
-        builder: LanguageContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = LanguageContext;
+
+    fn build(self) -> LanguageContext {
+        Self::build(self)
     }
 }
 
-impl<S1> LanguageContextBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `contexts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, contexts: crate::typed::builder::MissingRequiredField) -> LanguageContext { match contexts {} }
-}
-
-impl LanguageContextBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `language` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, language: crate::typed::builder::MissingRequiredField) -> LanguageContext { match language {} }
+impl<S0, S1> From<LanguageContextBuilder<(S0, S1)>> for LanguageContext
+where
+    S0: crate::typed::builder::IsSet<language_context_members::contexts>,
+    S1: crate::typed::builder::IsSet<language_context_members::language>,
+{
+    fn from(builder: LanguageContextBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`get_script_languages`](crate::typed::Client::get_script_languages).
@@ -166,7 +179,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -261,6 +276,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

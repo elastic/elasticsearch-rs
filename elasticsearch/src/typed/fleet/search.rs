@@ -171,16 +171,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -1076,14 +1087,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::AggregationContainer,
+        >,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::AggregationContainerBuilder,
-        ) -> crate::typed::_types::aggregations::AggregationContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(
             key,
@@ -1109,13 +1120,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`collapse`](Self::collapse) with a builder.
-    pub fn collapse_with(
+    pub fn collapse_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::FieldCollapse>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::FieldCollapseBuilder,
-        ) -> crate::typed::_global::search::_types::FieldCollapseBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::FieldCollapseBuilder) -> B,
     ) -> Self {
         self.collapse(f(crate::typed::_global::search::_types::FieldCollapseBuilder::new()).build())
     }
@@ -1187,13 +1196,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`highlight`](Self::highlight) with a builder.
-    pub fn highlight_with(
+    pub fn highlight_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Highlight>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::HighlightBuilder,
-        ) -> crate::typed::_global::search::_types::HighlightBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::HighlightBuilder) -> B,
     ) -> Self {
         self.highlight(f(crate::typed::_global::search::_types::HighlightBuilder::new()).build())
     }
@@ -1289,13 +1296,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`docvalue_fields2`](Self::docvalue_fields2), with a builder.
-    pub fn add_docvalue_fields2_with(
+    pub fn add_docvalue_fields2_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_docvalue_fields2(
             f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build(),
@@ -1333,13 +1338,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`post_filter`](Self::post_filter) with a builder.
-    pub fn post_filter_with(
+    pub fn post_filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.post_filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1374,13 +1377,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -1427,13 +1428,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`script_fields`](Self::script_fields), with a builder.
-    pub fn add_script_fields_with(
+    pub fn add_script_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ScriptField>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::_types::ScriptFieldBuilder,
-        )
-            -> crate::typed::_types::ScriptFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ScriptFieldBuilder) -> B,
     ) -> Self {
         self.add_script_fields(
             key,
@@ -1486,14 +1486,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`slice`](Self::slice) with a builder.
-    pub fn slice_with(
+    pub fn slice_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::SlicedScroll>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::SlicedScrollBuilder,
-        ) -> crate::typed::_types::SlicedScrollBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::SlicedScrollBuilder) -> B,
     ) -> Self {
         self.slice(f(crate::typed::_types::SlicedScrollBuilder::new()).build())
     }
@@ -1559,13 +1556,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`fields`](Self::fields), with a builder.
-    pub fn add_fields_with(
+    pub fn add_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::FieldAndFormatBuilder,
-        ) -> crate::typed::_types::query_dsl::FieldAndFormatBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
         self.add_fields(f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build())
     }
@@ -1588,11 +1583,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`suggest`](Self::suggest) with a builder.
-    pub fn suggest_with(
+    pub fn suggest_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Suggester>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::SuggesterBuilder,
-        ) -> crate::typed::_global::search::_types::SuggesterBuilder,
+        f: impl FnOnce(crate::typed::_global::search::_types::SuggesterBuilder) -> B,
     ) -> Self {
         self.suggest(f(crate::typed::_global::search::_types::SuggesterBuilder::new()).build())
     }
@@ -1697,13 +1692,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`pit`](Self::pit) with a builder.
-    pub fn pit_with(
+    pub fn pit_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::PointInTimeReference,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::PointInTimeReferenceBuilder,
-        ) -> crate::typed::_global::search::_types::PointInTimeReferenceBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_global::search::_types::PointInTimeReferenceBuilder) -> B,
     ) -> Self {
         self.pit(
             f(crate::typed::_global::search::_types::PointInTimeReferenceBuilder::new()).build(),
@@ -1742,14 +1737,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -1781,7 +1774,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A single target to search. If the target is an index alias, it must resolve to a single index.
+    /// **Required.** A single target to search. If the target is an index alias, it must resolve to a single index.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1792,9 +1785,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -1879,23 +1875,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

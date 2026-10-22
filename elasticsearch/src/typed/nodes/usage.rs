@@ -16,23 +16,30 @@ pub struct NodeUsage {
 
 impl NodeUsage {
     /// Creates a builder for [`NodeUsage`].
+    ///
+    /// Required: `rest_actions`, `since`, `timestamp`, `aggregations`.
     pub fn builder() -> NodeUsageBuilder {
         NodeUsageBuilder::new()
     }
 
     /// Creates a [`NodeUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeUsageBuilder,
-        ) -> NodeUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `rest_actions`, `since`, `timestamp`, `aggregations`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeUsage>>(
+        f: impl FnOnce(NodeUsageBuilder) -> B,
     ) -> NodeUsage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeUsageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_usage_members {
+    pub struct rest_actions;
+    pub struct since;
+    pub struct timestamp;
+    pub struct aggregations;
 }
 
 /// Builder for [`NodeUsage`].
@@ -84,7 +91,7 @@ impl<S0, S1, S2, S3> NodeUsageBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> NodeUsageBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The total number of times each REST endpoint has been called on this node since the last restart.
+    /// **Required.** The total number of times each REST endpoint has been called on this node since the last restart.
     /// Note that the REST endpoint names are not considered stable.
     pub fn rest_actions(
         self,
@@ -121,7 +128,7 @@ impl<S1, S2, S3> NodeUsageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
 }
 
 impl<S0, S2, S3> NodeUsageBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The timestamp for when the collection of these statistics started.
+    /// **Required.** The timestamp for when the collection of these statistics started.
     pub fn since(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -133,7 +140,7 @@ impl<S0, S2, S3> NodeUsageBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
 }
 
 impl<S0, S1, S3> NodeUsageBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The timestamp for when these statistics were collected.
+    /// **Required.** The timestamp for when these statistics were collected.
     pub fn timestamp(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -145,7 +152,7 @@ impl<S0, S1, S3> NodeUsageBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
 }
 
 impl<S0, S1, S2> NodeUsageBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The total number of times search aggregations have been called on this node since the last restart.
+    /// **Required.** The total number of times search aggregations have been called on this node since the last restart.
     pub fn aggregations(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -184,16 +191,15 @@ impl<S0, S1, S2> NodeUsageBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    NodeUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> NodeUsageBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`NodeUsage`].
-    pub fn build(self) -> NodeUsage {
+    pub fn build(self) -> NodeUsage
+    where
+        S0: crate::typed::builder::IsSet<node_usage_members::rest_actions>,
+        S1: crate::typed::builder::IsSet<node_usage_members::since>,
+        S2: crate::typed::builder::IsSet<node_usage_members::timestamp>,
+        S3: crate::typed::builder::IsSet<node_usage_members::aggregations>,
+    {
         NodeUsage {
             rest_actions: self.rest_actions.unwrap(),
             since: self.since.unwrap(),
@@ -203,71 +209,30 @@ impl
     }
 }
 
-impl
-    From<
-        NodeUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeUsage
+impl<S0, S1, S2, S3> crate::typed::builder::Build for NodeUsageBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<node_usage_members::rest_actions>,
+    S1: crate::typed::builder::IsSet<node_usage_members::since>,
+    S2: crate::typed::builder::IsSet<node_usage_members::timestamp>,
+    S3: crate::typed::builder::IsSet<node_usage_members::aggregations>,
 {
-    fn from(
-        builder: NodeUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeUsage;
+
+    fn build(self) -> NodeUsage {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> NodeUsageBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `rest_actions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rest_actions: crate::typed::builder::MissingRequiredField) -> NodeUsage { match rest_actions {} }
-}
-
-impl<S2, S3>
-    NodeUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<NodeUsageBuilder<(S0, S1, S2, S3)>> for NodeUsage
+where
+    S0: crate::typed::builder::IsSet<node_usage_members::rest_actions>,
+    S1: crate::typed::builder::IsSet<node_usage_members::since>,
+    S2: crate::typed::builder::IsSet<node_usage_members::timestamp>,
+    S3: crate::typed::builder::IsSet<node_usage_members::aggregations>,
 {
-    /// `since` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, since: crate::typed::builder::MissingRequiredField) -> NodeUsage { match since {} }
-}
-
-impl<S3>
-    NodeUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `timestamp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp: crate::typed::builder::MissingRequiredField) -> NodeUsage { match timestamp {} }
-}
-
-impl
-    NodeUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `aggregations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aggregations: crate::typed::builder::MissingRequiredField) -> NodeUsage { match aggregations {} }
+    fn from(builder: NodeUsageBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -339,7 +304,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -485,6 +452,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -617,19 +592,28 @@ pub struct ResponseBase {
 
 impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
+    ///
+    /// Required: `cluster_name`, `nodes`.
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
     }
 
     /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ResponseBaseBuilder,
-        )
-            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `cluster_name`, `nodes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ResponseBase>>(
+        f: impl FnOnce(ResponseBaseBuilder) -> B,
     ) -> ResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod response_base_members {
+    pub struct cluster_name;
+    pub struct nodes;
 }
 
 /// Builder for [`ResponseBase`].
@@ -675,21 +659,18 @@ impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     }
 
     /// Sets [`node_stats`](Self::node_stats) with a builder.
-    pub fn node_stats_with(
+    pub fn node_stats_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeStatisticsBuilder,
-        ) -> crate::typed::_types::NodeStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeStatisticsBuilder) -> B,
     ) -> Self {
         self.node_stats(f(crate::typed::_types::NodeStatisticsBuilder::new()).build())
     }
 }
 
 impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn cluster_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -701,6 +682,7 @@ impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn nodes(
         self,
         value: impl Into<indexmap::IndexMap<String, NodeUsage>>,
@@ -725,17 +707,10 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeUsage>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeUsageBuilder,
-        ) -> NodeUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeUsageBuilder) -> B,
     ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
         self.add_nodes(key, f(NodeUsageBuilder::new()).build())
     }
@@ -751,25 +726,22 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeUsage>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeUsageBuilder,
-        ) -> NodeUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeUsageBuilder) -> B,
     ) -> Self {
         self.add_nodes(key, f(NodeUsageBuilder::new()).build())
     }
 }
 
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ResponseBaseBuilder<(S0, S1)> {
     /// Builds a [`ResponseBase`].
-    pub fn build(self) -> ResponseBase {
+    pub fn build(self) -> ResponseBase
+    where
+        S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+        S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+    {
         ResponseBase {
             node_stats: self.node_stats,
             cluster_name: self.cluster_name.unwrap(),
@@ -778,24 +750,24 @@ impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ResponseBase
+impl<S0, S1> crate::typed::builder::Build for ResponseBaseBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
 {
-    fn from(
-        builder: ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ResponseBase;
+
+    fn build(self) -> ResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1> ResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `cluster_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cluster_name: crate::typed::builder::MissingRequiredField) -> ResponseBase { match cluster_name {} }
-}
-
-impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> ResponseBase { match nodes {} }
+impl<S0, S1> From<ResponseBaseBuilder<(S0, S1)>> for ResponseBase
+where
+    S0: crate::typed::builder::IsSet<response_base_members::cluster_name>,
+    S1: crate::typed::builder::IsSet<response_base_members::nodes>,
+{
+    fn from(builder: ResponseBaseBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

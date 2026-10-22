@@ -9,21 +9,28 @@ pub struct ComponentTemplate {
 
 impl ComponentTemplate {
     /// Creates a builder for [`ComponentTemplate`].
+    ///
+    /// Required: `name`, `component_template`.
     pub fn builder() -> ComponentTemplateBuilder {
         ComponentTemplateBuilder::new()
     }
 
     /// Creates a [`ComponentTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ComponentTemplateBuilder,
-        ) -> ComponentTemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `component_template`.
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplate>>(
+        f: impl FnOnce(ComponentTemplateBuilder) -> B,
     ) -> ComponentTemplate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ComponentTemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod component_template_members {
+    pub struct name;
+    pub struct component_template;
 }
 
 /// Builder for [`ComponentTemplate`].
@@ -57,6 +64,7 @@ impl<S0, S1> ComponentTemplateBuilder<(S0, S1)> {
 }
 
 impl<S1> ComponentTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -68,6 +76,7 @@ impl<S1> ComponentTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ComponentTemplateBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn component_template(
         self,
         value: impl Into<ComponentTemplateNodeWithRollover>,
@@ -78,20 +87,23 @@ impl<S0> ComponentTemplateBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`component_template`](Self::component_template) with a builder.
-    pub fn component_template_with(
+    pub fn component_template_with<
+        B: crate::typed::builder::Build<Output = ComponentTemplateNodeWithRollover>,
+    >(
         self,
-        f: impl FnOnce(
-            ComponentTemplateNodeWithRolloverBuilder,
-        )
-            -> ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ComponentTemplateNodeWithRolloverBuilder) -> B,
     ) -> ComponentTemplateBuilder<(S0, crate::typed::builder::Set)> {
         self.component_template(f(ComponentTemplateNodeWithRolloverBuilder::new()).build())
     }
 }
 
-impl ComponentTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ComponentTemplateBuilder<(S0, S1)> {
     /// Builds a [`ComponentTemplate`].
-    pub fn build(self) -> ComponentTemplate {
+    pub fn build(self) -> ComponentTemplate
+    where
+        S0: crate::typed::builder::IsSet<component_template_members::name>,
+        S1: crate::typed::builder::IsSet<component_template_members::component_template>,
+    {
         ComponentTemplate {
             name: self.name.unwrap(),
             component_template: self.component_template.unwrap(),
@@ -99,26 +111,26 @@ impl ComponentTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<ComponentTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ComponentTemplate
+impl<S0, S1> crate::typed::builder::Build for ComponentTemplateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<component_template_members::name>,
+    S1: crate::typed::builder::IsSet<component_template_members::component_template>,
 {
-    fn from(
-        builder: ComponentTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ComponentTemplate;
+
+    fn build(self) -> ComponentTemplate {
+        Self::build(self)
     }
 }
 
-impl<S1> ComponentTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match name {} }
-}
-
-impl ComponentTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `component_template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, component_template: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match component_template {} }
+impl<S0, S1> From<ComponentTemplateBuilder<(S0, S1)>> for ComponentTemplate
+where
+    S0: crate::typed::builder::IsSet<component_template_members::name>,
+    S1: crate::typed::builder::IsSet<component_template_members::component_template>,
+{
+    fn from(builder: ComponentTemplateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -146,18 +158,27 @@ pub struct ComponentTemplateNode {
 
 impl ComponentTemplateNode {
     /// Creates a builder for [`ComponentTemplateNode`].
+    ///
+    /// Required: `template`.
     pub fn builder() -> ComponentTemplateNodeBuilder {
         ComponentTemplateNodeBuilder::new()
     }
 
     /// Creates a [`ComponentTemplateNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ComponentTemplateNodeBuilder,
-        ) -> ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `template`.
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplateNode>>(
+        f: impl FnOnce(ComponentTemplateNodeBuilder) -> B,
     ) -> ComponentTemplateNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ComponentTemplateNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod component_template_node_members {
+    pub struct template;
 }
 
 /// Builder for [`ComponentTemplateNode`].
@@ -308,6 +329,7 @@ impl<S0> ComponentTemplateNodeBuilder<(S0,)> {
 }
 
 impl ComponentTemplateNodeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn template(
         self,
         value: impl Into<ComponentTemplateSummary>,
@@ -318,17 +340,20 @@ impl ComponentTemplateNodeBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = ComponentTemplateSummary>>(
         self,
-        f: impl FnOnce(ComponentTemplateSummaryBuilder) -> ComponentTemplateSummaryBuilder,
+        f: impl FnOnce(ComponentTemplateSummaryBuilder) -> B,
     ) -> ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)> {
         self.template(f(ComponentTemplateSummaryBuilder::new()).build())
     }
 }
 
-impl ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ComponentTemplateNodeBuilder<(S0,)> {
     /// Builds a [`ComponentTemplateNode`].
-    pub fn build(self) -> ComponentTemplateNode {
+    pub fn build(self) -> ComponentTemplateNode
+    where
+        S0: crate::typed::builder::IsSet<component_template_node_members::template>,
+    {
         ComponentTemplateNode {
             template: self.template.unwrap(),
             version: self.version,
@@ -342,16 +367,24 @@ impl ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)>> for ComponentTemplateNode {
-    fn from(builder: ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ComponentTemplateNodeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<component_template_node_members::template>,
+{
+    type Output = ComponentTemplateNode;
+
+    fn build(self) -> ComponentTemplateNode {
+        Self::build(self)
     }
 }
 
-impl ComponentTemplateNodeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, template: crate::typed::builder::MissingRequiredField) -> ComponentTemplateNode { match template {} }
+impl<S0> From<ComponentTemplateNodeBuilder<(S0,)>> for ComponentTemplateNode
+where
+    S0: crate::typed::builder::IsSet<component_template_node_members::template>,
+{
+    fn from(builder: ComponentTemplateNodeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -379,19 +412,27 @@ pub struct ComponentTemplateNodeWithRollover {
 
 impl ComponentTemplateNodeWithRollover {
     /// Creates a builder for [`ComponentTemplateNodeWithRollover`].
+    ///
+    /// Required: `template`.
     pub fn builder() -> ComponentTemplateNodeWithRolloverBuilder {
         ComponentTemplateNodeWithRolloverBuilder::new()
     }
 
     /// Creates a [`ComponentTemplateNodeWithRollover`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ComponentTemplateNodeWithRolloverBuilder,
-        )
-            -> ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `template`.
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplateNodeWithRollover>>(
+        f: impl FnOnce(ComponentTemplateNodeWithRolloverBuilder) -> B,
     ) -> ComponentTemplateNodeWithRollover {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ComponentTemplateNodeWithRolloverBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod component_template_node_with_rollover_members {
+    pub struct template;
 }
 
 /// Builder for [`ComponentTemplateNodeWithRollover`].
@@ -542,6 +583,7 @@ impl<S0> ComponentTemplateNodeWithRolloverBuilder<(S0,)> {
 }
 
 impl ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn template(
         self,
         value: impl Into<ComponentTemplateSummaryRes>,
@@ -552,17 +594,20 @@ impl ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::NotSet,)> 
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = ComponentTemplateSummaryRes>>(
         self,
-        f: impl FnOnce(ComponentTemplateSummaryResBuilder) -> ComponentTemplateSummaryResBuilder,
+        f: impl FnOnce(ComponentTemplateSummaryResBuilder) -> B,
     ) -> ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)> {
         self.template(f(ComponentTemplateSummaryResBuilder::new()).build())
     }
 }
 
-impl ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ComponentTemplateNodeWithRolloverBuilder<(S0,)> {
     /// Builds a [`ComponentTemplateNodeWithRollover`].
-    pub fn build(self) -> ComponentTemplateNodeWithRollover {
+    pub fn build(self) -> ComponentTemplateNodeWithRollover
+    where
+        S0: crate::typed::builder::IsSet<component_template_node_with_rollover_members::template>,
+    {
         ComponentTemplateNodeWithRollover {
             template: self.template.unwrap(),
             version: self.version,
@@ -576,20 +621,24 @@ impl ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)>>
-    for ComponentTemplateNodeWithRollover
+impl<S0> crate::typed::builder::Build for ComponentTemplateNodeWithRolloverBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<component_template_node_with_rollover_members::template>,
 {
-    fn from(
-        builder: ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = ComponentTemplateNodeWithRollover;
+
+    fn build(self) -> ComponentTemplateNodeWithRollover {
+        Self::build(self)
     }
 }
 
-impl ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::NotSet,)> {
-    /// `template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, template: crate::typed::builder::MissingRequiredField) -> ComponentTemplateNodeWithRollover { match template {} }
+impl<S0> From<ComponentTemplateNodeWithRolloverBuilder<(S0,)>> for ComponentTemplateNodeWithRollover
+where
+    S0: crate::typed::builder::IsSet<component_template_node_with_rollover_members::template>,
+{
+    fn from(builder: ComponentTemplateNodeWithRolloverBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -622,8 +671,8 @@ impl ComponentTemplateSummary {
     }
 
     /// Creates a [`ComponentTemplateSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ComponentTemplateSummaryBuilder) -> ComponentTemplateSummaryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplateSummary>>(
+        f: impl FnOnce(ComponentTemplateSummaryBuilder) -> B,
     ) -> ComponentTemplateSummary {
         f(Self::builder()).build()
     }
@@ -731,12 +780,12 @@ impl ComponentTemplateSummaryBuilder {
     }
 
     /// Adds an entry to [`settings`](Self::settings), with a builder.
-    pub fn add_settings_with(
+    pub fn add_settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.add_settings(
             key,
@@ -762,11 +811,11 @@ impl ComponentTemplateSummaryBuilder {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -801,12 +850,12 @@ impl ComponentTemplateSummaryBuilder {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::AliasDefinition>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasDefinitionBuilder,
-        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasDefinitionBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -832,11 +881,11 @@ impl ComponentTemplateSummaryBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::DataStreamLifecycle>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamLifecycleBuilder,
-        ) -> crate::typed::indices::_types::DataStreamLifecycleBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamLifecycleBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(crate::typed::indices::_types::DataStreamLifecycleBuilder::new()).build())
     }
@@ -859,11 +908,11 @@ impl ComponentTemplateSummaryBuilder {
     }
 
     /// Sets [`data_stream_options`](Self::data_stream_options) with a builder.
-    pub fn data_stream_options_with(
+    pub fn data_stream_options_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::DataStreamOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamOptionsBuilder,
-        ) -> crate::typed::indices::_types::DataStreamOptionsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamOptionsBuilder) -> B,
     ) -> Self {
         self.data_stream_options(
             f(crate::typed::indices::_types::DataStreamOptionsBuilder::new()).build(),
@@ -883,6 +932,14 @@ impl ComponentTemplateSummaryBuilder {
             lifecycle: self.lifecycle,
             data_stream_options: self.data_stream_options,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ComponentTemplateSummaryBuilder {
+    type Output = ComponentTemplateSummary;
+
+    fn build(self) -> ComponentTemplateSummary {
+        Self::build(self)
     }
 }
 
@@ -922,8 +979,8 @@ impl ComponentTemplateSummaryRes {
     }
 
     /// Creates a [`ComponentTemplateSummaryRes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ComponentTemplateSummaryResBuilder) -> ComponentTemplateSummaryResBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplateSummaryRes>>(
+        f: impl FnOnce(ComponentTemplateSummaryResBuilder) -> B,
     ) -> ComponentTemplateSummaryRes {
         f(Self::builder()).build()
     }
@@ -979,11 +1036,13 @@ impl ComponentTemplateSummaryResBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::_types::DataStreamLifecycleWithRollover,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder,
-        ) -> crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder) -> B,
     ) -> Self {
         self.lifecycle(
             f(crate::typed::indices::_types::DataStreamLifecycleWithRolloverBuilder::new()).build(),
@@ -1060,12 +1119,12 @@ impl ComponentTemplateSummaryResBuilder {
     }
 
     /// Adds an entry to [`settings`](Self::settings), with a builder.
-    pub fn add_settings_with(
+    pub fn add_settings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.add_settings(
             key,
@@ -1091,11 +1150,11 @@ impl ComponentTemplateSummaryResBuilder {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -1130,12 +1189,12 @@ impl ComponentTemplateSummaryResBuilder {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::AliasDefinition>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            crate::typed::indices::_types::AliasDefinitionBuilder,
-        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::AliasDefinitionBuilder) -> B,
     ) -> Self {
         self.add_aliases(
             key,
@@ -1161,11 +1220,11 @@ impl ComponentTemplateSummaryResBuilder {
     }
 
     /// Sets [`data_stream_options`](Self::data_stream_options) with a builder.
-    pub fn data_stream_options_with(
+    pub fn data_stream_options_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::DataStreamOptions>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DataStreamOptionsBuilder,
-        ) -> crate::typed::indices::_types::DataStreamOptionsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamOptionsBuilder) -> B,
     ) -> Self {
         self.data_stream_options(
             f(crate::typed::indices::_types::DataStreamOptionsBuilder::new()).build(),
@@ -1185,6 +1244,14 @@ impl ComponentTemplateSummaryResBuilder {
             aliases: self.aliases,
             data_stream_options: self.data_stream_options,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ComponentTemplateSummaryResBuilder {
+    type Output = ComponentTemplateSummaryRes;
+
+    fn build(self) -> ComponentTemplateSummaryRes {
+        Self::build(self)
     }
 }
 

@@ -7,5 +7,29 @@ pub struct Set;
 /// Builder state of a required member that isn't set.
 pub struct NotSet;
 
-/// A type that can't be created, used as an argument of `build()` when a required member is missing, so that compilation errors show the name of that member.
-pub enum MissingRequiredField {}
+/// Implemented by [`Set`]: a builder can only be built if each required member `M` is set.
+#[diagnostic::on_unimplemented(
+    message = "the required member `{M}` is missing",
+    label = "set `{M}` before building"
+)]
+pub trait IsSet<M> {}
+
+impl<M> IsSet<M> for Set {}
+
+/// Implemented by [`Set`]: a container can only be built once one of its variants is set.
+#[diagnostic::on_unimplemented(
+    message = "a variant of `{C}` must be set",
+    label = "set a variant of `{C}` before building"
+)]
+pub trait IsVariantSet<C> {}
+
+impl<C> IsVariantSet<C> for Set {}
+
+/// A builder whose required members are all set.
+pub trait Build {
+    /// The type built by the builder.
+    type Output;
+
+    /// Builds the value.
+    fn build(self) -> Self::Output;
+}

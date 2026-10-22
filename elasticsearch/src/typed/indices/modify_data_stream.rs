@@ -22,13 +22,17 @@ pub enum Action {
 
 impl Action {
     /// Creates a builder for [`Action`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ActionBuilder {
         ActionBuilder::new()
     }
 
     /// Creates a [`Action`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Action>>(
+        f: impl FnOnce(ActionBuilder) -> B,
     ) -> Action {
         f(Self::builder()).build()
     }
@@ -74,14 +78,11 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`add_backing_index`](Self::add_backing_index) with a builder.
-    pub fn add_backing_index_with(
+    pub fn add_backing_index_with<
+        B: crate::typed::builder::Build<Output = IndexAndDataStreamAction>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexAndDataStreamActionBuilder,
-        ) -> IndexAndDataStreamActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexAndDataStreamActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.add_backing_index(f(IndexAndDataStreamActionBuilder::new()).build())
     }
@@ -99,14 +100,11 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`remove_backing_index`](Self::remove_backing_index) with a builder.
-    pub fn remove_backing_index_with(
+    pub fn remove_backing_index_with<
+        B: crate::typed::builder::Build<Output = IndexAndDataStreamAction>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexAndDataStreamActionBuilder,
-        ) -> IndexAndDataStreamActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexAndDataStreamActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.remove_backing_index(f(IndexAndDataStreamActionBuilder::new()).build())
     }
@@ -123,36 +121,44 @@ impl ActionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`delete_backing_index`](Self::delete_backing_index) with a builder.
-    pub fn delete_backing_index_with(
+    pub fn delete_backing_index_with<
+        B: crate::typed::builder::Build<Output = IndexAndDataStreamAction>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexAndDataStreamActionBuilder,
-        ) -> IndexAndDataStreamActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexAndDataStreamActionBuilder) -> B,
     ) -> ActionBuilder<(crate::typed::builder::Set,)> {
         self.delete_backing_index(f(IndexAndDataStreamActionBuilder::new()).build())
     }
 }
 
-impl ActionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ActionBuilder<(S0,)> {
     /// Builds a [`Action`].
-    pub fn build(self) -> Action {
+    pub fn build(self) -> Action
+    where
+        S0: crate::typed::builder::IsVariantSet<Action>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ActionBuilder<(crate::typed::builder::Set,)>> for Action {
-    fn from(builder: ActionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ActionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Action>,
+{
+    type Output = Action;
+
+    fn build(self) -> Action {
+        Self::build(self)
     }
 }
 
-impl ActionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> Action { match variant {} }
+impl<S0> From<ActionBuilder<(S0,)>> for Action
+where
+    S0: crate::typed::builder::IsVariantSet<Action>,
+{
+    fn from(builder: ActionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -165,21 +171,28 @@ pub struct IndexAndDataStreamAction {
 
 impl IndexAndDataStreamAction {
     /// Creates a builder for [`IndexAndDataStreamAction`].
+    ///
+    /// Required: `data_stream`, `index`.
     pub fn builder() -> IndexAndDataStreamActionBuilder {
         IndexAndDataStreamActionBuilder::new()
     }
 
     /// Creates a [`IndexAndDataStreamAction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexAndDataStreamActionBuilder,
-        ) -> IndexAndDataStreamActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `data_stream`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexAndDataStreamAction>>(
+        f: impl FnOnce(IndexAndDataStreamActionBuilder) -> B,
     ) -> IndexAndDataStreamAction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexAndDataStreamActionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_and_data_stream_action_members {
+    pub struct data_stream;
+    pub struct index;
 }
 
 /// Builder for [`IndexAndDataStreamAction`].
@@ -215,7 +228,7 @@ impl<S0, S1> IndexAndDataStreamActionBuilder<(S0, S1)> {
 }
 
 impl<S1> IndexAndDataStreamActionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Data stream targeted by the action.
+    /// **Required.** Data stream targeted by the action.
     pub fn data_stream(
         self,
         value: impl Into<crate::typed::_types::DataStreamName>,
@@ -227,7 +240,7 @@ impl<S1> IndexAndDataStreamActionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndexAndDataStreamActionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Index for the action.
+    /// **Required.** Index for the action.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -238,9 +251,13 @@ impl<S0> IndexAndDataStreamActionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IndexAndDataStreamActionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexAndDataStreamActionBuilder<(S0, S1)> {
     /// Builds a [`IndexAndDataStreamAction`].
-    pub fn build(self) -> IndexAndDataStreamAction {
+    pub fn build(self) -> IndexAndDataStreamAction
+    where
+        S0: crate::typed::builder::IsSet<index_and_data_stream_action_members::data_stream>,
+        S1: crate::typed::builder::IsSet<index_and_data_stream_action_members::index>,
+    {
         IndexAndDataStreamAction {
             data_stream: self.data_stream.unwrap(),
             index: self.index.unwrap(),
@@ -248,29 +265,26 @@ impl IndexAndDataStreamActionBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<IndexAndDataStreamActionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexAndDataStreamAction
+impl<S0, S1> crate::typed::builder::Build for IndexAndDataStreamActionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_and_data_stream_action_members::data_stream>,
+    S1: crate::typed::builder::IsSet<index_and_data_stream_action_members::index>,
 {
-    fn from(
-        builder: IndexAndDataStreamActionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexAndDataStreamAction;
+
+    fn build(self) -> IndexAndDataStreamAction {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexAndDataStreamActionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `data_stream` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_stream: crate::typed::builder::MissingRequiredField) -> IndexAndDataStreamAction { match data_stream {} }
-}
-
-impl IndexAndDataStreamActionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> IndexAndDataStreamAction { match index {} }
+impl<S0, S1> From<IndexAndDataStreamActionBuilder<(S0, S1)>> for IndexAndDataStreamAction
+where
+    S0: crate::typed::builder::IsSet<index_and_data_stream_action_members::data_stream>,
+    S1: crate::typed::builder::IsSet<index_and_data_stream_action_members::index>,
+{
+    fn from(builder: IndexAndDataStreamActionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.modify_data_stream`](crate::typed::indices::IndicesClient::modify_data_stream).
@@ -303,16 +317,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `actions`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `actions`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct actions;
 }
 
 /// Builder for [`Request`].
@@ -411,7 +436,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Actions to perform.
+    /// **Required.** Actions to perform.
     pub fn actions(
         self,
         value: impl Into<Vec<Action>>,
@@ -435,9 +460,9 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 
     /// Adds an element to [`actions`](Self::actions), with a builder.
-    pub fn add_actions_with(
+    pub fn add_actions_with<B: crate::typed::builder::Build<Output = Action>>(
         self,
-        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ActionBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         self.add_actions(f(ActionBuilder::new()).build())
     }
@@ -453,17 +478,20 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 
     /// Adds an element to [`actions`](Self::actions), with a builder.
-    pub fn add_actions_with(
+    pub fn add_actions_with<B: crate::typed::builder::Build<Output = Action>>(
         self,
-        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ActionBuilder) -> B,
     ) -> Self {
         self.add_actions(f(ActionBuilder::new()).build())
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::actions>,
+    {
         Request {
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -474,23 +502,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::actions>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `actions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, actions: crate::typed::builder::MissingRequiredField) -> Request { match actions {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `actions` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, actions: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match actions {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::actions>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

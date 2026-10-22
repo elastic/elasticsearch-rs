@@ -107,23 +107,32 @@ pub struct Request<TDocument = serde_json::Value, TPartialDocument = serde_json:
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`, `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of<TDocument, TPartialDocument>(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (crate::typed::builder::Set, crate::typed::builder::Set),
-            (),
-            TDocument,
-            TPartialDocument,
-        >,
+    ///
+    /// Required: `id`, `index`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = Request<TDocument, TPartialDocument>>,
+        TDocument,
+        TPartialDocument,
+    >(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request<TDocument, TPartialDocument> {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -602,9 +611,9 @@ impl<S0, S1, C, TDocument, TPartialDocument>
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
@@ -721,7 +730,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
 impl<S1, C, TDocument, TPartialDocument>
     RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument, TPartialDocument>
 {
-    /// A unique identifier for the document to be updated.
+    /// **Required.** A unique identifier for the document to be updated.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -735,7 +744,7 @@ impl<S1, C, TDocument, TPartialDocument>
 impl<S0, C, TDocument, TPartialDocument>
     RequestBuilder<(S0, crate::typed::builder::NotSet), C, TDocument, TPartialDocument>
 {
-    /// The name of the target index.
+    /// **Required.** The name of the target index.
     /// By default, the index is created automatically if it doesn't exist.
     pub fn index(
         self,
@@ -747,16 +756,15 @@ impl<S0, C, TDocument, TPartialDocument>
     }
 }
 
-impl<C, TDocument, TPartialDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::Set),
-        C,
-        TDocument,
-        TPartialDocument,
-    >
+impl<S0, S1, C, TDocument, TPartialDocument>
+    RequestBuilder<(S0, S1), C, TDocument, TPartialDocument>
 {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request<TDocument, TPartialDocument> {
+    pub fn build(self) -> Request<TDocument, TPartialDocument>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -789,67 +797,33 @@ impl<C, TDocument, TPartialDocument>
     }
 }
 
-impl<TDocument, TPartialDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::Set),
-        &crate::Elasticsearch,
-        TDocument,
-        TPartialDocument,
-    >
+impl<S0, S1, C, TDocument, TPartialDocument> crate::typed::builder::Build
+    for RequestBuilder<(S0, S1), C, TDocument, TPartialDocument>
 where
-    TDocument: serde::Serialize,
-    TPartialDocument: serde::Serialize,
+    S0: crate::typed::builder::IsSet<request_members::id>,
+    S1: crate::typed::builder::IsSet<request_members::index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request<TDocument, TPartialDocument>;
+
+    fn build(self) -> Request<TDocument, TPartialDocument> {
+        Self::build(self)
     }
 }
 
-impl<S1, C, TDocument, TPartialDocument>
-    RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument, TPartialDocument>
+impl<S0, S1, TDocument, TPartialDocument>
+    RequestBuilder<(S0, S1), &crate::Elasticsearch, TDocument, TPartialDocument>
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request<TDocument, TPartialDocument> { match id {} }
-}
-impl<S1, TDocument, TPartialDocument>
-    RequestBuilder<
-        (crate::typed::builder::NotSet, S1),
-        &crate::Elasticsearch,
-        TDocument,
-        TPartialDocument,
-    >
-{
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
-}
-
-impl<C, TDocument, TPartialDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        C,
-        TDocument,
-        TPartialDocument,
-    >
-{
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument, TPartialDocument> { match index {} }
-}
-impl<TDocument, TPartialDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-        TDocument,
-        TPartialDocument,
-    >
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+        S1: crate::typed::builder::IsSet<request_members::index>,
+        TDocument: serde::Serialize,
+        TPartialDocument: serde::Serialize,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl<TDocument, TPartialDocument> Request<TDocument, TPartialDocument> {
@@ -1075,24 +1049,31 @@ pub struct UpdateWriteResponseBase {
 
 impl UpdateWriteResponseBase {
     /// Creates a builder for [`UpdateWriteResponseBase`].
+    ///
+    /// Required: `id`, `index`, `result`, `shards`, `version`.
     pub fn builder() -> UpdateWriteResponseBaseBuilder {
         UpdateWriteResponseBaseBuilder::new()
     }
 
     /// Creates a [`UpdateWriteResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UpdateWriteResponseBaseBuilder,
-        ) -> UpdateWriteResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `result`, `shards`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = UpdateWriteResponseBase>>(
+        f: impl FnOnce(UpdateWriteResponseBaseBuilder) -> B,
     ) -> UpdateWriteResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UpdateWriteResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod update_write_response_base_members {
+    pub struct id;
+    pub struct index;
+    pub struct result;
+    pub struct shards;
+    pub struct version;
 }
 
 /// Builder for [`UpdateWriteResponseBase`].
@@ -1228,11 +1209,9 @@ impl<S0, S1, S2, S3, S4> UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`get`](Self::get) with a builder.
-    pub fn get_with(
+    pub fn get_with<B: crate::typed::builder::Build<Output = crate::typed::_types::InlineGet>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::InlineGetBuilder,
-        ) -> crate::typed::_types::InlineGetBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::InlineGetBuilder) -> B,
     ) -> Self {
         self.get(f(crate::typed::_types::InlineGetBuilder::new()).build())
     }
@@ -1241,7 +1220,7 @@ impl<S0, S1, S2, S3, S4> UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
 impl<S1, S2, S3, S4>
     UpdateWriteResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// The unique identifier for the added document.
+    /// **Required.** The unique identifier for the added document.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -1255,7 +1234,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     UpdateWriteResponseBaseBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// The name of the index the document was added to.
+    /// **Required.** The name of the index the document was added to.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1269,7 +1248,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     UpdateWriteResponseBaseBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The result of the indexing operation: `created` or `updated`.
+    /// **Required.** The result of the indexing operation: `created` or `updated`.
     pub fn result(
         self,
         value: impl Into<crate::typed::_types::Result>,
@@ -1283,7 +1262,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     UpdateWriteResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// Information about the replication process of the operation.
+    /// **Required.** Information about the replication process of the operation.
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -1294,15 +1273,11 @@ impl<S0, S1, S2, S4>
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> UpdateWriteResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
@@ -1311,7 +1286,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// The document version, which is incremented each time the document is updated.
+    /// **Required.** The document version, which is incremented each time the document is updated.
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1322,17 +1297,16 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    UpdateWriteResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`UpdateWriteResponseBase`].
-    pub fn build(self) -> UpdateWriteResponseBase {
+    pub fn build(self) -> UpdateWriteResponseBase
+    where
+        S0: crate::typed::builder::IsSet<update_write_response_base_members::id>,
+        S1: crate::typed::builder::IsSet<update_write_response_base_members::index>,
+        S2: crate::typed::builder::IsSet<update_write_response_base_members::result>,
+        S3: crate::typed::builder::IsSet<update_write_response_base_members::shards>,
+        S4: crate::typed::builder::IsSet<update_write_response_base_members::version>,
+    {
         UpdateWriteResponseBase {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -1348,90 +1322,32 @@ impl
     }
 }
 
-impl
-    From<
-        UpdateWriteResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UpdateWriteResponseBase
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<update_write_response_base_members::id>,
+    S1: crate::typed::builder::IsSet<update_write_response_base_members::index>,
+    S2: crate::typed::builder::IsSet<update_write_response_base_members::result>,
+    S3: crate::typed::builder::IsSet<update_write_response_base_members::shards>,
+    S4: crate::typed::builder::IsSet<update_write_response_base_members::version>,
 {
-    fn from(
-        builder: UpdateWriteResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UpdateWriteResponseBase;
+
+    fn build(self) -> UpdateWriteResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    UpdateWriteResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)>>
+    for UpdateWriteResponseBase
+where
+    S0: crate::typed::builder::IsSet<update_write_response_base_members::id>,
+    S1: crate::typed::builder::IsSet<update_write_response_base_members::index>,
+    S2: crate::typed::builder::IsSet<update_write_response_base_members::result>,
+    S3: crate::typed::builder::IsSet<update_write_response_base_members::shards>,
+    S4: crate::typed::builder::IsSet<update_write_response_base_members::version>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> UpdateWriteResponseBase { match id {} }
-}
-
-impl<S2, S3, S4>
-    UpdateWriteResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> UpdateWriteResponseBase { match index {} }
-}
-
-impl<S3, S4>
-    UpdateWriteResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `result` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result: crate::typed::builder::MissingRequiredField) -> UpdateWriteResponseBase { match result {} }
-}
-
-impl<S4>
-    UpdateWriteResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> UpdateWriteResponseBase { match shards {} }
-}
-
-impl
-    UpdateWriteResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> UpdateWriteResponseBase { match version {} }
+    fn from(builder: UpdateWriteResponseBaseBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }

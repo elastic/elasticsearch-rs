@@ -18,16 +18,27 @@ pub struct CheckpointStats {
 
 impl CheckpointStats {
     /// Creates a builder for [`CheckpointStats`].
+    ///
+    /// Required: `checkpoint`.
     pub fn builder() -> CheckpointStatsBuilder {
         CheckpointStatsBuilder::new()
     }
 
     /// Creates a [`CheckpointStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CheckpointStatsBuilder) -> CheckpointStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `checkpoint`.
+    pub fn of<B: crate::typed::builder::Build<Output = CheckpointStats>>(
+        f: impl FnOnce(CheckpointStatsBuilder) -> B,
     ) -> CheckpointStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CheckpointStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod checkpoint_stats_members {
+    pub struct checkpoint;
 }
 
 /// Builder for [`CheckpointStats`].
@@ -81,14 +92,9 @@ impl<S0> CheckpointStatsBuilder<(S0,)> {
     }
 
     /// Sets [`checkpoint_progress`](Self::checkpoint_progress) with a builder.
-    pub fn checkpoint_progress_with(
+    pub fn checkpoint_progress_with<B: crate::typed::builder::Build<Output = TransformProgress>>(
         self,
-        f: impl FnOnce(
-            TransformProgressBuilder,
-        ) -> TransformProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TransformProgressBuilder) -> B,
     ) -> Self {
         self.checkpoint_progress(f(TransformProgressBuilder::new()).build())
     }
@@ -151,6 +157,7 @@ impl<S0> CheckpointStatsBuilder<(S0,)> {
 }
 
 impl CheckpointStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn checkpoint(self, value: i64) -> CheckpointStatsBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.checkpoint = Some(value);
@@ -158,9 +165,12 @@ impl CheckpointStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CheckpointStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CheckpointStatsBuilder<(S0,)> {
     /// Builds a [`CheckpointStats`].
-    pub fn build(self) -> CheckpointStats {
+    pub fn build(self) -> CheckpointStats
+    where
+        S0: crate::typed::builder::IsSet<checkpoint_stats_members::checkpoint>,
+    {
         CheckpointStats {
             checkpoint: self.checkpoint.unwrap(),
             checkpoint_progress: self.checkpoint_progress,
@@ -172,16 +182,24 @@ impl CheckpointStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CheckpointStatsBuilder<(crate::typed::builder::Set,)>> for CheckpointStats {
-    fn from(builder: CheckpointStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CheckpointStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<checkpoint_stats_members::checkpoint>,
+{
+    type Output = CheckpointStats;
+
+    fn build(self) -> CheckpointStats {
+        Self::build(self)
     }
 }
 
-impl CheckpointStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `checkpoint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, checkpoint: crate::typed::builder::MissingRequiredField) -> CheckpointStats { match checkpoint {} }
+impl<S0> From<CheckpointStatsBuilder<(S0,)>> for CheckpointStats
+where
+    S0: crate::typed::builder::IsSet<checkpoint_stats_members::checkpoint>,
+{
+    fn from(builder: CheckpointStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -203,16 +221,27 @@ pub struct Checkpointing {
 
 impl Checkpointing {
     /// Creates a builder for [`Checkpointing`].
+    ///
+    /// Required: `last`.
     pub fn builder() -> CheckpointingBuilder {
         CheckpointingBuilder::new()
     }
 
     /// Creates a [`Checkpointing`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CheckpointingBuilder) -> CheckpointingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `last`.
+    pub fn of<B: crate::typed::builder::Build<Output = Checkpointing>>(
+        f: impl FnOnce(CheckpointingBuilder) -> B,
     ) -> Checkpointing {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CheckpointingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod checkpointing_members {
+    pub struct last;
 }
 
 /// Builder for [`Checkpointing`].
@@ -297,9 +326,9 @@ impl<S0> CheckpointingBuilder<(S0,)> {
     }
 
     /// Sets [`next`](Self::next) with a builder.
-    pub fn next_with(
+    pub fn next_with<B: crate::typed::builder::Build<Output = CheckpointStats>>(
         self,
-        f: impl FnOnce(CheckpointStatsBuilder) -> CheckpointStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CheckpointStatsBuilder) -> B,
     ) -> Self {
         self.next(f(CheckpointStatsBuilder::new()).build())
     }
@@ -345,6 +374,7 @@ impl<S0> CheckpointingBuilder<(S0,)> {
 }
 
 impl CheckpointingBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn last(
         self,
         value: impl Into<CheckpointStats>,
@@ -355,17 +385,20 @@ impl CheckpointingBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`last`](Self::last) with a builder.
-    pub fn last_with(
+    pub fn last_with<B: crate::typed::builder::Build<Output = CheckpointStats>>(
         self,
-        f: impl FnOnce(CheckpointStatsBuilder) -> CheckpointStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CheckpointStatsBuilder) -> B,
     ) -> CheckpointingBuilder<(crate::typed::builder::Set,)> {
         self.last(f(CheckpointStatsBuilder::new()).build())
     }
 }
 
-impl CheckpointingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CheckpointingBuilder<(S0,)> {
     /// Builds a [`Checkpointing`].
-    pub fn build(self) -> Checkpointing {
+    pub fn build(self) -> Checkpointing
+    where
+        S0: crate::typed::builder::IsSet<checkpointing_members::last>,
+    {
         Checkpointing {
             changes_last_detected_at: self.changes_last_detected_at,
             changes_last_detected_at_string: self.changes_last_detected_at_string,
@@ -378,16 +411,24 @@ impl CheckpointingBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CheckpointingBuilder<(crate::typed::builder::Set,)>> for Checkpointing {
-    fn from(builder: CheckpointingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CheckpointingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<checkpointing_members::last>,
+{
+    type Output = Checkpointing;
+
+    fn build(self) -> Checkpointing {
+        Self::build(self)
     }
 }
 
-impl CheckpointingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `last` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, last: crate::typed::builder::MissingRequiredField) -> Checkpointing { match last {} }
+impl<S0> From<CheckpointingBuilder<(S0,)>> for Checkpointing
+where
+    S0: crate::typed::builder::IsSet<checkpointing_members::last>,
+{
+    fn from(builder: CheckpointingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`transform.get_transform_stats`](crate::typed::transform::TransformClient::get_transform_stats).
@@ -445,16 +486,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `transform_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `transform_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct transform_id;
 }
 
 /// Builder for [`Request`].
@@ -640,7 +692,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Identifier for the transform. It can be a transform identifier or a
+    /// **Required.** Identifier for the transform. It can be a transform identifier or a
     /// wildcard expression. You can get information for all transforms by using
     /// `_all`, by specifying `*` as the `<transform_id>`, or by omitting the
     /// `<transform_id>`.
@@ -654,9 +706,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::transform_id>,
+    {
         Request {
             transform_id: self.transform_id.unwrap(),
             allow_no_match: self.allow_no_match,
@@ -672,23 +727,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::transform_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `transform_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transform_id: crate::typed::builder::MissingRequiredField) -> Request { match transform_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `transform_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, transform_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match transform_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::transform_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -821,22 +879,29 @@ pub struct TransformHealthIssue {
 
 impl TransformHealthIssue {
     /// Creates a builder for [`TransformHealthIssue`].
+    ///
+    /// Required: `type`, `issue`, `count`.
     pub fn builder() -> TransformHealthIssueBuilder {
         TransformHealthIssueBuilder::new()
     }
 
     /// Creates a [`TransformHealthIssue`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformHealthIssueBuilder,
-        ) -> TransformHealthIssueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `issue`, `count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformHealthIssue>>(
+        f: impl FnOnce(TransformHealthIssueBuilder) -> B,
     ) -> TransformHealthIssue {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformHealthIssueBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_health_issue_members {
+    pub struct r#type;
+    pub struct issue;
+    pub struct count;
 }
 
 /// Builder for [`TransformHealthIssue`].
@@ -939,7 +1004,7 @@ impl<S0, S1, S2> TransformHealthIssueBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TransformHealthIssueBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The type of the issue
+    /// **Required.** The type of the issue
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -951,7 +1016,7 @@ impl<S1, S2> TransformHealthIssueBuilder<(crate::typed::builder::NotSet, S1, S2)
 }
 
 impl<S0, S2> TransformHealthIssueBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A description of the issue
+    /// **Required.** A description of the issue
     pub fn issue(
         self,
         value: impl Into<String>,
@@ -963,7 +1028,7 @@ impl<S0, S2> TransformHealthIssueBuilder<(S0, crate::typed::builder::NotSet, S2)
 }
 
 impl<S0, S1> TransformHealthIssueBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Number of times this issue has occurred since it started
+    /// **Required.** Number of times this issue has occurred since it started
     pub fn count(
         self,
         value: i32,
@@ -974,15 +1039,14 @@ impl<S0, S1> TransformHealthIssueBuilder<(S0, S1, crate::typed::builder::NotSet)
     }
 }
 
-impl
-    TransformHealthIssueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TransformHealthIssueBuilder<(S0, S1, S2)> {
     /// Builds a [`TransformHealthIssue`].
-    pub fn build(self) -> TransformHealthIssue {
+    pub fn build(self) -> TransformHealthIssue
+    where
+        S0: crate::typed::builder::IsSet<transform_health_issue_members::r#type>,
+        S1: crate::typed::builder::IsSet<transform_health_issue_members::issue>,
+        S2: crate::typed::builder::IsSet<transform_health_issue_members::count>,
+    {
         TransformHealthIssue {
             r#type: self.r#type.unwrap(),
             issue: self.issue.unwrap(),
@@ -994,54 +1058,28 @@ impl
     }
 }
 
-impl
-    From<
-        TransformHealthIssueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TransformHealthIssue
+impl<S0, S1, S2> crate::typed::builder::Build for TransformHealthIssueBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<transform_health_issue_members::r#type>,
+    S1: crate::typed::builder::IsSet<transform_health_issue_members::issue>,
+    S2: crate::typed::builder::IsSet<transform_health_issue_members::count>,
 {
-    fn from(
-        builder: TransformHealthIssueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TransformHealthIssue;
+
+    fn build(self) -> TransformHealthIssue {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TransformHealthIssueBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TransformHealthIssue { match r#type {} }
-}
-
-impl<S2>
-    TransformHealthIssueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TransformHealthIssueBuilder<(S0, S1, S2)>> for TransformHealthIssue
+where
+    S0: crate::typed::builder::IsSet<transform_health_issue_members::r#type>,
+    S1: crate::typed::builder::IsSet<transform_health_issue_members::issue>,
+    S2: crate::typed::builder::IsSet<transform_health_issue_members::count>,
 {
-    /// `issue` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, issue: crate::typed::builder::MissingRequiredField) -> TransformHealthIssue { match issue {} }
-}
-
-impl
-    TransformHealthIssueBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> TransformHealthIssue { match count {} }
+    fn from(builder: TransformHealthIssueBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1069,34 +1107,41 @@ pub struct TransformIndexerStats {
 
 impl TransformIndexerStats {
     /// Creates a builder for [`TransformIndexerStats`].
+    ///
+    /// Required: `documents_indexed`, `documents_processed`, `exponential_avg_checkpoint_duration_ms`, `exponential_avg_documents_indexed`, `exponential_avg_documents_processed`, `index_failures`, `index_time_in_ms`, `index_total`, `pages_processed`, `processing_time_in_ms`, `processing_total`, `search_failures`, `search_time_in_ms`, `search_total`, `trigger_count`.
     pub fn builder() -> TransformIndexerStatsBuilder {
         TransformIndexerStatsBuilder::new()
     }
 
     /// Creates a [`TransformIndexerStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformIndexerStatsBuilder,
-        ) -> TransformIndexerStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `documents_indexed`, `documents_processed`, `exponential_avg_checkpoint_duration_ms`, `exponential_avg_documents_indexed`, `exponential_avg_documents_processed`, `index_failures`, `index_time_in_ms`, `index_total`, `pages_processed`, `processing_time_in_ms`, `processing_total`, `search_failures`, `search_time_in_ms`, `search_total`, `trigger_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformIndexerStats>>(
+        f: impl FnOnce(TransformIndexerStatsBuilder) -> B,
     ) -> TransformIndexerStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformIndexerStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_indexer_stats_members {
+    pub struct documents_indexed;
+    pub struct documents_processed;
+    pub struct exponential_avg_checkpoint_duration_ms;
+    pub struct exponential_avg_documents_indexed;
+    pub struct exponential_avg_documents_processed;
+    pub struct index_failures;
+    pub struct index_time_in_ms;
+    pub struct index_total;
+    pub struct pages_processed;
+    pub struct processing_time_in_ms;
+    pub struct processing_total;
+    pub struct search_failures;
+    pub struct search_time_in_ms;
+    pub struct search_total;
+    pub struct trigger_count;
 }
 
 /// Builder for [`TransformIndexerStats`].
@@ -1274,6 +1319,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn documents_indexed(
         self,
         value: i64,
@@ -1319,6 +1365,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn documents_processed(
         self,
         value: i64,
@@ -1364,6 +1411,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn exponential_avg_checkpoint_duration_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitFloatMillis>,
@@ -1409,6 +1457,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn exponential_avg_documents_indexed(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1454,6 +1503,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn exponential_avg_documents_processed(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1499,6 +1549,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn index_failures(
         self,
         value: i64,
@@ -1544,6 +1595,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn index_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1589,6 +1641,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn index_total(
         self,
         value: i64,
@@ -1634,6 +1687,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn pages_processed(
         self,
         value: i64,
@@ -1679,6 +1733,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn processing_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1724,6 +1779,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn processing_total(
         self,
         value: i64,
@@ -1769,6 +1825,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn search_failures(
         self,
         value: i64,
@@ -1814,6 +1871,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S13, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn search_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1859,6 +1917,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S14>
         S14,
     )>
 {
+    /// **Required.**
     pub fn search_total(
         self,
         value: i64,
@@ -1904,6 +1963,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn trigger_count(
         self,
         value: i64,
@@ -1930,27 +1990,50 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13>
     }
 }
 
-impl
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
     TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
     )>
 {
     /// Builds a [`TransformIndexerStats`].
-    pub fn build(self) -> TransformIndexerStats {
+    pub fn build(self) -> TransformIndexerStats
+    where
+        S0: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_indexed>,
+        S1: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_processed>,
+        S2: crate::typed::builder::IsSet<
+            transform_indexer_stats_members::exponential_avg_checkpoint_duration_ms,
+        >,
+        S3: crate::typed::builder::IsSet<
+            transform_indexer_stats_members::exponential_avg_documents_indexed,
+        >,
+        S4: crate::typed::builder::IsSet<
+            transform_indexer_stats_members::exponential_avg_documents_processed,
+        >,
+        S5: crate::typed::builder::IsSet<transform_indexer_stats_members::index_failures>,
+        S6: crate::typed::builder::IsSet<transform_indexer_stats_members::index_time_in_ms>,
+        S7: crate::typed::builder::IsSet<transform_indexer_stats_members::index_total>,
+        S8: crate::typed::builder::IsSet<transform_indexer_stats_members::pages_processed>,
+        S9: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_time_in_ms>,
+        S10: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_total>,
+        S11: crate::typed::builder::IsSet<transform_indexer_stats_members::search_failures>,
+        S12: crate::typed::builder::IsSet<transform_indexer_stats_members::search_time_in_ms>,
+        S13: crate::typed::builder::IsSet<transform_indexer_stats_members::search_total>,
+        S14: crate::typed::builder::IsSet<transform_indexer_stats_members::trigger_count>,
+    {
         TransformIndexerStats {
             delete_time_in_ms: self.delete_time_in_ms,
             documents_indexed: self.documents_indexed.unwrap(),
@@ -1975,53 +2058,9 @@ impl
     }
 }
 
-impl
-    From<
-        TransformIndexerStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TransformIndexerStats
-{
-    fn from(
-        builder: TransformIndexerStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
-    }
-}
-
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::NotSet,
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14> crate::typed::builder::Build
+    for TransformIndexerStatsBuilder<(
+        S0,
         S1,
         S2,
         S3,
@@ -2037,346 +2076,100 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
         S13,
         S14,
     )>
+where
+    S0: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_indexed>,
+    S1: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_processed>,
+    S2: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_checkpoint_duration_ms,
+    >,
+    S3: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_documents_indexed,
+    >,
+    S4: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_documents_processed,
+    >,
+    S5: crate::typed::builder::IsSet<transform_indexer_stats_members::index_failures>,
+    S6: crate::typed::builder::IsSet<transform_indexer_stats_members::index_time_in_ms>,
+    S7: crate::typed::builder::IsSet<transform_indexer_stats_members::index_total>,
+    S8: crate::typed::builder::IsSet<transform_indexer_stats_members::pages_processed>,
+    S9: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_time_in_ms>,
+    S10: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_total>,
+    S11: crate::typed::builder::IsSet<transform_indexer_stats_members::search_failures>,
+    S12: crate::typed::builder::IsSet<transform_indexer_stats_members::search_time_in_ms>,
+    S13: crate::typed::builder::IsSet<transform_indexer_stats_members::search_total>,
+    S14: crate::typed::builder::IsSet<transform_indexer_stats_members::trigger_count>,
 {
-    /// `documents_indexed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, documents_indexed: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match documents_indexed {} }
+    type Output = TransformIndexerStats;
+
+    fn build(self) -> TransformIndexerStats {
+        Self::build(self)
+    }
 }
 
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
+    From<
+        TransformIndexerStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+        )>,
+    > for TransformIndexerStats
+where
+    S0: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_indexed>,
+    S1: crate::typed::builder::IsSet<transform_indexer_stats_members::documents_processed>,
+    S2: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_checkpoint_duration_ms,
+    >,
+    S3: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_documents_indexed,
+    >,
+    S4: crate::typed::builder::IsSet<
+        transform_indexer_stats_members::exponential_avg_documents_processed,
+    >,
+    S5: crate::typed::builder::IsSet<transform_indexer_stats_members::index_failures>,
+    S6: crate::typed::builder::IsSet<transform_indexer_stats_members::index_time_in_ms>,
+    S7: crate::typed::builder::IsSet<transform_indexer_stats_members::index_total>,
+    S8: crate::typed::builder::IsSet<transform_indexer_stats_members::pages_processed>,
+    S9: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_time_in_ms>,
+    S10: crate::typed::builder::IsSet<transform_indexer_stats_members::processing_total>,
+    S11: crate::typed::builder::IsSet<transform_indexer_stats_members::search_failures>,
+    S12: crate::typed::builder::IsSet<transform_indexer_stats_members::search_time_in_ms>,
+    S13: crate::typed::builder::IsSet<transform_indexer_stats_members::search_total>,
+    S14: crate::typed::builder::IsSet<transform_indexer_stats_members::trigger_count>,
 {
-    /// `documents_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, documents_processed: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match documents_processed {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `exponential_avg_checkpoint_duration_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponential_avg_checkpoint_duration_ms: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match exponential_avg_checkpoint_duration_ms {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `exponential_avg_documents_indexed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponential_avg_documents_indexed: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match exponential_avg_documents_indexed {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `exponential_avg_documents_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponential_avg_documents_processed: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match exponential_avg_documents_processed {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `index_failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_failures: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match index_failures {} }
-}
-
-impl<S7, S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `index_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_time_in_ms: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match index_time_in_ms {} }
-}
-
-impl<S8, S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `index_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_total: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match index_total {} }
-}
-
-impl<S9, S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `pages_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pages_processed: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match pages_processed {} }
-}
-
-impl<S10, S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `processing_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processing_time_in_ms: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match processing_time_in_ms {} }
-}
-
-impl<S11, S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `processing_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processing_total: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match processing_total {} }
-}
-
-impl<S12, S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-        S14,
-    )>
-{
-    /// `search_failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_failures: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match search_failures {} }
-}
-
-impl<S13, S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-        S14,
-    )>
-{
-    /// `search_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_time_in_ms: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match search_time_in_ms {} }
-}
-
-impl<S14>
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S14,
-    )>
-{
-    /// `search_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_total: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match search_total {} }
-}
-
-impl
-    TransformIndexerStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `trigger_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trigger_count: crate::typed::builder::MissingRequiredField) -> TransformIndexerStats { match trigger_count {} }
+    fn from(
+        builder: TransformIndexerStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+        )>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2393,21 +2186,28 @@ pub struct TransformProgress {
 
 impl TransformProgress {
     /// Creates a builder for [`TransformProgress`].
+    ///
+    /// Required: `docs_indexed`, `docs_processed`.
     pub fn builder() -> TransformProgressBuilder {
         TransformProgressBuilder::new()
     }
 
     /// Creates a [`TransformProgress`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformProgressBuilder,
-        ) -> TransformProgressBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `docs_indexed`, `docs_processed`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformProgress>>(
+        f: impl FnOnce(TransformProgressBuilder) -> B,
     ) -> TransformProgress {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformProgressBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_progress_members {
+    pub struct docs_indexed;
+    pub struct docs_processed;
 }
 
 /// Builder for [`TransformProgress`].
@@ -2483,6 +2283,7 @@ impl<S0, S1> TransformProgressBuilder<(S0, S1)> {
 }
 
 impl<S1> TransformProgressBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn docs_indexed(
         self,
         value: i64,
@@ -2494,6 +2295,7 @@ impl<S1> TransformProgressBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TransformProgressBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn docs_processed(
         self,
         value: i64,
@@ -2504,9 +2306,13 @@ impl<S0> TransformProgressBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TransformProgressBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TransformProgressBuilder<(S0, S1)> {
     /// Builds a [`TransformProgress`].
-    pub fn build(self) -> TransformProgress {
+    pub fn build(self) -> TransformProgress
+    where
+        S0: crate::typed::builder::IsSet<transform_progress_members::docs_indexed>,
+        S1: crate::typed::builder::IsSet<transform_progress_members::docs_processed>,
+    {
         TransformProgress {
             docs_indexed: self.docs_indexed.unwrap(),
             docs_processed: self.docs_processed.unwrap(),
@@ -2517,26 +2323,26 @@ impl TransformProgressBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<TransformProgressBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TransformProgress
+impl<S0, S1> crate::typed::builder::Build for TransformProgressBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<transform_progress_members::docs_indexed>,
+    S1: crate::typed::builder::IsSet<transform_progress_members::docs_processed>,
 {
-    fn from(
-        builder: TransformProgressBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = TransformProgress;
+
+    fn build(self) -> TransformProgress {
+        Self::build(self)
     }
 }
 
-impl<S1> TransformProgressBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `docs_indexed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, docs_indexed: crate::typed::builder::MissingRequiredField) -> TransformProgress { match docs_indexed {} }
-}
-
-impl TransformProgressBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `docs_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, docs_processed: crate::typed::builder::MissingRequiredField) -> TransformProgress { match docs_processed {} }
+impl<S0, S1> From<TransformProgressBuilder<(S0, S1)>> for TransformProgress
+where
+    S0: crate::typed::builder::IsSet<transform_progress_members::docs_indexed>,
+    S1: crate::typed::builder::IsSet<transform_progress_members::docs_processed>,
+{
+    fn from(builder: TransformProgressBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2555,23 +2361,30 @@ pub struct TransformStats {
 
 impl TransformStats {
     /// Creates a builder for [`TransformStats`].
+    ///
+    /// Required: `checkpointing`, `id`, `state`, `stats`.
     pub fn builder() -> TransformStatsBuilder {
         TransformStatsBuilder::new()
     }
 
     /// Creates a [`TransformStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformStatsBuilder,
-        ) -> TransformStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `checkpointing`, `id`, `state`, `stats`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformStats>>(
+        f: impl FnOnce(TransformStatsBuilder) -> B,
     ) -> TransformStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_stats_members {
+    pub struct checkpointing;
+    pub struct id;
+    pub struct state;
+    pub struct stats;
 }
 
 /// Builder for [`TransformStats`].
@@ -2642,11 +2455,9 @@ impl<S0, S1, S2, S3> TransformStatsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`health`](Self::health) with a builder.
-    pub fn health_with(
+    pub fn health_with<B: crate::typed::builder::Build<Output = TransformStatsHealth>>(
         self,
-        f: impl FnOnce(
-            TransformStatsHealthBuilder,
-        ) -> TransformStatsHealthBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TransformStatsHealthBuilder) -> B,
     ) -> Self {
         self.health(f(TransformStatsHealthBuilder::new()).build())
     }
@@ -2663,16 +2474,11 @@ impl<S0, S1, S2, S3> TransformStatsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::NodeAttributes>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::NodeAttributesBuilder,
-        ) -> crate::typed::_types::NodeAttributesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::NodeAttributesBuilder) -> B,
     ) -> Self {
         self.node(f(crate::typed::_types::NodeAttributesBuilder::new()).build())
     }
@@ -2690,6 +2496,7 @@ impl<S0, S1, S2, S3> TransformStatsBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> TransformStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn checkpointing(
         self,
         value: impl Into<Checkpointing>,
@@ -2700,15 +2507,16 @@ impl<S1, S2, S3> TransformStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S
     }
 
     /// Sets [`checkpointing`](Self::checkpointing) with a builder.
-    pub fn checkpointing_with(
+    pub fn checkpointing_with<B: crate::typed::builder::Build<Output = Checkpointing>>(
         self,
-        f: impl FnOnce(CheckpointingBuilder) -> CheckpointingBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CheckpointingBuilder) -> B,
     ) -> TransformStatsBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.checkpointing(f(CheckpointingBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> TransformStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -2720,6 +2528,7 @@ impl<S0, S2, S3> TransformStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3> TransformStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn state(
         self,
         value: impl Into<String>,
@@ -2731,6 +2540,7 @@ impl<S0, S1, S3> TransformStatsBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2> TransformStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn stats(
         self,
         value: impl Into<TransformIndexerStats>,
@@ -2741,42 +2551,23 @@ impl<S0, S1, S2> TransformStatsBuilder<(S0, S1, S2, crate::typed::builder::NotSe
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = TransformIndexerStats>>(
         self,
-        f: impl FnOnce(
-            TransformIndexerStatsBuilder,
-        ) -> TransformIndexerStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TransformIndexerStatsBuilder) -> B,
     ) -> TransformStatsBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.stats(f(TransformIndexerStatsBuilder::new()).build())
     }
 }
 
-impl
-    TransformStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> TransformStatsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`TransformStats`].
-    pub fn build(self) -> TransformStats {
+    pub fn build(self) -> TransformStats
+    where
+        S0: crate::typed::builder::IsSet<transform_stats_members::checkpointing>,
+        S1: crate::typed::builder::IsSet<transform_stats_members::id>,
+        S2: crate::typed::builder::IsSet<transform_stats_members::state>,
+        S3: crate::typed::builder::IsSet<transform_stats_members::stats>,
+    {
         TransformStats {
             checkpointing: self.checkpointing.unwrap(),
             health: self.health,
@@ -2789,71 +2580,30 @@ impl
     }
 }
 
-impl
-    From<
-        TransformStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TransformStats
+impl<S0, S1, S2, S3> crate::typed::builder::Build for TransformStatsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<transform_stats_members::checkpointing>,
+    S1: crate::typed::builder::IsSet<transform_stats_members::id>,
+    S2: crate::typed::builder::IsSet<transform_stats_members::state>,
+    S3: crate::typed::builder::IsSet<transform_stats_members::stats>,
 {
-    fn from(
-        builder: TransformStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TransformStats;
+
+    fn build(self) -> TransformStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> TransformStatsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `checkpointing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, checkpointing: crate::typed::builder::MissingRequiredField) -> TransformStats { match checkpointing {} }
-}
-
-impl<S2, S3>
-    TransformStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<TransformStatsBuilder<(S0, S1, S2, S3)>> for TransformStats
+where
+    S0: crate::typed::builder::IsSet<transform_stats_members::checkpointing>,
+    S1: crate::typed::builder::IsSet<transform_stats_members::id>,
+    S2: crate::typed::builder::IsSet<transform_stats_members::state>,
+    S3: crate::typed::builder::IsSet<transform_stats_members::stats>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> TransformStats { match id {} }
-}
-
-impl<S3>
-    TransformStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> TransformStats { match state {} }
-}
-
-impl
-    TransformStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> TransformStats { match stats {} }
+    fn from(builder: TransformStatsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2866,18 +2616,27 @@ pub struct TransformStatsHealth {
 
 impl TransformStatsHealth {
     /// Creates a builder for [`TransformStatsHealth`].
+    ///
+    /// Required: `status`.
     pub fn builder() -> TransformStatsHealthBuilder {
         TransformStatsHealthBuilder::new()
     }
 
     /// Creates a [`TransformStatsHealth`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformStatsHealthBuilder,
-        ) -> TransformStatsHealthBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformStatsHealth>>(
+        f: impl FnOnce(TransformStatsHealthBuilder) -> B,
     ) -> TransformStatsHealth {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformStatsHealthBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_stats_health_members {
+    pub struct status;
 }
 
 /// Builder for [`TransformStatsHealth`].
@@ -2928,21 +2687,16 @@ impl<S0> TransformStatsHealthBuilder<(S0,)> {
     }
 
     /// Adds an element to [`issues`](Self::issues), with a builder.
-    pub fn add_issues_with(
+    pub fn add_issues_with<B: crate::typed::builder::Build<Output = TransformHealthIssue>>(
         self,
-        f: impl FnOnce(
-            TransformHealthIssueBuilder,
-        ) -> TransformHealthIssueBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TransformHealthIssueBuilder) -> B,
     ) -> Self {
         self.add_issues(f(TransformHealthIssueBuilder::new()).build())
     }
 }
 
 impl TransformStatsHealthBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn status(
         self,
         value: impl Into<crate::typed::_types::HealthStatus>,
@@ -2953,9 +2707,12 @@ impl TransformStatsHealthBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TransformStatsHealthBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TransformStatsHealthBuilder<(S0,)> {
     /// Builds a [`TransformStatsHealth`].
-    pub fn build(self) -> TransformStatsHealth {
+    pub fn build(self) -> TransformStatsHealth
+    where
+        S0: crate::typed::builder::IsSet<transform_stats_health_members::status>,
+    {
         TransformStatsHealth {
             status: self.status.unwrap(),
             issues: self.issues,
@@ -2963,14 +2720,22 @@ impl TransformStatsHealthBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TransformStatsHealthBuilder<(crate::typed::builder::Set,)>> for TransformStatsHealth {
-    fn from(builder: TransformStatsHealthBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TransformStatsHealthBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<transform_stats_health_members::status>,
+{
+    type Output = TransformStatsHealth;
+
+    fn build(self) -> TransformStatsHealth {
+        Self::build(self)
     }
 }
 
-impl TransformStatsHealthBuilder<(crate::typed::builder::NotSet,)> {
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> TransformStatsHealth { match status {} }
+impl<S0> From<TransformStatsHealthBuilder<(S0,)>> for TransformStatsHealth
+where
+    S0: crate::typed::builder::IsSet<transform_stats_health_members::status>,
+{
+    fn from(builder: TransformStatsHealthBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

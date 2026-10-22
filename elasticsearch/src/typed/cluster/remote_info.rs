@@ -38,27 +38,34 @@ pub struct ClusterRemoteProxyInfo {
 
 impl ClusterRemoteProxyInfo {
     /// Creates a builder for [`ClusterRemoteProxyInfo`].
+    ///
+    /// Required: `mode`, `connected`, `initial_connect_timeout`, `skip_unavailable`, `proxy_address`, `server_name`, `num_proxy_sockets_connected`, `max_proxy_socket_connections`.
     pub fn builder() -> ClusterRemoteProxyInfoBuilder {
         ClusterRemoteProxyInfoBuilder::new()
     }
 
     /// Creates a [`ClusterRemoteProxyInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterRemoteProxyInfoBuilder,
-        ) -> ClusterRemoteProxyInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `mode`, `connected`, `initial_connect_timeout`, `skip_unavailable`, `proxy_address`, `server_name`, `num_proxy_sockets_connected`, `max_proxy_socket_connections`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterRemoteProxyInfo>>(
+        f: impl FnOnce(ClusterRemoteProxyInfoBuilder) -> B,
     ) -> ClusterRemoteProxyInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterRemoteProxyInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_remote_proxy_info_members {
+    pub struct mode;
+    pub struct connected;
+    pub struct initial_connect_timeout;
+    pub struct skip_unavailable;
+    pub struct proxy_address;
+    pub struct server_name;
+    pub struct num_proxy_sockets_connected;
+    pub struct max_proxy_socket_connections;
 }
 
 /// Builder for [`ClusterRemoteProxyInfo`].
@@ -149,7 +156,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
 impl<S1, S2, S3, S4, S5, S6, S7>
     ClusterRemoteProxyInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// The connection mode for the remote cluster.
+    /// **Required.** The connection mode for the remote cluster.
     pub fn mode(
         self,
         value: impl Into<String>,
@@ -164,7 +171,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     ClusterRemoteProxyInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
-    /// If it is `true`, there is at least one open connection to the remote cluster.
+    /// **Required.** If it is `true`, there is at least one open connection to the remote cluster.
     /// If it is `false`, it means that the cluster no longer has an open connection to the remote cluster.
     /// It does not necessarily mean that the remote cluster is down or unavailable, just that at some point a connection was lost.
     pub fn connected(
@@ -181,7 +188,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     ClusterRemoteProxyInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
-    /// The initial connect timeout for remote cluster connections.
+    /// **Required.** The initial connect timeout for remote cluster connections.
     pub fn initial_connect_timeout(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -196,7 +203,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     ClusterRemoteProxyInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// If `true`, cross-cluster search skips the remote cluster when its nodes are unavailable during the search and ignores errors returned by the remote cluster.
+    /// **Required.** If `true`, cross-cluster search skips the remote cluster when its nodes are unavailable during the search and ignores errors returned by the remote cluster.
     pub fn skip_unavailable(
         self,
         value: bool,
@@ -211,7 +218,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// The address for remote connections when proxy mode is configured.
+    /// **Required.** The address for remote connections when proxy mode is configured.
     pub fn proxy_address(
         self,
         value: impl Into<String>,
@@ -226,6 +233,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn server_name(
         self,
         value: impl Into<String>,
@@ -240,7 +248,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
-    /// The number of open socket connections to the remote cluster when proxy mode is configured.
+    /// **Required.** The number of open socket connections to the remote cluster when proxy mode is configured.
     pub fn num_proxy_sockets_connected(
         self,
         value: i32,
@@ -255,7 +263,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
-    /// The maximum number of socket connections to the remote cluster when proxy mode is configured.
+    /// **Required.** The maximum number of socket connections to the remote cluster when proxy mode is configured.
     pub fn max_proxy_socket_connections(
         self,
         value: i32,
@@ -267,20 +275,27 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
 {
     /// Builds a [`ClusterRemoteProxyInfo`].
-    pub fn build(self) -> ClusterRemoteProxyInfo {
+    pub fn build(self) -> ClusterRemoteProxyInfo
+    where
+        S0: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::mode>,
+        S1: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::connected>,
+        S2: crate::typed::builder::IsSet<
+            cluster_remote_proxy_info_members::initial_connect_timeout,
+        >,
+        S3: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::skip_unavailable>,
+        S4: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::proxy_address>,
+        S5: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::server_name>,
+        S6: crate::typed::builder::IsSet<
+            cluster_remote_proxy_info_members::num_proxy_sockets_connected,
+        >,
+        S7: crate::typed::builder::IsSet<
+            cluster_remote_proxy_info_members::max_proxy_socket_connections,
+        >,
+    {
         ClusterRemoteProxyInfo {
             mode: self.mode.unwrap(),
             connected: self.connected.unwrap(),
@@ -295,161 +310,48 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterRemoteProxyInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterRemoteProxyInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::mode>,
+    S1: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::connected>,
+    S2: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::initial_connect_timeout>,
+    S3: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::skip_unavailable>,
+    S4: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::proxy_address>,
+    S5: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::server_name>,
+    S6: crate::typed::builder::IsSet<
+        cluster_remote_proxy_info_members::num_proxy_sockets_connected,
+    >,
+    S7: crate::typed::builder::IsSet<
+        cluster_remote_proxy_info_members::max_proxy_socket_connections,
+    >,
 {
-    fn from(
-        builder: ClusterRemoteProxyInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterRemoteProxyInfo;
+
+    fn build(self) -> ClusterRemoteProxyInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    ClusterRemoteProxyInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for ClusterRemoteProxyInfo
+where
+    S0: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::mode>,
+    S1: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::connected>,
+    S2: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::initial_connect_timeout>,
+    S3: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::skip_unavailable>,
+    S4: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::proxy_address>,
+    S5: crate::typed::builder::IsSet<cluster_remote_proxy_info_members::server_name>,
+    S6: crate::typed::builder::IsSet<
+        cluster_remote_proxy_info_members::num_proxy_sockets_connected,
+    >,
+    S7: crate::typed::builder::IsSet<
+        cluster_remote_proxy_info_members::max_proxy_socket_connections,
+    >,
 {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match mode {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `connected` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connected: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match connected {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `initial_connect_timeout` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_connect_timeout: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match initial_connect_timeout {} }
-}
-
-impl<S4, S5, S6, S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `skip_unavailable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skip_unavailable: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match skip_unavailable {} }
-}
-
-impl<S5, S6, S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `proxy_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, proxy_address: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match proxy_address {} }
-}
-
-impl<S6, S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `server_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, server_name: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match server_name {} }
-}
-
-impl<S7>
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `num_proxy_sockets_connected` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_proxy_sockets_connected: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match num_proxy_sockets_connected {} }
-}
-
-impl
-    ClusterRemoteProxyInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_proxy_socket_connections` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_proxy_socket_connections: crate::typed::builder::MissingRequiredField) -> ClusterRemoteProxyInfo { match max_proxy_socket_connections {} }
+    fn from(builder: ClusterRemoteProxyInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -474,26 +376,33 @@ pub struct ClusterRemoteSniffInfo {
 
 impl ClusterRemoteSniffInfo {
     /// Creates a builder for [`ClusterRemoteSniffInfo`].
+    ///
+    /// Required: `mode`, `connected`, `max_connections_per_cluster`, `num_nodes_connected`, `initial_connect_timeout`, `skip_unavailable`, `seeds`.
     pub fn builder() -> ClusterRemoteSniffInfoBuilder {
         ClusterRemoteSniffInfoBuilder::new()
     }
 
     /// Creates a [`ClusterRemoteSniffInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterRemoteSniffInfoBuilder,
-        ) -> ClusterRemoteSniffInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `mode`, `connected`, `max_connections_per_cluster`, `num_nodes_connected`, `initial_connect_timeout`, `skip_unavailable`, `seeds`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterRemoteSniffInfo>>(
+        f: impl FnOnce(ClusterRemoteSniffInfoBuilder) -> B,
     ) -> ClusterRemoteSniffInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterRemoteSniffInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_remote_sniff_info_members {
+    pub struct mode;
+    pub struct connected;
+    pub struct max_connections_per_cluster;
+    pub struct num_nodes_connected;
+    pub struct initial_connect_timeout;
+    pub struct skip_unavailable;
+    pub struct seeds;
 }
 
 /// Builder for [`ClusterRemoteSniffInfo`].
@@ -562,7 +471,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, 
 impl<S1, S2, S3, S4, S5, S6>
     ClusterRemoteSniffInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
-    /// The connection mode for the remote cluster.
+    /// **Required.** The connection mode for the remote cluster.
     pub fn mode(
         self,
         value: impl Into<String>,
@@ -576,7 +485,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     ClusterRemoteSniffInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
-    /// If it is `true`, there is at least one open connection to the remote cluster.
+    /// **Required.** If it is `true`, there is at least one open connection to the remote cluster.
     /// If it is `false`, it means that the cluster no longer has an open connection to the remote cluster.
     /// It does not necessarily mean that the remote cluster is down or unavailable, just that at some point a connection was lost.
     pub fn connected(
@@ -592,7 +501,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     ClusterRemoteSniffInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
-    /// The maximum number of connections maintained for the remote cluster when sniff mode is configured.
+    /// **Required.** The maximum number of connections maintained for the remote cluster when sniff mode is configured.
     pub fn max_connections_per_cluster(
         self,
         value: i32,
@@ -606,7 +515,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     ClusterRemoteSniffInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
-    /// The number of connected nodes in the remote cluster when sniff mode is configured.
+    /// **Required.** The number of connected nodes in the remote cluster when sniff mode is configured.
     pub fn num_nodes_connected(
         self,
         value: i64,
@@ -620,7 +529,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
-    /// The initial connect timeout for remote cluster connections.
+    /// **Required.** The initial connect timeout for remote cluster connections.
     pub fn initial_connect_timeout(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -634,7 +543,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
-    /// If `true`, cross-cluster search skips the remote cluster when its nodes are unavailable during the search and ignores errors returned by the remote cluster.
+    /// **Required.** If `true`, cross-cluster search skips the remote cluster when its nodes are unavailable during the search and ignores errors returned by the remote cluster.
     pub fn skip_unavailable(
         self,
         value: bool,
@@ -648,7 +557,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
-    /// The initial seed transport addresses of the remote cluster when sniff mode is configured.
+    /// **Required.** The initial seed transport addresses of the remote cluster when sniff mode is configured.
     pub fn seeds(
         self,
         value: impl Into<Vec<String>>,
@@ -684,19 +593,22 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`ClusterRemoteSniffInfo`].
-    pub fn build(self) -> ClusterRemoteSniffInfo {
+    pub fn build(self) -> ClusterRemoteSniffInfo
+    where
+        S0: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::mode>,
+        S1: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::connected>,
+        S2: crate::typed::builder::IsSet<
+            cluster_remote_sniff_info_members::max_connections_per_cluster,
+        >,
+        S3: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::num_nodes_connected>,
+        S4: crate::typed::builder::IsSet<
+            cluster_remote_sniff_info_members::initial_connect_timeout,
+        >,
+        S5: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::skip_unavailable>,
+        S6: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::seeds>,
+    {
         ClusterRemoteSniffInfo {
             mode: self.mode.unwrap(),
             connected: self.connected.unwrap(),
@@ -709,136 +621,42 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterRemoteSniffInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterRemoteSniffInfo
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::mode>,
+    S1: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::connected>,
+    S2: crate::typed::builder::IsSet<
+        cluster_remote_sniff_info_members::max_connections_per_cluster,
+    >,
+    S3: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::num_nodes_connected>,
+    S4: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::initial_connect_timeout>,
+    S5: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::skip_unavailable>,
+    S6: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::seeds>,
 {
-    fn from(
-        builder: ClusterRemoteSniffInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterRemoteSniffInfo;
+
+    fn build(self) -> ClusterRemoteSniffInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    ClusterRemoteSniffInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for ClusterRemoteSniffInfo
+where
+    S0: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::mode>,
+    S1: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::connected>,
+    S2: crate::typed::builder::IsSet<
+        cluster_remote_sniff_info_members::max_connections_per_cluster,
+    >,
+    S3: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::num_nodes_connected>,
+    S4: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::initial_connect_timeout>,
+    S5: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::skip_unavailable>,
+    S6: crate::typed::builder::IsSet<cluster_remote_sniff_info_members::seeds>,
 {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match mode {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `connected` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connected: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match connected {} }
-}
-
-impl<S3, S4, S5, S6>
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `max_connections_per_cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_connections_per_cluster: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match max_connections_per_cluster {} }
-}
-
-impl<S4, S5, S6>
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `num_nodes_connected` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_nodes_connected: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match num_nodes_connected {} }
-}
-
-impl<S5, S6>
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `initial_connect_timeout` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, initial_connect_timeout: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match initial_connect_timeout {} }
-}
-
-impl<S6>
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `skip_unavailable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, skip_unavailable: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match skip_unavailable {} }
-}
-
-impl
-    ClusterRemoteSniffInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `seeds` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, seeds: crate::typed::builder::MissingRequiredField) -> ClusterRemoteSniffInfo { match seeds {} }
+    fn from(builder: ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.remote_info`](crate::typed::cluster::ClusterClient::remote_info).
@@ -881,7 +699,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -976,6 +796,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

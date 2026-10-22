@@ -8,18 +8,27 @@ pub struct FailedNodeException {
 
 impl FailedNodeException {
     /// Creates a builder for [`FailedNodeException`].
+    ///
+    /// Required: `node_id`.
     pub fn builder() -> FailedNodeExceptionBuilder {
         FailedNodeExceptionBuilder::new()
     }
 
     /// Creates a [`FailedNodeException`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FailedNodeExceptionBuilder,
-        ) -> FailedNodeExceptionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `node_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = FailedNodeException>>(
+        f: impl FnOnce(FailedNodeExceptionBuilder) -> B,
     ) -> FailedNodeException {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FailedNodeExceptionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod failed_node_exception_members {
+    pub struct node_id;
 }
 
 /// Builder for [`FailedNodeException`].
@@ -48,6 +57,7 @@ impl<S0> FailedNodeExceptionBuilder<(S0,)> {
 }
 
 impl FailedNodeExceptionBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -58,25 +68,36 @@ impl FailedNodeExceptionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FailedNodeExceptionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FailedNodeExceptionBuilder<(S0,)> {
     /// Builds a [`FailedNodeException`].
-    pub fn build(self) -> FailedNodeException {
+    pub fn build(self) -> FailedNodeException
+    where
+        S0: crate::typed::builder::IsSet<failed_node_exception_members::node_id>,
+    {
         FailedNodeException {
             node_id: self.node_id.unwrap(),
         }
     }
 }
 
-impl From<FailedNodeExceptionBuilder<(crate::typed::builder::Set,)>> for FailedNodeException {
-    fn from(builder: FailedNodeExceptionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FailedNodeExceptionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<failed_node_exception_members::node_id>,
+{
+    type Output = FailedNodeException;
+
+    fn build(self) -> FailedNodeException {
+        Self::build(self)
     }
 }
 
-impl FailedNodeExceptionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> FailedNodeException { match node_id {} }
+impl<S0> From<FailedNodeExceptionBuilder<(S0,)>> for FailedNodeException
+where
+    S0: crate::typed::builder::IsSet<failed_node_exception_members::node_id>,
+{
+    fn from(builder: FailedNodeExceptionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`capabilities`](crate::typed::Client::capabilities).
@@ -123,7 +144,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -309,6 +332,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

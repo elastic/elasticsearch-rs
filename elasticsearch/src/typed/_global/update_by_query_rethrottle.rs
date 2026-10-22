@@ -35,19 +35,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `task_id`, `requests_per_second`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `task_id`, `requests_per_second`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct task_id;
+    pub struct requests_per_second;
 }
 
 /// Builder for [`Request`].
@@ -152,7 +161,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The ID for the task.
+    /// **Required.** The ID for the task.
     pub fn task_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -164,7 +173,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The maximum number of documents to update per second, across the entire update_by_query operation (including slices).
+    /// **Required.** The maximum number of documents to update per second, across the entire update_by_query operation (including slices).
     /// It can be either `-1` to turn off throttling or any decimal number like `1.7` or `12` to throttle to that level.
     pub fn requests_per_second(
         self,
@@ -176,9 +185,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
         Request {
             task_id: self.task_id.unwrap(),
             requests_per_second: self.requests_per_second.unwrap(),
@@ -190,41 +203,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::task_id>,
+    S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `task_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_id: crate::typed::builder::MissingRequiredField) -> Request { match task_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `task_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, task_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match task_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `requests_per_second` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> Request { match requests_per_second {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `requests_per_second` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, requests_per_second: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match requests_per_second {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::task_id>,
+        S1: crate::typed::builder::IsSet<request_members::requests_per_second>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -340,25 +340,32 @@ pub struct UpdateByQueryRethrottleNode {
 
 impl UpdateByQueryRethrottleNode {
     /// Creates a builder for [`UpdateByQueryRethrottleNode`].
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`, `tasks`.
     pub fn builder() -> UpdateByQueryRethrottleNodeBuilder {
         UpdateByQueryRethrottleNodeBuilder::new()
     }
 
     /// Creates a [`UpdateByQueryRethrottleNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UpdateByQueryRethrottleNodeBuilder,
-        ) -> UpdateByQueryRethrottleNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `host`, `ip`, `name`, `transport_address`, `tasks`.
+    pub fn of<B: crate::typed::builder::Build<Output = UpdateByQueryRethrottleNode>>(
+        f: impl FnOnce(UpdateByQueryRethrottleNodeBuilder) -> B,
     ) -> UpdateByQueryRethrottleNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UpdateByQueryRethrottleNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod update_by_query_rethrottle_node_members {
+    pub struct attributes;
+    pub struct host;
+    pub struct ip;
+    pub struct name;
+    pub struct transport_address;
+    pub struct tasks;
 }
 
 /// Builder for [`UpdateByQueryRethrottleNode`].
@@ -446,6 +453,7 @@ impl<S0, S1, S2, S3, S4, S5> UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3,
 impl<S1, S2, S3, S4, S5>
     UpdateByQueryRethrottleNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -485,6 +493,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     UpdateByQueryRethrottleNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn host(
         self,
         value: impl Into<crate::typed::_types::Host>,
@@ -498,6 +507,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     UpdateByQueryRethrottleNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn ip(
         self,
         value: impl Into<crate::typed::_types::Ip>,
@@ -511,6 +521,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -524,6 +535,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -537,6 +549,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn tasks(
         self,
         value: impl Into<
@@ -563,21 +576,12 @@ impl<S0, S1, S2, S3, S4>
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<
+        B: crate::typed::builder::Build<Output = crate::typed::tasks::_types::TaskInfo>,
+    >(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            crate::typed::tasks::_types::TaskInfoBuilder,
-        ) -> crate::typed::tasks::_types::TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::tasks::_types::TaskInfoBuilder) -> B,
     ) -> UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.add_tasks(
             key,
@@ -602,21 +606,12 @@ impl<S0, S1, S2, S3, S4>
     }
 
     /// Adds an entry to [`tasks`](Self::tasks), with a builder.
-    pub fn add_tasks_with(
+    pub fn add_tasks_with<
+        B: crate::typed::builder::Build<Output = crate::typed::tasks::_types::TaskInfo>,
+    >(
         self,
         key: impl Into<crate::typed::_types::TaskId>,
-        f: impl FnOnce(
-            crate::typed::tasks::_types::TaskInfoBuilder,
-        ) -> crate::typed::tasks::_types::TaskInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::tasks::_types::TaskInfoBuilder) -> B,
     ) -> Self {
         self.add_tasks(
             key,
@@ -625,18 +620,19 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`UpdateByQueryRethrottleNode`].
-    pub fn build(self) -> UpdateByQueryRethrottleNode {
+    pub fn build(self) -> UpdateByQueryRethrottleNode
+    where
+        S0: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::attributes>,
+        S1: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::host>,
+        S2: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::ip>,
+        S3: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::name>,
+        S4: crate::typed::builder::IsSet<
+            update_by_query_rethrottle_node_members::transport_address,
+        >,
+        S5: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::tasks>,
+    {
         UpdateByQueryRethrottleNode {
             attributes: self.attributes.unwrap(),
             host: self.host.unwrap(),
@@ -649,111 +645,34 @@ impl
     }
 }
 
-impl
-    From<
-        UpdateByQueryRethrottleNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UpdateByQueryRethrottleNode
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::host>,
+    S2: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::ip>,
+    S3: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::name>,
+    S4: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::tasks>,
 {
-    fn from(
-        builder: UpdateByQueryRethrottleNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UpdateByQueryRethrottleNode;
+
+    fn build(self) -> UpdateByQueryRethrottleNode {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    UpdateByQueryRethrottleNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for UpdateByQueryRethrottleNode
+where
+    S0: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::attributes>,
+    S1: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::host>,
+    S2: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::ip>,
+    S3: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::name>,
+    S4: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<update_by_query_rethrottle_node_members::tasks>,
 {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match attributes {} }
-}
-
-impl<S2, S3, S4, S5>
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match host {} }
-}
-
-impl<S3, S4, S5>
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `ip` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, ip: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match ip {} }
-}
-
-impl<S4, S5>
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match name {} }
-}
-
-impl<S5>
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match transport_address {} }
-}
-
-impl
-    UpdateByQueryRethrottleNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `tasks` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tasks: crate::typed::builder::MissingRequiredField) -> UpdateByQueryRethrottleNode { match tasks {} }
+    fn from(builder: UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }

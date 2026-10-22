@@ -9,19 +9,28 @@ pub struct Column {
 
 impl Column {
     /// Creates a builder for [`Column`].
+    ///
+    /// Required: `name`, `type`.
     pub fn builder() -> ColumnBuilder {
         ColumnBuilder::new()
     }
 
     /// Creates a [`Column`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ColumnBuilder,
-        )
-            -> ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `name`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Column>>(
+        f: impl FnOnce(ColumnBuilder) -> B,
     ) -> Column {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ColumnBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod column_members {
+    pub struct name;
+    pub struct r#type;
 }
 
 /// Builder for [`Column`].
@@ -53,6 +62,7 @@ impl<S0, S1> ColumnBuilder<(S0, S1)> {
 }
 
 impl<S1> ColumnBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -64,6 +74,7 @@ impl<S1> ColumnBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ColumnBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -74,9 +85,13 @@ impl<S0> ColumnBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ColumnBuilder<(S0, S1)> {
     /// Builds a [`Column`].
-    pub fn build(self) -> Column {
+    pub fn build(self) -> Column
+    where
+        S0: crate::typed::builder::IsSet<column_members::name>,
+        S1: crate::typed::builder::IsSet<column_members::r#type>,
+    {
         Column {
             name: self.name.unwrap(),
             r#type: self.r#type.unwrap(),
@@ -84,24 +99,26 @@ impl ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
     }
 }
 
-impl From<ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>> for Column {
-    fn from(
-        builder: ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+impl<S0, S1> crate::typed::builder::Build for ColumnBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<column_members::name>,
+    S1: crate::typed::builder::IsSet<column_members::r#type>,
+{
+    type Output = Column;
+
+    fn build(self) -> Column {
+        Self::build(self)
     }
 }
 
-impl<S1> ColumnBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Column { match name {} }
-}
-
-impl ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Column { match r#type {} }
+impl<S0, S1> From<ColumnBuilder<(S0, S1)>> for Column
+where
+    S0: crate::typed::builder::IsSet<column_members::name>,
+    S1: crate::typed::builder::IsSet<column_members::r#type>,
+{
+    fn from(builder: ColumnBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type Row = Vec<serde_json::Value>;

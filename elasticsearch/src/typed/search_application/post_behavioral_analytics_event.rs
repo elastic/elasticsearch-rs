@@ -35,25 +35,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `collection_name`, `event_type`, `payload`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `collection_name`, `event_type`, `payload`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct collection_name;
+    pub struct event_type;
+    pub struct payload;
 }
 
 /// Builder for [`Request`].
@@ -189,7 +193,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The name of the behavioral analytics collection.
+    /// **Required.** The name of the behavioral analytics collection.
     pub fn collection_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -201,7 +205,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The analytics event type.
+    /// **Required.** The analytics event type.
     pub fn event_type(
         self,
         value: impl Into<crate::typed::search_application::_types::EventType>,
@@ -213,7 +217,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn payload(
         self,
         value: impl Into<serde_json::Value>,
@@ -224,18 +228,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::collection_name>,
+        S1: crate::typed::builder::IsSet<request_members::event_type>,
+        S2: crate::typed::builder::IsSet<request_members::payload>,
+    {
         Request {
             collection_name: self.collection_name.unwrap(),
             event_type: self.event_type.unwrap(),
@@ -249,90 +249,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::collection_name>,
+    S1: crate::typed::builder::IsSet<request_members::event_type>,
+    S2: crate::typed::builder::IsSet<request_members::payload>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `collection_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, collection_name: crate::typed::builder::MissingRequiredField) -> Request { match collection_name {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `collection_name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, collection_name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match collection_name {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `event_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, event_type: crate::typed::builder::MissingRequiredField) -> Request { match event_type {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `event_type` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, event_type: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match event_type {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `payload` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, payload: crate::typed::builder::MissingRequiredField) -> Request { match payload {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `payload` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, payload: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match payload {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::collection_name>,
+        S1: crate::typed::builder::IsSet<request_members::event_type>,
+        S2: crate::typed::builder::IsSet<request_members::payload>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

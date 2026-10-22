@@ -10,22 +10,29 @@ pub struct FileDetails {
 
 impl FileDetails {
     /// Creates a builder for [`FileDetails`].
+    ///
+    /// Required: `length`, `name`, `recovered`.
     pub fn builder() -> FileDetailsBuilder {
         FileDetailsBuilder::new()
     }
 
     /// Creates a [`FileDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FileDetailsBuilder,
-        ) -> FileDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `length`, `name`, `recovered`.
+    pub fn of<B: crate::typed::builder::Build<Output = FileDetails>>(
+        f: impl FnOnce(FileDetailsBuilder) -> B,
     ) -> FileDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FileDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod file_details_members {
+    pub struct length;
+    pub struct name;
+    pub struct recovered;
 }
 
 /// Builder for [`FileDetails`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> FileDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FileDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn length(self, value: i64) -> FileDetailsBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.length = Some(value);
@@ -80,6 +88,7 @@ impl<S1, S2> FileDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FileDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -91,6 +100,7 @@ impl<S0, S2> FileDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> FileDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn recovered(self, value: i64) -> FileDetailsBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.recovered = Some(value);
@@ -98,15 +108,14 @@ impl<S0, S1> FileDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    FileDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FileDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`FileDetails`].
-    pub fn build(self) -> FileDetails {
+    pub fn build(self) -> FileDetails
+    where
+        S0: crate::typed::builder::IsSet<file_details_members::length>,
+        S1: crate::typed::builder::IsSet<file_details_members::name>,
+        S2: crate::typed::builder::IsSet<file_details_members::recovered>,
+    {
         FileDetails {
             length: self.length.unwrap(),
             name: self.name.unwrap(),
@@ -115,54 +124,28 @@ impl
     }
 }
 
-impl
-    From<
-        FileDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FileDetails
+impl<S0, S1, S2> crate::typed::builder::Build for FileDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<file_details_members::length>,
+    S1: crate::typed::builder::IsSet<file_details_members::name>,
+    S2: crate::typed::builder::IsSet<file_details_members::recovered>,
 {
-    fn from(
-        builder: FileDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FileDetails;
+
+    fn build(self) -> FileDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FileDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, length: crate::typed::builder::MissingRequiredField) -> FileDetails { match length {} }
-}
-
-impl<S2>
-    FileDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FileDetailsBuilder<(S0, S1, S2)>> for FileDetails
+where
+    S0: crate::typed::builder::IsSet<file_details_members::length>,
+    S1: crate::typed::builder::IsSet<file_details_members::name>,
+    S2: crate::typed::builder::IsSet<file_details_members::recovered>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> FileDetails { match name {} }
-}
-
-impl
-    FileDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `recovered` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recovered: crate::typed::builder::MissingRequiredField) -> FileDetails { match recovered {} }
+    fn from(builder: FileDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -185,23 +168,30 @@ pub struct RecoveryBytes {
 
 impl RecoveryBytes {
     /// Creates a builder for [`RecoveryBytes`].
+    ///
+    /// Required: `percent`, `recovered_in_bytes`, `reused_in_bytes`, `total_in_bytes`.
     pub fn builder() -> RecoveryBytesBuilder {
         RecoveryBytesBuilder::new()
     }
 
     /// Creates a [`RecoveryBytes`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoveryBytesBuilder,
-        ) -> RecoveryBytesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `percent`, `recovered_in_bytes`, `reused_in_bytes`, `total_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryBytes>>(
+        f: impl FnOnce(RecoveryBytesBuilder) -> B,
     ) -> RecoveryBytes {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryBytesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_bytes_members {
+    pub struct percent;
+    pub struct recovered_in_bytes;
+    pub struct reused_in_bytes;
+    pub struct total_in_bytes;
 }
 
 /// Builder for [`RecoveryBytes`].
@@ -335,6 +325,7 @@ impl<S0, S1, S2, S3> RecoveryBytesBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RecoveryBytesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn percent(
         self,
         value: impl Into<crate::typed::_types::Percentage>,
@@ -346,6 +337,7 @@ impl<S1, S2, S3> RecoveryBytesBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> RecoveryBytesBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn recovered_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -357,6 +349,7 @@ impl<S0, S2, S3> RecoveryBytesBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> RecoveryBytesBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn reused_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -368,6 +361,7 @@ impl<S0, S1, S3> RecoveryBytesBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> RecoveryBytesBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -378,16 +372,15 @@ impl<S0, S1, S2> RecoveryBytesBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 }
 
-impl
-    RecoveryBytesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RecoveryBytesBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RecoveryBytes`].
-    pub fn build(self) -> RecoveryBytes {
+    pub fn build(self) -> RecoveryBytes
+    where
+        S0: crate::typed::builder::IsSet<recovery_bytes_members::percent>,
+        S1: crate::typed::builder::IsSet<recovery_bytes_members::recovered_in_bytes>,
+        S2: crate::typed::builder::IsSet<recovery_bytes_members::reused_in_bytes>,
+        S3: crate::typed::builder::IsSet<recovery_bytes_members::total_in_bytes>,
+    {
         RecoveryBytes {
             percent: self.percent.unwrap(),
             recovered: self.recovered,
@@ -402,71 +395,30 @@ impl
     }
 }
 
-impl
-    From<
-        RecoveryBytesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RecoveryBytes
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RecoveryBytesBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<recovery_bytes_members::percent>,
+    S1: crate::typed::builder::IsSet<recovery_bytes_members::recovered_in_bytes>,
+    S2: crate::typed::builder::IsSet<recovery_bytes_members::reused_in_bytes>,
+    S3: crate::typed::builder::IsSet<recovery_bytes_members::total_in_bytes>,
 {
-    fn from(
-        builder: RecoveryBytesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoveryBytes;
+
+    fn build(self) -> RecoveryBytes {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RecoveryBytesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, percent: crate::typed::builder::MissingRequiredField) -> RecoveryBytes { match percent {} }
-}
-
-impl<S2, S3>
-    RecoveryBytesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RecoveryBytesBuilder<(S0, S1, S2, S3)>> for RecoveryBytes
+where
+    S0: crate::typed::builder::IsSet<recovery_bytes_members::percent>,
+    S1: crate::typed::builder::IsSet<recovery_bytes_members::recovered_in_bytes>,
+    S2: crate::typed::builder::IsSet<recovery_bytes_members::reused_in_bytes>,
+    S3: crate::typed::builder::IsSet<recovery_bytes_members::total_in_bytes>,
 {
-    /// `recovered_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recovered_in_bytes: crate::typed::builder::MissingRequiredField) -> RecoveryBytes { match recovered_in_bytes {} }
-}
-
-impl<S3>
-    RecoveryBytesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `reused_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reused_in_bytes: crate::typed::builder::MissingRequiredField) -> RecoveryBytes { match reused_in_bytes {} }
-}
-
-impl
-    RecoveryBytesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_in_bytes: crate::typed::builder::MissingRequiredField) -> RecoveryBytes { match total_in_bytes {} }
+    fn from(builder: RecoveryBytesBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -481,23 +433,30 @@ pub struct RecoveryFiles {
 
 impl RecoveryFiles {
     /// Creates a builder for [`RecoveryFiles`].
+    ///
+    /// Required: `percent`, `recovered`, `reused`, `total`.
     pub fn builder() -> RecoveryFilesBuilder {
         RecoveryFilesBuilder::new()
     }
 
     /// Creates a [`RecoveryFiles`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoveryFilesBuilder,
-        ) -> RecoveryFilesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `percent`, `recovered`, `reused`, `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryFiles>>(
+        f: impl FnOnce(RecoveryFilesBuilder) -> B,
     ) -> RecoveryFiles {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryFilesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_files_members {
+    pub struct percent;
+    pub struct recovered;
+    pub struct reused;
+    pub struct total;
 }
 
 /// Builder for [`RecoveryFiles`].
@@ -570,21 +529,16 @@ impl<S0, S1, S2, S3> RecoveryFilesBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Adds an element to [`details`](Self::details), with a builder.
-    pub fn add_details_with(
+    pub fn add_details_with<B: crate::typed::builder::Build<Output = FileDetails>>(
         self,
-        f: impl FnOnce(
-            FileDetailsBuilder,
-        ) -> FileDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FileDetailsBuilder) -> B,
     ) -> Self {
         self.add_details(f(FileDetailsBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> RecoveryFilesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn percent(
         self,
         value: impl Into<crate::typed::_types::Percentage>,
@@ -596,6 +550,7 @@ impl<S1, S2, S3> RecoveryFilesBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> RecoveryFilesBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn recovered(
         self,
         value: i64,
@@ -607,6 +562,7 @@ impl<S0, S2, S3> RecoveryFilesBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> RecoveryFilesBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn reused(
         self,
         value: i64,
@@ -618,6 +574,7 @@ impl<S0, S1, S3> RecoveryFilesBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> RecoveryFilesBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total(
         self,
         value: i64,
@@ -628,16 +585,15 @@ impl<S0, S1, S2> RecoveryFilesBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 }
 
-impl
-    RecoveryFilesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RecoveryFilesBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RecoveryFiles`].
-    pub fn build(self) -> RecoveryFiles {
+    pub fn build(self) -> RecoveryFiles
+    where
+        S0: crate::typed::builder::IsSet<recovery_files_members::percent>,
+        S1: crate::typed::builder::IsSet<recovery_files_members::recovered>,
+        S2: crate::typed::builder::IsSet<recovery_files_members::reused>,
+        S3: crate::typed::builder::IsSet<recovery_files_members::total>,
+    {
         RecoveryFiles {
             details: self.details,
             percent: self.percent.unwrap(),
@@ -648,71 +604,30 @@ impl
     }
 }
 
-impl
-    From<
-        RecoveryFilesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RecoveryFiles
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RecoveryFilesBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<recovery_files_members::percent>,
+    S1: crate::typed::builder::IsSet<recovery_files_members::recovered>,
+    S2: crate::typed::builder::IsSet<recovery_files_members::reused>,
+    S3: crate::typed::builder::IsSet<recovery_files_members::total>,
 {
-    fn from(
-        builder: RecoveryFilesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoveryFiles;
+
+    fn build(self) -> RecoveryFiles {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RecoveryFilesBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, percent: crate::typed::builder::MissingRequiredField) -> RecoveryFiles { match percent {} }
-}
-
-impl<S2, S3>
-    RecoveryFilesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RecoveryFilesBuilder<(S0, S1, S2, S3)>> for RecoveryFiles
+where
+    S0: crate::typed::builder::IsSet<recovery_files_members::percent>,
+    S1: crate::typed::builder::IsSet<recovery_files_members::recovered>,
+    S2: crate::typed::builder::IsSet<recovery_files_members::reused>,
+    S3: crate::typed::builder::IsSet<recovery_files_members::total>,
 {
-    /// `recovered` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recovered: crate::typed::builder::MissingRequiredField) -> RecoveryFiles { match recovered {} }
-}
-
-impl<S3>
-    RecoveryFilesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `reused` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reused: crate::typed::builder::MissingRequiredField) -> RecoveryFiles { match reused {} }
-}
-
-impl
-    RecoveryFilesBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> RecoveryFiles { match total {} }
+    fn from(builder: RecoveryFilesBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -734,24 +649,31 @@ pub struct RecoveryIndexStatus {
 
 impl RecoveryIndexStatus {
     /// Creates a builder for [`RecoveryIndexStatus`].
+    ///
+    /// Required: `files`, `size`, `source_throttle_time_in_millis`, `target_throttle_time_in_millis`, `total_time_in_millis`.
     pub fn builder() -> RecoveryIndexStatusBuilder {
         RecoveryIndexStatusBuilder::new()
     }
 
     /// Creates a [`RecoveryIndexStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoveryIndexStatusBuilder,
-        ) -> RecoveryIndexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `files`, `size`, `source_throttle_time_in_millis`, `target_throttle_time_in_millis`, `total_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryIndexStatus>>(
+        f: impl FnOnce(RecoveryIndexStatusBuilder) -> B,
     ) -> RecoveryIndexStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryIndexStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_index_status_members {
+    pub struct files;
+    pub struct size;
+    pub struct source_throttle_time_in_millis;
+    pub struct target_throttle_time_in_millis;
+    pub struct total_time_in_millis;
 }
 
 /// Builder for [`RecoveryIndexStatus`].
@@ -830,16 +752,9 @@ impl<S0, S1, S2, S3, S4> RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`bytes`](Self::bytes) with a builder.
-    pub fn bytes_with(
+    pub fn bytes_with<B: crate::typed::builder::Build<Output = RecoveryBytes>>(
         self,
-        f: impl FnOnce(
-            RecoveryBytesBuilder,
-        ) -> RecoveryBytesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RecoveryBytesBuilder) -> B,
     ) -> Self {
         self.bytes(f(RecoveryBytesBuilder::new()).build())
     }
@@ -891,6 +806,7 @@ impl<S0, S1, S2, S3, S4> RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> RecoveryIndexStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn files(
         self,
         value: impl Into<RecoveryFiles>,
@@ -901,22 +817,16 @@ impl<S1, S2, S3, S4> RecoveryIndexStatusBuilder<(crate::typed::builder::NotSet, 
     }
 
     /// Sets [`files`](Self::files) with a builder.
-    pub fn files_with(
+    pub fn files_with<B: crate::typed::builder::Build<Output = RecoveryFiles>>(
         self,
-        f: impl FnOnce(
-            RecoveryFilesBuilder,
-        ) -> RecoveryFilesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RecoveryFilesBuilder) -> B,
     ) -> RecoveryIndexStatusBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         self.files(f(RecoveryFilesBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4> RecoveryIndexStatusBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn size(
         self,
         value: impl Into<RecoveryBytes>,
@@ -927,22 +837,16 @@ impl<S0, S2, S3, S4> RecoveryIndexStatusBuilder<(S0, crate::typed::builder::NotS
     }
 
     /// Sets [`size`](Self::size) with a builder.
-    pub fn size_with(
+    pub fn size_with<B: crate::typed::builder::Build<Output = RecoveryBytes>>(
         self,
-        f: impl FnOnce(
-            RecoveryBytesBuilder,
-        ) -> RecoveryBytesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RecoveryBytesBuilder) -> B,
     ) -> RecoveryIndexStatusBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
         self.size(f(RecoveryBytesBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3, S4> RecoveryIndexStatusBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn source_throttle_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -954,6 +858,7 @@ impl<S0, S1, S3, S4> RecoveryIndexStatusBuilder<(S0, S1, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S4> RecoveryIndexStatusBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn target_throttle_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -965,6 +870,7 @@ impl<S0, S1, S2, S4> RecoveryIndexStatusBuilder<(S0, S1, S2, crate::typed::build
 }
 
 impl<S0, S1, S2, S3> RecoveryIndexStatusBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -975,17 +881,20 @@ impl<S0, S1, S2, S3> RecoveryIndexStatusBuilder<(S0, S1, S2, S3, crate::typed::b
     }
 }
 
-impl
-    RecoveryIndexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`RecoveryIndexStatus`].
-    pub fn build(self) -> RecoveryIndexStatus {
+    pub fn build(self) -> RecoveryIndexStatus
+    where
+        S0: crate::typed::builder::IsSet<recovery_index_status_members::files>,
+        S1: crate::typed::builder::IsSet<recovery_index_status_members::size>,
+        S2: crate::typed::builder::IsSet<
+            recovery_index_status_members::source_throttle_time_in_millis,
+        >,
+        S3: crate::typed::builder::IsSet<
+            recovery_index_status_members::target_throttle_time_in_millis,
+        >,
+        S4: crate::typed::builder::IsSet<recovery_index_status_members::total_time_in_millis>,
+    {
         RecoveryIndexStatus {
             bytes: self.bytes,
             files: self.files.unwrap(),
@@ -1000,90 +909,34 @@ impl
     }
 }
 
-impl
-    From<
-        RecoveryIndexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RecoveryIndexStatus
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<recovery_index_status_members::files>,
+    S1: crate::typed::builder::IsSet<recovery_index_status_members::size>,
+    S2: crate::typed::builder::IsSet<recovery_index_status_members::source_throttle_time_in_millis>,
+    S3: crate::typed::builder::IsSet<recovery_index_status_members::target_throttle_time_in_millis>,
+    S4: crate::typed::builder::IsSet<recovery_index_status_members::total_time_in_millis>,
 {
-    fn from(
-        builder: RecoveryIndexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoveryIndexStatus;
+
+    fn build(self) -> RecoveryIndexStatus {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> RecoveryIndexStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `files` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, files: crate::typed::builder::MissingRequiredField) -> RecoveryIndexStatus { match files {} }
-}
-
-impl<S2, S3, S4>
-    RecoveryIndexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)>>
+    for RecoveryIndexStatus
+where
+    S0: crate::typed::builder::IsSet<recovery_index_status_members::files>,
+    S1: crate::typed::builder::IsSet<recovery_index_status_members::size>,
+    S2: crate::typed::builder::IsSet<recovery_index_status_members::source_throttle_time_in_millis>,
+    S3: crate::typed::builder::IsSet<recovery_index_status_members::target_throttle_time_in_millis>,
+    S4: crate::typed::builder::IsSet<recovery_index_status_members::total_time_in_millis>,
 {
-    /// `size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size: crate::typed::builder::MissingRequiredField) -> RecoveryIndexStatus { match size {} }
-}
-
-impl<S3, S4>
-    RecoveryIndexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `source_throttle_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source_throttle_time_in_millis: crate::typed::builder::MissingRequiredField) -> RecoveryIndexStatus { match source_throttle_time_in_millis {} }
-}
-
-impl<S4>
-    RecoveryIndexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `target_throttle_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_throttle_time_in_millis: crate::typed::builder::MissingRequiredField) -> RecoveryIndexStatus { match target_throttle_time_in_millis {} }
-}
-
-impl
-    RecoveryIndexStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_time_in_millis: crate::typed::builder::MissingRequiredField) -> RecoveryIndexStatus { match total_time_in_millis {} }
+    fn from(builder: RecoveryIndexStatusBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1125,7 +978,9 @@ impl RecoveryOrigin {
     }
 
     /// Creates a [`RecoveryOrigin`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RecoveryOriginBuilder) -> RecoveryOriginBuilder) -> RecoveryOrigin {
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryOrigin>>(
+        f: impl FnOnce(RecoveryOriginBuilder) -> B,
+    ) -> RecoveryOrigin {
         f(Self::builder()).build()
     }
 }
@@ -1326,6 +1181,14 @@ impl RecoveryOriginBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RecoveryOriginBuilder {
+    type Output = RecoveryOrigin;
+
+    fn build(self) -> RecoveryOrigin {
+        Self::build(self)
+    }
+}
+
 impl From<RecoveryOriginBuilder> for RecoveryOrigin {
     fn from(builder: RecoveryOriginBuilder) -> Self {
         builder.build()
@@ -1394,21 +1257,28 @@ pub struct RecoveryStartStatus {
 
 impl RecoveryStartStatus {
     /// Creates a builder for [`RecoveryStartStatus`].
+    ///
+    /// Required: `check_index_time_in_millis`, `total_time_in_millis`.
     pub fn builder() -> RecoveryStartStatusBuilder {
         RecoveryStartStatusBuilder::new()
     }
 
     /// Creates a [`RecoveryStartStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RecoveryStartStatusBuilder,
-        ) -> RecoveryStartStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `check_index_time_in_millis`, `total_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryStartStatus>>(
+        f: impl FnOnce(RecoveryStartStatusBuilder) -> B,
     ) -> RecoveryStartStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryStartStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_start_status_members {
+    pub struct check_index_time_in_millis;
+    pub struct total_time_in_millis;
 }
 
 /// Builder for [`RecoveryStartStatus`].
@@ -1470,6 +1340,7 @@ impl<S0, S1> RecoveryStartStatusBuilder<(S0, S1)> {
 }
 
 impl<S1> RecoveryStartStatusBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn check_index_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1481,6 +1352,7 @@ impl<S1> RecoveryStartStatusBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RecoveryStartStatusBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1491,9 +1363,13 @@ impl<S0> RecoveryStartStatusBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RecoveryStartStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RecoveryStartStatusBuilder<(S0, S1)> {
     /// Builds a [`RecoveryStartStatus`].
-    pub fn build(self) -> RecoveryStartStatus {
+    pub fn build(self) -> RecoveryStartStatus
+    where
+        S0: crate::typed::builder::IsSet<recovery_start_status_members::check_index_time_in_millis>,
+        S1: crate::typed::builder::IsSet<recovery_start_status_members::total_time_in_millis>,
+    {
         RecoveryStartStatus {
             check_index_time: self.check_index_time,
             check_index_time_in_millis: self.check_index_time_in_millis.unwrap(),
@@ -1503,29 +1379,26 @@ impl RecoveryStartStatusBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<RecoveryStartStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RecoveryStartStatus
+impl<S0, S1> crate::typed::builder::Build for RecoveryStartStatusBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<recovery_start_status_members::check_index_time_in_millis>,
+    S1: crate::typed::builder::IsSet<recovery_start_status_members::total_time_in_millis>,
 {
-    fn from(
-        builder: RecoveryStartStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RecoveryStartStatus;
+
+    fn build(self) -> RecoveryStartStatus {
+        Self::build(self)
     }
 }
 
-impl<S1> RecoveryStartStatusBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `check_index_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, check_index_time_in_millis: crate::typed::builder::MissingRequiredField) -> RecoveryStartStatus { match check_index_time_in_millis {} }
-}
-
-impl RecoveryStartStatusBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `total_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_time_in_millis: crate::typed::builder::MissingRequiredField) -> RecoveryStartStatus { match total_time_in_millis {} }
+impl<S0, S1> From<RecoveryStartStatusBuilder<(S0, S1)>> for RecoveryStartStatus
+where
+    S0: crate::typed::builder::IsSet<recovery_start_status_members::check_index_time_in_millis>,
+    S1: crate::typed::builder::IsSet<recovery_start_status_members::total_time_in_millis>,
+{
+    fn from(builder: RecoveryStartStatusBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1535,16 +1408,27 @@ pub struct RecoveryStatus {
 
 impl RecoveryStatus {
     /// Creates a builder for [`RecoveryStatus`].
+    ///
+    /// Required: `shards`.
     pub fn builder() -> RecoveryStatusBuilder {
         RecoveryStatusBuilder::new()
     }
 
     /// Creates a [`RecoveryStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RecoveryStatusBuilder) -> RecoveryStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = RecoveryStatus>>(
+        f: impl FnOnce(RecoveryStatusBuilder) -> B,
     ) -> RecoveryStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RecoveryStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod recovery_status_members {
+    pub struct shards;
 }
 
 /// Builder for [`RecoveryStatus`].
@@ -1573,6 +1457,7 @@ impl<S0> RecoveryStatusBuilder<(S0,)> {
 }
 
 impl RecoveryStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<Vec<ShardRecovery>>,
@@ -1596,23 +1481,9 @@ impl RecoveryStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardRecovery>>(
         self,
-        f: impl FnOnce(
-            ShardRecoveryBuilder,
-        ) -> ShardRecoveryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardRecoveryBuilder) -> B,
     ) -> RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
         self.add_shards(f(ShardRecoveryBuilder::new()).build())
     }
@@ -1628,47 +1499,44 @@ impl RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardRecovery>>(
         self,
-        f: impl FnOnce(
-            ShardRecoveryBuilder,
-        ) -> ShardRecoveryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardRecoveryBuilder) -> B,
     ) -> Self {
         self.add_shards(f(ShardRecoveryBuilder::new()).build())
     }
 }
 
-impl RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RecoveryStatusBuilder<(S0,)> {
     /// Builds a [`RecoveryStatus`].
-    pub fn build(self) -> RecoveryStatus {
+    pub fn build(self) -> RecoveryStatus
+    where
+        S0: crate::typed::builder::IsSet<recovery_status_members::shards>,
+    {
         RecoveryStatus {
             shards: self.shards.unwrap(),
         }
     }
 }
 
-impl From<RecoveryStatusBuilder<(crate::typed::builder::Set,)>> for RecoveryStatus {
-    fn from(builder: RecoveryStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RecoveryStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<recovery_status_members::shards>,
+{
+    type Output = RecoveryStatus;
+
+    fn build(self) -> RecoveryStatus {
+        Self::build(self)
     }
 }
 
-impl RecoveryStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> RecoveryStatus { match shards {} }
+impl<S0> From<RecoveryStatusBuilder<(S0,)>> for RecoveryStatus
+where
+    S0: crate::typed::builder::IsSet<recovery_status_members::shards>,
+{
+    fn from(builder: RecoveryStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1767,7 +1635,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1972,6 +1842,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -2149,30 +2027,37 @@ pub struct ShardRecovery {
 
 impl ShardRecovery {
     /// Creates a builder for [`ShardRecovery`].
+    ///
+    /// Required: `id`, `index`, `primary`, `source`, `stage`, `start_time_in_millis`, `target`, `total_time_in_millis`, `translog`, `type`, `verify_index`.
     pub fn builder() -> ShardRecoveryBuilder {
         ShardRecoveryBuilder::new()
     }
 
     /// Creates a [`ShardRecovery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardRecoveryBuilder,
-        ) -> ShardRecoveryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `index`, `primary`, `source`, `stage`, `start_time_in_millis`, `target`, `total_time_in_millis`, `translog`, `type`, `verify_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardRecovery>>(
+        f: impl FnOnce(ShardRecoveryBuilder) -> B,
     ) -> ShardRecovery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardRecoveryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_recovery_members {
+    pub struct id;
+    pub struct index;
+    pub struct primary;
+    pub struct source;
+    pub struct stage;
+    pub struct start_time_in_millis;
+    pub struct target;
+    pub struct total_time_in_millis;
+    pub struct translog;
+    pub struct r#type;
+    pub struct verify_index;
 }
 
 /// Builder for [`ShardRecovery`].
@@ -2356,14 +2241,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`start`](Self::start) with a builder.
-    pub fn start_with(
+    pub fn start_with<B: crate::typed::builder::Build<Output = RecoveryStartStatus>>(
         self,
-        f: impl FnOnce(
-            RecoveryStartStatusBuilder,
-        ) -> RecoveryStartStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RecoveryStartStatusBuilder) -> B,
     ) -> Self {
         self.start(f(RecoveryStartStatusBuilder::new()).build())
     }
@@ -2439,6 +2319,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: i64,
@@ -2476,6 +2357,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<RecoveryIndexStatus>,
@@ -2498,17 +2380,9 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<B: crate::typed::builder::Build<Output = RecoveryIndexStatus>>(
         self,
-        f: impl FnOnce(
-            RecoveryIndexStatusBuilder,
-        ) -> RecoveryIndexStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RecoveryIndexStatusBuilder) -> B,
     ) -> ShardRecoveryBuilder<(
         S0,
         crate::typed::builder::Set,
@@ -2541,6 +2415,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn primary(
         self,
         value: bool,
@@ -2578,6 +2453,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn source(
         self,
         value: impl Into<RecoveryOrigin>,
@@ -2600,9 +2476,9 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<B: crate::typed::builder::Build<Output = RecoveryOrigin>>(
         self,
-        f: impl FnOnce(RecoveryOriginBuilder) -> RecoveryOriginBuilder,
+        f: impl FnOnce(RecoveryOriginBuilder) -> B,
     ) -> ShardRecoveryBuilder<(
         S0,
         S1,
@@ -2635,7 +2511,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The recovery stage.
+    /// **Required.** The recovery stage.
     pub fn stage(
         self,
         value: impl Into<RecoveryStage>,
@@ -2673,7 +2549,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The time the recovery started, in milliseconds since the Unix epoch.
+    /// **Required.** The time the recovery started, in milliseconds since the Unix epoch.
     /// For recoveries in the `CREATED` stage (not yet started), this value is 0.
     pub fn start_time_in_millis(
         self,
@@ -2712,6 +2588,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn target(
         self,
         value: impl Into<RecoveryOrigin>,
@@ -2734,9 +2611,9 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
     }
 
     /// Sets [`target`](Self::target) with a builder.
-    pub fn target_with(
+    pub fn target_with<B: crate::typed::builder::Build<Output = RecoveryOrigin>>(
         self,
-        f: impl FnOnce(RecoveryOriginBuilder) -> RecoveryOriginBuilder,
+        f: impl FnOnce(RecoveryOriginBuilder) -> B,
     ) -> ShardRecoveryBuilder<(
         S0,
         S1,
@@ -2769,7 +2646,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
-    /// The total elapsed recovery time in milliseconds.
+    /// **Required.** The total elapsed recovery time in milliseconds.
     /// For recoveries in the `CREATED` stage (not yet started), this value is 0.
     pub fn total_time_in_millis(
         self,
@@ -2808,6 +2685,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
+    /// **Required.**
     pub fn translog(
         self,
         value: impl Into<TranslogStatus>,
@@ -2830,17 +2708,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
     }
 
     /// Sets [`translog`](Self::translog) with a builder.
-    pub fn translog_with(
+    pub fn translog_with<B: crate::typed::builder::Build<Output = TranslogStatus>>(
         self,
-        f: impl FnOnce(
-            TranslogStatusBuilder,
-        ) -> TranslogStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TranslogStatusBuilder) -> B,
     ) -> ShardRecoveryBuilder<(
         S0,
         S1,
@@ -2873,7 +2743,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
-    /// The recovery source type.
+    /// **Required.** The recovery source type.
     pub fn r#type(
         self,
         value: impl Into<RecoveryType>,
@@ -2911,6 +2781,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn verify_index(
         self,
         value: impl Into<VerifyIndex>,
@@ -2933,12 +2804,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`verify_index`](Self::verify_index) with a builder.
-    pub fn verify_index_with(
+    pub fn verify_index_with<B: crate::typed::builder::Build<Output = VerifyIndex>>(
         self,
-        f: impl FnOnce(
-            VerifyIndexBuilder,
-        )
-            -> VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(VerifyIndexBuilder) -> B,
     ) -> ShardRecoveryBuilder<(
         S0,
         S1,
@@ -2956,23 +2824,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ShardRecoveryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ShardRecovery`].
-    pub fn build(self) -> ShardRecovery {
+    pub fn build(self) -> ShardRecovery
+    where
+        S0: crate::typed::builder::IsSet<shard_recovery_members::id>,
+        S1: crate::typed::builder::IsSet<shard_recovery_members::index>,
+        S2: crate::typed::builder::IsSet<shard_recovery_members::primary>,
+        S3: crate::typed::builder::IsSet<shard_recovery_members::source>,
+        S4: crate::typed::builder::IsSet<shard_recovery_members::stage>,
+        S5: crate::typed::builder::IsSet<shard_recovery_members::start_time_in_millis>,
+        S6: crate::typed::builder::IsSet<shard_recovery_members::target>,
+        S7: crate::typed::builder::IsSet<shard_recovery_members::total_time_in_millis>,
+        S8: crate::typed::builder::IsSet<shard_recovery_members::translog>,
+        S9: crate::typed::builder::IsSet<shard_recovery_members::r#type>,
+        S10: crate::typed::builder::IsSet<shard_recovery_members::verify_index>,
+    {
         ShardRecovery {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -2998,260 +2867,46 @@ impl
     }
 }
 
-impl
-    From<
-        ShardRecoveryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardRecovery
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ShardRecoveryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<shard_recovery_members::id>,
+    S1: crate::typed::builder::IsSet<shard_recovery_members::index>,
+    S2: crate::typed::builder::IsSet<shard_recovery_members::primary>,
+    S3: crate::typed::builder::IsSet<shard_recovery_members::source>,
+    S4: crate::typed::builder::IsSet<shard_recovery_members::stage>,
+    S5: crate::typed::builder::IsSet<shard_recovery_members::start_time_in_millis>,
+    S6: crate::typed::builder::IsSet<shard_recovery_members::target>,
+    S7: crate::typed::builder::IsSet<shard_recovery_members::total_time_in_millis>,
+    S8: crate::typed::builder::IsSet<shard_recovery_members::translog>,
+    S9: crate::typed::builder::IsSet<shard_recovery_members::r#type>,
+    S10: crate::typed::builder::IsSet<shard_recovery_members::verify_index>,
 {
-    fn from(
-        builder: ShardRecoveryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardRecovery;
+
+    fn build(self) -> ShardRecovery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ShardRecoveryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for ShardRecovery
+where
+    S0: crate::typed::builder::IsSet<shard_recovery_members::id>,
+    S1: crate::typed::builder::IsSet<shard_recovery_members::index>,
+    S2: crate::typed::builder::IsSet<shard_recovery_members::primary>,
+    S3: crate::typed::builder::IsSet<shard_recovery_members::source>,
+    S4: crate::typed::builder::IsSet<shard_recovery_members::stage>,
+    S5: crate::typed::builder::IsSet<shard_recovery_members::start_time_in_millis>,
+    S6: crate::typed::builder::IsSet<shard_recovery_members::target>,
+    S7: crate::typed::builder::IsSet<shard_recovery_members::total_time_in_millis>,
+    S8: crate::typed::builder::IsSet<shard_recovery_members::translog>,
+    S9: crate::typed::builder::IsSet<shard_recovery_members::r#type>,
+    S10: crate::typed::builder::IsSet<shard_recovery_members::verify_index>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match id {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match index {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `primary` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primary: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match primary {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match source {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `stage` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stage: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match stage {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match start_time_in_millis {} }
-}
-
-impl<S7, S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `target` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match target {} }
-}
-
-impl<S8, S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_time_in_millis: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match total_time_in_millis {} }
-}
-
-impl<S9, S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `translog` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, translog: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match translog {} }
-}
-
-impl<S10>
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match r#type {} }
-}
-
-impl
-    ShardRecoveryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `verify_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, verify_index: crate::typed::builder::MissingRequiredField) -> ShardRecovery { match verify_index {} }
+    fn from(builder: ShardRecoveryBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3267,24 +2922,31 @@ pub struct TranslogStatus {
 
 impl TranslogStatus {
     /// Creates a builder for [`TranslogStatus`].
+    ///
+    /// Required: `percent`, `recovered`, `total`, `total_on_start`, `total_time_in_millis`.
     pub fn builder() -> TranslogStatusBuilder {
         TranslogStatusBuilder::new()
     }
 
     /// Creates a [`TranslogStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TranslogStatusBuilder,
-        ) -> TranslogStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `percent`, `recovered`, `total`, `total_on_start`, `total_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = TranslogStatus>>(
+        f: impl FnOnce(TranslogStatusBuilder) -> B,
     ) -> TranslogStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TranslogStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod translog_status_members {
+    pub struct percent;
+    pub struct recovered;
+    pub struct total;
+    pub struct total_on_start;
+    pub struct total_time_in_millis;
 }
 
 /// Builder for [`TranslogStatus`].
@@ -3355,6 +3017,7 @@ impl<S0, S1, S2, S3, S4> TranslogStatusBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> TranslogStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn percent(
         self,
         value: impl Into<crate::typed::_types::Percentage>,
@@ -3366,6 +3029,7 @@ impl<S1, S2, S3, S4> TranslogStatusBuilder<(crate::typed::builder::NotSet, S1, S
 }
 
 impl<S0, S2, S3, S4> TranslogStatusBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn recovered(
         self,
         value: i64,
@@ -3377,6 +3041,7 @@ impl<S0, S2, S3, S4> TranslogStatusBuilder<(S0, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S3, S4> TranslogStatusBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn total(
         self,
         value: i64,
@@ -3388,6 +3053,7 @@ impl<S0, S1, S3, S4> TranslogStatusBuilder<(S0, S1, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S4> TranslogStatusBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn total_on_start(
         self,
         value: i64,
@@ -3399,6 +3065,7 @@ impl<S0, S1, S2, S4> TranslogStatusBuilder<(S0, S1, S2, crate::typed::builder::N
 }
 
 impl<S0, S1, S2, S3> TranslogStatusBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3409,17 +3076,16 @@ impl<S0, S1, S2, S3> TranslogStatusBuilder<(S0, S1, S2, S3, crate::typed::builde
     }
 }
 
-impl
-    TranslogStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> TranslogStatusBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`TranslogStatus`].
-    pub fn build(self) -> TranslogStatus {
+    pub fn build(self) -> TranslogStatus
+    where
+        S0: crate::typed::builder::IsSet<translog_status_members::percent>,
+        S1: crate::typed::builder::IsSet<translog_status_members::recovered>,
+        S2: crate::typed::builder::IsSet<translog_status_members::total>,
+        S3: crate::typed::builder::IsSet<translog_status_members::total_on_start>,
+        S4: crate::typed::builder::IsSet<translog_status_members::total_time_in_millis>,
+    {
         TranslogStatus {
             percent: self.percent.unwrap(),
             recovered: self.recovered.unwrap(),
@@ -3431,90 +3097,33 @@ impl
     }
 }
 
-impl
-    From<
-        TranslogStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TranslogStatus
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for TranslogStatusBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<translog_status_members::percent>,
+    S1: crate::typed::builder::IsSet<translog_status_members::recovered>,
+    S2: crate::typed::builder::IsSet<translog_status_members::total>,
+    S3: crate::typed::builder::IsSet<translog_status_members::total_on_start>,
+    S4: crate::typed::builder::IsSet<translog_status_members::total_time_in_millis>,
 {
-    fn from(
-        builder: TranslogStatusBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TranslogStatus;
+
+    fn build(self) -> TranslogStatus {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> TranslogStatusBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, percent: crate::typed::builder::MissingRequiredField) -> TranslogStatus { match percent {} }
-}
-
-impl<S2, S3, S4>
-    TranslogStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<TranslogStatusBuilder<(S0, S1, S2, S3, S4)>> for TranslogStatus
+where
+    S0: crate::typed::builder::IsSet<translog_status_members::percent>,
+    S1: crate::typed::builder::IsSet<translog_status_members::recovered>,
+    S2: crate::typed::builder::IsSet<translog_status_members::total>,
+    S3: crate::typed::builder::IsSet<translog_status_members::total_on_start>,
+    S4: crate::typed::builder::IsSet<translog_status_members::total_time_in_millis>,
 {
-    /// `recovered` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, recovered: crate::typed::builder::MissingRequiredField) -> TranslogStatus { match recovered {} }
-}
-
-impl<S3, S4>
-    TranslogStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> TranslogStatus { match total {} }
-}
-
-impl<S4>
-    TranslogStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `total_on_start` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_on_start: crate::typed::builder::MissingRequiredField) -> TranslogStatus { match total_on_start {} }
-}
-
-impl
-    TranslogStatusBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_time_in_millis: crate::typed::builder::MissingRequiredField) -> TranslogStatus { match total_time_in_millis {} }
+    fn from(builder: TranslogStatusBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3529,19 +3138,28 @@ pub struct VerifyIndex {
 
 impl VerifyIndex {
     /// Creates a builder for [`VerifyIndex`].
+    ///
+    /// Required: `check_index_time_in_millis`, `total_time_in_millis`.
     pub fn builder() -> VerifyIndexBuilder {
         VerifyIndexBuilder::new()
     }
 
     /// Creates a [`VerifyIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VerifyIndexBuilder,
-        )
-            -> VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `check_index_time_in_millis`, `total_time_in_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = VerifyIndex>>(
+        f: impl FnOnce(VerifyIndexBuilder) -> B,
     ) -> VerifyIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VerifyIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod verify_index_members {
+    pub struct check_index_time_in_millis;
+    pub struct total_time_in_millis;
 }
 
 /// Builder for [`VerifyIndex`].
@@ -3601,6 +3219,7 @@ impl<S0, S1> VerifyIndexBuilder<(S0, S1)> {
 }
 
 impl<S1> VerifyIndexBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn check_index_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3612,6 +3231,7 @@ impl<S1> VerifyIndexBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> VerifyIndexBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3622,9 +3242,13 @@ impl<S0> VerifyIndexBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> VerifyIndexBuilder<(S0, S1)> {
     /// Builds a [`VerifyIndex`].
-    pub fn build(self) -> VerifyIndex {
+    pub fn build(self) -> VerifyIndex
+    where
+        S0: crate::typed::builder::IsSet<verify_index_members::check_index_time_in_millis>,
+        S1: crate::typed::builder::IsSet<verify_index_members::total_time_in_millis>,
+    {
         VerifyIndex {
             check_index_time: self.check_index_time,
             check_index_time_in_millis: self.check_index_time_in_millis.unwrap(),
@@ -3634,24 +3258,24 @@ impl VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for VerifyIndex
+impl<S0, S1> crate::typed::builder::Build for VerifyIndexBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<verify_index_members::check_index_time_in_millis>,
+    S1: crate::typed::builder::IsSet<verify_index_members::total_time_in_millis>,
 {
-    fn from(
-        builder: VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = VerifyIndex;
+
+    fn build(self) -> VerifyIndex {
+        Self::build(self)
     }
 }
 
-impl<S1> VerifyIndexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `check_index_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, check_index_time_in_millis: crate::typed::builder::MissingRequiredField) -> VerifyIndex { match check_index_time_in_millis {} }
-}
-
-impl VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `total_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_time_in_millis: crate::typed::builder::MissingRequiredField) -> VerifyIndex { match total_time_in_millis {} }
+impl<S0, S1> From<VerifyIndexBuilder<(S0, S1)>> for VerifyIndex
+where
+    S0: crate::typed::builder::IsSet<verify_index_members::check_index_time_in_millis>,
+    S1: crate::typed::builder::IsSet<verify_index_members::total_time_in_millis>,
+{
+    fn from(builder: VerifyIndexBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }

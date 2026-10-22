@@ -13,21 +13,28 @@ pub struct AuthenticateApiKey {
 
 impl AuthenticateApiKey {
     /// Creates a builder for [`AuthenticateApiKey`].
+    ///
+    /// Required: `id`, `managed_by`.
     pub fn builder() -> AuthenticateApiKeyBuilder {
         AuthenticateApiKeyBuilder::new()
     }
 
     /// Creates a [`AuthenticateApiKey`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AuthenticateApiKeyBuilder,
-        ) -> AuthenticateApiKeyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `managed_by`.
+    pub fn of<B: crate::typed::builder::Build<Output = AuthenticateApiKey>>(
+        f: impl FnOnce(AuthenticateApiKeyBuilder) -> B,
     ) -> AuthenticateApiKey {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AuthenticateApiKeyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod authenticate_api_key_members {
+    pub struct id;
+    pub struct managed_by;
 }
 
 /// Builder for [`AuthenticateApiKey`].
@@ -89,6 +96,7 @@ impl<S0, S1> AuthenticateApiKeyBuilder<(S0, S1)> {
 }
 
 impl<S1> AuthenticateApiKeyBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -100,6 +108,7 @@ impl<S1> AuthenticateApiKeyBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AuthenticateApiKeyBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn managed_by(
         self,
         value: impl Into<crate::typed::security::_types::CredentialManagedBy>,
@@ -110,9 +119,13 @@ impl<S0> AuthenticateApiKeyBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AuthenticateApiKeyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AuthenticateApiKeyBuilder<(S0, S1)> {
     /// Builds a [`AuthenticateApiKey`].
-    pub fn build(self) -> AuthenticateApiKey {
+    pub fn build(self) -> AuthenticateApiKey
+    where
+        S0: crate::typed::builder::IsSet<authenticate_api_key_members::id>,
+        S1: crate::typed::builder::IsSet<authenticate_api_key_members::managed_by>,
+    {
         AuthenticateApiKey {
             id: self.id.unwrap(),
             name: self.name,
@@ -122,29 +135,26 @@ impl AuthenticateApiKeyBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<AuthenticateApiKeyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AuthenticateApiKey
+impl<S0, S1> crate::typed::builder::Build for AuthenticateApiKeyBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<authenticate_api_key_members::id>,
+    S1: crate::typed::builder::IsSet<authenticate_api_key_members::managed_by>,
 {
-    fn from(
-        builder: AuthenticateApiKeyBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AuthenticateApiKey;
+
+    fn build(self) -> AuthenticateApiKey {
+        Self::build(self)
     }
 }
 
-impl<S1> AuthenticateApiKeyBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> AuthenticateApiKey { match id {} }
-}
-
-impl AuthenticateApiKeyBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `managed_by` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, managed_by: crate::typed::builder::MissingRequiredField) -> AuthenticateApiKey { match managed_by {} }
+impl<S0, S1> From<AuthenticateApiKeyBuilder<(S0, S1)>> for AuthenticateApiKey
+where
+    S0: crate::typed::builder::IsSet<authenticate_api_key_members::id>,
+    S1: crate::typed::builder::IsSet<authenticate_api_key_members::managed_by>,
+{
+    fn from(builder: AuthenticateApiKeyBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.authenticate`](crate::typed::security::SecurityClient::authenticate).
@@ -183,7 +193,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -278,6 +290,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -449,7 +469,9 @@ impl Token {
     }
 
     /// Creates a [`Token`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TokenBuilder) -> TokenBuilder) -> Token {
+    pub fn of<B: crate::typed::builder::Build<Output = Token>>(
+        f: impl FnOnce(TokenBuilder) -> B,
+    ) -> Token {
         f(Self::builder()).build()
     }
 }
@@ -521,6 +543,14 @@ impl TokenBuilder {
             r#type: self.r#type,
             managed_by: self.managed_by,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TokenBuilder {
+    type Output = Token;
+
+    fn build(self) -> Token {
+        Self::build(self)
     }
 }
 

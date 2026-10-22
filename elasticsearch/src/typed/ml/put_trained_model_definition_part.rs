@@ -38,27 +38,31 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `model_id`, `part`, `definition`, `total_definition_length`, `total_parts`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `model_id`, `part`, `definition`, `total_definition_length`, `total_parts`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct model_id;
+    pub struct part;
+    pub struct definition;
+    pub struct total_definition_length;
+    pub struct total_parts;
 }
 
 /// Builder for [`Request`].
@@ -189,7 +193,7 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
 }
 
 impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// The unique identifier of the trained model.
+    /// **Required.** The unique identifier of the trained model.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -201,7 +205,7 @@ impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S
 }
 
 impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4), C> {
-    /// The definition part number. When the definition is loaded for inference the definition parts are streamed in the
+    /// **Required.** The definition part number. When the definition is loaded for inference the definition parts are streamed in the
     /// order of their part number. The first part must be `0` and the final part must be `total_parts - 1`.
     pub fn part(
         self,
@@ -214,7 +218,7 @@ impl<S0, S2, S3, S4, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2, S
 }
 
 impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4), C> {
-    /// The definition part for the model. Must be a base64 encoded string.
+    /// **Required.** The definition part for the model. Must be a base64 encoded string.
     pub fn definition(
         self,
         value: impl Into<String>,
@@ -226,7 +230,7 @@ impl<S0, S1, S3, S4, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet, S
 }
 
 impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4), C> {
-    /// The total uncompressed definition length in bytes. Not base64 encoded.
+    /// **Required.** The total uncompressed definition length in bytes. Not base64 encoded.
     pub fn total_definition_length(
         self,
         value: i64,
@@ -238,7 +242,7 @@ impl<S0, S1, S2, S4, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet), C> {
-    /// The total number of parts that will be uploaded. Must be greater than 0.
+    /// **Required.** The total number of parts that will be uploaded. Must be greater than 0.
     pub fn total_parts(
         self,
         value: i32,
@@ -249,20 +253,16 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3, crate::typed::builder::N
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+        S1: crate::typed::builder::IsSet<request_members::part>,
+        S2: crate::typed::builder::IsSet<request_members::definition>,
+        S3: crate::typed::builder::IsSet<request_members::total_definition_length>,
+        S4: crate::typed::builder::IsSet<request_members::total_parts>,
+    {
         Request {
             model_id: self.model_id.unwrap(),
             part: self.part.unwrap(),
@@ -277,168 +277,34 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, S3, S4, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2, S3, S4), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::model_id>,
+    S1: crate::typed::builder::IsSet<request_members::part>,
+    S2: crate::typed::builder::IsSet<request_members::definition>,
+    S3: crate::typed::builder::IsSet<request_members::total_definition_length>,
+    S4: crate::typed::builder::IsSet<request_members::total_parts>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), C> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> Request { match model_id {} }
-}
-impl<S1, S2, S3, S4>
-    RequestBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4), &crate::Elasticsearch>
-{
-    /// `model_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, model_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match model_id {} }
-}
-
-impl<S2, S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `part` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, part: crate::typed::builder::MissingRequiredField) -> Request { match part {} }
-}
-impl<S2, S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `part` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, part: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match part {} }
-}
-
-impl<S3, S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `definition` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, definition: crate::typed::builder::MissingRequiredField) -> Request { match definition {} }
-}
-impl<S3, S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S3,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `definition` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, definition: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match definition {} }
-}
-
-impl<S4, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        C,
-    >
-{
-    /// `total_definition_length` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_definition_length: crate::typed::builder::MissingRequiredField) -> Request { match total_definition_length {} }
-}
-impl<S4>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S4,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `total_definition_length` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, total_definition_length: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match total_definition_length {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `total_parts` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_parts: crate::typed::builder::MissingRequiredField) -> Request { match total_parts {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `total_parts` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, total_parts: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match total_parts {} }
+impl<S0, S1, S2, S3, S4> RequestBuilder<(S0, S1, S2, S3, S4), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+        S1: crate::typed::builder::IsSet<request_members::part>,
+        S2: crate::typed::builder::IsSet<request_members::definition>,
+        S3: crate::typed::builder::IsSet<request_members::total_definition_length>,
+        S4: crate::typed::builder::IsSet<request_members::total_parts>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -51,16 +51,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `policy_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `policy_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct policy_id;
 }
 
 /// Builder for [`Request`].
@@ -219,11 +230,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(
+    pub fn config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::slm::_types::Configuration>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::slm::_types::ConfigurationBuilder,
-        ) -> crate::typed::slm::_types::ConfigurationBuilder,
+        f: impl FnOnce(crate::typed::slm::_types::ConfigurationBuilder) -> B,
     ) -> Self {
         self.config(f(crate::typed::slm::_types::ConfigurationBuilder::new()).build())
     }
@@ -265,15 +276,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`retention`](Self::retention) with a builder.
-    pub fn retention_with(
+    pub fn retention_with<
+        B: crate::typed::builder::Build<Output = crate::typed::slm::_types::Retention>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::slm::_types::RetentionBuilder,
-        ) -> crate::typed::slm::_types::RetentionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::slm::_types::RetentionBuilder) -> B,
     ) -> Self {
         self.retention(f(crate::typed::slm::_types::RetentionBuilder::new()).build())
     }
@@ -298,7 +305,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The identifier for the snapshot lifecycle policy you want to create or update.
+    /// **Required.** The identifier for the snapshot lifecycle policy you want to create or update.
     pub fn policy_id(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -309,9 +316,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::policy_id>,
+    {
         Request {
             policy_id: self.policy_id.unwrap(),
             master_timeout: self.master_timeout,
@@ -329,23 +339,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::policy_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `policy_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, policy_id: crate::typed::builder::MissingRequiredField) -> Request { match policy_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `policy_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, policy_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match policy_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::policy_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

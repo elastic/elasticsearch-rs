@@ -64,16 +64,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct model_id;
 }
 
 /// Builder for [`Request`].
@@ -339,13 +350,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Sets [`adaptive_allocations`](Self::adaptive_allocations) with a builder.
-    pub fn adaptive_allocations_with(
+    pub fn adaptive_allocations_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::AdaptiveAllocationsSettings,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AdaptiveAllocationsSettingsBuilder,
-        ) -> crate::typed::ml::_types::AdaptiveAllocationsSettingsBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::ml::_types::AdaptiveAllocationsSettingsBuilder) -> B,
     ) -> Self {
         self.adaptive_allocations(
             f(crate::typed::ml::_types::AdaptiveAllocationsSettingsBuilder::new()).build(),
@@ -354,7 +365,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The unique identifier of the trained model. Currently, only PyTorch models are supported.
+    /// **Required.** The unique identifier of the trained model. Currently, only PyTorch models are supported.
     pub fn model_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -365,9 +376,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+    {
         Request {
             model_id: self.model_id.unwrap(),
             cache_size: self.cache_size,
@@ -387,23 +401,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::model_id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> Request { match model_id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `model_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, model_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match model_id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::model_id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

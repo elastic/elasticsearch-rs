@@ -19,23 +19,30 @@ pub struct Deprecation {
 
 impl Deprecation {
     /// Creates a builder for [`Deprecation`].
+    ///
+    /// Required: `level`, `message`, `url`, `resolve_during_rolling_upgrade`.
     pub fn builder() -> DeprecationBuilder {
         DeprecationBuilder::new()
     }
 
     /// Creates a [`Deprecation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DeprecationBuilder,
-        ) -> DeprecationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `level`, `message`, `url`, `resolve_during_rolling_upgrade`.
+    pub fn of<B: crate::typed::builder::Build<Output = Deprecation>>(
+        f: impl FnOnce(DeprecationBuilder) -> B,
     ) -> Deprecation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DeprecationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod deprecation_members {
+    pub struct level;
+    pub struct message;
+    pub struct url;
+    pub struct resolve_during_rolling_upgrade;
 }
 
 /// Builder for [`Deprecation`].
@@ -127,7 +134,7 @@ impl<S0, S1, S2, S3> DeprecationBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> DeprecationBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The level property describes the significance of the issue.
+    /// **Required.** The level property describes the significance of the issue.
     pub fn level(
         self,
         value: impl Into<DeprecationLevel>,
@@ -139,7 +146,7 @@ impl<S1, S2, S3> DeprecationBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 }
 
 impl<S0, S2, S3> DeprecationBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Descriptive information about the deprecation warning.
+    /// **Required.** Descriptive information about the deprecation warning.
     pub fn message(
         self,
         value: impl Into<String>,
@@ -151,7 +158,7 @@ impl<S0, S2, S3> DeprecationBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 }
 
 impl<S0, S1, S3> DeprecationBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// A link to the breaking change documentation, where you can find more information about this change.
+    /// **Required.** A link to the breaking change documentation, where you can find more information about this change.
     pub fn url(
         self,
         value: impl Into<String>,
@@ -163,6 +170,7 @@ impl<S0, S1, S3> DeprecationBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 }
 
 impl<S0, S1, S2> DeprecationBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn resolve_during_rolling_upgrade(
         self,
         value: bool,
@@ -173,16 +181,15 @@ impl<S0, S1, S2> DeprecationBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    DeprecationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> DeprecationBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`Deprecation`].
-    pub fn build(self) -> Deprecation {
+    pub fn build(self) -> Deprecation
+    where
+        S0: crate::typed::builder::IsSet<deprecation_members::level>,
+        S1: crate::typed::builder::IsSet<deprecation_members::message>,
+        S2: crate::typed::builder::IsSet<deprecation_members::url>,
+        S3: crate::typed::builder::IsSet<deprecation_members::resolve_during_rolling_upgrade>,
+    {
         Deprecation {
             details: self.details,
             level: self.level.unwrap(),
@@ -194,71 +201,30 @@ impl
     }
 }
 
-impl
-    From<
-        DeprecationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Deprecation
+impl<S0, S1, S2, S3> crate::typed::builder::Build for DeprecationBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<deprecation_members::level>,
+    S1: crate::typed::builder::IsSet<deprecation_members::message>,
+    S2: crate::typed::builder::IsSet<deprecation_members::url>,
+    S3: crate::typed::builder::IsSet<deprecation_members::resolve_during_rolling_upgrade>,
 {
-    fn from(
-        builder: DeprecationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Deprecation;
+
+    fn build(self) -> Deprecation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> DeprecationBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `level` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, level: crate::typed::builder::MissingRequiredField) -> Deprecation { match level {} }
-}
-
-impl<S2, S3>
-    DeprecationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<DeprecationBuilder<(S0, S1, S2, S3)>> for Deprecation
+where
+    S0: crate::typed::builder::IsSet<deprecation_members::level>,
+    S1: crate::typed::builder::IsSet<deprecation_members::message>,
+    S2: crate::typed::builder::IsSet<deprecation_members::url>,
+    S3: crate::typed::builder::IsSet<deprecation_members::resolve_during_rolling_upgrade>,
 {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> Deprecation { match message {} }
-}
-
-impl<S3>
-    DeprecationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> Deprecation { match url {} }
-}
-
-impl
-    DeprecationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `resolve_during_rolling_upgrade` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resolve_during_rolling_upgrade: crate::typed::builder::MissingRequiredField) -> Deprecation { match resolve_during_rolling_upgrade {} }
+    fn from(builder: DeprecationBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -319,7 +285,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -429,6 +397,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

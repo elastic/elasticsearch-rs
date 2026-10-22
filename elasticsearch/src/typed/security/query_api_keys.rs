@@ -286,15 +286,17 @@ impl From<crate::typed::_types::aggregations::ValueCountAggregationBuilder>
 
 impl ApiKeyAggregationContainer {
     /// Creates a builder for [`ApiKeyAggregationContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ApiKeyAggregationContainerBuilder {
         ApiKeyAggregationContainerBuilder::new()
     }
 
     /// Creates a [`ApiKeyAggregationContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApiKeyAggregationContainerBuilder,
-        ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ApiKeyAggregationContainer>>(
+        f: impl FnOnce(ApiKeyAggregationContainerBuilder) -> B,
     ) -> ApiKeyAggregationContainer {
         f(Self::builder()).build()
     }
@@ -362,12 +364,12 @@ impl<S0> ApiKeyAggregationContainerBuilder<(S0,)> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<Output = ApiKeyAggregationContainer>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ApiKeyAggregationContainerBuilder,
-        ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ApiKeyAggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(key, f(ApiKeyAggregationContainerBuilder::new()).build())
     }
@@ -404,11 +406,13 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`cardinality`](Self::cardinality) with a builder.
-    pub fn cardinality_with(
+    pub fn cardinality_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::CardinalityAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::CardinalityAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::CardinalityAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::CardinalityAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.cardinality(
             f(crate::typed::_types::aggregations::CardinalityAggregationBuilder::new()).build(),
@@ -427,11 +431,13 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`composite`](Self::composite) with a builder.
-    pub fn composite_with(
+    pub fn composite_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::CompositeAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::CompositeAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::CompositeAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::CompositeAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.composite(
             f(crate::typed::_types::aggregations::CompositeAggregationBuilder::new()).build(),
@@ -449,11 +455,13 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`date_range`](Self::date_range) with a builder.
-    pub fn date_range_with(
+    pub fn date_range_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::DateRangeAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::DateRangeAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::DateRangeAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::DateRangeAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.date_range(
             f(crate::typed::_types::aggregations::DateRangeAggregationBuilder::new()).build(),
@@ -471,11 +479,9 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = ApiKeyQueryContainer>>(
         self,
-        f: impl FnOnce(
-            ApiKeyQueryContainerBuilder,
-        ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ApiKeyQueryContainerBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.filter(f(ApiKeyQueryContainerBuilder::new()).build())
     }
@@ -491,9 +497,9 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`filters`](Self::filters) with a builder.
-    pub fn filters_with(
+    pub fn filters_with<B: crate::typed::builder::Build<Output = ApiKeyFiltersAggregation>>(
         self,
-        f: impl FnOnce(ApiKeyFiltersAggregationBuilder) -> ApiKeyFiltersAggregationBuilder,
+        f: impl FnOnce(ApiKeyFiltersAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.filters(f(ApiKeyFiltersAggregationBuilder::new()).build())
     }
@@ -508,11 +514,13 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`missing`](Self::missing) with a builder.
-    pub fn missing_with(
+    pub fn missing_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::MissingAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::MissingAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::MissingAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::MissingAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.missing(
             f(crate::typed::_types::aggregations::MissingAggregationBuilder::new()).build(),
@@ -530,11 +538,11 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`range`](Self::range) with a builder.
-    pub fn range_with(
+    pub fn range_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::RangeAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::RangeAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::RangeAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::RangeAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.range(f(crate::typed::_types::aggregations::RangeAggregationBuilder::new()).build())
     }
@@ -550,11 +558,11 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::TermsAggregation>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::TermsAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::TermsAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::TermsAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(crate::typed::_types::aggregations::TermsAggregationBuilder::new()).build())
     }
@@ -570,11 +578,13 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`value_count`](Self::value_count) with a builder.
-    pub fn value_count_with(
+    pub fn value_count_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::aggregations::ValueCountAggregation,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::aggregations::ValueCountAggregationBuilder,
-        ) -> crate::typed::_types::aggregations::ValueCountAggregationBuilder,
+        f: impl FnOnce(crate::typed::_types::aggregations::ValueCountAggregationBuilder) -> B,
     ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
         self.value_count(
             f(crate::typed::_types::aggregations::ValueCountAggregationBuilder::new()).build(),
@@ -582,9 +592,12 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ApiKeyAggregationContainerBuilder<(S0,)> {
     /// Builds a [`ApiKeyAggregationContainer`].
-    pub fn build(self) -> ApiKeyAggregationContainer {
+    pub fn build(self) -> ApiKeyAggregationContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<ApiKeyAggregationContainer>,
+    {
         ApiKeyAggregationContainer {
             aggregations: self.aggregations,
             meta: self.meta,
@@ -593,18 +606,24 @@ impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>>
-    for ApiKeyAggregationContainer
+impl<S0> crate::typed::builder::Build for ApiKeyAggregationContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ApiKeyAggregationContainer>,
 {
-    fn from(builder: ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = ApiKeyAggregationContainer;
+
+    fn build(self) -> ApiKeyAggregationContainer {
+        Self::build(self)
     }
 }
 
-impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> ApiKeyAggregationContainer { match variant {} }
+impl<S0> From<ApiKeyAggregationContainerBuilder<(S0,)>> for ApiKeyAggregationContainer
+where
+    S0: crate::typed::builder::IsVariantSet<ApiKeyAggregationContainer>,
+{
+    fn from(builder: ApiKeyAggregationContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -631,8 +650,8 @@ impl ApiKeyFiltersAggregation {
     }
 
     /// Creates a [`ApiKeyFiltersAggregation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ApiKeyFiltersAggregationBuilder) -> ApiKeyFiltersAggregationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ApiKeyFiltersAggregation>>(
+        f: impl FnOnce(ApiKeyFiltersAggregationBuilder) -> B,
     ) -> ApiKeyFiltersAggregation {
         f(Self::builder()).build()
     }
@@ -724,6 +743,14 @@ impl ApiKeyFiltersAggregationBuilder {
             other_bucket_key: self.other_bucket_key,
             keyed: self.keyed,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ApiKeyFiltersAggregationBuilder {
+    type Output = ApiKeyFiltersAggregation;
+
+    fn build(self) -> ApiKeyFiltersAggregation {
+        Self::build(self)
     }
 }
 
@@ -884,15 +911,17 @@ impl From<crate::typed::_types::query_dsl::TermsQueryBuilder> for ApiKeyQueryCon
 
 impl ApiKeyQueryContainer {
     /// Creates a builder for [`ApiKeyQueryContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> ApiKeyQueryContainerBuilder {
         ApiKeyQueryContainerBuilder::new()
     }
 
     /// Creates a [`ApiKeyQueryContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApiKeyQueryContainerBuilder,
-        ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ApiKeyQueryContainer>>(
+        f: impl FnOnce(ApiKeyQueryContainerBuilder) -> B,
     ) -> ApiKeyQueryContainer {
         f(Self::builder()).build()
     }
@@ -935,11 +964,11 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bool`](Self::bool) with a builder.
-    pub fn bool_with(
+    pub fn bool_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::BoolQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::BoolQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::BoolQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::BoolQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.bool(f(crate::typed::_types::query_dsl::BoolQueryBuilder::new()).build())
     }
@@ -955,13 +984,11 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`exists`](Self::exists) with a builder.
-    pub fn exists_with(
+    pub fn exists_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::ExistsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::ExistsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::ExistsQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::ExistsQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.exists(f(crate::typed::_types::query_dsl::ExistsQueryBuilder::new()).build())
     }
@@ -978,11 +1005,11 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ids`](Self::ids) with a builder.
-    pub fn ids_with(
+    pub fn ids_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::IdsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::IdsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::IdsQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::IdsQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.ids(f(crate::typed::_types::query_dsl::IdsQueryBuilder::new()).build())
     }
@@ -1003,14 +1030,12 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::MatchQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::MatchQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::MatchQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::MatchQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.r#match(
             key,
@@ -1029,11 +1054,11 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_all`](Self::match_all) with a builder.
-    pub fn match_all_with(
+    pub fn match_all_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::MatchAllQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::MatchAllQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::MatchAllQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::MatchAllQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_all(f(crate::typed::_types::query_dsl::MatchAllQueryBuilder::new()).build())
     }
@@ -1053,14 +1078,12 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`prefix`](Self::prefix) with a builder.
-    pub fn prefix_with(
+    pub fn prefix_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::PrefixQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::PrefixQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::PrefixQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::PrefixQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.prefix(
             key,
@@ -1093,13 +1116,13 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`simple_query_string`](Self::simple_query_string) with a builder.
-    pub fn simple_query_string_with(
+    pub fn simple_query_string_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_types::query_dsl::SimpleQueryStringQuery,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.simple_query_string(
             f(crate::typed::_types::query_dsl::SimpleQueryStringQueryBuilder::new()).build(),
@@ -1122,14 +1145,12 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`term`](Self::term) with a builder.
-    pub fn term_with(
+    pub fn term_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::TermQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::TermQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::TermQueryBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::TermQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.term(
             key,
@@ -1149,11 +1170,11 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::TermsQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::TermsQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::TermsQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::TermsQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(crate::typed::_types::query_dsl::TermsQueryBuilder::new()).build())
     }
@@ -1172,12 +1193,12 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wildcard`](Self::wildcard) with a builder.
-    pub fn wildcard_with(
+    pub fn wildcard_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::WildcardQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::WildcardQueryBuilder,
-        ) -> crate::typed::_types::query_dsl::WildcardQueryBuilder,
+        f: impl FnOnce(crate::typed::_types::query_dsl::WildcardQueryBuilder) -> B,
     ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.wildcard(
             key,
@@ -1186,23 +1207,34 @@ impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ApiKeyQueryContainerBuilder<(S0,)> {
     /// Builds a [`ApiKeyQueryContainer`].
-    pub fn build(self) -> ApiKeyQueryContainer {
+    pub fn build(self) -> ApiKeyQueryContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<ApiKeyQueryContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>> for ApiKeyQueryContainer {
-    fn from(builder: ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ApiKeyQueryContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ApiKeyQueryContainer>,
+{
+    type Output = ApiKeyQueryContainer;
+
+    fn build(self) -> ApiKeyQueryContainer {
+        Self::build(self)
     }
 }
 
-impl ApiKeyQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> ApiKeyQueryContainer { match variant {} }
+impl<S0> From<ApiKeyQueryContainerBuilder<(S0,)>> for ApiKeyQueryContainer
+where
+    S0: crate::typed::builder::IsVariantSet<ApiKeyQueryContainer>,
+{
+    fn from(builder: ApiKeyQueryContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.query_api_keys`](crate::typed::security::SecurityClient::query_api_keys).
@@ -1287,7 +1319,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -1464,12 +1498,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
-    pub fn add_aggregations_with(
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<Output = ApiKeyAggregationContainer>,
+    >(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            ApiKeyAggregationContainerBuilder,
-        ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ApiKeyAggregationContainerBuilder) -> B,
     ) -> Self {
         self.add_aggregations(key, f(ApiKeyAggregationContainerBuilder::new()).build())
     }
@@ -1496,11 +1530,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = ApiKeyQueryContainer>>(
         self,
-        f: impl FnOnce(
-            ApiKeyQueryContainerBuilder,
-        ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ApiKeyQueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(ApiKeyQueryContainerBuilder::new()).build())
     }
@@ -1589,6 +1621,14 @@ impl<C> RequestBuilder<(), C> {
             size: self.size,
             search_after: self.search_after,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

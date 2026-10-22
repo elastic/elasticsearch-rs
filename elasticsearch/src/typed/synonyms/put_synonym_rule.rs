@@ -42,25 +42,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `set_id`, `rule_id`, `synonyms`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `set_id`, `rule_id`, `synonyms`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct set_id;
+    pub struct rule_id;
+    pub struct synonyms;
 }
 
 /// Builder for [`Request`].
@@ -197,7 +201,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The ID of the synonym set.
+    /// **Required.** The ID of the synonym set.
     pub fn set_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -209,7 +213,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The ID of the synonym rule to be updated or created.
+    /// **Required.** The ID of the synonym rule to be updated or created.
     pub fn rule_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -221,7 +225,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// The synonym rule information definition, which must be in Solr format.
+    /// **Required.** The synonym rule information definition, which must be in Solr format.
     pub fn synonyms(
         self,
         value: impl Into<crate::typed::synonyms::_types::SynonymString>,
@@ -232,18 +236,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::set_id>,
+        S1: crate::typed::builder::IsSet<request_members::rule_id>,
+        S2: crate::typed::builder::IsSet<request_members::synonyms>,
+    {
         Request {
             set_id: self.set_id.unwrap(),
             rule_id: self.rule_id.unwrap(),
@@ -257,90 +257,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::set_id>,
+    S1: crate::typed::builder::IsSet<request_members::rule_id>,
+    S2: crate::typed::builder::IsSet<request_members::synonyms>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `set_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, set_id: crate::typed::builder::MissingRequiredField) -> Request { match set_id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `set_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, set_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match set_id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `rule_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rule_id: crate::typed::builder::MissingRequiredField) -> Request { match rule_id {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `rule_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, rule_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match rule_id {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `synonyms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, synonyms: crate::typed::builder::MissingRequiredField) -> Request { match synonyms {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `synonyms` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, synonyms: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match synonyms {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::set_id>,
+        S1: crate::typed::builder::IsSet<request_members::rule_id>,
+        S2: crate::typed::builder::IsSet<request_members::synonyms>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

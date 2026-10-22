@@ -21,7 +21,9 @@ impl CreateFrom {
     }
 
     /// Creates a [`CreateFrom`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(CreateFromBuilder) -> CreateFromBuilder) -> CreateFrom {
+    pub fn of<B: crate::typed::builder::Build<Output = CreateFrom>>(
+        f: impl FnOnce(CreateFromBuilder) -> B,
+    ) -> CreateFrom {
         f(Self::builder()).build()
     }
 }
@@ -64,11 +66,11 @@ impl CreateFromBuilder {
     }
 
     /// Sets [`mappings_override`](Self::mappings_override) with a builder.
-    pub fn mappings_override_with(
+    pub fn mappings_override_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings_override(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -92,11 +94,11 @@ impl CreateFromBuilder {
     }
 
     /// Sets [`settings_override`](Self::settings_override) with a builder.
-    pub fn settings_override_with(
+    pub fn settings_override_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::IndexSettings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexSettingsBuilder,
-        ) -> crate::typed::indices::_types::IndexSettingsBuilder,
+        f: impl FnOnce(crate::typed::indices::_types::IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings_override(
             f(crate::typed::indices::_types::IndexSettingsBuilder::new()).build(),
@@ -124,6 +126,14 @@ impl CreateFromBuilder {
             settings_override: self.settings_override,
             remove_index_blocks: self.remove_index_blocks,
         }
+    }
+}
+
+impl crate::typed::builder::Build for CreateFromBuilder {
+    type Output = CreateFrom;
+
+    fn build(self) -> CreateFrom {
+        Self::build(self)
     }
 }
 
@@ -167,25 +177,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `source`, `dest`, `create_from`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `source`, `dest`, `create_from`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct source;
+    pub struct dest;
+    pub struct create_from;
 }
 
 /// Builder for [`Request`].
@@ -306,7 +320,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The source index or data stream name
+    /// **Required.** The source index or data stream name
     pub fn source(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -318,7 +332,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// The destination index or data stream name
+    /// **Required.** The destination index or data stream name
     pub fn dest(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -330,7 +344,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn create_from(
         self,
         value: impl Into<CreateFrom>,
@@ -341,26 +355,22 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`create_from`](Self::create_from) with a builder.
-    pub fn create_from_with(
+    pub fn create_from_with<B: crate::typed::builder::Build<Output = CreateFrom>>(
         self,
-        f: impl FnOnce(CreateFromBuilder) -> CreateFromBuilder,
+        f: impl FnOnce(CreateFromBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
         self.create_from(f(CreateFromBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::source>,
+        S1: crate::typed::builder::IsSet<request_members::dest>,
+        S2: crate::typed::builder::IsSet<request_members::create_from>,
+    {
         Request {
             source: self.source.unwrap(),
             dest: self.dest.unwrap(),
@@ -373,90 +383,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::source>,
+    S1: crate::typed::builder::IsSet<request_members::dest>,
+    S2: crate::typed::builder::IsSet<request_members::create_from>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> Request { match source {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `source` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, source: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match source {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `dest` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, dest: crate::typed::builder::MissingRequiredField) -> Request { match dest {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `dest` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, dest: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match dest {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `create_from` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, create_from: crate::typed::builder::MissingRequiredField) -> Request { match create_from {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `create_from` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, create_from: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match create_from {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::source>,
+        S1: crate::typed::builder::IsSet<request_members::dest>,
+        S2: crate::typed::builder::IsSet<request_members::create_from>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

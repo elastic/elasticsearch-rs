@@ -11,21 +11,28 @@ pub struct FollowIndexStats {
 
 impl FollowIndexStats {
     /// Creates a builder for [`FollowIndexStats`].
+    ///
+    /// Required: `index`, `shards`.
     pub fn builder() -> FollowIndexStatsBuilder {
         FollowIndexStatsBuilder::new()
     }
 
     /// Creates a [`FollowIndexStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FollowIndexStatsBuilder,
-        ) -> FollowIndexStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = FollowIndexStats>>(
+        f: impl FnOnce(FollowIndexStatsBuilder) -> B,
     ) -> FollowIndexStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FollowIndexStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod follow_index_stats_members {
+    pub struct index;
+    pub struct shards;
 }
 
 /// Builder for [`FollowIndexStats`].
@@ -59,7 +66,7 @@ impl<S0, S1> FollowIndexStatsBuilder<(S0, S1)> {
 }
 
 impl<S1> FollowIndexStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the follower index.
+    /// **Required.** The name of the follower index.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -71,7 +78,7 @@ impl<S1> FollowIndexStatsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FollowIndexStatsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An array of shard-level following task statistics.
+    /// **Required.** An array of shard-level following task statistics.
     pub fn shards(
         self,
         value: impl Into<Vec<ShardStats>>,
@@ -95,40 +102,9 @@ impl<S0> FollowIndexStatsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardStats>>(
         self,
-        f: impl FnOnce(
-            ShardStatsBuilder,
-        ) -> ShardStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardStatsBuilder) -> B,
     ) -> FollowIndexStatsBuilder<(S0, crate::typed::builder::Set)> {
         self.add_shards(f(ShardStatsBuilder::new()).build())
     }
@@ -144,48 +120,21 @@ impl<S0> FollowIndexStatsBuilder<(S0, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`shards`](Self::shards), with a builder.
-    pub fn add_shards_with(
+    pub fn add_shards_with<B: crate::typed::builder::Build<Output = ShardStats>>(
         self,
-        f: impl FnOnce(
-            ShardStatsBuilder,
-        ) -> ShardStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardStatsBuilder) -> B,
     ) -> Self {
         self.add_shards(f(ShardStatsBuilder::new()).build())
     }
 }
 
-impl FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FollowIndexStatsBuilder<(S0, S1)> {
     /// Builds a [`FollowIndexStats`].
-    pub fn build(self) -> FollowIndexStats {
+    pub fn build(self) -> FollowIndexStats
+    where
+        S0: crate::typed::builder::IsSet<follow_index_stats_members::index>,
+        S1: crate::typed::builder::IsSet<follow_index_stats_members::shards>,
+    {
         FollowIndexStats {
             index: self.index.unwrap(),
             shards: self.shards.unwrap(),
@@ -193,26 +142,26 @@ impl FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FollowIndexStats
+impl<S0, S1> crate::typed::builder::Build for FollowIndexStatsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<follow_index_stats_members::index>,
+    S1: crate::typed::builder::IsSet<follow_index_stats_members::shards>,
 {
-    fn from(
-        builder: FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = FollowIndexStats;
+
+    fn build(self) -> FollowIndexStats {
+        Self::build(self)
     }
 }
 
-impl<S1> FollowIndexStatsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> FollowIndexStats { match index {} }
-}
-
-impl FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> FollowIndexStats { match shards {} }
+impl<S0, S1> From<FollowIndexStatsBuilder<(S0, S1)>> for FollowIndexStats
+where
+    S0: crate::typed::builder::IsSet<follow_index_stats_members::index>,
+    S1: crate::typed::builder::IsSet<follow_index_stats_members::shards>,
+{
+    fn from(builder: FollowIndexStatsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -227,22 +176,29 @@ pub struct ReadException {
 
 impl ReadException {
     /// Creates a builder for [`ReadException`].
+    ///
+    /// Required: `exception`, `from_seq_no`, `retries`.
     pub fn builder() -> ReadExceptionBuilder {
         ReadExceptionBuilder::new()
     }
 
     /// Creates a [`ReadException`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReadExceptionBuilder,
-        ) -> ReadExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `exception`, `from_seq_no`, `retries`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReadException>>(
+        f: impl FnOnce(ReadExceptionBuilder) -> B,
     ) -> ReadException {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReadExceptionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod read_exception_members {
+    pub struct exception;
+    pub struct from_seq_no;
+    pub struct retries;
 }
 
 /// Builder for [`ReadException`].
@@ -289,7 +245,7 @@ impl<S0, S1, S2> ReadExceptionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ReadExceptionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The exception that caused the read to fail.
+    /// **Required.** The exception that caused the read to fail.
     pub fn exception(
         self,
         value: impl Into<crate::typed::_types::ErrorCause>,
@@ -300,19 +256,18 @@ impl<S1, S2> ReadExceptionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`exception`](Self::exception) with a builder.
-    pub fn exception_with(
+    pub fn exception_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> ReadExceptionBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.exception(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl<S0, S2> ReadExceptionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The starting sequence number of the batch requested from the leader.
+    /// **Required.** The starting sequence number of the batch requested from the leader.
     pub fn from_seq_no(
         self,
         value: impl Into<crate::typed::_types::SequenceNumber>,
@@ -324,7 +279,7 @@ impl<S0, S2> ReadExceptionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> ReadExceptionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The number of times the batch has been retried.
+    /// **Required.** The number of times the batch has been retried.
     pub fn retries(self, value: i32) -> ReadExceptionBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.retries = Some(value);
@@ -332,15 +287,14 @@ impl<S0, S1> ReadExceptionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    ReadExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ReadExceptionBuilder<(S0, S1, S2)> {
     /// Builds a [`ReadException`].
-    pub fn build(self) -> ReadException {
+    pub fn build(self) -> ReadException
+    where
+        S0: crate::typed::builder::IsSet<read_exception_members::exception>,
+        S1: crate::typed::builder::IsSet<read_exception_members::from_seq_no>,
+        S2: crate::typed::builder::IsSet<read_exception_members::retries>,
+    {
         ReadException {
             exception: self.exception.unwrap(),
             from_seq_no: self.from_seq_no.unwrap(),
@@ -349,54 +303,28 @@ impl
     }
 }
 
-impl
-    From<
-        ReadExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReadException
+impl<S0, S1, S2> crate::typed::builder::Build for ReadExceptionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<read_exception_members::exception>,
+    S1: crate::typed::builder::IsSet<read_exception_members::from_seq_no>,
+    S2: crate::typed::builder::IsSet<read_exception_members::retries>,
 {
-    fn from(
-        builder: ReadExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReadException;
+
+    fn build(self) -> ReadException {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ReadExceptionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `exception` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exception: crate::typed::builder::MissingRequiredField) -> ReadException { match exception {} }
-}
-
-impl<S2>
-    ReadExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ReadExceptionBuilder<(S0, S1, S2)>> for ReadException
+where
+    S0: crate::typed::builder::IsSet<read_exception_members::exception>,
+    S1: crate::typed::builder::IsSet<read_exception_members::from_seq_no>,
+    S2: crate::typed::builder::IsSet<read_exception_members::retries>,
 {
-    /// `from_seq_no` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, from_seq_no: crate::typed::builder::MissingRequiredField) -> ReadException { match from_seq_no {} }
-}
-
-impl
-    ReadExceptionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `retries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, retries: crate::typed::builder::MissingRequiredField) -> ReadException { match retries {} }
+    fn from(builder: ReadExceptionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -474,47 +402,54 @@ pub struct ShardStats {
 
 impl ShardStats {
     /// Creates a builder for [`ShardStats`].
+    ///
+    /// Required: `bytes_read`, `failed_read_requests`, `failed_write_requests`, `follower_aliases_version`, `follower_global_checkpoint`, `follower_index`, `follower_mapping_version`, `follower_max_seq_no`, `follower_settings_version`, `last_requested_seq_no`, `leader_global_checkpoint`, `leader_index`, `leader_max_seq_no`, `operations_read`, `operations_written`, `outstanding_read_requests`, `outstanding_write_requests`, `read_exceptions`, `remote_cluster`, `shard_id`, `successful_read_requests`, `successful_write_requests`, `time_since_last_read_millis`, `total_read_remote_exec_time_millis`, `total_read_time_millis`, `total_write_time_millis`, `write_buffer_operation_count`, `write_buffer_size_in_bytes`.
     pub fn builder() -> ShardStatsBuilder {
         ShardStatsBuilder::new()
     }
 
     /// Creates a [`ShardStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardStatsBuilder,
-        ) -> ShardStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `bytes_read`, `failed_read_requests`, `failed_write_requests`, `follower_aliases_version`, `follower_global_checkpoint`, `follower_index`, `follower_mapping_version`, `follower_max_seq_no`, `follower_settings_version`, `last_requested_seq_no`, `leader_global_checkpoint`, `leader_index`, `leader_max_seq_no`, `operations_read`, `operations_written`, `outstanding_read_requests`, `outstanding_write_requests`, `read_exceptions`, `remote_cluster`, `shard_id`, `successful_read_requests`, `successful_write_requests`, `time_since_last_read_millis`, `total_read_remote_exec_time_millis`, `total_read_time_millis`, `total_write_time_millis`, `write_buffer_operation_count`, `write_buffer_size_in_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardStats>>(
+        f: impl FnOnce(ShardStatsBuilder) -> B,
     ) -> ShardStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_stats_members {
+    pub struct bytes_read;
+    pub struct failed_read_requests;
+    pub struct failed_write_requests;
+    pub struct follower_aliases_version;
+    pub struct follower_global_checkpoint;
+    pub struct follower_index;
+    pub struct follower_mapping_version;
+    pub struct follower_max_seq_no;
+    pub struct follower_settings_version;
+    pub struct last_requested_seq_no;
+    pub struct leader_global_checkpoint;
+    pub struct leader_index;
+    pub struct leader_max_seq_no;
+    pub struct operations_read;
+    pub struct operations_written;
+    pub struct outstanding_read_requests;
+    pub struct outstanding_write_requests;
+    pub struct read_exceptions;
+    pub struct remote_cluster;
+    pub struct shard_id;
+    pub struct successful_read_requests;
+    pub struct successful_write_requests;
+    pub struct time_since_last_read_millis;
+    pub struct total_read_remote_exec_time_millis;
+    pub struct total_read_time_millis;
+    pub struct total_write_time_millis;
+    pub struct write_buffer_operation_count;
+    pub struct write_buffer_size_in_bytes;
 }
 
 /// Builder for [`ShardStats`].
@@ -774,12 +709,11 @@ impl<
     }
 
     /// Sets [`fatal_exception`](Self::fatal_exception) with a builder.
-    pub fn fatal_exception_with(
+    pub fn fatal_exception_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.fatal_exception(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -901,7 +835,7 @@ impl<
         S27,
     )>
 {
-    /// The total of transferred bytes read from the leader.
+    /// **Required.** The total of transferred bytes read from the leader.
     /// This is only an estimate and does not account for compression if enabled.
     pub fn bytes_read(
         self,
@@ -1002,7 +936,7 @@ impl<
         S27,
     )>
 {
-    /// The number of failed reads.
+    /// **Required.** The number of failed reads.
     pub fn failed_read_requests(
         self,
         value: i64,
@@ -1102,7 +1036,7 @@ impl<
         S27,
     )>
 {
-    /// The number of failed bulk write requests on the follower.
+    /// **Required.** The number of failed bulk write requests on the follower.
     pub fn failed_write_requests(
         self,
         value: i64,
@@ -1202,7 +1136,7 @@ impl<
         S27,
     )>
 {
-    /// The index aliases version the follower is synced up to.
+    /// **Required.** The index aliases version the follower is synced up to.
     pub fn follower_aliases_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1302,7 +1236,7 @@ impl<
         S27,
     )>
 {
-    /// The current global checkpoint on the follower.
+    /// **Required.** The current global checkpoint on the follower.
     /// The difference between the `leader_global_checkpoint` and the `follower_global_checkpoint` is an indication of how much the follower is lagging the leader.
     pub fn follower_global_checkpoint(
         self,
@@ -1403,7 +1337,7 @@ impl<
         S27,
     )>
 {
-    /// The name of the follower index.
+    /// **Required.** The name of the follower index.
     pub fn follower_index(
         self,
         value: impl Into<String>,
@@ -1503,7 +1437,7 @@ impl<
         S27,
     )>
 {
-    /// The mapping version the follower is synced up to.
+    /// **Required.** The mapping version the follower is synced up to.
     pub fn follower_mapping_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1603,7 +1537,7 @@ impl<
         S27,
     )>
 {
-    /// The current maximum sequence number on the follower.
+    /// **Required.** The current maximum sequence number on the follower.
     pub fn follower_max_seq_no(
         self,
         value: impl Into<crate::typed::_types::SequenceNumber>,
@@ -1703,7 +1637,7 @@ impl<
         S27,
     )>
 {
-    /// The index settings version the follower is synced up to.
+    /// **Required.** The index settings version the follower is synced up to.
     pub fn follower_settings_version(
         self,
         value: impl Into<crate::typed::_types::VersionNumber>,
@@ -1803,7 +1737,7 @@ impl<
         S27,
     )>
 {
-    /// The starting sequence number of the last batch of operations requested from the leader.
+    /// **Required.** The starting sequence number of the last batch of operations requested from the leader.
     pub fn last_requested_seq_no(
         self,
         value: impl Into<crate::typed::_types::SequenceNumber>,
@@ -1903,7 +1837,7 @@ impl<
         S27,
     )>
 {
-    /// The current global checkpoint on the leader known to the follower task.
+    /// **Required.** The current global checkpoint on the leader known to the follower task.
     pub fn leader_global_checkpoint(
         self,
         value: i64,
@@ -2003,7 +1937,7 @@ impl<
         S27,
     )>
 {
-    /// The name of the index in the leader cluster being followed.
+    /// **Required.** The name of the index in the leader cluster being followed.
     pub fn leader_index(
         self,
         value: impl Into<String>,
@@ -2103,7 +2037,7 @@ impl<
         S27,
     )>
 {
-    /// The current maximum sequence number on the leader known to the follower task.
+    /// **Required.** The current maximum sequence number on the leader known to the follower task.
     pub fn leader_max_seq_no(
         self,
         value: impl Into<crate::typed::_types::SequenceNumber>,
@@ -2203,7 +2137,7 @@ impl<
         S27,
     )>
 {
-    /// The total number of operations read from the leader.
+    /// **Required.** The total number of operations read from the leader.
     pub fn operations_read(
         self,
         value: i64,
@@ -2303,7 +2237,7 @@ impl<
         S27,
     )>
 {
-    /// The number of operations written on the follower.
+    /// **Required.** The number of operations written on the follower.
     pub fn operations_written(
         self,
         value: i64,
@@ -2403,7 +2337,7 @@ impl<
         S27,
     )>
 {
-    /// The number of active read requests from the follower.
+    /// **Required.** The number of active read requests from the follower.
     pub fn outstanding_read_requests(
         self,
         value: i32,
@@ -2503,7 +2437,7 @@ impl<
         S27,
     )>
 {
-    /// The number of active bulk write requests on the follower.
+    /// **Required.** The number of active bulk write requests on the follower.
     pub fn outstanding_write_requests(
         self,
         value: i32,
@@ -2603,7 +2537,7 @@ impl<
         S27,
     )>
 {
-    /// An array of objects representing failed reads.
+    /// **Required.** An array of objects representing failed reads.
     pub fn read_exceptions(
         self,
         value: impl Into<Vec<ReadException>>,
@@ -2685,15 +2619,9 @@ impl<
     }
 
     /// Adds an element to [`read_exceptions`](Self::read_exceptions), with a builder.
-    pub fn add_read_exceptions_with(
+    pub fn add_read_exceptions_with<B: crate::typed::builder::Build<Output = ReadException>>(
         self,
-        f: impl FnOnce(
-            ReadExceptionBuilder,
-        ) -> ReadExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReadExceptionBuilder) -> B,
     ) -> ShardStatsBuilder<(
         S0,
         S1,
@@ -2797,15 +2725,9 @@ impl<
     }
 
     /// Adds an element to [`read_exceptions`](Self::read_exceptions), with a builder.
-    pub fn add_read_exceptions_with(
+    pub fn add_read_exceptions_with<B: crate::typed::builder::Build<Output = ReadException>>(
         self,
-        f: impl FnOnce(
-            ReadExceptionBuilder,
-        ) -> ReadExceptionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReadExceptionBuilder) -> B,
     ) -> Self {
         self.add_read_exceptions(f(ReadExceptionBuilder::new()).build())
     }
@@ -2871,7 +2793,7 @@ impl<
         S27,
     )>
 {
-    /// The remote cluster containing the leader index.
+    /// **Required.** The remote cluster containing the leader index.
     pub fn remote_cluster(
         self,
         value: impl Into<String>,
@@ -2971,7 +2893,7 @@ impl<
         S27,
     )>
 {
-    /// The numerical shard ID, with values from 0 to one less than the number of replicas.
+    /// **Required.** The numerical shard ID, with values from 0 to one less than the number of replicas.
     pub fn shard_id(
         self,
         value: i32,
@@ -3071,7 +2993,7 @@ impl<
         S27,
     )>
 {
-    /// The number of successful fetches.
+    /// **Required.** The number of successful fetches.
     pub fn successful_read_requests(
         self,
         value: i64,
@@ -3171,7 +3093,7 @@ impl<
         S27,
     )>
 {
-    /// The number of bulk write requests run on the follower.
+    /// **Required.** The number of bulk write requests run on the follower.
     pub fn successful_write_requests(
         self,
         value: i64,
@@ -3271,7 +3193,7 @@ impl<
         S27,
     )>
 {
-    /// The number of milliseconds since a read request was sent to the leader.
+    /// **Required.** The number of milliseconds since a read request was sent to the leader.
     /// When the follower is caught up to the leader, this number will increase up to the configured `read_poll_timeout` at which point another read request will be sent to the leader.
     pub fn time_since_last_read_millis(
         self,
@@ -3372,7 +3294,7 @@ impl<
         S27,
     )>
 {
-    /// The total time reads spent running on the remote cluster.
+    /// **Required.** The total time reads spent running on the remote cluster.
     pub fn total_read_remote_exec_time_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3472,7 +3394,7 @@ impl<
         S27,
     )>
 {
-    /// The total time reads were outstanding, measured from the time a read was sent to the leader to the time a reply was returned to the follower.
+    /// **Required.** The total time reads were outstanding, measured from the time a read was sent to the leader to the time a reply was returned to the follower.
     pub fn total_read_time_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3572,7 +3494,7 @@ impl<
         S27,
     )>
 {
-    /// The total time spent writing on the follower.
+    /// **Required.** The total time spent writing on the follower.
     pub fn total_write_time_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -3672,7 +3594,7 @@ impl<
         S27,
     )>
 {
-    /// The number of write operations queued on the follower.
+    /// **Required.** The number of write operations queued on the follower.
     pub fn write_buffer_operation_count(
         self,
         value: i64,
@@ -3772,7 +3694,7 @@ impl<
         crate::typed::builder::NotSet,
     )>
 {
-    /// The total number of bytes of operations currently queued for writing.
+    /// **Required.** The total number of bytes of operations currently queued for writing.
     pub fn write_buffer_size_in_bytes(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -3812,40 +3734,99 @@ impl<
     }
 }
 
-impl
+impl<
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    >
     ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
     )>
 {
     /// Builds a [`ShardStats`].
-    pub fn build(self) -> ShardStats {
+    pub fn build(self) -> ShardStats
+    where
+        S0: crate::typed::builder::IsSet<shard_stats_members::bytes_read>,
+        S1: crate::typed::builder::IsSet<shard_stats_members::failed_read_requests>,
+        S2: crate::typed::builder::IsSet<shard_stats_members::failed_write_requests>,
+        S3: crate::typed::builder::IsSet<shard_stats_members::follower_aliases_version>,
+        S4: crate::typed::builder::IsSet<shard_stats_members::follower_global_checkpoint>,
+        S5: crate::typed::builder::IsSet<shard_stats_members::follower_index>,
+        S6: crate::typed::builder::IsSet<shard_stats_members::follower_mapping_version>,
+        S7: crate::typed::builder::IsSet<shard_stats_members::follower_max_seq_no>,
+        S8: crate::typed::builder::IsSet<shard_stats_members::follower_settings_version>,
+        S9: crate::typed::builder::IsSet<shard_stats_members::last_requested_seq_no>,
+        S10: crate::typed::builder::IsSet<shard_stats_members::leader_global_checkpoint>,
+        S11: crate::typed::builder::IsSet<shard_stats_members::leader_index>,
+        S12: crate::typed::builder::IsSet<shard_stats_members::leader_max_seq_no>,
+        S13: crate::typed::builder::IsSet<shard_stats_members::operations_read>,
+        S14: crate::typed::builder::IsSet<shard_stats_members::operations_written>,
+        S15: crate::typed::builder::IsSet<shard_stats_members::outstanding_read_requests>,
+        S16: crate::typed::builder::IsSet<shard_stats_members::outstanding_write_requests>,
+        S17: crate::typed::builder::IsSet<shard_stats_members::read_exceptions>,
+        S18: crate::typed::builder::IsSet<shard_stats_members::remote_cluster>,
+        S19: crate::typed::builder::IsSet<shard_stats_members::shard_id>,
+        S20: crate::typed::builder::IsSet<shard_stats_members::successful_read_requests>,
+        S21: crate::typed::builder::IsSet<shard_stats_members::successful_write_requests>,
+        S22: crate::typed::builder::IsSet<shard_stats_members::time_since_last_read_millis>,
+        S23: crate::typed::builder::IsSet<shard_stats_members::total_read_remote_exec_time_millis>,
+        S24: crate::typed::builder::IsSet<shard_stats_members::total_read_time_millis>,
+        S25: crate::typed::builder::IsSet<shard_stats_members::total_write_time_millis>,
+        S26: crate::typed::builder::IsSet<shard_stats_members::write_buffer_operation_count>,
+        S27: crate::typed::builder::IsSet<shard_stats_members::write_buffer_size_in_bytes>,
+    {
         ShardStats {
             bytes_read: self.bytes_read.unwrap(),
             failed_read_requests: self.failed_read_requests.unwrap(),
@@ -3884,77 +3865,105 @@ impl
     }
 }
 
-impl
-    From<
-        ShardStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardStats
+impl<
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    > crate::typed::builder::Build
+    for ShardStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    )>
+where
+    S0: crate::typed::builder::IsSet<shard_stats_members::bytes_read>,
+    S1: crate::typed::builder::IsSet<shard_stats_members::failed_read_requests>,
+    S2: crate::typed::builder::IsSet<shard_stats_members::failed_write_requests>,
+    S3: crate::typed::builder::IsSet<shard_stats_members::follower_aliases_version>,
+    S4: crate::typed::builder::IsSet<shard_stats_members::follower_global_checkpoint>,
+    S5: crate::typed::builder::IsSet<shard_stats_members::follower_index>,
+    S6: crate::typed::builder::IsSet<shard_stats_members::follower_mapping_version>,
+    S7: crate::typed::builder::IsSet<shard_stats_members::follower_max_seq_no>,
+    S8: crate::typed::builder::IsSet<shard_stats_members::follower_settings_version>,
+    S9: crate::typed::builder::IsSet<shard_stats_members::last_requested_seq_no>,
+    S10: crate::typed::builder::IsSet<shard_stats_members::leader_global_checkpoint>,
+    S11: crate::typed::builder::IsSet<shard_stats_members::leader_index>,
+    S12: crate::typed::builder::IsSet<shard_stats_members::leader_max_seq_no>,
+    S13: crate::typed::builder::IsSet<shard_stats_members::operations_read>,
+    S14: crate::typed::builder::IsSet<shard_stats_members::operations_written>,
+    S15: crate::typed::builder::IsSet<shard_stats_members::outstanding_read_requests>,
+    S16: crate::typed::builder::IsSet<shard_stats_members::outstanding_write_requests>,
+    S17: crate::typed::builder::IsSet<shard_stats_members::read_exceptions>,
+    S18: crate::typed::builder::IsSet<shard_stats_members::remote_cluster>,
+    S19: crate::typed::builder::IsSet<shard_stats_members::shard_id>,
+    S20: crate::typed::builder::IsSet<shard_stats_members::successful_read_requests>,
+    S21: crate::typed::builder::IsSet<shard_stats_members::successful_write_requests>,
+    S22: crate::typed::builder::IsSet<shard_stats_members::time_since_last_read_millis>,
+    S23: crate::typed::builder::IsSet<shard_stats_members::total_read_remote_exec_time_millis>,
+    S24: crate::typed::builder::IsSet<shard_stats_members::total_read_time_millis>,
+    S25: crate::typed::builder::IsSet<shard_stats_members::total_write_time_millis>,
+    S26: crate::typed::builder::IsSet<shard_stats_members::write_buffer_operation_count>,
+    S27: crate::typed::builder::IsSet<shard_stats_members::write_buffer_size_in_bytes>,
 {
-    fn from(
-        builder: ShardStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardStats;
+
+    fn build(self) -> ShardStats {
+        Self::build(self)
     }
 }
 
 impl<
+        S0,
         S1,
         S2,
         S3,
@@ -3983,1225 +3992,100 @@ impl<
         S26,
         S27,
     >
-    ShardStatsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
+    From<
+        ShardStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+            S16,
+            S17,
+            S18,
+            S19,
+            S20,
+            S21,
+            S22,
+            S23,
+            S24,
+            S25,
+            S26,
+            S27,
+        )>,
+    > for ShardStats
+where
+    S0: crate::typed::builder::IsSet<shard_stats_members::bytes_read>,
+    S1: crate::typed::builder::IsSet<shard_stats_members::failed_read_requests>,
+    S2: crate::typed::builder::IsSet<shard_stats_members::failed_write_requests>,
+    S3: crate::typed::builder::IsSet<shard_stats_members::follower_aliases_version>,
+    S4: crate::typed::builder::IsSet<shard_stats_members::follower_global_checkpoint>,
+    S5: crate::typed::builder::IsSet<shard_stats_members::follower_index>,
+    S6: crate::typed::builder::IsSet<shard_stats_members::follower_mapping_version>,
+    S7: crate::typed::builder::IsSet<shard_stats_members::follower_max_seq_no>,
+    S8: crate::typed::builder::IsSet<shard_stats_members::follower_settings_version>,
+    S9: crate::typed::builder::IsSet<shard_stats_members::last_requested_seq_no>,
+    S10: crate::typed::builder::IsSet<shard_stats_members::leader_global_checkpoint>,
+    S11: crate::typed::builder::IsSet<shard_stats_members::leader_index>,
+    S12: crate::typed::builder::IsSet<shard_stats_members::leader_max_seq_no>,
+    S13: crate::typed::builder::IsSet<shard_stats_members::operations_read>,
+    S14: crate::typed::builder::IsSet<shard_stats_members::operations_written>,
+    S15: crate::typed::builder::IsSet<shard_stats_members::outstanding_read_requests>,
+    S16: crate::typed::builder::IsSet<shard_stats_members::outstanding_write_requests>,
+    S17: crate::typed::builder::IsSet<shard_stats_members::read_exceptions>,
+    S18: crate::typed::builder::IsSet<shard_stats_members::remote_cluster>,
+    S19: crate::typed::builder::IsSet<shard_stats_members::shard_id>,
+    S20: crate::typed::builder::IsSet<shard_stats_members::successful_read_requests>,
+    S21: crate::typed::builder::IsSet<shard_stats_members::successful_write_requests>,
+    S22: crate::typed::builder::IsSet<shard_stats_members::time_since_last_read_millis>,
+    S23: crate::typed::builder::IsSet<shard_stats_members::total_read_remote_exec_time_millis>,
+    S24: crate::typed::builder::IsSet<shard_stats_members::total_read_time_millis>,
+    S25: crate::typed::builder::IsSet<shard_stats_members::total_write_time_millis>,
+    S26: crate::typed::builder::IsSet<shard_stats_members::write_buffer_operation_count>,
+    S27: crate::typed::builder::IsSet<shard_stats_members::write_buffer_size_in_bytes>,
 {
-    /// `bytes_read` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, bytes_read: crate::typed::builder::MissingRequiredField) -> ShardStats { match bytes_read {} }
-}
-
-impl<
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `failed_read_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed_read_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match failed_read_requests {} }
-}
-
-impl<
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `failed_write_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, failed_write_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match failed_write_requests {} }
-}
-
-impl<
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_aliases_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_aliases_version: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_aliases_version {} }
-}
-
-impl<
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_global_checkpoint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_global_checkpoint: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_global_checkpoint {} }
-}
-
-impl<
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_index: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_index {} }
-}
-
-impl<
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_mapping_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_mapping_version: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_mapping_version {} }
-}
-
-impl<
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_max_seq_no` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_max_seq_no: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_max_seq_no {} }
-}
-
-impl<
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    >
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `follower_settings_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, follower_settings_version: crate::typed::builder::MissingRequiredField) -> ShardStats { match follower_settings_version {} }
-}
-
-impl<S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `last_requested_seq_no` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, last_requested_seq_no: crate::typed::builder::MissingRequiredField) -> ShardStats { match last_requested_seq_no {} }
-}
-
-impl<S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `leader_global_checkpoint` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_global_checkpoint: crate::typed::builder::MissingRequiredField) -> ShardStats { match leader_global_checkpoint {} }
-}
-
-impl<S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S12,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `leader_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_index: crate::typed::builder::MissingRequiredField) -> ShardStats { match leader_index {} }
-}
-
-impl<S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S13,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `leader_max_seq_no` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, leader_max_seq_no: crate::typed::builder::MissingRequiredField) -> ShardStats { match leader_max_seq_no {} }
-}
-
-impl<S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S14,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `operations_read` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, operations_read: crate::typed::builder::MissingRequiredField) -> ShardStats { match operations_read {} }
-}
-
-impl<S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S15,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `operations_written` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, operations_written: crate::typed::builder::MissingRequiredField) -> ShardStats { match operations_written {} }
-}
-
-impl<S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S16,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `outstanding_read_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, outstanding_read_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match outstanding_read_requests {} }
-}
-
-impl<S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S17,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `outstanding_write_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, outstanding_write_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match outstanding_write_requests {} }
-}
-
-impl<S18, S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S18,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `read_exceptions` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, read_exceptions: crate::typed::builder::MissingRequiredField) -> ShardStats { match read_exceptions {} }
-}
-
-impl<S19, S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S19,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `remote_cluster` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, remote_cluster: crate::typed::builder::MissingRequiredField) -> ShardStats { match remote_cluster {} }
-}
-
-impl<S20, S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S20,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `shard_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_id: crate::typed::builder::MissingRequiredField) -> ShardStats { match shard_id {} }
-}
-
-impl<S21, S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S21,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `successful_read_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, successful_read_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match successful_read_requests {} }
-}
-
-impl<S22, S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S22,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `successful_write_requests` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, successful_write_requests: crate::typed::builder::MissingRequiredField) -> ShardStats { match successful_write_requests {} }
-}
-
-impl<S23, S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S23,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `time_since_last_read_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_since_last_read_millis: crate::typed::builder::MissingRequiredField) -> ShardStats { match time_since_last_read_millis {} }
-}
-
-impl<S24, S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S24,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `total_read_remote_exec_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_read_remote_exec_time_millis: crate::typed::builder::MissingRequiredField) -> ShardStats { match total_read_remote_exec_time_millis {} }
-}
-
-impl<S25, S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S25,
-        S26,
-        S27,
-    )>
-{
-    /// `total_read_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_read_time_millis: crate::typed::builder::MissingRequiredField) -> ShardStats { match total_read_time_millis {} }
-}
-
-impl<S26, S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S26,
-        S27,
-    )>
-{
-    /// `total_write_time_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_write_time_millis: crate::typed::builder::MissingRequiredField) -> ShardStats { match total_write_time_millis {} }
-}
-
-impl<S27>
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S27,
-    )>
-{
-    /// `write_buffer_operation_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_buffer_operation_count: crate::typed::builder::MissingRequiredField) -> ShardStats { match write_buffer_operation_count {} }
-}
-
-impl
-    ShardStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `write_buffer_size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_buffer_size_in_bytes: crate::typed::builder::MissingRequiredField) -> ShardStats { match write_buffer_size_in_bytes {} }
+    fn from(
+        builder: ShardStatsBuilder<(
+            S0,
+            S1,
+            S2,
+            S3,
+            S4,
+            S5,
+            S6,
+            S7,
+            S8,
+            S9,
+            S10,
+            S11,
+            S12,
+            S13,
+            S14,
+            S15,
+            S16,
+            S17,
+            S18,
+            S19,
+            S20,
+            S21,
+            S22,
+            S23,
+            S24,
+            S25,
+            S26,
+            S27,
+        )>,
+    ) -> Self {
+        builder.build()
+    }
 }

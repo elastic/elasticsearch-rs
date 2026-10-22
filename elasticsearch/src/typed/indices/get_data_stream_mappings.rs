@@ -14,22 +14,29 @@ pub struct DataStreamMappings {
 
 impl DataStreamMappings {
     /// Creates a builder for [`DataStreamMappings`].
+    ///
+    /// Required: `name`, `mappings`, `effective_mappings`.
     pub fn builder() -> DataStreamMappingsBuilder {
         DataStreamMappingsBuilder::new()
     }
 
     /// Creates a [`DataStreamMappings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamMappingsBuilder,
-        ) -> DataStreamMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `mappings`, `effective_mappings`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamMappings>>(
+        f: impl FnOnce(DataStreamMappingsBuilder) -> B,
     ) -> DataStreamMappings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamMappingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_mappings_members {
+    pub struct name;
+    pub struct mappings;
+    pub struct effective_mappings;
 }
 
 /// Builder for [`DataStreamMappings`].
@@ -76,7 +83,7 @@ impl<S0, S1, S2> DataStreamMappingsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DataStreamMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The name of the data stream.
+    /// **Required.** The name of the data stream.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -88,7 +95,7 @@ impl<S1, S2> DataStreamMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> DataStreamMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The settings specific to this data stream
+    /// **Required.** The settings specific to this data stream
     pub fn mappings(
         self,
         value: impl Into<crate::typed::_types::mapping::TypeMapping>,
@@ -99,18 +106,18 @@ impl<S0, S2> DataStreamMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> 
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> DataStreamMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
 impl<S0, S1> DataStreamMappingsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The settings specific to this data stream merged with the settings from its template. These `effective_settings`
+    /// **Required.** The settings specific to this data stream merged with the settings from its template. These `effective_settings`
     /// are the settings that will be used when a new index is created for this data stream.
     pub fn effective_mappings(
         self,
@@ -122,25 +129,24 @@ impl<S0, S1> DataStreamMappingsBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`effective_mappings`](Self::effective_mappings) with a builder.
-    pub fn effective_mappings_with(
+    pub fn effective_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> DataStreamMappingsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.effective_mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
-impl
-    DataStreamMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DataStreamMappingsBuilder<(S0, S1, S2)> {
     /// Builds a [`DataStreamMappings`].
-    pub fn build(self) -> DataStreamMappings {
+    pub fn build(self) -> DataStreamMappings
+    where
+        S0: crate::typed::builder::IsSet<data_stream_mappings_members::name>,
+        S1: crate::typed::builder::IsSet<data_stream_mappings_members::mappings>,
+        S2: crate::typed::builder::IsSet<data_stream_mappings_members::effective_mappings>,
+    {
         DataStreamMappings {
             name: self.name.unwrap(),
             mappings: self.mappings.unwrap(),
@@ -149,54 +155,28 @@ impl
     }
 }
 
-impl
-    From<
-        DataStreamMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataStreamMappings
+impl<S0, S1, S2> crate::typed::builder::Build for DataStreamMappingsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_mappings_members::name>,
+    S1: crate::typed::builder::IsSet<data_stream_mappings_members::mappings>,
+    S2: crate::typed::builder::IsSet<data_stream_mappings_members::effective_mappings>,
 {
-    fn from(
-        builder: DataStreamMappingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamMappings;
+
+    fn build(self) -> DataStreamMappings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DataStreamMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataStreamMappings { match name {} }
-}
-
-impl<S2>
-    DataStreamMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DataStreamMappingsBuilder<(S0, S1, S2)>> for DataStreamMappings
+where
+    S0: crate::typed::builder::IsSet<data_stream_mappings_members::name>,
+    S1: crate::typed::builder::IsSet<data_stream_mappings_members::mappings>,
+    S2: crate::typed::builder::IsSet<data_stream_mappings_members::effective_mappings>,
 {
-    /// `mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mappings: crate::typed::builder::MissingRequiredField) -> DataStreamMappings { match mappings {} }
-}
-
-impl
-    DataStreamMappingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `effective_mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, effective_mappings: crate::typed::builder::MissingRequiredField) -> DataStreamMappings { match effective_mappings {} }
+    fn from(builder: DataStreamMappingsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.get_data_stream_mappings`](crate::typed::indices::IndicesClient::get_data_stream_mappings).
@@ -233,16 +213,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -358,7 +349,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A comma-separated list of data streams or data stream patterns. Supports wildcards (`*`).
+    /// **Required.** A comma-separated list of data streams or data stream patterns. Supports wildcards (`*`).
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -369,9 +360,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             master_timeout: self.master_timeout,
@@ -383,23 +377,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

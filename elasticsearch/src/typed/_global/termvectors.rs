@@ -10,22 +10,29 @@ pub struct FieldStatistics {
 
 impl FieldStatistics {
     /// Creates a builder for [`FieldStatistics`].
+    ///
+    /// Required: `doc_count`, `sum_doc_freq`, `sum_ttf`.
     pub fn builder() -> FieldStatisticsBuilder {
         FieldStatisticsBuilder::new()
     }
 
     /// Creates a [`FieldStatistics`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldStatisticsBuilder,
-        ) -> FieldStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `doc_count`, `sum_doc_freq`, `sum_ttf`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldStatistics>>(
+        f: impl FnOnce(FieldStatisticsBuilder) -> B,
     ) -> FieldStatistics {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldStatisticsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_statistics_members {
+    pub struct doc_count;
+    pub struct sum_doc_freq;
+    pub struct sum_ttf;
 }
 
 /// Builder for [`FieldStatistics`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> FieldStatisticsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FieldStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn doc_count(
         self,
         value: i32,
@@ -83,6 +91,7 @@ impl<S1, S2> FieldStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FieldStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn sum_doc_freq(
         self,
         value: i64,
@@ -94,6 +103,7 @@ impl<S0, S2> FieldStatisticsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> FieldStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn sum_ttf(
         self,
         value: i64,
@@ -104,15 +114,14 @@ impl<S0, S1> FieldStatisticsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    FieldStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FieldStatisticsBuilder<(S0, S1, S2)> {
     /// Builds a [`FieldStatistics`].
-    pub fn build(self) -> FieldStatistics {
+    pub fn build(self) -> FieldStatistics
+    where
+        S0: crate::typed::builder::IsSet<field_statistics_members::doc_count>,
+        S1: crate::typed::builder::IsSet<field_statistics_members::sum_doc_freq>,
+        S2: crate::typed::builder::IsSet<field_statistics_members::sum_ttf>,
+    {
         FieldStatistics {
             doc_count: self.doc_count.unwrap(),
             sum_doc_freq: self.sum_doc_freq.unwrap(),
@@ -121,54 +130,28 @@ impl
     }
 }
 
-impl
-    From<
-        FieldStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldStatistics
+impl<S0, S1, S2> crate::typed::builder::Build for FieldStatisticsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<field_statistics_members::doc_count>,
+    S1: crate::typed::builder::IsSet<field_statistics_members::sum_doc_freq>,
+    S2: crate::typed::builder::IsSet<field_statistics_members::sum_ttf>,
 {
-    fn from(
-        builder: FieldStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldStatistics;
+
+    fn build(self) -> FieldStatistics {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FieldStatisticsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `doc_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, doc_count: crate::typed::builder::MissingRequiredField) -> FieldStatistics { match doc_count {} }
-}
-
-impl<S2>
-    FieldStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FieldStatisticsBuilder<(S0, S1, S2)>> for FieldStatistics
+where
+    S0: crate::typed::builder::IsSet<field_statistics_members::doc_count>,
+    S1: crate::typed::builder::IsSet<field_statistics_members::sum_doc_freq>,
+    S2: crate::typed::builder::IsSet<field_statistics_members::sum_ttf>,
 {
-    /// `sum_doc_freq` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum_doc_freq: crate::typed::builder::MissingRequiredField) -> FieldStatistics { match sum_doc_freq {} }
-}
-
-impl
-    FieldStatisticsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `sum_ttf` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sum_ttf: crate::typed::builder::MissingRequiredField) -> FieldStatistics { match sum_ttf {} }
+    fn from(builder: FieldStatisticsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -206,7 +189,9 @@ impl Filter {
     }
 
     /// Creates a [`Filter`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(FilterBuilder) -> FilterBuilder) -> Filter {
+    pub fn of<B: crate::typed::builder::Build<Output = Filter>>(
+        f: impl FnOnce(FilterBuilder) -> B,
+    ) -> Filter {
         f(Self::builder()).build()
     }
 }
@@ -338,6 +323,14 @@ impl FilterBuilder {
             min_term_freq: self.min_term_freq,
             min_word_length: self.min_word_length,
         }
+    }
+}
+
+impl crate::typed::builder::Build for FilterBuilder {
+    type Output = Filter;
+
+    fn build(self) -> Filter {
+        Self::build(self)
     }
 }
 
@@ -494,16 +487,27 @@ pub struct Request<TDocument = serde_json::Value> {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of<TDocument>(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), (), TDocument>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request<TDocument>>, TDocument>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request<TDocument> {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -940,7 +944,10 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(self, f: impl FnOnce(FilterBuilder) -> FilterBuilder) -> Self {
+    pub fn filter_with<B: crate::typed::builder::Build<Output = Filter>>(
+        self,
+        f: impl FnOnce(FilterBuilder) -> B,
+    ) -> Self {
         self.filter(f(FilterBuilder::new()).build())
     }
 
@@ -1104,7 +1111,7 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
 }
 
 impl<C, TDocument> RequestBuilder<(crate::typed::builder::NotSet,), C, TDocument> {
-    /// The name of the index that contains the document.
+    /// **Required.** The name of the index that contains the document.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1115,9 +1122,12 @@ impl<C, TDocument> RequestBuilder<(crate::typed::builder::NotSet,), C, TDocument
     }
 }
 
-impl<C, TDocument> RequestBuilder<(crate::typed::builder::Set,), C, TDocument> {
+impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request<TDocument> {
+    pub fn build(self) -> Request<TDocument>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             id: self.id,
@@ -1153,26 +1163,27 @@ impl<C, TDocument> RequestBuilder<(crate::typed::builder::Set,), C, TDocument> {
     }
 }
 
-impl<TDocument> RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch, TDocument>
+impl<S0, C, TDocument> crate::typed::builder::Build for RequestBuilder<(S0,), C, TDocument>
 where
-    TDocument: serde::Serialize,
+    S0: crate::typed::builder::IsSet<request_members::index>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request<TDocument>;
+
+    fn build(self) -> Request<TDocument> {
+        Self::build(self)
     }
 }
 
-impl<C, TDocument> RequestBuilder<(crate::typed::builder::NotSet,), C, TDocument> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match index {} }
-}
-impl<TDocument> RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch, TDocument> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0, TDocument> RequestBuilder<(S0,), &crate::Elasticsearch, TDocument> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        TDocument: serde::Serialize,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl<TDocument> Request<TDocument> {
@@ -1392,14 +1403,27 @@ pub struct Term {
 
 impl Term {
     /// Creates a builder for [`Term`].
+    ///
+    /// Required: `term_freq`.
     pub fn builder() -> TermBuilder {
         TermBuilder::new()
     }
 
     /// Creates a [`Term`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>) -> Term {
+    ///
+    /// Required: `term_freq`.
+    pub fn of<B: crate::typed::builder::Build<Output = Term>>(
+        f: impl FnOnce(TermBuilder) -> B,
+    ) -> Term {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod term_members {
+    pub struct term_freq;
 }
 
 /// Builder for [`Term`].
@@ -1480,9 +1504,9 @@ impl<S0> TermBuilder<(S0,)> {
     }
 
     /// Adds an element to [`tokens`](Self::tokens), with a builder.
-    pub fn add_tokens_with(
+    pub fn add_tokens_with<B: crate::typed::builder::Build<Output = Token>>(
         self,
-        f: impl FnOnce(TokenBuilder) -> TokenBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TokenBuilder) -> B,
     ) -> Self {
         self.add_tokens(f(TokenBuilder::new()).build())
     }
@@ -1500,6 +1524,7 @@ impl<S0> TermBuilder<(S0,)> {
 }
 
 impl TermBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn term_freq(self, value: i32) -> TermBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.term_freq = Some(value);
@@ -1507,9 +1532,12 @@ impl TermBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermBuilder<(S0,)> {
     /// Builds a [`Term`].
-    pub fn build(self) -> Term {
+    pub fn build(self) -> Term
+    where
+        S0: crate::typed::builder::IsSet<term_members::term_freq>,
+    {
         Term {
             doc_freq: self.doc_freq,
             score: self.score,
@@ -1520,16 +1548,24 @@ impl TermBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermBuilder<(crate::typed::builder::Set,)>> for Term {
-    fn from(builder: TermBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<term_members::term_freq>,
+{
+    type Output = Term;
+
+    fn build(self) -> Term {
+        Self::build(self)
     }
 }
 
-impl TermBuilder<(crate::typed::builder::NotSet,)> {
-    /// `term_freq` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term_freq: crate::typed::builder::MissingRequiredField) -> Term { match term_freq {} }
+impl<S0> From<TermBuilder<(S0,)>> for Term
+where
+    S0: crate::typed::builder::IsSet<term_members::term_freq>,
+{
+    fn from(builder: TermBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1541,16 +1577,27 @@ pub struct TermVector {
 
 impl TermVector {
     /// Creates a builder for [`TermVector`].
+    ///
+    /// Required: `terms`.
     pub fn builder() -> TermVectorBuilder {
         TermVectorBuilder::new()
     }
 
     /// Creates a [`TermVector`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermVectorBuilder) -> TermVectorBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `terms`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermVector>>(
+        f: impl FnOnce(TermVectorBuilder) -> B,
     ) -> TermVector {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermVectorBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod term_vector_members {
+    pub struct terms;
 }
 
 /// Builder for [`TermVector`].
@@ -1592,21 +1639,16 @@ impl<S0> TermVectorBuilder<(S0,)> {
     }
 
     /// Sets [`field_statistics`](Self::field_statistics) with a builder.
-    pub fn field_statistics_with(
+    pub fn field_statistics_with<B: crate::typed::builder::Build<Output = FieldStatistics>>(
         self,
-        f: impl FnOnce(
-            FieldStatisticsBuilder,
-        ) -> FieldStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FieldStatisticsBuilder) -> B,
     ) -> Self {
         self.field_statistics(f(FieldStatisticsBuilder::new()).build())
     }
 }
 
 impl TermVectorBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn terms(
         self,
         value: impl Into<indexmap::IndexMap<String, Term>>,
@@ -1631,10 +1673,10 @@ impl TermVectorBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an entry to [`terms`](Self::terms), with a builder.
-    pub fn add_terms_with(
+    pub fn add_terms_with<B: crate::typed::builder::Build<Output = Term>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TermBuilder) -> B,
     ) -> TermVectorBuilder<(crate::typed::builder::Set,)> {
         self.add_terms(key, f(TermBuilder::new()).build())
     }
@@ -1650,18 +1692,21 @@ impl TermVectorBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an entry to [`terms`](Self::terms), with a builder.
-    pub fn add_terms_with(
+    pub fn add_terms_with<B: crate::typed::builder::Build<Output = Term>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TermBuilder) -> B,
     ) -> Self {
         self.add_terms(key, f(TermBuilder::new()).build())
     }
 }
 
-impl TermVectorBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermVectorBuilder<(S0,)> {
     /// Builds a [`TermVector`].
-    pub fn build(self) -> TermVector {
+    pub fn build(self) -> TermVector
+    where
+        S0: crate::typed::builder::IsSet<term_vector_members::terms>,
+    {
         TermVector {
             field_statistics: self.field_statistics,
             terms: self.terms.unwrap(),
@@ -1669,16 +1714,24 @@ impl TermVectorBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermVectorBuilder<(crate::typed::builder::Set,)>> for TermVector {
-    fn from(builder: TermVectorBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermVectorBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<term_vector_members::terms>,
+{
+    type Output = TermVector;
+
+    fn build(self) -> TermVector {
+        Self::build(self)
     }
 }
 
-impl TermVectorBuilder<(crate::typed::builder::NotSet,)> {
-    /// `terms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, terms: crate::typed::builder::MissingRequiredField) -> TermVector { match terms {} }
+impl<S0> From<TermVectorBuilder<(S0,)>> for TermVector
+where
+    S0: crate::typed::builder::IsSet<term_vector_members::terms>,
+{
+    fn from(builder: TermVectorBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1694,16 +1747,27 @@ pub struct Token {
 
 impl Token {
     /// Creates a builder for [`Token`].
+    ///
+    /// Required: `position`.
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
     }
 
     /// Creates a [`Token`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TokenBuilder) -> TokenBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `position`.
+    pub fn of<B: crate::typed::builder::Build<Output = Token>>(
+        f: impl FnOnce(TokenBuilder) -> B,
     ) -> Token {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TokenBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod token_members {
+    pub struct position;
 }
 
 /// Builder for [`Token`].
@@ -1774,6 +1838,7 @@ impl<S0> TokenBuilder<(S0,)> {
 }
 
 impl TokenBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn position(self, value: i32) -> TokenBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.position = Some(value);
@@ -1781,9 +1846,12 @@ impl TokenBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TokenBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TokenBuilder<(S0,)> {
     /// Builds a [`Token`].
-    pub fn build(self) -> Token {
+    pub fn build(self) -> Token
+    where
+        S0: crate::typed::builder::IsSet<token_members::position>,
+    {
         Token {
             end_offset: self.end_offset,
             payload: self.payload,
@@ -1793,14 +1861,22 @@ impl TokenBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TokenBuilder<(crate::typed::builder::Set,)>> for Token {
-    fn from(builder: TokenBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TokenBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<token_members::position>,
+{
+    type Output = Token;
+
+    fn build(self) -> Token {
+        Self::build(self)
     }
 }
 
-impl TokenBuilder<(crate::typed::builder::NotSet,)> {
-    /// `position` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, position: crate::typed::builder::MissingRequiredField) -> Token { match position {} }
+impl<S0> From<TokenBuilder<(S0,)>> for Token
+where
+    S0: crate::typed::builder::IsSet<token_members::position>,
+{
+    fn from(builder: TokenBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

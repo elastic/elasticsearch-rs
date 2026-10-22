@@ -55,7 +55,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -166,6 +168,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -285,22 +295,29 @@ pub struct RollupJob {
 
 impl RollupJob {
     /// Creates a builder for [`RollupJob`].
+    ///
+    /// Required: `config`, `stats`, `status`.
     pub fn builder() -> RollupJobBuilder {
         RollupJobBuilder::new()
     }
 
     /// Creates a [`RollupJob`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RollupJobBuilder,
-        ) -> RollupJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `config`, `stats`, `status`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJob>>(
+        f: impl FnOnce(RollupJobBuilder) -> B,
     ) -> RollupJob {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_members {
+    pub struct config;
+    pub struct stats;
+    pub struct status;
 }
 
 /// Builder for [`RollupJob`].
@@ -347,7 +364,7 @@ impl<S0, S1, S2> RollupJobBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RollupJobBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The rollup job configuration.
+    /// **Required.** The rollup job configuration.
     pub fn config(
         self,
         value: impl Into<RollupJobConfiguration>,
@@ -358,27 +375,16 @@ impl<S1, S2> RollupJobBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(
+    pub fn config_with<B: crate::typed::builder::Build<Output = RollupJobConfiguration>>(
         self,
-        f: impl FnOnce(
-            RollupJobConfigurationBuilder,
-        ) -> RollupJobConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RollupJobConfigurationBuilder) -> B,
     ) -> RollupJobBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.config(f(RollupJobConfigurationBuilder::new()).build())
     }
 }
 
 impl<S0, S2> RollupJobBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Transient statistics about the rollup job, such as how many documents have been processed and how many rollup summary docs have been indexed.
+    /// **Required.** Transient statistics about the rollup job, such as how many documents have been processed and how many rollup summary docs have been indexed.
     /// These stats are not persisted.
     /// If a node is restarted, these stats are reset.
     pub fn stats(
@@ -391,31 +397,16 @@ impl<S0, S2> RollupJobBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`stats`](Self::stats) with a builder.
-    pub fn stats_with(
+    pub fn stats_with<B: crate::typed::builder::Build<Output = RollupJobStats>>(
         self,
-        f: impl FnOnce(
-            RollupJobStatsBuilder,
-        ) -> RollupJobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RollupJobStatsBuilder) -> B,
     ) -> RollupJobBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.stats(f(RollupJobStatsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> RollupJobBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The current status of the indexer for the rollup job.
+    /// **Required.** The current status of the indexer for the rollup job.
     pub fn status(
         self,
         value: impl Into<RollupJobStatus>,
@@ -426,23 +417,22 @@ impl<S0, S1> RollupJobBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`status`](Self::status) with a builder.
-    pub fn status_with(
+    pub fn status_with<B: crate::typed::builder::Build<Output = RollupJobStatus>>(
         self,
-        f: impl FnOnce(RollupJobStatusBuilder) -> RollupJobStatusBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RollupJobStatusBuilder) -> B,
     ) -> RollupJobBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.status(f(RollupJobStatusBuilder::new()).build())
     }
 }
 
-impl
-    RollupJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RollupJobBuilder<(S0, S1, S2)> {
     /// Builds a [`RollupJob`].
-    pub fn build(self) -> RollupJob {
+    pub fn build(self) -> RollupJob
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_members::config>,
+        S1: crate::typed::builder::IsSet<rollup_job_members::stats>,
+        S2: crate::typed::builder::IsSet<rollup_job_members::status>,
+    {
         RollupJob {
             config: self.config.unwrap(),
             stats: self.stats.unwrap(),
@@ -451,54 +441,28 @@ impl
     }
 }
 
-impl
-    From<
-        RollupJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RollupJob
+impl<S0, S1, S2> crate::typed::builder::Build for RollupJobBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_members::config>,
+    S1: crate::typed::builder::IsSet<rollup_job_members::stats>,
+    S2: crate::typed::builder::IsSet<rollup_job_members::status>,
 {
-    fn from(
-        builder: RollupJobBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RollupJob;
+
+    fn build(self) -> RollupJob {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RollupJobBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, config: crate::typed::builder::MissingRequiredField) -> RollupJob { match config {} }
-}
-
-impl<S2>
-    RollupJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RollupJobBuilder<(S0, S1, S2)>> for RollupJob
+where
+    S0: crate::typed::builder::IsSet<rollup_job_members::config>,
+    S1: crate::typed::builder::IsSet<rollup_job_members::stats>,
+    S2: crate::typed::builder::IsSet<rollup_job_members::status>,
 {
-    /// `stats` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, stats: crate::typed::builder::MissingRequiredField) -> RollupJob { match stats {} }
-}
-
-impl
-    RollupJobBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> RollupJob { match status {} }
+    fn from(builder: RollupJobBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -515,27 +479,34 @@ pub struct RollupJobConfiguration {
 
 impl RollupJobConfiguration {
     /// Creates a builder for [`RollupJobConfiguration`].
+    ///
+    /// Required: `cron`, `groups`, `id`, `index_pattern`, `metrics`, `page_size`, `rollup_index`, `timeout`.
     pub fn builder() -> RollupJobConfigurationBuilder {
         RollupJobConfigurationBuilder::new()
     }
 
     /// Creates a [`RollupJobConfiguration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RollupJobConfigurationBuilder,
-        ) -> RollupJobConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `cron`, `groups`, `id`, `index_pattern`, `metrics`, `page_size`, `rollup_index`, `timeout`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJobConfiguration>>(
+        f: impl FnOnce(RollupJobConfigurationBuilder) -> B,
     ) -> RollupJobConfiguration {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobConfigurationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_configuration_members {
+    pub struct cron;
+    pub struct groups;
+    pub struct id;
+    pub struct index_pattern;
+    pub struct metrics;
+    pub struct page_size;
+    pub struct rollup_index;
+    pub struct timeout;
 }
 
 /// Builder for [`RollupJobConfiguration`].
@@ -611,6 +582,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
 impl<S1, S2, S3, S4, S5, S6, S7>
     RollupJobConfigurationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn cron(
         self,
         value: impl Into<String>,
@@ -625,6 +597,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     RollupJobConfigurationBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn groups(
         self,
         value: impl Into<crate::typed::rollup::_types::Groupings>,
@@ -636,11 +609,11 @@ impl<S0, S2, S3, S4, S5, S6, S7>
     }
 
     /// Sets [`groups`](Self::groups) with a builder.
-    pub fn groups_with(
+    pub fn groups_with<
+        B: crate::typed::builder::Build<Output = crate::typed::rollup::_types::Groupings>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::rollup::_types::GroupingsBuilder,
-        ) -> crate::typed::rollup::_types::GroupingsBuilder,
+        f: impl FnOnce(crate::typed::rollup::_types::GroupingsBuilder) -> B,
     ) -> RollupJobConfigurationBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
     {
         self.groups(f(crate::typed::rollup::_types::GroupingsBuilder::new()).build())
@@ -650,6 +623,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     RollupJobConfigurationBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -664,6 +638,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     RollupJobConfigurationBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn index_pattern(
         self,
         value: impl Into<String>,
@@ -678,6 +653,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     RollupJobConfigurationBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn metrics(
         self,
         value: impl Into<Vec<crate::typed::rollup::_types::FieldMetric>>,
@@ -703,14 +679,11 @@ impl<S0, S1, S2, S3, S5, S6, S7>
     }
 
     /// Adds an element to [`metrics`](Self::metrics), with a builder.
-    pub fn add_metrics_with(
+    pub fn add_metrics_with<
+        B: crate::typed::builder::Build<Output = crate::typed::rollup::_types::FieldMetric>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::rollup::_types::FieldMetricBuilder,
-        ) -> crate::typed::rollup::_types::FieldMetricBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::rollup::_types::FieldMetricBuilder) -> B,
     ) -> RollupJobConfigurationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
     {
         self.add_metrics(f(crate::typed::rollup::_types::FieldMetricBuilder::new()).build())
@@ -732,14 +705,11 @@ impl<S0, S1, S2, S3, S5, S6, S7>
     }
 
     /// Adds an element to [`metrics`](Self::metrics), with a builder.
-    pub fn add_metrics_with(
+    pub fn add_metrics_with<
+        B: crate::typed::builder::Build<Output = crate::typed::rollup::_types::FieldMetric>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::rollup::_types::FieldMetricBuilder,
-        ) -> crate::typed::rollup::_types::FieldMetricBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::rollup::_types::FieldMetricBuilder) -> B,
     ) -> Self {
         self.add_metrics(f(crate::typed::rollup::_types::FieldMetricBuilder::new()).build())
     }
@@ -748,6 +718,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
+    /// **Required.**
     pub fn page_size(
         self,
         value: i64,
@@ -762,6 +733,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
+    /// **Required.**
     pub fn rollup_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -776,6 +748,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn timeout(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -787,20 +760,21 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
 {
     /// Builds a [`RollupJobConfiguration`].
-    pub fn build(self) -> RollupJobConfiguration {
+    pub fn build(self) -> RollupJobConfiguration
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_configuration_members::cron>,
+        S1: crate::typed::builder::IsSet<rollup_job_configuration_members::groups>,
+        S2: crate::typed::builder::IsSet<rollup_job_configuration_members::id>,
+        S3: crate::typed::builder::IsSet<rollup_job_configuration_members::index_pattern>,
+        S4: crate::typed::builder::IsSet<rollup_job_configuration_members::metrics>,
+        S5: crate::typed::builder::IsSet<rollup_job_configuration_members::page_size>,
+        S6: crate::typed::builder::IsSet<rollup_job_configuration_members::rollup_index>,
+        S7: crate::typed::builder::IsSet<rollup_job_configuration_members::timeout>,
+    {
         RollupJobConfiguration {
             cron: self.cron.unwrap(),
             groups: self.groups.unwrap(),
@@ -814,161 +788,40 @@ impl
     }
 }
 
-impl
-    From<
-        RollupJobConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RollupJobConfiguration
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_configuration_members::cron>,
+    S1: crate::typed::builder::IsSet<rollup_job_configuration_members::groups>,
+    S2: crate::typed::builder::IsSet<rollup_job_configuration_members::id>,
+    S3: crate::typed::builder::IsSet<rollup_job_configuration_members::index_pattern>,
+    S4: crate::typed::builder::IsSet<rollup_job_configuration_members::metrics>,
+    S5: crate::typed::builder::IsSet<rollup_job_configuration_members::page_size>,
+    S6: crate::typed::builder::IsSet<rollup_job_configuration_members::rollup_index>,
+    S7: crate::typed::builder::IsSet<rollup_job_configuration_members::timeout>,
 {
-    fn from(
-        builder: RollupJobConfigurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RollupJobConfiguration;
+
+    fn build(self) -> RollupJobConfiguration {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    RollupJobConfigurationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    From<RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>> for RollupJobConfiguration
+where
+    S0: crate::typed::builder::IsSet<rollup_job_configuration_members::cron>,
+    S1: crate::typed::builder::IsSet<rollup_job_configuration_members::groups>,
+    S2: crate::typed::builder::IsSet<rollup_job_configuration_members::id>,
+    S3: crate::typed::builder::IsSet<rollup_job_configuration_members::index_pattern>,
+    S4: crate::typed::builder::IsSet<rollup_job_configuration_members::metrics>,
+    S5: crate::typed::builder::IsSet<rollup_job_configuration_members::page_size>,
+    S6: crate::typed::builder::IsSet<rollup_job_configuration_members::rollup_index>,
+    S7: crate::typed::builder::IsSet<rollup_job_configuration_members::timeout>,
 {
-    /// `cron` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, cron: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match cron {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `groups` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, groups: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match groups {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match id {} }
-}
-
-impl<S4, S5, S6, S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `index_pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_pattern: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match index_pattern {} }
-}
-
-impl<S5, S6, S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `metrics` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metrics: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match metrics {} }
-}
-
-impl<S6, S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `page_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, page_size: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match page_size {} }
-}
-
-impl<S7>
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `rollup_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollup_index: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match rollup_index {} }
-}
-
-impl
-    RollupJobConfigurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timeout` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timeout: crate::typed::builder::MissingRequiredField) -> RollupJobConfiguration { match timeout {} }
+    fn from(builder: RollupJobConfigurationBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -989,31 +842,38 @@ pub struct RollupJobStats {
 
 impl RollupJobStats {
     /// Creates a builder for [`RollupJobStats`].
+    ///
+    /// Required: `documents_processed`, `index_failures`, `index_time_in_ms`, `index_total`, `pages_processed`, `rollups_indexed`, `search_failures`, `search_time_in_ms`, `search_total`, `trigger_count`, `processing_time_in_ms`, `processing_total`.
     pub fn builder() -> RollupJobStatsBuilder {
         RollupJobStatsBuilder::new()
     }
 
     /// Creates a [`RollupJobStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RollupJobStatsBuilder,
-        ) -> RollupJobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `documents_processed`, `index_failures`, `index_time_in_ms`, `index_total`, `pages_processed`, `rollups_indexed`, `search_failures`, `search_time_in_ms`, `search_total`, `trigger_count`, `processing_time_in_ms`, `processing_total`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJobStats>>(
+        f: impl FnOnce(RollupJobStatsBuilder) -> B,
     ) -> RollupJobStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_stats_members {
+    pub struct documents_processed;
+    pub struct index_failures;
+    pub struct index_time_in_ms;
+    pub struct index_total;
+    pub struct pages_processed;
+    pub struct rollups_indexed;
+    pub struct search_failures;
+    pub struct search_time_in_ms;
+    pub struct search_total;
+    pub struct trigger_count;
+    pub struct processing_time_in_ms;
+    pub struct processing_total;
 }
 
 /// Builder for [`RollupJobStats`].
@@ -1122,6 +982,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn documents_processed(
         self,
         value: i64,
@@ -1161,6 +1022,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn index_failures(
         self,
         value: i64,
@@ -1200,6 +1062,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn index_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1239,6 +1102,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn index_total(
         self,
         value: i64,
@@ -1278,6 +1142,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn pages_processed(
         self,
         value: i64,
@@ -1317,6 +1182,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn rollups_indexed(
         self,
         value: i64,
@@ -1356,6 +1222,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn search_failures(
         self,
         value: i64,
@@ -1395,6 +1262,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn search_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1434,6 +1302,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn search_total(
         self,
         value: i64,
@@ -1473,6 +1342,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn trigger_count(
         self,
         value: i64,
@@ -1512,6 +1382,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S11>
         S11,
     )>
 {
+    /// **Required.**
     pub fn processing_time_in_ms(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -1551,6 +1422,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         crate::typed::builder::NotSet,
     )>
 {
+    /// **Required.**
     pub fn processing_total(
         self,
         value: i64,
@@ -1574,24 +1446,25 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 }
 
-impl
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    RollupJobStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
 {
     /// Builds a [`RollupJobStats`].
-    pub fn build(self) -> RollupJobStats {
+    pub fn build(self) -> RollupJobStats
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_stats_members::documents_processed>,
+        S1: crate::typed::builder::IsSet<rollup_job_stats_members::index_failures>,
+        S2: crate::typed::builder::IsSet<rollup_job_stats_members::index_time_in_ms>,
+        S3: crate::typed::builder::IsSet<rollup_job_stats_members::index_total>,
+        S4: crate::typed::builder::IsSet<rollup_job_stats_members::pages_processed>,
+        S5: crate::typed::builder::IsSet<rollup_job_stats_members::rollups_indexed>,
+        S6: crate::typed::builder::IsSet<rollup_job_stats_members::search_failures>,
+        S7: crate::typed::builder::IsSet<rollup_job_stats_members::search_time_in_ms>,
+        S8: crate::typed::builder::IsSet<rollup_job_stats_members::search_total>,
+        S9: crate::typed::builder::IsSet<rollup_job_stats_members::trigger_count>,
+        S10: crate::typed::builder::IsSet<rollup_job_stats_members::processing_time_in_ms>,
+        S11: crate::typed::builder::IsSet<rollup_job_stats_members::processing_total>,
+    {
         RollupJobStats {
             documents_processed: self.documents_processed.unwrap(),
             index_failures: self.index_failures.unwrap(),
@@ -1609,294 +1482,51 @@ impl
     }
 }
 
-impl
-    From<
-        RollupJobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RollupJobStats
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11> crate::typed::builder::Build
+    for RollupJobStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_stats_members::documents_processed>,
+    S1: crate::typed::builder::IsSet<rollup_job_stats_members::index_failures>,
+    S2: crate::typed::builder::IsSet<rollup_job_stats_members::index_time_in_ms>,
+    S3: crate::typed::builder::IsSet<rollup_job_stats_members::index_total>,
+    S4: crate::typed::builder::IsSet<rollup_job_stats_members::pages_processed>,
+    S5: crate::typed::builder::IsSet<rollup_job_stats_members::rollups_indexed>,
+    S6: crate::typed::builder::IsSet<rollup_job_stats_members::search_failures>,
+    S7: crate::typed::builder::IsSet<rollup_job_stats_members::search_time_in_ms>,
+    S8: crate::typed::builder::IsSet<rollup_job_stats_members::search_total>,
+    S9: crate::typed::builder::IsSet<rollup_job_stats_members::trigger_count>,
+    S10: crate::typed::builder::IsSet<rollup_job_stats_members::processing_time_in_ms>,
+    S11: crate::typed::builder::IsSet<rollup_job_stats_members::processing_total>,
 {
-    fn from(
-        builder: RollupJobStatsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RollupJobStats;
+
+    fn build(self) -> RollupJobStats {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    From<RollupJobStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>>
+    for RollupJobStats
+where
+    S0: crate::typed::builder::IsSet<rollup_job_stats_members::documents_processed>,
+    S1: crate::typed::builder::IsSet<rollup_job_stats_members::index_failures>,
+    S2: crate::typed::builder::IsSet<rollup_job_stats_members::index_time_in_ms>,
+    S3: crate::typed::builder::IsSet<rollup_job_stats_members::index_total>,
+    S4: crate::typed::builder::IsSet<rollup_job_stats_members::pages_processed>,
+    S5: crate::typed::builder::IsSet<rollup_job_stats_members::rollups_indexed>,
+    S6: crate::typed::builder::IsSet<rollup_job_stats_members::search_failures>,
+    S7: crate::typed::builder::IsSet<rollup_job_stats_members::search_time_in_ms>,
+    S8: crate::typed::builder::IsSet<rollup_job_stats_members::search_total>,
+    S9: crate::typed::builder::IsSet<rollup_job_stats_members::trigger_count>,
+    S10: crate::typed::builder::IsSet<rollup_job_stats_members::processing_time_in_ms>,
+    S11: crate::typed::builder::IsSet<rollup_job_stats_members::processing_total>,
 {
-    /// `documents_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, documents_processed: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match documents_processed {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `index_failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_failures: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match index_failures {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `index_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_time_in_ms: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match index_time_in_ms {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `index_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_total: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match index_total {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `pages_processed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pages_processed: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match pages_processed {} }
-}
-
-impl<S6, S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `rollups_indexed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollups_indexed: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match rollups_indexed {} }
-}
-
-impl<S7, S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `search_failures` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_failures: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match search_failures {} }
-}
-
-impl<S8, S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `search_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_time_in_ms: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match search_time_in_ms {} }
-}
-
-impl<S9, S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-        S11,
-    )>
-{
-    /// `search_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search_total: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match search_total {} }
-}
-
-impl<S10, S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-        S11,
-    )>
-{
-    /// `trigger_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, trigger_count: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match trigger_count {} }
-}
-
-impl<S11>
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S11,
-    )>
-{
-    /// `processing_time_in_ms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processing_time_in_ms: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match processing_time_in_ms {} }
-}
-
-impl
-    RollupJobStatsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `processing_total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, processing_total: crate::typed::builder::MissingRequiredField) -> RollupJobStats { match processing_total {} }
+    fn from(
+        builder: RollupJobStatsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1910,16 +1540,27 @@ pub struct RollupJobStatus {
 
 impl RollupJobStatus {
     /// Creates a builder for [`RollupJobStatus`].
+    ///
+    /// Required: `job_state`.
     pub fn builder() -> RollupJobStatusBuilder {
         RollupJobStatusBuilder::new()
     }
 
     /// Creates a [`RollupJobStatus`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RollupJobStatusBuilder) -> RollupJobStatusBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `job_state`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJobStatus>>(
+        f: impl FnOnce(RollupJobStatusBuilder) -> B,
     ) -> RollupJobStatus {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobStatusBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_status_members {
+    pub struct job_state;
 }
 
 /// Builder for [`RollupJobStatus`].
@@ -1994,6 +1635,7 @@ impl<S0> RollupJobStatusBuilder<(S0,)> {
 }
 
 impl RollupJobStatusBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn job_state(
         self,
         value: impl Into<IndexingJobState>,
@@ -2004,9 +1646,12 @@ impl RollupJobStatusBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RollupJobStatusBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RollupJobStatusBuilder<(S0,)> {
     /// Builds a [`RollupJobStatus`].
-    pub fn build(self) -> RollupJobStatus {
+    pub fn build(self) -> RollupJobStatus
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_status_members::job_state>,
+    {
         RollupJobStatus {
             current_position: self.current_position,
             job_state: self.job_state.unwrap(),
@@ -2015,14 +1660,22 @@ impl RollupJobStatusBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RollupJobStatusBuilder<(crate::typed::builder::Set,)>> for RollupJobStatus {
-    fn from(builder: RollupJobStatusBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RollupJobStatusBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_status_members::job_state>,
+{
+    type Output = RollupJobStatus;
+
+    fn build(self) -> RollupJobStatus {
+        Self::build(self)
     }
 }
 
-impl RollupJobStatusBuilder<(crate::typed::builder::NotSet,)> {
-    /// `job_state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_state: crate::typed::builder::MissingRequiredField) -> RollupJobStatus { match job_state {} }
+impl<S0> From<RollupJobStatusBuilder<(S0,)>> for RollupJobStatus
+where
+    S0: crate::typed::builder::IsSet<rollup_job_status_members::job_state>,
+{
+    fn from(builder: RollupJobStatusBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

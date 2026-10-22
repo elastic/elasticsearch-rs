@@ -49,7 +49,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -210,6 +212,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -353,22 +363,29 @@ impl From<i64> for RpoBucketMaxRecoveryPointAgeMillis {
 
 impl RpoBucket {
     /// Creates a builder for [`RpoBucket`].
+    ///
+    /// Required: `start`, `end`, `max_recovery_point_age_millis`.
     pub fn builder() -> RpoBucketBuilder {
         RpoBucketBuilder::new()
     }
 
     /// Creates a [`RpoBucket`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RpoBucketBuilder,
-        ) -> RpoBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `start`, `end`, `max_recovery_point_age_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = RpoBucket>>(
+        f: impl FnOnce(RpoBucketBuilder) -> B,
     ) -> RpoBucket {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RpoBucketBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rpo_bucket_members {
+    pub struct start;
+    pub struct end;
+    pub struct max_recovery_point_age_millis;
 }
 
 /// Builder for [`RpoBucket`].
@@ -415,7 +432,7 @@ impl<S0, S1, S2> RpoBucketBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> RpoBucketBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The inclusive start of the bucket.
+    /// **Required.** The inclusive start of the bucket.
     pub fn start(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -427,7 +444,7 @@ impl<S1, S2> RpoBucketBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> RpoBucketBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The exclusive end of the bucket. The last bucket is clipped to the end of the range.
+    /// **Required.** The exclusive end of the bucket. The last bucket is clipped to the end of the range.
     pub fn end(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -439,7 +456,7 @@ impl<S0, S2> RpoBucketBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> RpoBucketBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The greatest age, in milliseconds, that the newest recoverable state reached during the bucket.
+    /// **Required.** The greatest age, in milliseconds, that the newest recoverable state reached during the bucket.
     /// It is `null` if no retained recovery point covers the start of the bucket or the bucket starts in the future.
     pub fn max_recovery_point_age_millis(
         self,
@@ -451,15 +468,14 @@ impl<S0, S1> RpoBucketBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    RpoBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> RpoBucketBuilder<(S0, S1, S2)> {
     /// Builds a [`RpoBucket`].
-    pub fn build(self) -> RpoBucket {
+    pub fn build(self) -> RpoBucket
+    where
+        S0: crate::typed::builder::IsSet<rpo_bucket_members::start>,
+        S1: crate::typed::builder::IsSet<rpo_bucket_members::end>,
+        S2: crate::typed::builder::IsSet<rpo_bucket_members::max_recovery_point_age_millis>,
+    {
         RpoBucket {
             start: self.start.unwrap(),
             end: self.end.unwrap(),
@@ -468,52 +484,26 @@ impl
     }
 }
 
-impl
-    From<
-        RpoBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RpoBucket
+impl<S0, S1, S2> crate::typed::builder::Build for RpoBucketBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<rpo_bucket_members::start>,
+    S1: crate::typed::builder::IsSet<rpo_bucket_members::end>,
+    S2: crate::typed::builder::IsSet<rpo_bucket_members::max_recovery_point_age_millis>,
 {
-    fn from(
-        builder: RpoBucketBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RpoBucket;
+
+    fn build(self) -> RpoBucket {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> RpoBucketBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `start` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start: crate::typed::builder::MissingRequiredField) -> RpoBucket { match start {} }
-}
-
-impl<S2>
-    RpoBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<RpoBucketBuilder<(S0, S1, S2)>> for RpoBucket
+where
+    S0: crate::typed::builder::IsSet<rpo_bucket_members::start>,
+    S1: crate::typed::builder::IsSet<rpo_bucket_members::end>,
+    S2: crate::typed::builder::IsSet<rpo_bucket_members::max_recovery_point_age_millis>,
 {
-    /// `end` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end: crate::typed::builder::MissingRequiredField) -> RpoBucket { match end {} }
-}
-
-impl
-    RpoBucketBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `max_recovery_point_age_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_recovery_point_age_millis: crate::typed::builder::MissingRequiredField) -> RpoBucket { match max_recovery_point_age_millis {} }
+    fn from(builder: RpoBucketBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }

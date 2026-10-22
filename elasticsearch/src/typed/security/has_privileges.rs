@@ -14,22 +14,29 @@ pub struct ApplicationPrivilegesCheck {
 
 impl ApplicationPrivilegesCheck {
     /// Creates a builder for [`ApplicationPrivilegesCheck`].
+    ///
+    /// Required: `application`, `privileges`, `resources`.
     pub fn builder() -> ApplicationPrivilegesCheckBuilder {
         ApplicationPrivilegesCheckBuilder::new()
     }
 
     /// Creates a [`ApplicationPrivilegesCheck`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ApplicationPrivilegesCheckBuilder,
-        ) -> ApplicationPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `application`, `privileges`, `resources`.
+    pub fn of<B: crate::typed::builder::Build<Output = ApplicationPrivilegesCheck>>(
+        f: impl FnOnce(ApplicationPrivilegesCheckBuilder) -> B,
     ) -> ApplicationPrivilegesCheck {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ApplicationPrivilegesCheckBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod application_privileges_check_members {
+    pub struct application;
+    pub struct privileges;
+    pub struct resources;
 }
 
 /// Builder for [`ApplicationPrivilegesCheck`].
@@ -76,7 +83,7 @@ impl<S0, S1, S2> ApplicationPrivilegesCheckBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ApplicationPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The name of the application.
+    /// **Required.** The name of the application.
     pub fn application(
         self,
         value: impl Into<String>,
@@ -88,7 +95,7 @@ impl<S1, S2> ApplicationPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0, S2> ApplicationPrivilegesCheckBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// A list of the privileges that you want to check for the specified resources.
+    /// **Required.** A list of the privileges that you want to check for the specified resources.
     /// It may be either application privilege names or the names of actions that are granted by those privileges
     pub fn privileges(
         self,
@@ -124,7 +131,7 @@ impl<S0, S2> ApplicationPrivilegesCheckBuilder<(S0, crate::typed::builder::Set, 
 }
 
 impl<S0, S1> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// A list of resource names against which the privileges should be checked.
+    /// **Required.** A list of resource names against which the privileges should be checked.
     pub fn resources(
         self,
         value: impl Into<Vec<String>>,
@@ -158,15 +165,14 @@ impl<S0, S1> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::S
     }
 }
 
-impl
-    ApplicationPrivilegesCheckBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ApplicationPrivilegesCheckBuilder<(S0, S1, S2)> {
     /// Builds a [`ApplicationPrivilegesCheck`].
-    pub fn build(self) -> ApplicationPrivilegesCheck {
+    pub fn build(self) -> ApplicationPrivilegesCheck
+    where
+        S0: crate::typed::builder::IsSet<application_privileges_check_members::application>,
+        S1: crate::typed::builder::IsSet<application_privileges_check_members::privileges>,
+        S2: crate::typed::builder::IsSet<application_privileges_check_members::resources>,
+    {
         ApplicationPrivilegesCheck {
             application: self.application.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -175,54 +181,29 @@ impl
     }
 }
 
-impl
-    From<
-        ApplicationPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ApplicationPrivilegesCheck
+impl<S0, S1, S2> crate::typed::builder::Build for ApplicationPrivilegesCheckBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<application_privileges_check_members::application>,
+    S1: crate::typed::builder::IsSet<application_privileges_check_members::privileges>,
+    S2: crate::typed::builder::IsSet<application_privileges_check_members::resources>,
 {
-    fn from(
-        builder: ApplicationPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ApplicationPrivilegesCheck;
+
+    fn build(self) -> ApplicationPrivilegesCheck {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ApplicationPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `application` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, application: crate::typed::builder::MissingRequiredField) -> ApplicationPrivilegesCheck { match application {} }
-}
-
-impl<S2>
-    ApplicationPrivilegesCheckBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ApplicationPrivilegesCheckBuilder<(S0, S1, S2)>>
+    for ApplicationPrivilegesCheck
+where
+    S0: crate::typed::builder::IsSet<application_privileges_check_members::application>,
+    S1: crate::typed::builder::IsSet<application_privileges_check_members::privileges>,
+    S2: crate::typed::builder::IsSet<application_privileges_check_members::resources>,
 {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> ApplicationPrivilegesCheck { match privileges {} }
-}
-
-impl
-    ApplicationPrivilegesCheckBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `resources` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resources: crate::typed::builder::MissingRequiredField) -> ApplicationPrivilegesCheck { match resources {} }
+    fn from(builder: ApplicationPrivilegesCheckBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type ApplicationsPrivileges =
@@ -243,21 +224,28 @@ pub struct IndexPrivilegesCheck {
 
 impl IndexPrivilegesCheck {
     /// Creates a builder for [`IndexPrivilegesCheck`].
+    ///
+    /// Required: `names`, `privileges`.
     pub fn builder() -> IndexPrivilegesCheckBuilder {
         IndexPrivilegesCheckBuilder::new()
     }
 
     /// Creates a [`IndexPrivilegesCheck`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexPrivilegesCheckBuilder,
-        ) -> IndexPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `names`, `privileges`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexPrivilegesCheck>>(
+        f: impl FnOnce(IndexPrivilegesCheckBuilder) -> B,
     ) -> IndexPrivilegesCheck {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexPrivilegesCheckBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_privileges_check_members {
+    pub struct names;
+    pub struct privileges;
 }
 
 /// Builder for [`IndexPrivilegesCheck`].
@@ -308,7 +296,7 @@ impl<S0, S1> IndexPrivilegesCheckBuilder<(S0, S1)> {
 }
 
 impl<S1> IndexPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A list of indices.
+    /// **Required.** A list of indices.
     pub fn names(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -320,7 +308,7 @@ impl<S1> IndexPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndexPrivilegesCheckBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A list of the privileges that you want to check for the specified indices.
+    /// **Required.** A list of the privileges that you want to check for the specified indices.
     pub fn privileges(
         self,
         value: impl Into<Vec<crate::typed::security::_types::IndexPrivilege>>,
@@ -357,9 +345,13 @@ impl<S0> IndexPrivilegesCheckBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndexPrivilegesCheckBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexPrivilegesCheckBuilder<(S0, S1)> {
     /// Builds a [`IndexPrivilegesCheck`].
-    pub fn build(self) -> IndexPrivilegesCheck {
+    pub fn build(self) -> IndexPrivilegesCheck
+    where
+        S0: crate::typed::builder::IsSet<index_privileges_check_members::names>,
+        S1: crate::typed::builder::IsSet<index_privileges_check_members::privileges>,
+    {
         IndexPrivilegesCheck {
             names: self.names.unwrap(),
             privileges: self.privileges.unwrap(),
@@ -368,29 +360,26 @@ impl IndexPrivilegesCheckBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<IndexPrivilegesCheckBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexPrivilegesCheck
+impl<S0, S1> crate::typed::builder::Build for IndexPrivilegesCheckBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_privileges_check_members::names>,
+    S1: crate::typed::builder::IsSet<index_privileges_check_members::privileges>,
 {
-    fn from(
-        builder: IndexPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexPrivilegesCheck;
+
+    fn build(self) -> IndexPrivilegesCheck {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexPrivilegesCheckBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `names` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, names: crate::typed::builder::MissingRequiredField) -> IndexPrivilegesCheck { match names {} }
-}
-
-impl IndexPrivilegesCheckBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `privileges` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, privileges: crate::typed::builder::MissingRequiredField) -> IndexPrivilegesCheck { match privileges {} }
+impl<S0, S1> From<IndexPrivilegesCheckBuilder<(S0, S1)>> for IndexPrivilegesCheck
+where
+    S0: crate::typed::builder::IsSet<index_privileges_check_members::names>,
+    S1: crate::typed::builder::IsSet<index_privileges_check_members::privileges>,
+{
+    fn from(builder: IndexPrivilegesCheckBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type Privileges = indexmap::IndexMap<String, bool>;
@@ -436,7 +425,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -561,15 +552,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`application`](Self::application), with a builder.
-    pub fn add_application_with(
+    pub fn add_application_with<
+        B: crate::typed::builder::Build<Output = ApplicationPrivilegesCheck>,
+    >(
         self,
-        f: impl FnOnce(
-            ApplicationPrivilegesCheckBuilder,
-        ) -> ApplicationPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ApplicationPrivilegesCheckBuilder) -> B,
     ) -> Self {
         self.add_application(f(ApplicationPrivilegesCheckBuilder::new()).build())
     }
@@ -623,14 +610,9 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an element to [`index`](Self::index), with a builder.
-    pub fn add_index_with(
+    pub fn add_index_with<B: crate::typed::builder::Build<Output = IndexPrivilegesCheck>>(
         self,
-        f: impl FnOnce(
-            IndexPrivilegesCheckBuilder,
-        ) -> IndexPrivilegesCheckBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(IndexPrivilegesCheckBuilder) -> B,
     ) -> Self {
         self.add_index(f(IndexPrivilegesCheckBuilder::new()).build())
     }
@@ -649,6 +631,14 @@ impl<C> RequestBuilder<(), C> {
             cluster: self.cluster,
             index: self.index,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

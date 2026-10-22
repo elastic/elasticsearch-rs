@@ -23,27 +23,34 @@ pub struct BlobDetails {
 
 impl BlobDetails {
     /// Creates a builder for [`BlobDetails`].
+    ///
+    /// Required: `name`, `overwritten`, `read_early`, `read_end`, `read_start`, `reads`, `size`, `size_bytes`.
     pub fn builder() -> BlobDetailsBuilder {
         BlobDetailsBuilder::new()
     }
 
     /// Creates a [`BlobDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BlobDetailsBuilder,
-        ) -> BlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `overwritten`, `read_early`, `read_end`, `read_start`, `reads`, `size`, `size_bytes`.
+    pub fn of<B: crate::typed::builder::Build<Output = BlobDetails>>(
+        f: impl FnOnce(BlobDetailsBuilder) -> B,
     ) -> BlobDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BlobDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod blob_details_members {
+    pub struct name;
+    pub struct overwritten;
+    pub struct read_early;
+    pub struct read_end;
+    pub struct read_start;
+    pub struct reads;
+    pub struct size;
+    pub struct size_bytes;
 }
 
 /// Builder for [`BlobDetails`].
@@ -117,7 +124,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5,
 impl<S1, S2, S3, S4, S5, S6, S7>
     BlobDetailsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
 {
-    /// The name of the blob.
+    /// **Required.** The name of the blob.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -131,7 +138,7 @@ impl<S1, S2, S3, S4, S5, S6, S7>
 impl<S0, S2, S3, S4, S5, S6, S7>
     BlobDetailsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6, S7)>
 {
-    /// Indicates whether the blob was overwritten while the read operations were ongoing.
+    /// **Required.** Indicates whether the blob was overwritten while the read operations were ongoing.
     /// /**
     pub fn overwritten(
         self,
@@ -146,6 +153,7 @@ impl<S0, S2, S3, S4, S5, S6, S7>
 impl<S0, S1, S3, S4, S5, S6, S7>
     BlobDetailsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6, S7)>
 {
+    /// **Required.**
     pub fn read_early(
         self,
         value: bool,
@@ -159,7 +167,7 @@ impl<S0, S1, S3, S4, S5, S6, S7>
 impl<S0, S1, S2, S4, S5, S6, S7>
     BlobDetailsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6, S7)>
 {
-    /// The position, in bytes, at which read operations completed.
+    /// **Required.** The position, in bytes, at which read operations completed.
     pub fn read_end(
         self,
         value: i64,
@@ -173,7 +181,7 @@ impl<S0, S1, S2, S4, S5, S6, S7>
 impl<S0, S1, S2, S3, S5, S6, S7>
     BlobDetailsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6, S7)>
 {
-    /// The position, in bytes, at which read operations started.
+    /// **Required.** The position, in bytes, at which read operations started.
     pub fn read_start(
         self,
         value: i64,
@@ -187,7 +195,7 @@ impl<S0, S1, S2, S3, S5, S6, S7>
 impl<S0, S1, S2, S3, S4, S6, S7>
     BlobDetailsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6, S7)>
 {
-    /// A description of every read operation performed on the blob.
+    /// **Required.** A description of every read operation performed on the blob.
     pub fn reads(
         self,
         value: impl Into<ReadBlobDetails>,
@@ -198,15 +206,9 @@ impl<S0, S1, S2, S3, S4, S6, S7>
     }
 
     /// Sets [`reads`](Self::reads) with a builder.
-    pub fn reads_with(
+    pub fn reads_with<B: crate::typed::builder::Build<Output = ReadBlobDetails>>(
         self,
-        f: impl FnOnce(
-            ReadBlobDetailsBuilder,
-        ) -> ReadBlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReadBlobDetailsBuilder) -> B,
     ) -> BlobDetailsBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7)> {
         self.reads(f(ReadBlobDetailsBuilder::new()).build())
     }
@@ -215,7 +217,7 @@ impl<S0, S1, S2, S3, S4, S6, S7>
 impl<S0, S1, S2, S3, S4, S5, S7>
     BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet, S7)>
 {
-    /// The size of the blob.
+    /// **Required.** The size of the blob.
     pub fn size(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -229,7 +231,7 @@ impl<S0, S1, S2, S3, S4, S5, S7>
 impl<S0, S1, S2, S3, S4, S5, S6>
     BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::NotSet)>
 {
-    /// The size of the blob in bytes.
+    /// **Required.** The size of the blob in bytes.
     pub fn size_bytes(
         self,
         value: i64,
@@ -240,20 +242,19 @@ impl<S0, S1, S2, S3, S4, S5, S6>
     }
 }
 
-impl
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7> BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)> {
     /// Builds a [`BlobDetails`].
-    pub fn build(self) -> BlobDetails {
+    pub fn build(self) -> BlobDetails
+    where
+        S0: crate::typed::builder::IsSet<blob_details_members::name>,
+        S1: crate::typed::builder::IsSet<blob_details_members::overwritten>,
+        S2: crate::typed::builder::IsSet<blob_details_members::read_early>,
+        S3: crate::typed::builder::IsSet<blob_details_members::read_end>,
+        S4: crate::typed::builder::IsSet<blob_details_members::read_start>,
+        S5: crate::typed::builder::IsSet<blob_details_members::reads>,
+        S6: crate::typed::builder::IsSet<blob_details_members::size>,
+        S7: crate::typed::builder::IsSet<blob_details_members::size_bytes>,
+    {
         BlobDetails {
             name: self.name.unwrap(),
             overwritten: self.overwritten.unwrap(),
@@ -267,161 +268,40 @@ impl
     }
 }
 
-impl
-    From<
-        BlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BlobDetails
+impl<S0, S1, S2, S3, S4, S5, S6, S7> crate::typed::builder::Build
+    for BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>
+where
+    S0: crate::typed::builder::IsSet<blob_details_members::name>,
+    S1: crate::typed::builder::IsSet<blob_details_members::overwritten>,
+    S2: crate::typed::builder::IsSet<blob_details_members::read_early>,
+    S3: crate::typed::builder::IsSet<blob_details_members::read_end>,
+    S4: crate::typed::builder::IsSet<blob_details_members::read_start>,
+    S5: crate::typed::builder::IsSet<blob_details_members::reads>,
+    S6: crate::typed::builder::IsSet<blob_details_members::size>,
+    S7: crate::typed::builder::IsSet<blob_details_members::size_bytes>,
 {
-    fn from(
-        builder: BlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BlobDetails;
+
+    fn build(self) -> BlobDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7>
-    BlobDetailsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6, S7)>
+impl<S0, S1, S2, S3, S4, S5, S6, S7> From<BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>>
+    for BlobDetails
+where
+    S0: crate::typed::builder::IsSet<blob_details_members::name>,
+    S1: crate::typed::builder::IsSet<blob_details_members::overwritten>,
+    S2: crate::typed::builder::IsSet<blob_details_members::read_early>,
+    S3: crate::typed::builder::IsSet<blob_details_members::read_end>,
+    S4: crate::typed::builder::IsSet<blob_details_members::read_start>,
+    S5: crate::typed::builder::IsSet<blob_details_members::reads>,
+    S6: crate::typed::builder::IsSet<blob_details_members::size>,
+    S7: crate::typed::builder::IsSet<blob_details_members::size_bytes>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> BlobDetails { match name {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `overwritten` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, overwritten: crate::typed::builder::MissingRequiredField) -> BlobDetails { match overwritten {} }
-}
-
-impl<S3, S4, S5, S6, S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `read_early` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, read_early: crate::typed::builder::MissingRequiredField) -> BlobDetails { match read_early {} }
-}
-
-impl<S4, S5, S6, S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `read_end` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, read_end: crate::typed::builder::MissingRequiredField) -> BlobDetails { match read_end {} }
-}
-
-impl<S5, S6, S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-    )>
-{
-    /// `read_start` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, read_start: crate::typed::builder::MissingRequiredField) -> BlobDetails { match read_start {} }
-}
-
-impl<S6, S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-    )>
-{
-    /// `reads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reads: crate::typed::builder::MissingRequiredField) -> BlobDetails { match reads {} }
-}
-
-impl<S7>
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-    )>
-{
-    /// `size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size: crate::typed::builder::MissingRequiredField) -> BlobDetails { match size {} }
-}
-
-impl
-    BlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_bytes: crate::typed::builder::MissingRequiredField) -> BlobDetails { match size_bytes {} }
+    fn from(builder: BlobDetailsBuilder<(S0, S1, S2, S3, S4, S5, S6, S7)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -450,25 +330,32 @@ pub struct DetailsInfo {
 
 impl DetailsInfo {
     /// Creates a builder for [`DetailsInfo`].
+    ///
+    /// Required: `blob`, `write_elapsed`, `write_elapsed_nanos`, `write_throttled`, `write_throttled_nanos`, `writer_node`.
     pub fn builder() -> DetailsInfoBuilder {
         DetailsInfoBuilder::new()
     }
 
     /// Creates a [`DetailsInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DetailsInfoBuilder,
-        ) -> DetailsInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `blob`, `write_elapsed`, `write_elapsed_nanos`, `write_throttled`, `write_throttled_nanos`, `writer_node`.
+    pub fn of<B: crate::typed::builder::Build<Output = DetailsInfo>>(
+        f: impl FnOnce(DetailsInfoBuilder) -> B,
     ) -> DetailsInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DetailsInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod details_info_members {
+    pub struct blob;
+    pub struct write_elapsed;
+    pub struct write_elapsed_nanos;
+    pub struct write_throttled;
+    pub struct write_throttled_nanos;
+    pub struct writer_node;
 }
 
 /// Builder for [`DetailsInfo`].
@@ -571,7 +458,7 @@ impl<S0, S1, S2, S3, S4, S5> DetailsInfoBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> DetailsInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// A description of the blob that was written and read.
+    /// **Required.** A description of the blob that was written and read.
     pub fn blob(
         self,
         value: impl Into<BlobDetails>,
@@ -582,27 +469,16 @@ impl<S1, S2, S3, S4, S5> DetailsInfoBuilder<(crate::typed::builder::NotSet, S1, 
     }
 
     /// Sets [`blob`](Self::blob) with a builder.
-    pub fn blob_with(
+    pub fn blob_with<B: crate::typed::builder::Build<Output = BlobDetails>>(
         self,
-        f: impl FnOnce(
-            BlobDetailsBuilder,
-        ) -> BlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(BlobDetailsBuilder) -> B,
     ) -> DetailsInfoBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)> {
         self.blob(f(BlobDetailsBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4, S5> DetailsInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
-    /// The elapsed time spent writing the blob.
+    /// **Required.** The elapsed time spent writing the blob.
     pub fn write_elapsed(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -614,7 +490,7 @@ impl<S0, S2, S3, S4, S5> DetailsInfoBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3, S4, S5> DetailsInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
-    /// The elapsed time spent writing the blob, in nanoseconds.
+    /// **Required.** The elapsed time spent writing the blob, in nanoseconds.
     pub fn write_elapsed_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -626,7 +502,7 @@ impl<S0, S1, S3, S4, S5> DetailsInfoBuilder<(S0, S1, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S4, S5> DetailsInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
-    /// The length of time spent waiting for the `max_snapshot_bytes_per_sec` (or `indices.recovery.max_bytes_per_sec` if the recovery settings for managed services are set) throttle while writing the blob.
+    /// **Required.** The length of time spent waiting for the `max_snapshot_bytes_per_sec` (or `indices.recovery.max_bytes_per_sec` if the recovery settings for managed services are set) throttle while writing the blob.
     pub fn write_throttled(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -638,7 +514,7 @@ impl<S0, S1, S2, S4, S5> DetailsInfoBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3, S5> DetailsInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
-    /// The length of time spent waiting for the `max_snapshot_bytes_per_sec` (or `indices.recovery.max_bytes_per_sec` if the recovery settings for managed services are set) throttle while writing the blob, in nanoseconds.
+    /// **Required.** The length of time spent waiting for the `max_snapshot_bytes_per_sec` (or `indices.recovery.max_bytes_per_sec` if the recovery settings for managed services are set) throttle while writing the blob, in nanoseconds.
     pub fn write_throttled_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -650,7 +526,7 @@ impl<S0, S1, S2, S3, S5> DetailsInfoBuilder<(S0, S1, S2, S3, crate::typed::build
 }
 
 impl<S0, S1, S2, S3, S4> DetailsInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
-    /// The node which wrote the blob and coordinated the read operations.
+    /// **Required.** The node which wrote the blob and coordinated the read operations.
     pub fn writer_node(
         self,
         value: impl Into<SnapshotNodeInfo>,
@@ -661,31 +537,25 @@ impl<S0, S1, S2, S3, S4> DetailsInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::b
     }
 
     /// Sets [`writer_node`](Self::writer_node) with a builder.
-    pub fn writer_node_with(
+    pub fn writer_node_with<B: crate::typed::builder::Build<Output = SnapshotNodeInfo>>(
         self,
-        f: impl FnOnce(
-            SnapshotNodeInfoBuilder,
-        ) -> SnapshotNodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotNodeInfoBuilder) -> B,
     ) -> DetailsInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
         self.writer_node(f(SnapshotNodeInfoBuilder::new()).build())
     }
 }
 
-impl
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> DetailsInfoBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`DetailsInfo`].
-    pub fn build(self) -> DetailsInfo {
+    pub fn build(self) -> DetailsInfo
+    where
+        S0: crate::typed::builder::IsSet<details_info_members::blob>,
+        S1: crate::typed::builder::IsSet<details_info_members::write_elapsed>,
+        S2: crate::typed::builder::IsSet<details_info_members::write_elapsed_nanos>,
+        S3: crate::typed::builder::IsSet<details_info_members::write_throttled>,
+        S4: crate::typed::builder::IsSet<details_info_members::write_throttled_nanos>,
+        S5: crate::typed::builder::IsSet<details_info_members::writer_node>,
+    {
         DetailsInfo {
             blob: self.blob.unwrap(),
             overwrite_elapsed: self.overwrite_elapsed,
@@ -699,111 +569,35 @@ impl
     }
 }
 
-impl
-    From<
-        DetailsInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DetailsInfo
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for DetailsInfoBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<details_info_members::blob>,
+    S1: crate::typed::builder::IsSet<details_info_members::write_elapsed>,
+    S2: crate::typed::builder::IsSet<details_info_members::write_elapsed_nanos>,
+    S3: crate::typed::builder::IsSet<details_info_members::write_throttled>,
+    S4: crate::typed::builder::IsSet<details_info_members::write_throttled_nanos>,
+    S5: crate::typed::builder::IsSet<details_info_members::writer_node>,
 {
-    fn from(
-        builder: DetailsInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DetailsInfo;
+
+    fn build(self) -> DetailsInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> DetailsInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `blob` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, blob: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match blob {} }
-}
-
-impl<S2, S3, S4, S5>
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<DetailsInfoBuilder<(S0, S1, S2, S3, S4, S5)>> for DetailsInfo
+where
+    S0: crate::typed::builder::IsSet<details_info_members::blob>,
+    S1: crate::typed::builder::IsSet<details_info_members::write_elapsed>,
+    S2: crate::typed::builder::IsSet<details_info_members::write_elapsed_nanos>,
+    S3: crate::typed::builder::IsSet<details_info_members::write_throttled>,
+    S4: crate::typed::builder::IsSet<details_info_members::write_throttled_nanos>,
+    S5: crate::typed::builder::IsSet<details_info_members::writer_node>,
 {
-    /// `write_elapsed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_elapsed: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match write_elapsed {} }
-}
-
-impl<S3, S4, S5>
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `write_elapsed_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_elapsed_nanos: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match write_elapsed_nanos {} }
-}
-
-impl<S4, S5>
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `write_throttled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_throttled: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match write_throttled {} }
-}
-
-impl<S5>
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `write_throttled_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write_throttled_nanos: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match write_throttled_nanos {} }
-}
-
-impl
-    DetailsInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `writer_node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, writer_node: crate::typed::builder::MissingRequiredField) -> DetailsInfo { match writer_node {} }
+    fn from(builder: DetailsInfoBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -843,22 +637,29 @@ pub struct ReadBlobDetails {
 
 impl ReadBlobDetails {
     /// Creates a builder for [`ReadBlobDetails`].
+    ///
+    /// Required: `first_byte_time_nanos`, `found`, `node`.
     pub fn builder() -> ReadBlobDetailsBuilder {
         ReadBlobDetailsBuilder::new()
     }
 
     /// Creates a [`ReadBlobDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReadBlobDetailsBuilder,
-        ) -> ReadBlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `first_byte_time_nanos`, `found`, `node`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReadBlobDetails>>(
+        f: impl FnOnce(ReadBlobDetailsBuilder) -> B,
     ) -> ReadBlobDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReadBlobDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod read_blob_details_members {
+    pub struct first_byte_time_nanos;
+    pub struct found;
+    pub struct node;
 }
 
 /// Builder for [`ReadBlobDetails`].
@@ -1012,7 +813,7 @@ impl<S0, S1, S2> ReadBlobDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ReadBlobDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The length of time waiting for the first byte of the read operation to be received, in nanoseconds.
+    /// **Required.** The length of time waiting for the first byte of the read operation to be received, in nanoseconds.
     /// If the blob was not found, this detail is omitted.
     pub fn first_byte_time_nanos(
         self,
@@ -1025,7 +826,7 @@ impl<S1, S2> ReadBlobDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ReadBlobDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Indicates whether the blob was found by the read operation.
+    /// **Required.** Indicates whether the blob was found by the read operation.
     /// If the read was started before the write completed or the write was ended before completion, it might be false.
     pub fn found(
         self,
@@ -1038,7 +839,7 @@ impl<S0, S2> ReadBlobDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> ReadBlobDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The node that performed the read operation.
+    /// **Required.** The node that performed the read operation.
     pub fn node(
         self,
         value: impl Into<SnapshotNodeInfo>,
@@ -1049,28 +850,22 @@ impl<S0, S1> ReadBlobDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<B: crate::typed::builder::Build<Output = SnapshotNodeInfo>>(
         self,
-        f: impl FnOnce(
-            SnapshotNodeInfoBuilder,
-        ) -> SnapshotNodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SnapshotNodeInfoBuilder) -> B,
     ) -> ReadBlobDetailsBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.node(f(SnapshotNodeInfoBuilder::new()).build())
     }
 }
 
-impl
-    ReadBlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ReadBlobDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`ReadBlobDetails`].
-    pub fn build(self) -> ReadBlobDetails {
+    pub fn build(self) -> ReadBlobDetails
+    where
+        S0: crate::typed::builder::IsSet<read_blob_details_members::first_byte_time_nanos>,
+        S1: crate::typed::builder::IsSet<read_blob_details_members::found>,
+        S2: crate::typed::builder::IsSet<read_blob_details_members::node>,
+    {
         ReadBlobDetails {
             before_write_complete: self.before_write_complete,
             elapsed: self.elapsed,
@@ -1085,54 +880,28 @@ impl
     }
 }
 
-impl
-    From<
-        ReadBlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReadBlobDetails
+impl<S0, S1, S2> crate::typed::builder::Build for ReadBlobDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<read_blob_details_members::first_byte_time_nanos>,
+    S1: crate::typed::builder::IsSet<read_blob_details_members::found>,
+    S2: crate::typed::builder::IsSet<read_blob_details_members::node>,
 {
-    fn from(
-        builder: ReadBlobDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReadBlobDetails;
+
+    fn build(self) -> ReadBlobDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ReadBlobDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `first_byte_time_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, first_byte_time_nanos: crate::typed::builder::MissingRequiredField) -> ReadBlobDetails { match first_byte_time_nanos {} }
-}
-
-impl<S2>
-    ReadBlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ReadBlobDetailsBuilder<(S0, S1, S2)>> for ReadBlobDetails
+where
+    S0: crate::typed::builder::IsSet<read_blob_details_members::first_byte_time_nanos>,
+    S1: crate::typed::builder::IsSet<read_blob_details_members::found>,
+    S2: crate::typed::builder::IsSet<read_blob_details_members::node>,
 {
-    /// `found` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, found: crate::typed::builder::MissingRequiredField) -> ReadBlobDetails { match found {} }
-}
-
-impl
-    ReadBlobDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ReadBlobDetails { match node {} }
+    fn from(builder: ReadBlobDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1163,30 +932,37 @@ pub struct ReadSummaryInfo {
 
 impl ReadSummaryInfo {
     /// Creates a builder for [`ReadSummaryInfo`].
+    ///
+    /// Required: `count`, `max_wait`, `max_wait_nanos`, `total_elapsed`, `total_elapsed_nanos`, `total_size`, `total_size_bytes`, `total_throttled`, `total_throttled_nanos`, `total_wait`, `total_wait_nanos`.
     pub fn builder() -> ReadSummaryInfoBuilder {
         ReadSummaryInfoBuilder::new()
     }
 
     /// Creates a [`ReadSummaryInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReadSummaryInfoBuilder,
-        ) -> ReadSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `max_wait`, `max_wait_nanos`, `total_elapsed`, `total_elapsed_nanos`, `total_size`, `total_size_bytes`, `total_throttled`, `total_throttled_nanos`, `total_wait`, `total_wait_nanos`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReadSummaryInfo>>(
+        f: impl FnOnce(ReadSummaryInfoBuilder) -> B,
     ) -> ReadSummaryInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReadSummaryInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod read_summary_info_members {
+    pub struct count;
+    pub struct max_wait;
+    pub struct max_wait_nanos;
+    pub struct total_elapsed;
+    pub struct total_elapsed_nanos;
+    pub struct total_size;
+    pub struct total_size_bytes;
+    pub struct total_throttled;
+    pub struct total_throttled_nanos;
+    pub struct total_wait;
+    pub struct total_wait_nanos;
 }
 
 /// Builder for [`ReadSummaryInfo`].
@@ -1289,7 +1065,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The number of read operations performed in the test.
+    /// **Required.** The number of read operations performed in the test.
     pub fn count(
         self,
         value: i32,
@@ -1327,7 +1103,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The maximum time spent waiting for the first byte of any read request to be received.
+    /// **Required.** The maximum time spent waiting for the first byte of any read request to be received.
     pub fn max_wait(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -1365,7 +1141,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The maximum time spent waiting for the first byte of any read request to be received, in nanoseconds.
+    /// **Required.** The maximum time spent waiting for the first byte of any read request to be received, in nanoseconds.
     pub fn max_wait_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1403,7 +1179,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The total elapsed time spent on reading blobs in the test.
+    /// **Required.** The total elapsed time spent on reading blobs in the test.
     pub fn total_elapsed(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -1441,7 +1217,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The total elapsed time spent on reading blobs in the test, in nanoseconds.
+    /// **Required.** The total elapsed time spent on reading blobs in the test, in nanoseconds.
     pub fn total_elapsed_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1479,7 +1255,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The total size of all the blobs or partial blobs read in the test.
+    /// **Required.** The total size of all the blobs or partial blobs read in the test.
     pub fn total_size(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -1517,7 +1293,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// The total size of all the blobs or partial blobs read in the test, in bytes.
+    /// **Required.** The total size of all the blobs or partial blobs read in the test, in bytes.
     pub fn total_size_bytes(
         self,
         value: i64,
@@ -1555,7 +1331,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
-    /// The total time spent waiting due to the `max_restore_bytes_per_sec` or `indices.recovery.max_bytes_per_sec` throttles.
+    /// **Required.** The total time spent waiting due to the `max_restore_bytes_per_sec` or `indices.recovery.max_bytes_per_sec` throttles.
     pub fn total_throttled(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -1593,7 +1369,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
-    /// The total time spent waiting due to the `max_restore_bytes_per_sec` or `indices.recovery.max_bytes_per_sec` throttles, in nanoseconds.
+    /// **Required.** The total time spent waiting due to the `max_restore_bytes_per_sec` or `indices.recovery.max_bytes_per_sec` throttles, in nanoseconds.
     pub fn total_throttled_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1631,7 +1407,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
-    /// The total time spent waiting for the first byte of each read request to be received.
+    /// **Required.** The total time spent waiting for the first byte of each read request to be received.
     pub fn total_wait(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -1669,7 +1445,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
-    /// The total time spent waiting for the first byte of each read request to be received, in nanoseconds.
+    /// **Required.** The total time spent waiting for the first byte of each read request to be received, in nanoseconds.
     pub fn total_wait_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -1692,23 +1468,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ReadSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`ReadSummaryInfo`].
-    pub fn build(self) -> ReadSummaryInfo {
+    pub fn build(self) -> ReadSummaryInfo
+    where
+        S0: crate::typed::builder::IsSet<read_summary_info_members::count>,
+        S1: crate::typed::builder::IsSet<read_summary_info_members::max_wait>,
+        S2: crate::typed::builder::IsSet<read_summary_info_members::max_wait_nanos>,
+        S3: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed>,
+        S4: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed_nanos>,
+        S5: crate::typed::builder::IsSet<read_summary_info_members::total_size>,
+        S6: crate::typed::builder::IsSet<read_summary_info_members::total_size_bytes>,
+        S7: crate::typed::builder::IsSet<read_summary_info_members::total_throttled>,
+        S8: crate::typed::builder::IsSet<read_summary_info_members::total_throttled_nanos>,
+        S9: crate::typed::builder::IsSet<read_summary_info_members::total_wait>,
+        S10: crate::typed::builder::IsSet<read_summary_info_members::total_wait_nanos>,
+    {
         ReadSummaryInfo {
             count: self.count.unwrap(),
             max_wait: self.max_wait.unwrap(),
@@ -1725,260 +1502,48 @@ impl
     }
 }
 
-impl
-    From<
-        ReadSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReadSummaryInfo
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for ReadSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<read_summary_info_members::count>,
+    S1: crate::typed::builder::IsSet<read_summary_info_members::max_wait>,
+    S2: crate::typed::builder::IsSet<read_summary_info_members::max_wait_nanos>,
+    S3: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed>,
+    S4: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed_nanos>,
+    S5: crate::typed::builder::IsSet<read_summary_info_members::total_size>,
+    S6: crate::typed::builder::IsSet<read_summary_info_members::total_size_bytes>,
+    S7: crate::typed::builder::IsSet<read_summary_info_members::total_throttled>,
+    S8: crate::typed::builder::IsSet<read_summary_info_members::total_throttled_nanos>,
+    S9: crate::typed::builder::IsSet<read_summary_info_members::total_wait>,
+    S10: crate::typed::builder::IsSet<read_summary_info_members::total_wait_nanos>,
 {
-    fn from(
-        builder: ReadSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReadSummaryInfo;
+
+    fn build(self) -> ReadSummaryInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<ReadSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for ReadSummaryInfo
+where
+    S0: crate::typed::builder::IsSet<read_summary_info_members::count>,
+    S1: crate::typed::builder::IsSet<read_summary_info_members::max_wait>,
+    S2: crate::typed::builder::IsSet<read_summary_info_members::max_wait_nanos>,
+    S3: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed>,
+    S4: crate::typed::builder::IsSet<read_summary_info_members::total_elapsed_nanos>,
+    S5: crate::typed::builder::IsSet<read_summary_info_members::total_size>,
+    S6: crate::typed::builder::IsSet<read_summary_info_members::total_size_bytes>,
+    S7: crate::typed::builder::IsSet<read_summary_info_members::total_throttled>,
+    S8: crate::typed::builder::IsSet<read_summary_info_members::total_throttled_nanos>,
+    S9: crate::typed::builder::IsSet<read_summary_info_members::total_wait>,
+    S10: crate::typed::builder::IsSet<read_summary_info_members::total_wait_nanos>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match count {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `max_wait` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_wait: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match max_wait {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `max_wait_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_wait_nanos: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match max_wait_nanos {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_elapsed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_elapsed: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_elapsed {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_elapsed_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_elapsed_nanos: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_elapsed_nanos {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_size: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_size {} }
-}
-
-impl<S7, S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_size_bytes: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_size_bytes {} }
-}
-
-impl<S8, S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `total_throttled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_throttled: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_throttled {} }
-}
-
-impl<S9, S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `total_throttled_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_throttled_nanos: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_throttled_nanos {} }
-}
-
-impl<S10>
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `total_wait` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_wait: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_wait {} }
-}
-
-impl
-    ReadSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_wait_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_wait_nanos: crate::typed::builder::MissingRequiredField) -> ReadSummaryInfo { match total_wait_nanos {} }
+    fn from(
+        builder: ReadSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>,
+    ) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`snapshot.repository_analyze`](crate::typed::snapshot::SnapshotClient::repository_analyze).
@@ -2160,16 +1725,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -2489,7 +2065,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The name of the repository.
+    /// **Required.** The name of the repository.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2500,9 +2076,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             blob_count: self.blob_count,
@@ -2526,23 +2105,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -2744,21 +2326,28 @@ pub struct SnapshotNodeInfo {
 
 impl SnapshotNodeInfo {
     /// Creates a builder for [`SnapshotNodeInfo`].
+    ///
+    /// Required: `id`, `name`.
     pub fn builder() -> SnapshotNodeInfoBuilder {
         SnapshotNodeInfoBuilder::new()
     }
 
     /// Creates a [`SnapshotNodeInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SnapshotNodeInfoBuilder,
-        ) -> SnapshotNodeInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = SnapshotNodeInfo>>(
+        f: impl FnOnce(SnapshotNodeInfoBuilder) -> B,
     ) -> SnapshotNodeInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SnapshotNodeInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod snapshot_node_info_members {
+    pub struct id;
+    pub struct name;
 }
 
 /// Builder for [`SnapshotNodeInfo`].
@@ -2792,6 +2381,7 @@ impl<S0, S1> SnapshotNodeInfoBuilder<(S0, S1)> {
 }
 
 impl<S1> SnapshotNodeInfoBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -2803,6 +2393,7 @@ impl<S1> SnapshotNodeInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SnapshotNodeInfoBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2813,9 +2404,13 @@ impl<S0> SnapshotNodeInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SnapshotNodeInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SnapshotNodeInfoBuilder<(S0, S1)> {
     /// Builds a [`SnapshotNodeInfo`].
-    pub fn build(self) -> SnapshotNodeInfo {
+    pub fn build(self) -> SnapshotNodeInfo
+    where
+        S0: crate::typed::builder::IsSet<snapshot_node_info_members::id>,
+        S1: crate::typed::builder::IsSet<snapshot_node_info_members::name>,
+    {
         SnapshotNodeInfo {
             id: self.id.unwrap(),
             name: self.name.unwrap(),
@@ -2823,26 +2418,26 @@ impl SnapshotNodeInfoBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<SnapshotNodeInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SnapshotNodeInfo
+impl<S0, S1> crate::typed::builder::Build for SnapshotNodeInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<snapshot_node_info_members::id>,
+    S1: crate::typed::builder::IsSet<snapshot_node_info_members::name>,
 {
-    fn from(
-        builder: SnapshotNodeInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SnapshotNodeInfo;
+
+    fn build(self) -> SnapshotNodeInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> SnapshotNodeInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> SnapshotNodeInfo { match id {} }
-}
-
-impl SnapshotNodeInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> SnapshotNodeInfo { match name {} }
+impl<S0, S1> From<SnapshotNodeInfoBuilder<(S0, S1)>> for SnapshotNodeInfo
+where
+    S0: crate::typed::builder::IsSet<snapshot_node_info_members::id>,
+    S1: crate::typed::builder::IsSet<snapshot_node_info_members::name>,
+{
+    fn from(builder: SnapshotNodeInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2855,19 +2450,28 @@ pub struct SummaryInfo {
 
 impl SummaryInfo {
     /// Creates a builder for [`SummaryInfo`].
+    ///
+    /// Required: `read`, `write`.
     pub fn builder() -> SummaryInfoBuilder {
         SummaryInfoBuilder::new()
     }
 
     /// Creates a [`SummaryInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SummaryInfoBuilder,
-        )
-            -> SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `read`, `write`.
+    pub fn of<B: crate::typed::builder::Build<Output = SummaryInfo>>(
+        f: impl FnOnce(SummaryInfoBuilder) -> B,
     ) -> SummaryInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SummaryInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod summary_info_members {
+    pub struct read;
+    pub struct write;
 }
 
 /// Builder for [`SummaryInfo`].
@@ -2899,7 +2503,7 @@ impl<S0, S1> SummaryInfoBuilder<(S0, S1)> {
 }
 
 impl<S1> SummaryInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A collection of statistics that summarise the results of the read operations in the test.
+    /// **Required.** A collection of statistics that summarise the results of the read operations in the test.
     pub fn read(
         self,
         value: impl Into<ReadSummaryInfo>,
@@ -2910,30 +2514,16 @@ impl<S1> SummaryInfoBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`read`](Self::read) with a builder.
-    pub fn read_with(
+    pub fn read_with<B: crate::typed::builder::Build<Output = ReadSummaryInfo>>(
         self,
-        f: impl FnOnce(
-            ReadSummaryInfoBuilder,
-        ) -> ReadSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReadSummaryInfoBuilder) -> B,
     ) -> SummaryInfoBuilder<(crate::typed::builder::Set, S1)> {
         self.read(f(ReadSummaryInfoBuilder::new()).build())
     }
 }
 
 impl<S0> SummaryInfoBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// A collection of statistics that summarise the results of the write operations in the test.
+    /// **Required.** A collection of statistics that summarise the results of the write operations in the test.
     pub fn write(
         self,
         value: impl Into<WriteSummaryInfo>,
@@ -2944,27 +2534,21 @@ impl<S0> SummaryInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`write`](Self::write) with a builder.
-    pub fn write_with(
+    pub fn write_with<B: crate::typed::builder::Build<Output = WriteSummaryInfo>>(
         self,
-        f: impl FnOnce(
-            WriteSummaryInfoBuilder,
-        ) -> WriteSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(WriteSummaryInfoBuilder) -> B,
     ) -> SummaryInfoBuilder<(S0, crate::typed::builder::Set)> {
         self.write(f(WriteSummaryInfoBuilder::new()).build())
     }
 }
 
-impl SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SummaryInfoBuilder<(S0, S1)> {
     /// Builds a [`SummaryInfo`].
-    pub fn build(self) -> SummaryInfo {
+    pub fn build(self) -> SummaryInfo
+    where
+        S0: crate::typed::builder::IsSet<summary_info_members::read>,
+        S1: crate::typed::builder::IsSet<summary_info_members::write>,
+    {
         SummaryInfo {
             read: self.read.unwrap(),
             write: self.write.unwrap(),
@@ -2972,26 +2556,26 @@ impl SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SummaryInfo
+impl<S0, S1> crate::typed::builder::Build for SummaryInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<summary_info_members::read>,
+    S1: crate::typed::builder::IsSet<summary_info_members::write>,
 {
-    fn from(
-        builder: SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SummaryInfo;
+
+    fn build(self) -> SummaryInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> SummaryInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `read` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, read: crate::typed::builder::MissingRequiredField) -> SummaryInfo { match read {} }
-}
-
-impl SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `write` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, write: crate::typed::builder::MissingRequiredField) -> SummaryInfo { match write {} }
+impl<S0, S1> From<SummaryInfoBuilder<(S0, S1)>> for SummaryInfo
+where
+    S0: crate::typed::builder::IsSet<summary_info_members::read>,
+    S1: crate::typed::builder::IsSet<summary_info_members::write>,
+{
+    fn from(builder: SummaryInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3014,26 +2598,33 @@ pub struct WriteSummaryInfo {
 
 impl WriteSummaryInfo {
     /// Creates a builder for [`WriteSummaryInfo`].
+    ///
+    /// Required: `count`, `total_elapsed`, `total_elapsed_nanos`, `total_size`, `total_size_bytes`, `total_throttled`, `total_throttled_nanos`.
     pub fn builder() -> WriteSummaryInfoBuilder {
         WriteSummaryInfoBuilder::new()
     }
 
     /// Creates a [`WriteSummaryInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WriteSummaryInfoBuilder,
-        ) -> WriteSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `count`, `total_elapsed`, `total_elapsed_nanos`, `total_size`, `total_size_bytes`, `total_throttled`, `total_throttled_nanos`.
+    pub fn of<B: crate::typed::builder::Build<Output = WriteSummaryInfo>>(
+        f: impl FnOnce(WriteSummaryInfoBuilder) -> B,
     ) -> WriteSummaryInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WriteSummaryInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod write_summary_info_members {
+    pub struct count;
+    pub struct total_elapsed;
+    pub struct total_elapsed_nanos;
+    pub struct total_size;
+    pub struct total_size_bytes;
+    pub struct total_throttled;
+    pub struct total_throttled_nanos;
 }
 
 /// Builder for [`WriteSummaryInfo`].
@@ -3102,7 +2693,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5
 impl<S1, S2, S3, S4, S5, S6>
     WriteSummaryInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
-    /// The number of write operations performed in the test.
+    /// **Required.** The number of write operations performed in the test.
     pub fn count(
         self,
         value: i32,
@@ -3116,7 +2707,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     WriteSummaryInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
-    /// The total elapsed time spent on writing blobs in the test.
+    /// **Required.** The total elapsed time spent on writing blobs in the test.
     pub fn total_elapsed(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -3130,7 +2721,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     WriteSummaryInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
-    /// The total elapsed time spent on writing blobs in the test, in nanoseconds.
+    /// **Required.** The total elapsed time spent on writing blobs in the test, in nanoseconds.
     pub fn total_elapsed_nanos(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitNanos>,
@@ -3144,7 +2735,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     WriteSummaryInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
-    /// The total size of all the blobs written in the test.
+    /// **Required.** The total size of all the blobs written in the test.
     pub fn total_size(
         self,
         value: impl Into<crate::typed::_types::ByteSize>,
@@ -3158,7 +2749,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     WriteSummaryInfoBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
-    /// The total size of all the blobs written in the test, in bytes.
+    /// **Required.** The total size of all the blobs written in the test, in bytes.
     pub fn total_size_bytes(
         self,
         value: i64,
@@ -3172,7 +2763,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
-    /// The total time spent waiting due to the `max_snapshot_bytes_per_sec` throttle.
+    /// **Required.** The total time spent waiting due to the `max_snapshot_bytes_per_sec` throttle.
     pub fn total_throttled(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -3186,7 +2777,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
-    /// The total time spent waiting due to the `max_snapshot_bytes_per_sec` throttle, in nanoseconds.
+    /// **Required.** The total time spent waiting due to the `max_snapshot_bytes_per_sec` throttle, in nanoseconds.
     pub fn total_throttled_nanos(
         self,
         value: i64,
@@ -3197,19 +2788,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`WriteSummaryInfo`].
-    pub fn build(self) -> WriteSummaryInfo {
+    pub fn build(self) -> WriteSummaryInfo
+    where
+        S0: crate::typed::builder::IsSet<write_summary_info_members::count>,
+        S1: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed>,
+        S2: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed_nanos>,
+        S3: crate::typed::builder::IsSet<write_summary_info_members::total_size>,
+        S4: crate::typed::builder::IsSet<write_summary_info_members::total_size_bytes>,
+        S5: crate::typed::builder::IsSet<write_summary_info_members::total_throttled>,
+        S6: crate::typed::builder::IsSet<write_summary_info_members::total_throttled_nanos>,
+    {
         WriteSummaryInfo {
             count: self.count.unwrap(),
             total_elapsed: self.total_elapsed.unwrap(),
@@ -3222,134 +2812,36 @@ impl
     }
 }
 
-impl
-    From<
-        WriteSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for WriteSummaryInfo
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<write_summary_info_members::count>,
+    S1: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed>,
+    S2: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed_nanos>,
+    S3: crate::typed::builder::IsSet<write_summary_info_members::total_size>,
+    S4: crate::typed::builder::IsSet<write_summary_info_members::total_size_bytes>,
+    S5: crate::typed::builder::IsSet<write_summary_info_members::total_throttled>,
+    S6: crate::typed::builder::IsSet<write_summary_info_members::total_throttled_nanos>,
 {
-    fn from(
-        builder: WriteSummaryInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = WriteSummaryInfo;
+
+    fn build(self) -> WriteSummaryInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    WriteSummaryInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for WriteSummaryInfo
+where
+    S0: crate::typed::builder::IsSet<write_summary_info_members::count>,
+    S1: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed>,
+    S2: crate::typed::builder::IsSet<write_summary_info_members::total_elapsed_nanos>,
+    S3: crate::typed::builder::IsSet<write_summary_info_members::total_size>,
+    S4: crate::typed::builder::IsSet<write_summary_info_members::total_size_bytes>,
+    S5: crate::typed::builder::IsSet<write_summary_info_members::total_throttled>,
+    S6: crate::typed::builder::IsSet<write_summary_info_members::total_throttled_nanos>,
 {
-    /// `count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, count: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match count {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_elapsed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_elapsed: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_elapsed {} }
-}
-
-impl<S3, S4, S5, S6>
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_elapsed_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_elapsed_nanos: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_elapsed_nanos {} }
-}
-
-impl<S4, S5, S6>
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `total_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_size: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_size {} }
-}
-
-impl<S5, S6>
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `total_size_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_size_bytes: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_size_bytes {} }
-}
-
-impl<S6>
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `total_throttled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_throttled: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_throttled {} }
-}
-
-impl
-    WriteSummaryInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_throttled_nanos` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_throttled_nanos: crate::typed::builder::MissingRequiredField) -> WriteSummaryInfo { match total_throttled_nanos {} }
+    fn from(builder: WriteSummaryInfoBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }

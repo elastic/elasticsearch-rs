@@ -80,25 +80,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `job_id`, `analysis_config`, `data_description`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `job_id`, `analysis_config`, `data_description`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct job_id;
+    pub struct analysis_config;
+    pub struct data_description;
 }
 
 /// Builder for [`Request`].
@@ -365,11 +369,11 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     }
 
     /// Sets [`analysis_limits`](Self::analysis_limits) with a builder.
-    pub fn analysis_limits_with(
+    pub fn analysis_limits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::AnalysisLimits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AnalysisLimitsBuilder,
-        ) -> crate::typed::ml::_types::AnalysisLimitsBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::AnalysisLimitsBuilder) -> B,
     ) -> Self {
         self.analysis_limits(f(crate::typed::ml::_types::AnalysisLimitsBuilder::new()).build())
     }
@@ -441,11 +445,11 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     }
 
     /// Sets [`datafeed_config`](Self::datafeed_config) with a builder.
-    pub fn datafeed_config_with(
+    pub fn datafeed_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DatafeedConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DatafeedConfigBuilder,
-        ) -> crate::typed::ml::_types::DatafeedConfigBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DatafeedConfigBuilder) -> B,
     ) -> Self {
         self.datafeed_config(f(crate::typed::ml::_types::DatafeedConfigBuilder::new()).build())
     }
@@ -513,11 +517,11 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     }
 
     /// Sets [`model_plot_config`](Self::model_plot_config) with a builder.
-    pub fn model_plot_config_with(
+    pub fn model_plot_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::ModelPlotConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::ModelPlotConfigBuilder,
-        ) -> crate::typed::ml::_types::ModelPlotConfigBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::ModelPlotConfigBuilder) -> B,
     ) -> Self {
         self.model_plot_config(f(crate::typed::ml::_types::ModelPlotConfigBuilder::new()).build())
     }
@@ -575,7 +579,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// The identifier for the anomaly detection job. This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores. It must start and end with alphanumeric characters.
+    /// **Required.** The identifier for the anomaly detection job. This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores. It must start and end with alphanumeric characters.
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -587,7 +591,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// Specifies how to analyze the data. After you create a job, you cannot change the analysis configuration; all the properties are informational.
+    /// **Required.** Specifies how to analyze the data. After you create a job, you cannot change the analysis configuration; all the properties are informational.
     pub fn analysis_config(
         self,
         value: impl Into<crate::typed::ml::_types::AnalysisConfig>,
@@ -598,19 +602,18 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
     }
 
     /// Sets [`analysis_config`](Self::analysis_config) with a builder.
-    pub fn analysis_config_with(
+    pub fn analysis_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::AnalysisConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::AnalysisConfigBuilder,
-        )
-            -> crate::typed::ml::_types::AnalysisConfigBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::ml::_types::AnalysisConfigBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set, S2), C> {
         self.analysis_config(f(crate::typed::ml::_types::AnalysisConfigBuilder::new()).build())
     }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// Defines the format of the input data when you send data to the job by using the post data API. Note that when configure a datafeed, these properties are automatically set. When data is received via the post data API, it is not stored in Elasticsearch. Only the results for anomaly detection are retained.
+    /// **Required.** Defines the format of the input data when you send data to the job by using the post data API. Note that when configure a datafeed, these properties are automatically set. When data is received via the post data API, it is not stored in Elasticsearch. Only the results for anomaly detection are retained.
     pub fn data_description(
         self,
         value: impl Into<crate::typed::ml::_types::DataDescription>,
@@ -621,28 +624,24 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`data_description`](Self::data_description) with a builder.
-    pub fn data_description_with(
+    pub fn data_description_with<
+        B: crate::typed::builder::Build<Output = crate::typed::ml::_types::DataDescription>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::ml::_types::DataDescriptionBuilder,
-        ) -> crate::typed::ml::_types::DataDescriptionBuilder,
+        f: impl FnOnce(crate::typed::ml::_types::DataDescriptionBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
         self.data_description(f(crate::typed::ml::_types::DataDescriptionBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+        S1: crate::typed::builder::IsSet<request_members::analysis_config>,
+        S2: crate::typed::builder::IsSet<request_members::data_description>,
+    {
         Request {
             job_id: self.job_id.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -674,90 +673,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::job_id>,
+    S1: crate::typed::builder::IsSet<request_members::analysis_config>,
+    S2: crate::typed::builder::IsSet<request_members::data_description>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> Request { match job_id {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `job_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, job_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match job_id {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `analysis_config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, analysis_config: crate::typed::builder::MissingRequiredField) -> Request { match analysis_config {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `analysis_config` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, analysis_config: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match analysis_config {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `data_description` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data_description: crate::typed::builder::MissingRequiredField) -> Request { match data_description {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `data_description` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, data_description: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match data_description {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::job_id>,
+        S1: crate::typed::builder::IsSet<request_members::analysis_config>,
+        S2: crate::typed::builder::IsSet<request_members::data_description>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -11,21 +11,28 @@ pub struct AnalyticsAcknowledgeResponseBase {
 
 impl AnalyticsAcknowledgeResponseBase {
     /// Creates a builder for [`AnalyticsAcknowledgeResponseBase`].
+    ///
+    /// Required: `acknowledged`, `name`.
     pub fn builder() -> AnalyticsAcknowledgeResponseBaseBuilder {
         AnalyticsAcknowledgeResponseBaseBuilder::new()
     }
 
     /// Creates a [`AnalyticsAcknowledgeResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnalyticsAcknowledgeResponseBaseBuilder,
-        ) -> AnalyticsAcknowledgeResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `acknowledged`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnalyticsAcknowledgeResponseBase>>(
+        f: impl FnOnce(AnalyticsAcknowledgeResponseBaseBuilder) -> B,
     ) -> AnalyticsAcknowledgeResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnalyticsAcknowledgeResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod analytics_acknowledge_response_base_members {
+    pub struct acknowledged;
+    pub struct name;
 }
 
 /// Builder for [`AnalyticsAcknowledgeResponseBase`].
@@ -64,7 +71,7 @@ impl<S0, S1> AnalyticsAcknowledgeResponseBaseBuilder<(S0, S1)> {
 }
 
 impl<S1> AnalyticsAcknowledgeResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// For a successful response, this value is always true. On failure, an exception is returned instead.
+    /// **Required.** For a successful response, this value is always true. On failure, an exception is returned instead.
     pub fn acknowledged(
         self,
         value: bool,
@@ -76,7 +83,7 @@ impl<S1> AnalyticsAcknowledgeResponseBaseBuilder<(crate::typed::builder::NotSet,
 }
 
 impl<S0> AnalyticsAcknowledgeResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the analytics collection created or updated
+    /// **Required.** The name of the analytics collection created or updated
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -87,14 +94,13 @@ impl<S0> AnalyticsAcknowledgeResponseBaseBuilder<(S0, crate::typed::builder::Not
     }
 }
 
-impl
-    AnalyticsAcknowledgeResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1> AnalyticsAcknowledgeResponseBaseBuilder<(S0, S1)> {
     /// Builds a [`AnalyticsAcknowledgeResponseBase`].
-    pub fn build(self) -> AnalyticsAcknowledgeResponseBase {
+    pub fn build(self) -> AnalyticsAcknowledgeResponseBase
+    where
+        S0: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::acknowledged>,
+        S1: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::name>,
+    {
         AnalyticsAcknowledgeResponseBase {
             acknowledged: self.acknowledged.unwrap(),
             name: self.name.unwrap(),
@@ -102,39 +108,27 @@ impl
     }
 }
 
-impl
-    From<
-        AnalyticsAcknowledgeResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AnalyticsAcknowledgeResponseBase
+impl<S0, S1> crate::typed::builder::Build for AnalyticsAcknowledgeResponseBaseBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::acknowledged>,
+    S1: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::name>,
 {
-    fn from(
-        builder: AnalyticsAcknowledgeResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AnalyticsAcknowledgeResponseBase;
+
+    fn build(self) -> AnalyticsAcknowledgeResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1> AnalyticsAcknowledgeResponseBaseBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `acknowledged` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, acknowledged: crate::typed::builder::MissingRequiredField) -> AnalyticsAcknowledgeResponseBase { match acknowledged {} }
-}
-
-impl
-    AnalyticsAcknowledgeResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<AnalyticsAcknowledgeResponseBaseBuilder<(S0, S1)>>
+    for AnalyticsAcknowledgeResponseBase
+where
+    S0: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::acknowledged>,
+    S1: crate::typed::builder::IsSet<analytics_acknowledge_response_base_members::name>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> AnalyticsAcknowledgeResponseBase { match name {} }
+    fn from(builder: AnalyticsAcknowledgeResponseBaseBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`search_application.put_behavioral_analytics`](crate::typed::search_application::SearchApplicationClient::put_behavioral_analytics).
@@ -165,16 +159,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -273,7 +278,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The name of the analytics collection to be created or updated.
+    /// **Required.** The name of the analytics collection to be created or updated.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -284,9 +289,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             error_trace: self.error_trace,
@@ -297,23 +305,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

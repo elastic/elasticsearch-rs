@@ -36,8 +36,8 @@ impl NodeAttributesRecord {
     }
 
     /// Creates a [`NodeAttributesRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NodeAttributesRecordBuilder) -> NodeAttributesRecordBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NodeAttributesRecord>>(
+        f: impl FnOnce(NodeAttributesRecordBuilder) -> B,
     ) -> NodeAttributesRecord {
         f(Self::builder()).build()
     }
@@ -185,6 +185,14 @@ impl NodeAttributesRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NodeAttributesRecordBuilder {
+    type Output = NodeAttributesRecord;
+
+    fn build(self) -> NodeAttributesRecord {
+        Self::build(self)
+    }
+}
+
 impl From<NodeAttributesRecordBuilder> for NodeAttributesRecord {
     fn from(builder: NodeAttributesRecordBuilder) -> Self {
         builder.build()
@@ -238,7 +246,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -401,6 +411,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

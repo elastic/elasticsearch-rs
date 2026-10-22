@@ -58,16 +58,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct name;
 }
 
 /// Builder for [`Request`].
@@ -239,15 +250,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`applications`](Self::applications), with a builder.
-    pub fn add_applications_with(
+    pub fn add_applications_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::ApplicationPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::ApplicationPrivilegesBuilder,
-        ) -> crate::typed::security::_types::ApplicationPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::ApplicationPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_applications(
             f(crate::typed::security::_types::ApplicationPrivilegesBuilder::new()).build(),
@@ -343,14 +352,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<
+        B: crate::typed::builder::Build<Output = crate::typed::security::_types::IndicesPrivileges>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::IndicesPrivilegesBuilder,
-        ) -> crate::typed::security::_types::IndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::IndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_indices(f(crate::typed::security::_types::IndicesPrivilegesBuilder::new()).build())
     }
@@ -388,15 +394,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`remote_indices`](Self::remote_indices), with a builder.
-    pub fn add_remote_indices_with(
+    pub fn add_remote_indices_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteIndicesPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteIndicesPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteIndicesPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_indices(
             f(crate::typed::security::_types::RemoteIndicesPrivilegesBuilder::new()).build(),
@@ -433,14 +437,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Adds an element to [`remote_cluster`](Self::remote_cluster), with a builder.
-    pub fn add_remote_cluster_with(
+    pub fn add_remote_cluster_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::security::_types::RemoteClusterPrivileges,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::security::_types::RemoteClusterPrivilegesBuilder,
-        ) -> crate::typed::security::_types::RemoteClusterPrivilegesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::security::_types::RemoteClusterPrivilegesBuilder) -> B,
     ) -> Self {
         self.add_remote_cluster(
             f(crate::typed::security::_types::RemoteClusterPrivilegesBuilder::new()).build(),
@@ -535,7 +538,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// The name of the role that is being created or updated. On Elasticsearch Serverless, the role name must begin with a letter or digit and can only contain letters, digits and the characters '_', '-', and '.'. Each role must have a unique name, as this will serve as the identifier for that role.
+    /// **Required.** The name of the role that is being created or updated. On Elasticsearch Serverless, the role name must begin with a letter or digit and can only contain letters, digits and the characters '_', '-', and '.'. Each role must have a unique name, as this will serve as the identifier for that role.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -546,9 +549,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
         Request {
             name: self.name.unwrap(),
             refresh: self.refresh,
@@ -570,23 +576,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::name>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> Request { match name {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `name` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, name: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match name {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::name>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

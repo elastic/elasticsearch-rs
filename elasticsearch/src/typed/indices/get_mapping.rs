@@ -10,18 +10,27 @@ pub struct IndexMappingRecord {
 
 impl IndexMappingRecord {
     /// Creates a builder for [`IndexMappingRecord`].
+    ///
+    /// Required: `mappings`.
     pub fn builder() -> IndexMappingRecordBuilder {
         IndexMappingRecordBuilder::new()
     }
 
     /// Creates a [`IndexMappingRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexMappingRecordBuilder,
-        ) -> IndexMappingRecordBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `mappings`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexMappingRecord>>(
+        f: impl FnOnce(IndexMappingRecordBuilder) -> B,
     ) -> IndexMappingRecord {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexMappingRecordBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_mapping_record_members {
+    pub struct mappings;
 }
 
 /// Builder for [`IndexMappingRecord`].
@@ -63,17 +72,18 @@ impl<S0> IndexMappingRecordBuilder<(S0,)> {
     }
 
     /// Sets [`item`](Self::item) with a builder.
-    pub fn item_with(
+    pub fn item_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.item(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
 impl IndexMappingRecordBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn mappings(
         self,
         value: impl Into<crate::typed::_types::mapping::TypeMapping>,
@@ -84,19 +94,22 @@ impl IndexMappingRecordBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> IndexMappingRecordBuilder<(crate::typed::builder::Set,)> {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
-impl IndexMappingRecordBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexMappingRecordBuilder<(S0,)> {
     /// Builds a [`IndexMappingRecord`].
-    pub fn build(self) -> IndexMappingRecord {
+    pub fn build(self) -> IndexMappingRecord
+    where
+        S0: crate::typed::builder::IsSet<index_mapping_record_members::mappings>,
+    {
         IndexMappingRecord {
             item: self.item,
             mappings: self.mappings.unwrap(),
@@ -104,16 +117,24 @@ impl IndexMappingRecordBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IndexMappingRecordBuilder<(crate::typed::builder::Set,)>> for IndexMappingRecord {
-    fn from(builder: IndexMappingRecordBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexMappingRecordBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_mapping_record_members::mappings>,
+{
+    type Output = IndexMappingRecord;
+
+    fn build(self) -> IndexMappingRecord {
+        Self::build(self)
     }
 }
 
-impl IndexMappingRecordBuilder<(crate::typed::builder::NotSet,)> {
-    /// `mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mappings: crate::typed::builder::MissingRequiredField) -> IndexMappingRecord { match mappings {} }
+impl<S0> From<IndexMappingRecordBuilder<(S0,)>> for IndexMappingRecord
+where
+    S0: crate::typed::builder::IsSet<index_mapping_record_members::mappings>,
+{
+    fn from(builder: IndexMappingRecordBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.get_mapping`](crate::typed::indices::IndicesClient::get_mapping).
@@ -173,7 +194,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -376,6 +399,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

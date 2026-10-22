@@ -24,8 +24,8 @@ impl AdaptiveAllocations {
     }
 
     /// Creates a [`AdaptiveAllocations`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AdaptiveAllocationsBuilder) -> AdaptiveAllocationsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AdaptiveAllocations>>(
+        f: impl FnOnce(AdaptiveAllocationsBuilder) -> B,
     ) -> AdaptiveAllocations {
         f(Self::builder()).build()
     }
@@ -101,6 +101,14 @@ impl AdaptiveAllocationsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AdaptiveAllocationsBuilder {
+    type Output = AdaptiveAllocations;
+
+    fn build(self) -> AdaptiveAllocations {
+        Self::build(self)
+    }
+}
+
 impl From<AdaptiveAllocationsBuilder> for AdaptiveAllocations {
     fn from(builder: AdaptiveAllocationsBuilder) -> Self {
         builder.build()
@@ -129,18 +137,27 @@ pub struct Ai21ServiceSettings {
 
 impl Ai21ServiceSettings {
     /// Creates a builder for [`Ai21ServiceSettings`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> Ai21ServiceSettingsBuilder {
         Ai21ServiceSettingsBuilder::new()
     }
 
     /// Creates a [`Ai21ServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            Ai21ServiceSettingsBuilder,
-        ) -> Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Ai21ServiceSettings>>(
+        f: impl FnOnce(Ai21ServiceSettingsBuilder) -> B,
     ) -> Ai21ServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`Ai21ServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ai21_service_settings_members {
+    pub struct model_id;
 }
 
 /// Builder for [`Ai21ServiceSettings`].
@@ -202,16 +219,16 @@ impl<S0> Ai21ServiceSettingsBuilder<(S0,)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl Ai21ServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the AI21 models documentation for the list of supported models and versions.
     /// Service has been tested and confirmed to be working for `completion` and `chat_completion` tasks with the following models:
     /// * `jamba-mini`
@@ -226,9 +243,12 @@ impl Ai21ServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> Ai21ServiceSettingsBuilder<(S0,)> {
     /// Builds a [`Ai21ServiceSettings`].
-    pub fn build(self) -> Ai21ServiceSettings {
+    pub fn build(self) -> Ai21ServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<ai21_service_settings_members::model_id>,
+    {
         Ai21ServiceSettings {
             model_id: self.model_id.unwrap(),
             api_key: self.api_key,
@@ -237,16 +257,24 @@ impl Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)>> for Ai21ServiceSettings {
-    fn from(builder: Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for Ai21ServiceSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<ai21_service_settings_members::model_id>,
+{
+    type Output = Ai21ServiceSettings;
+
+    fn build(self) -> Ai21ServiceSettings {
+        Self::build(self)
     }
 }
 
-impl Ai21ServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> Ai21ServiceSettings { match model_id {} }
+impl<S0> From<Ai21ServiceSettingsBuilder<(S0,)>> for Ai21ServiceSettings
+where
+    S0: crate::typed::builder::IsSet<ai21_service_settings_members::model_id>,
+{
+    fn from(builder: Ai21ServiceSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -303,23 +331,30 @@ pub struct AlibabaCloudServiceSettings {
 
 impl AlibabaCloudServiceSettings {
     /// Creates a builder for [`AlibabaCloudServiceSettings`].
+    ///
+    /// Required: `api_key`, `host`, `service_id`, `workspace`.
     pub fn builder() -> AlibabaCloudServiceSettingsBuilder {
         AlibabaCloudServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AlibabaCloudServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AlibabaCloudServiceSettingsBuilder,
-        ) -> AlibabaCloudServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `host`, `service_id`, `workspace`.
+    pub fn of<B: crate::typed::builder::Build<Output = AlibabaCloudServiceSettings>>(
+        f: impl FnOnce(AlibabaCloudServiceSettingsBuilder) -> B,
     ) -> AlibabaCloudServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AlibabaCloudServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod alibaba_cloud_service_settings_members {
+    pub struct api_key;
+    pub struct host;
+    pub struct service_id;
+    pub struct workspace;
 }
 
 /// Builder for [`AlibabaCloudServiceSettings`].
@@ -386,16 +421,16 @@ impl<S0, S1, S2, S3> AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> AlibabaCloudServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// A valid API key for the AlibabaCloud AI Search API.
+    /// **Required.** A valid API key for the AlibabaCloud AI Search API.
     pub fn api_key(
         self,
         value: impl Into<String>,
@@ -407,7 +442,7 @@ impl<S1, S2, S3> AlibabaCloudServiceSettingsBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> AlibabaCloudServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The name of the host address used for the inference task.
+    /// **Required.** The name of the host address used for the inference task.
     /// You can find the host address in the API keys section of the documentation.
     pub fn host(
         self,
@@ -420,7 +455,7 @@ impl<S0, S2, S3> AlibabaCloudServiceSettingsBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> AlibabaCloudServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The name of the model service to use for the inference task.
+    /// **Required.** The name of the model service to use for the inference task.
     /// The following service IDs are available for the `completion` task:
     ///
     /// * `ops-qwen-turbo`
@@ -453,7 +488,7 @@ impl<S0, S1, S3> AlibabaCloudServiceSettingsBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The name of the workspace used for the inference task.
+    /// **Required.** The name of the workspace used for the inference task.
     pub fn workspace(
         self,
         value: impl Into<String>,
@@ -464,16 +499,15 @@ impl<S0, S1, S2> AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    AlibabaCloudServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AlibabaCloudServiceSettings`].
-    pub fn build(self) -> AlibabaCloudServiceSettings {
+    pub fn build(self) -> AlibabaCloudServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::host>,
+        S2: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::service_id>,
+        S3: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::workspace>,
+    {
         AlibabaCloudServiceSettings {
             api_key: self.api_key.unwrap(),
             host: self.host.unwrap(),
@@ -484,71 +518,32 @@ impl
     }
 }
 
-impl
-    From<
-        AlibabaCloudServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AlibabaCloudServiceSettings
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::host>,
+    S2: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::service_id>,
+    S3: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::workspace>,
 {
-    fn from(
-        builder: AlibabaCloudServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AlibabaCloudServiceSettings;
+
+    fn build(self) -> AlibabaCloudServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AlibabaCloudServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> AlibabaCloudServiceSettings { match api_key {} }
-}
-
-impl<S2, S3>
-    AlibabaCloudServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, S3)>>
+    for AlibabaCloudServiceSettings
+where
+    S0: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::host>,
+    S2: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::service_id>,
+    S3: crate::typed::builder::IsSet<alibaba_cloud_service_settings_members::workspace>,
 {
-    /// `host` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, host: crate::typed::builder::MissingRequiredField) -> AlibabaCloudServiceSettings { match host {} }
-}
-
-impl<S3>
-    AlibabaCloudServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `service_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_id: crate::typed::builder::MissingRequiredField) -> AlibabaCloudServiceSettings { match service_id {} }
-}
-
-impl
-    AlibabaCloudServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `workspace` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, workspace: crate::typed::builder::MissingRequiredField) -> AlibabaCloudServiceSettings { match workspace {} }
+    fn from(builder: AlibabaCloudServiceSettingsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -579,8 +574,8 @@ impl AlibabaCloudTaskSettings {
     }
 
     /// Creates a [`AlibabaCloudTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AlibabaCloudTaskSettingsBuilder) -> AlibabaCloudTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AlibabaCloudTaskSettings>>(
+        f: impl FnOnce(AlibabaCloudTaskSettingsBuilder) -> B,
     ) -> AlibabaCloudTaskSettings {
         f(Self::builder()).build()
     }
@@ -643,6 +638,14 @@ impl AlibabaCloudTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AlibabaCloudTaskSettingsBuilder {
+    type Output = AlibabaCloudTaskSettings;
+
+    fn build(self) -> AlibabaCloudTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<AlibabaCloudTaskSettingsBuilder> for AlibabaCloudTaskSettings {
     fn from(builder: AlibabaCloudTaskSettingsBuilder) -> Self {
         builder.build()
@@ -695,23 +698,30 @@ pub struct AmazonBedrockServiceSettings {
 
 impl AmazonBedrockServiceSettings {
     /// Creates a builder for [`AmazonBedrockServiceSettings`].
+    ///
+    /// Required: `access_key`, `model`, `region`, `secret_key`.
     pub fn builder() -> AmazonBedrockServiceSettingsBuilder {
         AmazonBedrockServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AmazonBedrockServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AmazonBedrockServiceSettingsBuilder,
-        ) -> AmazonBedrockServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `access_key`, `model`, `region`, `secret_key`.
+    pub fn of<B: crate::typed::builder::Build<Output = AmazonBedrockServiceSettings>>(
+        f: impl FnOnce(AmazonBedrockServiceSettingsBuilder) -> B,
     ) -> AmazonBedrockServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AmazonBedrockServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod amazon_bedrock_service_settings_members {
+    pub struct access_key;
+    pub struct model;
+    pub struct region;
+    pub struct secret_key;
 }
 
 /// Builder for [`AmazonBedrockServiceSettings`].
@@ -802,16 +812,16 @@ impl<S0, S1, S2, S3> AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> AmazonBedrockServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// A valid AWS access key that has permissions to use Amazon Bedrock and access to models for inference requests.
+    /// **Required.** A valid AWS access key that has permissions to use Amazon Bedrock and access to models for inference requests.
     pub fn access_key(
         self,
         value: impl Into<String>,
@@ -823,7 +833,7 @@ impl<S1, S2, S3> AmazonBedrockServiceSettingsBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> AmazonBedrockServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The base model ID or an ARN to a custom model based on a foundational model.
+    /// **Required.** The base model ID or an ARN to a custom model based on a foundational model.
     /// The base model IDs can be found in the Amazon Bedrock documentation.
     /// Note that the model ID must be available for the provider chosen and your IAM user must have access to the model.
     pub fn model(
@@ -837,7 +847,7 @@ impl<S0, S2, S3> AmazonBedrockServiceSettingsBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> AmazonBedrockServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The region that your model or ARN is deployed in.
+    /// **Required.** The region that your model or ARN is deployed in.
     /// The list of available regions per model can be found in the Amazon Bedrock documentation.
     pub fn region(
         self,
@@ -850,7 +860,7 @@ impl<S0, S1, S3> AmazonBedrockServiceSettingsBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// A valid AWS secret key that is paired with the `access_key`.
+    /// **Required.** A valid AWS secret key that is paired with the `access_key`.
     /// For informationg about creating and managing access and secret keys, refer to the AWS documentation.
     pub fn secret_key(
         self,
@@ -862,16 +872,15 @@ impl<S0, S1, S2> AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    AmazonBedrockServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AmazonBedrockServiceSettings`].
-    pub fn build(self) -> AmazonBedrockServiceSettings {
+    pub fn build(self) -> AmazonBedrockServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::access_key>,
+        S1: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::model>,
+        S2: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::region>,
+        S3: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::secret_key>,
+    {
         AmazonBedrockServiceSettings {
             access_key: self.access_key.unwrap(),
             model: self.model.unwrap(),
@@ -883,71 +892,32 @@ impl
     }
 }
 
-impl
-    From<
-        AmazonBedrockServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AmazonBedrockServiceSettings
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::access_key>,
+    S1: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::model>,
+    S2: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::region>,
+    S3: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::secret_key>,
 {
-    fn from(
-        builder: AmazonBedrockServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AmazonBedrockServiceSettings;
+
+    fn build(self) -> AmazonBedrockServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AmazonBedrockServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `access_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, access_key: crate::typed::builder::MissingRequiredField) -> AmazonBedrockServiceSettings { match access_key {} }
-}
-
-impl<S2, S3>
-    AmazonBedrockServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, S3)>>
+    for AmazonBedrockServiceSettings
+where
+    S0: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::access_key>,
+    S1: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::model>,
+    S2: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::region>,
+    S3: crate::typed::builder::IsSet<amazon_bedrock_service_settings_members::secret_key>,
 {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> AmazonBedrockServiceSettings { match model {} }
-}
-
-impl<S3>
-    AmazonBedrockServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `region` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, region: crate::typed::builder::MissingRequiredField) -> AmazonBedrockServiceSettings { match region {} }
-}
-
-impl
-    AmazonBedrockServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `secret_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, secret_key: crate::typed::builder::MissingRequiredField) -> AmazonBedrockServiceSettings { match secret_key {} }
+    fn from(builder: AmazonBedrockServiceSettingsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -985,8 +955,8 @@ impl AmazonBedrockTaskSettings {
     }
 
     /// Creates a [`AmazonBedrockTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AmazonBedrockTaskSettingsBuilder) -> AmazonBedrockTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AmazonBedrockTaskSettings>>(
+        f: impl FnOnce(AmazonBedrockTaskSettingsBuilder) -> B,
     ) -> AmazonBedrockTaskSettings {
         f(Self::builder()).build()
     }
@@ -1080,6 +1050,14 @@ impl AmazonBedrockTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AmazonBedrockTaskSettingsBuilder {
+    type Output = AmazonBedrockTaskSettings;
+
+    fn build(self) -> AmazonBedrockTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<AmazonBedrockTaskSettingsBuilder> for AmazonBedrockTaskSettings {
     fn from(builder: AmazonBedrockTaskSettingsBuilder) -> Self {
         builder.build()
@@ -1160,24 +1138,31 @@ pub struct AmazonSageMakerServiceSettings {
 
 impl AmazonSageMakerServiceSettings {
     /// Creates a builder for [`AmazonSageMakerServiceSettings`].
+    ///
+    /// Required: `access_key`, `endpoint_name`, `api`, `region`, `secret_key`.
     pub fn builder() -> AmazonSageMakerServiceSettingsBuilder {
         AmazonSageMakerServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AmazonSageMakerServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AmazonSageMakerServiceSettingsBuilder,
-        ) -> AmazonSageMakerServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `access_key`, `endpoint_name`, `api`, `region`, `secret_key`.
+    pub fn of<B: crate::typed::builder::Build<Output = AmazonSageMakerServiceSettings>>(
+        f: impl FnOnce(AmazonSageMakerServiceSettingsBuilder) -> B,
     ) -> AmazonSageMakerServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AmazonSageMakerServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod amazon_sage_maker_service_settings_members {
+    pub struct access_key;
+    pub struct endpoint_name;
+    pub struct api;
+    pub struct region;
+    pub struct secret_key;
 }
 
 /// Builder for [`AmazonSageMakerServiceSettings`].
@@ -1347,7 +1332,7 @@ impl<S0, S1, S2, S3, S4> AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, 
 impl<S1, S2, S3, S4>
     AmazonSageMakerServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// A valid AWS access key that has permissions to use Amazon SageMaker and access to models for invoking requests.
+    /// **Required.** A valid AWS access key that has permissions to use Amazon SageMaker and access to models for invoking requests.
     pub fn access_key(
         self,
         value: impl Into<String>,
@@ -1361,7 +1346,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     AmazonSageMakerServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// The name of the SageMaker endpoint.
+    /// **Required.** The name of the SageMaker endpoint.
     pub fn endpoint_name(
         self,
         value: impl Into<String>,
@@ -1375,7 +1360,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     AmazonSageMakerServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The API format to use when calling SageMaker.
+    /// **Required.** The API format to use when calling SageMaker.
     /// Elasticsearch will convert the POST _inference request to this data format when invoking the SageMaker endpoint.
     pub fn api(
         self,
@@ -1390,7 +1375,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// The region that your endpoint or Amazon Resource Name (ARN) is deployed in.
+    /// **Required.** The region that your endpoint or Amazon Resource Name (ARN) is deployed in.
     /// The list of available regions per model can be found in the Amazon SageMaker documentation.
     pub fn region(
         self,
@@ -1405,7 +1390,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// A valid AWS secret key that is paired with the `access_key`.
+    /// **Required.** A valid AWS secret key that is paired with the `access_key`.
     /// For information about creating and managing access and secret keys, refer to the AWS documentation.
     pub fn secret_key(
         self,
@@ -1417,17 +1402,16 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    AmazonSageMakerServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`AmazonSageMakerServiceSettings`].
-    pub fn build(self) -> AmazonSageMakerServiceSettings {
+    pub fn build(self) -> AmazonSageMakerServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::access_key>,
+        S1: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::endpoint_name>,
+        S2: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::api>,
+        S3: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::region>,
+        S4: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::secret_key>,
+    {
         AmazonSageMakerServiceSettings {
             access_key: self.access_key.unwrap(),
             endpoint_name: self.endpoint_name.unwrap(),
@@ -1445,92 +1429,34 @@ impl
     }
 }
 
-impl
-    From<
-        AmazonSageMakerServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AmazonSageMakerServiceSettings
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::access_key>,
+    S1: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::endpoint_name>,
+    S2: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::api>,
+    S3: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::region>,
+    S4: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::secret_key>,
 {
-    fn from(
-        builder: AmazonSageMakerServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AmazonSageMakerServiceSettings;
+
+    fn build(self) -> AmazonSageMakerServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    AmazonSageMakerServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, S4)>>
+    for AmazonSageMakerServiceSettings
+where
+    S0: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::access_key>,
+    S1: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::endpoint_name>,
+    S2: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::api>,
+    S3: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::region>,
+    S4: crate::typed::builder::IsSet<amazon_sage_maker_service_settings_members::secret_key>,
 {
-    /// `access_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, access_key: crate::typed::builder::MissingRequiredField) -> AmazonSageMakerServiceSettings { match access_key {} }
-}
-
-impl<S2, S3, S4>
-    AmazonSageMakerServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `endpoint_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, endpoint_name: crate::typed::builder::MissingRequiredField) -> AmazonSageMakerServiceSettings { match endpoint_name {} }
-}
-
-impl<S3, S4>
-    AmazonSageMakerServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `api` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api: crate::typed::builder::MissingRequiredField) -> AmazonSageMakerServiceSettings { match api {} }
-}
-
-impl<S4>
-    AmazonSageMakerServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `region` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, region: crate::typed::builder::MissingRequiredField) -> AmazonSageMakerServiceSettings { match region {} }
-}
-
-impl
-    AmazonSageMakerServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `secret_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, secret_key: crate::typed::builder::MissingRequiredField) -> AmazonSageMakerServiceSettings { match secret_key {} }
+    fn from(builder: AmazonSageMakerServiceSettingsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1578,8 +1504,8 @@ impl AmazonSageMakerTaskSettings {
     }
 
     /// Creates a [`AmazonSageMakerTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AmazonSageMakerTaskSettingsBuilder) -> AmazonSageMakerTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AmazonSageMakerTaskSettings>>(
+        f: impl FnOnce(AmazonSageMakerTaskSettingsBuilder) -> B,
     ) -> AmazonSageMakerTaskSettings {
         f(Self::builder()).build()
     }
@@ -1685,6 +1611,14 @@ impl AmazonSageMakerTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AmazonSageMakerTaskSettingsBuilder {
+    type Output = AmazonSageMakerTaskSettings;
+
+    fn build(self) -> AmazonSageMakerTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<AmazonSageMakerTaskSettingsBuilder> for AmazonSageMakerTaskSettings {
     fn from(builder: AmazonSageMakerTaskSettingsBuilder) -> Self {
         builder.build()
@@ -1706,21 +1640,28 @@ pub struct AnthropicServiceSettings {
 
 impl AnthropicServiceSettings {
     /// Creates a builder for [`AnthropicServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> AnthropicServiceSettingsBuilder {
         AnthropicServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AnthropicServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnthropicServiceSettingsBuilder,
-        ) -> AnthropicServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnthropicServiceSettings>>(
+        f: impl FnOnce(AnthropicServiceSettingsBuilder) -> B,
     ) -> AnthropicServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnthropicServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod anthropic_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`AnthropicServiceSettings`].
@@ -1771,16 +1712,16 @@ impl<S0, S1> AnthropicServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> AnthropicServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for the Anthropic API.
+    /// **Required.** A valid API key for the Anthropic API.
     pub fn api_key(
         self,
         value: impl Into<String>,
@@ -1792,7 +1733,7 @@ impl<S1> AnthropicServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AnthropicServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Anthropic documentation for the list of supported models.
     pub fn model_id(
         self,
@@ -1804,9 +1745,13 @@ impl<S0> AnthropicServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AnthropicServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AnthropicServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`AnthropicServiceSettings`].
-    pub fn build(self) -> AnthropicServiceSettings {
+    pub fn build(self) -> AnthropicServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<anthropic_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<anthropic_service_settings_members::model_id>,
+    {
         AnthropicServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -1815,29 +1760,26 @@ impl AnthropicServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<AnthropicServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AnthropicServiceSettings
+impl<S0, S1> crate::typed::builder::Build for AnthropicServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<anthropic_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<anthropic_service_settings_members::model_id>,
 {
-    fn from(
-        builder: AnthropicServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AnthropicServiceSettings;
+
+    fn build(self) -> AnthropicServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> AnthropicServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> AnthropicServiceSettings { match api_key {} }
-}
-
-impl AnthropicServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> AnthropicServiceSettings { match model_id {} }
+impl<S0, S1> From<AnthropicServiceSettingsBuilder<(S0, S1)>> for AnthropicServiceSettings
+where
+    S0: crate::typed::builder::IsSet<anthropic_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<anthropic_service_settings_members::model_id>,
+{
+    fn from(builder: AnthropicServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1870,18 +1812,27 @@ pub struct AnthropicTaskSettings {
 
 impl AnthropicTaskSettings {
     /// Creates a builder for [`AnthropicTaskSettings`].
+    ///
+    /// Required: `max_tokens`.
     pub fn builder() -> AnthropicTaskSettingsBuilder {
         AnthropicTaskSettingsBuilder::new()
     }
 
     /// Creates a [`AnthropicTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AnthropicTaskSettingsBuilder,
-        ) -> AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `max_tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = AnthropicTaskSettings>>(
+        f: impl FnOnce(AnthropicTaskSettingsBuilder) -> B,
     ) -> AnthropicTaskSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AnthropicTaskSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod anthropic_task_settings_members {
+    pub struct max_tokens;
 }
 
 /// Builder for [`AnthropicTaskSettings`].
@@ -1962,7 +1913,7 @@ impl<S0> AnthropicTaskSettingsBuilder<(S0,)> {
 }
 
 impl AnthropicTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// For a `completion` or `chat_completion` task, it is the maximum number of tokens to generate before stopping.
+    /// **Required.** For a `completion` or `chat_completion` task, it is the maximum number of tokens to generate before stopping.
     pub fn max_tokens(
         self,
         value: i32,
@@ -1973,9 +1924,12 @@ impl AnthropicTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AnthropicTaskSettingsBuilder<(S0,)> {
     /// Builds a [`AnthropicTaskSettings`].
-    pub fn build(self) -> AnthropicTaskSettings {
+    pub fn build(self) -> AnthropicTaskSettings
+    where
+        S0: crate::typed::builder::IsSet<anthropic_task_settings_members::max_tokens>,
+    {
         AnthropicTaskSettings {
             max_tokens: self.max_tokens.unwrap(),
             temperature: self.temperature,
@@ -1985,16 +1939,24 @@ impl AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)>> for AnthropicTaskSettings {
-    fn from(builder: AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AnthropicTaskSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<anthropic_task_settings_members::max_tokens>,
+{
+    type Output = AnthropicTaskSettings;
+
+    fn build(self) -> AnthropicTaskSettings {
+        Self::build(self)
     }
 }
 
-impl AnthropicTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `max_tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max_tokens: crate::typed::builder::MissingRequiredField) -> AnthropicTaskSettings { match max_tokens {} }
+impl<S0> From<AnthropicTaskSettingsBuilder<(S0,)>> for AnthropicTaskSettings
+where
+    S0: crate::typed::builder::IsSet<anthropic_task_settings_members::max_tokens>,
+{
+    fn from(builder: AnthropicTaskSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2039,23 +2001,30 @@ pub struct AzureAiStudioServiceSettings {
 
 impl AzureAiStudioServiceSettings {
     /// Creates a builder for [`AzureAiStudioServiceSettings`].
+    ///
+    /// Required: `api_key`, `endpoint_type`, `target`, `provider`.
     pub fn builder() -> AzureAiStudioServiceSettingsBuilder {
         AzureAiStudioServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AzureAiStudioServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AzureAiStudioServiceSettingsBuilder,
-        ) -> AzureAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `endpoint_type`, `target`, `provider`.
+    pub fn of<B: crate::typed::builder::Build<Output = AzureAiStudioServiceSettings>>(
+        f: impl FnOnce(AzureAiStudioServiceSettingsBuilder) -> B,
     ) -> AzureAiStudioServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AzureAiStudioServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod azure_ai_studio_service_settings_members {
+    pub struct api_key;
+    pub struct endpoint_type;
+    pub struct target;
+    pub struct provider;
 }
 
 /// Builder for [`AzureAiStudioServiceSettings`].
@@ -2122,16 +2091,16 @@ impl<S0, S1, S2, S3> AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1, S2, S3> AzureAiStudioServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// A valid API key of your Azure AI Studio model deployment.
+    /// **Required.** A valid API key of your Azure AI Studio model deployment.
     /// This key can be found on the overview page for your deployment in the management section of your Azure AI Studio account.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -2147,7 +2116,7 @@ impl<S1, S2, S3> AzureAiStudioServiceSettingsBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> AzureAiStudioServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The type of endpoint that is available for deployment through Azure AI Studio: `token` or `realtime`.
+    /// **Required.** The type of endpoint that is available for deployment through Azure AI Studio: `token` or `realtime`.
     /// The `token` endpoint type is for "pay as you go" endpoints that are billed per token.
     /// The `realtime` endpoint type is for "real-time" endpoints that are billed per hour of usage.
     pub fn endpoint_type(
@@ -2161,7 +2130,7 @@ impl<S0, S2, S3> AzureAiStudioServiceSettingsBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> AzureAiStudioServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The target URL of your Azure AI Studio model deployment.
+    /// **Required.** The target URL of your Azure AI Studio model deployment.
     /// This can be found on the overview page for your deployment in the management section of your Azure AI Studio account.
     pub fn target(
         self,
@@ -2174,7 +2143,7 @@ impl<S0, S1, S3> AzureAiStudioServiceSettingsBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The model provider for your deployment.
+    /// **Required.** The model provider for your deployment.
     /// Note that some providers may support only certain task types.
     /// Supported providers include:
     ///
@@ -2194,16 +2163,15 @@ impl<S0, S1, S2> AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    AzureAiStudioServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AzureAiStudioServiceSettings`].
-    pub fn build(self) -> AzureAiStudioServiceSettings {
+    pub fn build(self) -> AzureAiStudioServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::endpoint_type>,
+        S2: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::target>,
+        S3: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::provider>,
+    {
         AzureAiStudioServiceSettings {
             api_key: self.api_key.unwrap(),
             endpoint_type: self.endpoint_type.unwrap(),
@@ -2214,71 +2182,32 @@ impl
     }
 }
 
-impl
-    From<
-        AzureAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AzureAiStudioServiceSettings
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::endpoint_type>,
+    S2: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::target>,
+    S3: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::provider>,
 {
-    fn from(
-        builder: AzureAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AzureAiStudioServiceSettings;
+
+    fn build(self) -> AzureAiStudioServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AzureAiStudioServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> AzureAiStudioServiceSettings { match api_key {} }
-}
-
-impl<S2, S3>
-    AzureAiStudioServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, S3)>>
+    for AzureAiStudioServiceSettings
+where
+    S0: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::endpoint_type>,
+    S2: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::target>,
+    S3: crate::typed::builder::IsSet<azure_ai_studio_service_settings_members::provider>,
 {
-    /// `endpoint_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, endpoint_type: crate::typed::builder::MissingRequiredField) -> AzureAiStudioServiceSettings { match endpoint_type {} }
-}
-
-impl<S3>
-    AzureAiStudioServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `target` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target: crate::typed::builder::MissingRequiredField) -> AzureAiStudioServiceSettings { match target {} }
-}
-
-impl
-    AzureAiStudioServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `provider` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, provider: crate::typed::builder::MissingRequiredField) -> AzureAiStudioServiceSettings { match provider {} }
+    fn from(builder: AzureAiStudioServiceSettingsBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2326,8 +2255,8 @@ impl AzureAiStudioTaskSettings {
     }
 
     /// Creates a [`AzureAiStudioTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AzureAiStudioTaskSettingsBuilder) -> AzureAiStudioTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AzureAiStudioTaskSettings>>(
+        f: impl FnOnce(AzureAiStudioTaskSettingsBuilder) -> B,
     ) -> AzureAiStudioTaskSettings {
         f(Self::builder()).build()
     }
@@ -2467,6 +2396,14 @@ impl AzureAiStudioTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AzureAiStudioTaskSettingsBuilder {
+    type Output = AzureAiStudioTaskSettings;
+
+    fn build(self) -> AzureAiStudioTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<AzureAiStudioTaskSettingsBuilder> for AzureAiStudioTaskSettings {
     fn from(builder: AzureAiStudioTaskSettingsBuilder) -> Self {
         builder.build()
@@ -2553,22 +2490,29 @@ pub struct AzureOpenAIServiceSettings {
 
 impl AzureOpenAIServiceSettings {
     /// Creates a builder for [`AzureOpenAIServiceSettings`].
+    ///
+    /// Required: `api_version`, `deployment_id`, `resource_name`.
     pub fn builder() -> AzureOpenAIServiceSettingsBuilder {
         AzureOpenAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`AzureOpenAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AzureOpenAIServiceSettingsBuilder,
-        ) -> AzureOpenAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_version`, `deployment_id`, `resource_name`.
+    pub fn of<B: crate::typed::builder::Build<Output = AzureOpenAIServiceSettings>>(
+        f: impl FnOnce(AzureOpenAIServiceSettingsBuilder) -> B,
     ) -> AzureOpenAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AzureOpenAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod azure_open_ai_service_settings_members {
+    pub struct api_version;
+    pub struct deployment_id;
+    pub struct resource_name;
 }
 
 /// Builder for [`AzureOpenAIServiceSettings`].
@@ -2715,9 +2659,9 @@ impl<S0, S1, S2> AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -2770,7 +2714,7 @@ impl<S0, S1, S2> AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AzureOpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The Azure API version ID to use.
+    /// **Required.** The Azure API version ID to use.
     /// It is recommended to use the latest supported non-preview version.
     pub fn api_version(
         self,
@@ -2783,7 +2727,7 @@ impl<S1, S2> AzureOpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0, S2> AzureOpenAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The deployment name of your deployed models.
+    /// **Required.** The deployment name of your deployed models.
     /// Your Azure OpenAI deployments can be found though the Azure OpenAI Studio portal that is linked to your subscription.
     pub fn deployment_id(
         self,
@@ -2796,7 +2740,7 @@ impl<S0, S2> AzureOpenAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSe
 }
 
 impl<S0, S1> AzureOpenAIServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The name of your Azure OpenAI resource.
+    /// **Required.** The name of your Azure OpenAI resource.
     /// You can find this from the list of resources in the Azure Portal for your subscription.
     pub fn resource_name(
         self,
@@ -2808,15 +2752,14 @@ impl<S0, S1> AzureOpenAIServiceSettingsBuilder<(S0, S1, crate::typed::builder::N
     }
 }
 
-impl
-    AzureOpenAIServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)> {
     /// Builds a [`AzureOpenAIServiceSettings`].
-    pub fn build(self) -> AzureOpenAIServiceSettings {
+    pub fn build(self) -> AzureOpenAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::api_version>,
+        S1: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::deployment_id>,
+        S2: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::resource_name>,
+    {
         AzureOpenAIServiceSettings {
             api_key: self.api_key,
             api_version: self.api_version.unwrap(),
@@ -2832,54 +2775,29 @@ impl
     }
 }
 
-impl
-    From<
-        AzureOpenAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AzureOpenAIServiceSettings
+impl<S0, S1, S2> crate::typed::builder::Build for AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::api_version>,
+    S1: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::deployment_id>,
+    S2: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::resource_name>,
 {
-    fn from(
-        builder: AzureOpenAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AzureOpenAIServiceSettings;
+
+    fn build(self) -> AzureOpenAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AzureOpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `api_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_version: crate::typed::builder::MissingRequiredField) -> AzureOpenAIServiceSettings { match api_version {} }
-}
-
-impl<S2>
-    AzureOpenAIServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)>>
+    for AzureOpenAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::api_version>,
+    S1: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::deployment_id>,
+    S2: crate::typed::builder::IsSet<azure_open_ai_service_settings_members::resource_name>,
 {
-    /// `deployment_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deployment_id: crate::typed::builder::MissingRequiredField) -> AzureOpenAIServiceSettings { match deployment_id {} }
-}
-
-impl
-    AzureOpenAIServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `resource_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, resource_name: crate::typed::builder::MissingRequiredField) -> AzureOpenAIServiceSettings { match resource_name {} }
+    fn from(builder: AzureOpenAIServiceSettingsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -2913,8 +2831,8 @@ impl AzureOpenAITaskSettings {
     }
 
     /// Creates a [`AzureOpenAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AzureOpenAITaskSettingsBuilder) -> AzureOpenAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = AzureOpenAITaskSettings>>(
+        f: impl FnOnce(AzureOpenAITaskSettingsBuilder) -> B,
     ) -> AzureOpenAITaskSettings {
         f(Self::builder()).build()
     }
@@ -2988,6 +2906,14 @@ impl AzureOpenAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AzureOpenAITaskSettingsBuilder {
+    type Output = AzureOpenAITaskSettings;
+
+    fn build(self) -> AzureOpenAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<AzureOpenAITaskSettingsBuilder> for AzureOpenAITaskSettings {
     fn from(builder: AzureOpenAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -3026,8 +2952,8 @@ impl BaseReasoningDetail {
     }
 
     /// Creates a [`BaseReasoningDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(BaseReasoningDetailBuilder) -> BaseReasoningDetailBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = BaseReasoningDetail>>(
+        f: impl FnOnce(BaseReasoningDetailBuilder) -> B,
     ) -> BaseReasoningDetail {
         f(Self::builder()).build()
     }
@@ -3101,6 +3027,14 @@ impl BaseReasoningDetailBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BaseReasoningDetailBuilder {
+    type Output = BaseReasoningDetail;
+
+    fn build(self) -> BaseReasoningDetail {
+        Self::build(self)
+    }
+}
+
 impl From<BaseReasoningDetailBuilder> for BaseReasoningDetail {
     fn from(builder: BaseReasoningDetailBuilder) -> Self {
         builder.build()
@@ -3123,21 +3057,28 @@ pub struct ChatCompletionChoice {
 
 impl ChatCompletionChoice {
     /// Creates a builder for [`ChatCompletionChoice`].
+    ///
+    /// Required: `message`, `index`.
     pub fn builder() -> ChatCompletionChoiceBuilder {
         ChatCompletionChoiceBuilder::new()
     }
 
     /// Creates a [`ChatCompletionChoice`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionChoiceBuilder,
-        ) -> ChatCompletionChoiceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `message`, `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionChoice>>(
+        f: impl FnOnce(ChatCompletionChoiceBuilder) -> B,
     ) -> ChatCompletionChoice {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChatCompletionChoiceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chat_completion_choice_members {
+    pub struct message;
+    pub struct index;
 }
 
 /// Builder for [`ChatCompletionChoice`].
@@ -3188,7 +3129,7 @@ impl<S0, S1> ChatCompletionChoiceBuilder<(S0, S1)> {
 }
 
 impl<S1> ChatCompletionChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The message generated by the model for this choice.
+    /// **Required.** The message generated by the model for this choice.
     pub fn message(
         self,
         value: impl Into<ChatCompletionMessage>,
@@ -3199,16 +3140,16 @@ impl<S1> ChatCompletionChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`message`](Self::message) with a builder.
-    pub fn message_with(
+    pub fn message_with<B: crate::typed::builder::Build<Output = ChatCompletionMessage>>(
         self,
-        f: impl FnOnce(ChatCompletionMessageBuilder) -> ChatCompletionMessageBuilder,
+        f: impl FnOnce(ChatCompletionMessageBuilder) -> B,
     ) -> ChatCompletionChoiceBuilder<(crate::typed::builder::Set, S1)> {
         self.message(f(ChatCompletionMessageBuilder::new()).build())
     }
 }
 
 impl<S0> ChatCompletionChoiceBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The index of this choice in the list of choices.
+    /// **Required.** The index of this choice in the list of choices.
     pub fn index(
         self,
         value: i32,
@@ -3219,9 +3160,13 @@ impl<S0> ChatCompletionChoiceBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ChatCompletionChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ChatCompletionChoiceBuilder<(S0, S1)> {
     /// Builds a [`ChatCompletionChoice`].
-    pub fn build(self) -> ChatCompletionChoice {
+    pub fn build(self) -> ChatCompletionChoice
+    where
+        S0: crate::typed::builder::IsSet<chat_completion_choice_members::message>,
+        S1: crate::typed::builder::IsSet<chat_completion_choice_members::index>,
+    {
         ChatCompletionChoice {
             message: self.message.unwrap(),
             finish_reason: self.finish_reason,
@@ -3230,29 +3175,26 @@ impl ChatCompletionChoiceBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<ChatCompletionChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ChatCompletionChoice
+impl<S0, S1> crate::typed::builder::Build for ChatCompletionChoiceBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<chat_completion_choice_members::message>,
+    S1: crate::typed::builder::IsSet<chat_completion_choice_members::index>,
 {
-    fn from(
-        builder: ChatCompletionChoiceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ChatCompletionChoice;
+
+    fn build(self) -> ChatCompletionChoice {
+        Self::build(self)
     }
 }
 
-impl<S1> ChatCompletionChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `message` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, message: crate::typed::builder::MissingRequiredField) -> ChatCompletionChoice { match message {} }
-}
-
-impl ChatCompletionChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> ChatCompletionChoice { match index {} }
+impl<S0, S1> From<ChatCompletionChoiceBuilder<(S0, S1)>> for ChatCompletionChoice
+where
+    S0: crate::typed::builder::IsSet<chat_completion_choice_members::message>,
+    S1: crate::typed::builder::IsSet<chat_completion_choice_members::index>,
+{
+    fn from(builder: ChatCompletionChoiceBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Breakdown of tokens used in the request.
@@ -3270,10 +3212,8 @@ impl ChatCompletionCompletionTokensDetails {
     }
 
     /// Creates a [`ChatCompletionCompletionTokensDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionCompletionTokensDetailsBuilder,
-        ) -> ChatCompletionCompletionTokensDetailsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionCompletionTokensDetails>>(
+        f: impl FnOnce(ChatCompletionCompletionTokensDetailsBuilder) -> B,
     ) -> ChatCompletionCompletionTokensDetails {
         f(Self::builder()).build()
     }
@@ -3316,6 +3256,14 @@ impl ChatCompletionCompletionTokensDetailsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChatCompletionCompletionTokensDetailsBuilder {
+    type Output = ChatCompletionCompletionTokensDetails;
+
+    fn build(self) -> ChatCompletionCompletionTokensDetails {
+        Self::build(self)
+    }
+}
+
 impl From<ChatCompletionCompletionTokensDetailsBuilder> for ChatCompletionCompletionTokensDetails {
     fn from(builder: ChatCompletionCompletionTokensDetailsBuilder) -> Self {
         builder.build()
@@ -3342,22 +3290,29 @@ pub struct ChatCompletionInferenceResult {
 
 impl ChatCompletionInferenceResult {
     /// Creates a builder for [`ChatCompletionInferenceResult`].
+    ///
+    /// Required: `id`, `model`, `object`.
     pub fn builder() -> ChatCompletionInferenceResultBuilder {
         ChatCompletionInferenceResultBuilder::new()
     }
 
     /// Creates a [`ChatCompletionInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionInferenceResultBuilder,
-        ) -> ChatCompletionInferenceResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `model`, `object`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionInferenceResult>>(
+        f: impl FnOnce(ChatCompletionInferenceResultBuilder) -> B,
     ) -> ChatCompletionInferenceResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChatCompletionInferenceResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chat_completion_inference_result_members {
+    pub struct id;
+    pub struct model;
+    pub struct object;
 }
 
 /// Builder for [`ChatCompletionInferenceResult`].
@@ -3429,14 +3384,9 @@ impl<S0, S1, S2> ChatCompletionInferenceResultBuilder<(S0, S1, S2)> {
     }
 
     /// Adds an element to [`choices`](Self::choices), with a builder.
-    pub fn add_choices_with(
+    pub fn add_choices_with<B: crate::typed::builder::Build<Output = ChatCompletionChoice>>(
         self,
-        f: impl FnOnce(
-            ChatCompletionChoiceBuilder,
-        ) -> ChatCompletionChoiceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChatCompletionChoiceBuilder) -> B,
     ) -> Self {
         self.add_choices(f(ChatCompletionChoiceBuilder::new()).build())
     }
@@ -3455,22 +3405,16 @@ impl<S0, S1, S2> ChatCompletionInferenceResultBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`usage`](Self::usage) with a builder.
-    pub fn usage_with(
+    pub fn usage_with<B: crate::typed::builder::Build<Output = ChatCompletionUsage>>(
         self,
-        f: impl FnOnce(
-            ChatCompletionUsageBuilder,
-        ) -> ChatCompletionUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChatCompletionUsageBuilder) -> B,
     ) -> Self {
         self.usage(f(ChatCompletionUsageBuilder::new()).build())
     }
 }
 
 impl<S1, S2> ChatCompletionInferenceResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The unique identifier for the completion.
+    /// **Required.** The unique identifier for the completion.
     pub fn id(
         self,
         value: impl Into<String>,
@@ -3482,7 +3426,7 @@ impl<S1, S2> ChatCompletionInferenceResultBuilder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2> ChatCompletionInferenceResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The model used to generate the completion.
+    /// **Required.** The model used to generate the completion.
     pub fn model(
         self,
         value: impl Into<String>,
@@ -3494,7 +3438,7 @@ impl<S0, S2> ChatCompletionInferenceResultBuilder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1> ChatCompletionInferenceResultBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The object type.
+    /// **Required.** The object type.
     pub fn object(
         self,
         value: impl Into<String>,
@@ -3505,15 +3449,14 @@ impl<S0, S1> ChatCompletionInferenceResultBuilder<(S0, S1, crate::typed::builder
     }
 }
 
-impl
-    ChatCompletionInferenceResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ChatCompletionInferenceResultBuilder<(S0, S1, S2)> {
     /// Builds a [`ChatCompletionInferenceResult`].
-    pub fn build(self) -> ChatCompletionInferenceResult {
+    pub fn build(self) -> ChatCompletionInferenceResult
+    where
+        S0: crate::typed::builder::IsSet<chat_completion_inference_result_members::id>,
+        S1: crate::typed::builder::IsSet<chat_completion_inference_result_members::model>,
+        S2: crate::typed::builder::IsSet<chat_completion_inference_result_members::object>,
+    {
         ChatCompletionInferenceResult {
             id: self.id.unwrap(),
             choices: self.choices,
@@ -3524,54 +3467,29 @@ impl
     }
 }
 
-impl
-    From<
-        ChatCompletionInferenceResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ChatCompletionInferenceResult
+impl<S0, S1, S2> crate::typed::builder::Build for ChatCompletionInferenceResultBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<chat_completion_inference_result_members::id>,
+    S1: crate::typed::builder::IsSet<chat_completion_inference_result_members::model>,
+    S2: crate::typed::builder::IsSet<chat_completion_inference_result_members::object>,
 {
-    fn from(
-        builder: ChatCompletionInferenceResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ChatCompletionInferenceResult;
+
+    fn build(self) -> ChatCompletionInferenceResult {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ChatCompletionInferenceResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ChatCompletionInferenceResult { match id {} }
-}
-
-impl<S2>
-    ChatCompletionInferenceResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ChatCompletionInferenceResultBuilder<(S0, S1, S2)>>
+    for ChatCompletionInferenceResult
+where
+    S0: crate::typed::builder::IsSet<chat_completion_inference_result_members::id>,
+    S1: crate::typed::builder::IsSet<chat_completion_inference_result_members::model>,
+    S2: crate::typed::builder::IsSet<chat_completion_inference_result_members::object>,
 {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> ChatCompletionInferenceResult { match model {} }
-}
-
-impl
-    ChatCompletionInferenceResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `object` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, object: crate::typed::builder::MissingRequiredField) -> ChatCompletionInferenceResult { match object {} }
+    fn from(builder: ChatCompletionInferenceResultBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The message returned by the model.
@@ -3606,8 +3524,8 @@ impl ChatCompletionMessage {
     }
 
     /// Creates a [`ChatCompletionMessage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChatCompletionMessageBuilder) -> ChatCompletionMessageBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionMessage>>(
+        f: impl FnOnce(ChatCompletionMessageBuilder) -> B,
     ) -> ChatCompletionMessage {
         f(Self::builder()).build()
     }
@@ -3708,14 +3626,9 @@ impl ChatCompletionMessageBuilder {
     }
 
     /// Adds an element to [`tool_calls`](Self::tool_calls), with a builder.
-    pub fn add_tool_calls_with(
+    pub fn add_tool_calls_with<B: crate::typed::builder::Build<Output = ChatCompletionToolCall>>(
         self,
-        f: impl FnOnce(
-            ChatCompletionToolCallBuilder,
-        ) -> ChatCompletionToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ChatCompletionToolCallBuilder) -> B,
     ) -> Self {
         self.add_tool_calls(f(ChatCompletionToolCallBuilder::new()).build())
     }
@@ -3756,6 +3669,14 @@ impl ChatCompletionMessageBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChatCompletionMessageBuilder {
+    type Output = ChatCompletionMessage;
+
+    fn build(self) -> ChatCompletionMessage {
+        Self::build(self)
+    }
+}
+
 impl From<ChatCompletionMessageBuilder> for ChatCompletionMessage {
     fn from(builder: ChatCompletionMessageBuilder) -> Self {
         builder.build()
@@ -3780,10 +3701,8 @@ impl ChatCompletionPromptTokensDetails {
     }
 
     /// Creates a [`ChatCompletionPromptTokensDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionPromptTokensDetailsBuilder,
-        ) -> ChatCompletionPromptTokensDetailsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionPromptTokensDetails>>(
+        f: impl FnOnce(ChatCompletionPromptTokensDetailsBuilder) -> B,
     ) -> ChatCompletionPromptTokensDetails {
         f(Self::builder()).build()
     }
@@ -3841,6 +3760,14 @@ impl ChatCompletionPromptTokensDetailsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChatCompletionPromptTokensDetailsBuilder {
+    type Output = ChatCompletionPromptTokensDetails;
+
+    fn build(self) -> ChatCompletionPromptTokensDetails {
+        Self::build(self)
+    }
+}
+
 impl From<ChatCompletionPromptTokensDetailsBuilder> for ChatCompletionPromptTokensDetails {
     fn from(builder: ChatCompletionPromptTokensDetailsBuilder) -> Self {
         builder.build()
@@ -3864,21 +3791,28 @@ pub struct ChatCompletionToolCall {
 
 impl ChatCompletionToolCall {
     /// Creates a builder for [`ChatCompletionToolCall`].
+    ///
+    /// Required: `index`, `type`.
     pub fn builder() -> ChatCompletionToolCallBuilder {
         ChatCompletionToolCallBuilder::new()
     }
 
     /// Creates a [`ChatCompletionToolCall`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionToolCallBuilder,
-        ) -> ChatCompletionToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionToolCall>>(
+        f: impl FnOnce(ChatCompletionToolCallBuilder) -> B,
     ) -> ChatCompletionToolCall {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChatCompletionToolCallBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chat_completion_tool_call_members {
+    pub struct index;
+    pub struct r#type;
 }
 
 /// Builder for [`ChatCompletionToolCall`].
@@ -3941,16 +3875,18 @@ impl<S0, S1> ChatCompletionToolCallBuilder<(S0, S1)> {
     }
 
     /// Sets [`function`](Self::function) with a builder.
-    pub fn function_with(
+    pub fn function_with<
+        B: crate::typed::builder::Build<Output = ChatCompletionToolCallFunction>,
+    >(
         self,
-        f: impl FnOnce(ChatCompletionToolCallFunctionBuilder) -> ChatCompletionToolCallFunctionBuilder,
+        f: impl FnOnce(ChatCompletionToolCallFunctionBuilder) -> B,
     ) -> Self {
         self.function(f(ChatCompletionToolCallFunctionBuilder::new()).build())
     }
 }
 
 impl<S1> ChatCompletionToolCallBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The index of the tool call in the list of tool calls generated by the model.
+    /// **Required.** The index of the tool call in the list of tool calls generated by the model.
     pub fn index(
         self,
         value: i32,
@@ -3962,7 +3898,7 @@ impl<S1> ChatCompletionToolCallBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ChatCompletionToolCallBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The type of the tool call.
+    /// **Required.** The type of the tool call.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -3973,9 +3909,13 @@ impl<S0> ChatCompletionToolCallBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ChatCompletionToolCallBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ChatCompletionToolCallBuilder<(S0, S1)> {
     /// Builds a [`ChatCompletionToolCall`].
-    pub fn build(self) -> ChatCompletionToolCall {
+    pub fn build(self) -> ChatCompletionToolCall
+    where
+        S0: crate::typed::builder::IsSet<chat_completion_tool_call_members::index>,
+        S1: crate::typed::builder::IsSet<chat_completion_tool_call_members::r#type>,
+    {
         ChatCompletionToolCall {
             index: self.index.unwrap(),
             id: self.id,
@@ -3985,29 +3925,26 @@ impl ChatCompletionToolCallBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<ChatCompletionToolCallBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ChatCompletionToolCall
+impl<S0, S1> crate::typed::builder::Build for ChatCompletionToolCallBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<chat_completion_tool_call_members::index>,
+    S1: crate::typed::builder::IsSet<chat_completion_tool_call_members::r#type>,
 {
-    fn from(
-        builder: ChatCompletionToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ChatCompletionToolCall;
+
+    fn build(self) -> ChatCompletionToolCall {
+        Self::build(self)
     }
 }
 
-impl<S1> ChatCompletionToolCallBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> ChatCompletionToolCall { match index {} }
-}
-
-impl ChatCompletionToolCallBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ChatCompletionToolCall { match r#type {} }
+impl<S0, S1> From<ChatCompletionToolCallBuilder<(S0, S1)>> for ChatCompletionToolCall
+where
+    S0: crate::typed::builder::IsSet<chat_completion_tool_call_members::index>,
+    S1: crate::typed::builder::IsSet<chat_completion_tool_call_members::r#type>,
+{
+    fn from(builder: ChatCompletionToolCallBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The function called by the tool.
@@ -4028,8 +3965,8 @@ impl ChatCompletionToolCallFunction {
     }
 
     /// Creates a [`ChatCompletionToolCallFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ChatCompletionToolCallFunctionBuilder) -> ChatCompletionToolCallFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionToolCallFunction>>(
+        f: impl FnOnce(ChatCompletionToolCallFunctionBuilder) -> B,
     ) -> ChatCompletionToolCallFunction {
         f(Self::builder()).build()
     }
@@ -4087,6 +4024,14 @@ impl ChatCompletionToolCallFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ChatCompletionToolCallFunctionBuilder {
+    type Output = ChatCompletionToolCallFunction;
+
+    fn build(self) -> ChatCompletionToolCallFunction {
+        Self::build(self)
+    }
+}
+
 impl From<ChatCompletionToolCallFunctionBuilder> for ChatCompletionToolCallFunction {
     fn from(builder: ChatCompletionToolCallFunctionBuilder) -> Self {
         builder.build()
@@ -4114,22 +4059,29 @@ pub struct ChatCompletionUsage {
 
 impl ChatCompletionUsage {
     /// Creates a builder for [`ChatCompletionUsage`].
+    ///
+    /// Required: `completion_tokens`, `prompt_tokens`, `total_tokens`.
     pub fn builder() -> ChatCompletionUsageBuilder {
         ChatCompletionUsageBuilder::new()
     }
 
     /// Creates a [`ChatCompletionUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ChatCompletionUsageBuilder,
-        ) -> ChatCompletionUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `completion_tokens`, `prompt_tokens`, `total_tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = ChatCompletionUsage>>(
+        f: impl FnOnce(ChatCompletionUsageBuilder) -> B,
     ) -> ChatCompletionUsage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ChatCompletionUsageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod chat_completion_usage_members {
+    pub struct completion_tokens;
+    pub struct prompt_tokens;
+    pub struct total_tokens;
 }
 
 /// Builder for [`ChatCompletionUsage`].
@@ -4200,11 +4152,11 @@ impl<S0, S1, S2> ChatCompletionUsageBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`prompt_tokens_details`](Self::prompt_tokens_details) with a builder.
-    pub fn prompt_tokens_details_with(
+    pub fn prompt_tokens_details_with<
+        B: crate::typed::builder::Build<Output = ChatCompletionPromptTokensDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            ChatCompletionPromptTokensDetailsBuilder,
-        ) -> ChatCompletionPromptTokensDetailsBuilder,
+        f: impl FnOnce(ChatCompletionPromptTokensDetailsBuilder) -> B,
     ) -> Self {
         self.prompt_tokens_details(f(ChatCompletionPromptTokensDetailsBuilder::new()).build())
     }
@@ -4229,11 +4181,11 @@ impl<S0, S1, S2> ChatCompletionUsageBuilder<(S0, S1, S2)> {
     }
 
     /// Sets [`completion_tokens_details`](Self::completion_tokens_details) with a builder.
-    pub fn completion_tokens_details_with(
+    pub fn completion_tokens_details_with<
+        B: crate::typed::builder::Build<Output = ChatCompletionCompletionTokensDetails>,
+    >(
         self,
-        f: impl FnOnce(
-            ChatCompletionCompletionTokensDetailsBuilder,
-        ) -> ChatCompletionCompletionTokensDetailsBuilder,
+        f: impl FnOnce(ChatCompletionCompletionTokensDetailsBuilder) -> B,
     ) -> Self {
         self.completion_tokens_details(
             f(ChatCompletionCompletionTokensDetailsBuilder::new()).build(),
@@ -4242,7 +4194,7 @@ impl<S0, S1, S2> ChatCompletionUsageBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ChatCompletionUsageBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The number of tokens in the generated completion.
+    /// **Required.** The number of tokens in the generated completion.
     pub fn completion_tokens(
         self,
         value: i32,
@@ -4254,7 +4206,7 @@ impl<S1, S2> ChatCompletionUsageBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> ChatCompletionUsageBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The number of tokens in the prompt.
+    /// **Required.** The number of tokens in the prompt.
     pub fn prompt_tokens(
         self,
         value: i32,
@@ -4266,7 +4218,7 @@ impl<S0, S2> ChatCompletionUsageBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> ChatCompletionUsageBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The total number of tokens used (prompt + completion).
+    /// **Required.** The total number of tokens used (prompt + completion).
     pub fn total_tokens(
         self,
         value: i32,
@@ -4277,15 +4229,14 @@ impl<S0, S1> ChatCompletionUsageBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    ChatCompletionUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ChatCompletionUsageBuilder<(S0, S1, S2)> {
     /// Builds a [`ChatCompletionUsage`].
-    pub fn build(self) -> ChatCompletionUsage {
+    pub fn build(self) -> ChatCompletionUsage
+    where
+        S0: crate::typed::builder::IsSet<chat_completion_usage_members::completion_tokens>,
+        S1: crate::typed::builder::IsSet<chat_completion_usage_members::prompt_tokens>,
+        S2: crate::typed::builder::IsSet<chat_completion_usage_members::total_tokens>,
+    {
         ChatCompletionUsage {
             completion_tokens: self.completion_tokens.unwrap(),
             prompt_tokens: self.prompt_tokens.unwrap(),
@@ -4296,54 +4247,28 @@ impl
     }
 }
 
-impl
-    From<
-        ChatCompletionUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ChatCompletionUsage
+impl<S0, S1, S2> crate::typed::builder::Build for ChatCompletionUsageBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<chat_completion_usage_members::completion_tokens>,
+    S1: crate::typed::builder::IsSet<chat_completion_usage_members::prompt_tokens>,
+    S2: crate::typed::builder::IsSet<chat_completion_usage_members::total_tokens>,
 {
-    fn from(
-        builder: ChatCompletionUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ChatCompletionUsage;
+
+    fn build(self) -> ChatCompletionUsage {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ChatCompletionUsageBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `completion_tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, completion_tokens: crate::typed::builder::MissingRequiredField) -> ChatCompletionUsage { match completion_tokens {} }
-}
-
-impl<S2>
-    ChatCompletionUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ChatCompletionUsageBuilder<(S0, S1, S2)>> for ChatCompletionUsage
+where
+    S0: crate::typed::builder::IsSet<chat_completion_usage_members::completion_tokens>,
+    S1: crate::typed::builder::IsSet<chat_completion_usage_members::prompt_tokens>,
+    S2: crate::typed::builder::IsSet<chat_completion_usage_members::total_tokens>,
 {
-    /// `prompt_tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, prompt_tokens: crate::typed::builder::MissingRequiredField) -> ChatCompletionUsage { match prompt_tokens {} }
-}
-
-impl
-    ChatCompletionUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `total_tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_tokens: crate::typed::builder::MissingRequiredField) -> ChatCompletionUsage { match total_tokens {} }
+    fn from(builder: ChatCompletionUsageBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4407,21 +4332,28 @@ pub struct CohereServiceSettings {
 
 impl CohereServiceSettings {
     /// Creates a builder for [`CohereServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> CohereServiceSettingsBuilder {
         CohereServiceSettingsBuilder::new()
     }
 
     /// Creates a [`CohereServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CohereServiceSettingsBuilder,
-        ) -> CohereServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = CohereServiceSettings>>(
+        f: impl FnOnce(CohereServiceSettingsBuilder) -> B,
     ) -> CohereServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CohereServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cohere_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`CohereServiceSettings`].
@@ -4493,9 +4425,9 @@ impl<S0, S1> CohereServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -4516,7 +4448,7 @@ impl<S0, S1> CohereServiceSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> CohereServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your Cohere account.
+    /// **Required.** A valid API key for your Cohere account.
     /// You can find or create your Cohere API keys on the Cohere API key settings page.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -4532,7 +4464,7 @@ impl<S1> CohereServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CohereServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// For a `completion`, `rerank`, or `text_embedding` task, the name of the model to use for the inference task.
+    /// **Required.** For a `completion`, `rerank`, or `text_embedding` task, the name of the model to use for the inference task.
     ///
     /// * For the available `completion` models, refer to the [Cohere command docs](https://docs.cohere.com/docs/models#command).
     /// * For the available `rerank` models, refer to the [Cohere rerank docs](https://docs.cohere.com/reference/rerank-1).
@@ -4547,9 +4479,13 @@ impl<S0> CohereServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CohereServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CohereServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`CohereServiceSettings`].
-    pub fn build(self) -> CohereServiceSettings {
+    pub fn build(self) -> CohereServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<cohere_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<cohere_service_settings_members::model_id>,
+    {
         CohereServiceSettings {
             api_key: self.api_key.unwrap(),
             embedding_type: self.embedding_type,
@@ -4560,29 +4496,26 @@ impl CohereServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<CohereServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CohereServiceSettings
+impl<S0, S1> crate::typed::builder::Build for CohereServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<cohere_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<cohere_service_settings_members::model_id>,
 {
-    fn from(
-        builder: CohereServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CohereServiceSettings;
+
+    fn build(self) -> CohereServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> CohereServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> CohereServiceSettings { match api_key {} }
-}
-
-impl CohereServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> CohereServiceSettings { match model_id {} }
+impl<S0, S1> From<CohereServiceSettingsBuilder<(S0, S1)>> for CohereServiceSettings
+where
+    S0: crate::typed::builder::IsSet<cohere_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<cohere_service_settings_members::model_id>,
+{
+    fn from(builder: CohereServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4633,18 +4566,27 @@ pub struct CohereTaskSettings {
 
 impl CohereTaskSettings {
     /// Creates a builder for [`CohereTaskSettings`].
+    ///
+    /// Required: `input_type`.
     pub fn builder() -> CohereTaskSettingsBuilder {
         CohereTaskSettingsBuilder::new()
     }
 
     /// Creates a [`CohereTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CohereTaskSettingsBuilder,
-        ) -> CohereTaskSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `input_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = CohereTaskSettings>>(
+        f: impl FnOnce(CohereTaskSettingsBuilder) -> B,
     ) -> CohereTaskSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CohereTaskSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cohere_task_settings_members {
+    pub struct input_type;
 }
 
 /// Builder for [`CohereTaskSettings`].
@@ -4725,7 +4667,7 @@ impl<S0> CohereTaskSettingsBuilder<(S0,)> {
 }
 
 impl CohereTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// For a `text_embedding` task, the type of input passed to the model.
+    /// **Required.** For a `text_embedding` task, the type of input passed to the model.
     /// Valid values are:
     ///
     /// * `classification`: Use it for embeddings passed through a text classifier.
@@ -4744,9 +4686,12 @@ impl CohereTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CohereTaskSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CohereTaskSettingsBuilder<(S0,)> {
     /// Builds a [`CohereTaskSettings`].
-    pub fn build(self) -> CohereTaskSettings {
+    pub fn build(self) -> CohereTaskSettings
+    where
+        S0: crate::typed::builder::IsSet<cohere_task_settings_members::input_type>,
+    {
         CohereTaskSettings {
             input_type: self.input_type.unwrap(),
             return_documents: self.return_documents,
@@ -4756,16 +4701,24 @@ impl CohereTaskSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CohereTaskSettingsBuilder<(crate::typed::builder::Set,)>> for CohereTaskSettings {
-    fn from(builder: CohereTaskSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CohereTaskSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cohere_task_settings_members::input_type>,
+{
+    type Output = CohereTaskSettings;
+
+    fn build(self) -> CohereTaskSettings {
+        Self::build(self)
     }
 }
 
-impl CohereTaskSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `input_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input_type: crate::typed::builder::MissingRequiredField) -> CohereTaskSettings { match input_type {} }
+impl<S0> From<CohereTaskSettingsBuilder<(S0,)>> for CohereTaskSettings
+where
+    S0: crate::typed::builder::IsSet<cohere_task_settings_members::input_type>,
+{
+    fn from(builder: CohereTaskSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4796,18 +4749,27 @@ pub struct CompletionInferenceResult {
 
 impl CompletionInferenceResult {
     /// Creates a builder for [`CompletionInferenceResult`].
+    ///
+    /// Required: `completion`.
     pub fn builder() -> CompletionInferenceResultBuilder {
         CompletionInferenceResultBuilder::new()
     }
 
     /// Creates a [`CompletionInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionInferenceResultBuilder,
-        ) -> CompletionInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `completion`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionInferenceResult>>(
+        f: impl FnOnce(CompletionInferenceResultBuilder) -> B,
     ) -> CompletionInferenceResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionInferenceResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_inference_result_members {
+    pub struct completion;
 }
 
 /// Builder for [`CompletionInferenceResult`].
@@ -4836,6 +4798,7 @@ impl<S0> CompletionInferenceResultBuilder<(S0,)> {
 }
 
 impl CompletionInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn completion(
         self,
         value: impl Into<Vec<CompletionResult>>,
@@ -4859,11 +4822,9 @@ impl CompletionInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`completion`](Self::completion), with a builder.
-    pub fn add_completion_with(
+    pub fn add_completion_with<B: crate::typed::builder::Build<Output = CompletionResult>>(
         self,
-        f: impl FnOnce(
-            CompletionResultBuilder,
-        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompletionResultBuilder) -> B,
     ) -> CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
         self.add_completion(f(CompletionResultBuilder::new()).build())
     }
@@ -4879,37 +4840,44 @@ impl CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`completion`](Self::completion), with a builder.
-    pub fn add_completion_with(
+    pub fn add_completion_with<B: crate::typed::builder::Build<Output = CompletionResult>>(
         self,
-        f: impl FnOnce(
-            CompletionResultBuilder,
-        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompletionResultBuilder) -> B,
     ) -> Self {
         self.add_completion(f(CompletionResultBuilder::new()).build())
     }
 }
 
-impl CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompletionInferenceResultBuilder<(S0,)> {
     /// Builds a [`CompletionInferenceResult`].
-    pub fn build(self) -> CompletionInferenceResult {
+    pub fn build(self) -> CompletionInferenceResult
+    where
+        S0: crate::typed::builder::IsSet<completion_inference_result_members::completion>,
+    {
         CompletionInferenceResult {
             completion: self.completion.unwrap(),
         }
     }
 }
 
-impl From<CompletionInferenceResultBuilder<(crate::typed::builder::Set,)>>
-    for CompletionInferenceResult
+impl<S0> crate::typed::builder::Build for CompletionInferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<completion_inference_result_members::completion>,
 {
-    fn from(builder: CompletionInferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CompletionInferenceResult;
+
+    fn build(self) -> CompletionInferenceResult {
+        Self::build(self)
     }
 }
 
-impl CompletionInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `completion` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, completion: crate::typed::builder::MissingRequiredField) -> CompletionInferenceResult { match completion {} }
+impl<S0> From<CompletionInferenceResultBuilder<(S0,)>> for CompletionInferenceResult
+where
+    S0: crate::typed::builder::IsSet<completion_inference_result_members::completion>,
+{
+    fn from(builder: CompletionInferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The completion result object
@@ -4920,18 +4888,27 @@ pub struct CompletionResult {
 
 impl CompletionResult {
     /// Creates a builder for [`CompletionResult`].
+    ///
+    /// Required: `result`.
     pub fn builder() -> CompletionResultBuilder {
         CompletionResultBuilder::new()
     }
 
     /// Creates a [`CompletionResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionResultBuilder,
-        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `result`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionResult>>(
+        f: impl FnOnce(CompletionResultBuilder) -> B,
     ) -> CompletionResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_result_members {
+    pub struct result;
 }
 
 /// Builder for [`CompletionResult`].
@@ -4960,6 +4937,7 @@ impl<S0> CompletionResultBuilder<(S0,)> {
 }
 
 impl CompletionResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn result(
         self,
         value: impl Into<String>,
@@ -4970,25 +4948,36 @@ impl CompletionResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompletionResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompletionResultBuilder<(S0,)> {
     /// Builds a [`CompletionResult`].
-    pub fn build(self) -> CompletionResult {
+    pub fn build(self) -> CompletionResult
+    where
+        S0: crate::typed::builder::IsSet<completion_result_members::result>,
+    {
         CompletionResult {
             result: self.result.unwrap(),
         }
     }
 }
 
-impl From<CompletionResultBuilder<(crate::typed::builder::Set,)>> for CompletionResult {
-    fn from(builder: CompletionResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CompletionResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<completion_result_members::result>,
+{
+    type Output = CompletionResult;
+
+    fn build(self) -> CompletionResult {
+        Self::build(self)
     }
 }
 
-impl CompletionResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `result` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, result: crate::typed::builder::MissingRequiredField) -> CompletionResult { match result {} }
+impl<S0> From<CompletionResultBuilder<(S0,)>> for CompletionResult
+where
+    S0: crate::typed::builder::IsSet<completion_result_members::result>,
+{
+    fn from(builder: CompletionResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A list of tools that the model can call.
@@ -5002,21 +4991,28 @@ pub struct CompletionTool {
 
 impl CompletionTool {
     /// Creates a builder for [`CompletionTool`].
+    ///
+    /// Required: `type`, `function`.
     pub fn builder() -> CompletionToolBuilder {
         CompletionToolBuilder::new()
     }
 
     /// Creates a [`CompletionTool`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionToolBuilder,
-        ) -> CompletionToolBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `function`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionTool>>(
+        f: impl FnOnce(CompletionToolBuilder) -> B,
     ) -> CompletionTool {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionToolBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_tool_members {
+    pub struct r#type;
+    pub struct function;
 }
 
 /// Builder for [`CompletionTool`].
@@ -5049,7 +5045,7 @@ impl<S0, S1> CompletionToolBuilder<(S0, S1)> {
 }
 
 impl<S1> CompletionToolBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The type of tool.
+    /// **Required.** The type of tool.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5061,7 +5057,7 @@ impl<S1> CompletionToolBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CompletionToolBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The function definition.
+    /// **Required.** The function definition.
     pub fn function(
         self,
         value: impl Into<CompletionToolFunction>,
@@ -5072,19 +5068,21 @@ impl<S0> CompletionToolBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`function`](Self::function) with a builder.
-    pub fn function_with(
+    pub fn function_with<B: crate::typed::builder::Build<Output = CompletionToolFunction>>(
         self,
-        f: impl FnOnce(
-            CompletionToolFunctionBuilder,
-        ) -> CompletionToolFunctionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompletionToolFunctionBuilder) -> B,
     ) -> CompletionToolBuilder<(S0, crate::typed::builder::Set)> {
         self.function(f(CompletionToolFunctionBuilder::new()).build())
     }
 }
 
-impl CompletionToolBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CompletionToolBuilder<(S0, S1)> {
     /// Builds a [`CompletionTool`].
-    pub fn build(self) -> CompletionTool {
+    pub fn build(self) -> CompletionTool
+    where
+        S0: crate::typed::builder::IsSet<completion_tool_members::r#type>,
+        S1: crate::typed::builder::IsSet<completion_tool_members::function>,
+    {
         CompletionTool {
             r#type: self.r#type.unwrap(),
             function: self.function.unwrap(),
@@ -5092,26 +5090,26 @@ impl CompletionToolBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<CompletionToolBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CompletionTool
+impl<S0, S1> crate::typed::builder::Build for CompletionToolBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<completion_tool_members::r#type>,
+    S1: crate::typed::builder::IsSet<completion_tool_members::function>,
 {
-    fn from(
-        builder: CompletionToolBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CompletionTool;
+
+    fn build(self) -> CompletionTool {
+        Self::build(self)
     }
 }
 
-impl<S1> CompletionToolBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CompletionTool { match r#type {} }
-}
-
-impl CompletionToolBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `function` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, function: crate::typed::builder::MissingRequiredField) -> CompletionTool { match function {} }
+impl<S0, S1> From<CompletionToolBuilder<(S0, S1)>> for CompletionTool
+where
+    S0: crate::typed::builder::IsSet<completion_tool_members::r#type>,
+    S1: crate::typed::builder::IsSet<completion_tool_members::function>,
+{
+    fn from(builder: CompletionToolBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Controls which tool is called by the model.
@@ -5125,21 +5123,28 @@ pub struct CompletionToolChoice {
 
 impl CompletionToolChoice {
     /// Creates a builder for [`CompletionToolChoice`].
+    ///
+    /// Required: `type`, `function`.
     pub fn builder() -> CompletionToolChoiceBuilder {
         CompletionToolChoiceBuilder::new()
     }
 
     /// Creates a [`CompletionToolChoice`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionToolChoiceBuilder,
-        ) -> CompletionToolChoiceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `function`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionToolChoice>>(
+        f: impl FnOnce(CompletionToolChoiceBuilder) -> B,
     ) -> CompletionToolChoice {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionToolChoiceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_tool_choice_members {
+    pub struct r#type;
+    pub struct function;
 }
 
 /// Builder for [`CompletionToolChoice`].
@@ -5173,7 +5178,7 @@ impl<S0, S1> CompletionToolChoiceBuilder<(S0, S1)> {
 }
 
 impl<S1> CompletionToolChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The type of the tool.
+    /// **Required.** The type of the tool.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -5185,7 +5190,7 @@ impl<S1> CompletionToolChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CompletionToolChoiceBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The tool choice function.
+    /// **Required.** The tool choice function.
     pub fn function(
         self,
         value: impl Into<CompletionToolChoiceFunction>,
@@ -5196,19 +5201,21 @@ impl<S0> CompletionToolChoiceBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`function`](Self::function) with a builder.
-    pub fn function_with(
+    pub fn function_with<B: crate::typed::builder::Build<Output = CompletionToolChoiceFunction>>(
         self,
-        f: impl FnOnce(
-            CompletionToolChoiceFunctionBuilder,
-        ) -> CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CompletionToolChoiceFunctionBuilder) -> B,
     ) -> CompletionToolChoiceBuilder<(S0, crate::typed::builder::Set)> {
         self.function(f(CompletionToolChoiceFunctionBuilder::new()).build())
     }
 }
 
-impl CompletionToolChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CompletionToolChoiceBuilder<(S0, S1)> {
     /// Builds a [`CompletionToolChoice`].
-    pub fn build(self) -> CompletionToolChoice {
+    pub fn build(self) -> CompletionToolChoice
+    where
+        S0: crate::typed::builder::IsSet<completion_tool_choice_members::r#type>,
+        S1: crate::typed::builder::IsSet<completion_tool_choice_members::function>,
+    {
         CompletionToolChoice {
             r#type: self.r#type.unwrap(),
             function: self.function.unwrap(),
@@ -5216,29 +5223,26 @@ impl CompletionToolChoiceBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<CompletionToolChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CompletionToolChoice
+impl<S0, S1> crate::typed::builder::Build for CompletionToolChoiceBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<completion_tool_choice_members::r#type>,
+    S1: crate::typed::builder::IsSet<completion_tool_choice_members::function>,
 {
-    fn from(
-        builder: CompletionToolChoiceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CompletionToolChoice;
+
+    fn build(self) -> CompletionToolChoice {
+        Self::build(self)
     }
 }
 
-impl<S1> CompletionToolChoiceBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> CompletionToolChoice { match r#type {} }
-}
-
-impl CompletionToolChoiceBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `function` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, function: crate::typed::builder::MissingRequiredField) -> CompletionToolChoice { match function {} }
+impl<S0, S1> From<CompletionToolChoiceBuilder<(S0, S1)>> for CompletionToolChoice
+where
+    S0: crate::typed::builder::IsSet<completion_tool_choice_members::r#type>,
+    S1: crate::typed::builder::IsSet<completion_tool_choice_members::function>,
+{
+    fn from(builder: CompletionToolChoiceBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The tool choice function.
@@ -5250,18 +5254,27 @@ pub struct CompletionToolChoiceFunction {
 
 impl CompletionToolChoiceFunction {
     /// Creates a builder for [`CompletionToolChoiceFunction`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> CompletionToolChoiceFunctionBuilder {
         CompletionToolChoiceFunctionBuilder::new()
     }
 
     /// Creates a [`CompletionToolChoiceFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionToolChoiceFunctionBuilder,
-        ) -> CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionToolChoiceFunction>>(
+        f: impl FnOnce(CompletionToolChoiceFunctionBuilder) -> B,
     ) -> CompletionToolChoiceFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionToolChoiceFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_tool_choice_function_members {
+    pub struct name;
 }
 
 /// Builder for [`CompletionToolChoiceFunction`].
@@ -5290,7 +5303,7 @@ impl<S0> CompletionToolChoiceFunctionBuilder<(S0,)> {
 }
 
 impl CompletionToolChoiceFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the function to call.
+    /// **Required.** The name of the function to call.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -5301,27 +5314,36 @@ impl CompletionToolChoiceFunctionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompletionToolChoiceFunctionBuilder<(S0,)> {
     /// Builds a [`CompletionToolChoiceFunction`].
-    pub fn build(self) -> CompletionToolChoiceFunction {
+    pub fn build(self) -> CompletionToolChoiceFunction
+    where
+        S0: crate::typed::builder::IsSet<completion_tool_choice_function_members::name>,
+    {
         CompletionToolChoiceFunction {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)>>
-    for CompletionToolChoiceFunction
+impl<S0> crate::typed::builder::Build for CompletionToolChoiceFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<completion_tool_choice_function_members::name>,
 {
-    fn from(builder: CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = CompletionToolChoiceFunction;
+
+    fn build(self) -> CompletionToolChoiceFunction {
+        Self::build(self)
     }
 }
 
-impl CompletionToolChoiceFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> CompletionToolChoiceFunction { match name {} }
+impl<S0> From<CompletionToolChoiceFunctionBuilder<(S0,)>> for CompletionToolChoiceFunction
+where
+    S0: crate::typed::builder::IsSet<completion_tool_choice_function_members::name>,
+{
+    fn from(builder: CompletionToolChoiceFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The completion tool function definition.
@@ -5343,18 +5365,27 @@ pub struct CompletionToolFunction {
 
 impl CompletionToolFunction {
     /// Creates a builder for [`CompletionToolFunction`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> CompletionToolFunctionBuilder {
         CompletionToolFunctionBuilder::new()
     }
 
     /// Creates a [`CompletionToolFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CompletionToolFunctionBuilder,
-        ) -> CompletionToolFunctionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = CompletionToolFunction>>(
+        f: impl FnOnce(CompletionToolFunctionBuilder) -> B,
     ) -> CompletionToolFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CompletionToolFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod completion_tool_function_members {
+    pub struct name;
 }
 
 /// Builder for [`CompletionToolFunction`].
@@ -5429,7 +5460,7 @@ impl<S0> CompletionToolFunctionBuilder<(S0,)> {
 }
 
 impl CompletionToolFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the function.
+    /// **Required.** The name of the function.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -5440,9 +5471,12 @@ impl CompletionToolFunctionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CompletionToolFunctionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CompletionToolFunctionBuilder<(S0,)> {
     /// Builds a [`CompletionToolFunction`].
-    pub fn build(self) -> CompletionToolFunction {
+    pub fn build(self) -> CompletionToolFunction
+    where
+        S0: crate::typed::builder::IsSet<completion_tool_function_members::name>,
+    {
         CompletionToolFunction {
             description: self.description,
             name: self.name.unwrap(),
@@ -5452,16 +5486,24 @@ impl CompletionToolFunctionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CompletionToolFunctionBuilder<(crate::typed::builder::Set,)>> for CompletionToolFunction {
-    fn from(builder: CompletionToolFunctionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CompletionToolFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<completion_tool_function_members::name>,
+{
+    type Output = CompletionToolFunction;
+
+    fn build(self) -> CompletionToolFunction {
+        Self::build(self)
     }
 }
 
-impl CompletionToolFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> CompletionToolFunction { match name {} }
+impl<S0> From<CompletionToolFunctionBuilder<(S0,)>> for CompletionToolFunction
+where
+    S0: crate::typed::builder::IsSet<completion_tool_function_members::name>,
+{
+    fn from(builder: CompletionToolFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5505,23 +5547,30 @@ pub struct ContentObject {
 
 impl ContentObject {
     /// Creates a builder for [`ContentObject`].
+    ///
+    /// Required: `type`, `text`, `image_url`, `file`.
     pub fn builder() -> ContentObjectBuilder {
         ContentObjectBuilder::new()
     }
 
     /// Creates a [`ContentObject`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ContentObjectBuilder,
-        ) -> ContentObjectBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `text`, `image_url`, `file`.
+    pub fn of<B: crate::typed::builder::Build<Output = ContentObject>>(
+        f: impl FnOnce(ContentObjectBuilder) -> B,
     ) -> ContentObject {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ContentObjectBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod content_object_members {
+    pub struct r#type;
+    pub struct text;
+    pub struct image_url;
+    pub struct file;
 }
 
 /// Builder for [`ContentObject`].
@@ -5573,7 +5622,7 @@ impl<S0, S1, S2, S3> ContentObjectBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ContentObjectBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The type of content. Must be one of `text`, `image_url` or `file`. Not all services/models support content
+    /// **Required.** The type of content. Must be one of `text`, `image_url` or `file`. Not all services/models support content
     /// types other than "text"
     pub fn r#type(
         self,
@@ -5586,7 +5635,7 @@ impl<S1, S2, S3> ContentObjectBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> ContentObjectBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// The text content. Only applicable for the `text` type
+    /// **Required.** The text content. Only applicable for the `text` type
     pub fn text(
         self,
         value: impl Into<String>,
@@ -5598,7 +5647,7 @@ impl<S0, S2, S3> ContentObjectBuilder<(S0, crate::typed::builder::NotSet, S2, S3
 }
 
 impl<S0, S1, S3> ContentObjectBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The image content. Only applicable for the `image_url` type
+    /// **Required.** The image content. Only applicable for the `image_url` type
     pub fn image_url(
         self,
         value: impl Into<ImageUrl>,
@@ -5609,16 +5658,16 @@ impl<S0, S1, S3> ContentObjectBuilder<(S0, S1, crate::typed::builder::NotSet, S3
     }
 
     /// Sets [`image_url`](Self::image_url) with a builder.
-    pub fn image_url_with(
+    pub fn image_url_with<B: crate::typed::builder::Build<Output = ImageUrl>>(
         self,
-        f: impl FnOnce(ImageUrlBuilder) -> ImageUrlBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ImageUrlBuilder) -> B,
     ) -> ContentObjectBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.image_url(f(ImageUrlBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> ContentObjectBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The file content. Only applicable for the `file` type
+    /// **Required.** The file content. Only applicable for the `file` type
     pub fn file(
         self,
         value: impl Into<FileContent>,
@@ -5629,27 +5678,23 @@ impl<S0, S1, S2> ContentObjectBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 
     /// Sets [`file`](Self::file) with a builder.
-    pub fn file_with(
+    pub fn file_with<B: crate::typed::builder::Build<Output = FileContent>>(
         self,
-        f: impl FnOnce(
-            FileContentBuilder,
-        )
-            -> FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(FileContentBuilder) -> B,
     ) -> ContentObjectBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.file(f(FileContentBuilder::new()).build())
     }
 }
 
-impl
-    ContentObjectBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ContentObjectBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ContentObject`].
-    pub fn build(self) -> ContentObject {
+    pub fn build(self) -> ContentObject
+    where
+        S0: crate::typed::builder::IsSet<content_object_members::r#type>,
+        S1: crate::typed::builder::IsSet<content_object_members::text>,
+        S2: crate::typed::builder::IsSet<content_object_members::image_url>,
+        S3: crate::typed::builder::IsSet<content_object_members::file>,
+    {
         ContentObject {
             r#type: self.r#type.unwrap(),
             text: self.text.unwrap(),
@@ -5659,71 +5704,30 @@ impl
     }
 }
 
-impl
-    From<
-        ContentObjectBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ContentObject
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ContentObjectBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<content_object_members::r#type>,
+    S1: crate::typed::builder::IsSet<content_object_members::text>,
+    S2: crate::typed::builder::IsSet<content_object_members::image_url>,
+    S3: crate::typed::builder::IsSet<content_object_members::file>,
 {
-    fn from(
-        builder: ContentObjectBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ContentObject;
+
+    fn build(self) -> ContentObject {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ContentObjectBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ContentObject { match r#type {} }
-}
-
-impl<S2, S3>
-    ContentObjectBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ContentObjectBuilder<(S0, S1, S2, S3)>> for ContentObject
+where
+    S0: crate::typed::builder::IsSet<content_object_members::r#type>,
+    S1: crate::typed::builder::IsSet<content_object_members::text>,
+    S2: crate::typed::builder::IsSet<content_object_members::image_url>,
+    S3: crate::typed::builder::IsSet<content_object_members::file>,
 {
-    /// `text` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, text: crate::typed::builder::MissingRequiredField) -> ContentObject { match text {} }
-}
-
-impl<S3>
-    ContentObjectBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `image_url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, image_url: crate::typed::builder::MissingRequiredField) -> ContentObject { match image_url {} }
-}
-
-impl
-    ContentObjectBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `file` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, file: crate::typed::builder::MissingRequiredField) -> ContentObject { match file {} }
+    fn from(builder: ContentObjectBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5755,21 +5759,28 @@ pub struct ContextualAIServiceSettings {
 
 impl ContextualAIServiceSettings {
     /// Creates a builder for [`ContextualAIServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> ContextualAIServiceSettingsBuilder {
         ContextualAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`ContextualAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ContextualAIServiceSettingsBuilder,
-        ) -> ContextualAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = ContextualAIServiceSettings>>(
+        f: impl FnOnce(ContextualAIServiceSettingsBuilder) -> B,
     ) -> ContextualAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ContextualAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod contextual_ai_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`ContextualAIServiceSettings`].
@@ -5824,16 +5835,16 @@ impl<S0, S1> ContextualAIServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> ContextualAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your Contexutual AI account.
+    /// **Required.** A valid API key for your Contexutual AI account.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
     /// The get inference endpoint API does not retrieve your API key.
@@ -5848,7 +5859,7 @@ impl<S1> ContextualAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)>
 }
 
 impl<S0> ContextualAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Contextual AI documentation for the list of available rerank models.
     pub fn model_id(
         self,
@@ -5860,9 +5871,13 @@ impl<S0> ContextualAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)>
     }
 }
 
-impl ContextualAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ContextualAIServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`ContextualAIServiceSettings`].
-    pub fn build(self) -> ContextualAIServiceSettings {
+    pub fn build(self) -> ContextualAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<contextual_ai_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<contextual_ai_service_settings_members::model_id>,
+    {
         ContextualAIServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -5871,36 +5886,26 @@ impl ContextualAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::type
     }
 }
 
-impl
-    From<
-        ContextualAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ContextualAIServiceSettings
+impl<S0, S1> crate::typed::builder::Build for ContextualAIServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<contextual_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<contextual_ai_service_settings_members::model_id>,
 {
-    fn from(
-        builder: ContextualAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ContextualAIServiceSettings;
+
+    fn build(self) -> ContextualAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> ContextualAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> ContextualAIServiceSettings { match api_key {} }
-}
-
-impl
-    ContextualAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<ContextualAIServiceSettingsBuilder<(S0, S1)>> for ContextualAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<contextual_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<contextual_ai_service_settings_members::model_id>,
 {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> ContextualAIServiceSettings { match model_id {} }
+    fn from(builder: ContextualAIServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5929,8 +5934,8 @@ impl ContextualAITaskSettings {
     }
 
     /// Creates a [`ContextualAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ContextualAITaskSettingsBuilder) -> ContextualAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ContextualAITaskSettings>>(
+        f: impl FnOnce(ContextualAITaskSettingsBuilder) -> B,
     ) -> ContextualAITaskSettings {
         f(Self::builder()).build()
     }
@@ -5991,6 +5996,14 @@ impl ContextualAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ContextualAITaskSettingsBuilder {
+    type Output = ContextualAITaskSettings;
+
+    fn build(self) -> ContextualAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<ContextualAITaskSettingsBuilder> for ContextualAITaskSettings {
     fn from(builder: ContextualAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -6008,19 +6021,28 @@ pub struct CspRegion {
 
 impl CspRegion {
     /// Creates a builder for [`CspRegion`].
+    ///
+    /// Required: `csp`, `region`.
     pub fn builder() -> CspRegionBuilder {
         CspRegionBuilder::new()
     }
 
     /// Creates a [`CspRegion`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CspRegionBuilder,
-        )
-            -> CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `csp`, `region`.
+    pub fn of<B: crate::typed::builder::Build<Output = CspRegion>>(
+        f: impl FnOnce(CspRegionBuilder) -> B,
     ) -> CspRegion {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CspRegionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod csp_region_members {
+    pub struct csp;
+    pub struct region;
 }
 
 /// Builder for [`CspRegion`].
@@ -6052,7 +6074,7 @@ impl<S0, S1> CspRegionBuilder<(S0, S1)> {
 }
 
 impl<S1> CspRegionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The cloud service provider, for example `aws`, `gcp`, or `azure`.
+    /// **Required.** The cloud service provider, for example `aws`, `gcp`, or `azure`.
     pub fn csp(
         self,
         value: impl Into<String>,
@@ -6064,7 +6086,7 @@ impl<S1> CspRegionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> CspRegionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The region of the cloud service provider, for example `us-east-1`.
+    /// **Required.** The region of the cloud service provider, for example `us-east-1`.
     pub fn region(
         self,
         value: impl Into<String>,
@@ -6075,9 +6097,13 @@ impl<S0> CspRegionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CspRegionBuilder<(S0, S1)> {
     /// Builds a [`CspRegion`].
-    pub fn build(self) -> CspRegion {
+    pub fn build(self) -> CspRegion
+    where
+        S0: crate::typed::builder::IsSet<csp_region_members::csp>,
+        S1: crate::typed::builder::IsSet<csp_region_members::region>,
+    {
         CspRegion {
             csp: self.csp.unwrap(),
             region: self.region.unwrap(),
@@ -6085,26 +6111,26 @@ impl CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CspRegion
+impl<S0, S1> crate::typed::builder::Build for CspRegionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<csp_region_members::csp>,
+    S1: crate::typed::builder::IsSet<csp_region_members::region>,
 {
-    fn from(
-        builder: CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = CspRegion;
+
+    fn build(self) -> CspRegion {
+        Self::build(self)
     }
 }
 
-impl<S1> CspRegionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `csp` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, csp: crate::typed::builder::MissingRequiredField) -> CspRegion { match csp {} }
-}
-
-impl CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `region` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, region: crate::typed::builder::MissingRequiredField) -> CspRegion { match region {} }
+impl<S0, S1> From<CspRegionBuilder<(S0, S1)>> for CspRegion
+where
+    S0: crate::typed::builder::IsSet<csp_region_members::csp>,
+    S1: crate::typed::builder::IsSet<csp_region_members::region>,
+{
+    fn from(builder: CspRegionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6121,18 +6147,27 @@ pub struct CustomRequestParams {
 
 impl CustomRequestParams {
     /// Creates a builder for [`CustomRequestParams`].
+    ///
+    /// Required: `content`.
     pub fn builder() -> CustomRequestParamsBuilder {
         CustomRequestParamsBuilder::new()
     }
 
     /// Creates a [`CustomRequestParams`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomRequestParamsBuilder,
-        ) -> CustomRequestParamsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `content`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomRequestParams>>(
+        f: impl FnOnce(CustomRequestParamsBuilder) -> B,
     ) -> CustomRequestParams {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomRequestParamsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_request_params_members {
+    pub struct content;
 }
 
 /// Builder for [`CustomRequestParams`].
@@ -6161,7 +6196,7 @@ impl<S0> CustomRequestParamsBuilder<(S0,)> {
 }
 
 impl CustomRequestParamsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The body structure of the request. It requires passing in the string-escaped result of the JSON format HTTP request body.
+    /// **Required.** The body structure of the request. It requires passing in the string-escaped result of the JSON format HTTP request body.
     /// For example:
     /// ```text
     /// "request": "{\"input\":${input}}"
@@ -6178,25 +6213,36 @@ impl CustomRequestParamsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CustomRequestParamsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CustomRequestParamsBuilder<(S0,)> {
     /// Builds a [`CustomRequestParams`].
-    pub fn build(self) -> CustomRequestParams {
+    pub fn build(self) -> CustomRequestParams
+    where
+        S0: crate::typed::builder::IsSet<custom_request_params_members::content>,
+    {
         CustomRequestParams {
             content: self.content.unwrap(),
         }
     }
 }
 
-impl From<CustomRequestParamsBuilder<(crate::typed::builder::Set,)>> for CustomRequestParams {
-    fn from(builder: CustomRequestParamsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CustomRequestParamsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<custom_request_params_members::content>,
+{
+    type Output = CustomRequestParams;
+
+    fn build(self) -> CustomRequestParams {
+        Self::build(self)
     }
 }
 
-impl CustomRequestParamsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `content` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, content: crate::typed::builder::MissingRequiredField) -> CustomRequestParams { match content {} }
+impl<S0> From<CustomRequestParamsBuilder<(S0,)>> for CustomRequestParams
+where
+    S0: crate::typed::builder::IsSet<custom_request_params_members::content>,
+{
+    fn from(builder: CustomRequestParamsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6356,18 +6402,27 @@ pub struct CustomResponseParams {
 
 impl CustomResponseParams {
     /// Creates a builder for [`CustomResponseParams`].
+    ///
+    /// Required: `json_parser`.
     pub fn builder() -> CustomResponseParamsBuilder {
         CustomResponseParamsBuilder::new()
     }
 
     /// Creates a [`CustomResponseParams`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomResponseParamsBuilder,
-        ) -> CustomResponseParamsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `json_parser`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomResponseParams>>(
+        f: impl FnOnce(CustomResponseParamsBuilder) -> B,
     ) -> CustomResponseParams {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomResponseParamsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_response_params_members {
+    pub struct json_parser;
 }
 
 /// Builder for [`CustomResponseParams`].
@@ -6396,7 +6451,7 @@ impl<S0> CustomResponseParamsBuilder<(S0,)> {
 }
 
 impl CustomResponseParamsBuilder<(crate::typed::builder::NotSet,)> {
-    /// Specifies the JSON parser that is used to parse the response from the custom service.
+    /// **Required.** Specifies the JSON parser that is used to parse the response from the custom service.
     /// Different task types require different json_parser parameters.
     /// For example:
     /// ```text
@@ -6580,25 +6635,36 @@ impl CustomResponseParamsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl CustomResponseParamsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CustomResponseParamsBuilder<(S0,)> {
     /// Builds a [`CustomResponseParams`].
-    pub fn build(self) -> CustomResponseParams {
+    pub fn build(self) -> CustomResponseParams
+    where
+        S0: crate::typed::builder::IsSet<custom_response_params_members::json_parser>,
+    {
         CustomResponseParams {
             json_parser: self.json_parser.unwrap(),
         }
     }
 }
 
-impl From<CustomResponseParamsBuilder<(crate::typed::builder::Set,)>> for CustomResponseParams {
-    fn from(builder: CustomResponseParamsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CustomResponseParamsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<custom_response_params_members::json_parser>,
+{
+    type Output = CustomResponseParams;
+
+    fn build(self) -> CustomResponseParams {
+        Self::build(self)
     }
 }
 
-impl CustomResponseParamsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `json_parser` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, json_parser: crate::typed::builder::MissingRequiredField) -> CustomResponseParams { match json_parser {} }
+impl<S0> From<CustomResponseParamsBuilder<(S0,)>> for CustomResponseParams
+where
+    S0: crate::typed::builder::IsSet<custom_response_params_members::json_parser>,
+{
+    fn from(builder: CustomResponseParamsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -6683,22 +6749,29 @@ pub struct CustomServiceSettings {
 
 impl CustomServiceSettings {
     /// Creates a builder for [`CustomServiceSettings`].
+    ///
+    /// Required: `request`, `response`, `secret_parameters`.
     pub fn builder() -> CustomServiceSettingsBuilder {
         CustomServiceSettingsBuilder::new()
     }
 
     /// Creates a [`CustomServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CustomServiceSettingsBuilder,
-        ) -> CustomServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `request`, `response`, `secret_parameters`.
+    pub fn of<B: crate::typed::builder::Build<Output = CustomServiceSettings>>(
+        f: impl FnOnce(CustomServiceSettingsBuilder) -> B,
     ) -> CustomServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CustomServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod custom_service_settings_members {
+    pub struct request;
+    pub struct response;
+    pub struct secret_parameters;
 }
 
 /// Builder for [`CustomServiceSettings`].
@@ -6882,7 +6955,7 @@ impl<S0, S1, S2> CustomServiceSettingsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> CustomServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The request configuration object.
+    /// **Required.** The request configuration object.
     pub fn request(
         self,
         value: impl Into<CustomRequestParams>,
@@ -6893,18 +6966,16 @@ impl<S1, S2> CustomServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2
     }
 
     /// Sets [`request`](Self::request) with a builder.
-    pub fn request_with(
+    pub fn request_with<B: crate::typed::builder::Build<Output = CustomRequestParams>>(
         self,
-        f: impl FnOnce(
-            CustomRequestParamsBuilder,
-        ) -> CustomRequestParamsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CustomRequestParamsBuilder) -> B,
     ) -> CustomServiceSettingsBuilder<(crate::typed::builder::Set, S1, S2)> {
         self.request(f(CustomRequestParamsBuilder::new()).build())
     }
 }
 
 impl<S0, S2> CustomServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The response configuration object.
+    /// **Required.** The response configuration object.
     pub fn response(
         self,
         value: impl Into<CustomResponseParams>,
@@ -6915,18 +6986,16 @@ impl<S0, S2> CustomServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2
     }
 
     /// Sets [`response`](Self::response) with a builder.
-    pub fn response_with(
+    pub fn response_with<B: crate::typed::builder::Build<Output = CustomResponseParams>>(
         self,
-        f: impl FnOnce(
-            CustomResponseParamsBuilder,
-        ) -> CustomResponseParamsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CustomResponseParamsBuilder) -> B,
     ) -> CustomServiceSettingsBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.response(f(CustomResponseParamsBuilder::new()).build())
     }
 }
 
 impl<S0, S1> CustomServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Specifies secret parameters, like `api_key` or `api_token`, that are required to access the custom service.
+    /// **Required.** Specifies secret parameters, like `api_key` or `api_token`, that are required to access the custom service.
     /// For example:
     /// ```text
     /// "secret_parameters":{
@@ -6971,15 +7040,14 @@ impl<S0, S1> CustomServiceSettingsBuilder<(S0, S1, crate::typed::builder::Set)> 
     }
 }
 
-impl
-    CustomServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> CustomServiceSettingsBuilder<(S0, S1, S2)> {
     /// Builds a [`CustomServiceSettings`].
-    pub fn build(self) -> CustomServiceSettings {
+    pub fn build(self) -> CustomServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<custom_service_settings_members::request>,
+        S1: crate::typed::builder::IsSet<custom_service_settings_members::response>,
+        S2: crate::typed::builder::IsSet<custom_service_settings_members::secret_parameters>,
+    {
         CustomServiceSettings {
             batch_size: self.batch_size,
             headers: self.headers,
@@ -6993,54 +7061,28 @@ impl
     }
 }
 
-impl
-    From<
-        CustomServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CustomServiceSettings
+impl<S0, S1, S2> crate::typed::builder::Build for CustomServiceSettingsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<custom_service_settings_members::request>,
+    S1: crate::typed::builder::IsSet<custom_service_settings_members::response>,
+    S2: crate::typed::builder::IsSet<custom_service_settings_members::secret_parameters>,
 {
-    fn from(
-        builder: CustomServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CustomServiceSettings;
+
+    fn build(self) -> CustomServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> CustomServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `request` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, request: crate::typed::builder::MissingRequiredField) -> CustomServiceSettings { match request {} }
-}
-
-impl<S2>
-    CustomServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<CustomServiceSettingsBuilder<(S0, S1, S2)>> for CustomServiceSettings
+where
+    S0: crate::typed::builder::IsSet<custom_service_settings_members::request>,
+    S1: crate::typed::builder::IsSet<custom_service_settings_members::response>,
+    S2: crate::typed::builder::IsSet<custom_service_settings_members::secret_parameters>,
 {
-    /// `response` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, response: crate::typed::builder::MissingRequiredField) -> CustomServiceSettings { match response {} }
-}
-
-impl
-    CustomServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `secret_parameters` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, secret_parameters: crate::typed::builder::MissingRequiredField) -> CustomServiceSettings { match secret_parameters {} }
+    fn from(builder: CustomServiceSettingsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -7127,8 +7169,8 @@ impl CustomTaskSettings {
     }
 
     /// Creates a [`CustomTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CustomTaskSettingsBuilder) -> CustomTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = CustomTaskSettings>>(
+        f: impl FnOnce(CustomTaskSettingsBuilder) -> B,
     ) -> CustomTaskSettings {
         f(Self::builder()).build()
     }
@@ -7199,6 +7241,14 @@ impl CustomTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for CustomTaskSettingsBuilder {
+    type Output = CustomTaskSettings;
+
+    fn build(self) -> CustomTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<CustomTaskSettingsBuilder> for CustomTaskSettings {
     fn from(builder: CustomTaskSettingsBuilder) -> Self {
         builder.build()
@@ -7236,21 +7286,28 @@ pub struct DeepSeekServiceSettings {
 
 impl DeepSeekServiceSettings {
     /// Creates a builder for [`DeepSeekServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> DeepSeekServiceSettingsBuilder {
         DeepSeekServiceSettingsBuilder::new()
     }
 
     /// Creates a [`DeepSeekServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DeepSeekServiceSettingsBuilder,
-        ) -> DeepSeekServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = DeepSeekServiceSettings>>(
+        f: impl FnOnce(DeepSeekServiceSettingsBuilder) -> B,
     ) -> DeepSeekServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DeepSeekServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod deep_seek_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`DeepSeekServiceSettings`].
@@ -7301,7 +7358,7 @@ impl<S0, S1> DeepSeekServiceSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> DeepSeekServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your DeepSeek account.
+    /// **Required.** A valid API key for your DeepSeek account.
     /// You can find or create your DeepSeek API keys on the DeepSeek API key page.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -7317,7 +7374,7 @@ impl<S1> DeepSeekServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DeepSeekServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// For a `completion` or `chat_completion` task, the name of the model to use for the inference task.
+    /// **Required.** For a `completion` or `chat_completion` task, the name of the model to use for the inference task.
     ///
     /// For the available `completion` and `chat_completion` models, refer to the [DeepSeek Models & Pricing docs](https://api-docs.deepseek.com/quick_start/pricing).
     pub fn model_id(
@@ -7330,9 +7387,13 @@ impl<S0> DeepSeekServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DeepSeekServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DeepSeekServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`DeepSeekServiceSettings`].
-    pub fn build(self) -> DeepSeekServiceSettings {
+    pub fn build(self) -> DeepSeekServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<deep_seek_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<deep_seek_service_settings_members::model_id>,
+    {
         DeepSeekServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -7341,29 +7402,26 @@ impl DeepSeekServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::b
     }
 }
 
-impl From<DeepSeekServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DeepSeekServiceSettings
+impl<S0, S1> crate::typed::builder::Build for DeepSeekServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<deep_seek_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<deep_seek_service_settings_members::model_id>,
 {
-    fn from(
-        builder: DeepSeekServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DeepSeekServiceSettings;
+
+    fn build(self) -> DeepSeekServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> DeepSeekServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> DeepSeekServiceSettings { match api_key {} }
-}
-
-impl DeepSeekServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> DeepSeekServiceSettings { match model_id {} }
+impl<S0, S1> From<DeepSeekServiceSettingsBuilder<(S0, S1)>> for DeepSeekServiceSettings
+where
+    S0: crate::typed::builder::IsSet<deep_seek_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<deep_seek_service_settings_members::model_id>,
+{
+    fn from(builder: DeepSeekServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -7382,21 +7440,28 @@ pub struct DeleteInferenceEndpointResult {
 
 impl DeleteInferenceEndpointResult {
     /// Creates a builder for [`DeleteInferenceEndpointResult`].
+    ///
+    /// Required: `acknowledged`, `pipelines`.
     pub fn builder() -> DeleteInferenceEndpointResultBuilder {
         DeleteInferenceEndpointResultBuilder::new()
     }
 
     /// Creates a [`DeleteInferenceEndpointResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DeleteInferenceEndpointResultBuilder,
-        ) -> DeleteInferenceEndpointResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `acknowledged`, `pipelines`.
+    pub fn of<B: crate::typed::builder::Build<Output = DeleteInferenceEndpointResult>>(
+        f: impl FnOnce(DeleteInferenceEndpointResultBuilder) -> B,
     ) -> DeleteInferenceEndpointResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DeleteInferenceEndpointResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod delete_inference_endpoint_result_members {
+    pub struct acknowledged;
+    pub struct pipelines;
 }
 
 /// Builder for [`DeleteInferenceEndpointResult`].
@@ -7435,7 +7500,7 @@ impl<S0, S1> DeleteInferenceEndpointResultBuilder<(S0, S1)> {
 }
 
 impl<S1> DeleteInferenceEndpointResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// For a successful response, this value is always true. On failure, an exception is returned instead.
+    /// **Required.** For a successful response, this value is always true. On failure, an exception is returned instead.
     pub fn acknowledged(
         self,
         value: bool,
@@ -7447,6 +7512,7 @@ impl<S1> DeleteInferenceEndpointResultBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0> DeleteInferenceEndpointResultBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn pipelines(
         self,
         value: impl Into<Vec<String>>,
@@ -7480,11 +7546,13 @@ impl<S0> DeleteInferenceEndpointResultBuilder<(S0, crate::typed::builder::Set)> 
     }
 }
 
-impl
-    DeleteInferenceEndpointResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> DeleteInferenceEndpointResultBuilder<(S0, S1)> {
     /// Builds a [`DeleteInferenceEndpointResult`].
-    pub fn build(self) -> DeleteInferenceEndpointResult {
+    pub fn build(self) -> DeleteInferenceEndpointResult
+    where
+        S0: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::acknowledged>,
+        S1: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::pipelines>,
+    {
         DeleteInferenceEndpointResult {
             acknowledged: self.acknowledged.unwrap(),
             pipelines: self.pipelines.unwrap(),
@@ -7492,39 +7560,26 @@ impl
     }
 }
 
-impl
-    From<
-        DeleteInferenceEndpointResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DeleteInferenceEndpointResult
+impl<S0, S1> crate::typed::builder::Build for DeleteInferenceEndpointResultBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::acknowledged>,
+    S1: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::pipelines>,
 {
-    fn from(
-        builder: DeleteInferenceEndpointResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DeleteInferenceEndpointResult;
+
+    fn build(self) -> DeleteInferenceEndpointResult {
+        Self::build(self)
     }
 }
 
-impl<S1> DeleteInferenceEndpointResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `acknowledged` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, acknowledged: crate::typed::builder::MissingRequiredField) -> DeleteInferenceEndpointResult { match acknowledged {} }
-}
-
-impl
-    DeleteInferenceEndpointResultBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<DeleteInferenceEndpointResultBuilder<(S0, S1)>> for DeleteInferenceEndpointResult
+where
+    S0: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::acknowledged>,
+    S1: crate::typed::builder::IsSet<delete_inference_endpoint_result_members::pipelines>,
 {
-    /// `pipelines` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipelines: crate::typed::builder::MissingRequiredField) -> DeleteInferenceEndpointResult { match pipelines {} }
+    fn from(builder: DeleteInferenceEndpointResultBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Dense Embedding results containing bytes are represented as Dense
@@ -7539,18 +7594,27 @@ pub struct DenseEmbeddingByteResult {
 
 impl DenseEmbeddingByteResult {
     /// Creates a builder for [`DenseEmbeddingByteResult`].
+    ///
+    /// Required: `embedding`.
     pub fn builder() -> DenseEmbeddingByteResultBuilder {
         DenseEmbeddingByteResultBuilder::new()
     }
 
     /// Creates a [`DenseEmbeddingByteResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseEmbeddingByteResultBuilder,
-        ) -> DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `embedding`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseEmbeddingByteResult>>(
+        f: impl FnOnce(DenseEmbeddingByteResultBuilder) -> B,
     ) -> DenseEmbeddingByteResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseEmbeddingByteResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_embedding_byte_result_members {
+    pub struct embedding;
 }
 
 /// Builder for [`DenseEmbeddingByteResult`].
@@ -7579,6 +7643,7 @@ impl<S0> DenseEmbeddingByteResultBuilder<(S0,)> {
 }
 
 impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn embedding(
         self,
         value: impl Into<DenseByteVector>,
@@ -7612,27 +7677,36 @@ impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseEmbeddingByteResultBuilder<(S0,)> {
     /// Builds a [`DenseEmbeddingByteResult`].
-    pub fn build(self) -> DenseEmbeddingByteResult {
+    pub fn build(self) -> DenseEmbeddingByteResult
+    where
+        S0: crate::typed::builder::IsSet<dense_embedding_byte_result_members::embedding>,
+    {
         DenseEmbeddingByteResult {
             embedding: self.embedding.unwrap(),
         }
     }
 }
 
-impl From<DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)>>
-    for DenseEmbeddingByteResult
+impl<S0> crate::typed::builder::Build for DenseEmbeddingByteResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_embedding_byte_result_members::embedding>,
 {
-    fn from(builder: DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DenseEmbeddingByteResult;
+
+    fn build(self) -> DenseEmbeddingByteResult {
+        Self::build(self)
     }
 }
 
-impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `embedding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, embedding: crate::typed::builder::MissingRequiredField) -> DenseEmbeddingByteResult { match embedding {} }
+impl<S0> From<DenseEmbeddingByteResultBuilder<(S0,)>> for DenseEmbeddingByteResult
+where
+    S0: crate::typed::builder::IsSet<dense_embedding_byte_result_members::embedding>,
+{
+    fn from(builder: DenseEmbeddingByteResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The dense embedding result object for float representation
@@ -7643,18 +7717,27 @@ pub struct DenseEmbeddingResult {
 
 impl DenseEmbeddingResult {
     /// Creates a builder for [`DenseEmbeddingResult`].
+    ///
+    /// Required: `embedding`.
     pub fn builder() -> DenseEmbeddingResultBuilder {
         DenseEmbeddingResultBuilder::new()
     }
 
     /// Creates a [`DenseEmbeddingResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DenseEmbeddingResultBuilder,
-        ) -> DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `embedding`.
+    pub fn of<B: crate::typed::builder::Build<Output = DenseEmbeddingResult>>(
+        f: impl FnOnce(DenseEmbeddingResultBuilder) -> B,
     ) -> DenseEmbeddingResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DenseEmbeddingResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dense_embedding_result_members {
+    pub struct embedding;
 }
 
 /// Builder for [`DenseEmbeddingResult`].
@@ -7683,6 +7766,7 @@ impl<S0> DenseEmbeddingResultBuilder<(S0,)> {
 }
 
 impl DenseEmbeddingResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn embedding(
         self,
         value: impl Into<DenseVector>,
@@ -7716,25 +7800,36 @@ impl DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DenseEmbeddingResultBuilder<(S0,)> {
     /// Builds a [`DenseEmbeddingResult`].
-    pub fn build(self) -> DenseEmbeddingResult {
+    pub fn build(self) -> DenseEmbeddingResult
+    where
+        S0: crate::typed::builder::IsSet<dense_embedding_result_members::embedding>,
+    {
         DenseEmbeddingResult {
             embedding: self.embedding.unwrap(),
         }
     }
 }
 
-impl From<DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)>> for DenseEmbeddingResult {
-    fn from(builder: DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DenseEmbeddingResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dense_embedding_result_members::embedding>,
+{
+    type Output = DenseEmbeddingResult;
+
+    fn build(self) -> DenseEmbeddingResult {
+        Self::build(self)
     }
 }
 
-impl DenseEmbeddingResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `embedding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, embedding: crate::typed::builder::MissingRequiredField) -> DenseEmbeddingResult { match embedding {} }
+impl<S0> From<DenseEmbeddingResultBuilder<(S0,)>> for DenseEmbeddingResult
+where
+    S0: crate::typed::builder::IsSet<dense_embedding_result_members::embedding>,
+{
+    fn from(builder: DenseEmbeddingResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Dense Embedding results are represented as Dense Vectors
@@ -7788,21 +7883,28 @@ pub struct ElasticsearchServiceSettings {
 
 impl ElasticsearchServiceSettings {
     /// Creates a builder for [`ElasticsearchServiceSettings`].
+    ///
+    /// Required: `model_id`, `num_threads`.
     pub fn builder() -> ElasticsearchServiceSettingsBuilder {
         ElasticsearchServiceSettingsBuilder::new()
     }
 
     /// Creates a [`ElasticsearchServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ElasticsearchServiceSettingsBuilder,
-        ) -> ElasticsearchServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_id`, `num_threads`.
+    pub fn of<B: crate::typed::builder::Build<Output = ElasticsearchServiceSettings>>(
+        f: impl FnOnce(ElasticsearchServiceSettingsBuilder) -> B,
     ) -> ElasticsearchServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ElasticsearchServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod elasticsearch_service_settings_members {
+    pub struct model_id;
+    pub struct num_threads;
 }
 
 /// Builder for [`ElasticsearchServiceSettings`].
@@ -7871,9 +7973,11 @@ impl<S0, S1> ElasticsearchServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`adaptive_allocations`](Self::adaptive_allocations) with a builder.
-    pub fn adaptive_allocations_with(
+    pub fn adaptive_allocations_with<
+        B: crate::typed::builder::Build<Output = AdaptiveAllocations>,
+    >(
         self,
-        f: impl FnOnce(AdaptiveAllocationsBuilder) -> AdaptiveAllocationsBuilder,
+        f: impl FnOnce(AdaptiveAllocationsBuilder) -> B,
     ) -> Self {
         self.adaptive_allocations(f(AdaptiveAllocationsBuilder::new()).build())
     }
@@ -7941,7 +8045,7 @@ impl<S0, S1> ElasticsearchServiceSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> ElasticsearchServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// It can be the ID of a built-in model (for example, `.multilingual-e5-small` for E5) or a text embedding model that was uploaded by using the Eland client.
     pub fn model_id(
         self,
@@ -7954,7 +8058,7 @@ impl<S1> ElasticsearchServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)
 }
 
 impl<S0> ElasticsearchServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The number of threads used by each model allocation during inference.
+    /// **Required.** The number of threads used by each model allocation during inference.
     /// This setting generally increases the speed per inference request.
     /// The inference process is a compute-bound process; `threads_per_allocations` must not exceed the number of available allocated processors per node.
     /// The value must be a power of 2.
@@ -7969,9 +8073,13 @@ impl<S0> ElasticsearchServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)
     }
 }
 
-impl ElasticsearchServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ElasticsearchServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`ElasticsearchServiceSettings`].
-    pub fn build(self) -> ElasticsearchServiceSettings {
+    pub fn build(self) -> ElasticsearchServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<elasticsearch_service_settings_members::model_id>,
+        S1: crate::typed::builder::IsSet<elasticsearch_service_settings_members::num_threads>,
+    {
         ElasticsearchServiceSettings {
             adaptive_allocations: self.adaptive_allocations,
             deployment_id: self.deployment_id,
@@ -7984,36 +8092,26 @@ impl ElasticsearchServiceSettingsBuilder<(crate::typed::builder::Set, crate::typ
     }
 }
 
-impl
-    From<
-        ElasticsearchServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ElasticsearchServiceSettings
+impl<S0, S1> crate::typed::builder::Build for ElasticsearchServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<elasticsearch_service_settings_members::model_id>,
+    S1: crate::typed::builder::IsSet<elasticsearch_service_settings_members::num_threads>,
 {
-    fn from(
-        builder: ElasticsearchServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ElasticsearchServiceSettings;
+
+    fn build(self) -> ElasticsearchServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> ElasticsearchServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> ElasticsearchServiceSettings { match model_id {} }
-}
-
-impl
-    ElasticsearchServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<ElasticsearchServiceSettingsBuilder<(S0, S1)>> for ElasticsearchServiceSettings
+where
+    S0: crate::typed::builder::IsSet<elasticsearch_service_settings_members::model_id>,
+    S1: crate::typed::builder::IsSet<elasticsearch_service_settings_members::num_threads>,
 {
-    /// `num_threads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_threads: crate::typed::builder::MissingRequiredField) -> ElasticsearchServiceSettings { match num_threads {} }
+    fn from(builder: ElasticsearchServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8036,8 +8134,8 @@ impl ElasticsearchTaskSettings {
     }
 
     /// Creates a [`ElasticsearchTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ElasticsearchTaskSettingsBuilder) -> ElasticsearchTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ElasticsearchTaskSettings>>(
+        f: impl FnOnce(ElasticsearchTaskSettingsBuilder) -> B,
     ) -> ElasticsearchTaskSettings {
         f(Self::builder()).build()
     }
@@ -8077,6 +8175,14 @@ impl ElasticsearchTaskSettingsBuilder {
         ElasticsearchTaskSettings {
             return_documents: self.return_documents,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ElasticsearchTaskSettingsBuilder {
+    type Output = ElasticsearchTaskSettings;
+
+    fn build(self) -> ElasticsearchTaskSettings {
+        Self::build(self)
     }
 }
 
@@ -8122,21 +8228,28 @@ pub struct ElserServiceSettings {
 
 impl ElserServiceSettings {
     /// Creates a builder for [`ElserServiceSettings`].
+    ///
+    /// Required: `num_allocations`, `num_threads`.
     pub fn builder() -> ElserServiceSettingsBuilder {
         ElserServiceSettingsBuilder::new()
     }
 
     /// Creates a [`ElserServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ElserServiceSettingsBuilder,
-        ) -> ElserServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `num_allocations`, `num_threads`.
+    pub fn of<B: crate::typed::builder::Build<Output = ElserServiceSettings>>(
+        f: impl FnOnce(ElserServiceSettingsBuilder) -> B,
     ) -> ElserServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ElserServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod elser_service_settings_members {
+    pub struct num_allocations;
+    pub struct num_threads;
 }
 
 /// Builder for [`ElserServiceSettings`].
@@ -8188,16 +8301,18 @@ impl<S0, S1> ElserServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`adaptive_allocations`](Self::adaptive_allocations) with a builder.
-    pub fn adaptive_allocations_with(
+    pub fn adaptive_allocations_with<
+        B: crate::typed::builder::Build<Output = AdaptiveAllocations>,
+    >(
         self,
-        f: impl FnOnce(AdaptiveAllocationsBuilder) -> AdaptiveAllocationsBuilder,
+        f: impl FnOnce(AdaptiveAllocationsBuilder) -> B,
     ) -> Self {
         self.adaptive_allocations(f(AdaptiveAllocationsBuilder::new()).build())
     }
 }
 
 impl<S1> ElserServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The total number of allocations this model is assigned across machine learning nodes.
+    /// **Required.** The total number of allocations this model is assigned across machine learning nodes.
     /// Increasing this value generally increases the throughput.
     /// If adaptive allocations is enabled, do not set this value because it's automatically set.
     pub fn num_allocations(
@@ -8211,7 +8326,7 @@ impl<S1> ElserServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ElserServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The number of threads used by each model allocation during inference.
+    /// **Required.** The number of threads used by each model allocation during inference.
     /// Increasing this value generally increases the speed per inference request.
     /// The inference process is a compute-bound process; `threads_per_allocations` must not exceed the number of available allocated processors per node.
     /// The value must be a power of 2.
@@ -8229,9 +8344,13 @@ impl<S0> ElserServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ElserServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ElserServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`ElserServiceSettings`].
-    pub fn build(self) -> ElserServiceSettings {
+    pub fn build(self) -> ElserServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<elser_service_settings_members::num_allocations>,
+        S1: crate::typed::builder::IsSet<elser_service_settings_members::num_threads>,
+    {
         ElserServiceSettings {
             adaptive_allocations: self.adaptive_allocations,
             num_allocations: self.num_allocations.unwrap(),
@@ -8240,29 +8359,26 @@ impl ElserServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<ElserServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ElserServiceSettings
+impl<S0, S1> crate::typed::builder::Build for ElserServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<elser_service_settings_members::num_allocations>,
+    S1: crate::typed::builder::IsSet<elser_service_settings_members::num_threads>,
 {
-    fn from(
-        builder: ElserServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ElserServiceSettings;
+
+    fn build(self) -> ElserServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> ElserServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `num_allocations` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_allocations: crate::typed::builder::MissingRequiredField) -> ElserServiceSettings { match num_allocations {} }
-}
-
-impl ElserServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `num_threads` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_threads: crate::typed::builder::MissingRequiredField) -> ElserServiceSettings { match num_threads {} }
+impl<S0, S1> From<ElserServiceSettingsBuilder<(S0, S1)>> for ElserServiceSettings
+where
+    S0: crate::typed::builder::IsSet<elser_service_settings_members::num_allocations>,
+    S1: crate::typed::builder::IsSet<elser_service_settings_members::num_threads>,
+{
+    fn from(builder: ElserServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8316,18 +8432,27 @@ pub struct EmbeddingContentObject {
 
 impl EmbeddingContentObject {
     /// Creates a builder for [`EmbeddingContentObject`].
+    ///
+    /// Required: `content`.
     pub fn builder() -> EmbeddingContentObjectBuilder {
         EmbeddingContentObjectBuilder::new()
     }
 
     /// Creates a [`EmbeddingContentObject`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EmbeddingContentObjectBuilder,
-        ) -> EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `content`.
+    pub fn of<B: crate::typed::builder::Build<Output = EmbeddingContentObject>>(
+        f: impl FnOnce(EmbeddingContentObjectBuilder) -> B,
     ) -> EmbeddingContentObject {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EmbeddingContentObjectBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod embedding_content_object_members {
+    pub struct content;
 }
 
 /// Builder for [`EmbeddingContentObject`].
@@ -8356,7 +8481,7 @@ impl<S0> EmbeddingContentObjectBuilder<(S0,)> {
 }
 
 impl EmbeddingContentObjectBuilder<(crate::typed::builder::NotSet,)> {
-    /// An object or an array of objects containing the input data for the model to embed
+    /// **Required.** An object or an array of objects containing the input data for the model to embed
     pub fn content(
         self,
         value: impl Into<EmbeddingContentObjectGroup>,
@@ -8367,25 +8492,36 @@ impl EmbeddingContentObjectBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EmbeddingContentObjectBuilder<(S0,)> {
     /// Builds a [`EmbeddingContentObject`].
-    pub fn build(self) -> EmbeddingContentObject {
+    pub fn build(self) -> EmbeddingContentObject
+    where
+        S0: crate::typed::builder::IsSet<embedding_content_object_members::content>,
+    {
         EmbeddingContentObject {
             content: self.content.unwrap(),
         }
     }
 }
 
-impl From<EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)>> for EmbeddingContentObject {
-    fn from(builder: EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for EmbeddingContentObjectBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<embedding_content_object_members::content>,
+{
+    type Output = EmbeddingContentObject;
+
+    fn build(self) -> EmbeddingContentObject {
+        Self::build(self)
     }
 }
 
-impl EmbeddingContentObjectBuilder<(crate::typed::builder::NotSet,)> {
-    /// `content` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, content: crate::typed::builder::MissingRequiredField) -> EmbeddingContentObject { match content {} }
+impl<S0> From<EmbeddingContentObjectBuilder<(S0,)>> for EmbeddingContentObject
+where
+    S0: crate::typed::builder::IsSet<embedding_content_object_members::content>,
+{
+    fn from(builder: EmbeddingContentObjectBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Allows specifying one or multiple items for the `embedding` task, which should result in a single embedding vector.
@@ -8428,21 +8564,28 @@ pub struct EmbeddingContentObjectItem {
 
 impl EmbeddingContentObjectItem {
     /// Creates a builder for [`EmbeddingContentObjectItem`].
+    ///
+    /// Required: `type`, `value`.
     pub fn builder() -> EmbeddingContentObjectItemBuilder {
         EmbeddingContentObjectItemBuilder::new()
     }
 
     /// Creates a [`EmbeddingContentObjectItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EmbeddingContentObjectItemBuilder,
-        ) -> EmbeddingContentObjectItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = EmbeddingContentObjectItem>>(
+        f: impl FnOnce(EmbeddingContentObjectItemBuilder) -> B,
     ) -> EmbeddingContentObjectItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EmbeddingContentObjectItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod embedding_content_object_item_members {
+    pub struct r#type;
+    pub struct value;
 }
 
 /// Builder for [`EmbeddingContentObjectItem`].
@@ -8499,7 +8642,7 @@ impl<S0, S1> EmbeddingContentObjectItemBuilder<(S0, S1)> {
 }
 
 impl<S1> EmbeddingContentObjectItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The type of input to embed. Not all models support all input types.
+    /// **Required.** The type of input to embed. Not all models support all input types.
     /// The `audio`, `video`, and `pdf` types are available in Elasticsearch 9.5.0 and later.
     pub fn r#type(
         self,
@@ -8512,7 +8655,7 @@ impl<S1> EmbeddingContentObjectItemBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> EmbeddingContentObjectItemBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The value of the input to embed. For the `base64` format, this must be a base64-encoded data URI, i.e. "data:content/type;base64,...".
+    /// **Required.** The value of the input to embed. For the `base64` format, this must be a base64-encoded data URI, i.e. "data:content/type;base64,...".
     /// For the `url` format, this must be a URL that points to the content, i.e. "https://example.com/image.jpg".
     pub fn value(
         self,
@@ -8524,9 +8667,13 @@ impl<S0> EmbeddingContentObjectItemBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl EmbeddingContentObjectItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EmbeddingContentObjectItemBuilder<(S0, S1)> {
     /// Builds a [`EmbeddingContentObjectItem`].
-    pub fn build(self) -> EmbeddingContentObjectItem {
+    pub fn build(self) -> EmbeddingContentObjectItem
+    where
+        S0: crate::typed::builder::IsSet<embedding_content_object_item_members::r#type>,
+        S1: crate::typed::builder::IsSet<embedding_content_object_item_members::value>,
+    {
         EmbeddingContentObjectItem {
             r#type: self.r#type.unwrap(),
             format: self.format,
@@ -8535,33 +8682,26 @@ impl EmbeddingContentObjectItemBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        EmbeddingContentObjectItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for EmbeddingContentObjectItem
+impl<S0, S1> crate::typed::builder::Build for EmbeddingContentObjectItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<embedding_content_object_item_members::r#type>,
+    S1: crate::typed::builder::IsSet<embedding_content_object_item_members::value>,
 {
-    fn from(
-        builder: EmbeddingContentObjectItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EmbeddingContentObjectItem;
+
+    fn build(self) -> EmbeddingContentObjectItem {
+        Self::build(self)
     }
 }
 
-impl<S1> EmbeddingContentObjectItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EmbeddingContentObjectItem { match r#type {} }
-}
-
-impl
-    EmbeddingContentObjectItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<EmbeddingContentObjectItemBuilder<(S0, S1)>> for EmbeddingContentObjectItem
+where
+    S0: crate::typed::builder::IsSet<embedding_content_object_item_members::r#type>,
+    S1: crate::typed::builder::IsSet<embedding_content_object_item_members::value>,
 {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> EmbeddingContentObjectItem { match value {} }
+    fn from(builder: EmbeddingContentObjectItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -8591,15 +8731,17 @@ pub enum EmbeddingInferenceResult {
 
 impl EmbeddingInferenceResult {
     /// Creates a builder for [`EmbeddingInferenceResult`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> EmbeddingInferenceResultBuilder {
         EmbeddingInferenceResultBuilder::new()
     }
 
     /// Creates a [`EmbeddingInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EmbeddingInferenceResultBuilder,
-        ) -> EmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = EmbeddingInferenceResult>>(
+        f: impl FnOnce(EmbeddingInferenceResultBuilder) -> B,
     ) -> EmbeddingInferenceResult {
         f(Self::builder()).build()
     }
@@ -8659,25 +8801,34 @@ impl EmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl EmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> EmbeddingInferenceResultBuilder<(S0,)> {
     /// Builds a [`EmbeddingInferenceResult`].
-    pub fn build(self) -> EmbeddingInferenceResult {
+    pub fn build(self) -> EmbeddingInferenceResult
+    where
+        S0: crate::typed::builder::IsVariantSet<EmbeddingInferenceResult>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<EmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>>
-    for EmbeddingInferenceResult
+impl<S0> crate::typed::builder::Build for EmbeddingInferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<EmbeddingInferenceResult>,
 {
-    fn from(builder: EmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = EmbeddingInferenceResult;
+
+    fn build(self) -> EmbeddingInferenceResult {
+        Self::build(self)
     }
 }
 
-impl EmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> EmbeddingInferenceResult { match variant {} }
+impl<S0> From<EmbeddingInferenceResultBuilder<(S0,)>> for EmbeddingInferenceResult
+where
+    S0: crate::typed::builder::IsVariantSet<EmbeddingInferenceResult>,
+{
+    fn from(builder: EmbeddingInferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Inference input.
@@ -8748,21 +8899,28 @@ pub struct EncryptedReasoningDetail {
 
 impl EncryptedReasoningDetail {
     /// Creates a builder for [`EncryptedReasoningDetail`].
+    ///
+    /// Required: `type`, `data`.
     pub fn builder() -> EncryptedReasoningDetailBuilder {
         EncryptedReasoningDetailBuilder::new()
     }
 
     /// Creates a [`EncryptedReasoningDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            EncryptedReasoningDetailBuilder,
-        ) -> EncryptedReasoningDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `data`.
+    pub fn of<B: crate::typed::builder::Build<Output = EncryptedReasoningDetail>>(
+        f: impl FnOnce(EncryptedReasoningDetailBuilder) -> B,
     ) -> EncryptedReasoningDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`EncryptedReasoningDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod encrypted_reasoning_detail_members {
+    pub struct r#type;
+    pub struct data;
 }
 
 /// Builder for [`EncryptedReasoningDetail`].
@@ -8844,6 +9002,7 @@ impl<S0, S1> EncryptedReasoningDetailBuilder<(S0, S1)> {
 }
 
 impl<S1> EncryptedReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -8855,7 +9014,7 @@ impl<S1> EncryptedReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> EncryptedReasoningDetailBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The encrypted reasoning data generated by the model,
+    /// **Required.** The encrypted reasoning data generated by the model,
     /// which may be redacted or protected based on the model's configuration and the nature of the reasoning information.
     pub fn data(
         self,
@@ -8867,9 +9026,13 @@ impl<S0> EncryptedReasoningDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl EncryptedReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> EncryptedReasoningDetailBuilder<(S0, S1)> {
     /// Builds a [`EncryptedReasoningDetail`].
-    pub fn build(self) -> EncryptedReasoningDetail {
+    pub fn build(self) -> EncryptedReasoningDetail
+    where
+        S0: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::r#type>,
+        S1: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::data>,
+    {
         EncryptedReasoningDetail {
             format: self.format,
             id: self.id,
@@ -8880,29 +9043,26 @@ impl EncryptedReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::
     }
 }
 
-impl From<EncryptedReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for EncryptedReasoningDetail
+impl<S0, S1> crate::typed::builder::Build for EncryptedReasoningDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::r#type>,
+    S1: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::data>,
 {
-    fn from(
-        builder: EncryptedReasoningDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = EncryptedReasoningDetail;
+
+    fn build(self) -> EncryptedReasoningDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> EncryptedReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> EncryptedReasoningDetail { match r#type {} }
-}
-
-impl EncryptedReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `data` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, data: crate::typed::builder::MissingRequiredField) -> EncryptedReasoningDetail { match data {} }
+impl<S0, S1> From<EncryptedReasoningDetailBuilder<(S0, S1)>> for EncryptedReasoningDetail
+where
+    S0: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::r#type>,
+    S1: crate::typed::builder::IsSet<encrypted_reasoning_detail_members::data>,
+{
+    fn from(builder: EncryptedReasoningDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8915,19 +9075,28 @@ pub struct FileContent {
 
 impl FileContent {
     /// Creates a builder for [`FileContent`].
+    ///
+    /// Required: `file_data`, `filename`.
     pub fn builder() -> FileContentBuilder {
         FileContentBuilder::new()
     }
 
     /// Creates a [`FileContent`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FileContentBuilder,
-        )
-            -> FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `file_data`, `filename`.
+    pub fn of<B: crate::typed::builder::Build<Output = FileContent>>(
+        f: impl FnOnce(FileContentBuilder) -> B,
     ) -> FileContent {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FileContentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod file_content_members {
+    pub struct file_data;
+    pub struct filename;
 }
 
 /// Builder for [`FileContent`].
@@ -8959,7 +9128,7 @@ impl<S0, S1> FileContentBuilder<(S0, S1)> {
 }
 
 impl<S1> FileContentBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The base64 encoded file data
+    /// **Required.** The base64 encoded file data
     pub fn file_data(
         self,
         value: impl Into<String>,
@@ -8971,7 +9140,7 @@ impl<S1> FileContentBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> FileContentBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the file
+    /// **Required.** The name of the file
     pub fn filename(
         self,
         value: impl Into<String>,
@@ -8982,9 +9151,13 @@ impl<S0> FileContentBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FileContentBuilder<(S0, S1)> {
     /// Builds a [`FileContent`].
-    pub fn build(self) -> FileContent {
+    pub fn build(self) -> FileContent
+    where
+        S0: crate::typed::builder::IsSet<file_content_members::file_data>,
+        S1: crate::typed::builder::IsSet<file_content_members::filename>,
+    {
         FileContent {
             file_data: self.file_data.unwrap(),
             filename: self.filename.unwrap(),
@@ -8992,26 +9165,26 @@ impl FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for FileContent
+impl<S0, S1> crate::typed::builder::Build for FileContentBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<file_content_members::file_data>,
+    S1: crate::typed::builder::IsSet<file_content_members::filename>,
 {
-    fn from(
-        builder: FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = FileContent;
+
+    fn build(self) -> FileContent {
+        Self::build(self)
     }
 }
 
-impl<S1> FileContentBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `file_data` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, file_data: crate::typed::builder::MissingRequiredField) -> FileContent { match file_data {} }
-}
-
-impl FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `filename` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filename: crate::typed::builder::MissingRequiredField) -> FileContent { match filename {} }
+impl<S0, S1> From<FileContentBuilder<(S0, S1)>> for FileContent
+where
+    S0: crate::typed::builder::IsSet<file_content_members::file_data>,
+    S1: crate::typed::builder::IsSet<file_content_members::filename>,
+{
+    fn from(builder: FileContentBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9046,21 +9219,28 @@ pub struct FireworksAIServiceSettings {
 
 impl FireworksAIServiceSettings {
     /// Creates a builder for [`FireworksAIServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> FireworksAIServiceSettingsBuilder {
         FireworksAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`FireworksAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FireworksAIServiceSettingsBuilder,
-        ) -> FireworksAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = FireworksAIServiceSettings>>(
+        f: impl FnOnce(FireworksAIServiceSettingsBuilder) -> B,
     ) -> FireworksAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FireworksAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fireworks_ai_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`FireworksAIServiceSettings`].
@@ -9162,16 +9342,16 @@ impl<S0, S1> FireworksAIServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> FireworksAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your Fireworks AI account.
+    /// **Required.** A valid API key for your Fireworks AI account.
     /// You can find or create your API keys in the Fireworks AI dashboard.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -9187,7 +9367,7 @@ impl<S1> FireworksAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> FireworksAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Fireworks AI documentation for the list of available models for chat completion, completion, and text embedding.
     /// For text embedding, supported models include the Qwen3 embedding family (e.g. `fireworks/qwen3-embedding-8b`) and other models in the Fireworks model library.
     pub fn model_id(
@@ -9200,9 +9380,13 @@ impl<S0> FireworksAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl FireworksAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> FireworksAIServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`FireworksAIServiceSettings`].
-    pub fn build(self) -> FireworksAIServiceSettings {
+    pub fn build(self) -> FireworksAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::model_id>,
+    {
         FireworksAIServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -9214,33 +9398,26 @@ impl FireworksAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        FireworksAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for FireworksAIServiceSettings
+impl<S0, S1> crate::typed::builder::Build for FireworksAIServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::model_id>,
 {
-    fn from(
-        builder: FireworksAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FireworksAIServiceSettings;
+
+    fn build(self) -> FireworksAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> FireworksAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> FireworksAIServiceSettings { match api_key {} }
-}
-
-impl
-    FireworksAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<FireworksAIServiceSettingsBuilder<(S0, S1)>> for FireworksAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<fireworks_ai_service_settings_members::model_id>,
 {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> FireworksAIServiceSettings { match model_id {} }
+    fn from(builder: FireworksAIServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9284,8 +9461,8 @@ impl FireworksAITaskSettings {
     }
 
     /// Creates a [`FireworksAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FireworksAITaskSettingsBuilder) -> FireworksAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FireworksAITaskSettings>>(
+        f: impl FnOnce(FireworksAITaskSettingsBuilder) -> B,
     ) -> FireworksAITaskSettings {
         f(Self::builder()).build()
     }
@@ -9359,6 +9536,14 @@ impl FireworksAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FireworksAITaskSettingsBuilder {
+    type Output = FireworksAITaskSettings;
+
+    fn build(self) -> FireworksAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<FireworksAITaskSettingsBuilder> for FireworksAITaskSettings {
     fn from(builder: FireworksAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -9396,21 +9581,28 @@ pub struct GoogleAiStudioServiceSettings {
 
 impl GoogleAiStudioServiceSettings {
     /// Creates a builder for [`GoogleAiStudioServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> GoogleAiStudioServiceSettingsBuilder {
         GoogleAiStudioServiceSettingsBuilder::new()
     }
 
     /// Creates a [`GoogleAiStudioServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GoogleAiStudioServiceSettingsBuilder,
-        ) -> GoogleAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = GoogleAiStudioServiceSettings>>(
+        f: impl FnOnce(GoogleAiStudioServiceSettingsBuilder) -> B,
     ) -> GoogleAiStudioServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GoogleAiStudioServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod google_ai_studio_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`GoogleAiStudioServiceSettings`].
@@ -9464,16 +9656,16 @@ impl<S0, S1> GoogleAiStudioServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> GoogleAiStudioServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key of your Google Gemini account.
+    /// **Required.** A valid API key of your Google Gemini account.
     pub fn api_key(
         self,
         value: impl Into<String>,
@@ -9485,7 +9677,7 @@ impl<S1> GoogleAiStudioServiceSettingsBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0> GoogleAiStudioServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Google documentation for the list of supported models.
     pub fn model_id(
         self,
@@ -9497,11 +9689,13 @@ impl<S0> GoogleAiStudioServiceSettingsBuilder<(S0, crate::typed::builder::NotSet
     }
 }
 
-impl
-    GoogleAiStudioServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>
-{
+impl<S0, S1> GoogleAiStudioServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`GoogleAiStudioServiceSettings`].
-    pub fn build(self) -> GoogleAiStudioServiceSettings {
+    pub fn build(self) -> GoogleAiStudioServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::model_id>,
+    {
         GoogleAiStudioServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -9510,39 +9704,26 @@ impl
     }
 }
 
-impl
-    From<
-        GoogleAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GoogleAiStudioServiceSettings
+impl<S0, S1> crate::typed::builder::Build for GoogleAiStudioServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::model_id>,
 {
-    fn from(
-        builder: GoogleAiStudioServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GoogleAiStudioServiceSettings;
+
+    fn build(self) -> GoogleAiStudioServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> GoogleAiStudioServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> GoogleAiStudioServiceSettings { match api_key {} }
-}
-
-impl
-    GoogleAiStudioServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
+impl<S0, S1> From<GoogleAiStudioServiceSettingsBuilder<(S0, S1)>> for GoogleAiStudioServiceSettings
+where
+    S0: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<google_ai_studio_service_settings_members::model_id>,
 {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> GoogleAiStudioServiceSettings { match model_id {} }
+    fn from(builder: GoogleAiStudioServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9646,18 +9827,27 @@ pub struct GoogleVertexAIServiceSettings {
 
 impl GoogleVertexAIServiceSettings {
     /// Creates a builder for [`GoogleVertexAIServiceSettings`].
+    ///
+    /// Required: `service_account_json`.
     pub fn builder() -> GoogleVertexAIServiceSettingsBuilder {
         GoogleVertexAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`GoogleVertexAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GoogleVertexAIServiceSettingsBuilder,
-        ) -> GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `service_account_json`.
+    pub fn of<B: crate::typed::builder::Build<Output = GoogleVertexAIServiceSettings>>(
+        f: impl FnOnce(GoogleVertexAIServiceSettingsBuilder) -> B,
     ) -> GoogleVertexAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GoogleVertexAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod google_vertex_ai_service_settings_members {
+    pub struct service_account_json;
 }
 
 /// Builder for [`GoogleVertexAIServiceSettings`].
@@ -9823,9 +10013,9 @@ impl<S0> GoogleVertexAIServiceSettingsBuilder<(S0,)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -9871,7 +10061,7 @@ impl<S0> GoogleVertexAIServiceSettingsBuilder<(S0,)> {
 }
 
 impl GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// A valid service account in JSON format for the Google Vertex AI API.
+    /// **Required.** A valid service account in JSON format for the Google Vertex AI API.
     pub fn service_account_json(
         self,
         value: impl Into<String>,
@@ -9882,9 +10072,14 @@ impl GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GoogleVertexAIServiceSettingsBuilder<(S0,)> {
     /// Builds a [`GoogleVertexAIServiceSettings`].
-    pub fn build(self) -> GoogleVertexAIServiceSettings {
+    pub fn build(self) -> GoogleVertexAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<
+            google_vertex_ai_service_settings_members::service_account_json,
+        >,
+    {
         GoogleVertexAIServiceSettings {
             provider: self.provider,
             url: self.url,
@@ -9900,18 +10095,28 @@ impl GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)>>
-    for GoogleVertexAIServiceSettings
+impl<S0> crate::typed::builder::Build for GoogleVertexAIServiceSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<
+        google_vertex_ai_service_settings_members::service_account_json,
+    >,
 {
-    fn from(builder: GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = GoogleVertexAIServiceSettings;
+
+    fn build(self) -> GoogleVertexAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `service_account_json` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_account_json: crate::typed::builder::MissingRequiredField) -> GoogleVertexAIServiceSettings { match service_account_json {} }
+impl<S0> From<GoogleVertexAIServiceSettingsBuilder<(S0,)>> for GoogleVertexAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<
+        google_vertex_ai_service_settings_members::service_account_json,
+    >,
+{
+    fn from(builder: GoogleVertexAIServiceSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -9947,8 +10152,8 @@ impl GoogleVertexAITaskSettings {
     }
 
     /// Creates a [`GoogleVertexAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GoogleVertexAITaskSettingsBuilder) -> GoogleVertexAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GoogleVertexAITaskSettings>>(
+        f: impl FnOnce(GoogleVertexAITaskSettingsBuilder) -> B,
     ) -> GoogleVertexAITaskSettings {
         f(Self::builder()).build()
     }
@@ -10013,9 +10218,9 @@ impl GoogleVertexAITaskSettingsBuilder {
     }
 
     /// Sets [`thinking_config`](Self::thinking_config) with a builder.
-    pub fn thinking_config_with(
+    pub fn thinking_config_with<B: crate::typed::builder::Build<Output = ThinkingConfig>>(
         self,
-        f: impl FnOnce(ThinkingConfigBuilder) -> ThinkingConfigBuilder,
+        f: impl FnOnce(ThinkingConfigBuilder) -> B,
     ) -> Self {
         self.thinking_config(f(ThinkingConfigBuilder::new()).build())
     }
@@ -10045,6 +10250,14 @@ impl GoogleVertexAITaskSettingsBuilder {
             thinking_config: self.thinking_config,
             max_tokens: self.max_tokens,
         }
+    }
+}
+
+impl crate::typed::builder::Build for GoogleVertexAITaskSettingsBuilder {
+    type Output = GoogleVertexAITaskSettings;
+
+    fn build(self) -> GoogleVertexAITaskSettings {
+        Self::build(self)
     }
 }
 
@@ -10087,18 +10300,27 @@ pub struct GroqServiceSettings {
 
 impl GroqServiceSettings {
     /// Creates a builder for [`GroqServiceSettings`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> GroqServiceSettingsBuilder {
         GroqServiceSettingsBuilder::new()
     }
 
     /// Creates a [`GroqServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GroqServiceSettingsBuilder,
-        ) -> GroqServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = GroqServiceSettings>>(
+        f: impl FnOnce(GroqServiceSettingsBuilder) -> B,
     ) -> GroqServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GroqServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod groq_service_settings_members {
+    pub struct model_id;
 }
 
 /// Builder for [`GroqServiceSettings`].
@@ -10160,16 +10382,16 @@ impl<S0> GroqServiceSettingsBuilder<(S0,)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl GroqServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Groq model documentation for the list of supported models and versions.
     /// Service has been tested and confirmed to be working for `completion` and `chat_completion` tasks with the following models:
     /// * `llama-3.3-70b-versatile`
@@ -10183,9 +10405,12 @@ impl GroqServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GroqServiceSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GroqServiceSettingsBuilder<(S0,)> {
     /// Builds a [`GroqServiceSettings`].
-    pub fn build(self) -> GroqServiceSettings {
+    pub fn build(self) -> GroqServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<groq_service_settings_members::model_id>,
+    {
         GroqServiceSettings {
             model_id: self.model_id.unwrap(),
             api_key: self.api_key,
@@ -10194,16 +10419,24 @@ impl GroqServiceSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GroqServiceSettingsBuilder<(crate::typed::builder::Set,)>> for GroqServiceSettings {
-    fn from(builder: GroqServiceSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GroqServiceSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<groq_service_settings_members::model_id>,
+{
+    type Output = GroqServiceSettings;
+
+    fn build(self) -> GroqServiceSettings {
+        Self::build(self)
     }
 }
 
-impl GroqServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> GroqServiceSettings { match model_id {} }
+impl<S0> From<GroqServiceSettingsBuilder<(S0,)>> for GroqServiceSettings
+where
+    S0: crate::typed::builder::IsSet<groq_service_settings_members::model_id>,
+{
+    fn from(builder: GroqServiceSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10245,21 +10478,28 @@ pub struct HuggingFaceServiceSettings {
 
 impl HuggingFaceServiceSettings {
     /// Creates a builder for [`HuggingFaceServiceSettings`].
+    ///
+    /// Required: `api_key`, `url`.
     pub fn builder() -> HuggingFaceServiceSettingsBuilder {
         HuggingFaceServiceSettingsBuilder::new()
     }
 
     /// Creates a [`HuggingFaceServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HuggingFaceServiceSettingsBuilder,
-        ) -> HuggingFaceServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = HuggingFaceServiceSettings>>(
+        f: impl FnOnce(HuggingFaceServiceSettingsBuilder) -> B,
     ) -> HuggingFaceServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HuggingFaceServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod hugging_face_service_settings_members {
+    pub struct api_key;
+    pub struct url;
 }
 
 /// Builder for [`HuggingFaceServiceSettings`].
@@ -10318,9 +10558,9 @@ impl<S0, S1> HuggingFaceServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -10341,7 +10581,7 @@ impl<S0, S1> HuggingFaceServiceSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> HuggingFaceServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid access token for your HuggingFace account.
+    /// **Required.** A valid access token for your HuggingFace account.
     /// You can create or find your access tokens on the HuggingFace settings page.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -10357,7 +10597,7 @@ impl<S1> HuggingFaceServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> HuggingFaceServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The URL endpoint to use for the requests.
+    /// **Required.** The URL endpoint to use for the requests.
     /// For `completion` and `chat_completion` tasks, the deployed model must be compatible with the Hugging Face Chat Completion interface (see the linked external documentation for details). The endpoint URL for the request must include `/v1/chat/completions`.
     /// If the model supports the OpenAI Chat Completion schema, a toggle should appear in the interface. Enabling this toggle doesn't change any model behavior, it reveals the full endpoint URL needed (which should include `/v1/chat/completions`) when configuring the inference endpoint in Elasticsearch. If the model doesn't support this schema, the toggle may not be shown.
     pub fn url(
@@ -10370,9 +10610,13 @@ impl<S0> HuggingFaceServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl HuggingFaceServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HuggingFaceServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`HuggingFaceServiceSettings`].
-    pub fn build(self) -> HuggingFaceServiceSettings {
+    pub fn build(self) -> HuggingFaceServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<hugging_face_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<hugging_face_service_settings_members::url>,
+    {
         HuggingFaceServiceSettings {
             api_key: self.api_key.unwrap(),
             rate_limit: self.rate_limit,
@@ -10382,33 +10626,26 @@ impl HuggingFaceServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        HuggingFaceServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for HuggingFaceServiceSettings
+impl<S0, S1> crate::typed::builder::Build for HuggingFaceServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<hugging_face_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<hugging_face_service_settings_members::url>,
 {
-    fn from(
-        builder: HuggingFaceServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = HuggingFaceServiceSettings;
+
+    fn build(self) -> HuggingFaceServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> HuggingFaceServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> HuggingFaceServiceSettings { match api_key {} }
-}
-
-impl
-    HuggingFaceServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<HuggingFaceServiceSettingsBuilder<(S0, S1)>> for HuggingFaceServiceSettings
+where
+    S0: crate::typed::builder::IsSet<hugging_face_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<hugging_face_service_settings_members::url>,
 {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> HuggingFaceServiceSettings { match url {} }
+    fn from(builder: HuggingFaceServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10435,8 +10672,8 @@ impl HuggingFaceTaskSettings {
     }
 
     /// Creates a [`HuggingFaceTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(HuggingFaceTaskSettingsBuilder) -> HuggingFaceTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = HuggingFaceTaskSettings>>(
+        f: impl FnOnce(HuggingFaceTaskSettingsBuilder) -> B,
     ) -> HuggingFaceTaskSettings {
         f(Self::builder()).build()
     }
@@ -10495,6 +10732,14 @@ impl HuggingFaceTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for HuggingFaceTaskSettingsBuilder {
+    type Output = HuggingFaceTaskSettings;
+
+    fn build(self) -> HuggingFaceTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<HuggingFaceTaskSettingsBuilder> for HuggingFaceTaskSettings {
     fn from(builder: HuggingFaceTaskSettingsBuilder) -> Self {
         builder.build()
@@ -10524,16 +10769,27 @@ pub struct ImageUrl {
 
 impl ImageUrl {
     /// Creates a builder for [`ImageUrl`].
+    ///
+    /// Required: `url`.
     pub fn builder() -> ImageUrlBuilder {
         ImageUrlBuilder::new()
     }
 
     /// Creates a [`ImageUrl`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ImageUrlBuilder) -> ImageUrlBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = ImageUrl>>(
+        f: impl FnOnce(ImageUrlBuilder) -> B,
     ) -> ImageUrl {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ImageUrlBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod image_url_members {
+    pub struct url;
 }
 
 /// Builder for [`ImageUrl`].
@@ -10577,7 +10833,7 @@ impl<S0> ImageUrlBuilder<(S0,)> {
 }
 
 impl ImageUrlBuilder<(crate::typed::builder::NotSet,)> {
-    /// The base64 encoded image data as a data URI
+    /// **Required.** The base64 encoded image data as a data URI
     pub fn url(self, value: impl Into<String>) -> ImageUrlBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.url = Some(value.into());
@@ -10585,9 +10841,12 @@ impl ImageUrlBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ImageUrlBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ImageUrlBuilder<(S0,)> {
     /// Builds a [`ImageUrl`].
-    pub fn build(self) -> ImageUrl {
+    pub fn build(self) -> ImageUrl
+    where
+        S0: crate::typed::builder::IsSet<image_url_members::url>,
+    {
         ImageUrl {
             url: self.url.unwrap(),
             detail: self.detail,
@@ -10595,16 +10854,24 @@ impl ImageUrlBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ImageUrlBuilder<(crate::typed::builder::Set,)>> for ImageUrl {
-    fn from(builder: ImageUrlBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ImageUrlBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<image_url_members::url>,
+{
+    type Output = ImageUrl;
+
+    fn build(self) -> ImageUrl {
+        Self::build(self)
     }
 }
 
-impl ImageUrlBuilder<(crate::typed::builder::NotSet,)> {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> ImageUrl { match url {} }
+impl<S0> From<ImageUrlBuilder<(S0,)>> for ImageUrl
+where
+    S0: crate::typed::builder::IsSet<image_url_members::url>,
+{
+    fn from(builder: ImageUrlBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10673,8 +10940,8 @@ impl InferenceChunkingSettings {
     }
 
     /// Creates a [`InferenceChunkingSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceChunkingSettings>>(
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> InferenceChunkingSettings {
         f(Self::builder()).build()
     }
@@ -10826,6 +11093,14 @@ impl InferenceChunkingSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for InferenceChunkingSettingsBuilder {
+    type Output = InferenceChunkingSettings;
+
+    fn build(self) -> InferenceChunkingSettings {
+        Self::build(self)
+    }
+}
+
 impl From<InferenceChunkingSettingsBuilder> for InferenceChunkingSettings {
     fn from(builder: InferenceChunkingSettingsBuilder) -> Self {
         builder.build()
@@ -10851,21 +11126,28 @@ pub struct InferenceEndpoint {
 
 impl InferenceEndpoint {
     /// Creates a builder for [`InferenceEndpoint`].
+    ///
+    /// Required: `service`, `service_settings`.
     pub fn builder() -> InferenceEndpointBuilder {
         InferenceEndpointBuilder::new()
     }
 
     /// Creates a [`InferenceEndpoint`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointBuilder,
-        ) -> InferenceEndpointBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpoint>>(
+        f: impl FnOnce(InferenceEndpointBuilder) -> B,
     ) -> InferenceEndpoint {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_members {
+    pub struct service;
+    pub struct service_settings;
 }
 
 /// Builder for [`InferenceEndpoint`].
@@ -10918,9 +11200,11 @@ impl<S0, S1> InferenceEndpointBuilder<(S0, S1)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -10939,7 +11223,7 @@ impl<S0, S1> InferenceEndpointBuilder<(S0, S1)> {
 }
 
 impl<S1> InferenceEndpointBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -10951,7 +11235,7 @@ impl<S1> InferenceEndpointBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> InferenceEndpointBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -10962,9 +11246,13 @@ impl<S0> InferenceEndpointBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl InferenceEndpointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> InferenceEndpointBuilder<(S0, S1)> {
     /// Builds a [`InferenceEndpoint`].
-    pub fn build(self) -> InferenceEndpoint {
+    pub fn build(self) -> InferenceEndpoint
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_members::service_settings>,
+    {
         InferenceEndpoint {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -10974,26 +11262,26 @@ impl InferenceEndpointBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<InferenceEndpointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for InferenceEndpoint
+impl<S0, S1> crate::typed::builder::Build for InferenceEndpointBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_members::service_settings>,
 {
-    fn from(
-        builder: InferenceEndpointBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpoint;
+
+    fn build(self) -> InferenceEndpoint {
+        Self::build(self)
     }
 }
 
-impl<S1> InferenceEndpointBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpoint { match service {} }
-}
-
-impl InferenceEndpointBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpoint { match service_settings {} }
+impl<S0, S1> From<InferenceEndpointBuilder<(S0, S1)>> for InferenceEndpoint
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_members::service_settings>,
+{
+    fn from(builder: InferenceEndpointBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Represents an inference endpoint as returned by the GET API
@@ -11019,23 +11307,30 @@ pub struct InferenceEndpointInfo {
 
 impl InferenceEndpointInfo {
     /// Creates a builder for [`InferenceEndpointInfo`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoBuilder {
         InferenceEndpointInfoBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoBuilder,
-        ) -> InferenceEndpointInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfo>>(
+        f: impl FnOnce(InferenceEndpointInfoBuilder) -> B,
     ) -> InferenceEndpointInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfo`].
@@ -11106,9 +11401,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -11127,7 +11424,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -11139,7 +11436,7 @@ impl<S1, S2, S3> InferenceEndpointInfoBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -11151,7 +11448,7 @@ impl<S0, S2, S3> InferenceEndpointInfoBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -11163,7 +11460,7 @@ impl<S0, S1, S3> InferenceEndpointInfoBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskType>,
@@ -11174,16 +11471,15 @@ impl<S0, S1, S2> InferenceEndpointInfoBuilder<(S0, S1, S2, crate::typed::builder
     }
 }
 
-impl
-    InferenceEndpointInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfo`].
-    pub fn build(self) -> InferenceEndpointInfo {
+    pub fn build(self) -> InferenceEndpointInfo
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_members::task_type>,
+    {
         InferenceEndpointInfo {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -11195,71 +11491,30 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfo
+impl<S0, S1, S2, S3> crate::typed::builder::Build for InferenceEndpointInfoBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfo;
+
+    fn build(self) -> InferenceEndpointInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfo { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoBuilder<(S0, S1, S2, S3)>> for InferenceEndpointInfo
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfo { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfo { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfo { match task_type {} }
+    fn from(builder: InferenceEndpointInfoBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11284,23 +11539,30 @@ pub struct InferenceEndpointInfoAi21 {
 
 impl InferenceEndpointInfoAi21 {
     /// Creates a builder for [`InferenceEndpointInfoAi21`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAi21Builder {
         InferenceEndpointInfoAi21Builder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAi21`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAi21Builder,
-        ) -> InferenceEndpointInfoAi21Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAi21>>(
+        f: impl FnOnce(InferenceEndpointInfoAi21Builder) -> B,
     ) -> InferenceEndpointInfoAi21 {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAi21Builder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_ai21_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAi21`].
@@ -11371,9 +11633,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -11392,7 +11656,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoAi21Builder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -11404,7 +11668,7 @@ impl<S1, S2, S3> InferenceEndpointInfoAi21Builder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoAi21Builder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -11416,7 +11680,7 @@ impl<S0, S2, S3> InferenceEndpointInfoAi21Builder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoAi21Builder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -11428,7 +11692,7 @@ impl<S0, S1, S3> InferenceEndpointInfoAi21Builder<(S0, S1, crate::typed::builder
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoAi21Builder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAi21>,
@@ -11439,16 +11703,15 @@ impl<S0, S1, S2> InferenceEndpointInfoAi21Builder<(S0, S1, S2, crate::typed::bui
     }
 }
 
-impl
-    InferenceEndpointInfoAi21Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAi21`].
-    pub fn build(self) -> InferenceEndpointInfoAi21 {
+    pub fn build(self) -> InferenceEndpointInfoAi21
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::task_type>,
+    {
         InferenceEndpointInfoAi21 {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -11460,71 +11723,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAi21Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAi21
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAi21Builder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAi21;
+
+    fn build(self) -> InferenceEndpointInfoAi21 {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoAi21Builder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAi21 { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAi21Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAi21
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_ai21_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAi21 { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAi21Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAi21 { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAi21Builder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAi21 { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAi21Builder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11549,23 +11773,30 @@ pub struct InferenceEndpointInfoAlibabaCloudAI {
 
 impl InferenceEndpointInfoAlibabaCloudAI {
     /// Creates a builder for [`InferenceEndpointInfoAlibabaCloudAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAlibabaCloudAIBuilder {
         InferenceEndpointInfoAlibabaCloudAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAlibabaCloudAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAlibabaCloudAIBuilder,
-        ) -> InferenceEndpointInfoAlibabaCloudAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAlibabaCloudAI>>(
+        f: impl FnOnce(InferenceEndpointInfoAlibabaCloudAIBuilder) -> B,
     ) -> InferenceEndpointInfoAlibabaCloudAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAlibabaCloudAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_alibaba_cloud_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAlibabaCloudAI`].
@@ -11636,9 +11867,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -11659,7 +11892,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)
 impl<S1, S2, S3>
     InferenceEndpointInfoAlibabaCloudAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -11673,7 +11906,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -11687,7 +11920,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -11701,7 +11934,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAlibabaCloudAI>,
@@ -11712,16 +11945,21 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAlibabaCloudAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAlibabaCloudAI`].
-    pub fn build(self) -> InferenceEndpointInfoAlibabaCloudAI {
+    pub fn build(self) -> InferenceEndpointInfoAlibabaCloudAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_alibaba_cloud_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_alibaba_cloud_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_alibaba_cloud_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            inference_endpoint_info_alibaba_cloud_ai_members::task_type,
+        >,
+    {
         InferenceEndpointInfoAlibabaCloudAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -11733,73 +11971,40 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAlibabaCloudAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAlibabaCloudAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_alibaba_cloud_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_alibaba_cloud_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_alibaba_cloud_ai_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_alibaba_cloud_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAlibabaCloudAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAlibabaCloudAI;
+
+    fn build(self) -> InferenceEndpointInfoAlibabaCloudAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAlibabaCloudAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAlibabaCloudAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_alibaba_cloud_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_alibaba_cloud_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_alibaba_cloud_ai_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_alibaba_cloud_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAlibabaCloudAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAlibabaCloudAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAlibabaCloudAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAlibabaCloudAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAlibabaCloudAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAlibabaCloudAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAlibabaCloudAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAlibabaCloudAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11824,23 +12029,30 @@ pub struct InferenceEndpointInfoAmazonBedrock {
 
 impl InferenceEndpointInfoAmazonBedrock {
     /// Creates a builder for [`InferenceEndpointInfoAmazonBedrock`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAmazonBedrockBuilder {
         InferenceEndpointInfoAmazonBedrockBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAmazonBedrock`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAmazonBedrockBuilder,
-        ) -> InferenceEndpointInfoAmazonBedrockBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAmazonBedrock>>(
+        f: impl FnOnce(InferenceEndpointInfoAmazonBedrockBuilder) -> B,
     ) -> InferenceEndpointInfoAmazonBedrock {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAmazonBedrockBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_amazon_bedrock_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAmazonBedrock`].
@@ -11911,9 +12123,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)>
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -11934,7 +12148,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)>
 impl<S1, S2, S3>
     InferenceEndpointInfoAmazonBedrockBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -11948,7 +12162,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAmazonBedrockBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -11962,7 +12176,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -11976,7 +12190,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAmazonBedrock>,
@@ -11987,16 +12201,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAmazonBedrockBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAmazonBedrock`].
-    pub fn build(self) -> InferenceEndpointInfoAmazonBedrock {
+    pub fn build(self) -> InferenceEndpointInfoAmazonBedrock
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_bedrock_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_bedrock_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::task_type>,
+    {
         InferenceEndpointInfoAmazonBedrock {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -12008,73 +12225,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAmazonBedrockBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAmazonBedrock
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_bedrock_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAmazonBedrockBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAmazonBedrock;
+
+    fn build(self) -> InferenceEndpointInfoAmazonBedrock {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAmazonBedrockBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAmazonBedrock
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_bedrock_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_amazon_bedrock_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonBedrock { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAmazonBedrockBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonBedrock { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAmazonBedrockBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonBedrock { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAmazonBedrockBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonBedrock { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAmazonBedrockBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12099,23 +12279,30 @@ pub struct InferenceEndpointInfoAmazonSageMaker {
 
 impl InferenceEndpointInfoAmazonSageMaker {
     /// Creates a builder for [`InferenceEndpointInfoAmazonSageMaker`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAmazonSageMakerBuilder {
         InferenceEndpointInfoAmazonSageMakerBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAmazonSageMaker`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAmazonSageMakerBuilder,
-        ) -> InferenceEndpointInfoAmazonSageMakerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAmazonSageMaker>>(
+        f: impl FnOnce(InferenceEndpointInfoAmazonSageMakerBuilder) -> B,
     ) -> InferenceEndpointInfoAmazonSageMaker {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAmazonSageMakerBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_amazon_sage_maker_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAmazonSageMaker`].
@@ -12186,9 +12373,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -12209,7 +12398,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3
 impl<S1, S2, S3>
     InferenceEndpointInfoAmazonSageMakerBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -12223,7 +12412,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAmazonSageMakerBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -12237,7 +12426,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -12251,7 +12440,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAmazonSageMaker>,
@@ -12262,16 +12451,23 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAmazonSageMakerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAmazonSageMaker`].
-    pub fn build(self) -> InferenceEndpointInfoAmazonSageMaker {
+    pub fn build(self) -> InferenceEndpointInfoAmazonSageMaker
+    where
+        S0: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_sage_maker_members::service,
+        >,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_sage_maker_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_sage_maker_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            inference_endpoint_info_amazon_sage_maker_members::task_type,
+        >,
+    {
         InferenceEndpointInfoAmazonSageMaker {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -12283,73 +12479,40 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAmazonSageMakerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAmazonSageMaker
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_amazon_sage_maker_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_sage_maker_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_sage_maker_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_amazon_sage_maker_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAmazonSageMakerBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAmazonSageMaker;
+
+    fn build(self) -> InferenceEndpointInfoAmazonSageMaker {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAmazonSageMakerBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAmazonSageMaker
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_amazon_sage_maker_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_sage_maker_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_amazon_sage_maker_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_amazon_sage_maker_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonSageMaker { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAmazonSageMakerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonSageMaker { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAmazonSageMakerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonSageMaker { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAmazonSageMakerBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAmazonSageMaker { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAmazonSageMakerBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12374,23 +12537,30 @@ pub struct InferenceEndpointInfoAnthropic {
 
 impl InferenceEndpointInfoAnthropic {
     /// Creates a builder for [`InferenceEndpointInfoAnthropic`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAnthropicBuilder {
         InferenceEndpointInfoAnthropicBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAnthropic`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAnthropicBuilder,
-        ) -> InferenceEndpointInfoAnthropicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAnthropic>>(
+        f: impl FnOnce(InferenceEndpointInfoAnthropicBuilder) -> B,
     ) -> InferenceEndpointInfoAnthropic {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAnthropicBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_anthropic_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAnthropic`].
@@ -12461,9 +12631,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -12484,7 +12656,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     InferenceEndpointInfoAnthropicBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -12498,7 +12670,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAnthropicBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -12512,7 +12684,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAnthropicBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -12526,7 +12698,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAnthropic>,
@@ -12537,16 +12709,17 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAnthropicBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAnthropic`].
-    pub fn build(self) -> InferenceEndpointInfoAnthropic {
+    pub fn build(self) -> InferenceEndpointInfoAnthropic
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_anthropic_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::task_type>,
+    {
         InferenceEndpointInfoAnthropic {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -12558,73 +12731,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAnthropicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAnthropic
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAnthropicBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAnthropic;
+
+    fn build(self) -> InferenceEndpointInfoAnthropic {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAnthropicBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAnthropic
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_anthropic_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAnthropic { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAnthropicBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAnthropic { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAnthropicBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAnthropic { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAnthropicBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAnthropic { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAnthropicBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12649,23 +12781,30 @@ pub struct InferenceEndpointInfoAzureAIStudio {
 
 impl InferenceEndpointInfoAzureAIStudio {
     /// Creates a builder for [`InferenceEndpointInfoAzureAIStudio`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAzureAIStudioBuilder {
         InferenceEndpointInfoAzureAIStudioBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAzureAIStudio`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAzureAIStudioBuilder,
-        ) -> InferenceEndpointInfoAzureAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAzureAIStudio>>(
+        f: impl FnOnce(InferenceEndpointInfoAzureAIStudioBuilder) -> B,
     ) -> InferenceEndpointInfoAzureAIStudio {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAzureAIStudioBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_azure_ai_studio_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAzureAIStudio`].
@@ -12736,9 +12875,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)>
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -12759,7 +12900,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)>
 impl<S1, S2, S3>
     InferenceEndpointInfoAzureAIStudioBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -12773,7 +12914,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAzureAIStudioBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -12787,7 +12928,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -12801,7 +12942,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAzureAIStudio>,
@@ -12812,16 +12953,21 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAzureAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAzureAIStudio`].
-    pub fn build(self) -> InferenceEndpointInfoAzureAIStudio {
+    pub fn build(self) -> InferenceEndpointInfoAzureAIStudio
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_azure_ai_studio_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_azure_ai_studio_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            inference_endpoint_info_azure_ai_studio_members::task_type,
+        >,
+    {
         InferenceEndpointInfoAzureAIStudio {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -12833,73 +12979,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAzureAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAzureAIStudio
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_azure_ai_studio_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAzureAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAzureAIStudio;
+
+    fn build(self) -> InferenceEndpointInfoAzureAIStudio {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAzureAIStudioBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAzureAIStudio
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_azure_ai_studio_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_azure_ai_studio_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureAIStudio { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAzureAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureAIStudio { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAzureAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureAIStudio { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAzureAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureAIStudio { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAzureAIStudioBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12924,23 +13033,30 @@ pub struct InferenceEndpointInfoAzureOpenAI {
 
 impl InferenceEndpointInfoAzureOpenAI {
     /// Creates a builder for [`InferenceEndpointInfoAzureOpenAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoAzureOpenAIBuilder {
         InferenceEndpointInfoAzureOpenAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoAzureOpenAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoAzureOpenAIBuilder,
-        ) -> InferenceEndpointInfoAzureOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoAzureOpenAI>>(
+        f: impl FnOnce(InferenceEndpointInfoAzureOpenAIBuilder) -> B,
     ) -> InferenceEndpointInfoAzureOpenAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoAzureOpenAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_azure_open_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoAzureOpenAI`].
@@ -13011,9 +13127,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -13034,7 +13152,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     InferenceEndpointInfoAzureOpenAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -13048,7 +13166,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoAzureOpenAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -13062,7 +13180,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -13076,7 +13194,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeAzureOpenAI>,
@@ -13087,16 +13205,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoAzureOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoAzureOpenAI`].
-    pub fn build(self) -> InferenceEndpointInfoAzureOpenAI {
+    pub fn build(self) -> InferenceEndpointInfoAzureOpenAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_azure_open_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_azure_open_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::task_type>,
+    {
         InferenceEndpointInfoAzureOpenAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -13108,73 +13229,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoAzureOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoAzureOpenAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_azure_open_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoAzureOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoAzureOpenAI;
+
+    fn build(self) -> InferenceEndpointInfoAzureOpenAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoAzureOpenAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoAzureOpenAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_azure_open_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_azure_open_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureOpenAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoAzureOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureOpenAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoAzureOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureOpenAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoAzureOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoAzureOpenAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoAzureOpenAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13199,23 +13283,30 @@ pub struct InferenceEndpointInfoCohere {
 
 impl InferenceEndpointInfoCohere {
     /// Creates a builder for [`InferenceEndpointInfoCohere`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoCohereBuilder {
         InferenceEndpointInfoCohereBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoCohere`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoCohereBuilder,
-        ) -> InferenceEndpointInfoCohereBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoCohere>>(
+        f: impl FnOnce(InferenceEndpointInfoCohereBuilder) -> B,
     ) -> InferenceEndpointInfoCohere {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoCohereBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_cohere_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoCohere`].
@@ -13286,9 +13377,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -13307,7 +13400,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoCohereBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -13319,7 +13412,7 @@ impl<S1, S2, S3> InferenceEndpointInfoCohereBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoCohereBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -13331,7 +13424,7 @@ impl<S0, S2, S3> InferenceEndpointInfoCohereBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoCohereBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -13343,7 +13436,7 @@ impl<S0, S1, S3> InferenceEndpointInfoCohereBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoCohereBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeCohere>,
@@ -13354,16 +13447,15 @@ impl<S0, S1, S2> InferenceEndpointInfoCohereBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    InferenceEndpointInfoCohereBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoCohere`].
-    pub fn build(self) -> InferenceEndpointInfoCohere {
+    pub fn build(self) -> InferenceEndpointInfoCohere
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::task_type>,
+    {
         InferenceEndpointInfoCohere {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -13375,71 +13467,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoCohereBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoCohere
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoCohereBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoCohere;
+
+    fn build(self) -> InferenceEndpointInfoCohere {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoCohereBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCohere { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoCohereBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoCohere
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_cohere_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCohere { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoCohereBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCohere { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoCohereBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCohere { match task_type {} }
+    fn from(builder: InferenceEndpointInfoCohereBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13464,23 +13517,30 @@ pub struct InferenceEndpointInfoContextualAi {
 
 impl InferenceEndpointInfoContextualAi {
     /// Creates a builder for [`InferenceEndpointInfoContextualAi`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoContextualAiBuilder {
         InferenceEndpointInfoContextualAiBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoContextualAi`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoContextualAiBuilder,
-        ) -> InferenceEndpointInfoContextualAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoContextualAi>>(
+        f: impl FnOnce(InferenceEndpointInfoContextualAiBuilder) -> B,
     ) -> InferenceEndpointInfoContextualAi {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoContextualAiBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_contextual_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoContextualAi`].
@@ -13551,9 +13611,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)> 
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -13574,7 +13636,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)> 
 impl<S1, S2, S3>
     InferenceEndpointInfoContextualAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -13588,7 +13650,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoContextualAiBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -13602,7 +13664,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoContextualAiBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -13616,7 +13678,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeContextualAI>,
@@ -13627,16 +13689,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoContextualAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoContextualAi`].
-    pub fn build(self) -> InferenceEndpointInfoContextualAi {
+    pub fn build(self) -> InferenceEndpointInfoContextualAi
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_contextual_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_contextual_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::task_type>,
+    {
         InferenceEndpointInfoContextualAi {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -13648,73 +13713,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoContextualAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoContextualAi
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_contextual_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoContextualAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoContextualAi;
+
+    fn build(self) -> InferenceEndpointInfoContextualAi {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoContextualAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoContextualAi
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_contextual_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_contextual_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoContextualAi { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoContextualAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoContextualAi { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoContextualAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoContextualAi { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoContextualAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoContextualAi { match task_type {} }
+    fn from(builder: InferenceEndpointInfoContextualAiBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13739,23 +13767,30 @@ pub struct InferenceEndpointInfoCustom {
 
 impl InferenceEndpointInfoCustom {
     /// Creates a builder for [`InferenceEndpointInfoCustom`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoCustomBuilder {
         InferenceEndpointInfoCustomBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoCustom`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoCustomBuilder,
-        ) -> InferenceEndpointInfoCustomBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoCustom>>(
+        f: impl FnOnce(InferenceEndpointInfoCustomBuilder) -> B,
     ) -> InferenceEndpointInfoCustom {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoCustomBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_custom_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoCustom`].
@@ -13826,9 +13861,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -13847,7 +13884,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoCustomBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -13859,7 +13896,7 @@ impl<S1, S2, S3> InferenceEndpointInfoCustomBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoCustomBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -13871,7 +13908,7 @@ impl<S0, S2, S3> InferenceEndpointInfoCustomBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoCustomBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -13883,7 +13920,7 @@ impl<S0, S1, S3> InferenceEndpointInfoCustomBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoCustomBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeCustom>,
@@ -13894,16 +13931,15 @@ impl<S0, S1, S2> InferenceEndpointInfoCustomBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    InferenceEndpointInfoCustomBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoCustom`].
-    pub fn build(self) -> InferenceEndpointInfoCustom {
+    pub fn build(self) -> InferenceEndpointInfoCustom
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::task_type>,
+    {
         InferenceEndpointInfoCustom {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -13915,71 +13951,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoCustomBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoCustom
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoCustomBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoCustom;
+
+    fn build(self) -> InferenceEndpointInfoCustom {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoCustomBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCustom { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoCustomBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoCustom
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_custom_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCustom { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoCustomBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCustom { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoCustomBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoCustom { match task_type {} }
+    fn from(builder: InferenceEndpointInfoCustomBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14004,23 +14001,30 @@ pub struct InferenceEndpointInfoDeepSeek {
 
 impl InferenceEndpointInfoDeepSeek {
     /// Creates a builder for [`InferenceEndpointInfoDeepSeek`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoDeepSeekBuilder {
         InferenceEndpointInfoDeepSeekBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoDeepSeek`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoDeepSeekBuilder,
-        ) -> InferenceEndpointInfoDeepSeekBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoDeepSeek>>(
+        f: impl FnOnce(InferenceEndpointInfoDeepSeekBuilder) -> B,
     ) -> InferenceEndpointInfoDeepSeek {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoDeepSeekBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_deep_seek_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoDeepSeek`].
@@ -14091,9 +14095,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -14112,7 +14118,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -14124,7 +14130,7 @@ impl<S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(crate::typed::builder::No
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -14136,7 +14142,7 @@ impl<S0, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, crate::typed::builder
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -14148,7 +14154,7 @@ impl<S0, S1, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, crate::typed::bui
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeDeepSeek>,
@@ -14159,16 +14165,17 @@ impl<S0, S1, S2> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, crate::typed:
     }
 }
 
-impl
-    InferenceEndpointInfoDeepSeekBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoDeepSeek`].
-    pub fn build(self) -> InferenceEndpointInfoDeepSeek {
+    pub fn build(self) -> InferenceEndpointInfoDeepSeek
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_deep_seek_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::task_type>,
+    {
         InferenceEndpointInfoDeepSeek {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -14180,71 +14187,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoDeepSeekBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoDeepSeek
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoDeepSeekBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoDeepSeek;
+
+    fn build(self) -> InferenceEndpointInfoDeepSeek {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoDeepSeekBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoDeepSeek { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoDeepSeekBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoDeepSeek
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_deep_seek_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoDeepSeek { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoDeepSeekBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoDeepSeek { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoDeepSeekBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoDeepSeek { match task_type {} }
+    fn from(builder: InferenceEndpointInfoDeepSeekBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14269,23 +14237,30 @@ pub struct InferenceEndpointInfoELSER {
 
 impl InferenceEndpointInfoELSER {
     /// Creates a builder for [`InferenceEndpointInfoELSER`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoELSERBuilder {
         InferenceEndpointInfoELSERBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoELSER`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoELSERBuilder,
-        ) -> InferenceEndpointInfoELSERBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoELSER>>(
+        f: impl FnOnce(InferenceEndpointInfoELSERBuilder) -> B,
     ) -> InferenceEndpointInfoELSER {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoELSERBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_elser_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoELSER`].
@@ -14356,9 +14331,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -14377,7 +14354,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoELSERBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -14389,7 +14366,7 @@ impl<S1, S2, S3> InferenceEndpointInfoELSERBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoELSERBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -14401,7 +14378,7 @@ impl<S0, S2, S3> InferenceEndpointInfoELSERBuilder<(S0, crate::typed::builder::N
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoELSERBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -14413,7 +14390,7 @@ impl<S0, S1, S3> InferenceEndpointInfoELSERBuilder<(S0, S1, crate::typed::builde
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoELSERBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeELSER>,
@@ -14424,16 +14401,15 @@ impl<S0, S1, S2> InferenceEndpointInfoELSERBuilder<(S0, S1, S2, crate::typed::bu
     }
 }
 
-impl
-    InferenceEndpointInfoELSERBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoELSER`].
-    pub fn build(self) -> InferenceEndpointInfoELSER {
+    pub fn build(self) -> InferenceEndpointInfoELSER
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::task_type>,
+    {
         InferenceEndpointInfoELSER {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -14445,71 +14421,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoELSERBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoELSER
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoELSERBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoELSER;
+
+    fn build(self) -> InferenceEndpointInfoELSER {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoELSERBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoELSER { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoELSERBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoELSER
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_elser_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoELSER { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoELSERBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoELSER { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoELSERBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoELSER { match task_type {} }
+    fn from(builder: InferenceEndpointInfoELSERBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14534,23 +14471,30 @@ pub struct InferenceEndpointInfoElasticsearch {
 
 impl InferenceEndpointInfoElasticsearch {
     /// Creates a builder for [`InferenceEndpointInfoElasticsearch`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoElasticsearchBuilder {
         InferenceEndpointInfoElasticsearchBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoElasticsearch`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoElasticsearchBuilder,
-        ) -> InferenceEndpointInfoElasticsearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoElasticsearch>>(
+        f: impl FnOnce(InferenceEndpointInfoElasticsearchBuilder) -> B,
     ) -> InferenceEndpointInfoElasticsearch {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoElasticsearchBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_elasticsearch_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoElasticsearch`].
@@ -14621,9 +14565,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)>
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -14644,7 +14590,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)>
 impl<S1, S2, S3>
     InferenceEndpointInfoElasticsearchBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -14658,7 +14604,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoElasticsearchBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -14672,7 +14618,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoElasticsearchBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -14686,7 +14632,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeElasticsearch>,
@@ -14697,16 +14643,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoElasticsearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoElasticsearch`].
-    pub fn build(self) -> InferenceEndpointInfoElasticsearch {
+    pub fn build(self) -> InferenceEndpointInfoElasticsearch
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_elasticsearch_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_elasticsearch_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::task_type>,
+    {
         InferenceEndpointInfoElasticsearch {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -14718,73 +14667,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoElasticsearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoElasticsearch
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_elasticsearch_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoElasticsearchBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoElasticsearch;
+
+    fn build(self) -> InferenceEndpointInfoElasticsearch {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoElasticsearchBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoElasticsearch
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_elasticsearch_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_elasticsearch_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoElasticsearch { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoElasticsearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoElasticsearch { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoElasticsearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoElasticsearch { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoElasticsearchBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoElasticsearch { match task_type {} }
+    fn from(builder: InferenceEndpointInfoElasticsearchBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14809,23 +14721,30 @@ pub struct InferenceEndpointInfoFireworksAI {
 
 impl InferenceEndpointInfoFireworksAI {
     /// Creates a builder for [`InferenceEndpointInfoFireworksAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoFireworksAIBuilder {
         InferenceEndpointInfoFireworksAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoFireworksAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoFireworksAIBuilder,
-        ) -> InferenceEndpointInfoFireworksAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoFireworksAI>>(
+        f: impl FnOnce(InferenceEndpointInfoFireworksAIBuilder) -> B,
     ) -> InferenceEndpointInfoFireworksAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoFireworksAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_fireworks_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoFireworksAI`].
@@ -14896,9 +14815,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -14919,7 +14840,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     InferenceEndpointInfoFireworksAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -14933,7 +14854,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoFireworksAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -14947,7 +14868,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoFireworksAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -14961,7 +14882,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeFireworksAI>,
@@ -14972,16 +14893,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoFireworksAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoFireworksAI`].
-    pub fn build(self) -> InferenceEndpointInfoFireworksAI {
+    pub fn build(self) -> InferenceEndpointInfoFireworksAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_fireworks_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_fireworks_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::task_type>,
+    {
         InferenceEndpointInfoFireworksAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -14993,73 +14917,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoFireworksAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoFireworksAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_fireworks_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoFireworksAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoFireworksAI;
+
+    fn build(self) -> InferenceEndpointInfoFireworksAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoFireworksAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoFireworksAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_fireworks_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_fireworks_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoFireworksAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoFireworksAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoFireworksAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoFireworksAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoFireworksAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoFireworksAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoFireworksAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoFireworksAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15084,23 +14971,30 @@ pub struct InferenceEndpointInfoGoogleAIStudio {
 
 impl InferenceEndpointInfoGoogleAIStudio {
     /// Creates a builder for [`InferenceEndpointInfoGoogleAIStudio`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoGoogleAIStudioBuilder {
         InferenceEndpointInfoGoogleAIStudioBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoGoogleAIStudio`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoGoogleAIStudioBuilder,
-        ) -> InferenceEndpointInfoGoogleAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoGoogleAIStudio>>(
+        f: impl FnOnce(InferenceEndpointInfoGoogleAIStudioBuilder) -> B,
     ) -> InferenceEndpointInfoGoogleAIStudio {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoGoogleAIStudioBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_google_ai_studio_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoGoogleAIStudio`].
@@ -15171,9 +15065,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -15194,7 +15090,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)
 impl<S1, S2, S3>
     InferenceEndpointInfoGoogleAIStudioBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -15208,7 +15104,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoGoogleAIStudioBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -15222,7 +15118,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -15236,7 +15132,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeGoogleAIStudio>,
@@ -15247,16 +15143,21 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoGoogleAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoGoogleAIStudio`].
-    pub fn build(self) -> InferenceEndpointInfoGoogleAIStudio {
+    pub fn build(self) -> InferenceEndpointInfoGoogleAIStudio
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_google_ai_studio_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_ai_studio_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_ai_studio_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_ai_studio_members::task_type,
+        >,
+    {
         InferenceEndpointInfoGoogleAIStudio {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -15268,73 +15169,40 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoGoogleAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoGoogleAIStudio
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_google_ai_studio_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_ai_studio_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_ai_studio_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_google_ai_studio_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoGoogleAIStudioBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoGoogleAIStudio;
+
+    fn build(self) -> InferenceEndpointInfoGoogleAIStudio {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoGoogleAIStudioBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoGoogleAIStudio
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_google_ai_studio_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_ai_studio_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_ai_studio_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_google_ai_studio_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleAIStudio { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoGoogleAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleAIStudio { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoGoogleAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleAIStudio { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoGoogleAIStudioBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleAIStudio { match task_type {} }
+    fn from(builder: InferenceEndpointInfoGoogleAIStudioBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15359,23 +15227,30 @@ pub struct InferenceEndpointInfoGoogleVertexAI {
 
 impl InferenceEndpointInfoGoogleVertexAI {
     /// Creates a builder for [`InferenceEndpointInfoGoogleVertexAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoGoogleVertexAIBuilder {
         InferenceEndpointInfoGoogleVertexAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoGoogleVertexAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoGoogleVertexAIBuilder,
-        ) -> InferenceEndpointInfoGoogleVertexAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoGoogleVertexAI>>(
+        f: impl FnOnce(InferenceEndpointInfoGoogleVertexAIBuilder) -> B,
     ) -> InferenceEndpointInfoGoogleVertexAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoGoogleVertexAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_google_vertex_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoGoogleVertexAI`].
@@ -15446,9 +15321,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -15469,7 +15346,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)
 impl<S1, S2, S3>
     InferenceEndpointInfoGoogleVertexAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -15483,7 +15360,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoGoogleVertexAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -15497,7 +15374,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -15511,7 +15388,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeGoogleVertexAI>,
@@ -15522,16 +15399,21 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoGoogleVertexAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoGoogleVertexAI`].
-    pub fn build(self) -> InferenceEndpointInfoGoogleVertexAI {
+    pub fn build(self) -> InferenceEndpointInfoGoogleVertexAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_google_vertex_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_vertex_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_vertex_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<
+            inference_endpoint_info_google_vertex_ai_members::task_type,
+        >,
+    {
         InferenceEndpointInfoGoogleVertexAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -15543,73 +15425,40 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoGoogleVertexAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoGoogleVertexAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_google_vertex_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_vertex_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_vertex_ai_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_google_vertex_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoGoogleVertexAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoGoogleVertexAI;
+
+    fn build(self) -> InferenceEndpointInfoGoogleVertexAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoGoogleVertexAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoGoogleVertexAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_google_vertex_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_vertex_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<
+        inference_endpoint_info_google_vertex_ai_members::inference_id,
+    >,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_google_vertex_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleVertexAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoGoogleVertexAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleVertexAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoGoogleVertexAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleVertexAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoGoogleVertexAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGoogleVertexAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoGoogleVertexAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15634,23 +15483,30 @@ pub struct InferenceEndpointInfoGroq {
 
 impl InferenceEndpointInfoGroq {
     /// Creates a builder for [`InferenceEndpointInfoGroq`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoGroqBuilder {
         InferenceEndpointInfoGroqBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoGroq`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoGroqBuilder,
-        ) -> InferenceEndpointInfoGroqBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoGroq>>(
+        f: impl FnOnce(InferenceEndpointInfoGroqBuilder) -> B,
     ) -> InferenceEndpointInfoGroq {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoGroqBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_groq_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoGroq`].
@@ -15721,9 +15577,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -15742,7 +15600,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoGroqBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -15754,7 +15612,7 @@ impl<S1, S2, S3> InferenceEndpointInfoGroqBuilder<(crate::typed::builder::NotSet
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoGroqBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -15766,7 +15624,7 @@ impl<S0, S2, S3> InferenceEndpointInfoGroqBuilder<(S0, crate::typed::builder::No
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoGroqBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -15778,7 +15636,7 @@ impl<S0, S1, S3> InferenceEndpointInfoGroqBuilder<(S0, S1, crate::typed::builder
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoGroqBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeGroq>,
@@ -15789,16 +15647,15 @@ impl<S0, S1, S2> InferenceEndpointInfoGroqBuilder<(S0, S1, S2, crate::typed::bui
     }
 }
 
-impl
-    InferenceEndpointInfoGroqBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoGroq`].
-    pub fn build(self) -> InferenceEndpointInfoGroq {
+    pub fn build(self) -> InferenceEndpointInfoGroq
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::task_type>,
+    {
         InferenceEndpointInfoGroq {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -15810,71 +15667,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoGroqBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoGroq
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoGroqBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoGroq;
+
+    fn build(self) -> InferenceEndpointInfoGroq {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoGroqBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGroq { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoGroqBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoGroq
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_groq_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGroq { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoGroqBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGroq { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoGroqBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoGroq { match task_type {} }
+    fn from(builder: InferenceEndpointInfoGroqBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15899,23 +15717,30 @@ pub struct InferenceEndpointInfoHuggingFace {
 
 impl InferenceEndpointInfoHuggingFace {
     /// Creates a builder for [`InferenceEndpointInfoHuggingFace`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoHuggingFaceBuilder {
         InferenceEndpointInfoHuggingFaceBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoHuggingFace`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoHuggingFaceBuilder,
-        ) -> InferenceEndpointInfoHuggingFaceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoHuggingFace>>(
+        f: impl FnOnce(InferenceEndpointInfoHuggingFaceBuilder) -> B,
     ) -> InferenceEndpointInfoHuggingFace {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoHuggingFaceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_hugging_face_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoHuggingFace`].
@@ -15986,9 +15811,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -16009,7 +15836,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     InferenceEndpointInfoHuggingFaceBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -16023,7 +15850,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoHuggingFaceBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -16037,7 +15864,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -16051,7 +15878,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeHuggingFace>,
@@ -16062,16 +15889,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoHuggingFaceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoHuggingFace`].
-    pub fn build(self) -> InferenceEndpointInfoHuggingFace {
+    pub fn build(self) -> InferenceEndpointInfoHuggingFace
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_hugging_face_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_hugging_face_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::task_type>,
+    {
         InferenceEndpointInfoHuggingFace {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -16083,73 +15913,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoHuggingFaceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoHuggingFace
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_hugging_face_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoHuggingFaceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoHuggingFace;
+
+    fn build(self) -> InferenceEndpointInfoHuggingFace {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoHuggingFaceBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoHuggingFace
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_hugging_face_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_hugging_face_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoHuggingFace { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoHuggingFaceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoHuggingFace { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoHuggingFaceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoHuggingFace { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoHuggingFaceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoHuggingFace { match task_type {} }
+    fn from(builder: InferenceEndpointInfoHuggingFaceBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16174,23 +15967,30 @@ pub struct InferenceEndpointInfoJinaAi {
 
 impl InferenceEndpointInfoJinaAi {
     /// Creates a builder for [`InferenceEndpointInfoJinaAi`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoJinaAiBuilder {
         InferenceEndpointInfoJinaAiBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoJinaAi`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoJinaAiBuilder,
-        ) -> InferenceEndpointInfoJinaAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoJinaAi>>(
+        f: impl FnOnce(InferenceEndpointInfoJinaAiBuilder) -> B,
     ) -> InferenceEndpointInfoJinaAi {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoJinaAiBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_jina_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoJinaAi`].
@@ -16261,9 +16061,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -16282,7 +16084,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -16294,7 +16096,7 @@ impl<S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoJinaAiBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -16306,7 +16108,7 @@ impl<S0, S2, S3> InferenceEndpointInfoJinaAiBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoJinaAiBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -16318,7 +16120,7 @@ impl<S0, S1, S3> InferenceEndpointInfoJinaAiBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeJinaAi>,
@@ -16329,16 +16131,15 @@ impl<S0, S1, S2> InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    InferenceEndpointInfoJinaAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoJinaAi`].
-    pub fn build(self) -> InferenceEndpointInfoJinaAi {
+    pub fn build(self) -> InferenceEndpointInfoJinaAi
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::task_type>,
+    {
         InferenceEndpointInfoJinaAi {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -16350,71 +16151,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoJinaAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoJinaAi
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoJinaAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoJinaAi;
+
+    fn build(self) -> InferenceEndpointInfoJinaAi {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoJinaAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoJinaAi { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoJinaAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoJinaAi
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_jina_ai_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoJinaAi { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoJinaAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoJinaAi { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoJinaAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoJinaAi { match task_type {} }
+    fn from(builder: InferenceEndpointInfoJinaAiBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16439,23 +16201,30 @@ pub struct InferenceEndpointInfoLlama {
 
 impl InferenceEndpointInfoLlama {
     /// Creates a builder for [`InferenceEndpointInfoLlama`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoLlamaBuilder {
         InferenceEndpointInfoLlamaBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoLlama`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoLlamaBuilder,
-        ) -> InferenceEndpointInfoLlamaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoLlama>>(
+        f: impl FnOnce(InferenceEndpointInfoLlamaBuilder) -> B,
     ) -> InferenceEndpointInfoLlama {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoLlamaBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_llama_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoLlama`].
@@ -16526,9 +16295,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -16547,7 +16318,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -16559,7 +16330,7 @@ impl<S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(crate::typed::builder::NotSe
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoLlamaBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -16571,7 +16342,7 @@ impl<S0, S2, S3> InferenceEndpointInfoLlamaBuilder<(S0, crate::typed::builder::N
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoLlamaBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -16583,7 +16354,7 @@ impl<S0, S1, S3> InferenceEndpointInfoLlamaBuilder<(S0, S1, crate::typed::builde
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeLlama>,
@@ -16594,16 +16365,15 @@ impl<S0, S1, S2> InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, crate::typed::bu
     }
 }
 
-impl
-    InferenceEndpointInfoLlamaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoLlama`].
-    pub fn build(self) -> InferenceEndpointInfoLlama {
+    pub fn build(self) -> InferenceEndpointInfoLlama
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::task_type>,
+    {
         InferenceEndpointInfoLlama {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -16615,71 +16385,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoLlamaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoLlama
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoLlamaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoLlama;
+
+    fn build(self) -> InferenceEndpointInfoLlama {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoLlamaBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoLlama { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoLlamaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoLlama
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_llama_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoLlama { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoLlamaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoLlama { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoLlamaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoLlama { match task_type {} }
+    fn from(builder: InferenceEndpointInfoLlamaBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16704,23 +16435,30 @@ pub struct InferenceEndpointInfoMistral {
 
 impl InferenceEndpointInfoMistral {
     /// Creates a builder for [`InferenceEndpointInfoMistral`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoMistralBuilder {
         InferenceEndpointInfoMistralBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoMistral`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoMistralBuilder,
-        ) -> InferenceEndpointInfoMistralBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoMistral>>(
+        f: impl FnOnce(InferenceEndpointInfoMistralBuilder) -> B,
     ) -> InferenceEndpointInfoMistral {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoMistralBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_mistral_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoMistral`].
@@ -16791,9 +16529,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -16812,7 +16552,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoMistralBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -16824,7 +16564,7 @@ impl<S1, S2, S3> InferenceEndpointInfoMistralBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoMistralBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -16836,7 +16576,7 @@ impl<S0, S2, S3> InferenceEndpointInfoMistralBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoMistralBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -16848,7 +16588,7 @@ impl<S0, S1, S3> InferenceEndpointInfoMistralBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoMistralBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeMistral>,
@@ -16859,16 +16599,15 @@ impl<S0, S1, S2> InferenceEndpointInfoMistralBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    InferenceEndpointInfoMistralBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoMistral`].
-    pub fn build(self) -> InferenceEndpointInfoMistral {
+    pub fn build(self) -> InferenceEndpointInfoMistral
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::task_type>,
+    {
         InferenceEndpointInfoMistral {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -16880,71 +16619,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoMistralBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoMistral
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoMistralBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoMistral;
+
+    fn build(self) -> InferenceEndpointInfoMistral {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoMistralBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoMistral { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoMistralBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoMistral
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_mistral_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoMistral { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoMistralBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoMistral { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoMistralBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoMistral { match task_type {} }
+    fn from(builder: InferenceEndpointInfoMistralBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -16969,23 +16669,30 @@ pub struct InferenceEndpointInfoNvidia {
 
 impl InferenceEndpointInfoNvidia {
     /// Creates a builder for [`InferenceEndpointInfoNvidia`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoNvidiaBuilder {
         InferenceEndpointInfoNvidiaBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoNvidia`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoNvidiaBuilder,
-        ) -> InferenceEndpointInfoNvidiaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoNvidia>>(
+        f: impl FnOnce(InferenceEndpointInfoNvidiaBuilder) -> B,
     ) -> InferenceEndpointInfoNvidia {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoNvidiaBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_nvidia_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoNvidia`].
@@ -17056,9 +16763,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -17077,7 +16786,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -17089,7 +16798,7 @@ impl<S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoNvidiaBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -17101,7 +16810,7 @@ impl<S0, S2, S3> InferenceEndpointInfoNvidiaBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoNvidiaBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference ID
+    /// **Required.** The inference ID
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -17113,7 +16822,7 @@ impl<S0, S1, S3> InferenceEndpointInfoNvidiaBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeNvidia>,
@@ -17124,16 +16833,15 @@ impl<S0, S1, S2> InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    InferenceEndpointInfoNvidiaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoNvidia`].
-    pub fn build(self) -> InferenceEndpointInfoNvidia {
+    pub fn build(self) -> InferenceEndpointInfoNvidia
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::task_type>,
+    {
         InferenceEndpointInfoNvidia {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -17145,71 +16853,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoNvidiaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoNvidia
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoNvidiaBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoNvidia;
+
+    fn build(self) -> InferenceEndpointInfoNvidia {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoNvidiaBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoNvidia { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoNvidiaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoNvidia
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_nvidia_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoNvidia { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoNvidiaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoNvidia { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoNvidiaBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoNvidia { match task_type {} }
+    fn from(builder: InferenceEndpointInfoNvidiaBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17234,23 +16903,30 @@ pub struct InferenceEndpointInfoOpenAI {
 
 impl InferenceEndpointInfoOpenAI {
     /// Creates a builder for [`InferenceEndpointInfoOpenAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoOpenAIBuilder {
         InferenceEndpointInfoOpenAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoOpenAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoOpenAIBuilder,
-        ) -> InferenceEndpointInfoOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoOpenAI>>(
+        f: impl FnOnce(InferenceEndpointInfoOpenAIBuilder) -> B,
     ) -> InferenceEndpointInfoOpenAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoOpenAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_open_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoOpenAI`].
@@ -17321,9 +16997,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -17342,7 +17020,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -17354,7 +17032,7 @@ impl<S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(crate::typed::builder::NotS
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoOpenAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -17366,7 +17044,7 @@ impl<S0, S2, S3> InferenceEndpointInfoOpenAIBuilder<(S0, crate::typed::builder::
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoOpenAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -17378,7 +17056,7 @@ impl<S0, S1, S3> InferenceEndpointInfoOpenAIBuilder<(S0, S1, crate::typed::build
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeOpenAI>,
@@ -17389,16 +17067,15 @@ impl<S0, S1, S2> InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, crate::typed::b
     }
 }
 
-impl
-    InferenceEndpointInfoOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoOpenAI`].
-    pub fn build(self) -> InferenceEndpointInfoOpenAI {
+    pub fn build(self) -> InferenceEndpointInfoOpenAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::task_type>,
+    {
         InferenceEndpointInfoOpenAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -17410,71 +17087,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoOpenAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoOpenAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoOpenAI;
+
+    fn build(self) -> InferenceEndpointInfoOpenAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoOpenAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoOpenAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_open_ai_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoOpenAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoOpenAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17499,23 +17137,30 @@ pub struct InferenceEndpointInfoOpenShiftAi {
 
 impl InferenceEndpointInfoOpenShiftAi {
     /// Creates a builder for [`InferenceEndpointInfoOpenShiftAi`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoOpenShiftAiBuilder {
         InferenceEndpointInfoOpenShiftAiBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoOpenShiftAi`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoOpenShiftAiBuilder,
-        ) -> InferenceEndpointInfoOpenShiftAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoOpenShiftAi>>(
+        f: impl FnOnce(InferenceEndpointInfoOpenShiftAiBuilder) -> B,
     ) -> InferenceEndpointInfoOpenShiftAi {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoOpenShiftAiBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_open_shift_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoOpenShiftAi`].
@@ -17586,9 +17231,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -17609,7 +17256,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)> {
 impl<S1, S2, S3>
     InferenceEndpointInfoOpenShiftAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
 {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -17623,7 +17270,7 @@ impl<S1, S2, S3>
 impl<S0, S2, S3>
     InferenceEndpointInfoOpenShiftAiBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
 {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -17637,7 +17284,7 @@ impl<S0, S2, S3>
 impl<S0, S1, S3>
     InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
 {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -17651,7 +17298,7 @@ impl<S0, S1, S3>
 impl<S0, S1, S2>
     InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
 {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeOpenShiftAi>,
@@ -17662,16 +17309,19 @@ impl<S0, S1, S2>
     }
 }
 
-impl
-    InferenceEndpointInfoOpenShiftAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoOpenShiftAi`].
-    pub fn build(self) -> InferenceEndpointInfoOpenShiftAi {
+    pub fn build(self) -> InferenceEndpointInfoOpenShiftAi
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_open_shift_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<
+            inference_endpoint_info_open_shift_ai_members::inference_id,
+        >,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::task_type>,
+    {
         InferenceEndpointInfoOpenShiftAi {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -17683,73 +17333,36 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoOpenShiftAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoOpenShiftAi
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_open_shift_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoOpenShiftAiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoOpenShiftAi;
+
+    fn build(self) -> InferenceEndpointInfoOpenShiftAi {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3>
-    InferenceEndpointInfoOpenShiftAiBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoOpenShiftAi
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::service>,
+    S1: crate::typed::builder::IsSet<
+        inference_endpoint_info_open_shift_ai_members::service_settings,
+    >,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_open_shift_ai_members::task_type>,
 {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenShiftAi { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoOpenShiftAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
-{
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenShiftAi { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoOpenShiftAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenShiftAi { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoOpenShiftAiBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoOpenShiftAi { match task_type {} }
+    fn from(builder: InferenceEndpointInfoOpenShiftAiBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17774,23 +17387,30 @@ pub struct InferenceEndpointInfoVoyageAI {
 
 impl InferenceEndpointInfoVoyageAI {
     /// Creates a builder for [`InferenceEndpointInfoVoyageAI`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoVoyageAIBuilder {
         InferenceEndpointInfoVoyageAIBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoVoyageAI`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoVoyageAIBuilder,
-        ) -> InferenceEndpointInfoVoyageAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoVoyageAI>>(
+        f: impl FnOnce(InferenceEndpointInfoVoyageAIBuilder) -> B,
     ) -> InferenceEndpointInfoVoyageAI {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoVoyageAIBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_voyage_ai_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoVoyageAI`].
@@ -17861,9 +17481,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -17882,7 +17504,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -17894,7 +17516,7 @@ impl<S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(crate::typed::builder::No
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -17906,7 +17528,7 @@ impl<S0, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, crate::typed::builder
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -17918,7 +17540,7 @@ impl<S0, S1, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, crate::typed::bui
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeVoyageAI>,
@@ -17929,16 +17551,17 @@ impl<S0, S1, S2> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, crate::typed:
     }
 }
 
-impl
-    InferenceEndpointInfoVoyageAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoVoyageAI`].
-    pub fn build(self) -> InferenceEndpointInfoVoyageAI {
+    pub fn build(self) -> InferenceEndpointInfoVoyageAI
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::service>,
+        S1: crate::typed::builder::IsSet<
+            inference_endpoint_info_voyage_ai_members::service_settings,
+        >,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::task_type>,
+    {
         InferenceEndpointInfoVoyageAI {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -17950,71 +17573,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoVoyageAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoVoyageAI
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoVoyageAIBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoVoyageAI;
+
+    fn build(self) -> InferenceEndpointInfoVoyageAI {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoVoyageAIBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoVoyageAI { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoVoyageAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoVoyageAI
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_voyage_ai_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoVoyageAI { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoVoyageAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoVoyageAI { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoVoyageAIBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoVoyageAI { match task_type {} }
+    fn from(builder: InferenceEndpointInfoVoyageAIBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18039,23 +17623,30 @@ pub struct InferenceEndpointInfoWatsonx {
 
 impl InferenceEndpointInfoWatsonx {
     /// Creates a builder for [`InferenceEndpointInfoWatsonx`].
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
     pub fn builder() -> InferenceEndpointInfoWatsonxBuilder {
         InferenceEndpointInfoWatsonxBuilder::new()
     }
 
     /// Creates a [`InferenceEndpointInfoWatsonx`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            InferenceEndpointInfoWatsonxBuilder,
-        ) -> InferenceEndpointInfoWatsonxBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `service`, `service_settings`, `inference_id`, `task_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceEndpointInfoWatsonx>>(
+        f: impl FnOnce(InferenceEndpointInfoWatsonxBuilder) -> B,
     ) -> InferenceEndpointInfoWatsonx {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`InferenceEndpointInfoWatsonxBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod inference_endpoint_info_watsonx_members {
+    pub struct service;
+    pub struct service_settings;
+    pub struct inference_id;
+    pub struct task_type;
 }
 
 /// Builder for [`InferenceEndpointInfoWatsonx`].
@@ -18126,9 +17717,11 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)> {
     }
 
     /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
-    pub fn chunking_settings_with(
+    pub fn chunking_settings_with<
+        B: crate::typed::builder::Build<Output = InferenceChunkingSettings>,
+    >(
         self,
-        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> B,
     ) -> Self {
         self.chunking_settings(f(InferenceChunkingSettingsBuilder::new()).build())
     }
@@ -18147,7 +17740,7 @@ impl<S0, S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// The service type
+    /// **Required.** The service type
     pub fn service(
         self,
         value: impl Into<String>,
@@ -18159,7 +17752,7 @@ impl<S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(crate::typed::builder::Not
 }
 
 impl<S0, S2, S3> InferenceEndpointInfoWatsonxBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
-    /// Settings specific to the service
+    /// **Required.** Settings specific to the service
     pub fn service_settings(
         self,
         value: impl Into<ServiceSettings>,
@@ -18171,7 +17764,7 @@ impl<S0, S2, S3> InferenceEndpointInfoWatsonxBuilder<(S0, crate::typed::builder:
 }
 
 impl<S0, S1, S3> InferenceEndpointInfoWatsonxBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
-    /// The inference Id
+    /// **Required.** The inference Id
     pub fn inference_id(
         self,
         value: impl Into<String>,
@@ -18183,7 +17776,7 @@ impl<S0, S1, S3> InferenceEndpointInfoWatsonxBuilder<(S0, S1, crate::typed::buil
 }
 
 impl<S0, S1, S2> InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
-    /// The task type
+    /// **Required.** The task type
     pub fn task_type(
         self,
         value: impl Into<TaskTypeWatsonx>,
@@ -18194,16 +17787,15 @@ impl<S0, S1, S2> InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, crate::typed::
     }
 }
 
-impl
-    InferenceEndpointInfoWatsonxBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`InferenceEndpointInfoWatsonx`].
-    pub fn build(self) -> InferenceEndpointInfoWatsonx {
+    pub fn build(self) -> InferenceEndpointInfoWatsonx
+    where
+        S0: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service>,
+        S1: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service_settings>,
+        S2: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::inference_id>,
+        S3: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::task_type>,
+    {
         InferenceEndpointInfoWatsonx {
             chunking_settings: self.chunking_settings,
             service: self.service.unwrap(),
@@ -18215,71 +17807,32 @@ impl
     }
 }
 
-impl
-    From<
-        InferenceEndpointInfoWatsonxBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for InferenceEndpointInfoWatsonx
+impl<S0, S1, S2, S3> crate::typed::builder::Build
+    for InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::task_type>,
 {
-    fn from(
-        builder: InferenceEndpointInfoWatsonxBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = InferenceEndpointInfoWatsonx;
+
+    fn build(self) -> InferenceEndpointInfoWatsonx {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> InferenceEndpointInfoWatsonxBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `service` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoWatsonx { match service {} }
-}
-
-impl<S2, S3>
-    InferenceEndpointInfoWatsonxBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)>>
+    for InferenceEndpointInfoWatsonx
+where
+    S0: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service>,
+    S1: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::service_settings>,
+    S2: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::inference_id>,
+    S3: crate::typed::builder::IsSet<inference_endpoint_info_watsonx_members::task_type>,
 {
-    /// `service_settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, service_settings: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoWatsonx { match service_settings {} }
-}
-
-impl<S3>
-    InferenceEndpointInfoWatsonxBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `inference_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, inference_id: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoWatsonx { match inference_id {} }
-}
-
-impl
-    InferenceEndpointInfoWatsonxBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `task_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, task_type: crate::typed::builder::MissingRequiredField) -> InferenceEndpointInfoWatsonx { match task_type {} }
+    fn from(builder: InferenceEndpointInfoWatsonxBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// InferenceResult is an aggregation of mutually exclusive variants
@@ -18307,13 +17860,17 @@ pub enum InferenceResult {
 
 impl InferenceResult {
     /// Creates a builder for [`InferenceResult`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> InferenceResultBuilder {
         InferenceResultBuilder::new()
     }
 
     /// Creates a [`InferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(InferenceResultBuilder) -> InferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = InferenceResult>>(
+        f: impl FnOnce(InferenceResultBuilder) -> B,
     ) -> InferenceResult {
         f(Self::builder()).build()
     }
@@ -18427,23 +17984,34 @@ impl InferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl InferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> InferenceResultBuilder<(S0,)> {
     /// Builds a [`InferenceResult`].
-    pub fn build(self) -> InferenceResult {
+    pub fn build(self) -> InferenceResult
+    where
+        S0: crate::typed::builder::IsVariantSet<InferenceResult>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<InferenceResultBuilder<(crate::typed::builder::Set,)>> for InferenceResult {
-    fn from(builder: InferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for InferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceResult>,
+{
+    type Output = InferenceResult;
+
+    fn build(self) -> InferenceResult {
+        Self::build(self)
     }
 }
 
-impl InferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> InferenceResult { match variant {} }
+impl<S0> From<InferenceResultBuilder<(S0,)>> for InferenceResult
+where
+    S0: crate::typed::builder::IsVariantSet<InferenceResult>,
+{
+    fn from(builder: InferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18495,21 +18063,28 @@ pub struct JinaAIServiceSettings {
 
 impl JinaAIServiceSettings {
     /// Creates a builder for [`JinaAIServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> JinaAIServiceSettingsBuilder {
         JinaAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`JinaAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            JinaAIServiceSettingsBuilder,
-        ) -> JinaAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = JinaAIServiceSettings>>(
+        f: impl FnOnce(JinaAIServiceSettingsBuilder) -> B,
     ) -> JinaAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`JinaAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod jina_ai_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`JinaAIServiceSettings`].
@@ -18570,9 +18145,9 @@ impl<S0, S1> JinaAIServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -18637,7 +18212,7 @@ impl<S0, S1> JinaAIServiceSettingsBuilder<(S0, S1)> {
 }
 
 impl<S1> JinaAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key of your JinaAI account.
+    /// **Required.** A valid API key of your JinaAI account.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
     /// The get inference endpoint API does not retrieve your API key.
@@ -18652,7 +18227,7 @@ impl<S1> JinaAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> JinaAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     pub fn model_id(
         self,
         value: impl Into<String>,
@@ -18663,9 +18238,13 @@ impl<S0> JinaAIServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl JinaAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> JinaAIServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`JinaAIServiceSettings`].
-    pub fn build(self) -> JinaAIServiceSettings {
+    pub fn build(self) -> JinaAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<jina_ai_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<jina_ai_service_settings_members::model_id>,
+    {
         JinaAIServiceSettings {
             api_key: self.api_key.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -18678,29 +18257,26 @@ impl JinaAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<JinaAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for JinaAIServiceSettings
+impl<S0, S1> crate::typed::builder::Build for JinaAIServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<jina_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<jina_ai_service_settings_members::model_id>,
 {
-    fn from(
-        builder: JinaAIServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = JinaAIServiceSettings;
+
+    fn build(self) -> JinaAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> JinaAIServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> JinaAIServiceSettings { match api_key {} }
-}
-
-impl JinaAIServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> JinaAIServiceSettings { match model_id {} }
+impl<S0, S1> From<JinaAIServiceSettingsBuilder<(S0, S1)>> for JinaAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<jina_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<jina_ai_service_settings_members::model_id>,
+{
+    fn from(builder: JinaAIServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -18755,8 +18331,8 @@ impl JinaAITaskSettings {
     }
 
     /// Creates a [`JinaAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(JinaAITaskSettingsBuilder) -> JinaAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = JinaAITaskSettings>>(
+        f: impl FnOnce(JinaAITaskSettingsBuilder) -> B,
     ) -> JinaAITaskSettings {
         f(Self::builder()).build()
     }
@@ -18857,6 +18433,14 @@ impl JinaAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for JinaAITaskSettingsBuilder {
+    type Output = JinaAITaskSettings;
+
+    fn build(self) -> JinaAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<JinaAITaskSettingsBuilder> for JinaAITaskSettings {
     fn from(builder: JinaAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -18912,21 +18496,28 @@ pub struct LlamaServiceSettings {
 
 impl LlamaServiceSettings {
     /// Creates a builder for [`LlamaServiceSettings`].
+    ///
+    /// Required: `url`, `model_id`.
     pub fn builder() -> LlamaServiceSettingsBuilder {
         LlamaServiceSettingsBuilder::new()
     }
 
     /// Creates a [`LlamaServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            LlamaServiceSettingsBuilder,
-        ) -> LlamaServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `url`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = LlamaServiceSettings>>(
+        f: impl FnOnce(LlamaServiceSettingsBuilder) -> B,
     ) -> LlamaServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`LlamaServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod llama_service_settings_members {
+    pub struct url;
+    pub struct model_id;
 }
 
 /// Builder for [`LlamaServiceSettings`].
@@ -19005,16 +18596,16 @@ impl<S0, S1> LlamaServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> LlamaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The URL endpoint of the Llama stack endpoint.
+    /// **Required.** The URL endpoint of the Llama stack endpoint.
     /// URL must contain:
     /// * For `text_embedding` task - `/v1/inference/embeddings`.
     /// * For `completion` and `chat_completion` tasks - `/v1/openai/v1/chat/completions`.
@@ -19029,7 +18620,7 @@ impl<S1> LlamaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> LlamaServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Llama downloading models documentation for different ways of getting a list of available models and downloading them.
     /// Service has been tested and confirmed to be working with the following models:
     /// * For `text_embedding` task - `all-MiniLM-L6-v2`.
@@ -19044,9 +18635,13 @@ impl<S0> LlamaServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl LlamaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> LlamaServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`LlamaServiceSettings`].
-    pub fn build(self) -> LlamaServiceSettings {
+    pub fn build(self) -> LlamaServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<llama_service_settings_members::url>,
+        S1: crate::typed::builder::IsSet<llama_service_settings_members::model_id>,
+    {
         LlamaServiceSettings {
             url: self.url.unwrap(),
             model_id: self.model_id.unwrap(),
@@ -19057,29 +18652,26 @@ impl LlamaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<LlamaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for LlamaServiceSettings
+impl<S0, S1> crate::typed::builder::Build for LlamaServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<llama_service_settings_members::url>,
+    S1: crate::typed::builder::IsSet<llama_service_settings_members::model_id>,
 {
-    fn from(
-        builder: LlamaServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = LlamaServiceSettings;
+
+    fn build(self) -> LlamaServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> LlamaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> LlamaServiceSettings { match url {} }
-}
-
-impl LlamaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> LlamaServiceSettings { match model_id {} }
+impl<S0, S1> From<LlamaServiceSettingsBuilder<(S0, S1)>> for LlamaServiceSettings
+where
+    S0: crate::typed::builder::IsSet<llama_service_settings_members::url>,
+    S1: crate::typed::builder::IsSet<llama_service_settings_members::model_id>,
+{
+    fn from(builder: LlamaServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19197,16 +18789,27 @@ pub struct Message {
 
 impl Message {
     /// Creates a builder for [`Message`].
+    ///
+    /// Required: `role`.
     pub fn builder() -> MessageBuilder {
         MessageBuilder::new()
     }
 
     /// Creates a [`Message`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `role`.
+    pub fn of<B: crate::typed::builder::Build<Output = Message>>(
+        f: impl FnOnce(MessageBuilder) -> B,
     ) -> Message {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MessageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod message_members {
+    pub struct role;
 }
 
 /// Builder for [`Message`].
@@ -19356,15 +18959,9 @@ impl<S0> MessageBuilder<(S0,)> {
     }
 
     /// Adds an element to [`tool_calls`](Self::tool_calls), with a builder.
-    pub fn add_tool_calls_with(
+    pub fn add_tool_calls_with<B: crate::typed::builder::Build<Output = ToolCall>>(
         self,
-        f: impl FnOnce(
-            ToolCallBuilder,
-        ) -> ToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ToolCallBuilder) -> B,
     ) -> Self {
         self.add_tool_calls(f(ToolCallBuilder::new()).build())
     }
@@ -19405,7 +19002,7 @@ impl<S0> MessageBuilder<(S0,)> {
 }
 
 impl MessageBuilder<(crate::typed::builder::NotSet,)> {
-    /// The role of the message author. Valid values are `user`, `assistant`, `system`, and `tool`.
+    /// **Required.** The role of the message author. Valid values are `user`, `assistant`, `system`, and `tool`.
     pub fn role(self, value: impl Into<String>) -> MessageBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.role = Some(value.into());
@@ -19413,9 +19010,12 @@ impl MessageBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MessageBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MessageBuilder<(S0,)> {
     /// Builds a [`Message`].
-    pub fn build(self) -> Message {
+    pub fn build(self) -> Message
+    where
+        S0: crate::typed::builder::IsSet<message_members::role>,
+    {
         Message {
             content: self.content,
             role: self.role.unwrap(),
@@ -19427,16 +19027,24 @@ impl MessageBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MessageBuilder<(crate::typed::builder::Set,)>> for Message {
-    fn from(builder: MessageBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MessageBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<message_members::role>,
+{
+    type Output = Message;
+
+    fn build(self) -> Message {
+        Self::build(self)
     }
 }
 
-impl MessageBuilder<(crate::typed::builder::NotSet,)> {
-    /// `role` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, role: crate::typed::builder::MissingRequiredField) -> Message { match role {} }
+impl<S0> From<MessageBuilder<(S0,)>> for Message
+where
+    S0: crate::typed::builder::IsSet<message_members::role>,
+{
+    fn from(builder: MessageBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19486,21 +19094,28 @@ pub struct MistralServiceSettings {
 
 impl MistralServiceSettings {
     /// Creates a builder for [`MistralServiceSettings`].
+    ///
+    /// Required: `api_key`, `model`.
     pub fn builder() -> MistralServiceSettingsBuilder {
         MistralServiceSettingsBuilder::new()
     }
 
     /// Creates a [`MistralServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MistralServiceSettingsBuilder,
-        ) -> MistralServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model`.
+    pub fn of<B: crate::typed::builder::Build<Output = MistralServiceSettings>>(
+        f: impl FnOnce(MistralServiceSettingsBuilder) -> B,
     ) -> MistralServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MistralServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod mistral_service_settings_members {
+    pub struct api_key;
+    pub struct model;
 }
 
 /// Builder for [`MistralServiceSettings`].
@@ -19564,16 +19179,16 @@ impl<S0, S1> MistralServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> MistralServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key of your Mistral account.
+    /// **Required.** A valid API key of your Mistral account.
     /// You can find your Mistral API keys or you can create a new one on the API Keys page.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -19589,7 +19204,7 @@ impl<S1> MistralServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MistralServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the Mistral models documentation for the list of available models.
     pub fn model(
         self,
@@ -19601,9 +19216,13 @@ impl<S0> MistralServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl MistralServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MistralServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`MistralServiceSettings`].
-    pub fn build(self) -> MistralServiceSettings {
+    pub fn build(self) -> MistralServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<mistral_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<mistral_service_settings_members::model>,
+    {
         MistralServiceSettings {
             api_key: self.api_key.unwrap(),
             max_input_tokens: self.max_input_tokens,
@@ -19613,29 +19232,26 @@ impl MistralServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<MistralServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MistralServiceSettings
+impl<S0, S1> crate::typed::builder::Build for MistralServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<mistral_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<mistral_service_settings_members::model>,
 {
-    fn from(
-        builder: MistralServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MistralServiceSettings;
+
+    fn build(self) -> MistralServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> MistralServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> MistralServiceSettings { match api_key {} }
-}
-
-impl MistralServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model: crate::typed::builder::MissingRequiredField) -> MistralServiceSettings { match model {} }
+impl<S0, S1> From<MistralServiceSettingsBuilder<(S0, S1)>> for MistralServiceSettings
+where
+    S0: crate::typed::builder::IsSet<mistral_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<mistral_service_settings_members::model>,
+{
+    fn from(builder: MistralServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19697,21 +19313,28 @@ pub struct NvidiaServiceSettings {
 
 impl NvidiaServiceSettings {
     /// Creates a builder for [`NvidiaServiceSettings`].
+    ///
+    /// Required: `api_key`, `model_id`.
     pub fn builder() -> NvidiaServiceSettingsBuilder {
         NvidiaServiceSettingsBuilder::new()
     }
 
     /// Creates a [`NvidiaServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NvidiaServiceSettingsBuilder,
-        ) -> NvidiaServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = NvidiaServiceSettings>>(
+        f: impl FnOnce(NvidiaServiceSettingsBuilder) -> B,
     ) -> NvidiaServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NvidiaServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nvidia_service_settings_members {
+    pub struct api_key;
+    pub struct model_id;
 }
 
 /// Builder for [`NvidiaServiceSettings`].
@@ -19809,16 +19432,16 @@ impl<S0, S1> NvidiaServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> NvidiaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your Nvidia endpoint.
+    /// **Required.** A valid API key for your Nvidia endpoint.
     /// Can be found in `API Keys` section of Nvidia account settings.
     pub fn api_key(
         self,
@@ -19831,7 +19454,7 @@ impl<S1> NvidiaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NvidiaServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the model's documentation for the name if needed.
     /// Service has been tested and confirmed to be working with the following models:
     ///
@@ -19849,9 +19472,13 @@ impl<S0> NvidiaServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl NvidiaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NvidiaServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`NvidiaServiceSettings`].
-    pub fn build(self) -> NvidiaServiceSettings {
+    pub fn build(self) -> NvidiaServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<nvidia_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<nvidia_service_settings_members::model_id>,
+    {
         NvidiaServiceSettings {
             api_key: self.api_key.unwrap(),
             url: self.url,
@@ -19863,29 +19490,26 @@ impl NvidiaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<NvidiaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NvidiaServiceSettings
+impl<S0, S1> crate::typed::builder::Build for NvidiaServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<nvidia_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<nvidia_service_settings_members::model_id>,
 {
-    fn from(
-        builder: NvidiaServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NvidiaServiceSettings;
+
+    fn build(self) -> NvidiaServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> NvidiaServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> NvidiaServiceSettings { match api_key {} }
-}
-
-impl NvidiaServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> NvidiaServiceSettings { match model_id {} }
+impl<S0, S1> From<NvidiaServiceSettingsBuilder<(S0, S1)>> for NvidiaServiceSettings
+where
+    S0: crate::typed::builder::IsSet<nvidia_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<nvidia_service_settings_members::model_id>,
+{
+    fn from(builder: NvidiaServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -19932,8 +19556,8 @@ impl NvidiaTaskSettings {
     }
 
     /// Creates a [`NvidiaTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NvidiaTaskSettingsBuilder) -> NvidiaTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NvidiaTaskSettings>>(
+        f: impl FnOnce(NvidiaTaskSettingsBuilder) -> B,
     ) -> NvidiaTaskSettings {
         f(Self::builder()).build()
     }
@@ -19999,6 +19623,14 @@ impl NvidiaTaskSettingsBuilder {
             input_type: self.input_type,
             truncate: self.truncate,
         }
+    }
+}
+
+impl crate::typed::builder::Build for NvidiaTaskSettingsBuilder {
+    type Output = NvidiaTaskSettings;
+
+    fn build(self) -> NvidiaTaskSettings {
+        Self::build(self)
     }
 }
 
@@ -20098,18 +19730,27 @@ pub struct OpenAIServiceSettings {
 
 impl OpenAIServiceSettings {
     /// Creates a builder for [`OpenAIServiceSettings`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> OpenAIServiceSettingsBuilder {
         OpenAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`OpenAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OpenAIServiceSettingsBuilder,
-        ) -> OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = OpenAIServiceSettings>>(
+        f: impl FnOnce(OpenAIServiceSettingsBuilder) -> B,
     ) -> OpenAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OpenAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod open_ai_service_settings_members {
+    pub struct model_id;
 }
 
 /// Builder for [`OpenAIServiceSettings`].
@@ -20260,9 +19901,9 @@ impl<S0> OpenAIServiceSettingsBuilder<(S0,)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -20343,7 +19984,7 @@ impl<S0> OpenAIServiceSettingsBuilder<(S0,)> {
 }
 
 impl OpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the OpenAI documentation for the list of available text embedding models.
     pub fn model_id(
         self,
@@ -20355,9 +19996,12 @@ impl OpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> OpenAIServiceSettingsBuilder<(S0,)> {
     /// Builds a [`OpenAIServiceSettings`].
-    pub fn build(self) -> OpenAIServiceSettings {
+    pub fn build(self) -> OpenAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<open_ai_service_settings_members::model_id>,
+    {
         OpenAIServiceSettings {
             api_key: self.api_key,
             client_id: self.client_id,
@@ -20374,16 +20018,24 @@ impl OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)>> for OpenAIServiceSettings {
-    fn from(builder: OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for OpenAIServiceSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<open_ai_service_settings_members::model_id>,
+{
+    type Output = OpenAIServiceSettings;
+
+    fn build(self) -> OpenAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl OpenAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> OpenAIServiceSettings { match model_id {} }
+impl<S0> From<OpenAIServiceSettingsBuilder<(S0,)>> for OpenAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<open_ai_service_settings_members::model_id>,
+{
+    fn from(builder: OpenAIServiceSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -20427,8 +20079,8 @@ impl OpenAITaskSettings {
     }
 
     /// Creates a [`OpenAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(OpenAITaskSettingsBuilder) -> OpenAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = OpenAITaskSettings>>(
+        f: impl FnOnce(OpenAITaskSettingsBuilder) -> B,
     ) -> OpenAITaskSettings {
         f(Self::builder()).build()
     }
@@ -20502,6 +20154,14 @@ impl OpenAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for OpenAITaskSettingsBuilder {
+    type Output = OpenAITaskSettings;
+
+    fn build(self) -> OpenAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<OpenAITaskSettingsBuilder> for OpenAITaskSettings {
     fn from(builder: OpenAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -20550,21 +20210,28 @@ pub struct OpenShiftAiServiceSettings {
 
 impl OpenShiftAiServiceSettings {
     /// Creates a builder for [`OpenShiftAiServiceSettings`].
+    ///
+    /// Required: `api_key`, `url`.
     pub fn builder() -> OpenShiftAiServiceSettingsBuilder {
         OpenShiftAiServiceSettingsBuilder::new()
     }
 
     /// Creates a [`OpenShiftAiServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            OpenShiftAiServiceSettingsBuilder,
-        ) -> OpenShiftAiServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = OpenShiftAiServiceSettings>>(
+        f: impl FnOnce(OpenShiftAiServiceSettingsBuilder) -> B,
     ) -> OpenShiftAiServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`OpenShiftAiServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod open_shift_ai_service_settings_members {
+    pub struct api_key;
+    pub struct url;
 }
 
 /// Builder for [`OpenShiftAiServiceSettings`].
@@ -20669,16 +20336,16 @@ impl<S0, S1> OpenShiftAiServiceSettingsBuilder<(S0, S1)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
 }
 
 impl<S1> OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// A valid API key for your OpenShift AI endpoint.
+    /// **Required.** A valid API key for your OpenShift AI endpoint.
     /// Can be found in `Token authentication` section of model related information.
     pub fn api_key(
         self,
@@ -20691,7 +20358,7 @@ impl<S1> OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> OpenShiftAiServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The URL of the OpenShift AI hosted model endpoint.
+    /// **Required.** The URL of the OpenShift AI hosted model endpoint.
     pub fn url(
         self,
         value: impl Into<String>,
@@ -20702,9 +20369,13 @@ impl<S0> OpenShiftAiServiceSettingsBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> OpenShiftAiServiceSettingsBuilder<(S0, S1)> {
     /// Builds a [`OpenShiftAiServiceSettings`].
-    pub fn build(self) -> OpenShiftAiServiceSettings {
+    pub fn build(self) -> OpenShiftAiServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::url>,
+    {
         OpenShiftAiServiceSettings {
             api_key: self.api_key.unwrap(),
             url: self.url.unwrap(),
@@ -20716,33 +20387,26 @@ impl OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for OpenShiftAiServiceSettings
+impl<S0, S1> crate::typed::builder::Build for OpenShiftAiServiceSettingsBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::url>,
 {
-    fn from(
-        builder: OpenShiftAiServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = OpenShiftAiServiceSettings;
+
+    fn build(self) -> OpenShiftAiServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1> OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> OpenShiftAiServiceSettings { match api_key {} }
-}
-
-impl
-    OpenShiftAiServiceSettingsBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<OpenShiftAiServiceSettingsBuilder<(S0, S1)>> for OpenShiftAiServiceSettings
+where
+    S0: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<open_shift_ai_service_settings_members::url>,
 {
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> OpenShiftAiServiceSettings { match url {} }
+    fn from(builder: OpenShiftAiServiceSettingsBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -20778,8 +20442,8 @@ impl OpenShiftAiTaskSettings {
     }
 
     /// Creates a [`OpenShiftAiTaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(OpenShiftAiTaskSettingsBuilder) -> OpenShiftAiTaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = OpenShiftAiTaskSettings>>(
+        f: impl FnOnce(OpenShiftAiTaskSettingsBuilder) -> B,
     ) -> OpenShiftAiTaskSettings {
         f(Self::builder()).build()
     }
@@ -20837,6 +20501,14 @@ impl OpenShiftAiTaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for OpenShiftAiTaskSettingsBuilder {
+    type Output = OpenShiftAiTaskSettings;
+
+    fn build(self) -> OpenShiftAiTaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<OpenShiftAiTaskSettingsBuilder> for OpenShiftAiTaskSettings {
     fn from(builder: OpenShiftAiTaskSettingsBuilder) -> Self {
         builder.build()
@@ -20869,21 +20541,28 @@ pub struct RankedDocument {
 
 impl RankedDocument {
     /// Creates a builder for [`RankedDocument`].
+    ///
+    /// Required: `index`, `relevance_score`.
     pub fn builder() -> RankedDocumentBuilder {
         RankedDocumentBuilder::new()
     }
 
     /// Creates a [`RankedDocument`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankedDocumentBuilder,
-        ) -> RankedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `relevance_score`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankedDocument>>(
+        f: impl FnOnce(RankedDocumentBuilder) -> B,
     ) -> RankedDocument {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankedDocumentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod ranked_document_members {
+    pub struct index;
+    pub struct relevance_score;
 }
 
 /// Builder for [`RankedDocument`].
@@ -20930,6 +20609,7 @@ impl<S0, S1> RankedDocumentBuilder<(S0, S1)> {
 }
 
 impl<S1> RankedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn index(self, value: i32) -> RankedDocumentBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.index = Some(value);
@@ -20938,6 +20618,7 @@ impl<S1> RankedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> RankedDocumentBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn relevance_score(
         self,
         value: f32,
@@ -20948,9 +20629,13 @@ impl<S0> RankedDocumentBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RankedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RankedDocumentBuilder<(S0, S1)> {
     /// Builds a [`RankedDocument`].
-    pub fn build(self) -> RankedDocument {
+    pub fn build(self) -> RankedDocument
+    where
+        S0: crate::typed::builder::IsSet<ranked_document_members::index>,
+        S1: crate::typed::builder::IsSet<ranked_document_members::relevance_score>,
+    {
         RankedDocument {
             index: self.index.unwrap(),
             relevance_score: self.relevance_score.unwrap(),
@@ -20959,26 +20644,26 @@ impl RankedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<RankedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RankedDocument
+impl<S0, S1> crate::typed::builder::Build for RankedDocumentBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<ranked_document_members::index>,
+    S1: crate::typed::builder::IsSet<ranked_document_members::relevance_score>,
 {
-    fn from(
-        builder: RankedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RankedDocument;
+
+    fn build(self) -> RankedDocument {
+        Self::build(self)
     }
 }
 
-impl<S1> RankedDocumentBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> RankedDocument { match index {} }
-}
-
-impl RankedDocumentBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `relevance_score` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, relevance_score: crate::typed::builder::MissingRequiredField) -> RankedDocument { match relevance_score {} }
+impl<S0, S1> From<RankedDocumentBuilder<(S0, S1)>> for RankedDocument
+where
+    S0: crate::typed::builder::IsSet<ranked_document_members::index>,
+    S1: crate::typed::builder::IsSet<ranked_document_members::relevance_score>,
+{
+    fn from(builder: RankedDocumentBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// This setting helps to minimize the number of rate limit errors returned from the service.
@@ -21019,8 +20704,8 @@ impl RateLimitSetting {
     }
 
     /// Creates a [`RateLimitSetting`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> RateLimitSetting {
         f(Self::builder()).build()
     }
@@ -21086,6 +20771,14 @@ impl RateLimitSettingBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RateLimitSettingBuilder {
+    type Output = RateLimitSetting;
+
+    fn build(self) -> RateLimitSetting {
+        Self::build(self)
+    }
+}
+
 impl From<RateLimitSettingBuilder> for RateLimitSetting {
     fn from(builder: RateLimitSettingBuilder) -> Self {
         builder.build()
@@ -21126,7 +20819,9 @@ impl Reasoning {
     }
 
     /// Creates a [`Reasoning`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ReasoningBuilder) -> ReasoningBuilder) -> Reasoning {
+    pub fn of<B: crate::typed::builder::Build<Output = Reasoning>>(
+        f: impl FnOnce(ReasoningBuilder) -> B,
+    ) -> Reasoning {
         f(Self::builder()).build()
     }
 }
@@ -21222,6 +20917,14 @@ impl ReasoningBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ReasoningBuilder {
+    type Output = Reasoning;
+
+    fn build(self) -> Reasoning {
+        Self::build(self)
+    }
+}
+
 impl From<ReasoningBuilder> for Reasoning {
     fn from(builder: ReasoningBuilder) -> Self {
         builder.build()
@@ -21284,13 +20987,17 @@ pub enum RegionPolicy {
 
 impl RegionPolicy {
     /// Creates a builder for [`RegionPolicy`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> RegionPolicyBuilder {
         RegionPolicyBuilder::new()
     }
 
     /// Creates a [`RegionPolicy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RegionPolicyBuilder) -> RegionPolicyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = RegionPolicy>>(
+        f: impl FnOnce(RegionPolicyBuilder) -> B,
     ) -> RegionPolicy {
         f(Self::builder()).build()
     }
@@ -21345,23 +21052,34 @@ impl RegionPolicyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RegionPolicyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RegionPolicyBuilder<(S0,)> {
     /// Builds a [`RegionPolicy`].
-    pub fn build(self) -> RegionPolicy {
+    pub fn build(self) -> RegionPolicy
+    where
+        S0: crate::typed::builder::IsVariantSet<RegionPolicy>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<RegionPolicyBuilder<(crate::typed::builder::Set,)>> for RegionPolicy {
-    fn from(builder: RegionPolicyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RegionPolicyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<RegionPolicy>,
+{
+    type Output = RegionPolicy;
+
+    fn build(self) -> RegionPolicy {
+        Self::build(self)
     }
 }
 
-impl RegionPolicyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> RegionPolicy { match variant {} }
+impl<S0> From<RegionPolicyBuilder<(S0,)>> for RegionPolicy
+where
+    S0: crate::typed::builder::IsVariantSet<RegionPolicy>,
+{
+    fn from(builder: RegionPolicyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The stored region policy document.
@@ -21383,21 +21101,28 @@ pub struct RegionPolicyDoc {
 
 impl RegionPolicyDoc {
     /// Creates a builder for [`RegionPolicyDoc`].
+    ///
+    /// Required: `region_policy`, `created_at`.
     pub fn builder() -> RegionPolicyDocBuilder {
         RegionPolicyDocBuilder::new()
     }
 
     /// Creates a [`RegionPolicyDoc`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RegionPolicyDocBuilder,
-        ) -> RegionPolicyDocBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `region_policy`, `created_at`.
+    pub fn of<B: crate::typed::builder::Build<Output = RegionPolicyDoc>>(
+        f: impl FnOnce(RegionPolicyDocBuilder) -> B,
     ) -> RegionPolicyDoc {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RegionPolicyDocBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod region_policy_doc_members {
+    pub struct region_policy;
+    pub struct created_at;
 }
 
 /// Builder for [`RegionPolicyDoc`].
@@ -21476,6 +21201,7 @@ impl<S0, S1> RegionPolicyDocBuilder<(S0, S1)> {
 }
 
 impl<S1> RegionPolicyDocBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn region_policy(
         self,
         value: impl Into<RegionPolicy>,
@@ -21486,16 +21212,16 @@ impl<S1> RegionPolicyDocBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`region_policy`](Self::region_policy) with a builder.
-    pub fn region_policy_with(
+    pub fn region_policy_with<B: crate::typed::builder::Build<Output = RegionPolicy>>(
         self,
-        f: impl FnOnce(RegionPolicyBuilder) -> RegionPolicyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RegionPolicyBuilder) -> B,
     ) -> RegionPolicyDocBuilder<(crate::typed::builder::Set, S1)> {
         self.region_policy(f(RegionPolicyBuilder::new()).build())
     }
 }
 
 impl<S0> RegionPolicyDocBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The date and time the region policy was created.
+    /// **Required.** The date and time the region policy was created.
     pub fn created_at(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -21506,9 +21232,13 @@ impl<S0> RegionPolicyDocBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RegionPolicyDocBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RegionPolicyDocBuilder<(S0, S1)> {
     /// Builds a [`RegionPolicyDoc`].
-    pub fn build(self) -> RegionPolicyDoc {
+    pub fn build(self) -> RegionPolicyDoc
+    where
+        S0: crate::typed::builder::IsSet<region_policy_doc_members::region_policy>,
+        S1: crate::typed::builder::IsSet<region_policy_doc_members::created_at>,
+    {
         RegionPolicyDoc {
             region_policy: self.region_policy.unwrap(),
             created_at: self.created_at.unwrap(),
@@ -21519,26 +21249,26 @@ impl RegionPolicyDocBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<RegionPolicyDocBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RegionPolicyDoc
+impl<S0, S1> crate::typed::builder::Build for RegionPolicyDocBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<region_policy_doc_members::region_policy>,
+    S1: crate::typed::builder::IsSet<region_policy_doc_members::created_at>,
 {
-    fn from(
-        builder: RegionPolicyDocBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RegionPolicyDoc;
+
+    fn build(self) -> RegionPolicyDoc {
+        Self::build(self)
     }
 }
 
-impl<S1> RegionPolicyDocBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `region_policy` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, region_policy: crate::typed::builder::MissingRequiredField) -> RegionPolicyDoc { match region_policy {} }
-}
-
-impl RegionPolicyDocBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `created_at` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, created_at: crate::typed::builder::MissingRequiredField) -> RegionPolicyDoc { match created_at {} }
+impl<S0, S1> From<RegionPolicyDocBuilder<(S0, S1)>> for RegionPolicyDoc
+where
+    S0: crate::typed::builder::IsSet<region_policy_doc_members::region_policy>,
+    S1: crate::typed::builder::IsSet<region_policy_doc_members::created_at>,
+{
+    fn from(builder: RegionPolicyDocBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21643,18 +21373,27 @@ pub struct RequestChatCompletion {
 
 impl RequestChatCompletion {
     /// Creates a builder for [`RequestChatCompletion`].
+    ///
+    /// Required: `messages`.
     pub fn builder() -> RequestChatCompletionBuilder {
         RequestChatCompletionBuilder::new()
     }
 
     /// Creates a [`RequestChatCompletion`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestChatCompletionBuilder,
-        ) -> RequestChatCompletionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `messages`.
+    pub fn of<B: crate::typed::builder::Build<Output = RequestChatCompletion>>(
+        f: impl FnOnce(RequestChatCompletionBuilder) -> B,
     ) -> RequestChatCompletion {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestChatCompletionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_chat_completion_members {
+    pub struct messages;
 }
 
 /// Builder for [`RequestChatCompletion`].
@@ -21773,7 +21512,10 @@ impl<S0> RequestChatCompletionBuilder<(S0,)> {
     }
 
     /// Sets [`reasoning`](Self::reasoning) with a builder.
-    pub fn reasoning_with(self, f: impl FnOnce(ReasoningBuilder) -> ReasoningBuilder) -> Self {
+    pub fn reasoning_with<B: crate::typed::builder::Build<Output = Reasoning>>(
+        self,
+        f: impl FnOnce(ReasoningBuilder) -> B,
+    ) -> Self {
         self.reasoning(f(ReasoningBuilder::new()).build())
     }
 
@@ -21879,14 +21621,9 @@ impl<S0> RequestChatCompletionBuilder<(S0,)> {
     }
 
     /// Adds an element to [`tools`](Self::tools), with a builder.
-    pub fn add_tools_with(
+    pub fn add_tools_with<B: crate::typed::builder::Build<Output = CompletionTool>>(
         self,
-        f: impl FnOnce(
-            CompletionToolBuilder,
-        ) -> CompletionToolBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CompletionToolBuilder) -> B,
     ) -> Self {
         self.add_tools(f(CompletionToolBuilder::new()).build())
     }
@@ -21905,7 +21642,7 @@ impl<S0> RequestChatCompletionBuilder<(S0,)> {
 }
 
 impl RequestChatCompletionBuilder<(crate::typed::builder::NotSet,)> {
-    /// A list of objects representing the conversation.
+    /// **Required.** A list of objects representing the conversation.
     /// Requests should generally only add new messages from the user (role `user`).
     /// The other message roles (`assistant`, `system`, or `tool`) should generally only be copied from the response to a previous completion request, such that the messages array is built up throughout a conversation.
     pub fn messages(
@@ -21931,9 +21668,9 @@ impl RequestChatCompletionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`messages`](Self::messages), with a builder.
-    pub fn add_messages_with(
+    pub fn add_messages_with<B: crate::typed::builder::Build<Output = Message>>(
         self,
-        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MessageBuilder) -> B,
     ) -> RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
         self.add_messages(f(MessageBuilder::new()).build())
     }
@@ -21949,17 +21686,20 @@ impl RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`messages`](Self::messages), with a builder.
-    pub fn add_messages_with(
+    pub fn add_messages_with<B: crate::typed::builder::Build<Output = Message>>(
         self,
-        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MessageBuilder) -> B,
     ) -> Self {
         self.add_messages(f(MessageBuilder::new()).build())
     }
 }
 
-impl RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RequestChatCompletionBuilder<(S0,)> {
     /// Builds a [`RequestChatCompletion`].
-    pub fn build(self) -> RequestChatCompletion {
+    pub fn build(self) -> RequestChatCompletion
+    where
+        S0: crate::typed::builder::IsSet<request_chat_completion_members::messages>,
+    {
         RequestChatCompletion {
             messages: self.messages.unwrap(),
             model: self.model,
@@ -21974,16 +21714,24 @@ impl RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RequestChatCompletionBuilder<(crate::typed::builder::Set,)>> for RequestChatCompletion {
-    fn from(builder: RequestChatCompletionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RequestChatCompletionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<request_chat_completion_members::messages>,
+{
+    type Output = RequestChatCompletion;
+
+    fn build(self) -> RequestChatCompletion {
+        Self::build(self)
     }
 }
 
-impl RequestChatCompletionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `messages` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, messages: crate::typed::builder::MissingRequiredField) -> RequestChatCompletion { match messages {} }
+impl<S0> From<RequestChatCompletionBuilder<(S0,)>> for RequestChatCompletion
+where
+    S0: crate::typed::builder::IsSet<request_chat_completion_members::messages>,
+{
+    fn from(builder: RequestChatCompletionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22080,18 +21828,27 @@ pub struct RequestEmbedding {
 
 impl RequestEmbedding {
     /// Creates a builder for [`RequestEmbedding`].
+    ///
+    /// Required: `input`.
     pub fn builder() -> RequestEmbeddingBuilder {
         RequestEmbeddingBuilder::new()
     }
 
     /// Creates a [`RequestEmbedding`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestEmbeddingBuilder,
-        ) -> RequestEmbeddingBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `input`.
+    pub fn of<B: crate::typed::builder::Build<Output = RequestEmbedding>>(
+        f: impl FnOnce(RequestEmbeddingBuilder) -> B,
     ) -> RequestEmbedding {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestEmbeddingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_embedding_members {
+    pub struct input;
 }
 
 /// Builder for [`RequestEmbedding`].
@@ -22160,7 +21917,7 @@ impl<S0> RequestEmbeddingBuilder<(S0,)> {
 }
 
 impl RequestEmbeddingBuilder<(crate::typed::builder::NotSet,)> {
-    /// Inference input.
+    /// **Required.** Inference input.
     /// Either a string, an array of strings, a `content` object, or an array of `content` objects.
     /// `content` objects may contain a single item or an array of items. Models that support multiple items per `content`
     /// object will return a single embedding for each `content` object, regardless of how many items it contains.
@@ -22241,9 +21998,12 @@ impl RequestEmbeddingBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RequestEmbeddingBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RequestEmbeddingBuilder<(S0,)> {
     /// Builds a [`RequestEmbedding`].
-    pub fn build(self) -> RequestEmbedding {
+    pub fn build(self) -> RequestEmbedding
+    where
+        S0: crate::typed::builder::IsSet<request_embedding_members::input>,
+    {
         RequestEmbedding {
             input: self.input.unwrap(),
             input_type: self.input_type,
@@ -22252,16 +22012,24 @@ impl RequestEmbeddingBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RequestEmbeddingBuilder<(crate::typed::builder::Set,)>> for RequestEmbedding {
-    fn from(builder: RequestEmbeddingBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RequestEmbeddingBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<request_embedding_members::input>,
+{
+    type Output = RequestEmbedding;
+
+    fn build(self) -> RequestEmbedding {
+        Self::build(self)
     }
 }
 
-impl RequestEmbeddingBuilder<(crate::typed::builder::NotSet,)> {
-    /// `input` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, input: crate::typed::builder::MissingRequiredField) -> RequestEmbedding { match input {} }
+impl<S0> From<RequestEmbeddingBuilder<(S0,)>> for RequestEmbedding
+where
+    S0: crate::typed::builder::IsSet<request_embedding_members::input>,
+{
+    fn from(builder: RequestEmbeddingBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Defines the response for a rerank request.
@@ -22272,18 +22040,27 @@ pub struct RerankedInferenceResult {
 
 impl RerankedInferenceResult {
     /// Creates a builder for [`RerankedInferenceResult`].
+    ///
+    /// Required: `rerank`.
     pub fn builder() -> RerankedInferenceResultBuilder {
         RerankedInferenceResultBuilder::new()
     }
 
     /// Creates a [`RerankedInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RerankedInferenceResultBuilder,
-        ) -> RerankedInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `rerank`.
+    pub fn of<B: crate::typed::builder::Build<Output = RerankedInferenceResult>>(
+        f: impl FnOnce(RerankedInferenceResultBuilder) -> B,
     ) -> RerankedInferenceResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RerankedInferenceResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reranked_inference_result_members {
+    pub struct rerank;
 }
 
 /// Builder for [`RerankedInferenceResult`].
@@ -22312,6 +22089,7 @@ impl<S0> RerankedInferenceResultBuilder<(S0,)> {
 }
 
 impl RerankedInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn rerank(
         self,
         value: impl Into<Vec<RankedDocument>>,
@@ -22335,14 +22113,9 @@ impl RerankedInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`rerank`](Self::rerank), with a builder.
-    pub fn add_rerank_with(
+    pub fn add_rerank_with<B: crate::typed::builder::Build<Output = RankedDocument>>(
         self,
-        f: impl FnOnce(
-            RankedDocumentBuilder,
-        ) -> RankedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankedDocumentBuilder) -> B,
     ) -> RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
         self.add_rerank(f(RankedDocumentBuilder::new()).build())
     }
@@ -22358,40 +22131,44 @@ impl RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`rerank`](Self::rerank), with a builder.
-    pub fn add_rerank_with(
+    pub fn add_rerank_with<B: crate::typed::builder::Build<Output = RankedDocument>>(
         self,
-        f: impl FnOnce(
-            RankedDocumentBuilder,
-        ) -> RankedDocumentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankedDocumentBuilder) -> B,
     ) -> Self {
         self.add_rerank(f(RankedDocumentBuilder::new()).build())
     }
 }
 
-impl RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RerankedInferenceResultBuilder<(S0,)> {
     /// Builds a [`RerankedInferenceResult`].
-    pub fn build(self) -> RerankedInferenceResult {
+    pub fn build(self) -> RerankedInferenceResult
+    where
+        S0: crate::typed::builder::IsSet<reranked_inference_result_members::rerank>,
+    {
         RerankedInferenceResult {
             rerank: self.rerank.unwrap(),
         }
     }
 }
 
-impl From<RerankedInferenceResultBuilder<(crate::typed::builder::Set,)>>
-    for RerankedInferenceResult
+impl<S0> crate::typed::builder::Build for RerankedInferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<reranked_inference_result_members::rerank>,
 {
-    fn from(builder: RerankedInferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RerankedInferenceResult;
+
+    fn build(self) -> RerankedInferenceResult {
+        Self::build(self)
     }
 }
 
-impl RerankedInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `rerank` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rerank: crate::typed::builder::MissingRequiredField) -> RerankedInferenceResult { match rerank {} }
+impl<S0> From<RerankedInferenceResultBuilder<(S0,)>> for RerankedInferenceResult
+where
+    S0: crate::typed::builder::IsSet<reranked_inference_result_members::rerank>,
+{
+    fn from(builder: RerankedInferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type ServiceSettings = serde_json::Value;
@@ -22404,18 +22181,27 @@ pub struct SparseEmbeddingInferenceResult {
 
 impl SparseEmbeddingInferenceResult {
     /// Creates a builder for [`SparseEmbeddingInferenceResult`].
+    ///
+    /// Required: `sparse_embedding`.
     pub fn builder() -> SparseEmbeddingInferenceResultBuilder {
         SparseEmbeddingInferenceResultBuilder::new()
     }
 
     /// Creates a [`SparseEmbeddingInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SparseEmbeddingInferenceResultBuilder,
-        ) -> SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `sparse_embedding`.
+    pub fn of<B: crate::typed::builder::Build<Output = SparseEmbeddingInferenceResult>>(
+        f: impl FnOnce(SparseEmbeddingInferenceResultBuilder) -> B,
     ) -> SparseEmbeddingInferenceResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SparseEmbeddingInferenceResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sparse_embedding_inference_result_members {
+    pub struct sparse_embedding;
 }
 
 /// Builder for [`SparseEmbeddingInferenceResult`].
@@ -22444,6 +22230,7 @@ impl<S0> SparseEmbeddingInferenceResultBuilder<(S0,)> {
 }
 
 impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn sparse_embedding(
         self,
         value: impl Into<Vec<SparseEmbeddingResult>>,
@@ -22467,14 +22254,11 @@ impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`sparse_embedding`](Self::sparse_embedding), with a builder.
-    pub fn add_sparse_embedding_with(
+    pub fn add_sparse_embedding_with<
+        B: crate::typed::builder::Build<Output = SparseEmbeddingResult>,
+    >(
         self,
-        f: impl FnOnce(
-            SparseEmbeddingResultBuilder,
-        ) -> SparseEmbeddingResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SparseEmbeddingResultBuilder) -> B,
     ) -> SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
         self.add_sparse_embedding(f(SparseEmbeddingResultBuilder::new()).build())
     }
@@ -22490,40 +22274,48 @@ impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`sparse_embedding`](Self::sparse_embedding), with a builder.
-    pub fn add_sparse_embedding_with(
+    pub fn add_sparse_embedding_with<
+        B: crate::typed::builder::Build<Output = SparseEmbeddingResult>,
+    >(
         self,
-        f: impl FnOnce(
-            SparseEmbeddingResultBuilder,
-        ) -> SparseEmbeddingResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SparseEmbeddingResultBuilder) -> B,
     ) -> Self {
         self.add_sparse_embedding(f(SparseEmbeddingResultBuilder::new()).build())
     }
 }
 
-impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SparseEmbeddingInferenceResultBuilder<(S0,)> {
     /// Builds a [`SparseEmbeddingInferenceResult`].
-    pub fn build(self) -> SparseEmbeddingInferenceResult {
+    pub fn build(self) -> SparseEmbeddingInferenceResult
+    where
+        S0: crate::typed::builder::IsSet<
+            sparse_embedding_inference_result_members::sparse_embedding,
+        >,
+    {
         SparseEmbeddingInferenceResult {
             sparse_embedding: self.sparse_embedding.unwrap(),
         }
     }
 }
 
-impl From<SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>>
-    for SparseEmbeddingInferenceResult
+impl<S0> crate::typed::builder::Build for SparseEmbeddingInferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<sparse_embedding_inference_result_members::sparse_embedding>,
 {
-    fn from(builder: SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SparseEmbeddingInferenceResult;
+
+    fn build(self) -> SparseEmbeddingInferenceResult {
+        Self::build(self)
     }
 }
 
-impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `sparse_embedding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, sparse_embedding: crate::typed::builder::MissingRequiredField) -> SparseEmbeddingInferenceResult { match sparse_embedding {} }
+impl<S0> From<SparseEmbeddingInferenceResultBuilder<(S0,)>> for SparseEmbeddingInferenceResult
+where
+    S0: crate::typed::builder::IsSet<sparse_embedding_inference_result_members::sparse_embedding>,
+{
+    fn from(builder: SparseEmbeddingInferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22535,21 +22327,28 @@ pub struct SparseEmbeddingResult {
 
 impl SparseEmbeddingResult {
     /// Creates a builder for [`SparseEmbeddingResult`].
+    ///
+    /// Required: `is_truncated`, `embedding`.
     pub fn builder() -> SparseEmbeddingResultBuilder {
         SparseEmbeddingResultBuilder::new()
     }
 
     /// Creates a [`SparseEmbeddingResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SparseEmbeddingResultBuilder,
-        ) -> SparseEmbeddingResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_truncated`, `embedding`.
+    pub fn of<B: crate::typed::builder::Build<Output = SparseEmbeddingResult>>(
+        f: impl FnOnce(SparseEmbeddingResultBuilder) -> B,
     ) -> SparseEmbeddingResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SparseEmbeddingResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sparse_embedding_result_members {
+    pub struct is_truncated;
+    pub struct embedding;
 }
 
 /// Builder for [`SparseEmbeddingResult`].
@@ -22583,7 +22382,7 @@ impl<S0, S1> SparseEmbeddingResultBuilder<(S0, S1)> {
 }
 
 impl<S1> SparseEmbeddingResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Indicates if the text input was truncated in the request sent to the service
+    /// **Required.** Indicates if the text input was truncated in the request sent to the service
     pub fn is_truncated(
         self,
         value: bool,
@@ -22595,6 +22394,7 @@ impl<S1> SparseEmbeddingResultBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SparseEmbeddingResultBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn embedding(
         self,
         value: impl Into<SparseVector>,
@@ -22629,9 +22429,13 @@ impl<S0> SparseEmbeddingResultBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl SparseEmbeddingResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SparseEmbeddingResultBuilder<(S0, S1)> {
     /// Builds a [`SparseEmbeddingResult`].
-    pub fn build(self) -> SparseEmbeddingResult {
+    pub fn build(self) -> SparseEmbeddingResult
+    where
+        S0: crate::typed::builder::IsSet<sparse_embedding_result_members::is_truncated>,
+        S1: crate::typed::builder::IsSet<sparse_embedding_result_members::embedding>,
+    {
         SparseEmbeddingResult {
             is_truncated: self.is_truncated.unwrap(),
             embedding: self.embedding.unwrap(),
@@ -22639,29 +22443,26 @@ impl SparseEmbeddingResultBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<SparseEmbeddingResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SparseEmbeddingResult
+impl<S0, S1> crate::typed::builder::Build for SparseEmbeddingResultBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<sparse_embedding_result_members::is_truncated>,
+    S1: crate::typed::builder::IsSet<sparse_embedding_result_members::embedding>,
 {
-    fn from(
-        builder: SparseEmbeddingResultBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SparseEmbeddingResult;
+
+    fn build(self) -> SparseEmbeddingResult {
+        Self::build(self)
     }
 }
 
-impl<S1> SparseEmbeddingResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `is_truncated` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_truncated: crate::typed::builder::MissingRequiredField) -> SparseEmbeddingResult { match is_truncated {} }
-}
-
-impl SparseEmbeddingResultBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `embedding` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, embedding: crate::typed::builder::MissingRequiredField) -> SparseEmbeddingResult { match embedding {} }
+impl<S0, S1> From<SparseEmbeddingResultBuilder<(S0, S1)>> for SparseEmbeddingResult
+where
+    S0: crate::typed::builder::IsSet<sparse_embedding_result_members::is_truncated>,
+    S1: crate::typed::builder::IsSet<sparse_embedding_result_members::embedding>,
+{
+    fn from(builder: SparseEmbeddingResultBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Sparse Embedding tokens are represented as a dictionary
@@ -22689,21 +22490,28 @@ pub struct SummaryReasoningDetail {
 
 impl SummaryReasoningDetail {
     /// Creates a builder for [`SummaryReasoningDetail`].
+    ///
+    /// Required: `type`, `summary`.
     pub fn builder() -> SummaryReasoningDetailBuilder {
         SummaryReasoningDetailBuilder::new()
     }
 
     /// Creates a [`SummaryReasoningDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SummaryReasoningDetailBuilder,
-        ) -> SummaryReasoningDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `summary`.
+    pub fn of<B: crate::typed::builder::Build<Output = SummaryReasoningDetail>>(
+        f: impl FnOnce(SummaryReasoningDetailBuilder) -> B,
     ) -> SummaryReasoningDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SummaryReasoningDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod summary_reasoning_detail_members {
+    pub struct r#type;
+    pub struct summary;
 }
 
 /// Builder for [`SummaryReasoningDetail`].
@@ -22783,6 +22591,7 @@ impl<S0, S1> SummaryReasoningDetailBuilder<(S0, S1)> {
 }
 
 impl<S1> SummaryReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -22794,7 +22603,7 @@ impl<S1> SummaryReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SummaryReasoningDetailBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The summary of the reasoning process generated by the model,
+    /// **Required.** The summary of the reasoning process generated by the model,
     /// which provides an overview of the key points and conclusions reached during the reasoning process.
     pub fn summary(
         self,
@@ -22806,9 +22615,13 @@ impl<S0> SummaryReasoningDetailBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SummaryReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SummaryReasoningDetailBuilder<(S0, S1)> {
     /// Builds a [`SummaryReasoningDetail`].
-    pub fn build(self) -> SummaryReasoningDetail {
+    pub fn build(self) -> SummaryReasoningDetail
+    where
+        S0: crate::typed::builder::IsSet<summary_reasoning_detail_members::r#type>,
+        S1: crate::typed::builder::IsSet<summary_reasoning_detail_members::summary>,
+    {
         SummaryReasoningDetail {
             format: self.format,
             id: self.id,
@@ -22819,29 +22632,26 @@ impl SummaryReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::bu
     }
 }
 
-impl From<SummaryReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SummaryReasoningDetail
+impl<S0, S1> crate::typed::builder::Build for SummaryReasoningDetailBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<summary_reasoning_detail_members::r#type>,
+    S1: crate::typed::builder::IsSet<summary_reasoning_detail_members::summary>,
 {
-    fn from(
-        builder: SummaryReasoningDetailBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SummaryReasoningDetail;
+
+    fn build(self) -> SummaryReasoningDetail {
+        Self::build(self)
     }
 }
 
-impl<S1> SummaryReasoningDetailBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SummaryReasoningDetail { match r#type {} }
-}
-
-impl SummaryReasoningDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `summary` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, summary: crate::typed::builder::MissingRequiredField) -> SummaryReasoningDetail { match summary {} }
+impl<S0, S1> From<SummaryReasoningDetailBuilder<(S0, S1)>> for SummaryReasoningDetail
+where
+    S0: crate::typed::builder::IsSet<summary_reasoning_detail_members::r#type>,
+    S1: crate::typed::builder::IsSet<summary_reasoning_detail_members::summary>,
+{
+    fn from(builder: SummaryReasoningDetailBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 pub type TaskSettings = serde_json::Value;
@@ -23131,15 +22941,17 @@ pub enum TextEmbeddingInferenceResult {
 
 impl TextEmbeddingInferenceResult {
     /// Creates a builder for [`TextEmbeddingInferenceResult`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> TextEmbeddingInferenceResultBuilder {
         TextEmbeddingInferenceResultBuilder::new()
     }
 
     /// Creates a [`TextEmbeddingInferenceResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextEmbeddingInferenceResultBuilder,
-        ) -> TextEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = TextEmbeddingInferenceResult>>(
+        f: impl FnOnce(TextEmbeddingInferenceResultBuilder) -> B,
     ) -> TextEmbeddingInferenceResult {
         f(Self::builder()).build()
     }
@@ -23203,25 +23015,34 @@ impl TextEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TextEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TextEmbeddingInferenceResultBuilder<(S0,)> {
     /// Builds a [`TextEmbeddingInferenceResult`].
-    pub fn build(self) -> TextEmbeddingInferenceResult {
+    pub fn build(self) -> TextEmbeddingInferenceResult
+    where
+        S0: crate::typed::builder::IsVariantSet<TextEmbeddingInferenceResult>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<TextEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>>
-    for TextEmbeddingInferenceResult
+impl<S0> crate::typed::builder::Build for TextEmbeddingInferenceResultBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<TextEmbeddingInferenceResult>,
 {
-    fn from(builder: TextEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TextEmbeddingInferenceResult;
+
+    fn build(self) -> TextEmbeddingInferenceResult {
+        Self::build(self)
     }
 }
 
-impl TextEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> TextEmbeddingInferenceResult { match variant {} }
+impl<S0> From<TextEmbeddingInferenceResultBuilder<(S0,)>> for TextEmbeddingInferenceResult
+where
+    S0: crate::typed::builder::IsVariantSet<TextEmbeddingInferenceResult>,
+{
+    fn from(builder: TextEmbeddingInferenceResultBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The reasoning text detail includes plaintext reasoning with optional signature verification.
@@ -23250,18 +23071,27 @@ pub struct TextReasoningDetail {
 
 impl TextReasoningDetail {
     /// Creates a builder for [`TextReasoningDetail`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> TextReasoningDetailBuilder {
         TextReasoningDetailBuilder::new()
     }
 
     /// Creates a [`TextReasoningDetail`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextReasoningDetailBuilder,
-        ) -> TextReasoningDetailBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = TextReasoningDetail>>(
+        f: impl FnOnce(TextReasoningDetailBuilder) -> B,
     ) -> TextReasoningDetail {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TextReasoningDetailBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod text_reasoning_detail_members {
+    pub struct r#type;
 }
 
 /// Builder for [`TextReasoningDetail`].
@@ -23368,6 +23198,7 @@ impl<S0> TextReasoningDetailBuilder<(S0,)> {
 }
 
 impl TextReasoningDetailBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -23378,9 +23209,12 @@ impl TextReasoningDetailBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TextReasoningDetailBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TextReasoningDetailBuilder<(S0,)> {
     /// Builds a [`TextReasoningDetail`].
-    pub fn build(self) -> TextReasoningDetail {
+    pub fn build(self) -> TextReasoningDetail
+    where
+        S0: crate::typed::builder::IsSet<text_reasoning_detail_members::r#type>,
+    {
         TextReasoningDetail {
             format: self.format,
             id: self.id,
@@ -23392,16 +23226,24 @@ impl TextReasoningDetailBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TextReasoningDetailBuilder<(crate::typed::builder::Set,)>> for TextReasoningDetail {
-    fn from(builder: TextReasoningDetailBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TextReasoningDetailBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<text_reasoning_detail_members::r#type>,
+{
+    type Output = TextReasoningDetail;
+
+    fn build(self) -> TextReasoningDetail {
+        Self::build(self)
     }
 }
 
-impl TextReasoningDetailBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> TextReasoningDetail { match r#type {} }
+impl<S0> From<TextReasoningDetailBuilder<(S0,)>> for TextReasoningDetail
+where
+    S0: crate::typed::builder::IsSet<text_reasoning_detail_members::r#type>,
+{
+    fn from(builder: TextReasoningDetailBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23418,7 +23260,9 @@ impl ThinkingConfig {
     }
 
     /// Creates a [`ThinkingConfig`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ThinkingConfigBuilder) -> ThinkingConfigBuilder) -> ThinkingConfig {
+    pub fn of<B: crate::typed::builder::Build<Output = ThinkingConfig>>(
+        f: impl FnOnce(ThinkingConfigBuilder) -> B,
+    ) -> ThinkingConfig {
         f(Self::builder()).build()
     }
 }
@@ -23460,6 +23304,14 @@ impl ThinkingConfigBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ThinkingConfigBuilder {
+    type Output = ThinkingConfig;
+
+    fn build(self) -> ThinkingConfig {
+        Self::build(self)
+    }
+}
+
 impl From<ThinkingConfigBuilder> for ThinkingConfig {
     fn from(builder: ThinkingConfigBuilder) -> Self {
         builder.build()
@@ -23479,22 +23331,29 @@ pub struct ToolCall {
 
 impl ToolCall {
     /// Creates a builder for [`ToolCall`].
+    ///
+    /// Required: `id`, `function`, `type`.
     pub fn builder() -> ToolCallBuilder {
         ToolCallBuilder::new()
     }
 
     /// Creates a [`ToolCall`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ToolCallBuilder,
-        ) -> ToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `function`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = ToolCall>>(
+        f: impl FnOnce(ToolCallBuilder) -> B,
     ) -> ToolCall {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ToolCallBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod tool_call_members {
+    pub struct id;
+    pub struct function;
+    pub struct r#type;
 }
 
 /// Builder for [`ToolCall`].
@@ -23541,7 +23400,7 @@ impl<S0, S1, S2> ToolCallBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ToolCallBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The identifier of the tool call.
+    /// **Required.** The identifier of the tool call.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -23553,7 +23412,7 @@ impl<S1, S2> ToolCallBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ToolCallBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// The function that the model called.
+    /// **Required.** The function that the model called.
     pub fn function(
         self,
         value: impl Into<ToolCallFunction>,
@@ -23564,21 +23423,16 @@ impl<S0, S2> ToolCallBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`function`](Self::function) with a builder.
-    pub fn function_with(
+    pub fn function_with<B: crate::typed::builder::Build<Output = ToolCallFunction>>(
         self,
-        f: impl FnOnce(
-            ToolCallFunctionBuilder,
-        ) -> ToolCallFunctionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ToolCallFunctionBuilder) -> B,
     ) -> ToolCallBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.function(f(ToolCallFunctionBuilder::new()).build())
     }
 }
 
 impl<S0, S1> ToolCallBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The type of the tool call.
+    /// **Required.** The type of the tool call.
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -23589,15 +23443,14 @@ impl<S0, S1> ToolCallBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    ToolCallBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ToolCallBuilder<(S0, S1, S2)> {
     /// Builds a [`ToolCall`].
-    pub fn build(self) -> ToolCall {
+    pub fn build(self) -> ToolCall
+    where
+        S0: crate::typed::builder::IsSet<tool_call_members::id>,
+        S1: crate::typed::builder::IsSet<tool_call_members::function>,
+        S2: crate::typed::builder::IsSet<tool_call_members::r#type>,
+    {
         ToolCall {
             id: self.id.unwrap(),
             function: self.function.unwrap(),
@@ -23606,54 +23459,28 @@ impl
     }
 }
 
-impl
-    From<
-        ToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ToolCall
+impl<S0, S1, S2> crate::typed::builder::Build for ToolCallBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<tool_call_members::id>,
+    S1: crate::typed::builder::IsSet<tool_call_members::function>,
+    S2: crate::typed::builder::IsSet<tool_call_members::r#type>,
 {
-    fn from(
-        builder: ToolCallBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ToolCall;
+
+    fn build(self) -> ToolCall {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ToolCallBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> ToolCall { match id {} }
-}
-
-impl<S2>
-    ToolCallBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ToolCallBuilder<(S0, S1, S2)>> for ToolCall
+where
+    S0: crate::typed::builder::IsSet<tool_call_members::id>,
+    S1: crate::typed::builder::IsSet<tool_call_members::function>,
+    S2: crate::typed::builder::IsSet<tool_call_members::r#type>,
 {
-    /// `function` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, function: crate::typed::builder::MissingRequiredField) -> ToolCall { match function {} }
-}
-
-impl
-    ToolCallBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> ToolCall { match r#type {} }
+    fn from(builder: ToolCallBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The function that the model called.
@@ -23667,21 +23494,28 @@ pub struct ToolCallFunction {
 
 impl ToolCallFunction {
     /// Creates a builder for [`ToolCallFunction`].
+    ///
+    /// Required: `arguments`, `name`.
     pub fn builder() -> ToolCallFunctionBuilder {
         ToolCallFunctionBuilder::new()
     }
 
     /// Creates a [`ToolCallFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ToolCallFunctionBuilder,
-        ) -> ToolCallFunctionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `arguments`, `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = ToolCallFunction>>(
+        f: impl FnOnce(ToolCallFunctionBuilder) -> B,
     ) -> ToolCallFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ToolCallFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod tool_call_function_members {
+    pub struct arguments;
+    pub struct name;
 }
 
 /// Builder for [`ToolCallFunction`].
@@ -23715,7 +23549,7 @@ impl<S0, S1> ToolCallFunctionBuilder<(S0, S1)> {
 }
 
 impl<S1> ToolCallFunctionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The arguments to call the function with in JSON format.
+    /// **Required.** The arguments to call the function with in JSON format.
     pub fn arguments(
         self,
         value: impl Into<String>,
@@ -23727,7 +23561,7 @@ impl<S1> ToolCallFunctionBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> ToolCallFunctionBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the function to call.
+    /// **Required.** The name of the function to call.
     pub fn name(
         self,
         value: impl Into<String>,
@@ -23738,9 +23572,13 @@ impl<S0> ToolCallFunctionBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl ToolCallFunctionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ToolCallFunctionBuilder<(S0, S1)> {
     /// Builds a [`ToolCallFunction`].
-    pub fn build(self) -> ToolCallFunction {
+    pub fn build(self) -> ToolCallFunction
+    where
+        S0: crate::typed::builder::IsSet<tool_call_function_members::arguments>,
+        S1: crate::typed::builder::IsSet<tool_call_function_members::name>,
+    {
         ToolCallFunction {
             arguments: self.arguments.unwrap(),
             name: self.name.unwrap(),
@@ -23748,26 +23586,26 @@ impl ToolCallFunctionBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ToolCallFunctionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ToolCallFunction
+impl<S0, S1> crate::typed::builder::Build for ToolCallFunctionBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<tool_call_function_members::arguments>,
+    S1: crate::typed::builder::IsSet<tool_call_function_members::name>,
 {
-    fn from(
-        builder: ToolCallFunctionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ToolCallFunction;
+
+    fn build(self) -> ToolCallFunction {
+        Self::build(self)
     }
 }
 
-impl<S1> ToolCallFunctionBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `arguments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, arguments: crate::typed::builder::MissingRequiredField) -> ToolCallFunction { match arguments {} }
-}
-
-impl ToolCallFunctionBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ToolCallFunction { match name {} }
+impl<S0, S1> From<ToolCallFunctionBuilder<(S0, S1)>> for ToolCallFunction
+where
+    S0: crate::typed::builder::IsSet<tool_call_function_members::arguments>,
+    S1: crate::typed::builder::IsSet<tool_call_function_members::name>,
+{
+    fn from(builder: ToolCallFunctionBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23797,18 +23635,27 @@ pub struct VoyageAIServiceSettings {
 
 impl VoyageAIServiceSettings {
     /// Creates a builder for [`VoyageAIServiceSettings`].
+    ///
+    /// Required: `model_id`.
     pub fn builder() -> VoyageAIServiceSettingsBuilder {
         VoyageAIServiceSettingsBuilder::new()
     }
 
     /// Creates a [`VoyageAIServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            VoyageAIServiceSettingsBuilder,
-        ) -> VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `model_id`.
+    pub fn of<B: crate::typed::builder::Build<Output = VoyageAIServiceSettings>>(
+        f: impl FnOnce(VoyageAIServiceSettingsBuilder) -> B,
     ) -> VoyageAIServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`VoyageAIServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod voyage_ai_service_settings_members {
+    pub struct model_id;
 }
 
 /// Builder for [`VoyageAIServiceSettings`].
@@ -23873,9 +23720,9 @@ impl<S0> VoyageAIServiceSettingsBuilder<(S0,)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -23899,7 +23746,7 @@ impl<S0> VoyageAIServiceSettingsBuilder<(S0,)> {
 }
 
 impl VoyageAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the VoyageAI documentation for the list of available text embedding and rerank models.
     pub fn model_id(
         self,
@@ -23911,9 +23758,12 @@ impl VoyageAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> VoyageAIServiceSettingsBuilder<(S0,)> {
     /// Builds a [`VoyageAIServiceSettings`].
-    pub fn build(self) -> VoyageAIServiceSettings {
+    pub fn build(self) -> VoyageAIServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<voyage_ai_service_settings_members::model_id>,
+    {
         VoyageAIServiceSettings {
             dimensions: self.dimensions,
             model_id: self.model_id.unwrap(),
@@ -23923,18 +23773,24 @@ impl VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)>>
-    for VoyageAIServiceSettings
+impl<S0> crate::typed::builder::Build for VoyageAIServiceSettingsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<voyage_ai_service_settings_members::model_id>,
 {
-    fn from(builder: VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = VoyageAIServiceSettings;
+
+    fn build(self) -> VoyageAIServiceSettings {
+        Self::build(self)
     }
 }
 
-impl VoyageAIServiceSettingsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> VoyageAIServiceSettings { match model_id {} }
+impl<S0> From<VoyageAIServiceSettingsBuilder<(S0,)>> for VoyageAIServiceSettings
+where
+    S0: crate::typed::builder::IsSet<voyage_ai_service_settings_members::model_id>,
+{
+    fn from(builder: VoyageAIServiceSettingsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -23971,8 +23827,8 @@ impl VoyageAITaskSettings {
     }
 
     /// Creates a [`VoyageAITaskSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(VoyageAITaskSettingsBuilder) -> VoyageAITaskSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = VoyageAITaskSettings>>(
+        f: impl FnOnce(VoyageAITaskSettingsBuilder) -> B,
     ) -> VoyageAITaskSettings {
         f(Self::builder()).build()
     }
@@ -24065,6 +23921,14 @@ impl VoyageAITaskSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for VoyageAITaskSettingsBuilder {
+    type Output = VoyageAITaskSettings;
+
+    fn build(self) -> VoyageAITaskSettings {
+        Self::build(self)
+    }
+}
+
 impl From<VoyageAITaskSettingsBuilder> for VoyageAITaskSettings {
     fn from(builder: VoyageAITaskSettingsBuilder) -> Self {
         builder.build()
@@ -24106,24 +23970,31 @@ pub struct WatsonxServiceSettings {
 
 impl WatsonxServiceSettings {
     /// Creates a builder for [`WatsonxServiceSettings`].
+    ///
+    /// Required: `api_key`, `api_version`, `model_id`, `project_id`, `url`.
     pub fn builder() -> WatsonxServiceSettingsBuilder {
         WatsonxServiceSettingsBuilder::new()
     }
 
     /// Creates a [`WatsonxServiceSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WatsonxServiceSettingsBuilder,
-        ) -> WatsonxServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `api_key`, `api_version`, `model_id`, `project_id`, `url`.
+    pub fn of<B: crate::typed::builder::Build<Output = WatsonxServiceSettings>>(
+        f: impl FnOnce(WatsonxServiceSettingsBuilder) -> B,
     ) -> WatsonxServiceSettings {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WatsonxServiceSettingsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod watsonx_service_settings_members {
+    pub struct api_key;
+    pub struct api_version;
+    pub struct model_id;
+    pub struct project_id;
+    pub struct url;
 }
 
 /// Builder for [`WatsonxServiceSettings`].
@@ -24195,9 +24066,9 @@ impl<S0, S1, S2, S3, S4> WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`rate_limit`](Self::rate_limit) with a builder.
-    pub fn rate_limit_with(
+    pub fn rate_limit_with<B: crate::typed::builder::Build<Output = RateLimitSetting>>(
         self,
-        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+        f: impl FnOnce(RateLimitSettingBuilder) -> B,
     ) -> Self {
         self.rate_limit(f(RateLimitSettingBuilder::new()).build())
     }
@@ -24206,7 +24077,7 @@ impl<S0, S1, S2, S3, S4> WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)> {
 impl<S1, S2, S3, S4>
     WatsonxServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
 {
-    /// A valid API key of your Watsonx account.
+    /// **Required.** A valid API key of your Watsonx account.
     /// You can find your Watsonx API keys or you can create a new one on the API keys page.
     ///
     /// IMPORTANT: You need to provide the API key only once, during the inference model creation.
@@ -24224,7 +24095,7 @@ impl<S1, S2, S3, S4>
 impl<S0, S2, S3, S4>
     WatsonxServiceSettingsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)>
 {
-    /// A version parameter that takes a version date in the format of `YYYY-MM-DD`.
+    /// **Required.** A version parameter that takes a version date in the format of `YYYY-MM-DD`.
     /// For the active version data parameters, refer to the Wastonx documentation.
     pub fn api_version(
         self,
@@ -24239,7 +24110,7 @@ impl<S0, S2, S3, S4>
 impl<S0, S1, S3, S4>
     WatsonxServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)>
 {
-    /// The name of the model to use for the inference task.
+    /// **Required.** The name of the model to use for the inference task.
     /// Refer to the IBM Embedding Models section in the Watsonx documentation for the list of available text embedding models.
     /// Refer to the IBM library - Foundation models in Watsonx.ai.
     pub fn model_id(
@@ -24255,7 +24126,7 @@ impl<S0, S1, S3, S4>
 impl<S0, S1, S2, S4>
     WatsonxServiceSettingsBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)>
 {
-    /// The identifier of the IBM Cloud project to use for the inference task.
+    /// **Required.** The identifier of the IBM Cloud project to use for the inference task.
     pub fn project_id(
         self,
         value: impl Into<String>,
@@ -24269,7 +24140,7 @@ impl<S0, S1, S2, S4>
 impl<S0, S1, S2, S3>
     WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)>
 {
-    /// The URL of the inference endpoint that you created on Watsonx.
+    /// **Required.** The URL of the inference endpoint that you created on Watsonx.
     pub fn url(
         self,
         value: impl Into<String>,
@@ -24280,17 +24151,16 @@ impl<S0, S1, S2, S3>
     }
 }
 
-impl
-    WatsonxServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`WatsonxServiceSettings`].
-    pub fn build(self) -> WatsonxServiceSettings {
+    pub fn build(self) -> WatsonxServiceSettings
+    where
+        S0: crate::typed::builder::IsSet<watsonx_service_settings_members::api_key>,
+        S1: crate::typed::builder::IsSet<watsonx_service_settings_members::api_version>,
+        S2: crate::typed::builder::IsSet<watsonx_service_settings_members::model_id>,
+        S3: crate::typed::builder::IsSet<watsonx_service_settings_members::project_id>,
+        S4: crate::typed::builder::IsSet<watsonx_service_settings_members::url>,
+    {
         WatsonxServiceSettings {
             api_key: self.api_key.unwrap(),
             api_version: self.api_version.unwrap(),
@@ -24302,92 +24172,34 @@ impl
     }
 }
 
-impl
-    From<
-        WatsonxServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for WatsonxServiceSettings
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<watsonx_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<watsonx_service_settings_members::api_version>,
+    S2: crate::typed::builder::IsSet<watsonx_service_settings_members::model_id>,
+    S3: crate::typed::builder::IsSet<watsonx_service_settings_members::project_id>,
+    S4: crate::typed::builder::IsSet<watsonx_service_settings_members::url>,
 {
-    fn from(
-        builder: WatsonxServiceSettingsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = WatsonxServiceSettings;
+
+    fn build(self) -> WatsonxServiceSettings {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4>
-    WatsonxServiceSettingsBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)>
+impl<S0, S1, S2, S3, S4> From<WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)>>
+    for WatsonxServiceSettings
+where
+    S0: crate::typed::builder::IsSet<watsonx_service_settings_members::api_key>,
+    S1: crate::typed::builder::IsSet<watsonx_service_settings_members::api_version>,
+    S2: crate::typed::builder::IsSet<watsonx_service_settings_members::model_id>,
+    S3: crate::typed::builder::IsSet<watsonx_service_settings_members::project_id>,
+    S4: crate::typed::builder::IsSet<watsonx_service_settings_members::url>,
 {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> WatsonxServiceSettings { match api_key {} }
-}
-
-impl<S2, S3, S4>
-    WatsonxServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
-{
-    /// `api_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_version: crate::typed::builder::MissingRequiredField) -> WatsonxServiceSettings { match api_version {} }
-}
-
-impl<S3, S4>
-    WatsonxServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> WatsonxServiceSettings { match model_id {} }
-}
-
-impl<S4>
-    WatsonxServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `project_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, project_id: crate::typed::builder::MissingRequiredField) -> WatsonxServiceSettings { match project_id {} }
-}
-
-impl
-    WatsonxServiceSettingsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `url` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, url: crate::typed::builder::MissingRequiredField) -> WatsonxServiceSettings { match url {} }
+    fn from(builder: WatsonxServiceSettingsBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

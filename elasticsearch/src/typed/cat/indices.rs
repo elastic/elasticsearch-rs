@@ -1233,7 +1233,9 @@ impl IndicesRecord {
     }
 
     /// Creates a [`IndicesRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndicesRecordBuilder) -> IndicesRecordBuilder) -> IndicesRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = IndicesRecord>>(
+        f: impl FnOnce(IndicesRecordBuilder) -> B,
+    ) -> IndicesRecord {
         f(Self::builder()).build()
     }
 }
@@ -3394,6 +3396,14 @@ impl IndicesRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndicesRecordBuilder {
+    type Output = IndicesRecord;
+
+    fn build(self) -> IndicesRecord {
+        Self::build(self)
+    }
+}
+
 impl From<IndicesRecordBuilder> for IndicesRecord {
     fn from(builder: IndicesRecordBuilder) -> Self {
         builder.build()
@@ -3469,7 +3479,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -3693,6 +3705,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

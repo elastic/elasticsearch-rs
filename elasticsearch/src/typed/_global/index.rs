@@ -204,22 +204,28 @@ pub struct Request<TDocument = serde_json::Value> {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `document`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of<TDocument>(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (crate::typed::builder::Set, crate::typed::builder::Set),
-            (),
-            TDocument,
-        >,
+    ///
+    /// Required: `index`, `document`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request<TDocument>>, TDocument>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request<TDocument> {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct document;
 }
 
 /// Builder for [`Request`].
@@ -583,7 +589,7 @@ impl<S0, S1, C, TDocument> RequestBuilder<(S0, S1), C, TDocument> {
 }
 
 impl<S1, C, TDocument> RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument> {
-    /// The name of the data stream or index to target.
+    /// **Required.** The name of the data stream or index to target.
     /// If the target doesn't exist and matches the name or wildcard (`*`) pattern of an index template with a `data_stream` definition, this request creates the data stream.
     /// If the target doesn't exist and doesn't match a data stream template, this request creates the index.
     /// You can check for existing targets with the resolve index API.
@@ -631,11 +637,13 @@ impl<S0, C, TDocument> RequestBuilder<(S0, crate::typed::builder::NotSet), C, TD
     }
 }
 
-impl<C, TDocument>
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C, TDocument>
-{
+impl<S0, S1, C, TDocument> RequestBuilder<(S0, S1), C, TDocument> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request<TDocument> {
+    pub fn build(self) -> Request<TDocument>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::document>,
+    {
         Request {
             id: self.id,
             index: self.index.unwrap(),
@@ -662,52 +670,29 @@ impl<C, TDocument>
     }
 }
 
-impl<TDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::Set),
-        &crate::Elasticsearch,
-        TDocument,
-    >
+impl<S0, S1, C, TDocument> crate::typed::builder::Build for RequestBuilder<(S0, S1), C, TDocument>
 where
-    TDocument: serde::Serialize,
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::document>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request<TDocument>;
+
+    fn build(self) -> Request<TDocument> {
+        Self::build(self)
     }
 }
 
-impl<S1, C, TDocument> RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match index {} }
-}
-impl<S1, TDocument>
-    RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch, TDocument>
-{
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<C, TDocument>
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C, TDocument>
-{
-    /// `document` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, document: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match document {} }
-}
-impl<TDocument>
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-        TDocument,
-    >
-{
-    /// `document` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, document: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match document {} }
+impl<S0, S1, TDocument> RequestBuilder<(S0, S1), &crate::Elasticsearch, TDocument> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::document>,
+        TDocument: serde::Serialize,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl<TDocument> Request<TDocument> {

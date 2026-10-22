@@ -34,8 +34,8 @@ impl PendingTasksRecord {
     }
 
     /// Creates a [`PendingTasksRecord`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PendingTasksRecordBuilder) -> PendingTasksRecordBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = PendingTasksRecord>>(
+        f: impl FnOnce(PendingTasksRecordBuilder) -> B,
     ) -> PendingTasksRecord {
         f(Self::builder()).build()
     }
@@ -123,6 +123,14 @@ impl PendingTasksRecordBuilder {
     }
 }
 
+impl crate::typed::builder::Build for PendingTasksRecordBuilder {
+    type Output = PendingTasksRecord;
+
+    fn build(self) -> PendingTasksRecord {
+        Self::build(self)
+    }
+}
+
 impl From<PendingTasksRecordBuilder> for PendingTasksRecord {
     fn from(builder: PendingTasksRecordBuilder) -> Self {
         builder.build()
@@ -176,7 +184,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -342,6 +352,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

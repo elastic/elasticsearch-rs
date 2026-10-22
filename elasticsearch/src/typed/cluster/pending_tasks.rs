@@ -21,24 +21,31 @@ pub struct PendingTask {
 
 impl PendingTask {
     /// Creates a builder for [`PendingTask`].
+    ///
+    /// Required: `executing`, `insert_order`, `priority`, `source`, `time_in_queue_millis`.
     pub fn builder() -> PendingTaskBuilder {
         PendingTaskBuilder::new()
     }
 
     /// Creates a [`PendingTask`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PendingTaskBuilder,
-        ) -> PendingTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `executing`, `insert_order`, `priority`, `source`, `time_in_queue_millis`.
+    pub fn of<B: crate::typed::builder::Build<Output = PendingTask>>(
+        f: impl FnOnce(PendingTaskBuilder) -> B,
     ) -> PendingTask {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PendingTaskBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pending_task_members {
+    pub struct executing;
+    pub struct insert_order;
+    pub struct priority;
+    pub struct source;
+    pub struct time_in_queue_millis;
 }
 
 /// Builder for [`PendingTask`].
@@ -110,7 +117,7 @@ impl<S0, S1, S2, S3, S4> PendingTaskBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> PendingTaskBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// Indicates whether the pending tasks are currently executing or not.
+    /// **Required.** Indicates whether the pending tasks are currently executing or not.
     pub fn executing(
         self,
         value: bool,
@@ -122,7 +129,7 @@ impl<S1, S2, S3, S4> PendingTaskBuilder<(crate::typed::builder::NotSet, S1, S2, 
 }
 
 impl<S0, S2, S3, S4> PendingTaskBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// The number that represents when the task has been inserted into the task queue.
+    /// **Required.** The number that represents when the task has been inserted into the task queue.
     pub fn insert_order(
         self,
         value: i32,
@@ -134,7 +141,7 @@ impl<S0, S2, S3, S4> PendingTaskBuilder<(S0, crate::typed::builder::NotSet, S2, 
 }
 
 impl<S0, S1, S3, S4> PendingTaskBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
-    /// The priority of the pending task.
+    /// **Required.** The priority of the pending task.
     /// The valid priorities in descending priority order are: `IMMEDIATE` > `URGENT` > `HIGH` > `NORMAL` > `LOW` > `LANGUID`.
     pub fn priority(
         self,
@@ -147,7 +154,7 @@ impl<S0, S1, S3, S4> PendingTaskBuilder<(S0, S1, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S2, S4> PendingTaskBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
-    /// A general description of the cluster task that may include a reason and origin.
+    /// **Required.** A general description of the cluster task that may include a reason and origin.
     pub fn source(
         self,
         value: impl Into<String>,
@@ -159,7 +166,7 @@ impl<S0, S1, S2, S4> PendingTaskBuilder<(S0, S1, S2, crate::typed::builder::NotS
 }
 
 impl<S0, S1, S2, S3> PendingTaskBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The time expressed in milliseconds since the task is waiting for being performed.
+    /// **Required.** The time expressed in milliseconds since the task is waiting for being performed.
     pub fn time_in_queue_millis(
         self,
         value: impl Into<crate::typed::_types::DurationValueUnitMillis>,
@@ -170,17 +177,16 @@ impl<S0, S1, S2, S3> PendingTaskBuilder<(S0, S1, S2, S3, crate::typed::builder::
     }
 }
 
-impl
-    PendingTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> PendingTaskBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`PendingTask`].
-    pub fn build(self) -> PendingTask {
+    pub fn build(self) -> PendingTask
+    where
+        S0: crate::typed::builder::IsSet<pending_task_members::executing>,
+        S1: crate::typed::builder::IsSet<pending_task_members::insert_order>,
+        S2: crate::typed::builder::IsSet<pending_task_members::priority>,
+        S3: crate::typed::builder::IsSet<pending_task_members::source>,
+        S4: crate::typed::builder::IsSet<pending_task_members::time_in_queue_millis>,
+    {
         PendingTask {
             executing: self.executing.unwrap(),
             insert_order: self.insert_order.unwrap(),
@@ -192,90 +198,32 @@ impl
     }
 }
 
-impl
-    From<
-        PendingTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for PendingTask
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build for PendingTaskBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<pending_task_members::executing>,
+    S1: crate::typed::builder::IsSet<pending_task_members::insert_order>,
+    S2: crate::typed::builder::IsSet<pending_task_members::priority>,
+    S3: crate::typed::builder::IsSet<pending_task_members::source>,
+    S4: crate::typed::builder::IsSet<pending_task_members::time_in_queue_millis>,
 {
-    fn from(
-        builder: PendingTaskBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = PendingTask;
+
+    fn build(self) -> PendingTask {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> PendingTaskBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `executing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, executing: crate::typed::builder::MissingRequiredField) -> PendingTask { match executing {} }
-}
-
-impl<S2, S3, S4>
-    PendingTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<PendingTaskBuilder<(S0, S1, S2, S3, S4)>> for PendingTask
+where
+    S0: crate::typed::builder::IsSet<pending_task_members::executing>,
+    S1: crate::typed::builder::IsSet<pending_task_members::insert_order>,
+    S2: crate::typed::builder::IsSet<pending_task_members::priority>,
+    S3: crate::typed::builder::IsSet<pending_task_members::source>,
+    S4: crate::typed::builder::IsSet<pending_task_members::time_in_queue_millis>,
 {
-    /// `insert_order` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, insert_order: crate::typed::builder::MissingRequiredField) -> PendingTask { match insert_order {} }
-}
-
-impl<S3, S4>
-    PendingTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `priority` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, priority: crate::typed::builder::MissingRequiredField) -> PendingTask { match priority {} }
-}
-
-impl<S4>
-    PendingTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `source` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, source: crate::typed::builder::MissingRequiredField) -> PendingTask { match source {} }
-}
-
-impl
-    PendingTaskBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `time_in_queue_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, time_in_queue_millis: crate::typed::builder::MissingRequiredField) -> PendingTask { match time_in_queue_millis {} }
+    fn from(builder: PendingTaskBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.pending_tasks`](crate::typed::cluster::ClusterClient::pending_tasks).
@@ -321,7 +269,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -448,6 +398,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

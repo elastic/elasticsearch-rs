@@ -32,19 +32,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `connector_id`, `pipeline`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `connector_id`, `pipeline`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct connector_id;
+    pub struct pipeline;
 }
 
 /// Builder for [`Request`].
@@ -149,7 +158,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The unique identifier of the connector to be updated
+    /// **Required.** The unique identifier of the connector to be updated
     pub fn connector_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -161,6 +170,7 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
+    /// **Required.**
     pub fn pipeline(
         self,
         value: impl Into<crate::typed::connector::_types::IngestPipelineParams>,
@@ -171,16 +181,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`pipeline`](Self::pipeline) with a builder.
-    pub fn pipeline_with(
+    pub fn pipeline_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::connector::_types::IngestPipelineParams,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::connector::_types::IngestPipelineParamsBuilder,
-        ) -> crate::typed::connector::_types::IngestPipelineParamsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::connector::_types::IngestPipelineParamsBuilder) -> B,
     ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
         self.pipeline(
             f(crate::typed::connector::_types::IngestPipelineParamsBuilder::new()).build(),
@@ -188,9 +195,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_id>,
+        S1: crate::typed::builder::IsSet<request_members::pipeline>,
+    {
         Request {
             connector_id: self.connector_id.unwrap(),
             error_trace: self.error_trace,
@@ -202,41 +213,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::connector_id>,
+    S1: crate::typed::builder::IsSet<request_members::pipeline>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `connector_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, connector_id: crate::typed::builder::MissingRequiredField) -> Request { match connector_id {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `connector_id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, connector_id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match connector_id {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `pipeline` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pipeline: crate::typed::builder::MissingRequiredField) -> Request { match pipeline {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `pipeline` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, pipeline: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match pipeline {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::connector_id>,
+        S1: crate::typed::builder::IsSet<request_members::pipeline>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

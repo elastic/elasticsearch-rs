@@ -10,22 +10,29 @@ pub struct ReloadDetails {
 
 impl ReloadDetails {
     /// Creates a builder for [`ReloadDetails`].
+    ///
+    /// Required: `index`, `reloaded_analyzers`, `reloaded_node_ids`.
     pub fn builder() -> ReloadDetailsBuilder {
         ReloadDetailsBuilder::new()
     }
 
     /// Creates a [`ReloadDetails`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReloadDetailsBuilder,
-        ) -> ReloadDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `reloaded_analyzers`, `reloaded_node_ids`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReloadDetails>>(
+        f: impl FnOnce(ReloadDetailsBuilder) -> B,
     ) -> ReloadDetails {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReloadDetailsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reload_details_members {
+    pub struct index;
+    pub struct reloaded_analyzers;
+    pub struct reloaded_node_ids;
 }
 
 /// Builder for [`ReloadDetails`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> ReloadDetailsBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ReloadDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<String>,
@@ -83,6 +91,7 @@ impl<S1, S2> ReloadDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> ReloadDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn reloaded_analyzers(
         self,
         value: impl Into<Vec<String>>,
@@ -117,6 +126,7 @@ impl<S0, S2> ReloadDetailsBuilder<(S0, crate::typed::builder::Set, S2)> {
 }
 
 impl<S0, S1> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn reloaded_node_ids(
         self,
         value: impl Into<Vec<String>>,
@@ -150,15 +160,14 @@ impl<S0, S1> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    ReloadDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ReloadDetailsBuilder<(S0, S1, S2)> {
     /// Builds a [`ReloadDetails`].
-    pub fn build(self) -> ReloadDetails {
+    pub fn build(self) -> ReloadDetails
+    where
+        S0: crate::typed::builder::IsSet<reload_details_members::index>,
+        S1: crate::typed::builder::IsSet<reload_details_members::reloaded_analyzers>,
+        S2: crate::typed::builder::IsSet<reload_details_members::reloaded_node_ids>,
+    {
         ReloadDetails {
             index: self.index.unwrap(),
             reloaded_analyzers: self.reloaded_analyzers.unwrap(),
@@ -167,54 +176,28 @@ impl
     }
 }
 
-impl
-    From<
-        ReloadDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReloadDetails
+impl<S0, S1, S2> crate::typed::builder::Build for ReloadDetailsBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<reload_details_members::index>,
+    S1: crate::typed::builder::IsSet<reload_details_members::reloaded_analyzers>,
+    S2: crate::typed::builder::IsSet<reload_details_members::reloaded_node_ids>,
 {
-    fn from(
-        builder: ReloadDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReloadDetails;
+
+    fn build(self) -> ReloadDetails {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ReloadDetailsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> ReloadDetails { match index {} }
-}
-
-impl<S2>
-    ReloadDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ReloadDetailsBuilder<(S0, S1, S2)>> for ReloadDetails
+where
+    S0: crate::typed::builder::IsSet<reload_details_members::index>,
+    S1: crate::typed::builder::IsSet<reload_details_members::reloaded_analyzers>,
+    S2: crate::typed::builder::IsSet<reload_details_members::reloaded_node_ids>,
 {
-    /// `reloaded_analyzers` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reloaded_analyzers: crate::typed::builder::MissingRequiredField) -> ReloadDetails { match reloaded_analyzers {} }
-}
-
-impl
-    ReloadDetailsBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `reloaded_node_ids` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reloaded_node_ids: crate::typed::builder::MissingRequiredField) -> ReloadDetails { match reloaded_node_ids {} }
+    fn from(builder: ReloadDetailsBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -226,19 +209,28 @@ pub struct ReloadResult {
 
 impl ReloadResult {
     /// Creates a builder for [`ReloadResult`].
+    ///
+    /// Required: `reload_details`, `shards`.
     pub fn builder() -> ReloadResultBuilder {
         ReloadResultBuilder::new()
     }
 
     /// Creates a [`ReloadResult`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReloadResultBuilder,
-        )
-            -> ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `reload_details`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReloadResult>>(
+        f: impl FnOnce(ReloadResultBuilder) -> B,
     ) -> ReloadResult {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReloadResultBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reload_result_members {
+    pub struct reload_details;
+    pub struct shards;
 }
 
 /// Builder for [`ReloadResult`].
@@ -270,6 +262,7 @@ impl<S0, S1> ReloadResultBuilder<(S0, S1)> {
 }
 
 impl<S1> ReloadResultBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn reload_details(
         self,
         value: impl Into<Vec<ReloadDetails>>,
@@ -293,15 +286,9 @@ impl<S1> ReloadResultBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Adds an element to [`reload_details`](Self::reload_details), with a builder.
-    pub fn add_reload_details_with(
+    pub fn add_reload_details_with<B: crate::typed::builder::Build<Output = ReloadDetails>>(
         self,
-        f: impl FnOnce(
-            ReloadDetailsBuilder,
-        ) -> ReloadDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReloadDetailsBuilder) -> B,
     ) -> ReloadResultBuilder<(crate::typed::builder::Set, S1)> {
         self.add_reload_details(f(ReloadDetailsBuilder::new()).build())
     }
@@ -317,21 +304,16 @@ impl<S1> ReloadResultBuilder<(crate::typed::builder::Set, S1)> {
     }
 
     /// Adds an element to [`reload_details`](Self::reload_details), with a builder.
-    pub fn add_reload_details_with(
+    pub fn add_reload_details_with<B: crate::typed::builder::Build<Output = ReloadDetails>>(
         self,
-        f: impl FnOnce(
-            ReloadDetailsBuilder,
-        ) -> ReloadDetailsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReloadDetailsBuilder) -> B,
     ) -> Self {
         self.add_reload_details(f(ReloadDetailsBuilder::new()).build())
     }
 }
 
 impl<S0> ReloadResultBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -342,23 +324,23 @@ impl<S0> ReloadResultBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> ReloadResultBuilder<(S0, crate::typed::builder::Set)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
-impl ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ReloadResultBuilder<(S0, S1)> {
     /// Builds a [`ReloadResult`].
-    pub fn build(self) -> ReloadResult {
+    pub fn build(self) -> ReloadResult
+    where
+        S0: crate::typed::builder::IsSet<reload_result_members::reload_details>,
+        S1: crate::typed::builder::IsSet<reload_result_members::shards>,
+    {
         ReloadResult {
             reload_details: self.reload_details.unwrap(),
             shards: self.shards.unwrap(),
@@ -366,26 +348,26 @@ impl ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ReloadResult
+impl<S0, S1> crate::typed::builder::Build for ReloadResultBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<reload_result_members::reload_details>,
+    S1: crate::typed::builder::IsSet<reload_result_members::shards>,
 {
-    fn from(
-        builder: ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ReloadResult;
+
+    fn build(self) -> ReloadResult {
+        Self::build(self)
     }
 }
 
-impl<S1> ReloadResultBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `reload_details` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reload_details: crate::typed::builder::MissingRequiredField) -> ReloadResult { match reload_details {} }
-}
-
-impl ReloadResultBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> ReloadResult { match shards {} }
+impl<S0, S1> From<ReloadResultBuilder<(S0, S1)>> for ReloadResult
+where
+    S0: crate::typed::builder::IsSet<reload_result_members::reload_details>,
+    S1: crate::typed::builder::IsSet<reload_result_members::shards>,
+{
+    fn from(builder: ReloadResultBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.reload_search_analyzers`](crate::typed::indices::IndicesClient::reload_search_analyzers).
@@ -445,16 +427,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -626,7 +619,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A comma-separated list of index names to reload analyzers for
+    /// **Required.** A comma-separated list of index names to reload analyzers for
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::Indices>,
@@ -637,9 +630,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
@@ -654,23 +650,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

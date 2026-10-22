@@ -9,21 +9,28 @@ pub struct AutoscalingCapacity {
 
 impl AutoscalingCapacity {
     /// Creates a builder for [`AutoscalingCapacity`].
+    ///
+    /// Required: `node`, `total`.
     pub fn builder() -> AutoscalingCapacityBuilder {
         AutoscalingCapacityBuilder::new()
     }
 
     /// Creates a [`AutoscalingCapacity`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoscalingCapacityBuilder,
-        ) -> AutoscalingCapacityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node`, `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingCapacity>>(
+        f: impl FnOnce(AutoscalingCapacityBuilder) -> B,
     ) -> AutoscalingCapacity {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingCapacityBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_capacity_members {
+    pub struct node;
+    pub struct total;
 }
 
 /// Builder for [`AutoscalingCapacity`].
@@ -57,6 +64,7 @@ impl<S0, S1> AutoscalingCapacityBuilder<(S0, S1)> {
 }
 
 impl<S1> AutoscalingCapacityBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn node(
         self,
         value: impl Into<AutoscalingResources>,
@@ -67,20 +75,16 @@ impl<S1> AutoscalingCapacityBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`node`](Self::node) with a builder.
-    pub fn node_with(
+    pub fn node_with<B: crate::typed::builder::Build<Output = AutoscalingResources>>(
         self,
-        f: impl FnOnce(
-            AutoscalingResourcesBuilder,
-        ) -> AutoscalingResourcesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoscalingResourcesBuilder) -> B,
     ) -> AutoscalingCapacityBuilder<(crate::typed::builder::Set, S1)> {
         self.node(f(AutoscalingResourcesBuilder::new()).build())
     }
 }
 
 impl<S0> AutoscalingCapacityBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn total(
         self,
         value: impl Into<AutoscalingResources>,
@@ -91,22 +95,21 @@ impl<S0> AutoscalingCapacityBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`total`](Self::total) with a builder.
-    pub fn total_with(
+    pub fn total_with<B: crate::typed::builder::Build<Output = AutoscalingResources>>(
         self,
-        f: impl FnOnce(
-            AutoscalingResourcesBuilder,
-        ) -> AutoscalingResourcesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoscalingResourcesBuilder) -> B,
     ) -> AutoscalingCapacityBuilder<(S0, crate::typed::builder::Set)> {
         self.total(f(AutoscalingResourcesBuilder::new()).build())
     }
 }
 
-impl AutoscalingCapacityBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AutoscalingCapacityBuilder<(S0, S1)> {
     /// Builds a [`AutoscalingCapacity`].
-    pub fn build(self) -> AutoscalingCapacity {
+    pub fn build(self) -> AutoscalingCapacity
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_capacity_members::node>,
+        S1: crate::typed::builder::IsSet<autoscaling_capacity_members::total>,
+    {
         AutoscalingCapacity {
             node: self.node.unwrap(),
             total: self.total.unwrap(),
@@ -114,29 +117,26 @@ impl AutoscalingCapacityBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<AutoscalingCapacityBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AutoscalingCapacity
+impl<S0, S1> crate::typed::builder::Build for AutoscalingCapacityBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_capacity_members::node>,
+    S1: crate::typed::builder::IsSet<autoscaling_capacity_members::total>,
 {
-    fn from(
-        builder: AutoscalingCapacityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoscalingCapacity;
+
+    fn build(self) -> AutoscalingCapacity {
+        Self::build(self)
     }
 }
 
-impl<S1> AutoscalingCapacityBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> AutoscalingCapacity { match node {} }
-}
-
-impl AutoscalingCapacityBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> AutoscalingCapacity { match total {} }
+impl<S0, S1> From<AutoscalingCapacityBuilder<(S0, S1)>> for AutoscalingCapacity
+where
+    S0: crate::typed::builder::IsSet<autoscaling_capacity_members::node>,
+    S1: crate::typed::builder::IsSet<autoscaling_capacity_members::total>,
+{
+    fn from(builder: AutoscalingCapacityBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -150,18 +150,27 @@ pub struct AutoscalingDecider {
 
 impl AutoscalingDecider {
     /// Creates a builder for [`AutoscalingDecider`].
+    ///
+    /// Required: `required_capacity`.
     pub fn builder() -> AutoscalingDeciderBuilder {
         AutoscalingDeciderBuilder::new()
     }
 
     /// Creates a [`AutoscalingDecider`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoscalingDeciderBuilder,
-        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `required_capacity`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingDecider>>(
+        f: impl FnOnce(AutoscalingDeciderBuilder) -> B,
     ) -> AutoscalingDecider {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingDeciderBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_decider_members {
+    pub struct required_capacity;
 }
 
 /// Builder for [`AutoscalingDecider`].
@@ -218,6 +227,7 @@ impl<S0> AutoscalingDeciderBuilder<(S0,)> {
 }
 
 impl AutoscalingDeciderBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn required_capacity(
         self,
         value: impl Into<AutoscalingCapacity>,
@@ -228,22 +238,20 @@ impl AutoscalingDeciderBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`required_capacity`](Self::required_capacity) with a builder.
-    pub fn required_capacity_with(
+    pub fn required_capacity_with<B: crate::typed::builder::Build<Output = AutoscalingCapacity>>(
         self,
-        f: impl FnOnce(
-            AutoscalingCapacityBuilder,
-        ) -> AutoscalingCapacityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoscalingCapacityBuilder) -> B,
     ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)> {
         self.required_capacity(f(AutoscalingCapacityBuilder::new()).build())
     }
 }
 
-impl AutoscalingDeciderBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AutoscalingDeciderBuilder<(S0,)> {
     /// Builds a [`AutoscalingDecider`].
-    pub fn build(self) -> AutoscalingDecider {
+    pub fn build(self) -> AutoscalingDecider
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_decider_members::required_capacity>,
+    {
         AutoscalingDecider {
             required_capacity: self.required_capacity.unwrap(),
             reason_summary: self.reason_summary,
@@ -252,16 +260,24 @@ impl AutoscalingDeciderBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>> for AutoscalingDecider {
-    fn from(builder: AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AutoscalingDeciderBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_decider_members::required_capacity>,
+{
+    type Output = AutoscalingDecider;
+
+    fn build(self) -> AutoscalingDecider {
+        Self::build(self)
     }
 }
 
-impl AutoscalingDeciderBuilder<(crate::typed::builder::NotSet,)> {
-    /// `required_capacity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, required_capacity: crate::typed::builder::MissingRequiredField) -> AutoscalingDecider { match required_capacity {} }
+impl<S0> From<AutoscalingDeciderBuilder<(S0,)>> for AutoscalingDecider
+where
+    S0: crate::typed::builder::IsSet<autoscaling_decider_members::required_capacity>,
+{
+    fn from(builder: AutoscalingDeciderBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -274,23 +290,30 @@ pub struct AutoscalingDeciders {
 
 impl AutoscalingDeciders {
     /// Creates a builder for [`AutoscalingDeciders`].
+    ///
+    /// Required: `required_capacity`, `current_capacity`, `current_nodes`, `deciders`.
     pub fn builder() -> AutoscalingDecidersBuilder {
         AutoscalingDecidersBuilder::new()
     }
 
     /// Creates a [`AutoscalingDeciders`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoscalingDecidersBuilder,
-        ) -> AutoscalingDecidersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `required_capacity`, `current_capacity`, `current_nodes`, `deciders`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingDeciders>>(
+        f: impl FnOnce(AutoscalingDecidersBuilder) -> B,
     ) -> AutoscalingDeciders {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingDecidersBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_deciders_members {
+    pub struct required_capacity;
+    pub struct current_capacity;
+    pub struct current_nodes;
+    pub struct deciders;
 }
 
 /// Builder for [`AutoscalingDeciders`].
@@ -342,6 +365,7 @@ impl<S0, S1, S2, S3> AutoscalingDecidersBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> AutoscalingDecidersBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn required_capacity(
         self,
         value: impl Into<AutoscalingCapacity>,
@@ -352,20 +376,16 @@ impl<S1, S2, S3> AutoscalingDecidersBuilder<(crate::typed::builder::NotSet, S1, 
     }
 
     /// Sets [`required_capacity`](Self::required_capacity) with a builder.
-    pub fn required_capacity_with(
+    pub fn required_capacity_with<B: crate::typed::builder::Build<Output = AutoscalingCapacity>>(
         self,
-        f: impl FnOnce(
-            AutoscalingCapacityBuilder,
-        ) -> AutoscalingCapacityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoscalingCapacityBuilder) -> B,
     ) -> AutoscalingDecidersBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.required_capacity(f(AutoscalingCapacityBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> AutoscalingDecidersBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn current_capacity(
         self,
         value: impl Into<AutoscalingCapacity>,
@@ -376,20 +396,16 @@ impl<S0, S2, S3> AutoscalingDecidersBuilder<(S0, crate::typed::builder::NotSet, 
     }
 
     /// Sets [`current_capacity`](Self::current_capacity) with a builder.
-    pub fn current_capacity_with(
+    pub fn current_capacity_with<B: crate::typed::builder::Build<Output = AutoscalingCapacity>>(
         self,
-        f: impl FnOnce(
-            AutoscalingCapacityBuilder,
-        ) -> AutoscalingCapacityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AutoscalingCapacityBuilder) -> B,
     ) -> AutoscalingDecidersBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.current_capacity(f(AutoscalingCapacityBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn current_nodes(
         self,
         value: impl Into<Vec<AutoscalingNode>>,
@@ -413,9 +429,9 @@ impl<S0, S1, S3> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::NotS
     }
 
     /// Adds an element to [`current_nodes`](Self::current_nodes), with a builder.
-    pub fn add_current_nodes_with(
+    pub fn add_current_nodes_with<B: crate::typed::builder::Build<Output = AutoscalingNode>>(
         self,
-        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AutoscalingNodeBuilder) -> B,
     ) -> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
         self.add_current_nodes(f(AutoscalingNodeBuilder::new()).build())
     }
@@ -431,15 +447,16 @@ impl<S0, S1, S3> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::Set,
     }
 
     /// Adds an element to [`current_nodes`](Self::current_nodes), with a builder.
-    pub fn add_current_nodes_with(
+    pub fn add_current_nodes_with<B: crate::typed::builder::Build<Output = AutoscalingNode>>(
         self,
-        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AutoscalingNodeBuilder) -> B,
     ) -> Self {
         self.add_current_nodes(f(AutoscalingNodeBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn deciders(
         self,
         value: impl Into<indexmap::IndexMap<String, AutoscalingDecider>>,
@@ -464,12 +481,10 @@ impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::
     }
 
     /// Adds an entry to [`deciders`](Self::deciders), with a builder.
-    pub fn add_deciders_with(
+    pub fn add_deciders_with<B: crate::typed::builder::Build<Output = AutoscalingDecider>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            AutoscalingDeciderBuilder,
-        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AutoscalingDeciderBuilder) -> B,
     ) -> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_deciders(key, f(AutoscalingDeciderBuilder::new()).build())
     }
@@ -489,27 +504,24 @@ impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::
     }
 
     /// Adds an entry to [`deciders`](Self::deciders), with a builder.
-    pub fn add_deciders_with(
+    pub fn add_deciders_with<B: crate::typed::builder::Build<Output = AutoscalingDecider>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            AutoscalingDeciderBuilder,
-        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(AutoscalingDeciderBuilder) -> B,
     ) -> Self {
         self.add_deciders(key, f(AutoscalingDeciderBuilder::new()).build())
     }
 }
 
-impl
-    AutoscalingDecidersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> AutoscalingDecidersBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`AutoscalingDeciders`].
-    pub fn build(self) -> AutoscalingDeciders {
+    pub fn build(self) -> AutoscalingDeciders
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_deciders_members::required_capacity>,
+        S1: crate::typed::builder::IsSet<autoscaling_deciders_members::current_capacity>,
+        S2: crate::typed::builder::IsSet<autoscaling_deciders_members::current_nodes>,
+        S3: crate::typed::builder::IsSet<autoscaling_deciders_members::deciders>,
+    {
         AutoscalingDeciders {
             required_capacity: self.required_capacity.unwrap(),
             current_capacity: self.current_capacity.unwrap(),
@@ -519,71 +531,30 @@ impl
     }
 }
 
-impl
-    From<
-        AutoscalingDecidersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AutoscalingDeciders
+impl<S0, S1, S2, S3> crate::typed::builder::Build for AutoscalingDecidersBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_deciders_members::required_capacity>,
+    S1: crate::typed::builder::IsSet<autoscaling_deciders_members::current_capacity>,
+    S2: crate::typed::builder::IsSet<autoscaling_deciders_members::current_nodes>,
+    S3: crate::typed::builder::IsSet<autoscaling_deciders_members::deciders>,
 {
-    fn from(
-        builder: AutoscalingDecidersBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoscalingDeciders;
+
+    fn build(self) -> AutoscalingDeciders {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> AutoscalingDecidersBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `required_capacity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, required_capacity: crate::typed::builder::MissingRequiredField) -> AutoscalingDeciders { match required_capacity {} }
-}
-
-impl<S2, S3>
-    AutoscalingDecidersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<AutoscalingDecidersBuilder<(S0, S1, S2, S3)>> for AutoscalingDeciders
+where
+    S0: crate::typed::builder::IsSet<autoscaling_deciders_members::required_capacity>,
+    S1: crate::typed::builder::IsSet<autoscaling_deciders_members::current_capacity>,
+    S2: crate::typed::builder::IsSet<autoscaling_deciders_members::current_nodes>,
+    S3: crate::typed::builder::IsSet<autoscaling_deciders_members::deciders>,
 {
-    /// `current_capacity` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_capacity: crate::typed::builder::MissingRequiredField) -> AutoscalingDeciders { match current_capacity {} }
-}
-
-impl<S3>
-    AutoscalingDecidersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `current_nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, current_nodes: crate::typed::builder::MissingRequiredField) -> AutoscalingDeciders { match current_nodes {} }
-}
-
-impl
-    AutoscalingDecidersBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `deciders` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deciders: crate::typed::builder::MissingRequiredField) -> AutoscalingDeciders { match deciders {} }
+    fn from(builder: AutoscalingDecidersBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -593,16 +564,27 @@ pub struct AutoscalingNode {
 
 impl AutoscalingNode {
     /// Creates a builder for [`AutoscalingNode`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> AutoscalingNodeBuilder {
         AutoscalingNodeBuilder::new()
     }
 
     /// Creates a [`AutoscalingNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingNode>>(
+        f: impl FnOnce(AutoscalingNodeBuilder) -> B,
     ) -> AutoscalingNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_node_members {
+    pub struct name;
 }
 
 /// Builder for [`AutoscalingNode`].
@@ -631,6 +613,7 @@ impl<S0> AutoscalingNodeBuilder<(S0,)> {
 }
 
 impl AutoscalingNodeBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::NodeName>,
@@ -641,25 +624,36 @@ impl AutoscalingNodeBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl AutoscalingNodeBuilder<(crate::typed::builder::Set,)> {
+impl<S0> AutoscalingNodeBuilder<(S0,)> {
     /// Builds a [`AutoscalingNode`].
-    pub fn build(self) -> AutoscalingNode {
+    pub fn build(self) -> AutoscalingNode
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_node_members::name>,
+    {
         AutoscalingNode {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<AutoscalingNodeBuilder<(crate::typed::builder::Set,)>> for AutoscalingNode {
-    fn from(builder: AutoscalingNodeBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for AutoscalingNodeBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_node_members::name>,
+{
+    type Output = AutoscalingNode;
+
+    fn build(self) -> AutoscalingNode {
+        Self::build(self)
     }
 }
 
-impl AutoscalingNodeBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> AutoscalingNode { match name {} }
+impl<S0> From<AutoscalingNodeBuilder<(S0,)>> for AutoscalingNode
+where
+    S0: crate::typed::builder::IsSet<autoscaling_node_members::name>,
+{
+    fn from(builder: AutoscalingNodeBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -670,21 +664,28 @@ pub struct AutoscalingResources {
 
 impl AutoscalingResources {
     /// Creates a builder for [`AutoscalingResources`].
+    ///
+    /// Required: `storage`, `memory`.
     pub fn builder() -> AutoscalingResourcesBuilder {
         AutoscalingResourcesBuilder::new()
     }
 
     /// Creates a [`AutoscalingResources`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AutoscalingResourcesBuilder,
-        ) -> AutoscalingResourcesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `storage`, `memory`.
+    pub fn of<B: crate::typed::builder::Build<Output = AutoscalingResources>>(
+        f: impl FnOnce(AutoscalingResourcesBuilder) -> B,
     ) -> AutoscalingResources {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AutoscalingResourcesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod autoscaling_resources_members {
+    pub struct storage;
+    pub struct memory;
 }
 
 /// Builder for [`AutoscalingResources`].
@@ -718,6 +719,7 @@ impl<S0, S1> AutoscalingResourcesBuilder<(S0, S1)> {
 }
 
 impl<S1> AutoscalingResourcesBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn storage(
         self,
         value: i32,
@@ -729,6 +731,7 @@ impl<S1> AutoscalingResourcesBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> AutoscalingResourcesBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn memory(
         self,
         value: i32,
@@ -739,9 +742,13 @@ impl<S0> AutoscalingResourcesBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl AutoscalingResourcesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> AutoscalingResourcesBuilder<(S0, S1)> {
     /// Builds a [`AutoscalingResources`].
-    pub fn build(self) -> AutoscalingResources {
+    pub fn build(self) -> AutoscalingResources
+    where
+        S0: crate::typed::builder::IsSet<autoscaling_resources_members::storage>,
+        S1: crate::typed::builder::IsSet<autoscaling_resources_members::memory>,
+    {
         AutoscalingResources {
             storage: self.storage.unwrap(),
             memory: self.memory.unwrap(),
@@ -749,29 +756,26 @@ impl AutoscalingResourcesBuilder<(crate::typed::builder::Set, crate::typed::buil
     }
 }
 
-impl From<AutoscalingResourcesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for AutoscalingResources
+impl<S0, S1> crate::typed::builder::Build for AutoscalingResourcesBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<autoscaling_resources_members::storage>,
+    S1: crate::typed::builder::IsSet<autoscaling_resources_members::memory>,
 {
-    fn from(
-        builder: AutoscalingResourcesBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AutoscalingResources;
+
+    fn build(self) -> AutoscalingResources {
+        Self::build(self)
     }
 }
 
-impl<S1> AutoscalingResourcesBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `storage` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, storage: crate::typed::builder::MissingRequiredField) -> AutoscalingResources { match storage {} }
-}
-
-impl AutoscalingResourcesBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `memory` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory: crate::typed::builder::MissingRequiredField) -> AutoscalingResources { match memory {} }
+impl<S0, S1> From<AutoscalingResourcesBuilder<(S0, S1)>> for AutoscalingResources
+where
+    S0: crate::typed::builder::IsSet<autoscaling_resources_members::storage>,
+    S1: crate::typed::builder::IsSet<autoscaling_resources_members::memory>,
+{
+    fn from(builder: AutoscalingResourcesBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`autoscaling.get_autoscaling_capacity`](crate::typed::autoscaling::AutoscalingClient::get_autoscaling_capacity).
@@ -821,7 +825,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -932,6 +938,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

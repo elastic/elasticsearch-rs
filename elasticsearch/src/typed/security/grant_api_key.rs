@@ -56,16 +56,27 @@ impl From<Vec<indexmap::IndexMap<String, crate::typed::security::_types::RoleDes
 
 impl GrantApiKey {
     /// Creates a builder for [`GrantApiKey`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> GrantApiKeyBuilder {
         GrantApiKeyBuilder::new()
     }
 
     /// Creates a [`GrantApiKey`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GrantApiKeyBuilder) -> GrantApiKeyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = GrantApiKey>>(
+        f: impl FnOnce(GrantApiKeyBuilder) -> B,
     ) -> GrantApiKey {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GrantApiKeyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod grant_api_key_members {
+    pub struct name;
 }
 
 /// Builder for [`GrantApiKey`].
@@ -155,6 +166,7 @@ impl<S0> GrantApiKeyBuilder<(S0,)> {
 }
 
 impl GrantApiKeyBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -165,9 +177,12 @@ impl GrantApiKeyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GrantApiKeyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GrantApiKeyBuilder<(S0,)> {
     /// Builds a [`GrantApiKey`].
-    pub fn build(self) -> GrantApiKey {
+    pub fn build(self) -> GrantApiKey
+    where
+        S0: crate::typed::builder::IsSet<grant_api_key_members::name>,
+    {
         GrantApiKey {
             name: self.name.unwrap(),
             expiration: self.expiration,
@@ -177,16 +192,24 @@ impl GrantApiKeyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GrantApiKeyBuilder<(crate::typed::builder::Set,)>> for GrantApiKey {
-    fn from(builder: GrantApiKeyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GrantApiKeyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<grant_api_key_members::name>,
+{
+    type Output = GrantApiKey;
+
+    fn build(self) -> GrantApiKey {
+        Self::build(self)
     }
 }
 
-impl GrantApiKeyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> GrantApiKey { match name {} }
+impl<S0> From<GrantApiKeyBuilder<(S0,)>> for GrantApiKey
+where
+    S0: crate::typed::builder::IsSet<grant_api_key_members::name>,
+{
+    fn from(builder: GrantApiKeyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`security.grant_api_key`](crate::typed::security::SecurityClient::grant_api_key).
@@ -259,19 +282,28 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `api_key`, `grant_type`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        )
-            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ///
+    /// Required: `api_key`, `grant_type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct api_key;
+    pub struct grant_type;
 }
 
 /// Builder for [`Request`].
@@ -460,7 +492,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 }
 
 impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// The API key.
+    /// **Required.** The API key.
     pub fn api_key(
         self,
         value: impl Into<GrantApiKey>,
@@ -471,16 +503,16 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
     }
 
     /// Sets [`api_key`](Self::api_key) with a builder.
-    pub fn api_key_with(
+    pub fn api_key_with<B: crate::typed::builder::Build<Output = GrantApiKey>>(
         self,
-        f: impl FnOnce(GrantApiKeyBuilder) -> GrantApiKeyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GrantApiKeyBuilder) -> B,
     ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
         self.api_key(f(GrantApiKeyBuilder::new()).build())
     }
 }
 
 impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
-    /// The type of grant. Supported grant types are: `access_token`, `password`.
+    /// **Required.** The type of grant. Supported grant types are: `access_token`, `password`.
     pub fn grant_type(
         self,
         value: impl Into<ApiKeyGrantType>,
@@ -491,9 +523,13 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::api_key>,
+        S1: crate::typed::builder::IsSet<request_members::grant_type>,
+    {
         Request {
             refresh: self.refresh,
             error_trace: self.error_trace,
@@ -510,41 +546,28 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<S0, S1, C> crate::typed::builder::Build for RequestBuilder<(S0, S1), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::api_key>,
+    S1: crate::typed::builder::IsSet<request_members::grant_type>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
-    /// `api_key` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, api_key: crate::typed::builder::MissingRequiredField) -> Request { match api_key {} }
-}
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
-    /// `api_key` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, api_key: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match api_key {} }
-}
-
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
-    /// `grant_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, grant_type: crate::typed::builder::MissingRequiredField) -> Request { match grant_type {} }
-}
-impl
-    RequestBuilder<
-        (crate::typed::builder::Set, crate::typed::builder::NotSet),
-        &crate::Elasticsearch,
-    >
-{
-    /// `grant_type` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, grant_type: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match grant_type {} }
+impl<S0, S1> RequestBuilder<(S0, S1), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::api_key>,
+        S1: crate::typed::builder::IsSet<request_members::grant_type>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

@@ -54,7 +54,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -291,6 +293,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -476,7 +486,9 @@ impl TasksRecord {
     }
 
     /// Creates a [`TasksRecord`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TasksRecordBuilder) -> TasksRecordBuilder) -> TasksRecord {
+    pub fn of<B: crate::typed::builder::Build<Output = TasksRecord>>(
+        f: impl FnOnce(TasksRecordBuilder) -> B,
+    ) -> TasksRecord {
         f(Self::builder()).build()
     }
 }
@@ -740,6 +752,14 @@ impl TasksRecordBuilder {
             x_opaque_id: self.x_opaque_id,
             description: self.description,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TasksRecordBuilder {
+    type Output = TasksRecord;
+
+    fn build(self) -> TasksRecord {
+        Self::build(self)
     }
 }
 

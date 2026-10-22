@@ -33,7 +33,9 @@ impl Alias {
     }
 
     /// Creates a [`Alias`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AliasBuilder) -> AliasBuilder) -> Alias {
+    pub fn of<B: crate::typed::builder::Build<Output = Alias>>(
+        f: impl FnOnce(AliasBuilder) -> B,
+    ) -> Alias {
         f(Self::builder()).build()
     }
 }
@@ -82,13 +84,11 @@ impl AliasBuilder {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -171,6 +171,14 @@ impl AliasBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AliasBuilder {
+    type Output = Alias;
+
+    fn build(self) -> Alias {
+        Self::build(self)
+    }
+}
+
 impl From<AliasBuilder> for Alias {
     fn from(builder: AliasBuilder) -> Self {
         builder.build()
@@ -209,7 +217,9 @@ impl AliasDefinition {
     }
 
     /// Creates a [`AliasDefinition`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(AliasDefinitionBuilder) -> AliasDefinitionBuilder) -> AliasDefinition {
+    pub fn of<B: crate::typed::builder::Build<Output = AliasDefinition>>(
+        f: impl FnOnce(AliasDefinitionBuilder) -> B,
+    ) -> AliasDefinition {
         f(Self::builder()).build()
     }
 }
@@ -258,13 +268,11 @@ impl AliasDefinitionBuilder {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -347,6 +355,14 @@ impl AliasDefinitionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for AliasDefinitionBuilder {
+    type Output = AliasDefinition;
+
+    fn build(self) -> AliasDefinition {
+        Self::build(self)
+    }
+}
+
 impl From<AliasDefinitionBuilder> for AliasDefinition {
     fn from(builder: AliasDefinitionBuilder) -> Self {
         builder.build()
@@ -360,16 +376,27 @@ pub struct CacheQueries {
 
 impl CacheQueries {
     /// Creates a builder for [`CacheQueries`].
+    ///
+    /// Required: `enabled`.
     pub fn builder() -> CacheQueriesBuilder {
         CacheQueriesBuilder::new()
     }
 
     /// Creates a [`CacheQueries`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(CacheQueriesBuilder) -> CacheQueriesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enabled`.
+    pub fn of<B: crate::typed::builder::Build<Output = CacheQueries>>(
+        f: impl FnOnce(CacheQueriesBuilder) -> B,
     ) -> CacheQueries {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CacheQueriesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cache_queries_members {
+    pub struct enabled;
 }
 
 /// Builder for [`CacheQueries`].
@@ -398,6 +425,7 @@ impl<S0> CacheQueriesBuilder<(S0,)> {
 }
 
 impl CacheQueriesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> CacheQueriesBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -405,25 +433,36 @@ impl CacheQueriesBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CacheQueriesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CacheQueriesBuilder<(S0,)> {
     /// Builds a [`CacheQueries`].
-    pub fn build(self) -> CacheQueries {
+    pub fn build(self) -> CacheQueries
+    where
+        S0: crate::typed::builder::IsSet<cache_queries_members::enabled>,
+    {
         CacheQueries {
             enabled: self.enabled.unwrap(),
         }
     }
 }
 
-impl From<CacheQueriesBuilder<(crate::typed::builder::Set,)>> for CacheQueries {
-    fn from(builder: CacheQueriesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CacheQueriesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<cache_queries_members::enabled>,
+{
+    type Output = CacheQueries;
+
+    fn build(self) -> CacheQueries {
+        Self::build(self)
     }
 }
 
-impl CacheQueriesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> CacheQueries { match enabled {} }
+impl<S0> From<CacheQueriesBuilder<(S0,)>> for CacheQueries
+where
+    S0: crate::typed::builder::IsSet<cache_queries_members::enabled>,
+{
+    fn from(builder: CacheQueriesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -490,30 +529,37 @@ pub struct DataStream {
 
 impl DataStream {
     /// Creates a builder for [`DataStream`].
+    ///
+    /// Required: `generation`, `hidden`, `next_generation_managed_by`, `prefer_ilm`, `indices`, `name`, `rollover_on_write`, `settings`, `status`, `template`, `timestamp_field`.
     pub fn builder() -> DataStreamBuilder {
         DataStreamBuilder::new()
     }
 
     /// Creates a [`DataStream`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamBuilder,
-        ) -> DataStreamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `generation`, `hidden`, `next_generation_managed_by`, `prefer_ilm`, `indices`, `name`, `rollover_on_write`, `settings`, `status`, `template`, `timestamp_field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStream>>(
+        f: impl FnOnce(DataStreamBuilder) -> B,
     ) -> DataStream {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_members {
+    pub struct generation;
+    pub struct hidden;
+    pub struct next_generation_managed_by;
+    pub struct prefer_ilm;
+    pub struct indices;
+    pub struct name;
+    pub struct rollover_on_write;
+    pub struct settings;
+    pub struct status;
+    pub struct template;
+    pub struct timestamp_field;
 }
 
 /// Builder for [`DataStream`].
@@ -673,15 +719,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`failure_store`](Self::failure_store) with a builder.
-    pub fn failure_store_with(
+    pub fn failure_store_with<B: crate::typed::builder::Build<Output = FailureStore>>(
         self,
-        f: impl FnOnce(
-            FailureStoreBuilder,
-        ) -> FailureStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(FailureStoreBuilder) -> B,
     ) -> Self {
         self.failure_store(f(FailureStoreBuilder::new()).build())
     }
@@ -714,9 +754,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<Output = DataStreamLifecycleWithRollover>,
+    >(
         self,
-        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> DataStreamLifecycleWithRolloverBuilder,
+        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(DataStreamLifecycleWithRolloverBuilder::new()).build())
     }
@@ -753,11 +795,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -802,7 +844,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Current generation for the data stream. This number acts as a cumulative count of the stream’s rollovers, starting at 1.
+    /// **Required.** Current generation for the data stream. This number acts as a cumulative count of the stream’s rollovers, starting at 1.
     pub fn generation(
         self,
         value: i32,
@@ -840,7 +882,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// If `true`, the data stream is hidden.
+    /// **Required.** If `true`, the data stream is hidden.
     pub fn hidden(
         self,
         value: bool,
@@ -878,7 +920,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Name of the lifecycle system that'll manage the next generation of the data stream.
+    /// **Required.** Name of the lifecycle system that'll manage the next generation of the data stream.
     pub fn next_generation_managed_by(
         self,
         value: impl Into<ManagedBy>,
@@ -916,7 +958,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Indicates if ILM should take precedence over DSL in case both are configured to managed this data stream.
+    /// **Required.** Indicates if ILM should take precedence over DSL in case both are configured to managed this data stream.
     pub fn prefer_ilm(
         self,
         value: bool,
@@ -954,7 +996,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Array of objects containing information about the data stream’s backing indices.
+    /// **Required.** Array of objects containing information about the data stream’s backing indices.
     /// The last item in this array contains information about the stream’s current write index.
     pub fn indices(
         self,
@@ -1003,14 +1045,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = DataStreamIndex>>(
         self,
-        f: impl FnOnce(
-            DataStreamIndexBuilder,
-        ) -> DataStreamIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamIndexBuilder) -> B,
     ) -> DataStreamBuilder<(
         S0,
         S1,
@@ -1052,14 +1089,9 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = DataStreamIndex>>(
         self,
-        f: impl FnOnce(
-            DataStreamIndexBuilder,
-        ) -> DataStreamIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamIndexBuilder) -> B,
     ) -> Self {
         self.add_indices(f(DataStreamIndexBuilder::new()).build())
     }
@@ -1080,7 +1112,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// Name of the data stream.
+    /// **Required.** Name of the data stream.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::DataStreamName>,
@@ -1118,7 +1150,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10>
         S10,
     )>
 {
-    /// If `true`, the next write to this data stream will trigger a rollover first and the document will be indexed in the new backing index. If the rollover fails the indexing request will fail too.
+    /// **Required.** If `true`, the next write to this data stream will trigger a rollover first and the document will be indexed in the new backing index. If the rollover fails the indexing request will fail too.
     pub fn rollover_on_write(
         self,
         value: bool,
@@ -1156,7 +1188,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         S10,
     )>
 {
-    /// The settings specific to this data stream that will take precedence over the settings in the matching index
+    /// **Required.** The settings specific to this data stream that will take precedence over the settings in the matching index
     /// template.
     pub fn settings(
         self,
@@ -1180,9 +1212,9 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> DataStreamBuilder<(
         S0,
         S1,
@@ -1215,7 +1247,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10>
         S10,
     )>
 {
-    /// Health status of the data stream.
+    /// **Required.** Health status of the data stream.
     /// This health status is based on the state of the primary and replica shards of the stream’s backing indices.
     pub fn status(
         self,
@@ -1254,7 +1286,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10>
         S10,
     )>
 {
-    /// Name of the index template used to create the data stream’s backing indices.
+    /// **Required.** Name of the index template used to create the data stream’s backing indices.
     /// The template’s index pattern must match the name of this data stream.
     pub fn template(
         self,
@@ -1293,7 +1325,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Information about the `@timestamp` field in the data stream.
+    /// **Required.** Information about the `@timestamp` field in the data stream.
     pub fn timestamp_field(
         self,
         value: impl Into<DataStreamTimestampField>,
@@ -1316,11 +1348,11 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 
     /// Sets [`timestamp_field`](Self::timestamp_field) with a builder.
-    pub fn timestamp_field_with(
+    pub fn timestamp_field_with<
+        B: crate::typed::builder::Build<Output = DataStreamTimestampField>,
+    >(
         self,
-        f: impl FnOnce(
-            DataStreamTimestampFieldBuilder,
-        ) -> DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DataStreamTimestampFieldBuilder) -> B,
     ) -> DataStreamBuilder<(
         S0,
         S1,
@@ -1338,23 +1370,24 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
     }
 }
 
-impl
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    DataStreamBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
 {
     /// Builds a [`DataStream`].
-    pub fn build(self) -> DataStream {
+    pub fn build(self) -> DataStream
+    where
+        S0: crate::typed::builder::IsSet<data_stream_members::generation>,
+        S1: crate::typed::builder::IsSet<data_stream_members::hidden>,
+        S2: crate::typed::builder::IsSet<data_stream_members::next_generation_managed_by>,
+        S3: crate::typed::builder::IsSet<data_stream_members::prefer_ilm>,
+        S4: crate::typed::builder::IsSet<data_stream_members::indices>,
+        S5: crate::typed::builder::IsSet<data_stream_members::name>,
+        S6: crate::typed::builder::IsSet<data_stream_members::rollover_on_write>,
+        S7: crate::typed::builder::IsSet<data_stream_members::settings>,
+        S8: crate::typed::builder::IsSet<data_stream_members::status>,
+        S9: crate::typed::builder::IsSet<data_stream_members::template>,
+        S10: crate::typed::builder::IsSet<data_stream_members::timestamp_field>,
+    {
         DataStream {
             meta: self.meta,
             allow_custom_routing: self.allow_custom_routing,
@@ -1380,260 +1413,46 @@ impl
     }
 }
 
-impl
-    From<
-        DataStreamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DataStream
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10> crate::typed::builder::Build
+    for DataStreamBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_members::generation>,
+    S1: crate::typed::builder::IsSet<data_stream_members::hidden>,
+    S2: crate::typed::builder::IsSet<data_stream_members::next_generation_managed_by>,
+    S3: crate::typed::builder::IsSet<data_stream_members::prefer_ilm>,
+    S4: crate::typed::builder::IsSet<data_stream_members::indices>,
+    S5: crate::typed::builder::IsSet<data_stream_members::name>,
+    S6: crate::typed::builder::IsSet<data_stream_members::rollover_on_write>,
+    S7: crate::typed::builder::IsSet<data_stream_members::settings>,
+    S8: crate::typed::builder::IsSet<data_stream_members::status>,
+    S9: crate::typed::builder::IsSet<data_stream_members::template>,
+    S10: crate::typed::builder::IsSet<data_stream_members::timestamp_field>,
 {
-    fn from(
-        builder: DataStreamBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStream;
+
+    fn build(self) -> DataStream {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    From<DataStreamBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>> for DataStream
+where
+    S0: crate::typed::builder::IsSet<data_stream_members::generation>,
+    S1: crate::typed::builder::IsSet<data_stream_members::hidden>,
+    S2: crate::typed::builder::IsSet<data_stream_members::next_generation_managed_by>,
+    S3: crate::typed::builder::IsSet<data_stream_members::prefer_ilm>,
+    S4: crate::typed::builder::IsSet<data_stream_members::indices>,
+    S5: crate::typed::builder::IsSet<data_stream_members::name>,
+    S6: crate::typed::builder::IsSet<data_stream_members::rollover_on_write>,
+    S7: crate::typed::builder::IsSet<data_stream_members::settings>,
+    S8: crate::typed::builder::IsSet<data_stream_members::status>,
+    S9: crate::typed::builder::IsSet<data_stream_members::template>,
+    S10: crate::typed::builder::IsSet<data_stream_members::timestamp_field>,
 {
-    /// `generation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, generation: crate::typed::builder::MissingRequiredField) -> DataStream { match generation {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `hidden` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, hidden: crate::typed::builder::MissingRequiredField) -> DataStream { match hidden {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `next_generation_managed_by` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, next_generation_managed_by: crate::typed::builder::MissingRequiredField) -> DataStream { match next_generation_managed_by {} }
-}
-
-impl<S4, S5, S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `prefer_ilm` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, prefer_ilm: crate::typed::builder::MissingRequiredField) -> DataStream { match prefer_ilm {} }
-}
-
-impl<S5, S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> DataStream { match indices {} }
-}
-
-impl<S6, S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataStream { match name {} }
-}
-
-impl<S7, S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `rollover_on_write` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollover_on_write: crate::typed::builder::MissingRequiredField) -> DataStream { match rollover_on_write {} }
-}
-
-impl<S8, S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-        S9,
-        S10,
-    )>
-{
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> DataStream { match settings {} }
-}
-
-impl<S9, S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S9,
-        S10,
-    )>
-{
-    /// `status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, status: crate::typed::builder::MissingRequiredField) -> DataStream { match status {} }
-}
-
-impl<S10>
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S10,
-    )>
-{
-    /// `template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, template: crate::typed::builder::MissingRequiredField) -> DataStream { match template {} }
-}
-
-impl
-    DataStreamBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `timestamp_field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, timestamp_field: crate::typed::builder::MissingRequiredField) -> DataStream { match timestamp_field {} }
+    fn from(builder: DataStreamBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Data stream failure store contains the configuration of the failure store for a given data stream.
@@ -1656,8 +1475,8 @@ impl DataStreamFailureStore {
     }
 
     /// Creates a [`DataStreamFailureStore`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamFailureStoreBuilder) -> DataStreamFailureStoreBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamFailureStore>>(
+        f: impl FnOnce(DataStreamFailureStoreBuilder) -> B,
     ) -> DataStreamFailureStore {
         f(Self::builder()).build()
     }
@@ -1707,9 +1526,9 @@ impl DataStreamFailureStoreBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<B: crate::typed::builder::Build<Output = FailureStoreLifecycle>>(
         self,
-        f: impl FnOnce(FailureStoreLifecycleBuilder) -> FailureStoreLifecycleBuilder,
+        f: impl FnOnce(FailureStoreLifecycleBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(FailureStoreLifecycleBuilder::new()).build())
     }
@@ -1722,6 +1541,14 @@ impl DataStreamFailureStoreBuilder {
             enabled: self.enabled,
             lifecycle: self.lifecycle,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataStreamFailureStoreBuilder {
+    type Output = DataStreamFailureStore;
+
+    fn build(self) -> DataStreamFailureStore {
+        Self::build(self)
     }
 }
 
@@ -1777,8 +1604,8 @@ impl DataStreamFailureStoreTemplate {
     }
 
     /// Creates a [`DataStreamFailureStoreTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamFailureStoreTemplateBuilder) -> DataStreamFailureStoreTemplateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamFailureStoreTemplate>>(
+        f: impl FnOnce(DataStreamFailureStoreTemplateBuilder) -> B,
     ) -> DataStreamFailureStoreTemplate {
         f(Self::builder()).build()
     }
@@ -1841,6 +1668,14 @@ impl DataStreamFailureStoreTemplateBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataStreamFailureStoreTemplateBuilder {
+    type Output = DataStreamFailureStoreTemplate;
+
+    fn build(self) -> DataStreamFailureStoreTemplate {
+        Self::build(self)
+    }
+}
+
 impl From<DataStreamFailureStoreTemplateBuilder> for DataStreamFailureStoreTemplate {
     fn from(builder: DataStreamFailureStoreTemplateBuilder) -> Self {
         builder.build()
@@ -1869,21 +1704,28 @@ pub struct DataStreamIndex {
 
 impl DataStreamIndex {
     /// Creates a builder for [`DataStreamIndex`].
+    ///
+    /// Required: `index_name`, `index_uuid`.
     pub fn builder() -> DataStreamIndexBuilder {
         DataStreamIndexBuilder::new()
     }
 
     /// Creates a [`DataStreamIndex`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamIndexBuilder,
-        ) -> DataStreamIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_name`, `index_uuid`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamIndex>>(
+        f: impl FnOnce(DataStreamIndexBuilder) -> B,
     ) -> DataStreamIndex {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamIndexBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_index_members {
+    pub struct index_name;
+    pub struct index_uuid;
 }
 
 /// Builder for [`DataStreamIndex`].
@@ -1977,7 +1819,7 @@ impl<S0, S1> DataStreamIndexBuilder<(S0, S1)> {
 }
 
 impl<S1> DataStreamIndexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Name of the backing index.
+    /// **Required.** Name of the backing index.
     pub fn index_name(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -1989,7 +1831,7 @@ impl<S1> DataStreamIndexBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DataStreamIndexBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Universally unique identifier (UUID) for the index.
+    /// **Required.** Universally unique identifier (UUID) for the index.
     pub fn index_uuid(
         self,
         value: impl Into<crate::typed::_types::Uuid>,
@@ -2000,9 +1842,13 @@ impl<S0> DataStreamIndexBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DataStreamIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DataStreamIndexBuilder<(S0, S1)> {
     /// Builds a [`DataStreamIndex`].
-    pub fn build(self) -> DataStreamIndex {
+    pub fn build(self) -> DataStreamIndex
+    where
+        S0: crate::typed::builder::IsSet<data_stream_index_members::index_name>,
+        S1: crate::typed::builder::IsSet<data_stream_index_members::index_uuid>,
+    {
         DataStreamIndex {
             index_name: self.index_name.unwrap(),
             index_uuid: self.index_uuid.unwrap(),
@@ -2014,26 +1860,26 @@ impl DataStreamIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<DataStreamIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DataStreamIndex
+impl<S0, S1> crate::typed::builder::Build for DataStreamIndexBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<data_stream_index_members::index_uuid>,
 {
-    fn from(
-        builder: DataStreamIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DataStreamIndex;
+
+    fn build(self) -> DataStreamIndex {
+        Self::build(self)
     }
 }
 
-impl<S1> DataStreamIndexBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_name: crate::typed::builder::MissingRequiredField) -> DataStreamIndex { match index_name {} }
-}
-
-impl DataStreamIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index_uuid` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_uuid: crate::typed::builder::MissingRequiredField) -> DataStreamIndex { match index_uuid {} }
+impl<S0, S1> From<DataStreamIndexBuilder<(S0, S1)>> for DataStreamIndex
+where
+    S0: crate::typed::builder::IsSet<data_stream_index_members::index_name>,
+    S1: crate::typed::builder::IsSet<data_stream_index_members::index_uuid>,
+{
+    fn from(builder: DataStreamIndexBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Data stream lifecycle denotes that a data stream is managed by the data stream lifecycle and contains the configuration.
@@ -2074,8 +1920,8 @@ impl DataStreamLifecycle {
     }
 
     /// Creates a [`DataStreamLifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamLifecycleBuilder) -> DataStreamLifecycleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamLifecycle>>(
+        f: impl FnOnce(DataStreamLifecycleBuilder) -> B,
     ) -> DataStreamLifecycle {
         f(Self::builder()).build()
     }
@@ -2170,14 +2016,9 @@ impl DataStreamLifecycleBuilder {
     }
 
     /// Adds an element to [`downsampling`](Self::downsampling), with a builder.
-    pub fn add_downsampling_with(
+    pub fn add_downsampling_with<B: crate::typed::builder::Build<Output = DownsamplingRound>>(
         self,
-        f: impl FnOnce(
-            DownsamplingRoundBuilder,
-        ) -> DownsamplingRoundBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DownsamplingRoundBuilder) -> B,
     ) -> Self {
         self.add_downsampling(f(DownsamplingRoundBuilder::new()).build())
     }
@@ -2237,6 +2078,14 @@ impl DataStreamLifecycleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataStreamLifecycleBuilder {
+    type Output = DataStreamLifecycle;
+
+    fn build(self) -> DataStreamLifecycle {
+        Self::build(self)
+    }
+}
+
 impl From<DataStreamLifecycleBuilder> for DataStreamLifecycle {
     fn from(builder: DataStreamLifecycleBuilder) -> Self {
         builder.build()
@@ -2274,10 +2123,8 @@ impl DataStreamLifecycleRolloverConditions {
     }
 
     /// Creates a [`DataStreamLifecycleRolloverConditions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamLifecycleRolloverConditionsBuilder,
-        ) -> DataStreamLifecycleRolloverConditionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamLifecycleRolloverConditions>>(
+        f: impl FnOnce(DataStreamLifecycleRolloverConditionsBuilder) -> B,
     ) -> DataStreamLifecycleRolloverConditions {
         f(Self::builder()).build()
     }
@@ -2457,6 +2304,14 @@ impl DataStreamLifecycleRolloverConditionsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataStreamLifecycleRolloverConditionsBuilder {
+    type Output = DataStreamLifecycleRolloverConditions;
+
+    fn build(self) -> DataStreamLifecycleRolloverConditions {
+        Self::build(self)
+    }
+}
+
 impl From<DataStreamLifecycleRolloverConditionsBuilder> for DataStreamLifecycleRolloverConditions {
     fn from(builder: DataStreamLifecycleRolloverConditionsBuilder) -> Self {
         builder.build()
@@ -2507,8 +2362,8 @@ impl DataStreamLifecycleWithRollover {
     }
 
     /// Creates a [`DataStreamLifecycleWithRollover`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> DataStreamLifecycleWithRolloverBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamLifecycleWithRollover>>(
+        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> B,
     ) -> DataStreamLifecycleWithRollover {
         f(Self::builder()).build()
     }
@@ -2605,14 +2460,9 @@ impl DataStreamLifecycleWithRolloverBuilder {
     }
 
     /// Adds an element to [`downsampling`](Self::downsampling), with a builder.
-    pub fn add_downsampling_with(
+    pub fn add_downsampling_with<B: crate::typed::builder::Build<Output = DownsamplingRound>>(
         self,
-        f: impl FnOnce(
-            DownsamplingRoundBuilder,
-        ) -> DownsamplingRoundBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DownsamplingRoundBuilder) -> B,
     ) -> Self {
         self.add_downsampling(f(DownsamplingRoundBuilder::new()).build())
     }
@@ -2671,11 +2521,11 @@ impl DataStreamLifecycleWithRolloverBuilder {
     }
 
     /// Sets [`rollover`](Self::rollover) with a builder.
-    pub fn rollover_with(
+    pub fn rollover_with<
+        B: crate::typed::builder::Build<Output = DataStreamLifecycleRolloverConditions>,
+    >(
         self,
-        f: impl FnOnce(
-            DataStreamLifecycleRolloverConditionsBuilder,
-        ) -> DataStreamLifecycleRolloverConditionsBuilder,
+        f: impl FnOnce(DataStreamLifecycleRolloverConditionsBuilder) -> B,
     ) -> Self {
         self.rollover(f(DataStreamLifecycleRolloverConditionsBuilder::new()).build())
     }
@@ -2694,6 +2544,14 @@ impl DataStreamLifecycleWithRolloverBuilder {
             frozen_after: self.frozen_after,
             rollover: self.rollover,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataStreamLifecycleWithRolloverBuilder {
+    type Output = DataStreamLifecycleWithRollover;
+
+    fn build(self) -> DataStreamLifecycleWithRollover {
+        Self::build(self)
     }
 }
 
@@ -2719,8 +2577,8 @@ impl DataStreamOptions {
     }
 
     /// Creates a [`DataStreamOptions`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamOptionsBuilder) -> DataStreamOptionsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamOptions>>(
+        f: impl FnOnce(DataStreamOptionsBuilder) -> B,
     ) -> DataStreamOptions {
         f(Self::builder()).build()
     }
@@ -2754,9 +2612,9 @@ impl DataStreamOptionsBuilder {
     }
 
     /// Sets [`failure_store`](Self::failure_store) with a builder.
-    pub fn failure_store_with(
+    pub fn failure_store_with<B: crate::typed::builder::Build<Output = DataStreamFailureStore>>(
         self,
-        f: impl FnOnce(DataStreamFailureStoreBuilder) -> DataStreamFailureStoreBuilder,
+        f: impl FnOnce(DataStreamFailureStoreBuilder) -> B,
     ) -> Self {
         self.failure_store(f(DataStreamFailureStoreBuilder::new()).build())
     }
@@ -2768,6 +2626,14 @@ impl DataStreamOptionsBuilder {
         DataStreamOptions {
             failure_store: self.failure_store,
         }
+    }
+}
+
+impl crate::typed::builder::Build for DataStreamOptionsBuilder {
+    type Output = DataStreamOptions;
+
+    fn build(self) -> DataStreamOptions {
+        Self::build(self)
     }
 }
 
@@ -2804,8 +2670,8 @@ impl DataStreamOptionsTemplate {
     }
 
     /// Creates a [`DataStreamOptionsTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamOptionsTemplateBuilder) -> DataStreamOptionsTemplateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamOptionsTemplate>>(
+        f: impl FnOnce(DataStreamOptionsTemplateBuilder) -> B,
     ) -> DataStreamOptionsTemplate {
         f(Self::builder()).build()
     }
@@ -2853,6 +2719,14 @@ impl DataStreamOptionsTemplateBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataStreamOptionsTemplateBuilder {
+    type Output = DataStreamOptionsTemplate;
+
+    fn build(self) -> DataStreamOptionsTemplate {
+        Self::build(self)
+    }
+}
+
 impl From<DataStreamOptionsTemplateBuilder> for DataStreamOptionsTemplate {
     fn from(builder: DataStreamOptionsTemplateBuilder) -> Self {
         builder.build()
@@ -2867,18 +2741,27 @@ pub struct DataStreamTimestampField {
 
 impl DataStreamTimestampField {
     /// Creates a builder for [`DataStreamTimestampField`].
+    ///
+    /// Required: `name`.
     pub fn builder() -> DataStreamTimestampFieldBuilder {
         DataStreamTimestampFieldBuilder::new()
     }
 
     /// Creates a [`DataStreamTimestampField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DataStreamTimestampFieldBuilder,
-        ) -> DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `name`.
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamTimestampField>>(
+        f: impl FnOnce(DataStreamTimestampFieldBuilder) -> B,
     ) -> DataStreamTimestampField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DataStreamTimestampFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod data_stream_timestamp_field_members {
+    pub struct name;
 }
 
 /// Builder for [`DataStreamTimestampField`].
@@ -2907,7 +2790,7 @@ impl<S0> DataStreamTimestampFieldBuilder<(S0,)> {
 }
 
 impl DataStreamTimestampFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// Name of the timestamp field for the data stream, which must be `@timestamp`. The `@timestamp` field must be included in every document indexed to the data stream.
+    /// **Required.** Name of the timestamp field for the data stream, which must be `@timestamp`. The `@timestamp` field must be included in every document indexed to the data stream.
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -2918,27 +2801,36 @@ impl DataStreamTimestampFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DataStreamTimestampFieldBuilder<(S0,)> {
     /// Builds a [`DataStreamTimestampField`].
-    pub fn build(self) -> DataStreamTimestampField {
+    pub fn build(self) -> DataStreamTimestampField
+    where
+        S0: crate::typed::builder::IsSet<data_stream_timestamp_field_members::name>,
+    {
         DataStreamTimestampField {
             name: self.name.unwrap(),
         }
     }
 }
 
-impl From<DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)>>
-    for DataStreamTimestampField
+impl<S0> crate::typed::builder::Build for DataStreamTimestampFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<data_stream_timestamp_field_members::name>,
 {
-    fn from(builder: DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = DataStreamTimestampField;
+
+    fn build(self) -> DataStreamTimestampField {
+        Self::build(self)
     }
 }
 
-impl DataStreamTimestampFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> DataStreamTimestampField { match name {} }
+impl<S0> From<DataStreamTimestampFieldBuilder<(S0,)>> for DataStreamTimestampField
+where
+    S0: crate::typed::builder::IsSet<data_stream_timestamp_field_members::name>,
+{
+    fn from(builder: DataStreamTimestampFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2958,8 +2850,8 @@ impl DataStreamVisibility {
     }
 
     /// Creates a [`DataStreamVisibility`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DataStreamVisibilityBuilder) -> DataStreamVisibilityBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DataStreamVisibility>>(
+        f: impl FnOnce(DataStreamVisibilityBuilder) -> B,
     ) -> DataStreamVisibility {
         f(Self::builder()).build()
     }
@@ -3029,6 +2921,14 @@ impl DataStreamVisibilityBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DataStreamVisibilityBuilder {
+    type Output = DataStreamVisibility;
+
+    fn build(self) -> DataStreamVisibility {
+        Self::build(self)
+    }
+}
+
 impl From<DataStreamVisibilityBuilder> for DataStreamVisibility {
     fn from(builder: DataStreamVisibilityBuilder) -> Self {
         builder.build()
@@ -3046,18 +2946,27 @@ pub struct DownsampleConfig {
 
 impl DownsampleConfig {
     /// Creates a builder for [`DownsampleConfig`].
+    ///
+    /// Required: `fixed_interval`.
     pub fn builder() -> DownsampleConfigBuilder {
         DownsampleConfigBuilder::new()
     }
 
     /// Creates a [`DownsampleConfig`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DownsampleConfigBuilder,
-        ) -> DownsampleConfigBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `fixed_interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = DownsampleConfig>>(
+        f: impl FnOnce(DownsampleConfigBuilder) -> B,
     ) -> DownsampleConfig {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DownsampleConfigBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod downsample_config_members {
+    pub struct fixed_interval;
 }
 
 /// Builder for [`DownsampleConfig`].
@@ -3101,7 +3010,7 @@ impl<S0> DownsampleConfigBuilder<(S0,)> {
 }
 
 impl DownsampleConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// The interval at which to aggregate the original time series index.
+    /// **Required.** The interval at which to aggregate the original time series index.
     pub fn fixed_interval(
         self,
         value: impl Into<crate::typed::_types::DurationLarge>,
@@ -3112,9 +3021,12 @@ impl DownsampleConfigBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl DownsampleConfigBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DownsampleConfigBuilder<(S0,)> {
     /// Builds a [`DownsampleConfig`].
-    pub fn build(self) -> DownsampleConfig {
+    pub fn build(self) -> DownsampleConfig
+    where
+        S0: crate::typed::builder::IsSet<downsample_config_members::fixed_interval>,
+    {
         DownsampleConfig {
             fixed_interval: self.fixed_interval.unwrap(),
             sampling_method: self.sampling_method,
@@ -3122,16 +3034,24 @@ impl DownsampleConfigBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DownsampleConfigBuilder<(crate::typed::builder::Set,)>> for DownsampleConfig {
-    fn from(builder: DownsampleConfigBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DownsampleConfigBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<downsample_config_members::fixed_interval>,
+{
+    type Output = DownsampleConfig;
+
+    fn build(self) -> DownsampleConfig {
+        Self::build(self)
     }
 }
 
-impl DownsampleConfigBuilder<(crate::typed::builder::NotSet,)> {
-    /// `fixed_interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fixed_interval: crate::typed::builder::MissingRequiredField) -> DownsampleConfig { match fixed_interval {} }
+impl<S0> From<DownsampleConfigBuilder<(S0,)>> for DownsampleConfig
+where
+    S0: crate::typed::builder::IsSet<downsample_config_members::fixed_interval>,
+{
+    fn from(builder: DownsampleConfigBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3144,21 +3064,28 @@ pub struct DownsamplingRound {
 
 impl DownsamplingRound {
     /// Creates a builder for [`DownsamplingRound`].
+    ///
+    /// Required: `after`, `fixed_interval`.
     pub fn builder() -> DownsamplingRoundBuilder {
         DownsamplingRoundBuilder::new()
     }
 
     /// Creates a [`DownsamplingRound`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DownsamplingRoundBuilder,
-        ) -> DownsamplingRoundBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `after`, `fixed_interval`.
+    pub fn of<B: crate::typed::builder::Build<Output = DownsamplingRound>>(
+        f: impl FnOnce(DownsamplingRoundBuilder) -> B,
     ) -> DownsamplingRound {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DownsamplingRoundBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod downsampling_round_members {
+    pub struct after;
+    pub struct fixed_interval;
 }
 
 /// Builder for [`DownsamplingRound`].
@@ -3192,7 +3119,7 @@ impl<S0, S1> DownsamplingRoundBuilder<(S0, S1)> {
 }
 
 impl<S1> DownsamplingRoundBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The duration since rollover when this downsampling round should execute
+    /// **Required.** The duration since rollover when this downsampling round should execute
     pub fn after(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -3204,7 +3131,7 @@ impl<S1> DownsamplingRoundBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> DownsamplingRoundBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The downsample interval.
+    /// **Required.** The downsample interval.
     pub fn fixed_interval(
         self,
         value: impl Into<crate::typed::_types::DurationLarge>,
@@ -3215,9 +3142,13 @@ impl<S0> DownsamplingRoundBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl DownsamplingRoundBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> DownsamplingRoundBuilder<(S0, S1)> {
     /// Builds a [`DownsamplingRound`].
-    pub fn build(self) -> DownsamplingRound {
+    pub fn build(self) -> DownsamplingRound
+    where
+        S0: crate::typed::builder::IsSet<downsampling_round_members::after>,
+        S1: crate::typed::builder::IsSet<downsampling_round_members::fixed_interval>,
+    {
         DownsamplingRound {
             after: self.after.unwrap(),
             fixed_interval: self.fixed_interval.unwrap(),
@@ -3225,26 +3156,26 @@ impl DownsamplingRoundBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<DownsamplingRoundBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for DownsamplingRound
+impl<S0, S1> crate::typed::builder::Build for DownsamplingRoundBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<downsampling_round_members::after>,
+    S1: crate::typed::builder::IsSet<downsampling_round_members::fixed_interval>,
 {
-    fn from(
-        builder: DownsamplingRoundBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = DownsamplingRound;
+
+    fn build(self) -> DownsamplingRound {
+        Self::build(self)
     }
 }
 
-impl<S1> DownsamplingRoundBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `after` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, after: crate::typed::builder::MissingRequiredField) -> DownsamplingRound { match after {} }
-}
-
-impl DownsamplingRoundBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `fixed_interval` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fixed_interval: crate::typed::builder::MissingRequiredField) -> DownsamplingRound { match fixed_interval {} }
+impl<S0, S1> From<DownsamplingRoundBuilder<(S0, S1)>> for DownsamplingRound
+where
+    S0: crate::typed::builder::IsSet<downsampling_round_members::after>,
+    S1: crate::typed::builder::IsSet<downsampling_round_members::fixed_interval>,
+{
+    fn from(builder: DownsamplingRoundBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3256,22 +3187,29 @@ pub struct FailureStore {
 
 impl FailureStore {
     /// Creates a builder for [`FailureStore`].
+    ///
+    /// Required: `enabled`, `indices`, `rollover_on_write`.
     pub fn builder() -> FailureStoreBuilder {
         FailureStoreBuilder::new()
     }
 
     /// Creates a [`FailureStore`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FailureStoreBuilder,
-        ) -> FailureStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `enabled`, `indices`, `rollover_on_write`.
+    pub fn of<B: crate::typed::builder::Build<Output = FailureStore>>(
+        f: impl FnOnce(FailureStoreBuilder) -> B,
     ) -> FailureStore {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FailureStoreBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod failure_store_members {
+    pub struct enabled;
+    pub struct indices;
+    pub struct rollover_on_write;
 }
 
 /// Builder for [`FailureStore`].
@@ -3318,6 +3256,7 @@ impl<S0, S1, S2> FailureStoreBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FailureStoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn enabled(self, value: bool) -> FailureStoreBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
@@ -3326,6 +3265,7 @@ impl<S1, S2> FailureStoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FailureStoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<DataStreamIndex>>,
@@ -3349,14 +3289,9 @@ impl<S0, S2> FailureStoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = DataStreamIndex>>(
         self,
-        f: impl FnOnce(
-            DataStreamIndexBuilder,
-        ) -> DataStreamIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamIndexBuilder) -> B,
     ) -> FailureStoreBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.add_indices(f(DataStreamIndexBuilder::new()).build())
     }
@@ -3372,20 +3307,16 @@ impl<S0, S2> FailureStoreBuilder<(S0, crate::typed::builder::Set, S2)> {
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = DataStreamIndex>>(
         self,
-        f: impl FnOnce(
-            DataStreamIndexBuilder,
-        ) -> DataStreamIndexBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DataStreamIndexBuilder) -> B,
     ) -> Self {
         self.add_indices(f(DataStreamIndexBuilder::new()).build())
     }
 }
 
 impl<S0, S1> FailureStoreBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn rollover_on_write(
         self,
         value: bool,
@@ -3396,15 +3327,14 @@ impl<S0, S1> FailureStoreBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    FailureStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FailureStoreBuilder<(S0, S1, S2)> {
     /// Builds a [`FailureStore`].
-    pub fn build(self) -> FailureStore {
+    pub fn build(self) -> FailureStore
+    where
+        S0: crate::typed::builder::IsSet<failure_store_members::enabled>,
+        S1: crate::typed::builder::IsSet<failure_store_members::indices>,
+        S2: crate::typed::builder::IsSet<failure_store_members::rollover_on_write>,
+    {
         FailureStore {
             enabled: self.enabled.unwrap(),
             indices: self.indices.unwrap(),
@@ -3413,54 +3343,28 @@ impl
     }
 }
 
-impl
-    From<
-        FailureStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FailureStore
+impl<S0, S1, S2> crate::typed::builder::Build for FailureStoreBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<failure_store_members::enabled>,
+    S1: crate::typed::builder::IsSet<failure_store_members::indices>,
+    S2: crate::typed::builder::IsSet<failure_store_members::rollover_on_write>,
 {
-    fn from(
-        builder: FailureStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FailureStore;
+
+    fn build(self) -> FailureStore {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FailureStoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `enabled` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enabled: crate::typed::builder::MissingRequiredField) -> FailureStore { match enabled {} }
-}
-
-impl<S2>
-    FailureStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FailureStoreBuilder<(S0, S1, S2)>> for FailureStore
+where
+    S0: crate::typed::builder::IsSet<failure_store_members::enabled>,
+    S1: crate::typed::builder::IsSet<failure_store_members::indices>,
+    S2: crate::typed::builder::IsSet<failure_store_members::rollover_on_write>,
 {
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> FailureStore { match indices {} }
-}
-
-impl
-    FailureStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `rollover_on_write` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollover_on_write: crate::typed::builder::MissingRequiredField) -> FailureStore { match rollover_on_write {} }
+    fn from(builder: FailureStoreBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// The failure store lifecycle configures the data stream lifecycle configuration for failure indices.
@@ -3484,8 +3388,8 @@ impl FailureStoreLifecycle {
     }
 
     /// Creates a [`FailureStoreLifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FailureStoreLifecycleBuilder) -> FailureStoreLifecycleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FailureStoreLifecycle>>(
+        f: impl FnOnce(FailureStoreLifecycleBuilder) -> B,
     ) -> FailureStoreLifecycle {
         f(Self::builder()).build()
     }
@@ -3546,6 +3450,14 @@ impl FailureStoreLifecycleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FailureStoreLifecycleBuilder {
+    type Output = FailureStoreLifecycle;
+
+    fn build(self) -> FailureStoreLifecycle {
+        Self::build(self)
+    }
+}
+
 impl From<FailureStoreLifecycleBuilder> for FailureStoreLifecycle {
     fn from(builder: FailureStoreLifecycleBuilder) -> Self {
         builder.build()
@@ -3586,8 +3498,8 @@ impl FailureStoreLifecycleTemplate {
     }
 
     /// Creates a [`FailureStoreLifecycleTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FailureStoreLifecycleTemplateBuilder) -> FailureStoreLifecycleTemplateBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FailureStoreLifecycleTemplate>>(
+        f: impl FnOnce(FailureStoreLifecycleTemplateBuilder) -> B,
     ) -> FailureStoreLifecycleTemplate {
         f(Self::builder()).build()
     }
@@ -3654,6 +3566,14 @@ impl FailureStoreLifecycleTemplateBuilder {
     }
 }
 
+impl crate::typed::builder::Build for FailureStoreLifecycleTemplateBuilder {
+    type Output = FailureStoreLifecycleTemplate;
+
+    fn build(self) -> FailureStoreLifecycleTemplate {
+        Self::build(self)
+    }
+}
+
 impl From<FailureStoreLifecycleTemplateBuilder> for FailureStoreLifecycleTemplate {
     fn from(builder: FailureStoreLifecycleTemplateBuilder) -> Self {
         builder.build()
@@ -3669,22 +3589,29 @@ pub struct FielddataFrequencyFilter {
 
 impl FielddataFrequencyFilter {
     /// Creates a builder for [`FielddataFrequencyFilter`].
+    ///
+    /// Required: `max`, `min`, `min_segment_size`.
     pub fn builder() -> FielddataFrequencyFilterBuilder {
         FielddataFrequencyFilterBuilder::new()
     }
 
     /// Creates a [`FielddataFrequencyFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FielddataFrequencyFilterBuilder,
-        ) -> FielddataFrequencyFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `max`, `min`, `min_segment_size`.
+    pub fn of<B: crate::typed::builder::Build<Output = FielddataFrequencyFilter>>(
+        f: impl FnOnce(FielddataFrequencyFilterBuilder) -> B,
     ) -> FielddataFrequencyFilter {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FielddataFrequencyFilterBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fielddata_frequency_filter_members {
+    pub struct max;
+    pub struct min;
+    pub struct min_segment_size;
 }
 
 /// Builder for [`FielddataFrequencyFilter`].
@@ -3731,6 +3658,7 @@ impl<S0, S1, S2> FielddataFrequencyFilterBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FielddataFrequencyFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn max(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -3742,6 +3670,7 @@ impl<S1, S2> FielddataFrequencyFilterBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2> FielddataFrequencyFilterBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn min(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -3753,6 +3682,7 @@ impl<S0, S2> FielddataFrequencyFilterBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1> FielddataFrequencyFilterBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn min_segment_size(
         self,
         value: i32,
@@ -3763,15 +3693,14 @@ impl<S0, S1> FielddataFrequencyFilterBuilder<(S0, S1, crate::typed::builder::Not
     }
 }
 
-impl
-    FielddataFrequencyFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FielddataFrequencyFilterBuilder<(S0, S1, S2)> {
     /// Builds a [`FielddataFrequencyFilter`].
-    pub fn build(self) -> FielddataFrequencyFilter {
+    pub fn build(self) -> FielddataFrequencyFilter
+    where
+        S0: crate::typed::builder::IsSet<fielddata_frequency_filter_members::max>,
+        S1: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min>,
+        S2: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min_segment_size>,
+    {
         FielddataFrequencyFilter {
             max: self.max.unwrap(),
             min: self.min.unwrap(),
@@ -3780,54 +3709,28 @@ impl
     }
 }
 
-impl
-    From<
-        FielddataFrequencyFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FielddataFrequencyFilter
+impl<S0, S1, S2> crate::typed::builder::Build for FielddataFrequencyFilterBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<fielddata_frequency_filter_members::max>,
+    S1: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min>,
+    S2: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min_segment_size>,
 {
-    fn from(
-        builder: FielddataFrequencyFilterBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FielddataFrequencyFilter;
+
+    fn build(self) -> FielddataFrequencyFilter {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FielddataFrequencyFilterBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `max` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, max: crate::typed::builder::MissingRequiredField) -> FielddataFrequencyFilter { match max {} }
-}
-
-impl<S2>
-    FielddataFrequencyFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FielddataFrequencyFilterBuilder<(S0, S1, S2)>> for FielddataFrequencyFilter
+where
+    S0: crate::typed::builder::IsSet<fielddata_frequency_filter_members::max>,
+    S1: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min>,
+    S2: crate::typed::builder::IsSet<fielddata_frequency_filter_members::min_segment_size>,
 {
-    /// `min` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min: crate::typed::builder::MissingRequiredField) -> FielddataFrequencyFilter { match min {} }
-}
-
-impl
-    FielddataFrequencyFilterBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `min_segment_size` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, min_segment_size: crate::typed::builder::MissingRequiredField) -> FielddataFrequencyFilter { match min_segment_size {} }
+    fn from(builder: FielddataFrequencyFilterBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3867,7 +3770,9 @@ impl IndexRouting {
     }
 
     /// Creates a [`IndexRouting`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndexRoutingBuilder) -> IndexRoutingBuilder) -> IndexRouting {
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRouting>>(
+        f: impl FnOnce(IndexRoutingBuilder) -> B,
+    ) -> IndexRouting {
         f(Self::builder()).build()
     }
 }
@@ -3901,9 +3806,9 @@ impl IndexRoutingBuilder {
     }
 
     /// Sets [`allocation`](Self::allocation) with a builder.
-    pub fn allocation_with(
+    pub fn allocation_with<B: crate::typed::builder::Build<Output = IndexRoutingAllocation>>(
         self,
-        f: impl FnOnce(IndexRoutingAllocationBuilder) -> IndexRoutingAllocationBuilder,
+        f: impl FnOnce(IndexRoutingAllocationBuilder) -> B,
     ) -> Self {
         self.allocation(f(IndexRoutingAllocationBuilder::new()).build())
     }
@@ -3920,11 +3825,9 @@ impl IndexRoutingBuilder {
     }
 
     /// Sets [`rebalance`](Self::rebalance) with a builder.
-    pub fn rebalance_with(
+    pub fn rebalance_with<B: crate::typed::builder::Build<Output = IndexRoutingRebalance>>(
         self,
-        f: impl FnOnce(
-            IndexRoutingRebalanceBuilder,
-        ) -> IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IndexRoutingRebalanceBuilder) -> B,
     ) -> Self {
         self.rebalance(f(IndexRoutingRebalanceBuilder::new()).build())
     }
@@ -3937,6 +3840,14 @@ impl IndexRoutingBuilder {
             allocation: self.allocation,
             rebalance: self.rebalance,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexRoutingBuilder {
+    type Output = IndexRouting;
+
+    fn build(self) -> IndexRouting {
+        Self::build(self)
     }
 }
 
@@ -3965,8 +3876,8 @@ impl IndexRoutingAllocation {
     }
 
     /// Creates a [`IndexRoutingAllocation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexRoutingAllocationBuilder) -> IndexRoutingAllocationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRoutingAllocation>>(
+        f: impl FnOnce(IndexRoutingAllocationBuilder) -> B,
     ) -> IndexRoutingAllocation {
         f(Self::builder()).build()
     }
@@ -4016,9 +3927,9 @@ impl IndexRoutingAllocationBuilder {
     }
 
     /// Sets [`include`](Self::include) with a builder.
-    pub fn include_with(
+    pub fn include_with<B: crate::typed::builder::Build<Output = IndexRoutingAllocationInclude>>(
         self,
-        f: impl FnOnce(IndexRoutingAllocationIncludeBuilder) -> IndexRoutingAllocationIncludeBuilder,
+        f: impl FnOnce(IndexRoutingAllocationIncludeBuilder) -> B,
     ) -> Self {
         self.include(f(IndexRoutingAllocationIncludeBuilder::new()).build())
     }
@@ -4041,11 +3952,11 @@ impl IndexRoutingAllocationBuilder {
     }
 
     /// Sets [`initial_recovery`](Self::initial_recovery) with a builder.
-    pub fn initial_recovery_with(
+    pub fn initial_recovery_with<
+        B: crate::typed::builder::Build<Output = IndexRoutingAllocationInitialRecovery>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexRoutingAllocationInitialRecoveryBuilder,
-        ) -> IndexRoutingAllocationInitialRecoveryBuilder,
+        f: impl FnOnce(IndexRoutingAllocationInitialRecoveryBuilder) -> B,
     ) -> Self {
         self.initial_recovery(f(IndexRoutingAllocationInitialRecoveryBuilder::new()).build())
     }
@@ -4062,9 +3973,9 @@ impl IndexRoutingAllocationBuilder {
     }
 
     /// Sets [`disk`](Self::disk) with a builder.
-    pub fn disk_with(
+    pub fn disk_with<B: crate::typed::builder::Build<Output = IndexRoutingAllocationDisk>>(
         self,
-        f: impl FnOnce(IndexRoutingAllocationDiskBuilder) -> IndexRoutingAllocationDiskBuilder,
+        f: impl FnOnce(IndexRoutingAllocationDiskBuilder) -> B,
     ) -> Self {
         self.disk(f(IndexRoutingAllocationDiskBuilder::new()).build())
     }
@@ -4079,6 +3990,14 @@ impl IndexRoutingAllocationBuilder {
             initial_recovery: self.initial_recovery,
             disk: self.disk,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexRoutingAllocationBuilder {
+    type Output = IndexRoutingAllocation;
+
+    fn build(self) -> IndexRoutingAllocation {
+        Self::build(self)
     }
 }
 
@@ -4126,8 +4045,8 @@ impl IndexRoutingAllocationDisk {
     }
 
     /// Creates a [`IndexRoutingAllocationDisk`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexRoutingAllocationDiskBuilder) -> IndexRoutingAllocationDiskBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRoutingAllocationDisk>>(
+        f: impl FnOnce(IndexRoutingAllocationDiskBuilder) -> B,
     ) -> IndexRoutingAllocationDisk {
         f(Self::builder()).build()
     }
@@ -4175,6 +4094,14 @@ impl IndexRoutingAllocationDiskBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexRoutingAllocationDiskBuilder {
+    type Output = IndexRoutingAllocationDisk;
+
+    fn build(self) -> IndexRoutingAllocationDisk {
+        Self::build(self)
+    }
+}
+
 impl From<IndexRoutingAllocationDiskBuilder> for IndexRoutingAllocationDisk {
     fn from(builder: IndexRoutingAllocationDiskBuilder) -> Self {
         builder.build()
@@ -4200,8 +4127,8 @@ impl IndexRoutingAllocationInclude {
     }
 
     /// Creates a [`IndexRoutingAllocationInclude`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexRoutingAllocationIncludeBuilder) -> IndexRoutingAllocationIncludeBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRoutingAllocationInclude>>(
+        f: impl FnOnce(IndexRoutingAllocationIncludeBuilder) -> B,
     ) -> IndexRoutingAllocationInclude {
         f(Self::builder()).build()
     }
@@ -4257,6 +4184,14 @@ impl IndexRoutingAllocationIncludeBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexRoutingAllocationIncludeBuilder {
+    type Output = IndexRoutingAllocationInclude;
+
+    fn build(self) -> IndexRoutingAllocationInclude {
+        Self::build(self)
+    }
+}
+
 impl From<IndexRoutingAllocationIncludeBuilder> for IndexRoutingAllocationInclude {
     fn from(builder: IndexRoutingAllocationIncludeBuilder) -> Self {
         builder.build()
@@ -4276,10 +4211,8 @@ impl IndexRoutingAllocationInitialRecovery {
     }
 
     /// Creates a [`IndexRoutingAllocationInitialRecovery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexRoutingAllocationInitialRecoveryBuilder,
-        ) -> IndexRoutingAllocationInitialRecoveryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRoutingAllocationInitialRecovery>>(
+        f: impl FnOnce(IndexRoutingAllocationInitialRecoveryBuilder) -> B,
     ) -> IndexRoutingAllocationInitialRecovery {
         f(Self::builder()).build()
     }
@@ -4317,6 +4250,14 @@ impl IndexRoutingAllocationInitialRecoveryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexRoutingAllocationInitialRecoveryBuilder {
+    type Output = IndexRoutingAllocationInitialRecovery;
+
+    fn build(self) -> IndexRoutingAllocationInitialRecovery {
+        Self::build(self)
+    }
+}
+
 impl From<IndexRoutingAllocationInitialRecoveryBuilder> for IndexRoutingAllocationInitialRecovery {
     fn from(builder: IndexRoutingAllocationInitialRecoveryBuilder) -> Self {
         builder.build()
@@ -4342,18 +4283,27 @@ pub struct IndexRoutingRebalance {
 
 impl IndexRoutingRebalance {
     /// Creates a builder for [`IndexRoutingRebalance`].
+    ///
+    /// Required: `enable`.
     pub fn builder() -> IndexRoutingRebalanceBuilder {
         IndexRoutingRebalanceBuilder::new()
     }
 
     /// Creates a [`IndexRoutingRebalance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexRoutingRebalanceBuilder,
-        ) -> IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `enable`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexRoutingRebalance>>(
+        f: impl FnOnce(IndexRoutingRebalanceBuilder) -> B,
     ) -> IndexRoutingRebalance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexRoutingRebalanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_routing_rebalance_members {
+    pub struct enable;
 }
 
 /// Builder for [`IndexRoutingRebalance`].
@@ -4382,6 +4332,7 @@ impl<S0> IndexRoutingRebalanceBuilder<(S0,)> {
 }
 
 impl IndexRoutingRebalanceBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn enable(
         self,
         value: impl Into<IndexRoutingRebalanceOptions>,
@@ -4392,25 +4343,36 @@ impl IndexRoutingRebalanceBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexRoutingRebalanceBuilder<(S0,)> {
     /// Builds a [`IndexRoutingRebalance`].
-    pub fn build(self) -> IndexRoutingRebalance {
+    pub fn build(self) -> IndexRoutingRebalance
+    where
+        S0: crate::typed::builder::IsSet<index_routing_rebalance_members::enable>,
+    {
         IndexRoutingRebalance {
             enable: self.enable.unwrap(),
         }
     }
 }
 
-impl From<IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)>> for IndexRoutingRebalance {
-    fn from(builder: IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexRoutingRebalanceBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_routing_rebalance_members::enable>,
+{
+    type Output = IndexRoutingRebalance;
+
+    fn build(self) -> IndexRoutingRebalance {
+        Self::build(self)
     }
 }
 
-impl IndexRoutingRebalanceBuilder<(crate::typed::builder::NotSet,)> {
-    /// `enable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, enable: crate::typed::builder::MissingRequiredField) -> IndexRoutingRebalance { match enable {} }
+impl<S0> From<IndexRoutingRebalanceBuilder<(S0,)>> for IndexRoutingRebalance
+where
+    S0: crate::typed::builder::IsSet<index_routing_rebalance_members::enable>,
+{
+    fn from(builder: IndexRoutingRebalanceBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4501,8 +4463,8 @@ impl IndexSegmentSort {
     }
 
     /// Creates a [`IndexSegmentSort`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSegmentSortBuilder) -> IndexSegmentSortBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSegmentSort>>(
+        f: impl FnOnce(IndexSegmentSortBuilder) -> B,
     ) -> IndexSegmentSort {
         f(Self::builder()).build()
     }
@@ -4586,6 +4548,14 @@ impl IndexSegmentSortBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSegmentSortBuilder {
+    type Output = IndexSegmentSort;
+
+    fn build(self) -> IndexSegmentSort {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSegmentSortBuilder> for IndexSegmentSort {
     fn from(builder: IndexSegmentSortBuilder) -> Self {
         builder.build()
@@ -4613,8 +4583,8 @@ impl IndexSettingBlocks {
     }
 
     /// Creates a [`IndexSettingBlocks`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingBlocksBuilder) -> IndexSettingBlocksBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingBlocks>>(
+        f: impl FnOnce(IndexSettingBlocksBuilder) -> B,
     ) -> IndexSettingBlocks {
         f(Self::builder()).build()
     }
@@ -4736,6 +4706,14 @@ impl IndexSettingBlocksBuilder {
             write: self.write,
             metadata: self.metadata,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexSettingBlocksBuilder {
+    type Output = IndexSettingBlocks;
+
+    fn build(self) -> IndexSettingBlocks {
+        Self::build(self)
     }
 }
 
@@ -5077,7 +5055,9 @@ impl IndexSettings {
     }
 
     /// Creates a [`IndexSettings`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder) -> IndexSettings {
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettings>>(
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
+    ) -> IndexSettings {
         f(Self::builder()).build()
     }
 }
@@ -5223,7 +5203,10 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(self, f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder) -> Self {
+    pub fn index_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
+        self,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
+    ) -> Self {
         self.index(f(IndexSettingsBuilder::new()).build())
     }
 
@@ -5261,9 +5244,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`soft_deletes`](Self::soft_deletes) with a builder.
-    pub fn soft_deletes_with(
+    pub fn soft_deletes_with<B: crate::typed::builder::Build<Output = SoftDeletes>>(
         self,
-        f: impl FnOnce(SoftDeletesBuilder) -> SoftDeletesBuilder,
+        f: impl FnOnce(SoftDeletesBuilder) -> B,
     ) -> Self {
         self.soft_deletes(f(SoftDeletesBuilder::new()).build())
     }
@@ -5280,9 +5263,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`sort`](Self::sort) with a builder.
-    pub fn sort_with(
+    pub fn sort_with<B: crate::typed::builder::Build<Output = IndexSegmentSort>>(
         self,
-        f: impl FnOnce(IndexSegmentSortBuilder) -> IndexSegmentSortBuilder,
+        f: impl FnOnce(IndexSegmentSortBuilder) -> B,
     ) -> Self {
         self.sort(f(IndexSegmentSortBuilder::new()).build())
     }
@@ -5413,7 +5396,10 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`merge`](Self::merge) with a builder.
-    pub fn merge_with(self, f: impl FnOnce(MergeBuilder) -> MergeBuilder) -> Self {
+    pub fn merge_with<B: crate::typed::builder::Build<Output = Merge>>(
+        self,
+        f: impl FnOnce(MergeBuilder) -> B,
+    ) -> Self {
         self.merge(f(MergeBuilder::new()).build())
     }
 
@@ -5429,9 +5415,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`search`](Self::search) with a builder.
-    pub fn search_with(
+    pub fn search_with<B: crate::typed::builder::Build<Output = SettingsSearch>>(
         self,
-        f: impl FnOnce(SettingsSearchBuilder) -> SettingsSearchBuilder,
+        f: impl FnOnce(SettingsSearchBuilder) -> B,
     ) -> Self {
         self.search(f(SettingsSearchBuilder::new()).build())
     }
@@ -5536,9 +5522,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`blocks`](Self::blocks) with a builder.
-    pub fn blocks_with(
+    pub fn blocks_with<B: crate::typed::builder::Build<Output = IndexSettingBlocks>>(
         self,
-        f: impl FnOnce(IndexSettingBlocksBuilder) -> IndexSettingBlocksBuilder,
+        f: impl FnOnce(IndexSettingBlocksBuilder) -> B,
     ) -> Self {
         self.blocks(f(IndexSettingBlocksBuilder::new()).build())
     }
@@ -5568,9 +5554,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`analyze`](Self::analyze) with a builder.
-    pub fn analyze_with(
+    pub fn analyze_with<B: crate::typed::builder::Build<Output = SettingsAnalyze>>(
         self,
-        f: impl FnOnce(SettingsAnalyzeBuilder) -> SettingsAnalyzeBuilder,
+        f: impl FnOnce(SettingsAnalyzeBuilder) -> B,
     ) -> Self {
         self.analyze(f(SettingsAnalyzeBuilder::new()).build())
     }
@@ -5587,9 +5573,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`highlight`](Self::highlight) with a builder.
-    pub fn highlight_with(
+    pub fn highlight_with<B: crate::typed::builder::Build<Output = SettingsHighlight>>(
         self,
-        f: impl FnOnce(SettingsHighlightBuilder) -> SettingsHighlightBuilder,
+        f: impl FnOnce(SettingsHighlightBuilder) -> B,
     ) -> Self {
         self.highlight(f(SettingsHighlightBuilder::new()).build())
     }
@@ -5628,7 +5614,10 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(self, f: impl FnOnce(IndexRoutingBuilder) -> IndexRoutingBuilder) -> Self {
+    pub fn routing_with<B: crate::typed::builder::Build<Output = IndexRouting>>(
+        self,
+        f: impl FnOnce(IndexRoutingBuilder) -> B,
+    ) -> Self {
         self.routing(f(IndexRoutingBuilder::new()).build())
     }
 
@@ -5644,9 +5633,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`unassigned`](Self::unassigned) with a builder.
-    pub fn unassigned_with(
+    pub fn unassigned_with<B: crate::typed::builder::Build<Output = IndexSettingsUnassigned>>(
         self,
-        f: impl FnOnce(IndexSettingsUnassignedBuilder) -> IndexSettingsUnassignedBuilder,
+        f: impl FnOnce(IndexSettingsUnassignedBuilder) -> B,
     ) -> Self {
         self.unassigned(f(IndexSettingsUnassignedBuilder::new()).build())
     }
@@ -5705,9 +5694,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<B: crate::typed::builder::Build<Output = IndexSettingsLifecycle>>(
         self,
-        f: impl FnOnce(IndexSettingsLifecycleBuilder) -> IndexSettingsLifecycleBuilder,
+        f: impl FnOnce(IndexSettingsLifecycleBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(IndexSettingsLifecycleBuilder::new()).build())
     }
@@ -5780,9 +5769,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`version`](Self::version) with a builder.
-    pub fn version_with(
+    pub fn version_with<B: crate::typed::builder::Build<Output = IndexVersioning>>(
         self,
-        f: impl FnOnce(IndexVersioningBuilder) -> IndexVersioningBuilder,
+        f: impl FnOnce(IndexVersioningBuilder) -> B,
     ) -> Self {
         self.version(f(IndexVersioningBuilder::new()).build())
     }
@@ -5838,7 +5827,10 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`translog`](Self::translog) with a builder.
-    pub fn translog_with(self, f: impl FnOnce(TranslogBuilder) -> TranslogBuilder) -> Self {
+    pub fn translog_with<B: crate::typed::builder::Build<Output = Translog>>(
+        self,
+        f: impl FnOnce(TranslogBuilder) -> B,
+    ) -> Self {
         self.translog(f(TranslogBuilder::new()).build())
     }
 
@@ -5854,11 +5846,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`query_string`](Self::query_string) with a builder.
-    pub fn query_string_with(
+    pub fn query_string_with<B: crate::typed::builder::Build<Output = SettingsQueryString>>(
         self,
-        f: impl FnOnce(
-            SettingsQueryStringBuilder,
-        ) -> SettingsQueryStringBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SettingsQueryStringBuilder) -> B,
     ) -> Self {
         self.query_string(f(SettingsQueryStringBuilder::new()).build())
     }
@@ -5897,9 +5887,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`analysis`](Self::analysis) with a builder.
-    pub fn analysis_with(
+    pub fn analysis_with<B: crate::typed::builder::Build<Output = IndexSettingsAnalysis>>(
         self,
-        f: impl FnOnce(IndexSettingsAnalysisBuilder) -> IndexSettingsAnalysisBuilder,
+        f: impl FnOnce(IndexSettingsAnalysisBuilder) -> B,
     ) -> Self {
         self.analysis(f(IndexSettingsAnalysisBuilder::new()).build())
     }
@@ -5916,9 +5906,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(IndexSettingsBuilder::new()).build())
     }
@@ -5935,9 +5925,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`time_series`](Self::time_series) with a builder.
-    pub fn time_series_with(
+    pub fn time_series_with<B: crate::typed::builder::Build<Output = IndexSettingsTimeSeries>>(
         self,
-        f: impl FnOnce(IndexSettingsTimeSeriesBuilder) -> IndexSettingsTimeSeriesBuilder,
+        f: impl FnOnce(IndexSettingsTimeSeriesBuilder) -> B,
     ) -> Self {
         self.time_series(f(IndexSettingsTimeSeriesBuilder::new()).build())
     }
@@ -5954,7 +5944,10 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`queries`](Self::queries) with a builder.
-    pub fn queries_with(self, f: impl FnOnce(QueriesBuilder) -> QueriesBuilder) -> Self {
+    pub fn queries_with<B: crate::typed::builder::Build<Output = Queries>>(
+        self,
+        f: impl FnOnce(QueriesBuilder) -> B,
+    ) -> Self {
         self.queries(f(QueriesBuilder::new()).build())
     }
 
@@ -6001,9 +5994,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`mapping`](Self::mapping) with a builder.
-    pub fn mapping_with(
+    pub fn mapping_with<B: crate::typed::builder::Build<Output = MappingLimitSettings>>(
         self,
-        f: impl FnOnce(MappingLimitSettingsBuilder) -> MappingLimitSettingsBuilder,
+        f: impl FnOnce(MappingLimitSettingsBuilder) -> B,
     ) -> Self {
         self.mapping(f(MappingLimitSettingsBuilder::new()).build())
     }
@@ -6020,9 +6013,11 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`indexing_slowlog`](Self::indexing_slowlog) with a builder.
-    pub fn indexing_slowlog_with(
+    pub fn indexing_slowlog_with<
+        B: crate::typed::builder::Build<Output = IndexingSlowlogSettings>,
+    >(
         self,
-        f: impl FnOnce(IndexingSlowlogSettingsBuilder) -> IndexingSlowlogSettingsBuilder,
+        f: impl FnOnce(IndexingSlowlogSettingsBuilder) -> B,
     ) -> Self {
         self.indexing_slowlog(f(IndexingSlowlogSettingsBuilder::new()).build())
     }
@@ -6040,11 +6035,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`indexing_pressure`](Self::indexing_pressure) with a builder.
-    pub fn indexing_pressure_with(
+    pub fn indexing_pressure_with<B: crate::typed::builder::Build<Output = IndexingPressure>>(
         self,
-        f: impl FnOnce(
-            IndexingPressureBuilder,
-        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IndexingPressureBuilder) -> B,
     ) -> Self {
         self.indexing_pressure(f(IndexingPressureBuilder::new()).build())
     }
@@ -6062,9 +6055,9 @@ impl IndexSettingsBuilder {
     }
 
     /// Sets [`store`](Self::store) with a builder.
-    pub fn store_with(
+    pub fn store_with<B: crate::typed::builder::Build<Output = Storage>>(
         self,
-        f: impl FnOnce(StorageBuilder) -> StorageBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(StorageBuilder) -> B,
     ) -> Self {
         self.store(f(StorageBuilder::new()).build())
     }
@@ -6155,6 +6148,14 @@ impl IndexSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsBuilder {
+    type Output = IndexSettings;
+
+    fn build(self) -> IndexSettings {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsBuilder> for IndexSettings {
     fn from(builder: IndexSettingsBuilder) -> Self {
         builder.build()
@@ -6182,8 +6183,8 @@ impl IndexSettingsAnalysis {
     }
 
     /// Creates a [`IndexSettingsAnalysis`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsAnalysisBuilder) -> IndexSettingsAnalysisBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsAnalysis>>(
+        f: impl FnOnce(IndexSettingsAnalysisBuilder) -> B,
     ) -> IndexSettingsAnalysis {
         f(Self::builder()).build()
     }
@@ -6371,6 +6372,14 @@ impl IndexSettingsAnalysisBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsAnalysisBuilder {
+    type Output = IndexSettingsAnalysis;
+
+    fn build(self) -> IndexSettingsAnalysis {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsAnalysisBuilder> for IndexSettingsAnalysis {
     fn from(builder: IndexSettingsAnalysisBuilder) -> Self {
         builder.build()
@@ -6442,8 +6451,8 @@ impl IndexSettingsLifecycle {
     }
 
     /// Creates a [`IndexSettingsLifecycle`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsLifecycleBuilder) -> IndexSettingsLifecycleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsLifecycle>>(
+        f: impl FnOnce(IndexSettingsLifecycleBuilder) -> B,
     ) -> IndexSettingsLifecycle {
         f(Self::builder()).build()
     }
@@ -6548,9 +6557,9 @@ impl IndexSettingsLifecycleBuilder {
     }
 
     /// Sets [`step`](Self::step) with a builder.
-    pub fn step_with(
+    pub fn step_with<B: crate::typed::builder::Build<Output = IndexSettingsLifecycleStep>>(
         self,
-        f: impl FnOnce(IndexSettingsLifecycleStepBuilder) -> IndexSettingsLifecycleStepBuilder,
+        f: impl FnOnce(IndexSettingsLifecycleStepBuilder) -> B,
     ) -> Self {
         self.step(f(IndexSettingsLifecycleStepBuilder::new()).build())
     }
@@ -6598,6 +6607,14 @@ impl IndexSettingsLifecycleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsLifecycleBuilder {
+    type Output = IndexSettingsLifecycle;
+
+    fn build(self) -> IndexSettingsLifecycle {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsLifecycleBuilder> for IndexSettingsLifecycle {
     fn from(builder: IndexSettingsLifecycleBuilder) -> Self {
         builder.build()
@@ -6619,8 +6636,8 @@ impl IndexSettingsLifecycleStep {
     }
 
     /// Creates a [`IndexSettingsLifecycleStep`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsLifecycleStepBuilder) -> IndexSettingsLifecycleStepBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsLifecycleStep>>(
+        f: impl FnOnce(IndexSettingsLifecycleStepBuilder) -> B,
     ) -> IndexSettingsLifecycleStep {
         f(Self::builder()).build()
     }
@@ -6667,6 +6684,14 @@ impl IndexSettingsLifecycleStepBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsLifecycleStepBuilder {
+    type Output = IndexSettingsLifecycleStep;
+
+    fn build(self) -> IndexSettingsLifecycleStep {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsLifecycleStepBuilder> for IndexSettingsLifecycleStep {
     fn from(builder: IndexSettingsLifecycleStepBuilder) -> Self {
         builder.build()
@@ -6693,8 +6718,8 @@ impl IndexSettingsTimeSeries {
     }
 
     /// Creates a [`IndexSettingsTimeSeries`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsTimeSeriesBuilder) -> IndexSettingsTimeSeriesBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsTimeSeries>>(
+        f: impl FnOnce(IndexSettingsTimeSeriesBuilder) -> B,
     ) -> IndexSettingsTimeSeries {
         f(Self::builder()).build()
     }
@@ -6767,6 +6792,14 @@ impl IndexSettingsTimeSeriesBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsTimeSeriesBuilder {
+    type Output = IndexSettingsTimeSeries;
+
+    fn build(self) -> IndexSettingsTimeSeries {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsTimeSeriesBuilder> for IndexSettingsTimeSeries {
     fn from(builder: IndexSettingsTimeSeriesBuilder) -> Self {
         builder.build()
@@ -6786,8 +6819,8 @@ impl IndexSettingsUnassigned {
     }
 
     /// Creates a [`IndexSettingsUnassigned`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsUnassignedBuilder) -> IndexSettingsUnassignedBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsUnassigned>>(
+        f: impl FnOnce(IndexSettingsUnassignedBuilder) -> B,
     ) -> IndexSettingsUnassigned {
         f(Self::builder()).build()
     }
@@ -6818,9 +6851,11 @@ impl IndexSettingsUnassignedBuilder {
     }
 
     /// Sets [`node_left`](Self::node_left) with a builder.
-    pub fn node_left_with(
+    pub fn node_left_with<
+        B: crate::typed::builder::Build<Output = IndexSettingsUnassignedNodeLeft>,
+    >(
         self,
-        f: impl FnOnce(IndexSettingsUnassignedNodeLeftBuilder) -> IndexSettingsUnassignedNodeLeftBuilder,
+        f: impl FnOnce(IndexSettingsUnassignedNodeLeftBuilder) -> B,
     ) -> Self {
         self.node_left(f(IndexSettingsUnassignedNodeLeftBuilder::new()).build())
     }
@@ -6832,6 +6867,14 @@ impl IndexSettingsUnassignedBuilder {
         IndexSettingsUnassigned {
             node_left: self.node_left,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexSettingsUnassignedBuilder {
+    type Output = IndexSettingsUnassigned;
+
+    fn build(self) -> IndexSettingsUnassigned {
+        Self::build(self)
     }
 }
 
@@ -6856,8 +6899,8 @@ impl IndexSettingsUnassignedNodeLeft {
     }
 
     /// Creates a [`IndexSettingsUnassignedNodeLeft`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSettingsUnassignedNodeLeftBuilder) -> IndexSettingsUnassignedNodeLeftBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSettingsUnassignedNodeLeft>>(
+        f: impl FnOnce(IndexSettingsUnassignedNodeLeftBuilder) -> B,
     ) -> IndexSettingsUnassignedNodeLeft {
         f(Self::builder()).build()
     }
@@ -6901,6 +6944,14 @@ impl IndexSettingsUnassignedNodeLeftBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexSettingsUnassignedNodeLeftBuilder {
+    type Output = IndexSettingsUnassignedNodeLeft;
+
+    fn build(self) -> IndexSettingsUnassignedNodeLeft {
+        Self::build(self)
+    }
+}
+
 impl From<IndexSettingsUnassignedNodeLeftBuilder> for IndexSettingsUnassignedNodeLeft {
     fn from(builder: IndexSettingsUnassignedNodeLeftBuilder) -> Self {
         builder.build()
@@ -6932,7 +6983,9 @@ impl IndexState {
     }
 
     /// Creates a [`IndexState`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndexStateBuilder) -> IndexStateBuilder) -> IndexState {
+    pub fn of<B: crate::typed::builder::Build<Output = IndexState>>(
+        f: impl FnOnce(IndexStateBuilder) -> B,
+    ) -> IndexState {
         f(Self::builder()).build()
     }
 }
@@ -6992,10 +7045,10 @@ impl IndexStateBuilder {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = Alias>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+        f: impl FnOnce(AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(key, f(AliasBuilder::new()).build())
     }
@@ -7018,11 +7071,11 @@ impl IndexStateBuilder {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -7039,9 +7092,9 @@ impl IndexStateBuilder {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(IndexSettingsBuilder::new()).build())
     }
@@ -7059,9 +7112,9 @@ impl IndexStateBuilder {
     }
 
     /// Sets [`defaults`](Self::defaults) with a builder.
-    pub fn defaults_with(
+    pub fn defaults_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> Self {
         self.defaults(f(IndexSettingsBuilder::new()).build())
     }
@@ -7093,9 +7146,9 @@ impl IndexStateBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<B: crate::typed::builder::Build<Output = DataStreamLifecycle>>(
         self,
-        f: impl FnOnce(DataStreamLifecycleBuilder) -> DataStreamLifecycleBuilder,
+        f: impl FnOnce(DataStreamLifecycleBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(DataStreamLifecycleBuilder::new()).build())
     }
@@ -7112,6 +7165,14 @@ impl IndexStateBuilder {
             data_stream: self.data_stream,
             lifecycle: self.lifecycle,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexStateBuilder {
+    type Output = IndexState;
+
+    fn build(self) -> IndexState {
+        Self::build(self)
     }
 }
 
@@ -7177,19 +7238,28 @@ pub struct IndexTemplate {
 
 impl IndexTemplate {
     /// Creates a builder for [`IndexTemplate`].
+    ///
+    /// Required: `index_patterns`, `composed_of`.
     pub fn builder() -> IndexTemplateBuilder {
         IndexTemplateBuilder::new()
     }
 
     /// Creates a [`IndexTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexTemplateBuilder,
-        )
-            -> IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `index_patterns`, `composed_of`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplate>>(
+        f: impl FnOnce(IndexTemplateBuilder) -> B,
     ) -> IndexTemplate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexTemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_template_members {
+    pub struct index_patterns;
+    pub struct composed_of;
 }
 
 /// Builder for [`IndexTemplate`].
@@ -7270,9 +7340,9 @@ impl<S0, S1> IndexTemplateBuilder<(S0, S1)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<B: crate::typed::builder::Build<Output = IndexTemplateSummary>>(
         self,
-        f: impl FnOnce(IndexTemplateSummaryBuilder) -> IndexTemplateSummaryBuilder,
+        f: impl FnOnce(IndexTemplateSummaryBuilder) -> B,
     ) -> Self {
         self.template(f(IndexTemplateSummaryBuilder::new()).build())
     }
@@ -7355,11 +7425,11 @@ impl<S0, S1> IndexTemplateBuilder<(S0, S1)> {
     }
 
     /// Sets [`data_stream`](Self::data_stream) with a builder.
-    pub fn data_stream_with(
+    pub fn data_stream_with<
+        B: crate::typed::builder::Build<Output = IndexTemplateDataStreamConfiguration>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexTemplateDataStreamConfigurationBuilder,
-        ) -> IndexTemplateDataStreamConfigurationBuilder,
+        f: impl FnOnce(IndexTemplateDataStreamConfigurationBuilder) -> B,
     ) -> Self {
         self.data_stream(f(IndexTemplateDataStreamConfigurationBuilder::new()).build())
     }
@@ -7458,7 +7528,7 @@ impl<S0, S1> IndexTemplateBuilder<(S0, S1)> {
 }
 
 impl<S1> IndexTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Array of wildcard (`*`) expressions used to match the names of data streams and indices during creation.
+    /// **Required.** Array of wildcard (`*`) expressions used to match the names of data streams and indices during creation.
     pub fn index_patterns(
         self,
         value: impl Into<crate::typed::_types::Names>,
@@ -7470,7 +7540,7 @@ impl<S1> IndexTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndexTemplateBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An ordered list of component template names.
+    /// **Required.** An ordered list of component template names.
     /// Component templates are merged in the order specified, meaning that the last component template specified has the highest precedence.
     pub fn composed_of(
         self,
@@ -7505,9 +7575,13 @@ impl<S0> IndexTemplateBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexTemplateBuilder<(S0, S1)> {
     /// Builds a [`IndexTemplate`].
-    pub fn build(self) -> IndexTemplate {
+    pub fn build(self) -> IndexTemplate
+    where
+        S0: crate::typed::builder::IsSet<index_template_members::index_patterns>,
+        S1: crate::typed::builder::IsSet<index_template_members::composed_of>,
+    {
         IndexTemplate {
             index_patterns: self.index_patterns.unwrap(),
             composed_of: self.composed_of.unwrap(),
@@ -7527,26 +7601,26 @@ impl IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexTemplate
+impl<S0, S1> crate::typed::builder::Build for IndexTemplateBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_template_members::index_patterns>,
+    S1: crate::typed::builder::IsSet<index_template_members::composed_of>,
 {
-    fn from(
-        builder: IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexTemplate;
+
+    fn build(self) -> IndexTemplate {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexTemplateBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_patterns: crate::typed::builder::MissingRequiredField) -> IndexTemplate { match index_patterns {} }
-}
-
-impl IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `composed_of` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, composed_of: crate::typed::builder::MissingRequiredField) -> IndexTemplate { match composed_of {} }
+impl<S0, S1> From<IndexTemplateBuilder<(S0, S1)>> for IndexTemplate
+where
+    S0: crate::typed::builder::IsSet<index_template_members::index_patterns>,
+    S1: crate::typed::builder::IsSet<index_template_members::composed_of>,
+{
+    fn from(builder: IndexTemplateBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7566,10 +7640,8 @@ impl IndexTemplateDataStreamConfiguration {
     }
 
     /// Creates a [`IndexTemplateDataStreamConfiguration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexTemplateDataStreamConfigurationBuilder,
-        ) -> IndexTemplateDataStreamConfigurationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplateDataStreamConfiguration>>(
+        f: impl FnOnce(IndexTemplateDataStreamConfigurationBuilder) -> B,
     ) -> IndexTemplateDataStreamConfiguration {
         f(Self::builder()).build()
     }
@@ -7627,6 +7699,14 @@ impl IndexTemplateDataStreamConfigurationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexTemplateDataStreamConfigurationBuilder {
+    type Output = IndexTemplateDataStreamConfiguration;
+
+    fn build(self) -> IndexTemplateDataStreamConfiguration {
+        Self::build(self)
+    }
+}
+
 impl From<IndexTemplateDataStreamConfigurationBuilder> for IndexTemplateDataStreamConfiguration {
     fn from(builder: IndexTemplateDataStreamConfigurationBuilder) -> Self {
         builder.build()
@@ -7661,8 +7741,8 @@ impl IndexTemplateSummary {
     }
 
     /// Creates a [`IndexTemplateSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexTemplateSummaryBuilder) -> IndexTemplateSummaryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplateSummary>>(
+        f: impl FnOnce(IndexTemplateSummaryBuilder) -> B,
     ) -> IndexTemplateSummary {
         f(Self::builder()).build()
     }
@@ -7725,10 +7805,10 @@ impl IndexTemplateSummaryBuilder {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = Alias>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+        f: impl FnOnce(AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(key, f(AliasBuilder::new()).build())
     }
@@ -7753,11 +7833,11 @@ impl IndexTemplateSummaryBuilder {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -7775,9 +7855,9 @@ impl IndexTemplateSummaryBuilder {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(IndexSettingsBuilder::new()).build())
     }
@@ -7794,9 +7874,9 @@ impl IndexTemplateSummaryBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<B: crate::typed::builder::Build<Output = DataStreamLifecycle>>(
         self,
-        f: impl FnOnce(DataStreamLifecycleBuilder) -> DataStreamLifecycleBuilder,
+        f: impl FnOnce(DataStreamLifecycleBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(DataStreamLifecycleBuilder::new()).build())
     }
@@ -7813,9 +7893,9 @@ impl IndexTemplateSummaryBuilder {
     }
 
     /// Sets [`data_stream_options`](Self::data_stream_options) with a builder.
-    pub fn data_stream_options_with(
+    pub fn data_stream_options_with<B: crate::typed::builder::Build<Output = DataStreamOptions>>(
         self,
-        f: impl FnOnce(DataStreamOptionsBuilder) -> DataStreamOptionsBuilder,
+        f: impl FnOnce(DataStreamOptionsBuilder) -> B,
     ) -> Self {
         self.data_stream_options(f(DataStreamOptionsBuilder::new()).build())
     }
@@ -7831,6 +7911,14 @@ impl IndexTemplateSummaryBuilder {
             lifecycle: self.lifecycle,
             data_stream_options: self.data_stream_options,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexTemplateSummaryBuilder {
+    type Output = IndexTemplateSummary;
+
+    fn build(self) -> IndexTemplateSummary {
+        Self::build(self)
     }
 }
 
@@ -7868,10 +7956,8 @@ impl IndexTemplateSummaryWithRollover {
     }
 
     /// Creates a [`IndexTemplateSummaryWithRollover`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexTemplateSummaryWithRolloverBuilder,
-        ) -> IndexTemplateSummaryWithRolloverBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplateSummaryWithRollover>>(
+        f: impl FnOnce(IndexTemplateSummaryWithRolloverBuilder) -> B,
     ) -> IndexTemplateSummaryWithRollover {
         f(Self::builder()).build()
     }
@@ -7912,9 +7998,11 @@ impl IndexTemplateSummaryWithRolloverBuilder {
     }
 
     /// Sets [`lifecycle`](Self::lifecycle) with a builder.
-    pub fn lifecycle_with(
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<Output = DataStreamLifecycleWithRollover>,
+    >(
         self,
-        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> DataStreamLifecycleWithRolloverBuilder,
+        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> B,
     ) -> Self {
         self.lifecycle(f(DataStreamLifecycleWithRolloverBuilder::new()).build())
     }
@@ -7953,10 +8041,10 @@ impl IndexTemplateSummaryWithRolloverBuilder {
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = Alias>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+        f: impl FnOnce(AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(key, f(AliasBuilder::new()).build())
     }
@@ -7981,11 +8069,11 @@ impl IndexTemplateSummaryWithRolloverBuilder {
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> Self {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
@@ -8003,9 +8091,9 @@ impl IndexTemplateSummaryWithRolloverBuilder {
     }
 
     /// Sets [`settings`](Self::settings) with a builder.
-    pub fn settings_with(
+    pub fn settings_with<B: crate::typed::builder::Build<Output = IndexSettings>>(
         self,
-        f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder,
+        f: impl FnOnce(IndexSettingsBuilder) -> B,
     ) -> Self {
         self.settings(f(IndexSettingsBuilder::new()).build())
     }
@@ -8022,9 +8110,9 @@ impl IndexTemplateSummaryWithRolloverBuilder {
     }
 
     /// Sets [`data_stream_options`](Self::data_stream_options) with a builder.
-    pub fn data_stream_options_with(
+    pub fn data_stream_options_with<B: crate::typed::builder::Build<Output = DataStreamOptions>>(
         self,
-        f: impl FnOnce(DataStreamOptionsBuilder) -> DataStreamOptionsBuilder,
+        f: impl FnOnce(DataStreamOptionsBuilder) -> B,
     ) -> Self {
         self.data_stream_options(f(DataStreamOptionsBuilder::new()).build())
     }
@@ -8040,6 +8128,14 @@ impl IndexTemplateSummaryWithRolloverBuilder {
             settings: self.settings,
             data_stream_options: self.data_stream_options,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexTemplateSummaryWithRolloverBuilder {
+    type Output = IndexTemplateSummaryWithRollover;
+
+    fn build(self) -> IndexTemplateSummaryWithRollover {
+        Self::build(self)
     }
 }
 
@@ -8105,21 +8201,28 @@ pub struct IndexTemplateWithRollover {
 
 impl IndexTemplateWithRollover {
     /// Creates a builder for [`IndexTemplateWithRollover`].
+    ///
+    /// Required: `index_patterns`, `composed_of`.
     pub fn builder() -> IndexTemplateWithRolloverBuilder {
         IndexTemplateWithRolloverBuilder::new()
     }
 
     /// Creates a [`IndexTemplateWithRollover`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexTemplateWithRolloverBuilder,
-        ) -> IndexTemplateWithRolloverBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index_patterns`, `composed_of`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplateWithRollover>>(
+        f: impl FnOnce(IndexTemplateWithRolloverBuilder) -> B,
     ) -> IndexTemplateWithRollover {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexTemplateWithRolloverBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_template_with_rollover_members {
+    pub struct index_patterns;
+    pub struct composed_of;
 }
 
 /// Builder for [`IndexTemplateWithRollover`].
@@ -8203,11 +8306,11 @@ impl<S0, S1> IndexTemplateWithRolloverBuilder<(S0, S1)> {
     }
 
     /// Sets [`template`](Self::template) with a builder.
-    pub fn template_with(
+    pub fn template_with<
+        B: crate::typed::builder::Build<Output = IndexTemplateSummaryWithRollover>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexTemplateSummaryWithRolloverBuilder,
-        ) -> IndexTemplateSummaryWithRolloverBuilder,
+        f: impl FnOnce(IndexTemplateSummaryWithRolloverBuilder) -> B,
     ) -> Self {
         self.template(f(IndexTemplateSummaryWithRolloverBuilder::new()).build())
     }
@@ -8290,11 +8393,11 @@ impl<S0, S1> IndexTemplateWithRolloverBuilder<(S0, S1)> {
     }
 
     /// Sets [`data_stream`](Self::data_stream) with a builder.
-    pub fn data_stream_with(
+    pub fn data_stream_with<
+        B: crate::typed::builder::Build<Output = IndexTemplateDataStreamConfiguration>,
+    >(
         self,
-        f: impl FnOnce(
-            IndexTemplateDataStreamConfigurationBuilder,
-        ) -> IndexTemplateDataStreamConfigurationBuilder,
+        f: impl FnOnce(IndexTemplateDataStreamConfigurationBuilder) -> B,
     ) -> Self {
         self.data_stream(f(IndexTemplateDataStreamConfigurationBuilder::new()).build())
     }
@@ -8393,7 +8496,7 @@ impl<S0, S1> IndexTemplateWithRolloverBuilder<(S0, S1)> {
 }
 
 impl<S1> IndexTemplateWithRolloverBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Array of wildcard (`*`) expressions used to match the names of data streams and indices during creation.
+    /// **Required.** Array of wildcard (`*`) expressions used to match the names of data streams and indices during creation.
     pub fn index_patterns(
         self,
         value: impl Into<crate::typed::_types::Names>,
@@ -8405,7 +8508,7 @@ impl<S1> IndexTemplateWithRolloverBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndexTemplateWithRolloverBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// An ordered list of component template names.
+    /// **Required.** An ordered list of component template names.
     /// Component templates are merged in the order specified, meaning that the last component template specified has the highest precedence.
     pub fn composed_of(
         self,
@@ -8440,9 +8543,13 @@ impl<S0> IndexTemplateWithRolloverBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl IndexTemplateWithRolloverBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexTemplateWithRolloverBuilder<(S0, S1)> {
     /// Builds a [`IndexTemplateWithRollover`].
-    pub fn build(self) -> IndexTemplateWithRollover {
+    pub fn build(self) -> IndexTemplateWithRollover
+    where
+        S0: crate::typed::builder::IsSet<index_template_with_rollover_members::index_patterns>,
+        S1: crate::typed::builder::IsSet<index_template_with_rollover_members::composed_of>,
+    {
         IndexTemplateWithRollover {
             template: self.template,
             index_patterns: self.index_patterns.unwrap(),
@@ -8462,30 +8569,26 @@ impl IndexTemplateWithRolloverBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<IndexTemplateWithRolloverBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexTemplateWithRollover
+impl<S0, S1> crate::typed::builder::Build for IndexTemplateWithRolloverBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_template_with_rollover_members::index_patterns>,
+    S1: crate::typed::builder::IsSet<index_template_with_rollover_members::composed_of>,
 {
-    fn from(
-        builder: IndexTemplateWithRolloverBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexTemplateWithRollover;
+
+    fn build(self) -> IndexTemplateWithRollover {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexTemplateWithRolloverBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_patterns: crate::typed::builder::MissingRequiredField) -> IndexTemplateWithRollover { match index_patterns {} }
-}
-
-impl IndexTemplateWithRolloverBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `composed_of` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, composed_of: crate::typed::builder::MissingRequiredField) -> IndexTemplateWithRollover { match composed_of {} }
+impl<S0, S1> From<IndexTemplateWithRolloverBuilder<(S0, S1)>> for IndexTemplateWithRollover
+where
+    S0: crate::typed::builder::IsSet<index_template_with_rollover_members::index_patterns>,
+    S1: crate::typed::builder::IsSet<index_template_with_rollover_members::composed_of>,
+{
+    fn from(builder: IndexTemplateWithRolloverBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8503,7 +8606,9 @@ impl IndexVersioning {
     }
 
     /// Creates a [`IndexVersioning`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IndexVersioningBuilder) -> IndexVersioningBuilder) -> IndexVersioning {
+    pub fn of<B: crate::typed::builder::Build<Output = IndexVersioning>>(
+        f: impl FnOnce(IndexVersioningBuilder) -> B,
+    ) -> IndexVersioning {
         f(Self::builder()).build()
     }
 }
@@ -8558,6 +8663,14 @@ impl IndexVersioningBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexVersioningBuilder {
+    type Output = IndexVersioning;
+
+    fn build(self) -> IndexVersioning {
+        Self::build(self)
+    }
+}
+
 impl From<IndexVersioningBuilder> for IndexVersioning {
     fn from(builder: IndexVersioningBuilder) -> Self {
         builder.build()
@@ -8571,18 +8684,27 @@ pub struct IndexingPressure {
 
 impl IndexingPressure {
     /// Creates a builder for [`IndexingPressure`].
+    ///
+    /// Required: `memory`.
     pub fn builder() -> IndexingPressureBuilder {
         IndexingPressureBuilder::new()
     }
 
     /// Creates a [`IndexingPressure`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexingPressureBuilder,
-        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `memory`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexingPressure>>(
+        f: impl FnOnce(IndexingPressureBuilder) -> B,
     ) -> IndexingPressure {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexingPressureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod indexing_pressure_members {
+    pub struct memory;
 }
 
 /// Builder for [`IndexingPressure`].
@@ -8611,6 +8733,7 @@ impl<S0> IndexingPressureBuilder<(S0,)> {
 }
 
 impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn memory(
         self,
         value: impl Into<IndexingPressureMemory>,
@@ -8621,33 +8744,44 @@ impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`memory`](Self::memory) with a builder.
-    pub fn memory_with(
+    pub fn memory_with<B: crate::typed::builder::Build<Output = IndexingPressureMemory>>(
         self,
-        f: impl FnOnce(IndexingPressureMemoryBuilder) -> IndexingPressureMemoryBuilder,
+        f: impl FnOnce(IndexingPressureMemoryBuilder) -> B,
     ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)> {
         self.memory(f(IndexingPressureMemoryBuilder::new()).build())
     }
 }
 
-impl IndexingPressureBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexingPressureBuilder<(S0,)> {
     /// Builds a [`IndexingPressure`].
-    pub fn build(self) -> IndexingPressure {
+    pub fn build(self) -> IndexingPressure
+    where
+        S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+    {
         IndexingPressure {
             memory: self.memory.unwrap(),
         }
     }
 }
 
-impl From<IndexingPressureBuilder<(crate::typed::builder::Set,)>> for IndexingPressure {
-    fn from(builder: IndexingPressureBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexingPressureBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+{
+    type Output = IndexingPressure;
+
+    fn build(self) -> IndexingPressure {
+        Self::build(self)
     }
 }
 
-impl IndexingPressureBuilder<(crate::typed::builder::NotSet,)> {
-    /// `memory` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, memory: crate::typed::builder::MissingRequiredField) -> IndexingPressure { match memory {} }
+impl<S0> From<IndexingPressureBuilder<(S0,)>> for IndexingPressure
+where
+    S0: crate::typed::builder::IsSet<indexing_pressure_members::memory>,
+{
+    fn from(builder: IndexingPressureBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8666,8 +8800,8 @@ impl IndexingPressureMemory {
     }
 
     /// Creates a [`IndexingPressureMemory`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexingPressureMemoryBuilder) -> IndexingPressureMemoryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexingPressureMemory>>(
+        f: impl FnOnce(IndexingPressureMemoryBuilder) -> B,
     ) -> IndexingPressureMemory {
         f(Self::builder()).build()
     }
@@ -8708,6 +8842,14 @@ impl IndexingPressureMemoryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IndexingPressureMemoryBuilder {
+    type Output = IndexingPressureMemory;
+
+    fn build(self) -> IndexingPressureMemory {
+        Self::build(self)
+    }
+}
+
 impl From<IndexingPressureMemoryBuilder> for IndexingPressureMemory {
     fn from(builder: IndexingPressureMemoryBuilder) -> Self {
         builder.build()
@@ -8733,8 +8875,8 @@ impl IndexingSlowlogSettings {
     }
 
     /// Creates a [`IndexingSlowlogSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexingSlowlogSettingsBuilder) -> IndexingSlowlogSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexingSlowlogSettings>>(
+        f: impl FnOnce(IndexingSlowlogSettingsBuilder) -> B,
     ) -> IndexingSlowlogSettings {
         f(Self::builder()).build()
     }
@@ -8806,9 +8948,9 @@ impl IndexingSlowlogSettingsBuilder {
     }
 
     /// Sets [`threshold`](Self::threshold) with a builder.
-    pub fn threshold_with(
+    pub fn threshold_with<B: crate::typed::builder::Build<Output = IndexingSlowlogTresholds>>(
         self,
-        f: impl FnOnce(IndexingSlowlogTresholdsBuilder) -> IndexingSlowlogTresholdsBuilder,
+        f: impl FnOnce(IndexingSlowlogTresholdsBuilder) -> B,
     ) -> Self {
         self.threshold(f(IndexingSlowlogTresholdsBuilder::new()).build())
     }
@@ -8823,6 +8965,14 @@ impl IndexingSlowlogSettingsBuilder {
             reformat: self.reformat,
             threshold: self.threshold,
         }
+    }
+}
+
+impl crate::typed::builder::Build for IndexingSlowlogSettingsBuilder {
+    type Output = IndexingSlowlogSettings;
+
+    fn build(self) -> IndexingSlowlogSettings {
+        Self::build(self)
     }
 }
 
@@ -8847,8 +8997,8 @@ impl IndexingSlowlogTresholds {
     }
 
     /// Creates a [`IndexingSlowlogTresholds`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexingSlowlogTresholdsBuilder) -> IndexingSlowlogTresholdsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = IndexingSlowlogTresholds>>(
+        f: impl FnOnce(IndexingSlowlogTresholdsBuilder) -> B,
     ) -> IndexingSlowlogTresholds {
         f(Self::builder()).build()
     }
@@ -8881,9 +9031,9 @@ impl IndexingSlowlogTresholdsBuilder {
     }
 
     /// Sets [`index`](Self::index) with a builder.
-    pub fn index_with(
+    pub fn index_with<B: crate::typed::builder::Build<Output = SlowlogTresholdLevels>>(
         self,
-        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> SlowlogTresholdLevelsBuilder,
+        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> B,
     ) -> Self {
         self.index(f(SlowlogTresholdLevelsBuilder::new()).build())
     }
@@ -8893,6 +9043,14 @@ impl IndexingSlowlogTresholdsBuilder {
     /// Builds a [`IndexingSlowlogTresholds`].
     pub fn build(self) -> IndexingSlowlogTresholds {
         IndexingSlowlogTresholds { index: self.index }
+    }
+}
+
+impl crate::typed::builder::Build for IndexingSlowlogTresholdsBuilder {
+    type Output = IndexingSlowlogTresholds;
+
+    fn build(self) -> IndexingSlowlogTresholds {
+        Self::build(self)
     }
 }
 
@@ -8982,8 +9140,8 @@ impl MappingLimitSettings {
     }
 
     /// Creates a [`MappingLimitSettings`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MappingLimitSettingsBuilder) -> MappingLimitSettingsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettings>>(
+        f: impl FnOnce(MappingLimitSettingsBuilder) -> B,
     ) -> MappingLimitSettings {
         f(Self::builder()).build()
     }
@@ -9043,9 +9201,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`total_fields`](Self::total_fields) with a builder.
-    pub fn total_fields_with(
+    pub fn total_fields_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsTotalFields>,
+    >(
         self,
-        f: impl FnOnce(MappingLimitSettingsTotalFieldsBuilder) -> MappingLimitSettingsTotalFieldsBuilder,
+        f: impl FnOnce(MappingLimitSettingsTotalFieldsBuilder) -> B,
     ) -> Self {
         self.total_fields(f(MappingLimitSettingsTotalFieldsBuilder::new()).build())
     }
@@ -9062,9 +9222,9 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`depth`](Self::depth) with a builder.
-    pub fn depth_with(
+    pub fn depth_with<B: crate::typed::builder::Build<Output = MappingLimitSettingsDepth>>(
         self,
-        f: impl FnOnce(MappingLimitSettingsDepthBuilder) -> MappingLimitSettingsDepthBuilder,
+        f: impl FnOnce(MappingLimitSettingsDepthBuilder) -> B,
     ) -> Self {
         self.depth(f(MappingLimitSettingsDepthBuilder::new()).build())
     }
@@ -9081,11 +9241,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`nested_fields`](Self::nested_fields) with a builder.
-    pub fn nested_fields_with(
+    pub fn nested_fields_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsNestedFields>,
+    >(
         self,
-        f: impl FnOnce(
-            MappingLimitSettingsNestedFieldsBuilder,
-        ) -> MappingLimitSettingsNestedFieldsBuilder,
+        f: impl FnOnce(MappingLimitSettingsNestedFieldsBuilder) -> B,
     ) -> Self {
         self.nested_fields(f(MappingLimitSettingsNestedFieldsBuilder::new()).build())
     }
@@ -9105,11 +9265,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`nested_objects`](Self::nested_objects) with a builder.
-    pub fn nested_objects_with(
+    pub fn nested_objects_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsNestedObjects>,
+    >(
         self,
-        f: impl FnOnce(
-            MappingLimitSettingsNestedObjectsBuilder,
-        ) -> MappingLimitSettingsNestedObjectsBuilder,
+        f: impl FnOnce(MappingLimitSettingsNestedObjectsBuilder) -> B,
     ) -> Self {
         self.nested_objects(f(MappingLimitSettingsNestedObjectsBuilder::new()).build())
     }
@@ -9132,11 +9292,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`field_name_length`](Self::field_name_length) with a builder.
-    pub fn field_name_length_with(
+    pub fn field_name_length_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsFieldNameLength>,
+    >(
         self,
-        f: impl FnOnce(
-            MappingLimitSettingsFieldNameLengthBuilder,
-        ) -> MappingLimitSettingsFieldNameLengthBuilder,
+        f: impl FnOnce(MappingLimitSettingsFieldNameLengthBuilder) -> B,
     ) -> Self {
         self.field_name_length(f(MappingLimitSettingsFieldNameLengthBuilder::new()).build())
     }
@@ -9159,11 +9319,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`dimension_fields`](Self::dimension_fields) with a builder.
-    pub fn dimension_fields_with(
+    pub fn dimension_fields_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsDimensionFields>,
+    >(
         self,
-        f: impl FnOnce(
-            MappingLimitSettingsDimensionFieldsBuilder,
-        ) -> MappingLimitSettingsDimensionFieldsBuilder,
+        f: impl FnOnce(MappingLimitSettingsDimensionFieldsBuilder) -> B,
     ) -> Self {
         self.dimension_fields(f(MappingLimitSettingsDimensionFieldsBuilder::new()).build())
     }
@@ -9180,12 +9340,11 @@ impl MappingLimitSettingsBuilder {
     }
 
     /// Sets [`source`](Self::source) with a builder.
-    pub fn source_with(
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = MappingLimitSettingsSourceFields>,
+    >(
         self,
-        f: impl FnOnce(
-            MappingLimitSettingsSourceFieldsBuilder,
-        )
-            -> MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MappingLimitSettingsSourceFieldsBuilder) -> B,
     ) -> Self {
         self.source(f(MappingLimitSettingsSourceFieldsBuilder::new()).build())
     }
@@ -9225,6 +9384,14 @@ impl MappingLimitSettingsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsBuilder {
+    type Output = MappingLimitSettings;
+
+    fn build(self) -> MappingLimitSettings {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsBuilder> for MappingLimitSettings {
     fn from(builder: MappingLimitSettingsBuilder) -> Self {
         builder.build()
@@ -9246,8 +9413,8 @@ impl MappingLimitSettingsDepth {
     }
 
     /// Creates a [`MappingLimitSettingsDepth`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MappingLimitSettingsDepthBuilder) -> MappingLimitSettingsDepthBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsDepth>>(
+        f: impl FnOnce(MappingLimitSettingsDepthBuilder) -> B,
     ) -> MappingLimitSettingsDepth {
         f(Self::builder()).build()
     }
@@ -9287,6 +9454,14 @@ impl MappingLimitSettingsDepthBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsDepthBuilder {
+    type Output = MappingLimitSettingsDepth;
+
+    fn build(self) -> MappingLimitSettingsDepth {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsDepthBuilder> for MappingLimitSettingsDepth {
     fn from(builder: MappingLimitSettingsDepthBuilder) -> Self {
         builder.build()
@@ -9308,10 +9483,8 @@ impl MappingLimitSettingsDimensionFields {
     }
 
     /// Creates a [`MappingLimitSettingsDimensionFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingLimitSettingsDimensionFieldsBuilder,
-        ) -> MappingLimitSettingsDimensionFieldsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsDimensionFields>>(
+        f: impl FnOnce(MappingLimitSettingsDimensionFieldsBuilder) -> B,
     ) -> MappingLimitSettingsDimensionFields {
         f(Self::builder()).build()
     }
@@ -9351,6 +9524,14 @@ impl MappingLimitSettingsDimensionFieldsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsDimensionFieldsBuilder {
+    type Output = MappingLimitSettingsDimensionFields;
+
+    fn build(self) -> MappingLimitSettingsDimensionFields {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsDimensionFieldsBuilder> for MappingLimitSettingsDimensionFields {
     fn from(builder: MappingLimitSettingsDimensionFieldsBuilder) -> Self {
         builder.build()
@@ -9373,10 +9554,8 @@ impl MappingLimitSettingsFieldNameLength {
     }
 
     /// Creates a [`MappingLimitSettingsFieldNameLength`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingLimitSettingsFieldNameLengthBuilder,
-        ) -> MappingLimitSettingsFieldNameLengthBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsFieldNameLength>>(
+        f: impl FnOnce(MappingLimitSettingsFieldNameLengthBuilder) -> B,
     ) -> MappingLimitSettingsFieldNameLength {
         f(Self::builder()).build()
     }
@@ -9417,6 +9596,14 @@ impl MappingLimitSettingsFieldNameLengthBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsFieldNameLengthBuilder {
+    type Output = MappingLimitSettingsFieldNameLength;
+
+    fn build(self) -> MappingLimitSettingsFieldNameLength {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsFieldNameLengthBuilder> for MappingLimitSettingsFieldNameLength {
     fn from(builder: MappingLimitSettingsFieldNameLengthBuilder) -> Self {
         builder.build()
@@ -9439,10 +9626,8 @@ impl MappingLimitSettingsNestedFields {
     }
 
     /// Creates a [`MappingLimitSettingsNestedFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingLimitSettingsNestedFieldsBuilder,
-        ) -> MappingLimitSettingsNestedFieldsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsNestedFields>>(
+        f: impl FnOnce(MappingLimitSettingsNestedFieldsBuilder) -> B,
     ) -> MappingLimitSettingsNestedFields {
         f(Self::builder()).build()
     }
@@ -9483,6 +9668,14 @@ impl MappingLimitSettingsNestedFieldsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsNestedFieldsBuilder {
+    type Output = MappingLimitSettingsNestedFields;
+
+    fn build(self) -> MappingLimitSettingsNestedFields {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsNestedFieldsBuilder> for MappingLimitSettingsNestedFields {
     fn from(builder: MappingLimitSettingsNestedFieldsBuilder) -> Self {
         builder.build()
@@ -9504,10 +9697,8 @@ impl MappingLimitSettingsNestedObjects {
     }
 
     /// Creates a [`MappingLimitSettingsNestedObjects`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingLimitSettingsNestedObjectsBuilder,
-        ) -> MappingLimitSettingsNestedObjectsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsNestedObjects>>(
+        f: impl FnOnce(MappingLimitSettingsNestedObjectsBuilder) -> B,
     ) -> MappingLimitSettingsNestedObjects {
         f(Self::builder()).build()
     }
@@ -9547,6 +9738,14 @@ impl MappingLimitSettingsNestedObjectsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsNestedObjectsBuilder {
+    type Output = MappingLimitSettingsNestedObjects;
+
+    fn build(self) -> MappingLimitSettingsNestedObjects {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsNestedObjectsBuilder> for MappingLimitSettingsNestedObjects {
     fn from(builder: MappingLimitSettingsNestedObjectsBuilder) -> Self {
         builder.build()
@@ -9560,19 +9759,27 @@ pub struct MappingLimitSettingsSourceFields {
 
 impl MappingLimitSettingsSourceFields {
     /// Creates a builder for [`MappingLimitSettingsSourceFields`].
+    ///
+    /// Required: `mode`.
     pub fn builder() -> MappingLimitSettingsSourceFieldsBuilder {
         MappingLimitSettingsSourceFieldsBuilder::new()
     }
 
     /// Creates a [`MappingLimitSettingsSourceFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MappingLimitSettingsSourceFieldsBuilder,
-        )
-            -> MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `mode`.
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsSourceFields>>(
+        f: impl FnOnce(MappingLimitSettingsSourceFieldsBuilder) -> B,
     ) -> MappingLimitSettingsSourceFields {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MappingLimitSettingsSourceFieldsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod mapping_limit_settings_source_fields_members {
+    pub struct mode;
 }
 
 /// Builder for [`MappingLimitSettingsSourceFields`].
@@ -9601,6 +9808,7 @@ impl<S0> MappingLimitSettingsSourceFieldsBuilder<(S0,)> {
 }
 
 impl MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn mode(
         self,
         value: impl Into<SourceMode>,
@@ -9611,29 +9819,36 @@ impl MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MappingLimitSettingsSourceFieldsBuilder<(S0,)> {
     /// Builds a [`MappingLimitSettingsSourceFields`].
-    pub fn build(self) -> MappingLimitSettingsSourceFields {
+    pub fn build(self) -> MappingLimitSettingsSourceFields
+    where
+        S0: crate::typed::builder::IsSet<mapping_limit_settings_source_fields_members::mode>,
+    {
         MappingLimitSettingsSourceFields {
             mode: self.mode.unwrap(),
         }
     }
 }
 
-impl From<MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)>>
-    for MappingLimitSettingsSourceFields
+impl<S0> crate::typed::builder::Build for MappingLimitSettingsSourceFieldsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<mapping_limit_settings_source_fields_members::mode>,
 {
-    fn from(
-        builder: MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)>,
-    ) -> Self {
-        builder.build()
+    type Output = MappingLimitSettingsSourceFields;
+
+    fn build(self) -> MappingLimitSettingsSourceFields {
+        Self::build(self)
     }
 }
 
-impl MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `mode` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mode: crate::typed::builder::MissingRequiredField) -> MappingLimitSettingsSourceFields { match mode {} }
+impl<S0> From<MappingLimitSettingsSourceFieldsBuilder<(S0,)>> for MappingLimitSettingsSourceFields
+where
+    S0: crate::typed::builder::IsSet<mapping_limit_settings_source_fields_members::mode>,
+{
+    fn from(builder: MappingLimitSettingsSourceFieldsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9710,8 +9925,8 @@ impl MappingLimitSettingsTotalFields {
     }
 
     /// Creates a [`MappingLimitSettingsTotalFields`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MappingLimitSettingsTotalFieldsBuilder) -> MappingLimitSettingsTotalFieldsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = MappingLimitSettingsTotalFields>>(
+        f: impl FnOnce(MappingLimitSettingsTotalFieldsBuilder) -> B,
     ) -> MappingLimitSettingsTotalFields {
         f(Self::builder()).build()
     }
@@ -9781,6 +9996,14 @@ impl MappingLimitSettingsTotalFieldsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MappingLimitSettingsTotalFieldsBuilder {
+    type Output = MappingLimitSettingsTotalFields;
+
+    fn build(self) -> MappingLimitSettingsTotalFields {
+        Self::build(self)
+    }
+}
+
 impl From<MappingLimitSettingsTotalFieldsBuilder> for MappingLimitSettingsTotalFields {
     fn from(builder: MappingLimitSettingsTotalFieldsBuilder) -> Self {
         builder.build()
@@ -9800,7 +10023,9 @@ impl Merge {
     }
 
     /// Creates a [`Merge`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MergeBuilder) -> MergeBuilder) -> Merge {
+    pub fn of<B: crate::typed::builder::Build<Output = Merge>>(
+        f: impl FnOnce(MergeBuilder) -> B,
+    ) -> Merge {
         f(Self::builder()).build()
     }
 }
@@ -9830,9 +10055,9 @@ impl MergeBuilder {
     }
 
     /// Sets [`scheduler`](Self::scheduler) with a builder.
-    pub fn scheduler_with(
+    pub fn scheduler_with<B: crate::typed::builder::Build<Output = MergeScheduler>>(
         self,
-        f: impl FnOnce(MergeSchedulerBuilder) -> MergeSchedulerBuilder,
+        f: impl FnOnce(MergeSchedulerBuilder) -> B,
     ) -> Self {
         self.scheduler(f(MergeSchedulerBuilder::new()).build())
     }
@@ -9844,6 +10069,14 @@ impl MergeBuilder {
         Merge {
             scheduler: self.scheduler,
         }
+    }
+}
+
+impl crate::typed::builder::Build for MergeBuilder {
+    type Output = Merge;
+
+    fn build(self) -> Merge {
+        Self::build(self)
     }
 }
 
@@ -9868,7 +10101,9 @@ impl MergeScheduler {
     }
 
     /// Creates a [`MergeScheduler`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MergeSchedulerBuilder) -> MergeSchedulerBuilder) -> MergeScheduler {
+    pub fn of<B: crate::typed::builder::Build<Output = MergeScheduler>>(
+        f: impl FnOnce(MergeSchedulerBuilder) -> B,
+    ) -> MergeScheduler {
         f(Self::builder()).build()
     }
 }
@@ -9935,6 +10170,14 @@ impl MergeSchedulerBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MergeSchedulerBuilder {
+    type Output = MergeScheduler;
+
+    fn build(self) -> MergeScheduler {
+        Self::build(self)
+    }
+}
+
 impl From<MergeSchedulerBuilder> for MergeScheduler {
     fn from(builder: MergeSchedulerBuilder) -> Self {
         builder.build()
@@ -9948,18 +10191,27 @@ pub struct NumericFielddata {
 
 impl NumericFielddata {
     /// Creates a builder for [`NumericFielddata`].
+    ///
+    /// Required: `format`.
     pub fn builder() -> NumericFielddataBuilder {
         NumericFielddataBuilder::new()
     }
 
     /// Creates a [`NumericFielddata`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NumericFielddataBuilder,
-        ) -> NumericFielddataBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `format`.
+    pub fn of<B: crate::typed::builder::Build<Output = NumericFielddata>>(
+        f: impl FnOnce(NumericFielddataBuilder) -> B,
     ) -> NumericFielddata {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NumericFielddataBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod numeric_fielddata_members {
+    pub struct format;
 }
 
 /// Builder for [`NumericFielddata`].
@@ -9988,6 +10240,7 @@ impl<S0> NumericFielddataBuilder<(S0,)> {
 }
 
 impl NumericFielddataBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn format(
         self,
         value: impl Into<NumericFielddataFormat>,
@@ -9998,25 +10251,36 @@ impl NumericFielddataBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl NumericFielddataBuilder<(crate::typed::builder::Set,)> {
+impl<S0> NumericFielddataBuilder<(S0,)> {
     /// Builds a [`NumericFielddata`].
-    pub fn build(self) -> NumericFielddata {
+    pub fn build(self) -> NumericFielddata
+    where
+        S0: crate::typed::builder::IsSet<numeric_fielddata_members::format>,
+    {
         NumericFielddata {
             format: self.format.unwrap(),
         }
     }
 }
 
-impl From<NumericFielddataBuilder<(crate::typed::builder::Set,)>> for NumericFielddata {
-    fn from(builder: NumericFielddataBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for NumericFielddataBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<numeric_fielddata_members::format>,
+{
+    type Output = NumericFielddata;
+
+    fn build(self) -> NumericFielddata {
+        Self::build(self)
     }
 }
 
-impl NumericFielddataBuilder<(crate::typed::builder::NotSet,)> {
-    /// `format` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, format: crate::typed::builder::MissingRequiredField) -> NumericFielddata { match format {} }
+impl<S0> From<NumericFielddataBuilder<(S0,)>> for NumericFielddata
+where
+    S0: crate::typed::builder::IsSet<numeric_fielddata_members::format>,
+{
+    fn from(builder: NumericFielddataBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10040,7 +10304,9 @@ impl Queries {
     }
 
     /// Creates a [`Queries`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(QueriesBuilder) -> QueriesBuilder) -> Queries {
+    pub fn of<B: crate::typed::builder::Build<Output = Queries>>(
+        f: impl FnOnce(QueriesBuilder) -> B,
+    ) -> Queries {
         f(Self::builder()).build()
     }
 }
@@ -10070,9 +10336,9 @@ impl QueriesBuilder {
     }
 
     /// Sets [`cache`](Self::cache) with a builder.
-    pub fn cache_with(
+    pub fn cache_with<B: crate::typed::builder::Build<Output = CacheQueries>>(
         self,
-        f: impl FnOnce(CacheQueriesBuilder) -> CacheQueriesBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CacheQueriesBuilder) -> B,
     ) -> Self {
         self.cache(f(CacheQueriesBuilder::new()).build())
     }
@@ -10082,6 +10348,14 @@ impl QueriesBuilder {
     /// Builds a [`Queries`].
     pub fn build(self) -> Queries {
         Queries { cache: self.cache }
+    }
+}
+
+impl crate::typed::builder::Build for QueriesBuilder {
+    type Output = Queries;
+
+    fn build(self) -> Queries {
+        Self::build(self)
     }
 }
 
@@ -10098,16 +10372,27 @@ pub struct RetentionLease {
 
 impl RetentionLease {
     /// Creates a builder for [`RetentionLease`].
+    ///
+    /// Required: `period`.
     pub fn builder() -> RetentionLeaseBuilder {
         RetentionLeaseBuilder::new()
     }
 
     /// Creates a [`RetentionLease`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RetentionLeaseBuilder) -> RetentionLeaseBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `period`.
+    pub fn of<B: crate::typed::builder::Build<Output = RetentionLease>>(
+        f: impl FnOnce(RetentionLeaseBuilder) -> B,
     ) -> RetentionLease {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RetentionLeaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod retention_lease_members {
+    pub struct period;
 }
 
 /// Builder for [`RetentionLease`].
@@ -10136,6 +10421,7 @@ impl<S0> RetentionLeaseBuilder<(S0,)> {
 }
 
 impl RetentionLeaseBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn period(
         self,
         value: impl Into<crate::typed::_types::Duration>,
@@ -10146,25 +10432,36 @@ impl RetentionLeaseBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RetentionLeaseBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RetentionLeaseBuilder<(S0,)> {
     /// Builds a [`RetentionLease`].
-    pub fn build(self) -> RetentionLease {
+    pub fn build(self) -> RetentionLease
+    where
+        S0: crate::typed::builder::IsSet<retention_lease_members::period>,
+    {
         RetentionLease {
             period: self.period.unwrap(),
         }
     }
 }
 
-impl From<RetentionLeaseBuilder<(crate::typed::builder::Set,)>> for RetentionLease {
-    fn from(builder: RetentionLeaseBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RetentionLeaseBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<retention_lease_members::period>,
+{
+    type Output = RetentionLease;
+
+    fn build(self) -> RetentionLease {
+        Self::build(self)
     }
 }
 
-impl RetentionLeaseBuilder<(crate::typed::builder::NotSet,)> {
-    /// `period` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, period: crate::typed::builder::MissingRequiredField) -> RetentionLease { match period {} }
+impl<S0> From<RetentionLeaseBuilder<(S0,)>> for RetentionLease
+where
+    S0: crate::typed::builder::IsSet<retention_lease_members::period>,
+{
+    fn from(builder: RetentionLeaseBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -10200,7 +10497,9 @@ impl SearchIdle {
     }
 
     /// Creates a [`SearchIdle`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SearchIdleBuilder) -> SearchIdleBuilder) -> SearchIdle {
+    pub fn of<B: crate::typed::builder::Build<Output = SearchIdle>>(
+        f: impl FnOnce(SearchIdleBuilder) -> B,
+    ) -> SearchIdle {
         f(Self::builder()).build()
     }
 }
@@ -10234,6 +10533,14 @@ impl SearchIdleBuilder {
     /// Builds a [`SearchIdle`].
     pub fn build(self) -> SearchIdle {
         SearchIdle { after: self.after }
+    }
+}
+
+impl crate::typed::builder::Build for SearchIdleBuilder {
+    type Output = SearchIdle;
+
+    fn build(self) -> SearchIdle {
+        Self::build(self)
     }
 }
 
@@ -10280,7 +10587,9 @@ impl SettingsAnalyze {
     }
 
     /// Creates a [`SettingsAnalyze`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SettingsAnalyzeBuilder) -> SettingsAnalyzeBuilder) -> SettingsAnalyze {
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsAnalyze>>(
+        f: impl FnOnce(SettingsAnalyzeBuilder) -> B,
+    ) -> SettingsAnalyze {
         f(Self::builder()).build()
     }
 }
@@ -10327,6 +10636,14 @@ impl SettingsAnalyzeBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SettingsAnalyzeBuilder {
+    type Output = SettingsAnalyze;
+
+    fn build(self) -> SettingsAnalyze {
+        Self::build(self)
+    }
+}
+
 impl From<SettingsAnalyzeBuilder> for SettingsAnalyze {
     fn from(builder: SettingsAnalyzeBuilder) -> Self {
         builder.build()
@@ -10346,8 +10663,8 @@ impl SettingsHighlight {
     }
 
     /// Creates a [`SettingsHighlight`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SettingsHighlightBuilder) -> SettingsHighlightBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsHighlight>>(
+        f: impl FnOnce(SettingsHighlightBuilder) -> B,
     ) -> SettingsHighlight {
         f(Self::builder()).build()
     }
@@ -10389,6 +10706,14 @@ impl SettingsHighlightBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SettingsHighlightBuilder {
+    type Output = SettingsHighlight;
+
+    fn build(self) -> SettingsHighlight {
+        Self::build(self)
+    }
+}
+
 impl From<SettingsHighlightBuilder> for SettingsHighlight {
     fn from(builder: SettingsHighlightBuilder) -> Self {
         builder.build()
@@ -10402,18 +10727,27 @@ pub struct SettingsQueryString {
 
 impl SettingsQueryString {
     /// Creates a builder for [`SettingsQueryString`].
+    ///
+    /// Required: `lenient`.
     pub fn builder() -> SettingsQueryStringBuilder {
         SettingsQueryStringBuilder::new()
     }
 
     /// Creates a [`SettingsQueryString`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsQueryStringBuilder,
-        ) -> SettingsQueryStringBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `lenient`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsQueryString>>(
+        f: impl FnOnce(SettingsQueryStringBuilder) -> B,
     ) -> SettingsQueryString {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsQueryStringBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_query_string_members {
+    pub struct lenient;
 }
 
 /// Builder for [`SettingsQueryString`].
@@ -10442,6 +10776,7 @@ impl<S0> SettingsQueryStringBuilder<(S0,)> {
 }
 
 impl SettingsQueryStringBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn lenient(
         self,
         value: impl Into<crate::typed::_spec_utils::Stringifiedboolean>,
@@ -10452,25 +10787,36 @@ impl SettingsQueryStringBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SettingsQueryStringBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SettingsQueryStringBuilder<(S0,)> {
     /// Builds a [`SettingsQueryString`].
-    pub fn build(self) -> SettingsQueryString {
+    pub fn build(self) -> SettingsQueryString
+    where
+        S0: crate::typed::builder::IsSet<settings_query_string_members::lenient>,
+    {
         SettingsQueryString {
             lenient: self.lenient.unwrap(),
         }
     }
 }
 
-impl From<SettingsQueryStringBuilder<(crate::typed::builder::Set,)>> for SettingsQueryString {
-    fn from(builder: SettingsQueryStringBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SettingsQueryStringBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<settings_query_string_members::lenient>,
+{
+    type Output = SettingsQueryString;
+
+    fn build(self) -> SettingsQueryString {
+        Self::build(self)
     }
 }
 
-impl SettingsQueryStringBuilder<(crate::typed::builder::NotSet,)> {
-    /// `lenient` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lenient: crate::typed::builder::MissingRequiredField) -> SettingsQueryString { match lenient {} }
+impl<S0> From<SettingsQueryStringBuilder<(S0,)>> for SettingsQueryString
+where
+    S0: crate::typed::builder::IsSet<settings_query_string_members::lenient>,
+{
+    fn from(builder: SettingsQueryStringBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10488,7 +10834,9 @@ impl SettingsSearch {
     }
 
     /// Creates a [`SettingsSearch`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SettingsSearchBuilder) -> SettingsSearchBuilder) -> SettingsSearch {
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSearch>>(
+        f: impl FnOnce(SettingsSearchBuilder) -> B,
+    ) -> SettingsSearch {
         f(Self::builder()).build()
     }
 }
@@ -10522,7 +10870,10 @@ impl SettingsSearchBuilder {
     }
 
     /// Sets [`idle`](Self::idle) with a builder.
-    pub fn idle_with(self, f: impl FnOnce(SearchIdleBuilder) -> SearchIdleBuilder) -> Self {
+    pub fn idle_with<B: crate::typed::builder::Build<Output = SearchIdle>>(
+        self,
+        f: impl FnOnce(SearchIdleBuilder) -> B,
+    ) -> Self {
         self.idle(f(SearchIdleBuilder::new()).build())
     }
 
@@ -10538,9 +10889,9 @@ impl SettingsSearchBuilder {
     }
 
     /// Sets [`slowlog`](Self::slowlog) with a builder.
-    pub fn slowlog_with(
+    pub fn slowlog_with<B: crate::typed::builder::Build<Output = SlowlogSettings>>(
         self,
-        f: impl FnOnce(SlowlogSettingsBuilder) -> SlowlogSettingsBuilder,
+        f: impl FnOnce(SlowlogSettingsBuilder) -> B,
     ) -> Self {
         self.slowlog(f(SlowlogSettingsBuilder::new()).build())
     }
@@ -10553,6 +10904,14 @@ impl SettingsSearchBuilder {
             idle: self.idle,
             slowlog: self.slowlog,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SettingsSearchBuilder {
+    type Output = SettingsSearch;
+
+    fn build(self) -> SettingsSearch {
+        Self::build(self)
     }
 }
 
@@ -10586,18 +10945,27 @@ pub struct SettingsSimilarityBm25 {
 
 impl SettingsSimilarityBm25 {
     /// Creates a builder for [`SettingsSimilarityBm25`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityBm25Builder {
         SettingsSimilarityBm25Builder::new()
     }
 
     /// Creates a [`SettingsSimilarityBm25`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityBm25Builder,
-        ) -> SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityBm25>>(
+        f: impl FnOnce(SettingsSimilarityBm25Builder) -> B,
     ) -> SettingsSimilarityBm25 {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityBm25Builder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_bm25_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SettingsSimilarityBm25`].
@@ -10668,6 +11036,7 @@ impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
 }
 
 impl SettingsSimilarityBm25Builder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10678,9 +11047,12 @@ impl SettingsSimilarityBm25Builder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)> {
+impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
     /// Builds a [`SettingsSimilarityBm25`].
-    pub fn build(self) -> SettingsSimilarityBm25 {
+    pub fn build(self) -> SettingsSimilarityBm25
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
+    {
         SettingsSimilarityBm25 {
             r#type: self.r#type.unwrap(),
             b: self.b,
@@ -10690,16 +11062,24 @@ impl SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)>> for SettingsSimilarityBm25 {
-    fn from(builder: SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SettingsSimilarityBm25Builder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
+{
+    type Output = SettingsSimilarityBm25;
+
+    fn build(self) -> SettingsSimilarityBm25 {
+        Self::build(self)
     }
 }
 
-impl SettingsSimilarityBm25Builder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityBm25 { match r#type {} }
+impl<S0> From<SettingsSimilarityBm25Builder<(S0,)>> for SettingsSimilarityBm25
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
+{
+    fn from(builder: SettingsSimilarityBm25Builder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10709,18 +11089,27 @@ pub struct SettingsSimilarityBoolean {
 
 impl SettingsSimilarityBoolean {
     /// Creates a builder for [`SettingsSimilarityBoolean`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityBooleanBuilder {
         SettingsSimilarityBooleanBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityBoolean`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityBooleanBuilder,
-        ) -> SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityBoolean>>(
+        f: impl FnOnce(SettingsSimilarityBooleanBuilder) -> B,
     ) -> SettingsSimilarityBoolean {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityBooleanBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_boolean_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SettingsSimilarityBoolean`].
@@ -10749,6 +11138,7 @@ impl<S0> SettingsSimilarityBooleanBuilder<(S0,)> {
 }
 
 impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10759,27 +11149,36 @@ impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SettingsSimilarityBooleanBuilder<(S0,)> {
     /// Builds a [`SettingsSimilarityBoolean`].
-    pub fn build(self) -> SettingsSimilarityBoolean {
+    pub fn build(self) -> SettingsSimilarityBoolean
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
+    {
         SettingsSimilarityBoolean {
             r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl From<SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)>>
-    for SettingsSimilarityBoolean
+impl<S0> crate::typed::builder::Build for SettingsSimilarityBooleanBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
 {
-    fn from(builder: SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = SettingsSimilarityBoolean;
+
+    fn build(self) -> SettingsSimilarityBoolean {
+        Self::build(self)
     }
 }
 
-impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityBoolean { match r#type {} }
+impl<S0> From<SettingsSimilarityBooleanBuilder<(S0,)>> for SettingsSimilarityBoolean
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
+{
+    fn from(builder: SettingsSimilarityBooleanBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10790,21 +11189,28 @@ pub struct SettingsSimilarityDfi {
 
 impl SettingsSimilarityDfi {
     /// Creates a builder for [`SettingsSimilarityDfi`].
+    ///
+    /// Required: `type`, `independence_measure`.
     pub fn builder() -> SettingsSimilarityDfiBuilder {
         SettingsSimilarityDfiBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityDfi`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityDfiBuilder,
-        ) -> SettingsSimilarityDfiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `independence_measure`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityDfi>>(
+        f: impl FnOnce(SettingsSimilarityDfiBuilder) -> B,
     ) -> SettingsSimilarityDfi {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityDfiBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_dfi_members {
+    pub struct r#type;
+    pub struct independence_measure;
 }
 
 /// Builder for [`SettingsSimilarityDfi`].
@@ -10838,6 +11244,7 @@ impl<S0, S1> SettingsSimilarityDfiBuilder<(S0, S1)> {
 }
 
 impl<S1> SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10849,6 +11256,7 @@ impl<S1> SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SettingsSimilarityDfiBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn independence_measure(
         self,
         value: impl Into<crate::typed::_types::DFIIndependenceMeasure>,
@@ -10859,9 +11267,13 @@ impl<S0> SettingsSimilarityDfiBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SettingsSimilarityDfiBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SettingsSimilarityDfiBuilder<(S0, S1)> {
     /// Builds a [`SettingsSimilarityDfi`].
-    pub fn build(self) -> SettingsSimilarityDfi {
+    pub fn build(self) -> SettingsSimilarityDfi
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
+        S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
+    {
         SettingsSimilarityDfi {
             r#type: self.r#type.unwrap(),
             independence_measure: self.independence_measure.unwrap(),
@@ -10869,29 +11281,26 @@ impl SettingsSimilarityDfiBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<SettingsSimilarityDfiBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SettingsSimilarityDfi
+impl<S0, S1> crate::typed::builder::Build for SettingsSimilarityDfiBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
 {
-    fn from(
-        builder: SettingsSimilarityDfiBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SettingsSimilarityDfi;
+
+    fn build(self) -> SettingsSimilarityDfi {
+        Self::build(self)
     }
 }
 
-impl<S1> SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfi { match r#type {} }
-}
-
-impl SettingsSimilarityDfiBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `independence_measure` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, independence_measure: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfi { match independence_measure {} }
+impl<S0, S1> From<SettingsSimilarityDfiBuilder<(S0, S1)>> for SettingsSimilarityDfi
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
+{
+    fn from(builder: SettingsSimilarityDfiBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10904,23 +11313,30 @@ pub struct SettingsSimilarityDfr {
 
 impl SettingsSimilarityDfr {
     /// Creates a builder for [`SettingsSimilarityDfr`].
+    ///
+    /// Required: `type`, `after_effect`, `basic_model`, `normalization`.
     pub fn builder() -> SettingsSimilarityDfrBuilder {
         SettingsSimilarityDfrBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityDfr`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityDfrBuilder,
-        ) -> SettingsSimilarityDfrBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `after_effect`, `basic_model`, `normalization`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityDfr>>(
+        f: impl FnOnce(SettingsSimilarityDfrBuilder) -> B,
     ) -> SettingsSimilarityDfr {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityDfrBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_dfr_members {
+    pub struct r#type;
+    pub struct after_effect;
+    pub struct basic_model;
+    pub struct normalization;
 }
 
 /// Builder for [`SettingsSimilarityDfr`].
@@ -10972,6 +11388,7 @@ impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> SettingsSimilarityDfrBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -10983,6 +11400,7 @@ impl<S1, S2, S3> SettingsSimilarityDfrBuilder<(crate::typed::builder::NotSet, S1
 }
 
 impl<S0, S2, S3> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn after_effect(
         self,
         value: impl Into<crate::typed::_types::DFRAfterEffect>,
@@ -10994,6 +11412,7 @@ impl<S0, S2, S3> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S3> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn basic_model(
         self,
         value: impl Into<crate::typed::_types::DFRBasicModel>,
@@ -11005,6 +11424,7 @@ impl<S0, S1, S3> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::No
 }
 
 impl<S0, S1, S2> SettingsSimilarityDfrBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn normalization(
         self,
         value: impl Into<crate::typed::_types::Normalization>,
@@ -11015,16 +11435,15 @@ impl<S0, S1, S2> SettingsSimilarityDfrBuilder<(S0, S1, S2, crate::typed::builder
     }
 }
 
-impl
-    SettingsSimilarityDfrBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`SettingsSimilarityDfr`].
-    pub fn build(self) -> SettingsSimilarityDfr {
+    pub fn build(self) -> SettingsSimilarityDfr
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
+        S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+        S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+        S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
+    {
         SettingsSimilarityDfr {
             r#type: self.r#type.unwrap(),
             after_effect: self.after_effect.unwrap(),
@@ -11034,71 +11453,30 @@ impl
     }
 }
 
-impl
-    From<
-        SettingsSimilarityDfrBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SettingsSimilarityDfr
+impl<S0, S1, S2, S3> crate::typed::builder::Build for SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+    S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
 {
-    fn from(
-        builder: SettingsSimilarityDfrBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SettingsSimilarityDfr;
+
+    fn build(self) -> SettingsSimilarityDfr {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> SettingsSimilarityDfrBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfr { match r#type {} }
-}
-
-impl<S2, S3>
-    SettingsSimilarityDfrBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>> for SettingsSimilarityDfr
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+    S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
 {
-    /// `after_effect` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, after_effect: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfr { match after_effect {} }
-}
-
-impl<S3>
-    SettingsSimilarityDfrBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `basic_model` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, basic_model: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfr { match basic_model {} }
-}
-
-impl
-    SettingsSimilarityDfrBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `normalization` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, normalization: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityDfr { match normalization {} }
+    fn from(builder: SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11111,23 +11489,30 @@ pub struct SettingsSimilarityIb {
 
 impl SettingsSimilarityIb {
     /// Creates a builder for [`SettingsSimilarityIb`].
+    ///
+    /// Required: `type`, `distribution`, `lambda`, `normalization`.
     pub fn builder() -> SettingsSimilarityIbBuilder {
         SettingsSimilarityIbBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityIb`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityIbBuilder,
-        ) -> SettingsSimilarityIbBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `distribution`, `lambda`, `normalization`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityIb>>(
+        f: impl FnOnce(SettingsSimilarityIbBuilder) -> B,
     ) -> SettingsSimilarityIb {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityIbBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_ib_members {
+    pub struct r#type;
+    pub struct distribution;
+    pub struct lambda;
+    pub struct normalization;
 }
 
 /// Builder for [`SettingsSimilarityIb`].
@@ -11179,6 +11564,7 @@ impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> SettingsSimilarityIbBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11190,6 +11576,7 @@ impl<S1, S2, S3> SettingsSimilarityIbBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2, S3> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn distribution(
         self,
         value: impl Into<crate::typed::_types::IBDistribution>,
@@ -11201,6 +11588,7 @@ impl<S0, S2, S3> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S3> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn lambda(
         self,
         value: impl Into<crate::typed::_types::IBLambda>,
@@ -11212,6 +11600,7 @@ impl<S0, S1, S3> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::Not
 }
 
 impl<S0, S1, S2> SettingsSimilarityIbBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn normalization(
         self,
         value: impl Into<crate::typed::_types::Normalization>,
@@ -11222,16 +11611,15 @@ impl<S0, S1, S2> SettingsSimilarityIbBuilder<(S0, S1, S2, crate::typed::builder:
     }
 }
 
-impl
-    SettingsSimilarityIbBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`SettingsSimilarityIb`].
-    pub fn build(self) -> SettingsSimilarityIb {
+    pub fn build(self) -> SettingsSimilarityIb
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
+        S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+        S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+        S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
+    {
         SettingsSimilarityIb {
             r#type: self.r#type.unwrap(),
             distribution: self.distribution.unwrap(),
@@ -11241,71 +11629,30 @@ impl
     }
 }
 
-impl
-    From<
-        SettingsSimilarityIbBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for SettingsSimilarityIb
+impl<S0, S1, S2, S3> crate::typed::builder::Build for SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+    S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
 {
-    fn from(
-        builder: SettingsSimilarityIbBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SettingsSimilarityIb;
+
+    fn build(self) -> SettingsSimilarityIb {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> SettingsSimilarityIbBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityIb { match r#type {} }
-}
-
-impl<S2, S3>
-    SettingsSimilarityIbBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>> for SettingsSimilarityIb
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+    S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
 {
-    /// `distribution` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, distribution: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityIb { match distribution {} }
-}
-
-impl<S3>
-    SettingsSimilarityIbBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `lambda` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, lambda: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityIb { match lambda {} }
-}
-
-impl
-    SettingsSimilarityIbBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `normalization` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, normalization: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityIb { match normalization {} }
+    fn from(builder: SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11317,18 +11664,27 @@ pub struct SettingsSimilarityLmd {
 
 impl SettingsSimilarityLmd {
     /// Creates a builder for [`SettingsSimilarityLmd`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityLmdBuilder {
         SettingsSimilarityLmdBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityLmd`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityLmdBuilder,
-        ) -> SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityLmd>>(
+        f: impl FnOnce(SettingsSimilarityLmdBuilder) -> B,
     ) -> SettingsSimilarityLmd {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityLmdBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_lmd_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SettingsSimilarityLmd`].
@@ -11371,6 +11727,7 @@ impl<S0> SettingsSimilarityLmdBuilder<(S0,)> {
 }
 
 impl SettingsSimilarityLmdBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11381,9 +11738,12 @@ impl SettingsSimilarityLmdBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SettingsSimilarityLmdBuilder<(S0,)> {
     /// Builds a [`SettingsSimilarityLmd`].
-    pub fn build(self) -> SettingsSimilarityLmd {
+    pub fn build(self) -> SettingsSimilarityLmd
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
+    {
         SettingsSimilarityLmd {
             r#type: self.r#type.unwrap(),
             mu: self.mu,
@@ -11391,16 +11751,24 @@ impl SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)>> for SettingsSimilarityLmd {
-    fn from(builder: SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SettingsSimilarityLmdBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
+{
+    type Output = SettingsSimilarityLmd;
+
+    fn build(self) -> SettingsSimilarityLmd {
+        Self::build(self)
     }
 }
 
-impl SettingsSimilarityLmdBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityLmd { match r#type {} }
+impl<S0> From<SettingsSimilarityLmdBuilder<(S0,)>> for SettingsSimilarityLmd
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
+{
+    fn from(builder: SettingsSimilarityLmdBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11412,18 +11780,27 @@ pub struct SettingsSimilarityLmj {
 
 impl SettingsSimilarityLmj {
     /// Creates a builder for [`SettingsSimilarityLmj`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityLmjBuilder {
         SettingsSimilarityLmjBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityLmj`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityLmjBuilder,
-        ) -> SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityLmj>>(
+        f: impl FnOnce(SettingsSimilarityLmjBuilder) -> B,
     ) -> SettingsSimilarityLmj {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityLmjBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_lmj_members {
+    pub struct r#type;
 }
 
 /// Builder for [`SettingsSimilarityLmj`].
@@ -11466,6 +11843,7 @@ impl<S0> SettingsSimilarityLmjBuilder<(S0,)> {
 }
 
 impl SettingsSimilarityLmjBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11476,9 +11854,12 @@ impl SettingsSimilarityLmjBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SettingsSimilarityLmjBuilder<(S0,)> {
     /// Builds a [`SettingsSimilarityLmj`].
-    pub fn build(self) -> SettingsSimilarityLmj {
+    pub fn build(self) -> SettingsSimilarityLmj
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
+    {
         SettingsSimilarityLmj {
             r#type: self.r#type.unwrap(),
             lambda: self.lambda,
@@ -11486,16 +11867,24 @@ impl SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)>> for SettingsSimilarityLmj {
-    fn from(builder: SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SettingsSimilarityLmjBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
+{
+    type Output = SettingsSimilarityLmj;
+
+    fn build(self) -> SettingsSimilarityLmj {
+        Self::build(self)
     }
 }
 
-impl SettingsSimilarityLmjBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityLmj { match r#type {} }
+impl<S0> From<SettingsSimilarityLmjBuilder<(S0,)>> for SettingsSimilarityLmj
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
+{
+    fn from(builder: SettingsSimilarityLmjBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11508,21 +11897,28 @@ pub struct SettingsSimilarityScripted {
 
 impl SettingsSimilarityScripted {
     /// Creates a builder for [`SettingsSimilarityScripted`].
+    ///
+    /// Required: `type`, `script`.
     pub fn builder() -> SettingsSimilarityScriptedBuilder {
         SettingsSimilarityScriptedBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityScripted`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SettingsSimilarityScriptedBuilder,
-        ) -> SettingsSimilarityScriptedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `type`, `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityScripted>>(
+        f: impl FnOnce(SettingsSimilarityScriptedBuilder) -> B,
     ) -> SettingsSimilarityScripted {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SettingsSimilarityScriptedBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod settings_similarity_scripted_members {
+    pub struct r#type;
+    pub struct script;
 }
 
 /// Builder for [`SettingsSimilarityScripted`].
@@ -11574,15 +11970,18 @@ impl<S0, S1> SettingsSimilarityScriptedBuilder<(S0, S1)> {
     }
 
     /// Sets [`weight_script`](Self::weight_script) with a builder.
-    pub fn weight_script_with(
+    pub fn weight_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.weight_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
 impl<S1> SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -11594,6 +11993,7 @@ impl<S1> SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -11604,17 +12004,21 @@ impl<S0> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::Set)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SettingsSimilarityScriptedBuilder<(S0, S1)> {
     /// Builds a [`SettingsSimilarityScripted`].
-    pub fn build(self) -> SettingsSimilarityScripted {
+    pub fn build(self) -> SettingsSimilarityScripted
+    where
+        S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
+        S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
+    {
         SettingsSimilarityScripted {
             r#type: self.r#type.unwrap(),
             script: self.script.unwrap(),
@@ -11623,33 +12027,26 @@ impl SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for SettingsSimilarityScripted
+impl<S0, S1> crate::typed::builder::Build for SettingsSimilarityScriptedBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
 {
-    fn from(
-        builder: SettingsSimilarityScriptedBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SettingsSimilarityScripted;
+
+    fn build(self) -> SettingsSimilarityScripted {
+        Self::build(self)
     }
 }
 
-impl<S1> SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityScripted { match r#type {} }
-}
-
-impl
-    SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<SettingsSimilarityScriptedBuilder<(S0, S1)>> for SettingsSimilarityScripted
+where
+    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
+    S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
 {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> SettingsSimilarityScripted { match script {} }
+    fn from(builder: SettingsSimilarityScriptedBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11671,7 +12068,9 @@ impl SlowlogSettings {
     }
 
     /// Creates a [`SlowlogSettings`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SlowlogSettingsBuilder) -> SlowlogSettingsBuilder) -> SlowlogSettings {
+    pub fn of<B: crate::typed::builder::Build<Output = SlowlogSettings>>(
+        f: impl FnOnce(SlowlogSettingsBuilder) -> B,
+    ) -> SlowlogSettings {
         f(Self::builder()).build()
     }
 }
@@ -11742,9 +12141,9 @@ impl SlowlogSettingsBuilder {
     }
 
     /// Sets [`threshold`](Self::threshold) with a builder.
-    pub fn threshold_with(
+    pub fn threshold_with<B: crate::typed::builder::Build<Output = SlowlogTresholds>>(
         self,
-        f: impl FnOnce(SlowlogTresholdsBuilder) -> SlowlogTresholdsBuilder,
+        f: impl FnOnce(SlowlogTresholdsBuilder) -> B,
     ) -> Self {
         self.threshold(f(SlowlogTresholdsBuilder::new()).build())
     }
@@ -11759,6 +12158,14 @@ impl SlowlogSettingsBuilder {
             reformat: self.reformat,
             threshold: self.threshold,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SlowlogSettingsBuilder {
+    type Output = SlowlogSettings;
+
+    fn build(self) -> SlowlogSettings {
+        Self::build(self)
     }
 }
 
@@ -11787,8 +12194,8 @@ impl SlowlogTresholdLevels {
     }
 
     /// Creates a [`SlowlogTresholdLevels`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> SlowlogTresholdLevelsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SlowlogTresholdLevels>>(
+        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> B,
     ) -> SlowlogTresholdLevels {
         f(Self::builder()).build()
     }
@@ -11872,6 +12279,14 @@ impl SlowlogTresholdLevelsBuilder {
     }
 }
 
+impl crate::typed::builder::Build for SlowlogTresholdLevelsBuilder {
+    type Output = SlowlogTresholdLevels;
+
+    fn build(self) -> SlowlogTresholdLevels {
+        Self::build(self)
+    }
+}
+
 impl From<SlowlogTresholdLevelsBuilder> for SlowlogTresholdLevels {
     fn from(builder: SlowlogTresholdLevelsBuilder) -> Self {
         builder.build()
@@ -11893,8 +12308,8 @@ impl SlowlogTresholds {
     }
 
     /// Creates a [`SlowlogTresholds`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SlowlogTresholdsBuilder) -> SlowlogTresholdsBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = SlowlogTresholds>>(
+        f: impl FnOnce(SlowlogTresholdsBuilder) -> B,
     ) -> SlowlogTresholds {
         f(Self::builder()).build()
     }
@@ -11929,9 +12344,9 @@ impl SlowlogTresholdsBuilder {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = SlowlogTresholdLevels>>(
         self,
-        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> SlowlogTresholdLevelsBuilder,
+        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> B,
     ) -> Self {
         self.query(f(SlowlogTresholdLevelsBuilder::new()).build())
     }
@@ -11948,9 +12363,9 @@ impl SlowlogTresholdsBuilder {
     }
 
     /// Sets [`fetch`](Self::fetch) with a builder.
-    pub fn fetch_with(
+    pub fn fetch_with<B: crate::typed::builder::Build<Output = SlowlogTresholdLevels>>(
         self,
-        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> SlowlogTresholdLevelsBuilder,
+        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> B,
     ) -> Self {
         self.fetch(f(SlowlogTresholdLevelsBuilder::new()).build())
     }
@@ -11963,6 +12378,14 @@ impl SlowlogTresholdsBuilder {
             query: self.query,
             fetch: self.fetch,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SlowlogTresholdsBuilder {
+    type Output = SlowlogTresholds;
+
+    fn build(self) -> SlowlogTresholds {
+        Self::build(self)
     }
 }
 
@@ -11992,7 +12415,9 @@ impl SoftDeletes {
     }
 
     /// Creates a [`SoftDeletes`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(SoftDeletesBuilder) -> SoftDeletesBuilder) -> SoftDeletes {
+    pub fn of<B: crate::typed::builder::Build<Output = SoftDeletes>>(
+        f: impl FnOnce(SoftDeletesBuilder) -> B,
+    ) -> SoftDeletes {
         f(Self::builder()).build()
     }
 }
@@ -12042,9 +12467,9 @@ impl SoftDeletesBuilder {
     }
 
     /// Sets [`retention_lease`](Self::retention_lease) with a builder.
-    pub fn retention_lease_with(
+    pub fn retention_lease_with<B: crate::typed::builder::Build<Output = RetentionLease>>(
         self,
-        f: impl FnOnce(RetentionLeaseBuilder) -> RetentionLeaseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RetentionLeaseBuilder) -> B,
     ) -> Self {
         self.retention_lease(f(RetentionLeaseBuilder::new()).build())
     }
@@ -12057,6 +12482,14 @@ impl SoftDeletesBuilder {
             enabled: self.enabled,
             retention_lease: self.retention_lease,
         }
+    }
+}
+
+impl crate::typed::builder::Build for SoftDeletesBuilder {
+    type Output = SoftDeletes;
+
+    fn build(self) -> SoftDeletes {
+        Self::build(self)
     }
 }
 
@@ -12092,16 +12525,27 @@ pub struct Storage {
 
 impl Storage {
     /// Creates a builder for [`Storage`].
+    ///
+    /// Required: `type`.
     pub fn builder() -> StorageBuilder {
         StorageBuilder::new()
     }
 
     /// Creates a [`Storage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(StorageBuilder) -> StorageBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = Storage>>(
+        f: impl FnOnce(StorageBuilder) -> B,
     ) -> Storage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StorageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod storage_members {
+    pub struct r#type;
 }
 
 /// Builder for [`Storage`].
@@ -12169,6 +12613,7 @@ impl<S0> StorageBuilder<(S0,)> {
 }
 
 impl StorageBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<StorageType>,
@@ -12179,9 +12624,12 @@ impl StorageBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl StorageBuilder<(crate::typed::builder::Set,)> {
+impl<S0> StorageBuilder<(S0,)> {
     /// Builds a [`Storage`].
-    pub fn build(self) -> Storage {
+    pub fn build(self) -> Storage
+    where
+        S0: crate::typed::builder::IsSet<storage_members::r#type>,
+    {
         Storage {
             r#type: self.r#type.unwrap(),
             allow_mmap: self.allow_mmap,
@@ -12190,16 +12638,24 @@ impl StorageBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<StorageBuilder<(crate::typed::builder::Set,)>> for Storage {
-    fn from(builder: StorageBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for StorageBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<storage_members::r#type>,
+{
+    type Output = Storage;
+
+    fn build(self) -> Storage {
+        Self::build(self)
     }
 }
 
-impl StorageBuilder<(crate::typed::builder::NotSet,)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> Storage { match r#type {} }
+impl<S0> From<StorageBuilder<(S0,)>> for Storage
+where
+    S0: crate::typed::builder::IsSet<storage_members::r#type>,
+{
+    fn from(builder: StorageBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -12239,24 +12695,31 @@ pub struct TemplateMapping {
 
 impl TemplateMapping {
     /// Creates a builder for [`TemplateMapping`].
+    ///
+    /// Required: `aliases`, `index_patterns`, `mappings`, `order`, `settings`.
     pub fn builder() -> TemplateMappingBuilder {
         TemplateMappingBuilder::new()
     }
 
     /// Creates a [`TemplateMapping`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TemplateMappingBuilder,
-        ) -> TemplateMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `aliases`, `index_patterns`, `mappings`, `order`, `settings`.
+    pub fn of<B: crate::typed::builder::Build<Output = TemplateMapping>>(
+        f: impl FnOnce(TemplateMappingBuilder) -> B,
     ) -> TemplateMapping {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TemplateMappingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod template_mapping_members {
+    pub struct aliases;
+    pub struct index_patterns;
+    pub struct mappings;
+    pub struct order;
+    pub struct settings;
 }
 
 /// Builder for [`TemplateMapping`].
@@ -12327,6 +12790,7 @@ impl<S0, S1, S2, S3, S4> TemplateMappingBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
+    /// **Required.**
     pub fn aliases(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::IndexName, Alias>>,
@@ -12351,10 +12815,10 @@ impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::NotSet, S1, 
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = Alias>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+        f: impl FnOnce(AliasBuilder) -> B,
     ) -> TemplateMappingBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
         self.add_aliases(key, f(AliasBuilder::new()).build())
     }
@@ -12374,16 +12838,17 @@ impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::Set, S1, S2,
     }
 
     /// Adds an entry to [`aliases`](Self::aliases), with a builder.
-    pub fn add_aliases_with(
+    pub fn add_aliases_with<B: crate::typed::builder::Build<Output = Alias>>(
         self,
         key: impl Into<crate::typed::_types::IndexName>,
-        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+        f: impl FnOnce(AliasBuilder) -> B,
     ) -> Self {
         self.add_aliases(key, f(AliasBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3, S4> TemplateMappingBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
+    /// **Required.**
     pub fn index_patterns(
         self,
         value: impl Into<Vec<crate::typed::_types::Name>>,
@@ -12418,6 +12883,7 @@ impl<S0, S2, S3, S4> TemplateMappingBuilder<(S0, crate::typed::builder::Set, S2,
 }
 
 impl<S0, S1, S3, S4> TemplateMappingBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn mappings(
         self,
         value: impl Into<crate::typed::_types::mapping::TypeMapping>,
@@ -12428,17 +12894,18 @@ impl<S0, S1, S3, S4> TemplateMappingBuilder<(S0, S1, crate::typed::builder::NotS
     }
 
     /// Sets [`mappings`](Self::mappings) with a builder.
-    pub fn mappings_with(
+    pub fn mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::TypeMapping>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::TypeMappingBuilder,
-        ) -> crate::typed::_types::mapping::TypeMappingBuilder,
+        f: impl FnOnce(crate::typed::_types::mapping::TypeMappingBuilder) -> B,
     ) -> TemplateMappingBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
         self.mappings(f(crate::typed::_types::mapping::TypeMappingBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S2, S4> TemplateMappingBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn order(
         self,
         value: i32,
@@ -12450,6 +12917,7 @@ impl<S0, S1, S2, S4> TemplateMappingBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3> TemplateMappingBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn settings(
         self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
@@ -12488,17 +12956,16 @@ impl<S0, S1, S2, S3> TemplateMappingBuilder<(S0, S1, S2, S3, crate::typed::build
     }
 }
 
-impl
-    TemplateMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> TemplateMappingBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`TemplateMapping`].
-    pub fn build(self) -> TemplateMapping {
+    pub fn build(self) -> TemplateMapping
+    where
+        S0: crate::typed::builder::IsSet<template_mapping_members::aliases>,
+        S1: crate::typed::builder::IsSet<template_mapping_members::index_patterns>,
+        S2: crate::typed::builder::IsSet<template_mapping_members::mappings>,
+        S3: crate::typed::builder::IsSet<template_mapping_members::order>,
+        S4: crate::typed::builder::IsSet<template_mapping_members::settings>,
+    {
         TemplateMapping {
             aliases: self.aliases.unwrap(),
             index_patterns: self.index_patterns.unwrap(),
@@ -12510,90 +12977,33 @@ impl
     }
 }
 
-impl
-    From<
-        TemplateMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TemplateMapping
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for TemplateMappingBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<template_mapping_members::aliases>,
+    S1: crate::typed::builder::IsSet<template_mapping_members::index_patterns>,
+    S2: crate::typed::builder::IsSet<template_mapping_members::mappings>,
+    S3: crate::typed::builder::IsSet<template_mapping_members::order>,
+    S4: crate::typed::builder::IsSet<template_mapping_members::settings>,
 {
-    fn from(
-        builder: TemplateMappingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TemplateMapping;
+
+    fn build(self) -> TemplateMapping {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `aliases` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aliases: crate::typed::builder::MissingRequiredField) -> TemplateMapping { match aliases {} }
-}
-
-impl<S2, S3, S4>
-    TemplateMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<TemplateMappingBuilder<(S0, S1, S2, S3, S4)>> for TemplateMapping
+where
+    S0: crate::typed::builder::IsSet<template_mapping_members::aliases>,
+    S1: crate::typed::builder::IsSet<template_mapping_members::index_patterns>,
+    S2: crate::typed::builder::IsSet<template_mapping_members::mappings>,
+    S3: crate::typed::builder::IsSet<template_mapping_members::order>,
+    S4: crate::typed::builder::IsSet<template_mapping_members::settings>,
 {
-    /// `index_patterns` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_patterns: crate::typed::builder::MissingRequiredField) -> TemplateMapping { match index_patterns {} }
-}
-
-impl<S3, S4>
-    TemplateMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `mappings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mappings: crate::typed::builder::MissingRequiredField) -> TemplateMapping { match mappings {} }
-}
-
-impl<S4>
-    TemplateMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `order` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, order: crate::typed::builder::MissingRequiredField) -> TemplateMapping { match order {} }
-}
-
-impl
-    TemplateMappingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `settings` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings: crate::typed::builder::MissingRequiredField) -> TemplateMapping { match settings {} }
+    fn from(builder: TemplateMappingBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12623,7 +13033,9 @@ impl Translog {
     }
 
     /// Creates a [`Translog`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TranslogBuilder) -> TranslogBuilder) -> Translog {
+    pub fn of<B: crate::typed::builder::Build<Output = Translog>>(
+        f: impl FnOnce(TranslogBuilder) -> B,
+    ) -> Translog {
         f(Self::builder()).build()
     }
 }
@@ -12708,9 +13120,9 @@ impl TranslogBuilder {
     }
 
     /// Sets [`retention`](Self::retention) with a builder.
-    pub fn retention_with(
+    pub fn retention_with<B: crate::typed::builder::Build<Output = TranslogRetention>>(
         self,
-        f: impl FnOnce(TranslogRetentionBuilder) -> TranslogRetentionBuilder,
+        f: impl FnOnce(TranslogRetentionBuilder) -> B,
     ) -> Self {
         self.retention(f(TranslogRetentionBuilder::new()).build())
     }
@@ -12725,6 +13137,14 @@ impl TranslogBuilder {
             flush_threshold_size: self.flush_threshold_size,
             retention: self.retention,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TranslogBuilder {
+    type Output = Translog;
+
+    fn build(self) -> Translog {
+        Self::build(self)
     }
 }
 
@@ -12771,8 +13191,8 @@ impl TranslogRetention {
     }
 
     /// Creates a [`TranslogRetention`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TranslogRetentionBuilder) -> TranslogRetentionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = TranslogRetention>>(
+        f: impl FnOnce(TranslogRetentionBuilder) -> B,
     ) -> TranslogRetention {
         f(Self::builder()).build()
     }
@@ -12835,6 +13255,14 @@ impl TranslogRetentionBuilder {
             size: self.size,
             age: self.age,
         }
+    }
+}
+
+impl crate::typed::builder::Build for TranslogRetentionBuilder {
+    type Output = TranslogRetention;
+
+    fn build(self) -> TranslogRetention {
+        Self::build(self)
     }
 }
 

@@ -9,21 +9,28 @@ pub struct IndexTemplateItem {
 
 impl IndexTemplateItem {
     /// Creates a builder for [`IndexTemplateItem`].
+    ///
+    /// Required: `name`, `index_template`.
     pub fn builder() -> IndexTemplateItemBuilder {
         IndexTemplateItemBuilder::new()
     }
 
     /// Creates a [`IndexTemplateItem`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexTemplateItemBuilder,
-        ) -> IndexTemplateItemBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `index_template`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexTemplateItem>>(
+        f: impl FnOnce(IndexTemplateItemBuilder) -> B,
     ) -> IndexTemplateItem {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexTemplateItemBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_template_item_members {
+    pub struct name;
+    pub struct index_template;
 }
 
 /// Builder for [`IndexTemplateItem`].
@@ -57,6 +64,7 @@ impl<S0, S1> IndexTemplateItemBuilder<(S0, S1)> {
 }
 
 impl<S1> IndexTemplateItemBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -68,6 +76,7 @@ impl<S1> IndexTemplateItemBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> IndexTemplateItemBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn index_template(
         self,
         value: impl Into<crate::typed::indices::_types::IndexTemplateWithRollover>,
@@ -78,14 +87,13 @@ impl<S0> IndexTemplateItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`index_template`](Self::index_template) with a builder.
-    pub fn index_template_with(
+    pub fn index_template_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::_types::IndexTemplateWithRollover,
+        >,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::IndexTemplateWithRolloverBuilder,
-        ) -> crate::typed::indices::_types::IndexTemplateWithRolloverBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::IndexTemplateWithRolloverBuilder) -> B,
     ) -> IndexTemplateItemBuilder<(S0, crate::typed::builder::Set)> {
         self.index_template(
             f(crate::typed::indices::_types::IndexTemplateWithRolloverBuilder::new()).build(),
@@ -93,9 +101,13 @@ impl<S0> IndexTemplateItemBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl IndexTemplateItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> IndexTemplateItemBuilder<(S0, S1)> {
     /// Builds a [`IndexTemplateItem`].
-    pub fn build(self) -> IndexTemplateItem {
+    pub fn build(self) -> IndexTemplateItem
+    where
+        S0: crate::typed::builder::IsSet<index_template_item_members::name>,
+        S1: crate::typed::builder::IsSet<index_template_item_members::index_template>,
+    {
         IndexTemplateItem {
             name: self.name.unwrap(),
             index_template: self.index_template.unwrap(),
@@ -103,26 +115,26 @@ impl IndexTemplateItemBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<IndexTemplateItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for IndexTemplateItem
+impl<S0, S1> crate::typed::builder::Build for IndexTemplateItemBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<index_template_item_members::name>,
+    S1: crate::typed::builder::IsSet<index_template_item_members::index_template>,
 {
-    fn from(
-        builder: IndexTemplateItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = IndexTemplateItem;
+
+    fn build(self) -> IndexTemplateItem {
+        Self::build(self)
     }
 }
 
-impl<S1> IndexTemplateItemBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> IndexTemplateItem { match name {} }
-}
-
-impl IndexTemplateItemBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `index_template` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_template: crate::typed::builder::MissingRequiredField) -> IndexTemplateItem { match index_template {} }
+impl<S0, S1> From<IndexTemplateItemBuilder<(S0, S1)>> for IndexTemplateItem
+where
+    S0: crate::typed::builder::IsSet<index_template_item_members::name>,
+    S1: crate::typed::builder::IsSet<index_template_item_members::index_template>,
+{
+    fn from(builder: IndexTemplateItemBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.get_index_template`](crate::typed::indices::IndicesClient::get_index_template).
@@ -168,7 +180,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -338,6 +352,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

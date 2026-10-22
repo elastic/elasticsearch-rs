@@ -10,22 +10,29 @@ pub struct AllocationDecision {
 
 impl AllocationDecision {
     /// Creates a builder for [`AllocationDecision`].
+    ///
+    /// Required: `decider`, `decision`, `explanation`.
     pub fn builder() -> AllocationDecisionBuilder {
         AllocationDecisionBuilder::new()
     }
 
     /// Creates a [`AllocationDecision`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AllocationDecisionBuilder,
-        ) -> AllocationDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `decider`, `decision`, `explanation`.
+    pub fn of<B: crate::typed::builder::Build<Output = AllocationDecision>>(
+        f: impl FnOnce(AllocationDecisionBuilder) -> B,
     ) -> AllocationDecision {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AllocationDecisionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod allocation_decision_members {
+    pub struct decider;
+    pub struct decision;
+    pub struct explanation;
 }
 
 /// Builder for [`AllocationDecision`].
@@ -72,6 +79,7 @@ impl<S0, S1, S2> AllocationDecisionBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> AllocationDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn decider(
         self,
         value: impl Into<String>,
@@ -83,6 +91,7 @@ impl<S1, S2> AllocationDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> 
 }
 
 impl<S0, S2> AllocationDecisionBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn decision(
         self,
         value: impl Into<AllocationExplainDecision>,
@@ -94,6 +103,7 @@ impl<S0, S2> AllocationDecisionBuilder<(S0, crate::typed::builder::NotSet, S2)> 
 }
 
 impl<S0, S1> AllocationDecisionBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn explanation(
         self,
         value: impl Into<String>,
@@ -104,15 +114,14 @@ impl<S0, S1> AllocationDecisionBuilder<(S0, S1, crate::typed::builder::NotSet)> 
     }
 }
 
-impl
-    AllocationDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> AllocationDecisionBuilder<(S0, S1, S2)> {
     /// Builds a [`AllocationDecision`].
-    pub fn build(self) -> AllocationDecision {
+    pub fn build(self) -> AllocationDecision
+    where
+        S0: crate::typed::builder::IsSet<allocation_decision_members::decider>,
+        S1: crate::typed::builder::IsSet<allocation_decision_members::decision>,
+        S2: crate::typed::builder::IsSet<allocation_decision_members::explanation>,
+    {
         AllocationDecision {
             decider: self.decider.unwrap(),
             decision: self.decision.unwrap(),
@@ -121,54 +130,28 @@ impl
     }
 }
 
-impl
-    From<
-        AllocationDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AllocationDecision
+impl<S0, S1, S2> crate::typed::builder::Build for AllocationDecisionBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<allocation_decision_members::decider>,
+    S1: crate::typed::builder::IsSet<allocation_decision_members::decision>,
+    S2: crate::typed::builder::IsSet<allocation_decision_members::explanation>,
 {
-    fn from(
-        builder: AllocationDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AllocationDecision;
+
+    fn build(self) -> AllocationDecision {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> AllocationDecisionBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `decider` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, decider: crate::typed::builder::MissingRequiredField) -> AllocationDecision { match decider {} }
-}
-
-impl<S2>
-    AllocationDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<AllocationDecisionBuilder<(S0, S1, S2)>> for AllocationDecision
+where
+    S0: crate::typed::builder::IsSet<allocation_decision_members::decider>,
+    S1: crate::typed::builder::IsSet<allocation_decision_members::decision>,
+    S2: crate::typed::builder::IsSet<allocation_decision_members::explanation>,
 {
-    /// `decision` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, decision: crate::typed::builder::MissingRequiredField) -> AllocationDecision { match decision {} }
-}
-
-impl
-    AllocationDecisionBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `explanation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, explanation: crate::typed::builder::MissingRequiredField) -> AllocationDecision { match explanation {} }
+    fn from(builder: AllocationDecisionBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -195,25 +178,32 @@ pub struct AllocationStore {
 
 impl AllocationStore {
     /// Creates a builder for [`AllocationStore`].
+    ///
+    /// Required: `allocation_id`, `found`, `in_sync`, `matching_size_in_bytes`, `matching_sync_id`, `store_exception`.
     pub fn builder() -> AllocationStoreBuilder {
         AllocationStoreBuilder::new()
     }
 
     /// Creates a [`AllocationStore`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            AllocationStoreBuilder,
-        ) -> AllocationStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `allocation_id`, `found`, `in_sync`, `matching_size_in_bytes`, `matching_sync_id`, `store_exception`.
+    pub fn of<B: crate::typed::builder::Build<Output = AllocationStore>>(
+        f: impl FnOnce(AllocationStoreBuilder) -> B,
     ) -> AllocationStore {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`AllocationStoreBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod allocation_store_members {
+    pub struct allocation_id;
+    pub struct found;
+    pub struct in_sync;
+    pub struct matching_size_in_bytes;
+    pub struct matching_sync_id;
+    pub struct store_exception;
 }
 
 /// Builder for [`AllocationStore`].
@@ -277,6 +267,7 @@ impl<S0, S1, S2, S3, S4, S5> AllocationStoreBuilder<(S0, S1, S2, S3, S4, S5)> {
 impl<S1, S2, S3, S4, S5>
     AllocationStoreBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn allocation_id(
         self,
         value: impl Into<String>,
@@ -290,6 +281,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     AllocationStoreBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn found(
         self,
         value: bool,
@@ -303,6 +295,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     AllocationStoreBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn in_sync(
         self,
         value: bool,
@@ -316,6 +309,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     AllocationStoreBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn matching_size_in_bytes(
         self,
         value: i64,
@@ -329,6 +323,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     AllocationStoreBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn matching_sync_id(
         self,
         value: bool,
@@ -342,6 +337,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     AllocationStoreBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn store_exception(
         self,
         value: impl Into<String>,
@@ -352,18 +348,17 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> AllocationStoreBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`AllocationStore`].
-    pub fn build(self) -> AllocationStore {
+    pub fn build(self) -> AllocationStore
+    where
+        S0: crate::typed::builder::IsSet<allocation_store_members::allocation_id>,
+        S1: crate::typed::builder::IsSet<allocation_store_members::found>,
+        S2: crate::typed::builder::IsSet<allocation_store_members::in_sync>,
+        S3: crate::typed::builder::IsSet<allocation_store_members::matching_size_in_bytes>,
+        S4: crate::typed::builder::IsSet<allocation_store_members::matching_sync_id>,
+        S5: crate::typed::builder::IsSet<allocation_store_members::store_exception>,
+    {
         AllocationStore {
             allocation_id: self.allocation_id.unwrap(),
             found: self.found.unwrap(),
@@ -375,113 +370,36 @@ impl
     }
 }
 
-impl
-    From<
-        AllocationStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for AllocationStore
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for AllocationStoreBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<allocation_store_members::allocation_id>,
+    S1: crate::typed::builder::IsSet<allocation_store_members::found>,
+    S2: crate::typed::builder::IsSet<allocation_store_members::in_sync>,
+    S3: crate::typed::builder::IsSet<allocation_store_members::matching_size_in_bytes>,
+    S4: crate::typed::builder::IsSet<allocation_store_members::matching_sync_id>,
+    S5: crate::typed::builder::IsSet<allocation_store_members::store_exception>,
 {
-    fn from(
-        builder: AllocationStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = AllocationStore;
+
+    fn build(self) -> AllocationStore {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    AllocationStoreBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<AllocationStoreBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for AllocationStore
+where
+    S0: crate::typed::builder::IsSet<allocation_store_members::allocation_id>,
+    S1: crate::typed::builder::IsSet<allocation_store_members::found>,
+    S2: crate::typed::builder::IsSet<allocation_store_members::in_sync>,
+    S3: crate::typed::builder::IsSet<allocation_store_members::matching_size_in_bytes>,
+    S4: crate::typed::builder::IsSet<allocation_store_members::matching_sync_id>,
+    S5: crate::typed::builder::IsSet<allocation_store_members::store_exception>,
 {
-    /// `allocation_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, allocation_id: crate::typed::builder::MissingRequiredField) -> AllocationStore { match allocation_id {} }
-}
-
-impl<S2, S3, S4, S5>
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `found` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, found: crate::typed::builder::MissingRequiredField) -> AllocationStore { match found {} }
-}
-
-impl<S3, S4, S5>
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `in_sync` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, in_sync: crate::typed::builder::MissingRequiredField) -> AllocationStore { match in_sync {} }
-}
-
-impl<S4, S5>
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `matching_size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, matching_size_in_bytes: crate::typed::builder::MissingRequiredField) -> AllocationStore { match matching_size_in_bytes {} }
-}
-
-impl<S5>
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `matching_sync_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, matching_sync_id: crate::typed::builder::MissingRequiredField) -> AllocationStore { match matching_sync_id {} }
-}
-
-impl
-    AllocationStoreBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `store_exception` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, store_exception: crate::typed::builder::MissingRequiredField) -> AllocationStore { match store_exception {} }
+    fn from(builder: AllocationStoreBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -496,23 +414,30 @@ pub struct ClusterInfo {
 
 impl ClusterInfo {
     /// Creates a builder for [`ClusterInfo`].
+    ///
+    /// Required: `nodes`, `shard_sizes`, `shard_paths`, `reserved_sizes`.
     pub fn builder() -> ClusterInfoBuilder {
         ClusterInfoBuilder::new()
     }
 
     /// Creates a [`ClusterInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ClusterInfoBuilder,
-        ) -> ClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `nodes`, `shard_sizes`, `shard_paths`, `reserved_sizes`.
+    pub fn of<B: crate::typed::builder::Build<Output = ClusterInfo>>(
+        f: impl FnOnce(ClusterInfoBuilder) -> B,
     ) -> ClusterInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ClusterInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod cluster_info_members {
+    pub struct nodes;
+    pub struct shard_sizes;
+    pub struct shard_paths;
+    pub struct reserved_sizes;
 }
 
 /// Builder for [`ClusterInfo`].
@@ -596,6 +521,7 @@ impl<S0, S1, S2, S3> ClusterInfoBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn nodes(
         self,
         value: impl Into<indexmap::IndexMap<String, NodeDiskUsage>>,
@@ -620,16 +546,10 @@ impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeDiskUsage>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeDiskUsageBuilder,
-        ) -> NodeDiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeDiskUsageBuilder) -> B,
     ) -> ClusterInfoBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
         self.add_nodes(key, f(NodeDiskUsageBuilder::new()).build())
     }
@@ -645,22 +565,17 @@ impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
     }
 
     /// Adds an entry to [`nodes`](Self::nodes), with a builder.
-    pub fn add_nodes_with(
+    pub fn add_nodes_with<B: crate::typed::builder::Build<Output = NodeDiskUsage>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            NodeDiskUsageBuilder,
-        ) -> NodeDiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(NodeDiskUsageBuilder) -> B,
     ) -> Self {
         self.add_nodes(key, f(NodeDiskUsageBuilder::new()).build())
     }
 }
 
 impl<S0, S2, S3> ClusterInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn shard_sizes(
         self,
         value: impl Into<indexmap::IndexMap<String, i64>>,
@@ -696,6 +611,7 @@ impl<S0, S2, S3> ClusterInfoBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
 }
 
 impl<S0, S1, S3> ClusterInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn shard_paths(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -731,6 +647,7 @@ impl<S0, S1, S3> ClusterInfoBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
 }
 
 impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn reserved_sizes(
         self,
         value: impl Into<Vec<ReservedSize>>,
@@ -754,16 +671,9 @@ impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
     }
 
     /// Adds an element to [`reserved_sizes`](Self::reserved_sizes), with a builder.
-    pub fn add_reserved_sizes_with(
+    pub fn add_reserved_sizes_with<B: crate::typed::builder::Build<Output = ReservedSize>>(
         self,
-        f: impl FnOnce(
-            ReservedSizeBuilder,
-        ) -> ReservedSizeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReservedSizeBuilder) -> B,
     ) -> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_reserved_sizes(f(ReservedSizeBuilder::new()).build())
     }
@@ -779,31 +689,23 @@ impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 
     /// Adds an element to [`reserved_sizes`](Self::reserved_sizes), with a builder.
-    pub fn add_reserved_sizes_with(
+    pub fn add_reserved_sizes_with<B: crate::typed::builder::Build<Output = ReservedSize>>(
         self,
-        f: impl FnOnce(
-            ReservedSizeBuilder,
-        ) -> ReservedSizeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ReservedSizeBuilder) -> B,
     ) -> Self {
         self.add_reserved_sizes(f(ReservedSizeBuilder::new()).build())
     }
 }
 
-impl
-    ClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ClusterInfoBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ClusterInfo`].
-    pub fn build(self) -> ClusterInfo {
+    pub fn build(self) -> ClusterInfo
+    where
+        S0: crate::typed::builder::IsSet<cluster_info_members::nodes>,
+        S1: crate::typed::builder::IsSet<cluster_info_members::shard_sizes>,
+        S2: crate::typed::builder::IsSet<cluster_info_members::shard_paths>,
+        S3: crate::typed::builder::IsSet<cluster_info_members::reserved_sizes>,
+    {
         ClusterInfo {
             nodes: self.nodes.unwrap(),
             shard_sizes: self.shard_sizes.unwrap(),
@@ -814,71 +716,30 @@ impl
     }
 }
 
-impl
-    From<
-        ClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ClusterInfo
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ClusterInfoBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<cluster_info_members::nodes>,
+    S1: crate::typed::builder::IsSet<cluster_info_members::shard_sizes>,
+    S2: crate::typed::builder::IsSet<cluster_info_members::shard_paths>,
+    S3: crate::typed::builder::IsSet<cluster_info_members::reserved_sizes>,
 {
-    fn from(
-        builder: ClusterInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ClusterInfo;
+
+    fn build(self) -> ClusterInfo {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `nodes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, nodes: crate::typed::builder::MissingRequiredField) -> ClusterInfo { match nodes {} }
-}
-
-impl<S2, S3>
-    ClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ClusterInfoBuilder<(S0, S1, S2, S3)>> for ClusterInfo
+where
+    S0: crate::typed::builder::IsSet<cluster_info_members::nodes>,
+    S1: crate::typed::builder::IsSet<cluster_info_members::shard_sizes>,
+    S2: crate::typed::builder::IsSet<cluster_info_members::shard_paths>,
+    S3: crate::typed::builder::IsSet<cluster_info_members::reserved_sizes>,
 {
-    /// `shard_sizes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_sizes: crate::typed::builder::MissingRequiredField) -> ClusterInfo { match shard_sizes {} }
-}
-
-impl<S3>
-    ClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `shard_paths` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shard_paths: crate::typed::builder::MissingRequiredField) -> ClusterInfo { match shard_paths {} }
-}
-
-impl
-    ClusterInfoBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `reserved_sizes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reserved_sizes: crate::typed::builder::MissingRequiredField) -> ClusterInfo { match reserved_sizes {} }
+    fn from(builder: ClusterInfoBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -893,25 +754,32 @@ pub struct CurrentNode {
 
 impl CurrentNode {
     /// Creates a builder for [`CurrentNode`].
+    ///
+    /// Required: `id`, `name`, `roles`, `attributes`, `transport_address`, `weight_ranking`.
     pub fn builder() -> CurrentNodeBuilder {
         CurrentNodeBuilder::new()
     }
 
     /// Creates a [`CurrentNode`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CurrentNodeBuilder,
-        ) -> CurrentNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `id`, `name`, `roles`, `attributes`, `transport_address`, `weight_ranking`.
+    pub fn of<B: crate::typed::builder::Build<Output = CurrentNode>>(
+        f: impl FnOnce(CurrentNodeBuilder) -> B,
     ) -> CurrentNode {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CurrentNodeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod current_node_members {
+    pub struct id;
+    pub struct name;
+    pub struct roles;
+    pub struct attributes;
+    pub struct transport_address;
+    pub struct weight_ranking;
 }
 
 /// Builder for [`CurrentNode`].
@@ -973,6 +841,7 @@ impl<S0, S1, S2, S3, S4, S5> CurrentNodeBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> CurrentNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -984,6 +853,7 @@ impl<S1, S2, S3, S4, S5> CurrentNodeBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2, S3, S4, S5> CurrentNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -995,6 +865,7 @@ impl<S0, S2, S3, S4, S5> CurrentNodeBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1, S3, S4, S5> CurrentNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<crate::typed::_types::NodeRoles>,
@@ -1029,6 +900,7 @@ impl<S0, S1, S3, S4, S5> CurrentNodeBuilder<(S0, S1, crate::typed::builder::Set,
 }
 
 impl<S0, S1, S2, S4, S5> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
+    /// **Required.**
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -1064,6 +936,7 @@ impl<S0, S1, S2, S4, S5> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::
 }
 
 impl<S0, S1, S2, S3, S5> CurrentNodeBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -1075,6 +948,7 @@ impl<S0, S1, S2, S3, S5> CurrentNodeBuilder<(S0, S1, S2, S3, crate::typed::build
 }
 
 impl<S0, S1, S2, S3, S4> CurrentNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn weight_ranking(
         self,
         value: i32,
@@ -1085,18 +959,17 @@ impl<S0, S1, S2, S3, S4> CurrentNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::b
     }
 }
 
-impl
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> CurrentNodeBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`CurrentNode`].
-    pub fn build(self) -> CurrentNode {
+    pub fn build(self) -> CurrentNode
+    where
+        S0: crate::typed::builder::IsSet<current_node_members::id>,
+        S1: crate::typed::builder::IsSet<current_node_members::name>,
+        S2: crate::typed::builder::IsSet<current_node_members::roles>,
+        S3: crate::typed::builder::IsSet<current_node_members::attributes>,
+        S4: crate::typed::builder::IsSet<current_node_members::transport_address>,
+        S5: crate::typed::builder::IsSet<current_node_members::weight_ranking>,
+    {
         CurrentNode {
             id: self.id.unwrap(),
             name: self.name.unwrap(),
@@ -1108,111 +981,35 @@ impl
     }
 }
 
-impl
-    From<
-        CurrentNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for CurrentNode
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for CurrentNodeBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<current_node_members::id>,
+    S1: crate::typed::builder::IsSet<current_node_members::name>,
+    S2: crate::typed::builder::IsSet<current_node_members::roles>,
+    S3: crate::typed::builder::IsSet<current_node_members::attributes>,
+    S4: crate::typed::builder::IsSet<current_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<current_node_members::weight_ranking>,
 {
-    fn from(
-        builder: CurrentNodeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CurrentNode;
+
+    fn build(self) -> CurrentNode {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> CurrentNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> CurrentNode { match id {} }
-}
-
-impl<S2, S3, S4, S5>
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<CurrentNodeBuilder<(S0, S1, S2, S3, S4, S5)>> for CurrentNode
+where
+    S0: crate::typed::builder::IsSet<current_node_members::id>,
+    S1: crate::typed::builder::IsSet<current_node_members::name>,
+    S2: crate::typed::builder::IsSet<current_node_members::roles>,
+    S3: crate::typed::builder::IsSet<current_node_members::attributes>,
+    S4: crate::typed::builder::IsSet<current_node_members::transport_address>,
+    S5: crate::typed::builder::IsSet<current_node_members::weight_ranking>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> CurrentNode { match name {} }
-}
-
-impl<S3, S4, S5>
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> CurrentNode { match roles {} }
-}
-
-impl<S4, S5>
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> CurrentNode { match attributes {} }
-}
-
-impl<S5>
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> CurrentNode { match transport_address {} }
-}
-
-impl
-    CurrentNodeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `weight_ranking` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, weight_ranking: crate::typed::builder::MissingRequiredField) -> CurrentNode { match weight_ranking {} }
+    fn from(builder: CurrentNodeBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -1247,25 +1044,32 @@ pub struct DiskUsage {
 
 impl DiskUsage {
     /// Creates a builder for [`DiskUsage`].
+    ///
+    /// Required: `path`, `total_bytes`, `used_bytes`, `free_bytes`, `free_disk_percent`, `used_disk_percent`.
     pub fn builder() -> DiskUsageBuilder {
         DiskUsageBuilder::new()
     }
 
     /// Creates a [`DiskUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DiskUsageBuilder,
-        ) -> DiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `path`, `total_bytes`, `used_bytes`, `free_bytes`, `free_disk_percent`, `used_disk_percent`.
+    pub fn of<B: crate::typed::builder::Build<Output = DiskUsage>>(
+        f: impl FnOnce(DiskUsageBuilder) -> B,
     ) -> DiskUsage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DiskUsageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod disk_usage_members {
+    pub struct path;
+    pub struct total_bytes;
+    pub struct used_bytes;
+    pub struct free_bytes;
+    pub struct free_disk_percent;
+    pub struct used_disk_percent;
 }
 
 /// Builder for [`DiskUsage`].
@@ -1327,6 +1131,7 @@ impl<S0, S1, S2, S3, S4, S5> DiskUsageBuilder<(S0, S1, S2, S3, S4, S5)> {
 }
 
 impl<S1, S2, S3, S4, S5> DiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn path(
         self,
         value: impl Into<String>,
@@ -1338,6 +1143,7 @@ impl<S1, S2, S3, S4, S5> DiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2
 }
 
 impl<S0, S2, S3, S4, S5> DiskUsageBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
+    /// **Required.**
     pub fn total_bytes(
         self,
         value: i64,
@@ -1349,6 +1155,7 @@ impl<S0, S2, S3, S4, S5> DiskUsageBuilder<(S0, crate::typed::builder::NotSet, S2
 }
 
 impl<S0, S1, S3, S4, S5> DiskUsageBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)> {
+    /// **Required.**
     pub fn used_bytes(
         self,
         value: i64,
@@ -1360,6 +1167,7 @@ impl<S0, S1, S3, S4, S5> DiskUsageBuilder<(S0, S1, crate::typed::builder::NotSet
 }
 
 impl<S0, S1, S2, S4, S5> DiskUsageBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
+    /// **Required.**
     pub fn free_bytes(
         self,
         value: i64,
@@ -1371,6 +1179,7 @@ impl<S0, S1, S2, S4, S5> DiskUsageBuilder<(S0, S1, S2, crate::typed::builder::No
 }
 
 impl<S0, S1, S2, S3, S5> DiskUsageBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)> {
+    /// **Required.**
     pub fn free_disk_percent(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1382,6 +1191,7 @@ impl<S0, S1, S2, S3, S5> DiskUsageBuilder<(S0, S1, S2, S3, crate::typed::builder
 }
 
 impl<S0, S1, S2, S3, S4> DiskUsageBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn used_disk_percent(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -1392,18 +1202,17 @@ impl<S0, S1, S2, S3, S4> DiskUsageBuilder<(S0, S1, S2, S3, S4, crate::typed::bui
     }
 }
 
-impl
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> DiskUsageBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`DiskUsage`].
-    pub fn build(self) -> DiskUsage {
+    pub fn build(self) -> DiskUsage
+    where
+        S0: crate::typed::builder::IsSet<disk_usage_members::path>,
+        S1: crate::typed::builder::IsSet<disk_usage_members::total_bytes>,
+        S2: crate::typed::builder::IsSet<disk_usage_members::used_bytes>,
+        S3: crate::typed::builder::IsSet<disk_usage_members::free_bytes>,
+        S4: crate::typed::builder::IsSet<disk_usage_members::free_disk_percent>,
+        S5: crate::typed::builder::IsSet<disk_usage_members::used_disk_percent>,
+    {
         DiskUsage {
             path: self.path.unwrap(),
             total_bytes: self.total_bytes.unwrap(),
@@ -1415,111 +1224,35 @@ impl
     }
 }
 
-impl
-    From<
-        DiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DiskUsage
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for DiskUsageBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<disk_usage_members::path>,
+    S1: crate::typed::builder::IsSet<disk_usage_members::total_bytes>,
+    S2: crate::typed::builder::IsSet<disk_usage_members::used_bytes>,
+    S3: crate::typed::builder::IsSet<disk_usage_members::free_bytes>,
+    S4: crate::typed::builder::IsSet<disk_usage_members::free_disk_percent>,
+    S5: crate::typed::builder::IsSet<disk_usage_members::used_disk_percent>,
 {
-    fn from(
-        builder: DiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DiskUsage;
+
+    fn build(self) -> DiskUsage {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5> DiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)> {
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> DiskUsage { match path {} }
-}
-
-impl<S2, S3, S4, S5>
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
+impl<S0, S1, S2, S3, S4, S5> From<DiskUsageBuilder<(S0, S1, S2, S3, S4, S5)>> for DiskUsage
+where
+    S0: crate::typed::builder::IsSet<disk_usage_members::path>,
+    S1: crate::typed::builder::IsSet<disk_usage_members::total_bytes>,
+    S2: crate::typed::builder::IsSet<disk_usage_members::used_bytes>,
+    S3: crate::typed::builder::IsSet<disk_usage_members::free_bytes>,
+    S4: crate::typed::builder::IsSet<disk_usage_members::free_disk_percent>,
+    S5: crate::typed::builder::IsSet<disk_usage_members::used_disk_percent>,
 {
-    /// `total_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total_bytes: crate::typed::builder::MissingRequiredField) -> DiskUsage { match total_bytes {} }
-}
-
-impl<S3, S4, S5>
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `used_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, used_bytes: crate::typed::builder::MissingRequiredField) -> DiskUsage { match used_bytes {} }
-}
-
-impl<S4, S5>
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `free_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, free_bytes: crate::typed::builder::MissingRequiredField) -> DiskUsage { match free_bytes {} }
-}
-
-impl<S5>
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `free_disk_percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, free_disk_percent: crate::typed::builder::MissingRequiredField) -> DiskUsage { match free_disk_percent {} }
-}
-
-impl
-    DiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `used_disk_percent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, used_disk_percent: crate::typed::builder::MissingRequiredField) -> DiskUsage { match used_disk_percent {} }
+    fn from(builder: DiskUsageBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1540,25 +1273,32 @@ pub struct NodeAllocationExplanation {
 
 impl NodeAllocationExplanation {
     /// Creates a builder for [`NodeAllocationExplanation`].
+    ///
+    /// Required: `node_attributes`, `node_decision`, `node_id`, `node_name`, `roles`, `transport_address`.
     pub fn builder() -> NodeAllocationExplanationBuilder {
         NodeAllocationExplanationBuilder::new()
     }
 
     /// Creates a [`NodeAllocationExplanation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeAllocationExplanationBuilder,
-        ) -> NodeAllocationExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node_attributes`, `node_decision`, `node_id`, `node_name`, `roles`, `transport_address`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeAllocationExplanation>>(
+        f: impl FnOnce(NodeAllocationExplanationBuilder) -> B,
     ) -> NodeAllocationExplanation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeAllocationExplanationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_allocation_explanation_members {
+    pub struct node_attributes;
+    pub struct node_decision;
+    pub struct node_id;
+    pub struct node_name;
+    pub struct roles;
+    pub struct transport_address;
 }
 
 /// Builder for [`NodeAllocationExplanation`].
@@ -1647,15 +1387,9 @@ impl<S0, S1, S2, S3, S4, S5> NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S
     }
 
     /// Adds an element to [`deciders`](Self::deciders), with a builder.
-    pub fn add_deciders_with(
+    pub fn add_deciders_with<B: crate::typed::builder::Build<Output = AllocationDecision>>(
         self,
-        f: impl FnOnce(
-            AllocationDecisionBuilder,
-        ) -> AllocationDecisionBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AllocationDecisionBuilder) -> B,
     ) -> Self {
         self.add_deciders(f(AllocationDecisionBuilder::new()).build())
     }
@@ -1672,18 +1406,9 @@ impl<S0, S1, S2, S3, S4, S5> NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S
     }
 
     /// Sets [`store`](Self::store) with a builder.
-    pub fn store_with(
+    pub fn store_with<B: crate::typed::builder::Build<Output = AllocationStore>>(
         self,
-        f: impl FnOnce(
-            AllocationStoreBuilder,
-        ) -> AllocationStoreBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(AllocationStoreBuilder) -> B,
     ) -> Self {
         self.store(f(AllocationStoreBuilder::new()).build())
     }
@@ -1703,6 +1428,7 @@ impl<S0, S1, S2, S3, S4, S5> NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S
 impl<S1, S2, S3, S4, S5>
     NodeAllocationExplanationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn node_attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -1742,6 +1468,7 @@ impl<S1, S2, S3, S4, S5>
 impl<S0, S2, S3, S4, S5>
     NodeAllocationExplanationBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn node_decision(
         self,
         value: impl Into<Decision>,
@@ -1755,6 +1482,7 @@ impl<S0, S2, S3, S4, S5>
 impl<S0, S1, S3, S4, S5>
     NodeAllocationExplanationBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5)>
 {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -1768,6 +1496,7 @@ impl<S0, S1, S3, S4, S5>
 impl<S0, S1, S2, S4, S5>
     NodeAllocationExplanationBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)>
 {
+    /// **Required.**
     pub fn node_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -1781,6 +1510,7 @@ impl<S0, S1, S2, S4, S5>
 impl<S0, S1, S2, S3, S5>
     NodeAllocationExplanationBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5)>
 {
+    /// **Required.**
     pub fn roles(
         self,
         value: impl Into<crate::typed::_types::NodeRoles>,
@@ -1819,6 +1549,7 @@ impl<S0, S1, S2, S3, S5>
 impl<S0, S1, S2, S3, S4>
     NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn transport_address(
         self,
         value: impl Into<crate::typed::_types::TransportAddress>,
@@ -1829,18 +1560,17 @@ impl<S0, S1, S2, S3, S4>
     }
 }
 
-impl
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5> NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S4, S5)> {
     /// Builds a [`NodeAllocationExplanation`].
-    pub fn build(self) -> NodeAllocationExplanation {
+    pub fn build(self) -> NodeAllocationExplanation
+    where
+        S0: crate::typed::builder::IsSet<node_allocation_explanation_members::node_attributes>,
+        S1: crate::typed::builder::IsSet<node_allocation_explanation_members::node_decision>,
+        S2: crate::typed::builder::IsSet<node_allocation_explanation_members::node_id>,
+        S3: crate::typed::builder::IsSet<node_allocation_explanation_members::node_name>,
+        S4: crate::typed::builder::IsSet<node_allocation_explanation_members::roles>,
+        S5: crate::typed::builder::IsSet<node_allocation_explanation_members::transport_address>,
+    {
         NodeAllocationExplanation {
             deciders: self.deciders,
             node_attributes: self.node_attributes.unwrap(),
@@ -1855,113 +1585,36 @@ impl
     }
 }
 
-impl
-    From<
-        NodeAllocationExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeAllocationExplanation
+impl<S0, S1, S2, S3, S4, S5> crate::typed::builder::Build
+    for NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S4, S5)>
+where
+    S0: crate::typed::builder::IsSet<node_allocation_explanation_members::node_attributes>,
+    S1: crate::typed::builder::IsSet<node_allocation_explanation_members::node_decision>,
+    S2: crate::typed::builder::IsSet<node_allocation_explanation_members::node_id>,
+    S3: crate::typed::builder::IsSet<node_allocation_explanation_members::node_name>,
+    S4: crate::typed::builder::IsSet<node_allocation_explanation_members::roles>,
+    S5: crate::typed::builder::IsSet<node_allocation_explanation_members::transport_address>,
 {
-    fn from(
-        builder: NodeAllocationExplanationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeAllocationExplanation;
+
+    fn build(self) -> NodeAllocationExplanation {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5>
-    NodeAllocationExplanationBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5)>
+impl<S0, S1, S2, S3, S4, S5> From<NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S4, S5)>>
+    for NodeAllocationExplanation
+where
+    S0: crate::typed::builder::IsSet<node_allocation_explanation_members::node_attributes>,
+    S1: crate::typed::builder::IsSet<node_allocation_explanation_members::node_decision>,
+    S2: crate::typed::builder::IsSet<node_allocation_explanation_members::node_id>,
+    S3: crate::typed::builder::IsSet<node_allocation_explanation_members::node_name>,
+    S4: crate::typed::builder::IsSet<node_allocation_explanation_members::roles>,
+    S5: crate::typed::builder::IsSet<node_allocation_explanation_members::transport_address>,
 {
-    /// `node_attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_attributes: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match node_attributes {} }
-}
-
-impl<S2, S3, S4, S5>
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `node_decision` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_decision: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match node_decision {} }
-}
-
-impl<S3, S4, S5>
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-    )>
-{
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match node_id {} }
-}
-
-impl<S4, S5>
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-    )>
-{
-    /// `node_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_name: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match node_name {} }
-}
-
-impl<S5>
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-    )>
-{
-    /// `roles` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, roles: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match roles {} }
-}
-
-impl
-    NodeAllocationExplanationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `transport_address` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, transport_address: crate::typed::builder::MissingRequiredField) -> NodeAllocationExplanation { match transport_address {} }
+    fn from(builder: NodeAllocationExplanationBuilder<(S0, S1, S2, S3, S4, S5)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1973,22 +1626,29 @@ pub struct NodeDiskUsage {
 
 impl NodeDiskUsage {
     /// Creates a builder for [`NodeDiskUsage`].
+    ///
+    /// Required: `node_name`, `least_available`, `most_available`.
     pub fn builder() -> NodeDiskUsageBuilder {
         NodeDiskUsageBuilder::new()
     }
 
     /// Creates a [`NodeDiskUsage`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NodeDiskUsageBuilder,
-        ) -> NodeDiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node_name`, `least_available`, `most_available`.
+    pub fn of<B: crate::typed::builder::Build<Output = NodeDiskUsage>>(
+        f: impl FnOnce(NodeDiskUsageBuilder) -> B,
     ) -> NodeDiskUsage {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NodeDiskUsageBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod node_disk_usage_members {
+    pub struct node_name;
+    pub struct least_available;
+    pub struct most_available;
 }
 
 /// Builder for [`NodeDiskUsage`].
@@ -2035,6 +1695,7 @@ impl<S0, S1, S2> NodeDiskUsageBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> NodeDiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn node_name(
         self,
         value: impl Into<crate::typed::_types::Name>,
@@ -2046,6 +1707,7 @@ impl<S1, S2> NodeDiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> NodeDiskUsageBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn least_available(
         self,
         value: impl Into<DiskUsage>,
@@ -2056,24 +1718,16 @@ impl<S0, S2> NodeDiskUsageBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`least_available`](Self::least_available) with a builder.
-    pub fn least_available_with(
+    pub fn least_available_with<B: crate::typed::builder::Build<Output = DiskUsage>>(
         self,
-        f: impl FnOnce(
-            DiskUsageBuilder,
-        ) -> DiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiskUsageBuilder) -> B,
     ) -> NodeDiskUsageBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.least_available(f(DiskUsageBuilder::new()).build())
     }
 }
 
 impl<S0, S1> NodeDiskUsageBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn most_available(
         self,
         value: impl Into<DiskUsage>,
@@ -2084,32 +1738,22 @@ impl<S0, S1> NodeDiskUsageBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`most_available`](Self::most_available) with a builder.
-    pub fn most_available_with(
+    pub fn most_available_with<B: crate::typed::builder::Build<Output = DiskUsage>>(
         self,
-        f: impl FnOnce(
-            DiskUsageBuilder,
-        ) -> DiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(DiskUsageBuilder) -> B,
     ) -> NodeDiskUsageBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.most_available(f(DiskUsageBuilder::new()).build())
     }
 }
 
-impl
-    NodeDiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> NodeDiskUsageBuilder<(S0, S1, S2)> {
     /// Builds a [`NodeDiskUsage`].
-    pub fn build(self) -> NodeDiskUsage {
+    pub fn build(self) -> NodeDiskUsage
+    where
+        S0: crate::typed::builder::IsSet<node_disk_usage_members::node_name>,
+        S1: crate::typed::builder::IsSet<node_disk_usage_members::least_available>,
+        S2: crate::typed::builder::IsSet<node_disk_usage_members::most_available>,
+    {
         NodeDiskUsage {
             node_name: self.node_name.unwrap(),
             least_available: self.least_available.unwrap(),
@@ -2118,54 +1762,28 @@ impl
     }
 }
 
-impl
-    From<
-        NodeDiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for NodeDiskUsage
+impl<S0, S1, S2> crate::typed::builder::Build for NodeDiskUsageBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<node_disk_usage_members::node_name>,
+    S1: crate::typed::builder::IsSet<node_disk_usage_members::least_available>,
+    S2: crate::typed::builder::IsSet<node_disk_usage_members::most_available>,
 {
-    fn from(
-        builder: NodeDiskUsageBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = NodeDiskUsage;
+
+    fn build(self) -> NodeDiskUsage {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> NodeDiskUsageBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `node_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_name: crate::typed::builder::MissingRequiredField) -> NodeDiskUsage { match node_name {} }
-}
-
-impl<S2>
-    NodeDiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<NodeDiskUsageBuilder<(S0, S1, S2)>> for NodeDiskUsage
+where
+    S0: crate::typed::builder::IsSet<node_disk_usage_members::node_name>,
+    S1: crate::typed::builder::IsSet<node_disk_usage_members::least_available>,
+    S2: crate::typed::builder::IsSet<node_disk_usage_members::most_available>,
 {
-    /// `least_available` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, least_available: crate::typed::builder::MissingRequiredField) -> NodeDiskUsage { match least_available {} }
-}
-
-impl
-    NodeDiskUsageBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `most_available` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, most_available: crate::typed::builder::MissingRequiredField) -> NodeDiskUsage { match most_available {} }
+    fn from(builder: NodeDiskUsageBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cluster.allocation_explain`](crate::typed::cluster::ClusterClient::allocation_explain).
@@ -2228,7 +1846,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -2491,6 +2111,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -2644,23 +2272,30 @@ pub struct ReservedSize {
 
 impl ReservedSize {
     /// Creates a builder for [`ReservedSize`].
+    ///
+    /// Required: `node_id`, `path`, `total`, `shards`.
     pub fn builder() -> ReservedSizeBuilder {
         ReservedSizeBuilder::new()
     }
 
     /// Creates a [`ReservedSize`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ReservedSizeBuilder,
-        ) -> ReservedSizeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node_id`, `path`, `total`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = ReservedSize>>(
+        f: impl FnOnce(ReservedSizeBuilder) -> B,
     ) -> ReservedSize {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ReservedSizeBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod reserved_size_members {
+    pub struct node_id;
+    pub struct path;
+    pub struct total;
+    pub struct shards;
 }
 
 /// Builder for [`ReservedSize`].
@@ -2712,6 +2347,7 @@ impl<S0, S1, S2, S3> ReservedSizeBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ReservedSizeBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn node_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -2723,6 +2359,7 @@ impl<S1, S2, S3> ReservedSizeBuilder<(crate::typed::builder::NotSet, S1, S2, S3)
 }
 
 impl<S0, S2, S3> ReservedSizeBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn path(
         self,
         value: impl Into<String>,
@@ -2734,6 +2371,7 @@ impl<S0, S2, S3> ReservedSizeBuilder<(S0, crate::typed::builder::NotSet, S2, S3)
 }
 
 impl<S0, S1, S3> ReservedSizeBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn total(
         self,
         value: i64,
@@ -2745,6 +2383,7 @@ impl<S0, S1, S3> ReservedSizeBuilder<(S0, S1, crate::typed::builder::NotSet, S3)
 }
 
 impl<S0, S1, S2> ReservedSizeBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<Vec<String>>,
@@ -2778,16 +2417,15 @@ impl<S0, S1, S2> ReservedSizeBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
     }
 }
 
-impl
-    ReservedSizeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ReservedSizeBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ReservedSize`].
-    pub fn build(self) -> ReservedSize {
+    pub fn build(self) -> ReservedSize
+    where
+        S0: crate::typed::builder::IsSet<reserved_size_members::node_id>,
+        S1: crate::typed::builder::IsSet<reserved_size_members::path>,
+        S2: crate::typed::builder::IsSet<reserved_size_members::total>,
+        S3: crate::typed::builder::IsSet<reserved_size_members::shards>,
+    {
         ReservedSize {
             node_id: self.node_id.unwrap(),
             path: self.path.unwrap(),
@@ -2797,71 +2435,30 @@ impl
     }
 }
 
-impl
-    From<
-        ReservedSizeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ReservedSize
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ReservedSizeBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<reserved_size_members::node_id>,
+    S1: crate::typed::builder::IsSet<reserved_size_members::path>,
+    S2: crate::typed::builder::IsSet<reserved_size_members::total>,
+    S3: crate::typed::builder::IsSet<reserved_size_members::shards>,
 {
-    fn from(
-        builder: ReservedSizeBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ReservedSize;
+
+    fn build(self) -> ReservedSize {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ReservedSizeBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `node_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node_id: crate::typed::builder::MissingRequiredField) -> ReservedSize { match node_id {} }
-}
-
-impl<S2, S3>
-    ReservedSizeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ReservedSizeBuilder<(S0, S1, S2, S3)>> for ReservedSize
+where
+    S0: crate::typed::builder::IsSet<reserved_size_members::node_id>,
+    S1: crate::typed::builder::IsSet<reserved_size_members::path>,
+    S2: crate::typed::builder::IsSet<reserved_size_members::total>,
+    S3: crate::typed::builder::IsSet<reserved_size_members::shards>,
 {
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> ReservedSize { match path {} }
-}
-
-impl<S3>
-    ReservedSizeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> ReservedSize { match total {} }
-}
-
-impl
-    ReservedSizeBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> ReservedSize { match shards {} }
+    fn from(builder: ReservedSizeBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Response of [`cluster.allocation_explain`](crate::typed::cluster::ClusterClient::allocation_explain).
@@ -2933,21 +2530,28 @@ pub struct UnassignedInformation {
 
 impl UnassignedInformation {
     /// Creates a builder for [`UnassignedInformation`].
+    ///
+    /// Required: `at`, `reason`.
     pub fn builder() -> UnassignedInformationBuilder {
         UnassignedInformationBuilder::new()
     }
 
     /// Creates a [`UnassignedInformation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UnassignedInformationBuilder,
-        ) -> UnassignedInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `at`, `reason`.
+    pub fn of<B: crate::typed::builder::Build<Output = UnassignedInformation>>(
+        f: impl FnOnce(UnassignedInformationBuilder) -> B,
     ) -> UnassignedInformation {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UnassignedInformationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod unassigned_information_members {
+    pub struct at;
+    pub struct reason;
 }
 
 /// Builder for [`UnassignedInformation`].
@@ -3051,6 +2655,7 @@ impl<S0, S1> UnassignedInformationBuilder<(S0, S1)> {
 }
 
 impl<S1> UnassignedInformationBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn at(
         self,
         value: impl Into<crate::typed::_types::DateTime>,
@@ -3062,6 +2667,7 @@ impl<S1> UnassignedInformationBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> UnassignedInformationBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn reason(
         self,
         value: impl Into<UnassignedInformationReason>,
@@ -3072,9 +2678,13 @@ impl<S0> UnassignedInformationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl UnassignedInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> UnassignedInformationBuilder<(S0, S1)> {
     /// Builds a [`UnassignedInformation`].
-    pub fn build(self) -> UnassignedInformation {
+    pub fn build(self) -> UnassignedInformation
+    where
+        S0: crate::typed::builder::IsSet<unassigned_information_members::at>,
+        S1: crate::typed::builder::IsSet<unassigned_information_members::reason>,
+    {
         UnassignedInformation {
             at: self.at.unwrap(),
             last_allocation_status: self.last_allocation_status,
@@ -3087,29 +2697,26 @@ impl UnassignedInformationBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<UnassignedInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for UnassignedInformation
+impl<S0, S1> crate::typed::builder::Build for UnassignedInformationBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<unassigned_information_members::at>,
+    S1: crate::typed::builder::IsSet<unassigned_information_members::reason>,
 {
-    fn from(
-        builder: UnassignedInformationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UnassignedInformation;
+
+    fn build(self) -> UnassignedInformation {
+        Self::build(self)
     }
 }
 
-impl<S1> UnassignedInformationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `at` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, at: crate::typed::builder::MissingRequiredField) -> UnassignedInformation { match at {} }
-}
-
-impl UnassignedInformationBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `reason` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, reason: crate::typed::builder::MissingRequiredField) -> UnassignedInformation { match reason {} }
+impl<S0, S1> From<UnassignedInformationBuilder<(S0, S1)>> for UnassignedInformation
+where
+    S0: crate::typed::builder::IsSet<unassigned_information_members::at>,
+    S1: crate::typed::builder::IsSet<unassigned_information_members::reason>,
+{
+    fn from(builder: UnassignedInformationBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

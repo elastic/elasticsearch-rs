@@ -11,23 +11,30 @@ pub struct MigrationFeature {
 
 impl MigrationFeature {
     /// Creates a builder for [`MigrationFeature`].
+    ///
+    /// Required: `feature_name`, `minimum_index_version`, `migration_status`, `indices`.
     pub fn builder() -> MigrationFeatureBuilder {
         MigrationFeatureBuilder::new()
     }
 
     /// Creates a [`MigrationFeature`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MigrationFeatureBuilder,
-        ) -> MigrationFeatureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `feature_name`, `minimum_index_version`, `migration_status`, `indices`.
+    pub fn of<B: crate::typed::builder::Build<Output = MigrationFeature>>(
+        f: impl FnOnce(MigrationFeatureBuilder) -> B,
     ) -> MigrationFeature {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MigrationFeatureBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod migration_feature_members {
+    pub struct feature_name;
+    pub struct minimum_index_version;
+    pub struct migration_status;
+    pub struct indices;
 }
 
 /// Builder for [`MigrationFeature`].
@@ -79,6 +86,7 @@ impl<S0, S1, S2, S3> MigrationFeatureBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> MigrationFeatureBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn feature_name(
         self,
         value: impl Into<String>,
@@ -90,6 +98,7 @@ impl<S1, S2, S3> MigrationFeatureBuilder<(crate::typed::builder::NotSet, S1, S2,
 }
 
 impl<S0, S2, S3> MigrationFeatureBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn minimum_index_version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -101,6 +110,7 @@ impl<S0, S2, S3> MigrationFeatureBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3> MigrationFeatureBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn migration_status(
         self,
         value: impl Into<MigrationStatus>,
@@ -112,6 +122,7 @@ impl<S0, S1, S3> MigrationFeatureBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn indices(
         self,
         value: impl Into<Vec<MigrationFeatureIndexInfo>>,
@@ -135,14 +146,9 @@ impl<S0, S1, S2> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = MigrationFeatureIndexInfo>>(
         self,
-        f: impl FnOnce(
-            MigrationFeatureIndexInfoBuilder,
-        ) -> MigrationFeatureIndexInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MigrationFeatureIndexInfoBuilder) -> B,
     ) -> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_indices(f(MigrationFeatureIndexInfoBuilder::new()).build())
     }
@@ -158,29 +164,23 @@ impl<S0, S1, S2> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Set
     }
 
     /// Adds an element to [`indices`](Self::indices), with a builder.
-    pub fn add_indices_with(
+    pub fn add_indices_with<B: crate::typed::builder::Build<Output = MigrationFeatureIndexInfo>>(
         self,
-        f: impl FnOnce(
-            MigrationFeatureIndexInfoBuilder,
-        ) -> MigrationFeatureIndexInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(MigrationFeatureIndexInfoBuilder) -> B,
     ) -> Self {
         self.add_indices(f(MigrationFeatureIndexInfoBuilder::new()).build())
     }
 }
 
-impl
-    MigrationFeatureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> MigrationFeatureBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`MigrationFeature`].
-    pub fn build(self) -> MigrationFeature {
+    pub fn build(self) -> MigrationFeature
+    where
+        S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+        S1: crate::typed::builder::IsSet<migration_feature_members::minimum_index_version>,
+        S2: crate::typed::builder::IsSet<migration_feature_members::migration_status>,
+        S3: crate::typed::builder::IsSet<migration_feature_members::indices>,
+    {
         MigrationFeature {
             feature_name: self.feature_name.unwrap(),
             minimum_index_version: self.minimum_index_version.unwrap(),
@@ -190,71 +190,30 @@ impl
     }
 }
 
-impl
-    From<
-        MigrationFeatureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for MigrationFeature
+impl<S0, S1, S2, S3> crate::typed::builder::Build for MigrationFeatureBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+    S1: crate::typed::builder::IsSet<migration_feature_members::minimum_index_version>,
+    S2: crate::typed::builder::IsSet<migration_feature_members::migration_status>,
+    S3: crate::typed::builder::IsSet<migration_feature_members::indices>,
 {
-    fn from(
-        builder: MigrationFeatureBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MigrationFeature;
+
+    fn build(self) -> MigrationFeature {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> MigrationFeatureBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `feature_name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, feature_name: crate::typed::builder::MissingRequiredField) -> MigrationFeature { match feature_name {} }
-}
-
-impl<S2, S3>
-    MigrationFeatureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<MigrationFeatureBuilder<(S0, S1, S2, S3)>> for MigrationFeature
+where
+    S0: crate::typed::builder::IsSet<migration_feature_members::feature_name>,
+    S1: crate::typed::builder::IsSet<migration_feature_members::minimum_index_version>,
+    S2: crate::typed::builder::IsSet<migration_feature_members::migration_status>,
+    S3: crate::typed::builder::IsSet<migration_feature_members::indices>,
 {
-    /// `minimum_index_version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, minimum_index_version: crate::typed::builder::MissingRequiredField) -> MigrationFeature { match minimum_index_version {} }
-}
-
-impl<S3>
-    MigrationFeatureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `migration_status` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, migration_status: crate::typed::builder::MissingRequiredField) -> MigrationFeature { match migration_status {} }
-}
-
-impl
-    MigrationFeatureBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `indices` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, indices: crate::typed::builder::MissingRequiredField) -> MigrationFeature { match indices {} }
+    fn from(builder: MigrationFeatureBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -267,21 +226,28 @@ pub struct MigrationFeatureIndexInfo {
 
 impl MigrationFeatureIndexInfo {
     /// Creates a builder for [`MigrationFeatureIndexInfo`].
+    ///
+    /// Required: `index`, `version`.
     pub fn builder() -> MigrationFeatureIndexInfoBuilder {
         MigrationFeatureIndexInfoBuilder::new()
     }
 
     /// Creates a [`MigrationFeatureIndexInfo`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MigrationFeatureIndexInfoBuilder,
-        ) -> MigrationFeatureIndexInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = MigrationFeatureIndexInfo>>(
+        f: impl FnOnce(MigrationFeatureIndexInfoBuilder) -> B,
     ) -> MigrationFeatureIndexInfo {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MigrationFeatureIndexInfoBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod migration_feature_index_info_members {
+    pub struct index;
+    pub struct version;
 }
 
 /// Builder for [`MigrationFeatureIndexInfo`].
@@ -330,18 +296,18 @@ impl<S0, S1> MigrationFeatureIndexInfoBuilder<(S0, S1)> {
     }
 
     /// Sets [`failure_cause`](Self::failure_cause) with a builder.
-    pub fn failure_cause_with(
+    pub fn failure_cause_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.failure_cause(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
 }
 
 impl<S1> MigrationFeatureIndexInfoBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -353,6 +319,7 @@ impl<S1> MigrationFeatureIndexInfoBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> MigrationFeatureIndexInfoBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -363,9 +330,13 @@ impl<S0> MigrationFeatureIndexInfoBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl MigrationFeatureIndexInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> MigrationFeatureIndexInfoBuilder<(S0, S1)> {
     /// Builds a [`MigrationFeatureIndexInfo`].
-    pub fn build(self) -> MigrationFeatureIndexInfo {
+    pub fn build(self) -> MigrationFeatureIndexInfo
+    where
+        S0: crate::typed::builder::IsSet<migration_feature_index_info_members::index>,
+        S1: crate::typed::builder::IsSet<migration_feature_index_info_members::version>,
+    {
         MigrationFeatureIndexInfo {
             index: self.index.unwrap(),
             version: self.version.unwrap(),
@@ -374,30 +345,26 @@ impl MigrationFeatureIndexInfoBuilder<(crate::typed::builder::Set, crate::typed:
     }
 }
 
-impl
-    From<MigrationFeatureIndexInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for MigrationFeatureIndexInfo
+impl<S0, S1> crate::typed::builder::Build for MigrationFeatureIndexInfoBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<migration_feature_index_info_members::index>,
+    S1: crate::typed::builder::IsSet<migration_feature_index_info_members::version>,
 {
-    fn from(
-        builder: MigrationFeatureIndexInfoBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = MigrationFeatureIndexInfo;
+
+    fn build(self) -> MigrationFeatureIndexInfo {
+        Self::build(self)
     }
 }
 
-impl<S1> MigrationFeatureIndexInfoBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> MigrationFeatureIndexInfo { match index {} }
-}
-
-impl MigrationFeatureIndexInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> MigrationFeatureIndexInfo { match version {} }
+impl<S0, S1> From<MigrationFeatureIndexInfoBuilder<(S0, S1)>> for MigrationFeatureIndexInfo
+where
+    S0: crate::typed::builder::IsSet<migration_feature_index_info_members::index>,
+    S1: crate::typed::builder::IsSet<migration_feature_index_info_members::version>,
+{
+    fn from(builder: MigrationFeatureIndexInfoBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -449,7 +416,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -544,6 +513,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

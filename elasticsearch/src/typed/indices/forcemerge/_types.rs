@@ -18,8 +18,8 @@ impl ForceMergeResponseBody {
     }
 
     /// Creates a [`ForceMergeResponseBody`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ForceMergeResponseBodyBuilder) -> ForceMergeResponseBodyBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = ForceMergeResponseBody>>(
+        f: impl FnOnce(ForceMergeResponseBodyBuilder) -> B,
     ) -> ForceMergeResponseBody {
         f(Self::builder()).build()
     }
@@ -54,15 +54,11 @@ impl ForceMergeResponseBodyBuilder {
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> Self {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
@@ -88,6 +84,14 @@ impl ForceMergeResponseBodyBuilder {
             shards: self.shards,
             task: self.task,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ForceMergeResponseBodyBuilder {
+    type Output = ForceMergeResponseBody;
+
+    fn build(self) -> ForceMergeResponseBody {
+        Self::build(self)
     }
 }
 

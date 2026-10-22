@@ -55,22 +55,29 @@ pub struct FieldCapability {
 
 impl FieldCapability {
     /// Creates a builder for [`FieldCapability`].
+    ///
+    /// Required: `aggregatable`, `searchable`, `type`.
     pub fn builder() -> FieldCapabilityBuilder {
         FieldCapabilityBuilder::new()
     }
 
     /// Creates a [`FieldCapability`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldCapabilityBuilder,
-        ) -> FieldCapabilityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `aggregatable`, `searchable`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldCapability>>(
+        f: impl FnOnce(FieldCapabilityBuilder) -> B,
     ) -> FieldCapability {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldCapabilityBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_capability_members {
+    pub struct aggregatable;
+    pub struct searchable;
+    pub struct r#type;
 }
 
 /// Builder for [`FieldCapability`].
@@ -388,7 +395,7 @@ impl<S0, S1, S2> FieldCapabilityBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> FieldCapabilityBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Whether this field can be aggregated on all indices.
+    /// **Required.** Whether this field can be aggregated on all indices.
     pub fn aggregatable(
         self,
         value: bool,
@@ -400,7 +407,7 @@ impl<S1, S2> FieldCapabilityBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> FieldCapabilityBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Whether this field is indexed for search on all indices.
+    /// **Required.** Whether this field is indexed for search on all indices.
     pub fn searchable(
         self,
         value: bool,
@@ -412,6 +419,7 @@ impl<S0, S2> FieldCapabilityBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> FieldCapabilityBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn r#type(
         self,
         value: impl Into<String>,
@@ -422,15 +430,14 @@ impl<S0, S1> FieldCapabilityBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    FieldCapabilityBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> FieldCapabilityBuilder<(S0, S1, S2)> {
     /// Builds a [`FieldCapability`].
-    pub fn build(self) -> FieldCapability {
+    pub fn build(self) -> FieldCapability
+    where
+        S0: crate::typed::builder::IsSet<field_capability_members::aggregatable>,
+        S1: crate::typed::builder::IsSet<field_capability_members::searchable>,
+        S2: crate::typed::builder::IsSet<field_capability_members::r#type>,
+    {
         FieldCapability {
             aggregatable: self.aggregatable.unwrap(),
             indices: self.indices,
@@ -452,54 +459,28 @@ impl
     }
 }
 
-impl
-    From<
-        FieldCapabilityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for FieldCapability
+impl<S0, S1, S2> crate::typed::builder::Build for FieldCapabilityBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<field_capability_members::aggregatable>,
+    S1: crate::typed::builder::IsSet<field_capability_members::searchable>,
+    S2: crate::typed::builder::IsSet<field_capability_members::r#type>,
 {
-    fn from(
-        builder: FieldCapabilityBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = FieldCapability;
+
+    fn build(self) -> FieldCapability {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> FieldCapabilityBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `aggregatable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, aggregatable: crate::typed::builder::MissingRequiredField) -> FieldCapability { match aggregatable {} }
-}
-
-impl<S2>
-    FieldCapabilityBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<FieldCapabilityBuilder<(S0, S1, S2)>> for FieldCapability
+where
+    S0: crate::typed::builder::IsSet<field_capability_members::aggregatable>,
+    S1: crate::typed::builder::IsSet<field_capability_members::searchable>,
+    S2: crate::typed::builder::IsSet<field_capability_members::r#type>,
 {
-    /// `searchable` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, searchable: crate::typed::builder::MissingRequiredField) -> FieldCapability { match searchable {} }
-}
-
-impl
-    FieldCapabilityBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> FieldCapability { match r#type {} }
+    fn from(builder: FieldCapabilityBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`field_caps`](crate::typed::Client::field_caps).
@@ -586,7 +567,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -863,13 +846,11 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Sets [`index_filter`](Self::index_filter) with a builder.
-    pub fn index_filter_with(
+    pub fn index_filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::query_dsl::QueryContainerBuilder,
-        ) -> crate::typed::_types::query_dsl::QueryContainerBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
     ) -> Self {
         self.index_filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
@@ -906,14 +887,12 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
-    pub fn add_runtime_mappings_with(
+    pub fn add_runtime_mappings_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::RuntimeField>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            crate::typed::_types::mapping::RuntimeFieldBuilder,
-        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::mapping::RuntimeFieldBuilder) -> B,
     ) -> Self {
         self.add_runtime_mappings(
             key,
@@ -969,6 +948,14 @@ impl<C> RequestBuilder<(), C> {
             runtime_mappings: self.runtime_mappings,
             project_routing: self.project_routing,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

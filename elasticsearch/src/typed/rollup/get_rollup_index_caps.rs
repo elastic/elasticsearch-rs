@@ -8,18 +8,27 @@ pub struct IndexCapabilities {
 
 impl IndexCapabilities {
     /// Creates a builder for [`IndexCapabilities`].
+    ///
+    /// Required: `rollup_jobs`.
     pub fn builder() -> IndexCapabilitiesBuilder {
         IndexCapabilitiesBuilder::new()
     }
 
     /// Creates a [`IndexCapabilities`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IndexCapabilitiesBuilder,
-        ) -> IndexCapabilitiesBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `rollup_jobs`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexCapabilities>>(
+        f: impl FnOnce(IndexCapabilitiesBuilder) -> B,
     ) -> IndexCapabilities {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexCapabilitiesBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_capabilities_members {
+    pub struct rollup_jobs;
 }
 
 /// Builder for [`IndexCapabilities`].
@@ -48,6 +57,7 @@ impl<S0> IndexCapabilitiesBuilder<(S0,)> {
 }
 
 impl IndexCapabilitiesBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn rollup_jobs(
         self,
         value: impl Into<Vec<RollupJobSummary>>,
@@ -71,16 +81,9 @@ impl IndexCapabilitiesBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`rollup_jobs`](Self::rollup_jobs), with a builder.
-    pub fn add_rollup_jobs_with(
+    pub fn add_rollup_jobs_with<B: crate::typed::builder::Build<Output = RollupJobSummary>>(
         self,
-        f: impl FnOnce(
-            RollupJobSummaryBuilder,
-        ) -> RollupJobSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RollupJobSummaryBuilder) -> B,
     ) -> IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
         self.add_rollup_jobs(f(RollupJobSummaryBuilder::new()).build())
     }
@@ -96,40 +99,44 @@ impl IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`rollup_jobs`](Self::rollup_jobs), with a builder.
-    pub fn add_rollup_jobs_with(
+    pub fn add_rollup_jobs_with<B: crate::typed::builder::Build<Output = RollupJobSummary>>(
         self,
-        f: impl FnOnce(
-            RollupJobSummaryBuilder,
-        ) -> RollupJobSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RollupJobSummaryBuilder) -> B,
     ) -> Self {
         self.add_rollup_jobs(f(RollupJobSummaryBuilder::new()).build())
     }
 }
 
-impl IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexCapabilitiesBuilder<(S0,)> {
     /// Builds a [`IndexCapabilities`].
-    pub fn build(self) -> IndexCapabilities {
+    pub fn build(self) -> IndexCapabilities
+    where
+        S0: crate::typed::builder::IsSet<index_capabilities_members::rollup_jobs>,
+    {
         IndexCapabilities {
             rollup_jobs: self.rollup_jobs.unwrap(),
         }
     }
 }
 
-impl From<IndexCapabilitiesBuilder<(crate::typed::builder::Set,)>> for IndexCapabilities {
-    fn from(builder: IndexCapabilitiesBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexCapabilitiesBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_capabilities_members::rollup_jobs>,
+{
+    type Output = IndexCapabilities;
+
+    fn build(self) -> IndexCapabilities {
+        Self::build(self)
     }
 }
 
-impl IndexCapabilitiesBuilder<(crate::typed::builder::NotSet,)> {
-    /// `rollup_jobs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollup_jobs: crate::typed::builder::MissingRequiredField) -> IndexCapabilities { match rollup_jobs {} }
+impl<S0> From<IndexCapabilitiesBuilder<(S0,)>> for IndexCapabilities
+where
+    S0: crate::typed::builder::IsSet<index_capabilities_members::rollup_jobs>,
+{
+    fn from(builder: IndexCapabilitiesBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`rollup.get_rollup_index_caps`](crate::typed::rollup::RollupClient::get_rollup_index_caps).
@@ -167,16 +174,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `index`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
 }
 
 /// Builder for [`Request`].
@@ -275,7 +293,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// Data stream or index to check for rollup capabilities.
+    /// **Required.** Data stream or index to check for rollup capabilities.
     /// Wildcard (`*`) expressions are supported.
     pub fn index(
         self,
@@ -287,9 +305,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
         Request {
             index: self.index.unwrap(),
             error_trace: self.error_trace,
@@ -300,23 +321,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -420,23 +444,30 @@ pub struct RollupJobSummary {
 
 impl RollupJobSummary {
     /// Creates a builder for [`RollupJobSummary`].
+    ///
+    /// Required: `fields`, `index_pattern`, `job_id`, `rollup_index`.
     pub fn builder() -> RollupJobSummaryBuilder {
         RollupJobSummaryBuilder::new()
     }
 
     /// Creates a [`RollupJobSummary`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RollupJobSummaryBuilder,
-        ) -> RollupJobSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `fields`, `index_pattern`, `job_id`, `rollup_index`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJobSummary>>(
+        f: impl FnOnce(RollupJobSummaryBuilder) -> B,
     ) -> RollupJobSummary {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobSummaryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_summary_members {
+    pub struct fields;
+    pub struct index_pattern;
+    pub struct job_id;
+    pub struct rollup_index;
 }
 
 /// Builder for [`RollupJobSummary`].
@@ -488,6 +519,7 @@ impl<S0, S1, S2, S3> RollupJobSummaryBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> RollupJobSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn fields(
         self,
         value: impl Into<indexmap::IndexMap<crate::typed::_types::Field, Vec<RollupJobSummaryField>>>,
@@ -527,6 +559,7 @@ impl<S1, S2, S3> RollupJobSummaryBuilder<(crate::typed::builder::Set, S1, S2, S3
 }
 
 impl<S0, S2, S3> RollupJobSummaryBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn index_pattern(
         self,
         value: impl Into<String>,
@@ -538,6 +571,7 @@ impl<S0, S2, S3> RollupJobSummaryBuilder<(S0, crate::typed::builder::NotSet, S2,
 }
 
 impl<S0, S1, S3> RollupJobSummaryBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn job_id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -549,6 +583,7 @@ impl<S0, S1, S3> RollupJobSummaryBuilder<(S0, S1, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1, S2> RollupJobSummaryBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn rollup_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -559,16 +594,15 @@ impl<S0, S1, S2> RollupJobSummaryBuilder<(S0, S1, S2, crate::typed::builder::Not
     }
 }
 
-impl
-    RollupJobSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> RollupJobSummaryBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`RollupJobSummary`].
-    pub fn build(self) -> RollupJobSummary {
+    pub fn build(self) -> RollupJobSummary
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_summary_members::fields>,
+        S1: crate::typed::builder::IsSet<rollup_job_summary_members::index_pattern>,
+        S2: crate::typed::builder::IsSet<rollup_job_summary_members::job_id>,
+        S3: crate::typed::builder::IsSet<rollup_job_summary_members::rollup_index>,
+    {
         RollupJobSummary {
             fields: self.fields.unwrap(),
             index_pattern: self.index_pattern.unwrap(),
@@ -578,71 +612,30 @@ impl
     }
 }
 
-impl
-    From<
-        RollupJobSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for RollupJobSummary
+impl<S0, S1, S2, S3> crate::typed::builder::Build for RollupJobSummaryBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_summary_members::fields>,
+    S1: crate::typed::builder::IsSet<rollup_job_summary_members::index_pattern>,
+    S2: crate::typed::builder::IsSet<rollup_job_summary_members::job_id>,
+    S3: crate::typed::builder::IsSet<rollup_job_summary_members::rollup_index>,
 {
-    fn from(
-        builder: RollupJobSummaryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RollupJobSummary;
+
+    fn build(self) -> RollupJobSummary {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> RollupJobSummaryBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> RollupJobSummary { match fields {} }
-}
-
-impl<S2, S3>
-    RollupJobSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<RollupJobSummaryBuilder<(S0, S1, S2, S3)>> for RollupJobSummary
+where
+    S0: crate::typed::builder::IsSet<rollup_job_summary_members::fields>,
+    S1: crate::typed::builder::IsSet<rollup_job_summary_members::index_pattern>,
+    S2: crate::typed::builder::IsSet<rollup_job_summary_members::job_id>,
+    S3: crate::typed::builder::IsSet<rollup_job_summary_members::rollup_index>,
 {
-    /// `index_pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index_pattern: crate::typed::builder::MissingRequiredField) -> RollupJobSummary { match index_pattern {} }
-}
-
-impl<S3>
-    RollupJobSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `job_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, job_id: crate::typed::builder::MissingRequiredField) -> RollupJobSummary { match job_id {} }
-}
-
-impl
-    RollupJobSummaryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `rollup_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, rollup_index: crate::typed::builder::MissingRequiredField) -> RollupJobSummary { match rollup_index {} }
+    fn from(builder: RollupJobSummaryBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -656,18 +649,27 @@ pub struct RollupJobSummaryField {
 
 impl RollupJobSummaryField {
     /// Creates a builder for [`RollupJobSummaryField`].
+    ///
+    /// Required: `agg`.
     pub fn builder() -> RollupJobSummaryFieldBuilder {
         RollupJobSummaryFieldBuilder::new()
     }
 
     /// Creates a [`RollupJobSummaryField`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RollupJobSummaryFieldBuilder,
-        ) -> RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `agg`.
+    pub fn of<B: crate::typed::builder::Build<Output = RollupJobSummaryField>>(
+        f: impl FnOnce(RollupJobSummaryFieldBuilder) -> B,
     ) -> RollupJobSummaryField {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RollupJobSummaryFieldBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rollup_job_summary_field_members {
+    pub struct agg;
 }
 
 /// Builder for [`RollupJobSummaryField`].
@@ -727,6 +729,7 @@ impl<S0> RollupJobSummaryFieldBuilder<(S0,)> {
 }
 
 impl RollupJobSummaryFieldBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn agg(
         self,
         value: impl Into<String>,
@@ -737,9 +740,12 @@ impl RollupJobSummaryFieldBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RollupJobSummaryFieldBuilder<(S0,)> {
     /// Builds a [`RollupJobSummaryField`].
-    pub fn build(self) -> RollupJobSummaryField {
+    pub fn build(self) -> RollupJobSummaryField
+    where
+        S0: crate::typed::builder::IsSet<rollup_job_summary_field_members::agg>,
+    {
         RollupJobSummaryField {
             agg: self.agg.unwrap(),
             time_zone: self.time_zone,
@@ -748,14 +754,22 @@ impl RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)>> for RollupJobSummaryField {
-    fn from(builder: RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RollupJobSummaryFieldBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rollup_job_summary_field_members::agg>,
+{
+    type Output = RollupJobSummaryField;
+
+    fn build(self) -> RollupJobSummaryField {
+        Self::build(self)
     }
 }
 
-impl RollupJobSummaryFieldBuilder<(crate::typed::builder::NotSet,)> {
-    /// `agg` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, agg: crate::typed::builder::MissingRequiredField) -> RollupJobSummaryField { match agg {} }
+impl<S0> From<RollupJobSummaryFieldBuilder<(S0,)>> for RollupJobSummaryField
+where
+    S0: crate::typed::builder::IsSet<rollup_job_summary_field_members::agg>,
+{
+    fn from(builder: RollupJobSummaryFieldBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

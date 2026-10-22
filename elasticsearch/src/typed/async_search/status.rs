@@ -38,16 +38,27 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ///
+    /// Required: `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct id;
 }
 
 /// Builder for [`Request`].
@@ -162,7 +173,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// A unique identifier for the async search.
+    /// **Required.** A unique identifier for the async search.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -173,9 +184,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+    {
         Request {
             id: self.id.unwrap(),
             keep_alive: self.keep_alive,
@@ -187,23 +201,26 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::id>,
+{
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
-}
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
-    /// `id` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
+impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::id>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {
@@ -343,24 +360,31 @@ pub struct StatusResponseBase {
 
 impl StatusResponseBase {
     /// Creates a builder for [`StatusResponseBase`].
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`, `shards`.
     pub fn builder() -> StatusResponseBaseBuilder {
         StatusResponseBaseBuilder::new()
     }
 
     /// Creates a [`StatusResponseBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            StatusResponseBaseBuilder,
-        ) -> StatusResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `is_partial`, `is_running`, `expiration_time_in_millis`, `start_time_in_millis`, `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = StatusResponseBase>>(
+        f: impl FnOnce(StatusResponseBaseBuilder) -> B,
     ) -> StatusResponseBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`StatusResponseBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod status_response_base_members {
+    pub struct is_partial;
+    pub struct is_running;
+    pub struct expiration_time_in_millis;
+    pub struct start_time_in_millis;
+    pub struct shards;
 }
 
 /// Builder for [`StatusResponseBase`].
@@ -515,12 +539,11 @@ impl<S0, S1, S2, S3, S4> StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`error`](Self::error) with a builder.
-    pub fn error_with(
+    pub fn error_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ErrorCause>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ErrorCauseBuilder,
-        )
-            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::ErrorCauseBuilder) -> B,
     ) -> Self {
         self.error(f(crate::typed::_types::ErrorCauseBuilder::new()).build())
     }
@@ -542,18 +565,11 @@ impl<S0, S1, S2, S3, S4> StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     }
 
     /// Sets [`clusters`](Self::clusters) with a builder.
-    pub fn clusters_with(
+    pub fn clusters_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ClusterStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ClusterStatisticsBuilder,
-        ) -> crate::typed::_types::ClusterStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ClusterStatisticsBuilder) -> B,
     ) -> Self {
         self.clusters(f(crate::typed::_types::ClusterStatisticsBuilder::new()).build())
     }
@@ -574,7 +590,7 @@ impl<S0, S1, S2, S3, S4> StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
 }
 
 impl<S1, S2, S3, S4> StatusResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
+    /// **Required.** When the query is no longer running, this property indicates whether the search failed or was successfully completed on all shards.
     /// While the query is running, `is_partial` is always set to `true`.
     pub fn is_partial(
         self,
@@ -587,7 +603,7 @@ impl<S1, S2, S3, S4> StatusResponseBaseBuilder<(crate::typed::builder::NotSet, S
 }
 
 impl<S0, S2, S3, S4> StatusResponseBaseBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
-    /// Indicates whether the search is still running or has completed.
+    /// **Required.** Indicates whether the search is still running or has completed.
     ///
     /// > info
     /// > If the search failed after some shards returned their results or the node that is coordinating the async search dies, results may be partial even though `is_running` is `false`.
@@ -602,6 +618,7 @@ impl<S0, S2, S3, S4> StatusResponseBaseBuilder<(S0, crate::typed::builder::NotSe
 }
 
 impl<S0, S1, S3, S4> StatusResponseBaseBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4)> {
+    /// **Required.**
     pub fn expiration_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -613,6 +630,7 @@ impl<S0, S1, S3, S4> StatusResponseBaseBuilder<(S0, S1, crate::typed::builder::N
 }
 
 impl<S0, S1, S2, S4> StatusResponseBaseBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
+    /// **Required.**
     pub fn start_time_in_millis(
         self,
         value: impl Into<crate::typed::_types::EpochTimeUnitMillis>,
@@ -624,7 +642,7 @@ impl<S0, S1, S2, S4> StatusResponseBaseBuilder<(S0, S1, S2, crate::typed::builde
 }
 
 impl<S0, S1, S2, S3> StatusResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
-    /// The number of shards that have run the query so far.
+    /// **Required.** The number of shards that have run the query so far.
     pub fn shards(
         self,
         value: impl Into<crate::typed::_types::ShardStatistics>,
@@ -635,31 +653,26 @@ impl<S0, S1, S2, S3> StatusResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::bu
     }
 
     /// Sets [`shards`](Self::shards) with a builder.
-    pub fn shards_with(
+    pub fn shards_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::ShardStatistics>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::ShardStatisticsBuilder,
-        ) -> crate::typed::_types::ShardStatisticsBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::_types::ShardStatisticsBuilder) -> B,
     ) -> StatusResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
         self.shards(f(crate::typed::_types::ShardStatisticsBuilder::new()).build())
     }
 }
 
-impl
-    StatusResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4> StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)> {
     /// Builds a [`StatusResponseBase`].
-    pub fn build(self) -> StatusResponseBase {
+    pub fn build(self) -> StatusResponseBase
+    where
+        S0: crate::typed::builder::IsSet<status_response_base_members::is_partial>,
+        S1: crate::typed::builder::IsSet<status_response_base_members::is_running>,
+        S2: crate::typed::builder::IsSet<status_response_base_members::expiration_time_in_millis>,
+        S3: crate::typed::builder::IsSet<status_response_base_members::start_time_in_millis>,
+        S4: crate::typed::builder::IsSet<status_response_base_members::shards>,
+    {
         StatusResponseBase {
             id: self.id,
             is_partial: self.is_partial.unwrap(),
@@ -678,88 +691,32 @@ impl
     }
 }
 
-impl
-    From<
-        StatusResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for StatusResponseBase
+impl<S0, S1, S2, S3, S4> crate::typed::builder::Build
+    for StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)>
+where
+    S0: crate::typed::builder::IsSet<status_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<status_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<status_response_base_members::expiration_time_in_millis>,
+    S3: crate::typed::builder::IsSet<status_response_base_members::start_time_in_millis>,
+    S4: crate::typed::builder::IsSet<status_response_base_members::shards>,
 {
-    fn from(
-        builder: StatusResponseBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = StatusResponseBase;
+
+    fn build(self) -> StatusResponseBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4> StatusResponseBaseBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4)> {
-    /// `is_partial` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_partial: crate::typed::builder::MissingRequiredField) -> StatusResponseBase { match is_partial {} }
-}
-
-impl<S2, S3, S4>
-    StatusResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-    )>
+impl<S0, S1, S2, S3, S4> From<StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)>>
+    for StatusResponseBase
+where
+    S0: crate::typed::builder::IsSet<status_response_base_members::is_partial>,
+    S1: crate::typed::builder::IsSet<status_response_base_members::is_running>,
+    S2: crate::typed::builder::IsSet<status_response_base_members::expiration_time_in_millis>,
+    S3: crate::typed::builder::IsSet<status_response_base_members::start_time_in_millis>,
+    S4: crate::typed::builder::IsSet<status_response_base_members::shards>,
 {
-    /// `is_running` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, is_running: crate::typed::builder::MissingRequiredField) -> StatusResponseBase { match is_running {} }
-}
-
-impl<S3, S4>
-    StatusResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-    )>
-{
-    /// `expiration_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, expiration_time_in_millis: crate::typed::builder::MissingRequiredField) -> StatusResponseBase { match expiration_time_in_millis {} }
-}
-
-impl<S4>
-    StatusResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-    )>
-{
-    /// `start_time_in_millis` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, start_time_in_millis: crate::typed::builder::MissingRequiredField) -> StatusResponseBase { match start_time_in_millis {} }
-}
-
-impl
-    StatusResponseBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> StatusResponseBase { match shards {} }
+    fn from(builder: StatusResponseBaseBuilder<(S0, S1, S2, S3, S4)>) -> Self {
+        builder.build()
+    }
 }

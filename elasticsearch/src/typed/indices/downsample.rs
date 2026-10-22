@@ -46,25 +46,29 @@ pub struct Request {
 
 impl Request {
     /// Creates a builder for [`Request`].
+    ///
+    /// Required: `index`, `target_index`, `config`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RequestBuilder,
-        ) -> RequestBuilder<
-            (
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-                crate::typed::builder::Set,
-            ),
-            (),
-        >,
+    ///
+    /// Required: `index`, `target_index`, `config`.
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RequestBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod request_members {
+    pub struct index;
+    pub struct target_index;
+    pub struct config;
 }
 
 /// Builder for [`Request`].
@@ -185,7 +189,7 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
 }
 
 impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// Name of the time series index to downsample.
+    /// **Required.** Name of the time series index to downsample.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -197,7 +201,7 @@ impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
 }
 
 impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
-    /// Name of the index to create.
+    /// **Required.** Name of the index to create.
     pub fn target_index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -209,7 +213,7 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
-    /// Request body.
+    /// **Required.** Request body.
     pub fn config(
         self,
         value: impl Into<crate::typed::indices::_types::DownsampleConfig>,
@@ -220,30 +224,24 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
     }
 
     /// Sets [`config`](Self::config) with a builder.
-    pub fn config_with(
+    pub fn config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::indices::_types::DownsampleConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::indices::_types::DownsampleConfigBuilder,
-        ) -> crate::typed::indices::_types::DownsampleConfigBuilder<(
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(crate::typed::indices::_types::DownsampleConfigBuilder) -> B,
     ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
         self.config(f(crate::typed::indices::_types::DownsampleConfigBuilder::new()).build())
     }
 }
 
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        C,
-    >
-{
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::target_index>,
+        S2: crate::typed::builder::IsSet<request_members::config>,
+    {
         Request {
             index: self.index.unwrap(),
             target_index: self.target_index.unwrap(),
@@ -256,90 +254,30 @@ impl<C>
     }
 }
 
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        ),
-        &crate::Elasticsearch,
-    >
+impl<S0, S1, S2, C> crate::typed::builder::Build for RequestBuilder<(S0, S1, S2), C>
+where
+    S0: crate::typed::builder::IsSet<request_members::index>,
+    S1: crate::typed::builder::IsSet<request_members::target_index>,
+    S2: crate::typed::builder::IsSet<request_members::config>,
 {
-    /// Sends the request.
-    pub async fn send(self) -> std::result::Result<Response, crate::Error> {
-        let client = self.bound_client;
-        self.build().send(client).await
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, C> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), C> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
-}
-impl<S1, S2> RequestBuilder<(crate::typed::builder::NotSet, S1, S2), &crate::Elasticsearch> {
-    /// `index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
-}
-
-impl<S2, C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        C,
-    >
-{
-    /// `target_index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, target_index: crate::typed::builder::MissingRequiredField) -> Request { match target_index {} }
-}
-impl<S2>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-            S2,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `target_index` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, target_index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match target_index {} }
-}
-
-impl<C>
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        C,
-    >
-{
-    /// `config` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, config: crate::typed::builder::MissingRequiredField) -> Request { match config {} }
-}
-impl
-    RequestBuilder<
-        (
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::NotSet,
-        ),
-        &crate::Elasticsearch,
-    >
-{
-    /// `config` is missing: set it before calling `send()`.
-    #[rustfmt::skip]
-    pub async fn send(self, config: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match config {} }
+impl<S0, S1, S2> RequestBuilder<(S0, S1, S2), &crate::Elasticsearch> {
+    /// Sends the request.
+    pub async fn send(self) -> std::result::Result<Response, crate::Error>
+    where
+        S0: crate::typed::builder::IsSet<request_members::index>,
+        S1: crate::typed::builder::IsSet<request_members::target_index>,
+        S2: crate::typed::builder::IsSet<request_members::config>,
+    {
+        let client = self.bound_client;
+        self.build().send(client).await
+    }
 }
 
 impl Request {

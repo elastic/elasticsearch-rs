@@ -33,26 +33,33 @@ impl From<&str> for ComponentTemplateVersion {
 
 impl ComponentTemplate {
     /// Creates a builder for [`ComponentTemplate`].
+    ///
+    /// Required: `name`, `version`, `alias_count`, `mapping_count`, `settings_count`, `metadata_count`, `included_in`.
     pub fn builder() -> ComponentTemplateBuilder {
         ComponentTemplateBuilder::new()
     }
 
     /// Creates a [`ComponentTemplate`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ComponentTemplateBuilder,
-        ) -> ComponentTemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `name`, `version`, `alias_count`, `mapping_count`, `settings_count`, `metadata_count`, `included_in`.
+    pub fn of<B: crate::typed::builder::Build<Output = ComponentTemplate>>(
+        f: impl FnOnce(ComponentTemplateBuilder) -> B,
     ) -> ComponentTemplate {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ComponentTemplateBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod component_template_members {
+    pub struct name;
+    pub struct version;
+    pub struct alias_count;
+    pub struct mapping_count;
+    pub struct settings_count;
+    pub struct metadata_count;
+    pub struct included_in;
 }
 
 /// Builder for [`ComponentTemplate`].
@@ -121,6 +128,7 @@ impl<S0, S1, S2, S3, S4, S5, S6> ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S
 impl<S1, S2, S3, S4, S5, S6>
     ComponentTemplateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn name(
         self,
         value: impl Into<String>,
@@ -134,6 +142,7 @@ impl<S1, S2, S3, S4, S5, S6>
 impl<S0, S2, S3, S4, S5, S6>
     ComponentTemplateBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn version(
         self,
         value: impl Into<ComponentTemplateVersion>,
@@ -147,6 +156,7 @@ impl<S0, S2, S3, S4, S5, S6>
 impl<S0, S1, S3, S4, S5, S6>
     ComponentTemplateBuilder<(S0, S1, crate::typed::builder::NotSet, S3, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn alias_count(
         self,
         value: impl Into<String>,
@@ -160,6 +170,7 @@ impl<S0, S1, S3, S4, S5, S6>
 impl<S0, S1, S2, S4, S5, S6>
     ComponentTemplateBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5, S6)>
 {
+    /// **Required.**
     pub fn mapping_count(
         self,
         value: impl Into<String>,
@@ -173,6 +184,7 @@ impl<S0, S1, S2, S4, S5, S6>
 impl<S0, S1, S2, S3, S5, S6>
     ComponentTemplateBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet, S5, S6)>
 {
+    /// **Required.**
     pub fn settings_count(
         self,
         value: impl Into<String>,
@@ -186,6 +198,7 @@ impl<S0, S1, S2, S3, S5, S6>
 impl<S0, S1, S2, S3, S4, S6>
     ComponentTemplateBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::NotSet, S6)>
 {
+    /// **Required.**
     pub fn metadata_count(
         self,
         value: impl Into<String>,
@@ -199,6 +212,7 @@ impl<S0, S1, S2, S3, S4, S6>
 impl<S0, S1, S2, S3, S4, S5>
     ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::NotSet)>
 {
+    /// **Required.**
     pub fn included_in(
         self,
         value: impl Into<String>,
@@ -209,19 +223,18 @@ impl<S0, S1, S2, S3, S4, S5>
     }
 }
 
-impl
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6> ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S5, S6)> {
     /// Builds a [`ComponentTemplate`].
-    pub fn build(self) -> ComponentTemplate {
+    pub fn build(self) -> ComponentTemplate
+    where
+        S0: crate::typed::builder::IsSet<component_template_members::name>,
+        S1: crate::typed::builder::IsSet<component_template_members::version>,
+        S2: crate::typed::builder::IsSet<component_template_members::alias_count>,
+        S3: crate::typed::builder::IsSet<component_template_members::mapping_count>,
+        S4: crate::typed::builder::IsSet<component_template_members::settings_count>,
+        S5: crate::typed::builder::IsSet<component_template_members::metadata_count>,
+        S6: crate::typed::builder::IsSet<component_template_members::included_in>,
+    {
         ComponentTemplate {
             name: self.name.unwrap(),
             version: self.version.unwrap(),
@@ -234,136 +247,38 @@ impl
     }
 }
 
-impl
-    From<
-        ComponentTemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ComponentTemplate
+impl<S0, S1, S2, S3, S4, S5, S6> crate::typed::builder::Build
+    for ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S5, S6)>
+where
+    S0: crate::typed::builder::IsSet<component_template_members::name>,
+    S1: crate::typed::builder::IsSet<component_template_members::version>,
+    S2: crate::typed::builder::IsSet<component_template_members::alias_count>,
+    S3: crate::typed::builder::IsSet<component_template_members::mapping_count>,
+    S4: crate::typed::builder::IsSet<component_template_members::settings_count>,
+    S5: crate::typed::builder::IsSet<component_template_members::metadata_count>,
+    S6: crate::typed::builder::IsSet<component_template_members::included_in>,
 {
-    fn from(
-        builder: ComponentTemplateBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ComponentTemplate;
+
+    fn build(self) -> ComponentTemplate {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6>
-    ComponentTemplateBuilder<(crate::typed::builder::NotSet, S1, S2, S3, S4, S5, S6)>
+impl<S0, S1, S2, S3, S4, S5, S6> From<ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S5, S6)>>
+    for ComponentTemplate
+where
+    S0: crate::typed::builder::IsSet<component_template_members::name>,
+    S1: crate::typed::builder::IsSet<component_template_members::version>,
+    S2: crate::typed::builder::IsSet<component_template_members::alias_count>,
+    S3: crate::typed::builder::IsSet<component_template_members::mapping_count>,
+    S4: crate::typed::builder::IsSet<component_template_members::settings_count>,
+    S5: crate::typed::builder::IsSet<component_template_members::metadata_count>,
+    S6: crate::typed::builder::IsSet<component_template_members::included_in>,
 {
-    /// `name` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, name: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match name {} }
-}
-
-impl<S2, S3, S4, S5, S6>
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match version {} }
-}
-
-impl<S3, S4, S5, S6>
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `alias_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, alias_count: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match alias_count {} }
-}
-
-impl<S4, S5, S6>
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-    )>
-{
-    /// `mapping_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, mapping_count: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match mapping_count {} }
-}
-
-impl<S5, S6>
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-    )>
-{
-    /// `settings_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, settings_count: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match settings_count {} }
-}
-
-impl<S6>
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-    )>
-{
-    /// `metadata_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, metadata_count: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match metadata_count {} }
-}
-
-impl
-    ComponentTemplateBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `included_in` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, included_in: crate::typed::builder::MissingRequiredField) -> ComponentTemplate { match included_in {} }
+    fn from(builder: ComponentTemplateBuilder<(S0, S1, S2, S3, S4, S5, S6)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`cat.component_templates`](crate::typed::cat::CatClient::component_templates).
@@ -420,7 +335,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -600,6 +517,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 

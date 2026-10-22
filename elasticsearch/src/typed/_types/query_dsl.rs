@@ -113,7 +113,9 @@ impl BoolQuery {
     }
 
     /// Creates a [`BoolQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(BoolQueryBuilder) -> BoolQueryBuilder) -> BoolQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = BoolQuery>>(
+        f: impl FnOnce(BoolQueryBuilder) -> B,
+    ) -> BoolQuery {
         f(Self::builder()).build()
     }
 }
@@ -255,6 +257,14 @@ impl BoolQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for BoolQueryBuilder {
+    type Output = BoolQuery;
+
+    fn build(self) -> BoolQuery {
+        Self::build(self)
+    }
+}
+
 impl From<BoolQueryBuilder> for BoolQuery {
     fn from(builder: BoolQueryBuilder) -> Self {
         builder.build()
@@ -281,22 +291,29 @@ pub struct BoostingQuery {
 
 impl BoostingQuery {
     /// Creates a builder for [`BoostingQuery`].
+    ///
+    /// Required: `negative_boost`, `negative`, `positive`.
     pub fn builder() -> BoostingQueryBuilder {
         BoostingQueryBuilder::new()
     }
 
     /// Creates a [`BoostingQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            BoostingQueryBuilder,
-        ) -> BoostingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `negative_boost`, `negative`, `positive`.
+    pub fn of<B: crate::typed::builder::Build<Output = BoostingQuery>>(
+        f: impl FnOnce(BoostingQueryBuilder) -> B,
     ) -> BoostingQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`BoostingQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod boosting_query_members {
+    pub struct negative_boost;
+    pub struct negative;
+    pub struct positive;
 }
 
 /// Builder for [`BoostingQuery`].
@@ -375,7 +392,7 @@ impl<S0, S1, S2> BoostingQueryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> BoostingQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Floating point number between 0 and 1.0 used to decrease the relevance scores of documents matching the `negative` query.
+    /// **Required.** Floating point number between 0 and 1.0 used to decrease the relevance scores of documents matching the `negative` query.
     pub fn negative_boost(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -387,7 +404,7 @@ impl<S1, S2> BoostingQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> BoostingQueryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Query used to decrease the relevance score of matching documents.
+    /// **Required.** Query used to decrease the relevance score of matching documents.
     pub fn negative(
         self,
         value: impl Into<QueryContainer>,
@@ -398,16 +415,16 @@ impl<S0, S2> BoostingQueryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     }
 
     /// Sets [`negative`](Self::negative) with a builder.
-    pub fn negative_with(
+    pub fn negative_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> BoostingQueryBuilder<(S0, crate::typed::builder::Set, S2)> {
         self.negative(f(QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S0, S1> BoostingQueryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Any returned documents must match this query.
+    /// **Required.** Any returned documents must match this query.
     pub fn positive(
         self,
         value: impl Into<QueryContainer>,
@@ -418,23 +435,22 @@ impl<S0, S1> BoostingQueryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`positive`](Self::positive) with a builder.
-    pub fn positive_with(
+    pub fn positive_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> BoostingQueryBuilder<(S0, S1, crate::typed::builder::Set)> {
         self.positive(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl
-    BoostingQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> BoostingQueryBuilder<(S0, S1, S2)> {
     /// Builds a [`BoostingQuery`].
-    pub fn build(self) -> BoostingQuery {
+    pub fn build(self) -> BoostingQuery
+    where
+        S0: crate::typed::builder::IsSet<boosting_query_members::negative_boost>,
+        S1: crate::typed::builder::IsSet<boosting_query_members::negative>,
+        S2: crate::typed::builder::IsSet<boosting_query_members::positive>,
+    {
         BoostingQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -445,54 +461,28 @@ impl
     }
 }
 
-impl
-    From<
-        BoostingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for BoostingQuery
+impl<S0, S1, S2> crate::typed::builder::Build for BoostingQueryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<boosting_query_members::negative_boost>,
+    S1: crate::typed::builder::IsSet<boosting_query_members::negative>,
+    S2: crate::typed::builder::IsSet<boosting_query_members::positive>,
 {
-    fn from(
-        builder: BoostingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = BoostingQuery;
+
+    fn build(self) -> BoostingQuery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> BoostingQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `negative_boost` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, negative_boost: crate::typed::builder::MissingRequiredField) -> BoostingQuery { match negative_boost {} }
-}
-
-impl<S2>
-    BoostingQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<BoostingQueryBuilder<(S0, S1, S2)>> for BoostingQuery
+where
+    S0: crate::typed::builder::IsSet<boosting_query_members::negative_boost>,
+    S1: crate::typed::builder::IsSet<boosting_query_members::negative>,
+    S2: crate::typed::builder::IsSet<boosting_query_members::positive>,
 {
-    /// `negative` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, negative: crate::typed::builder::MissingRequiredField) -> BoostingQuery { match negative {} }
-}
-
-impl
-    BoostingQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `positive` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, positive: crate::typed::builder::MissingRequiredField) -> BoostingQuery { match positive {} }
+    fn from(builder: BoostingQueryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -548,21 +538,28 @@ pub struct CombinedFieldsQuery {
 
 impl CombinedFieldsQuery {
     /// Creates a builder for [`CombinedFieldsQuery`].
+    ///
+    /// Required: `fields`, `query`.
     pub fn builder() -> CombinedFieldsQueryBuilder {
         CombinedFieldsQueryBuilder::new()
     }
 
     /// Creates a [`CombinedFieldsQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CombinedFieldsQueryBuilder,
-        ) -> CombinedFieldsQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `fields`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = CombinedFieldsQuery>>(
+        f: impl FnOnce(CombinedFieldsQueryBuilder) -> B,
     ) -> CombinedFieldsQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CombinedFieldsQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod combined_fields_query_members {
+    pub struct fields;
+    pub struct query;
 }
 
 /// Builder for [`CombinedFieldsQuery`].
@@ -694,7 +691,7 @@ impl<S0, S1> CombinedFieldsQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> CombinedFieldsQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// List of fields to search. Field wildcard patterns are allowed. Only `text` fields are supported, and they must all have the same search `analyzer`.
+    /// **Required.** List of fields to search. Field wildcard patterns are allowed. Only `text` fields are supported, and they must all have the same search `analyzer`.
     pub fn fields(
         self,
         value: impl Into<Vec<crate::typed::_types::Field>>,
@@ -729,7 +726,7 @@ impl<S1> CombinedFieldsQueryBuilder<(crate::typed::builder::Set, S1)> {
 }
 
 impl<S0> CombinedFieldsQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Text to search for in the provided `fields`.
+    /// **Required.** Text to search for in the provided `fields`.
     /// The `combined_fields` query analyzes the provided text before performing a search.
     pub fn query(
         self,
@@ -741,9 +738,13 @@ impl<S0> CombinedFieldsQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl CombinedFieldsQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> CombinedFieldsQueryBuilder<(S0, S1)> {
     /// Builds a [`CombinedFieldsQuery`].
-    pub fn build(self) -> CombinedFieldsQuery {
+    pub fn build(self) -> CombinedFieldsQuery
+    where
+        S0: crate::typed::builder::IsSet<combined_fields_query_members::fields>,
+        S1: crate::typed::builder::IsSet<combined_fields_query_members::query>,
+    {
         CombinedFieldsQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -757,29 +758,26 @@ impl CombinedFieldsQueryBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<CombinedFieldsQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for CombinedFieldsQuery
+impl<S0, S1> crate::typed::builder::Build for CombinedFieldsQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<combined_fields_query_members::fields>,
+    S1: crate::typed::builder::IsSet<combined_fields_query_members::query>,
 {
-    fn from(
-        builder: CombinedFieldsQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = CombinedFieldsQuery;
+
+    fn build(self) -> CombinedFieldsQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> CombinedFieldsQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `fields` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, fields: crate::typed::builder::MissingRequiredField) -> CombinedFieldsQuery { match fields {} }
-}
-
-impl CombinedFieldsQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> CombinedFieldsQuery { match query {} }
+impl<S0, S1> From<CombinedFieldsQueryBuilder<(S0, S1)>> for CombinedFieldsQuery
+where
+    S0: crate::typed::builder::IsSet<combined_fields_query_members::fields>,
+    S1: crate::typed::builder::IsSet<combined_fields_query_members::query>,
+{
+    fn from(builder: CombinedFieldsQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -817,18 +815,27 @@ pub struct CommonTermsQuery {
 
 impl CommonTermsQuery {
     /// Creates a builder for [`CommonTermsQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> CommonTermsQueryBuilder {
         CommonTermsQueryBuilder::new()
     }
 
     /// Creates a [`CommonTermsQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            CommonTermsQueryBuilder,
-        ) -> CommonTermsQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = CommonTermsQuery>>(
+        f: impl FnOnce(CommonTermsQueryBuilder) -> B,
     ) -> CommonTermsQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`CommonTermsQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod common_terms_query_members {
+    pub struct query;
 }
 
 /// Builder for [`CommonTermsQuery`].
@@ -965,6 +972,7 @@ impl<S0> CommonTermsQueryBuilder<(S0,)> {
 }
 
 impl CommonTermsQueryBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<String>,
@@ -975,9 +983,12 @@ impl CommonTermsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl CommonTermsQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> CommonTermsQueryBuilder<(S0,)> {
     /// Builds a [`CommonTermsQuery`].
-    pub fn build(self) -> CommonTermsQuery {
+    pub fn build(self) -> CommonTermsQuery
+    where
+        S0: crate::typed::builder::IsSet<common_terms_query_members::query>,
+    {
         CommonTermsQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -991,16 +1002,24 @@ impl CommonTermsQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<CommonTermsQueryBuilder<(crate::typed::builder::Set,)>> for CommonTermsQuery {
-    fn from(builder: CommonTermsQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for CommonTermsQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<common_terms_query_members::query>,
+{
+    type Output = CommonTermsQuery;
+
+    fn build(self) -> CommonTermsQuery {
+        Self::build(self)
     }
 }
 
-impl CommonTermsQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> CommonTermsQuery { match query {} }
+impl<S0> From<CommonTermsQueryBuilder<(S0,)>> for CommonTermsQuery
+where
+    S0: crate::typed::builder::IsSet<common_terms_query_members::query>,
+{
+    fn from(builder: CommonTermsQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1021,18 +1040,27 @@ pub struct ConstantScoreQuery {
 
 impl ConstantScoreQuery {
     /// Creates a builder for [`ConstantScoreQuery`].
+    ///
+    /// Required: `filter`.
     pub fn builder() -> ConstantScoreQueryBuilder {
         ConstantScoreQueryBuilder::new()
     }
 
     /// Creates a [`ConstantScoreQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ConstantScoreQueryBuilder,
-        ) -> ConstantScoreQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `filter`.
+    pub fn of<B: crate::typed::builder::Build<Output = ConstantScoreQuery>>(
+        f: impl FnOnce(ConstantScoreQueryBuilder) -> B,
     ) -> ConstantScoreQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ConstantScoreQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod constant_score_query_members {
+    pub struct filter;
 }
 
 /// Builder for [`ConstantScoreQuery`].
@@ -1093,7 +1121,7 @@ impl<S0> ConstantScoreQueryBuilder<(S0,)> {
 }
 
 impl ConstantScoreQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Filter query you wish to run. Any returned documents must match this query.
+    /// **Required.** Filter query you wish to run. Any returned documents must match this query.
     /// Filter queries do not calculate relevance scores.
     /// To speed up performance, Elasticsearch automatically caches frequently used filter queries.
     pub fn filter(
@@ -1106,17 +1134,20 @@ impl ConstantScoreQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> ConstantScoreQueryBuilder<(crate::typed::builder::Set,)> {
         self.filter(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl ConstantScoreQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ConstantScoreQueryBuilder<(S0,)> {
     /// Builds a [`ConstantScoreQuery`].
-    pub fn build(self) -> ConstantScoreQuery {
+    pub fn build(self) -> ConstantScoreQuery
+    where
+        S0: crate::typed::builder::IsSet<constant_score_query_members::filter>,
+    {
         ConstantScoreQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -1125,16 +1156,24 @@ impl ConstantScoreQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ConstantScoreQueryBuilder<(crate::typed::builder::Set,)>> for ConstantScoreQuery {
-    fn from(builder: ConstantScoreQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ConstantScoreQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<constant_score_query_members::filter>,
+{
+    type Output = ConstantScoreQuery;
+
+    fn build(self) -> ConstantScoreQuery {
+        Self::build(self)
     }
 }
 
-impl ConstantScoreQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `filter` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, filter: crate::typed::builder::MissingRequiredField) -> ConstantScoreQuery { match filter {} }
+impl<S0> From<ConstantScoreQueryBuilder<(S0,)>> for ConstantScoreQuery
+where
+    S0: crate::typed::builder::IsSet<constant_score_query_members::filter>,
+{
+    fn from(builder: ConstantScoreQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1155,8 +1194,8 @@ impl DateDecayFunction {
     }
 
     /// Creates a [`DateDecayFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DateDecayFunctionBuilder) -> DateDecayFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DateDecayFunction>>(
+        f: impl FnOnce(DateDecayFunctionBuilder) -> B,
     ) -> DateDecayFunction {
         f(Self::builder()).build()
     }
@@ -1222,6 +1261,14 @@ impl DateDecayFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DateDecayFunctionBuilder {
+    type Output = DateDecayFunction;
+
+    fn build(self) -> DateDecayFunction {
+        Self::build(self)
+    }
+}
+
 impl From<DateDecayFunctionBuilder> for DateDecayFunction {
     fn from(builder: DateDecayFunctionBuilder) -> Self {
         builder.build()
@@ -1255,22 +1302,29 @@ pub struct DateDistanceFeatureQuery {
 
 impl DateDistanceFeatureQuery {
     /// Creates a builder for [`DateDistanceFeatureQuery`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> DateDistanceFeatureQueryBuilder {
         DateDistanceFeatureQueryBuilder::new()
     }
 
     /// Creates a [`DateDistanceFeatureQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DateDistanceFeatureQueryBuilder,
-        ) -> DateDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DateDistanceFeatureQuery>>(
+        f: impl FnOnce(DateDistanceFeatureQueryBuilder) -> B,
     ) -> DateDistanceFeatureQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DateDistanceFeatureQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod date_distance_feature_query_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`DateDistanceFeatureQuery`].
@@ -1349,7 +1403,7 @@ impl<S0, S1, S2> DateDistanceFeatureQueryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DateDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -1364,7 +1418,7 @@ impl<S1, S2> DateDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2> DateDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -1377,7 +1431,7 @@ impl<S0, S2> DateDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1> DateDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -1391,15 +1445,14 @@ impl<S0, S1> DateDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::Not
     }
 }
 
-impl
-    DateDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DateDistanceFeatureQueryBuilder<(S0, S1, S2)> {
     /// Builds a [`DateDistanceFeatureQuery`].
-    pub fn build(self) -> DateDistanceFeatureQuery {
+    pub fn build(self) -> DateDistanceFeatureQuery
+    where
+        S0: crate::typed::builder::IsSet<date_distance_feature_query_members::origin>,
+        S1: crate::typed::builder::IsSet<date_distance_feature_query_members::pivot>,
+        S2: crate::typed::builder::IsSet<date_distance_feature_query_members::field>,
+    {
         DateDistanceFeatureQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -1410,54 +1463,28 @@ impl
     }
 }
 
-impl
-    From<
-        DateDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DateDistanceFeatureQuery
+impl<S0, S1, S2> crate::typed::builder::Build for DateDistanceFeatureQueryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<date_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<date_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<date_distance_feature_query_members::field>,
 {
-    fn from(
-        builder: DateDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DateDistanceFeatureQuery;
+
+    fn build(self) -> DateDistanceFeatureQuery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DateDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> DateDistanceFeatureQuery { match origin {} }
-}
-
-impl<S2>
-    DateDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DateDistanceFeatureQueryBuilder<(S0, S1, S2)>> for DateDistanceFeatureQuery
+where
+    S0: crate::typed::builder::IsSet<date_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<date_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<date_distance_feature_query_members::field>,
 {
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> DateDistanceFeatureQuery { match pivot {} }
-}
-
-impl
-    DateDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DateDistanceFeatureQuery { match field {} }
+    fn from(builder: DateDistanceFeatureQueryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1500,7 +1527,9 @@ impl DateRangeQuery {
     }
 
     /// Creates a [`DateRangeQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DateRangeQueryBuilder) -> DateRangeQueryBuilder) -> DateRangeQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = DateRangeQuery>>(
+        f: impl FnOnce(DateRangeQueryBuilder) -> B,
+    ) -> DateRangeQuery {
         f(Self::builder()).build()
     }
 }
@@ -1664,6 +1693,14 @@ impl DateRangeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DateRangeQueryBuilder {
+    type Output = DateRangeQuery;
+
+    fn build(self) -> DateRangeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<DateRangeQueryBuilder> for DateRangeQuery {
     fn from(builder: DateRangeQueryBuilder) -> Self {
         builder.build()
@@ -1698,8 +1735,8 @@ impl DecayFunctionBase {
     }
 
     /// Creates a [`DecayFunctionBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DecayFunctionBaseBuilder) -> DecayFunctionBaseBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayFunctionBase>>(
+        f: impl FnOnce(DecayFunctionBaseBuilder) -> B,
     ) -> DecayFunctionBase {
         f(Self::builder()).build()
     }
@@ -1764,6 +1801,14 @@ impl DecayFunctionBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayFunctionBaseBuilder {
+    type Output = DecayFunctionBase;
+
+    fn build(self) -> DecayFunctionBase {
+        Self::build(self)
+    }
+}
+
 impl From<DecayFunctionBaseBuilder> for DecayFunctionBase {
     fn from(builder: DecayFunctionBaseBuilder) -> Self {
         builder.build()
@@ -1788,10 +1833,8 @@ impl DecayFunctionBaseDateMathDuration {
     }
 
     /// Creates a [`DecayFunctionBaseDateMathDuration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DecayFunctionBaseDateMathDurationBuilder,
-        ) -> DecayFunctionBaseDateMathDurationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayFunctionBaseDateMathDuration>>(
+        f: impl FnOnce(DecayFunctionBaseDateMathDurationBuilder) -> B,
     ) -> DecayFunctionBaseDateMathDuration {
         f(Self::builder()).build()
     }
@@ -1857,6 +1900,14 @@ impl DecayFunctionBaseDateMathDurationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayFunctionBaseDateMathDurationBuilder {
+    type Output = DecayFunctionBaseDateMathDuration;
+
+    fn build(self) -> DecayFunctionBaseDateMathDuration {
+        Self::build(self)
+    }
+}
+
 impl From<DecayFunctionBaseDateMathDurationBuilder> for DecayFunctionBaseDateMathDuration {
     fn from(builder: DecayFunctionBaseDateMathDurationBuilder) -> Self {
         builder.build()
@@ -1881,10 +1932,8 @@ impl DecayFunctionBaseGeoLocationDistance {
     }
 
     /// Creates a [`DecayFunctionBaseGeoLocationDistance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DecayFunctionBaseGeoLocationDistanceBuilder,
-        ) -> DecayFunctionBaseGeoLocationDistanceBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayFunctionBaseGeoLocationDistance>>(
+        f: impl FnOnce(DecayFunctionBaseGeoLocationDistanceBuilder) -> B,
     ) -> DecayFunctionBaseGeoLocationDistance {
         f(Self::builder()).build()
     }
@@ -1950,6 +1999,14 @@ impl DecayFunctionBaseGeoLocationDistanceBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayFunctionBaseGeoLocationDistanceBuilder {
+    type Output = DecayFunctionBaseGeoLocationDistance;
+
+    fn build(self) -> DecayFunctionBaseGeoLocationDistance {
+        Self::build(self)
+    }
+}
+
 impl From<DecayFunctionBaseGeoLocationDistanceBuilder> for DecayFunctionBaseGeoLocationDistance {
     fn from(builder: DecayFunctionBaseGeoLocationDistanceBuilder) -> Self {
         builder.build()
@@ -1974,8 +2031,8 @@ impl DecayFunctionBasedoubledouble {
     }
 
     /// Creates a [`DecayFunctionBasedoubledouble`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DecayFunctionBasedoubledoubleBuilder) -> DecayFunctionBasedoubledoubleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayFunctionBasedoubledouble>>(
+        f: impl FnOnce(DecayFunctionBasedoubledoubleBuilder) -> B,
     ) -> DecayFunctionBasedoubledouble {
         f(Self::builder()).build()
     }
@@ -2041,6 +2098,14 @@ impl DecayFunctionBasedoubledoubleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayFunctionBasedoubledoubleBuilder {
+    type Output = DecayFunctionBasedoubledouble;
+
+    fn build(self) -> DecayFunctionBasedoubledouble {
+        Self::build(self)
+    }
+}
+
 impl From<DecayFunctionBasedoubledoubleBuilder> for DecayFunctionBasedoubledouble {
     fn from(builder: DecayFunctionBasedoubledoubleBuilder) -> Self {
         builder.build()
@@ -2070,7 +2135,9 @@ impl DecayPlacement {
     }
 
     /// Creates a [`DecayPlacement`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(DecayPlacementBuilder) -> DecayPlacementBuilder) -> DecayPlacement {
+    pub fn of<B: crate::typed::builder::Build<Output = DecayPlacement>>(
+        f: impl FnOnce(DecayPlacementBuilder) -> B,
+    ) -> DecayPlacement {
         f(Self::builder()).build()
     }
 }
@@ -2157,6 +2224,14 @@ impl DecayPlacementBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayPlacementBuilder {
+    type Output = DecayPlacement;
+
+    fn build(self) -> DecayPlacement {
+        Self::build(self)
+    }
+}
+
 impl From<DecayPlacementBuilder> for DecayPlacement {
     fn from(builder: DecayPlacementBuilder) -> Self {
         builder.build()
@@ -2186,8 +2261,8 @@ impl DecayPlacementDateMathDuration {
     }
 
     /// Creates a [`DecayPlacementDateMathDuration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DecayPlacementDateMathDurationBuilder) -> DecayPlacementDateMathDurationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayPlacementDateMathDuration>>(
+        f: impl FnOnce(DecayPlacementDateMathDurationBuilder) -> B,
     ) -> DecayPlacementDateMathDuration {
         f(Self::builder()).build()
     }
@@ -2275,6 +2350,14 @@ impl DecayPlacementDateMathDurationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayPlacementDateMathDurationBuilder {
+    type Output = DecayPlacementDateMathDuration;
+
+    fn build(self) -> DecayPlacementDateMathDuration {
+        Self::build(self)
+    }
+}
+
 impl From<DecayPlacementDateMathDurationBuilder> for DecayPlacementDateMathDuration {
     fn from(builder: DecayPlacementDateMathDurationBuilder) -> Self {
         builder.build()
@@ -2304,10 +2387,8 @@ impl DecayPlacementGeoLocationDistance {
     }
 
     /// Creates a [`DecayPlacementGeoLocationDistance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DecayPlacementGeoLocationDistanceBuilder,
-        ) -> DecayPlacementGeoLocationDistanceBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayPlacementGeoLocationDistance>>(
+        f: impl FnOnce(DecayPlacementGeoLocationDistanceBuilder) -> B,
     ) -> DecayPlacementGeoLocationDistance {
         f(Self::builder()).build()
     }
@@ -2395,6 +2476,14 @@ impl DecayPlacementGeoLocationDistanceBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayPlacementGeoLocationDistanceBuilder {
+    type Output = DecayPlacementGeoLocationDistance;
+
+    fn build(self) -> DecayPlacementGeoLocationDistance {
+        Self::build(self)
+    }
+}
+
 impl From<DecayPlacementGeoLocationDistanceBuilder> for DecayPlacementGeoLocationDistance {
     fn from(builder: DecayPlacementGeoLocationDistanceBuilder) -> Self {
         builder.build()
@@ -2424,8 +2513,8 @@ impl DecayPlacementdoubledouble {
     }
 
     /// Creates a [`DecayPlacementdoubledouble`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DecayPlacementdoubledoubleBuilder) -> DecayPlacementdoubledoubleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = DecayPlacementdoubledouble>>(
+        f: impl FnOnce(DecayPlacementdoubledoubleBuilder) -> B,
     ) -> DecayPlacementdoubledouble {
         f(Self::builder()).build()
     }
@@ -2513,6 +2602,14 @@ impl DecayPlacementdoubledoubleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for DecayPlacementdoubledoubleBuilder {
+    type Output = DecayPlacementdoubledouble;
+
+    fn build(self) -> DecayPlacementdoubledouble {
+        Self::build(self)
+    }
+}
+
 impl From<DecayPlacementdoubledoubleBuilder> for DecayPlacementdoubledouble {
     fn from(builder: DecayPlacementdoubledoubleBuilder) -> Self {
         builder.build()
@@ -2540,16 +2637,27 @@ pub struct DisMaxQuery {
 
 impl DisMaxQuery {
     /// Creates a builder for [`DisMaxQuery`].
+    ///
+    /// Required: `queries`.
     pub fn builder() -> DisMaxQueryBuilder {
         DisMaxQueryBuilder::new()
     }
 
     /// Creates a [`DisMaxQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(DisMaxQueryBuilder) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `queries`.
+    pub fn of<B: crate::typed::builder::Build<Output = DisMaxQuery>>(
+        f: impl FnOnce(DisMaxQueryBuilder) -> B,
     ) -> DisMaxQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DisMaxQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod dis_max_query_members {
+    pub struct queries;
 }
 
 /// Builder for [`DisMaxQuery`].
@@ -2625,7 +2733,7 @@ impl<S0> DisMaxQueryBuilder<(S0,)> {
 }
 
 impl DisMaxQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// One or more query clauses.
+    /// **Required.** One or more query clauses.
     /// Returned documents must match one or more of these queries.
     /// If a document matches multiple queries, Elasticsearch uses the highest relevance score.
     pub fn queries(
@@ -2651,9 +2759,9 @@ impl DisMaxQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`queries`](Self::queries), with a builder.
-    pub fn add_queries_with(
+    pub fn add_queries_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
         self.add_queries(f(QueryContainerBuilder::new()).build())
     }
@@ -2669,17 +2777,20 @@ impl DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`queries`](Self::queries), with a builder.
-    pub fn add_queries_with(
+    pub fn add_queries_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> Self {
         self.add_queries(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> DisMaxQueryBuilder<(S0,)> {
     /// Builds a [`DisMaxQuery`].
-    pub fn build(self) -> DisMaxQuery {
+    pub fn build(self) -> DisMaxQuery
+    where
+        S0: crate::typed::builder::IsSet<dis_max_query_members::queries>,
+    {
         DisMaxQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -2689,16 +2800,24 @@ impl DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<DisMaxQueryBuilder<(crate::typed::builder::Set,)>> for DisMaxQuery {
-    fn from(builder: DisMaxQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for DisMaxQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<dis_max_query_members::queries>,
+{
+    type Output = DisMaxQuery;
+
+    fn build(self) -> DisMaxQuery {
+        Self::build(self)
     }
 }
 
-impl DisMaxQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `queries` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, queries: crate::typed::builder::MissingRequiredField) -> DisMaxQuery { match queries {} }
+impl<S0> From<DisMaxQueryBuilder<(S0,)>> for DisMaxQuery
+where
+    S0: crate::typed::builder::IsSet<dis_max_query_members::queries>,
+{
+    fn from(builder: DisMaxQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
@@ -2739,22 +2858,29 @@ pub struct DistanceFeatureQueryBase {
 
 impl DistanceFeatureQueryBase {
     /// Creates a builder for [`DistanceFeatureQueryBase`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> DistanceFeatureQueryBaseBuilder {
         DistanceFeatureQueryBaseBuilder::new()
     }
 
     /// Creates a [`DistanceFeatureQueryBase`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DistanceFeatureQueryBaseBuilder,
-        ) -> DistanceFeatureQueryBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = DistanceFeatureQueryBase>>(
+        f: impl FnOnce(DistanceFeatureQueryBaseBuilder) -> B,
     ) -> DistanceFeatureQueryBase {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DistanceFeatureQueryBaseBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod distance_feature_query_base_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`DistanceFeatureQueryBase`].
@@ -2833,7 +2959,7 @@ impl<S0, S1, S2> DistanceFeatureQueryBaseBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> DistanceFeatureQueryBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -2848,7 +2974,7 @@ impl<S1, S2> DistanceFeatureQueryBaseBuilder<(crate::typed::builder::NotSet, S1,
 }
 
 impl<S0, S2> DistanceFeatureQueryBaseBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -2861,7 +2987,7 @@ impl<S0, S2> DistanceFeatureQueryBaseBuilder<(S0, crate::typed::builder::NotSet,
 }
 
 impl<S0, S1> DistanceFeatureQueryBaseBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -2875,15 +3001,14 @@ impl<S0, S1> DistanceFeatureQueryBaseBuilder<(S0, S1, crate::typed::builder::Not
     }
 }
 
-impl
-    DistanceFeatureQueryBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DistanceFeatureQueryBaseBuilder<(S0, S1, S2)> {
     /// Builds a [`DistanceFeatureQueryBase`].
-    pub fn build(self) -> DistanceFeatureQueryBase {
+    pub fn build(self) -> DistanceFeatureQueryBase
+    where
+        S0: crate::typed::builder::IsSet<distance_feature_query_base_members::origin>,
+        S1: crate::typed::builder::IsSet<distance_feature_query_base_members::pivot>,
+        S2: crate::typed::builder::IsSet<distance_feature_query_base_members::field>,
+    {
         DistanceFeatureQueryBase {
             boost: self.boost,
             query_name: self.query_name,
@@ -2894,54 +3019,28 @@ impl
     }
 }
 
-impl
-    From<
-        DistanceFeatureQueryBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DistanceFeatureQueryBase
+impl<S0, S1, S2> crate::typed::builder::Build for DistanceFeatureQueryBaseBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<distance_feature_query_base_members::origin>,
+    S1: crate::typed::builder::IsSet<distance_feature_query_base_members::pivot>,
+    S2: crate::typed::builder::IsSet<distance_feature_query_base_members::field>,
 {
-    fn from(
-        builder: DistanceFeatureQueryBaseBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DistanceFeatureQueryBase;
+
+    fn build(self) -> DistanceFeatureQueryBase {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> DistanceFeatureQueryBaseBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBase { match origin {} }
-}
-
-impl<S2>
-    DistanceFeatureQueryBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<DistanceFeatureQueryBaseBuilder<(S0, S1, S2)>> for DistanceFeatureQueryBase
+where
+    S0: crate::typed::builder::IsSet<distance_feature_query_base_members::origin>,
+    S1: crate::typed::builder::IsSet<distance_feature_query_base_members::pivot>,
+    S2: crate::typed::builder::IsSet<distance_feature_query_base_members::field>,
 {
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBase { match pivot {} }
-}
-
-impl
-    DistanceFeatureQueryBaseBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBase { match field {} }
+    fn from(builder: DistanceFeatureQueryBaseBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -2971,22 +3070,31 @@ pub struct DistanceFeatureQueryBaseDateMathDuration {
 
 impl DistanceFeatureQueryBaseDateMathDuration {
     /// Creates a builder for [`DistanceFeatureQueryBaseDateMathDuration`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> DistanceFeatureQueryBaseDateMathDurationBuilder {
         DistanceFeatureQueryBaseDateMathDurationBuilder::new()
     }
 
     /// Creates a [`DistanceFeatureQueryBaseDateMathDuration`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DistanceFeatureQueryBaseDateMathDurationBuilder,
-        ) -> DistanceFeatureQueryBaseDateMathDurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DistanceFeatureQueryBaseDateMathDuration>,
+    >(
+        f: impl FnOnce(DistanceFeatureQueryBaseDateMathDurationBuilder) -> B,
     ) -> DistanceFeatureQueryBaseDateMathDuration {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DistanceFeatureQueryBaseDateMathDurationBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod distance_feature_query_base_date_math_duration_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`DistanceFeatureQueryBaseDateMathDuration`].
@@ -3067,7 +3175,7 @@ impl<S0, S1, S2> DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, S2)> {
 impl<S1, S2>
     DistanceFeatureQueryBaseDateMathDurationBuilder<(crate::typed::builder::NotSet, S1, S2)>
 {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -3084,7 +3192,7 @@ impl<S1, S2>
 impl<S0, S2>
     DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, crate::typed::builder::NotSet, S2)>
 {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -3099,7 +3207,7 @@ impl<S0, S2>
 impl<S0, S1>
     DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, crate::typed::builder::NotSet)>
 {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -3113,15 +3221,20 @@ impl<S0, S1>
     }
 }
 
-impl
-    DistanceFeatureQueryBaseDateMathDurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, S2)> {
     /// Builds a [`DistanceFeatureQueryBaseDateMathDuration`].
-    pub fn build(self) -> DistanceFeatureQueryBaseDateMathDuration {
+    pub fn build(self) -> DistanceFeatureQueryBaseDateMathDuration
+    where
+        S0: crate::typed::builder::IsSet<
+            distance_feature_query_base_date_math_duration_members::origin,
+        >,
+        S1: crate::typed::builder::IsSet<
+            distance_feature_query_base_date_math_duration_members::pivot,
+        >,
+        S2: crate::typed::builder::IsSet<
+            distance_feature_query_base_date_math_duration_members::field,
+        >,
+    {
         DistanceFeatureQueryBaseDateMathDuration {
             boost: self.boost,
             query_name: self.query_name,
@@ -3132,56 +3245,34 @@ impl
     }
 }
 
-impl
-    From<
-        DistanceFeatureQueryBaseDateMathDurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DistanceFeatureQueryBaseDateMathDuration
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        distance_feature_query_base_date_math_duration_members::origin,
+    >,
+    S1: crate::typed::builder::IsSet<distance_feature_query_base_date_math_duration_members::pivot>,
+    S2: crate::typed::builder::IsSet<distance_feature_query_base_date_math_duration_members::field>,
 {
-    fn from(
-        builder: DistanceFeatureQueryBaseDateMathDurationBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DistanceFeatureQueryBaseDateMathDuration;
+
+    fn build(self) -> DistanceFeatureQueryBaseDateMathDuration {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    DistanceFeatureQueryBaseDateMathDurationBuilder<(crate::typed::builder::NotSet, S1, S2)>
+impl<S0, S1, S2> From<DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, S2)>>
+    for DistanceFeatureQueryBaseDateMathDuration
+where
+    S0: crate::typed::builder::IsSet<
+        distance_feature_query_base_date_math_duration_members::origin,
+    >,
+    S1: crate::typed::builder::IsSet<distance_feature_query_base_date_math_duration_members::pivot>,
+    S2: crate::typed::builder::IsSet<distance_feature_query_base_date_math_duration_members::field>,
 {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseDateMathDuration { match origin {} }
-}
-
-impl<S2>
-    DistanceFeatureQueryBaseDateMathDurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseDateMathDuration { match pivot {} }
-}
-
-impl
-    DistanceFeatureQueryBaseDateMathDurationBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseDateMathDuration { match field {} }
+    fn from(builder: DistanceFeatureQueryBaseDateMathDurationBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3211,22 +3302,31 @@ pub struct DistanceFeatureQueryBaseGeoLocationDistance {
 
 impl DistanceFeatureQueryBaseGeoLocationDistance {
     /// Creates a builder for [`DistanceFeatureQueryBaseGeoLocationDistance`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> DistanceFeatureQueryBaseGeoLocationDistanceBuilder {
         DistanceFeatureQueryBaseGeoLocationDistanceBuilder::new()
     }
 
     /// Creates a [`DistanceFeatureQueryBaseGeoLocationDistance`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            DistanceFeatureQueryBaseGeoLocationDistanceBuilder,
-        ) -> DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<
+        B: crate::typed::builder::Build<Output = DistanceFeatureQueryBaseGeoLocationDistance>,
+    >(
+        f: impl FnOnce(DistanceFeatureQueryBaseGeoLocationDistanceBuilder) -> B,
     ) -> DistanceFeatureQueryBaseGeoLocationDistance {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`DistanceFeatureQueryBaseGeoLocationDistanceBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod distance_feature_query_base_geo_location_distance_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`DistanceFeatureQueryBaseGeoLocationDistance`].
@@ -3307,7 +3407,7 @@ impl<S0, S1, S2> DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, S2)
 impl<S1, S2>
     DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(crate::typed::builder::NotSet, S1, S2)>
 {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -3325,7 +3425,7 @@ impl<S1, S2>
 impl<S0, S2>
     DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, crate::typed::builder::NotSet, S2)>
 {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -3341,7 +3441,7 @@ impl<S0, S2>
 impl<S0, S1>
     DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, crate::typed::builder::NotSet)>
 {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -3356,15 +3456,20 @@ impl<S0, S1>
     }
 }
 
-impl
-    DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, S2)> {
     /// Builds a [`DistanceFeatureQueryBaseGeoLocationDistance`].
-    pub fn build(self) -> DistanceFeatureQueryBaseGeoLocationDistance {
+    pub fn build(self) -> DistanceFeatureQueryBaseGeoLocationDistance
+    where
+        S0: crate::typed::builder::IsSet<
+            distance_feature_query_base_geo_location_distance_members::origin,
+        >,
+        S1: crate::typed::builder::IsSet<
+            distance_feature_query_base_geo_location_distance_members::pivot,
+        >,
+        S2: crate::typed::builder::IsSet<
+            distance_feature_query_base_geo_location_distance_members::field,
+        >,
+    {
         DistanceFeatureQueryBaseGeoLocationDistance {
             boost: self.boost,
             query_name: self.query_name,
@@ -3375,56 +3480,42 @@ impl
     }
 }
 
-impl
-    From<
-        DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for DistanceFeatureQueryBaseGeoLocationDistance
+impl<S0, S1, S2> crate::typed::builder::Build
+    for DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::origin,
+    >,
+    S1: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::pivot,
+    >,
+    S2: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::field,
+    >,
 {
-    fn from(
-        builder: DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = DistanceFeatureQueryBaseGeoLocationDistance;
+
+    fn build(self) -> DistanceFeatureQueryBaseGeoLocationDistance {
+        Self::build(self)
     }
 }
 
-impl<S1, S2>
-    DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(crate::typed::builder::NotSet, S1, S2)>
+impl<S0, S1, S2> From<DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, S2)>>
+    for DistanceFeatureQueryBaseGeoLocationDistance
+where
+    S0: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::origin,
+    >,
+    S1: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::pivot,
+    >,
+    S2: crate::typed::builder::IsSet<
+        distance_feature_query_base_geo_location_distance_members::field,
+    >,
 {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseGeoLocationDistance { match origin {} }
-}
-
-impl<S2>
-    DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
-{
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseGeoLocationDistance { match pivot {} }
-}
-
-impl
-    DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> DistanceFeatureQueryBaseGeoLocationDistance { match field {} }
+    fn from(builder: DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3443,16 +3534,27 @@ pub struct ExistsQuery {
 
 impl ExistsQuery {
     /// Creates a builder for [`ExistsQuery`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> ExistsQueryBuilder {
         ExistsQueryBuilder::new()
     }
 
     /// Creates a [`ExistsQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ExistsQueryBuilder) -> ExistsQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = ExistsQuery>>(
+        f: impl FnOnce(ExistsQueryBuilder) -> B,
     ) -> ExistsQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ExistsQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod exists_query_members {
+    pub struct field;
 }
 
 /// Builder for [`ExistsQuery`].
@@ -3513,7 +3615,7 @@ impl<S0> ExistsQueryBuilder<(S0,)> {
 }
 
 impl ExistsQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Name of the field you wish to search.
+    /// **Required.** Name of the field you wish to search.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3524,9 +3626,12 @@ impl ExistsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl ExistsQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ExistsQueryBuilder<(S0,)> {
     /// Builds a [`ExistsQuery`].
-    pub fn build(self) -> ExistsQuery {
+    pub fn build(self) -> ExistsQuery
+    where
+        S0: crate::typed::builder::IsSet<exists_query_members::field>,
+    {
         ExistsQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -3535,16 +3640,24 @@ impl ExistsQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ExistsQueryBuilder<(crate::typed::builder::Set,)>> for ExistsQuery {
-    fn from(builder: ExistsQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ExistsQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<exists_query_members::field>,
+{
+    type Output = ExistsQuery;
+
+    fn build(self) -> ExistsQuery {
+        Self::build(self)
     }
 }
 
-impl ExistsQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> ExistsQuery { match field {} }
+impl<S0> From<ExistsQueryBuilder<(S0,)>> for ExistsQuery
+where
+    S0: crate::typed::builder::IsSet<exists_query_members::field>,
+{
+    fn from(builder: ExistsQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// A reference to a field with formatting instructions on how to return the value
@@ -3561,16 +3674,27 @@ pub struct FieldAndFormat {
 
 impl FieldAndFormat {
     /// Creates a builder for [`FieldAndFormat`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> FieldAndFormatBuilder {
         FieldAndFormatBuilder::new()
     }
 
     /// Creates a [`FieldAndFormat`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FieldAndFormatBuilder) -> FieldAndFormatBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldAndFormat>>(
+        f: impl FnOnce(FieldAndFormatBuilder) -> B,
     ) -> FieldAndFormat {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldAndFormatBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_and_format_members {
+    pub struct field;
 }
 
 /// Builder for [`FieldAndFormat`].
@@ -3628,7 +3752,7 @@ impl<S0> FieldAndFormatBuilder<(S0,)> {
 }
 
 impl FieldAndFormatBuilder<(crate::typed::builder::NotSet,)> {
-    /// A wildcard pattern. The request returns values for field names matching this pattern.
+    /// **Required.** A wildcard pattern. The request returns values for field names matching this pattern.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3639,9 +3763,12 @@ impl FieldAndFormatBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FieldAndFormatBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldAndFormatBuilder<(S0,)> {
     /// Builds a [`FieldAndFormat`].
-    pub fn build(self) -> FieldAndFormat {
+    pub fn build(self) -> FieldAndFormat
+    where
+        S0: crate::typed::builder::IsSet<field_and_format_members::field>,
+    {
         FieldAndFormat {
             field: self.field.unwrap(),
             format: self.format,
@@ -3650,16 +3777,24 @@ impl FieldAndFormatBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FieldAndFormatBuilder<(crate::typed::builder::Set,)>> for FieldAndFormat {
-    fn from(builder: FieldAndFormatBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FieldAndFormatBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<field_and_format_members::field>,
+{
+    type Output = FieldAndFormat;
+
+    fn build(self) -> FieldAndFormat {
+        Self::build(self)
     }
 }
 
-impl FieldAndFormatBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FieldAndFormat { match field {} }
+impl<S0> From<FieldAndFormatBuilder<(S0,)>> for FieldAndFormat
+where
+    S0: crate::typed::builder::IsSet<field_and_format_members::field>,
+{
+    fn from(builder: FieldAndFormatBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -3679,16 +3814,27 @@ pub struct FieldLookup {
 
 impl FieldLookup {
     /// Creates a builder for [`FieldLookup`].
+    ///
+    /// Required: `id`.
     pub fn builder() -> FieldLookupBuilder {
         FieldLookupBuilder::new()
     }
 
     /// Creates a [`FieldLookup`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FieldLookupBuilder) -> FieldLookupBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldLookup>>(
+        f: impl FnOnce(FieldLookupBuilder) -> B,
     ) -> FieldLookup {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldLookupBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_lookup_members {
+    pub struct id;
 }
 
 /// Builder for [`FieldLookup`].
@@ -3762,7 +3908,7 @@ impl<S0> FieldLookupBuilder<(S0,)> {
 }
 
 impl FieldLookupBuilder<(crate::typed::builder::NotSet,)> {
-    /// `id` of the document.
+    /// **Required.** `id` of the document.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -3773,9 +3919,12 @@ impl FieldLookupBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FieldLookupBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldLookupBuilder<(S0,)> {
     /// Builds a [`FieldLookup`].
-    pub fn build(self) -> FieldLookup {
+    pub fn build(self) -> FieldLookup
+    where
+        S0: crate::typed::builder::IsSet<field_lookup_members::id>,
+    {
         FieldLookup {
             id: self.id.unwrap(),
             index: self.index,
@@ -3785,16 +3934,24 @@ impl FieldLookupBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FieldLookupBuilder<(crate::typed::builder::Set,)>> for FieldLookup {
-    fn from(builder: FieldLookupBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FieldLookupBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<field_lookup_members::id>,
+{
+    type Output = FieldLookup;
+
+    fn build(self) -> FieldLookup {
+        Self::build(self)
     }
 }
 
-impl FieldLookupBuilder<(crate::typed::builder::NotSet,)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> FieldLookup { match id {} }
+impl<S0> From<FieldLookupBuilder<(S0,)>> for FieldLookup
+where
+    S0: crate::typed::builder::IsSet<field_lookup_members::id>,
+{
+    fn from(builder: FieldLookupBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -3851,18 +4008,27 @@ pub struct FieldValueFactorScoreFunction {
 
 impl FieldValueFactorScoreFunction {
     /// Creates a builder for [`FieldValueFactorScoreFunction`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> FieldValueFactorScoreFunctionBuilder {
         FieldValueFactorScoreFunctionBuilder::new()
     }
 
     /// Creates a [`FieldValueFactorScoreFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FieldValueFactorScoreFunctionBuilder,
-        ) -> FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = FieldValueFactorScoreFunction>>(
+        f: impl FnOnce(FieldValueFactorScoreFunctionBuilder) -> B,
     ) -> FieldValueFactorScoreFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FieldValueFactorScoreFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod field_value_factor_score_function_members {
+    pub struct field;
 }
 
 /// Builder for [`FieldValueFactorScoreFunction`].
@@ -3937,7 +4103,7 @@ impl<S0> FieldValueFactorScoreFunctionBuilder<(S0,)> {
 }
 
 impl FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field to be extracted from the document.
+    /// **Required.** Field to be extracted from the document.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -3948,9 +4114,12 @@ impl FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FieldValueFactorScoreFunctionBuilder<(S0,)> {
     /// Builds a [`FieldValueFactorScoreFunction`].
-    pub fn build(self) -> FieldValueFactorScoreFunction {
+    pub fn build(self) -> FieldValueFactorScoreFunction
+    where
+        S0: crate::typed::builder::IsSet<field_value_factor_score_function_members::field>,
+    {
         FieldValueFactorScoreFunction {
             field: self.field.unwrap(),
             factor: self.factor,
@@ -3960,18 +4129,24 @@ impl FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)>>
-    for FieldValueFactorScoreFunction
+impl<S0> crate::typed::builder::Build for FieldValueFactorScoreFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<field_value_factor_score_function_members::field>,
 {
-    fn from(builder: FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = FieldValueFactorScoreFunction;
+
+    fn build(self) -> FieldValueFactorScoreFunction {
+        Self::build(self)
     }
 }
 
-impl FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> FieldValueFactorScoreFunction { match field {} }
+impl<S0> From<FieldValueFactorScoreFunctionBuilder<(S0,)>> for FieldValueFactorScoreFunction
+where
+    S0: crate::typed::builder::IsSet<field_value_factor_score_function_members::field>,
+{
+    fn from(builder: FieldValueFactorScoreFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4108,15 +4283,17 @@ impl From<ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>> for Functio
 
 impl FunctionScoreContainer {
     /// Creates a builder for [`FunctionScoreContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> FunctionScoreContainerBuilder {
         FunctionScoreContainerBuilder::new()
     }
 
     /// Creates a [`FunctionScoreContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            FunctionScoreContainerBuilder,
-        ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = FunctionScoreContainer>>(
+        f: impl FnOnce(FunctionScoreContainerBuilder) -> B,
     ) -> FunctionScoreContainer {
         f(Self::builder()).build()
     }
@@ -4167,9 +4344,9 @@ impl<S0> FunctionScoreContainerBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> Self {
         self.filter(f(QueryContainerBuilder::new()).build())
     }
@@ -4241,11 +4418,11 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`field_value_factor`](Self::field_value_factor) with a builder.
-    pub fn field_value_factor_with(
+    pub fn field_value_factor_with<
+        B: crate::typed::builder::Build<Output = FieldValueFactorScoreFunction>,
+    >(
         self,
-        f: impl FnOnce(
-            FieldValueFactorScoreFunctionBuilder,
-        ) -> FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FieldValueFactorScoreFunctionBuilder) -> B,
     ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
         self.field_value_factor(f(FieldValueFactorScoreFunctionBuilder::new()).build())
     }
@@ -4262,9 +4439,9 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`random_score`](Self::random_score) with a builder.
-    pub fn random_score_with(
+    pub fn random_score_with<B: crate::typed::builder::Build<Output = RandomScoreFunction>>(
         self,
-        f: impl FnOnce(RandomScoreFunctionBuilder) -> RandomScoreFunctionBuilder,
+        f: impl FnOnce(RandomScoreFunctionBuilder) -> B,
     ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
         self.random_score(f(RandomScoreFunctionBuilder::new()).build())
     }
@@ -4280,19 +4457,20 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script_score`](Self::script_score) with a builder.
-    pub fn script_score_with(
+    pub fn script_score_with<B: crate::typed::builder::Build<Output = ScriptScoreFunction>>(
         self,
-        f: impl FnOnce(
-            ScriptScoreFunctionBuilder,
-        ) -> ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ScriptScoreFunctionBuilder) -> B,
     ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
         self.script_score(f(ScriptScoreFunctionBuilder::new()).build())
     }
 }
 
-impl FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FunctionScoreContainerBuilder<(S0,)> {
     /// Builds a [`FunctionScoreContainer`].
-    pub fn build(self) -> FunctionScoreContainer {
+    pub fn build(self) -> FunctionScoreContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<FunctionScoreContainer>,
+    {
         FunctionScoreContainer {
             filter: self.filter,
             weight: self.weight,
@@ -4302,16 +4480,24 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FunctionScoreContainerBuilder<(crate::typed::builder::Set,)>> for FunctionScoreContainer {
-    fn from(builder: FunctionScoreContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FunctionScoreContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<FunctionScoreContainer>,
+{
+    type Output = FunctionScoreContainer;
+
+    fn build(self) -> FunctionScoreContainer {
+        Self::build(self)
     }
 }
 
-impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> FunctionScoreContainer { match variant {} }
+impl<S0> From<FunctionScoreContainerBuilder<(S0,)>> for FunctionScoreContainer
+where
+    S0: crate::typed::builder::IsVariantSet<FunctionScoreContainer>,
+{
+    fn from(builder: FunctionScoreContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -4373,8 +4559,8 @@ impl FunctionScoreQuery {
     }
 
     /// Creates a [`FunctionScoreQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FunctionScoreQueryBuilder) -> FunctionScoreQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = FunctionScoreQuery>>(
+        f: impl FnOnce(FunctionScoreQueryBuilder) -> B,
     ) -> FunctionScoreQuery {
         f(Self::builder()).build()
     }
@@ -4468,11 +4654,9 @@ impl FunctionScoreQueryBuilder {
     }
 
     /// Adds an element to [`functions`](Self::functions), with a builder.
-    pub fn add_functions_with(
+    pub fn add_functions_with<B: crate::typed::builder::Build<Output = FunctionScoreContainer>>(
         self,
-        f: impl FnOnce(
-            FunctionScoreContainerBuilder,
-        ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FunctionScoreContainerBuilder) -> B,
     ) -> Self {
         self.add_functions(f(FunctionScoreContainerBuilder::new()).build())
     }
@@ -4514,9 +4698,9 @@ impl FunctionScoreQueryBuilder {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> Self {
         self.query(f(QueryContainerBuilder::new()).build())
     }
@@ -4547,6 +4731,14 @@ impl FunctionScoreQueryBuilder {
             query: self.query,
             score_mode: self.score_mode,
         }
+    }
+}
+
+impl crate::typed::builder::Build for FunctionScoreQueryBuilder {
+    type Output = FunctionScoreQuery;
+
+    fn build(self) -> FunctionScoreQuery {
+        Self::build(self)
     }
 }
 
@@ -4625,16 +4817,27 @@ impl From<f64> for FuzzyQueryValue {
 
 impl FuzzyQuery {
     /// Creates a builder for [`FuzzyQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> FuzzyQueryBuilder {
         FuzzyQueryBuilder::new()
     }
 
     /// Creates a [`FuzzyQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(FuzzyQueryBuilder) -> FuzzyQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = FuzzyQuery>>(
+        f: impl FnOnce(FuzzyQueryBuilder) -> B,
     ) -> FuzzyQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`FuzzyQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod fuzzy_query_members {
+    pub struct value;
 }
 
 /// Builder for [`FuzzyQuery`].
@@ -4776,7 +4979,7 @@ impl<S0> FuzzyQueryBuilder<(S0,)> {
 }
 
 impl FuzzyQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Term you wish to find in the provided field.
+    /// **Required.** Term you wish to find in the provided field.
     pub fn value(
         self,
         value: impl Into<FuzzyQueryValue>,
@@ -4787,9 +4990,12 @@ impl FuzzyQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl FuzzyQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> FuzzyQueryBuilder<(S0,)> {
     /// Builds a [`FuzzyQuery`].
-    pub fn build(self) -> FuzzyQuery {
+    pub fn build(self) -> FuzzyQuery
+    where
+        S0: crate::typed::builder::IsSet<fuzzy_query_members::value>,
+    {
         FuzzyQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -4803,16 +5009,24 @@ impl FuzzyQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<FuzzyQueryBuilder<(crate::typed::builder::Set,)>> for FuzzyQuery {
-    fn from(builder: FuzzyQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for FuzzyQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<fuzzy_query_members::value>,
+{
+    type Output = FuzzyQuery;
+
+    fn build(self) -> FuzzyQuery {
+        Self::build(self)
     }
 }
 
-impl FuzzyQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> FuzzyQuery { match value {} }
+impl<S0> From<FuzzyQueryBuilder<(S0,)>> for FuzzyQuery
+where
+    S0: crate::typed::builder::IsSet<fuzzy_query_members::value>,
+{
+    fn from(builder: FuzzyQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -4848,8 +5062,8 @@ impl GeoBoundingBoxQuery {
     }
 
     /// Creates a [`GeoBoundingBoxQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoBoundingBoxQueryBuilder) -> GeoBoundingBoxQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoBoundingBoxQuery>>(
+        f: impl FnOnce(GeoBoundingBoxQueryBuilder) -> B,
     ) -> GeoBoundingBoxQuery {
         f(Self::builder()).build()
     }
@@ -4978,6 +5192,14 @@ impl GeoBoundingBoxQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoBoundingBoxQueryBuilder {
+    type Output = GeoBoundingBoxQuery;
+
+    fn build(self) -> GeoBoundingBoxQuery {
+        Self::build(self)
+    }
+}
+
 impl From<GeoBoundingBoxQueryBuilder> for GeoBoundingBoxQuery {
     fn from(builder: GeoBoundingBoxQueryBuilder) -> Self {
         builder.build()
@@ -5002,8 +5224,8 @@ impl GeoDecayFunction {
     }
 
     /// Creates a [`GeoDecayFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoDecayFunctionBuilder) -> GeoDecayFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoDecayFunction>>(
+        f: impl FnOnce(GeoDecayFunctionBuilder) -> B,
     ) -> GeoDecayFunction {
         f(Self::builder()).build()
     }
@@ -5069,6 +5291,14 @@ impl GeoDecayFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoDecayFunctionBuilder {
+    type Output = GeoDecayFunction;
+
+    fn build(self) -> GeoDecayFunction {
+        Self::build(self)
+    }
+}
+
 impl From<GeoDecayFunctionBuilder> for GeoDecayFunction {
     fn from(builder: GeoDecayFunctionBuilder) -> Self {
         builder.build()
@@ -5102,22 +5332,29 @@ pub struct GeoDistanceFeatureQuery {
 
 impl GeoDistanceFeatureQuery {
     /// Creates a builder for [`GeoDistanceFeatureQuery`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> GeoDistanceFeatureQueryBuilder {
         GeoDistanceFeatureQueryBuilder::new()
     }
 
     /// Creates a [`GeoDistanceFeatureQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoDistanceFeatureQueryBuilder,
-        ) -> GeoDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoDistanceFeatureQuery>>(
+        f: impl FnOnce(GeoDistanceFeatureQueryBuilder) -> B,
     ) -> GeoDistanceFeatureQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoDistanceFeatureQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_distance_feature_query_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`GeoDistanceFeatureQuery`].
@@ -5196,7 +5433,7 @@ impl<S0, S1, S2> GeoDistanceFeatureQueryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> GeoDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -5211,7 +5448,7 @@ impl<S1, S2> GeoDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, 
 }
 
 impl<S0, S2> GeoDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -5224,7 +5461,7 @@ impl<S0, S2> GeoDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotSet, 
 }
 
 impl<S0, S1> GeoDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -5238,15 +5475,14 @@ impl<S0, S1> GeoDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::NotS
     }
 }
 
-impl
-    GeoDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> GeoDistanceFeatureQueryBuilder<(S0, S1, S2)> {
     /// Builds a [`GeoDistanceFeatureQuery`].
-    pub fn build(self) -> GeoDistanceFeatureQuery {
+    pub fn build(self) -> GeoDistanceFeatureQuery
+    where
+        S0: crate::typed::builder::IsSet<geo_distance_feature_query_members::origin>,
+        S1: crate::typed::builder::IsSet<geo_distance_feature_query_members::pivot>,
+        S2: crate::typed::builder::IsSet<geo_distance_feature_query_members::field>,
+    {
         GeoDistanceFeatureQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -5257,54 +5493,28 @@ impl
     }
 }
 
-impl
-    From<
-        GeoDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for GeoDistanceFeatureQuery
+impl<S0, S1, S2> crate::typed::builder::Build for GeoDistanceFeatureQueryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<geo_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<geo_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<geo_distance_feature_query_members::field>,
 {
-    fn from(
-        builder: GeoDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = GeoDistanceFeatureQuery;
+
+    fn build(self) -> GeoDistanceFeatureQuery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> GeoDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> GeoDistanceFeatureQuery { match origin {} }
-}
-
-impl<S2>
-    GeoDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<GeoDistanceFeatureQueryBuilder<(S0, S1, S2)>> for GeoDistanceFeatureQuery
+where
+    S0: crate::typed::builder::IsSet<geo_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<geo_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<geo_distance_feature_query_members::field>,
 {
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> GeoDistanceFeatureQuery { match pivot {} }
-}
-
-impl
-    GeoDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> GeoDistanceFeatureQuery { match field {} }
+    fn from(builder: GeoDistanceFeatureQueryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5340,18 +5550,27 @@ pub struct GeoDistanceQuery {
 
 impl GeoDistanceQuery {
     /// Creates a builder for [`GeoDistanceQuery`].
+    ///
+    /// Required: `distance`.
     pub fn builder() -> GeoDistanceQueryBuilder {
         GeoDistanceQueryBuilder::new()
     }
 
     /// Creates a [`GeoDistanceQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoDistanceQueryBuilder,
-        ) -> GeoDistanceQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `distance`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoDistanceQuery>>(
+        f: impl FnOnce(GeoDistanceQueryBuilder) -> B,
     ) -> GeoDistanceQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoDistanceQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_distance_query_members {
+    pub struct distance;
 }
 
 /// Builder for [`GeoDistanceQuery`].
@@ -5489,7 +5708,7 @@ impl<S0> GeoDistanceQueryBuilder<(S0,)> {
 }
 
 impl GeoDistanceQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// The radius of the circle centred on the specified location.
+    /// **Required.** The radius of the circle centred on the specified location.
     /// Points which fall into this circle are considered to be matches.
     pub fn distance(
         self,
@@ -5501,9 +5720,12 @@ impl GeoDistanceQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoDistanceQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoDistanceQueryBuilder<(S0,)> {
     /// Builds a [`GeoDistanceQuery`].
-    pub fn build(self) -> GeoDistanceQuery {
+    pub fn build(self) -> GeoDistanceQuery
+    where
+        S0: crate::typed::builder::IsSet<geo_distance_query_members::distance>,
+    {
         GeoDistanceQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -5516,16 +5738,24 @@ impl GeoDistanceQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<GeoDistanceQueryBuilder<(crate::typed::builder::Set,)>> for GeoDistanceQuery {
-    fn from(builder: GeoDistanceQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoDistanceQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_distance_query_members::distance>,
+{
+    type Output = GeoDistanceQuery;
+
+    fn build(self) -> GeoDistanceQuery {
+        Self::build(self)
     }
 }
 
-impl GeoDistanceQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `distance` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, distance: crate::typed::builder::MissingRequiredField) -> GeoDistanceQuery { match distance {} }
+impl<S0> From<GeoDistanceQueryBuilder<(S0,)>> for GeoDistanceQuery
+where
+    S0: crate::typed::builder::IsSet<geo_distance_query_members::distance>,
+{
+    fn from(builder: GeoDistanceQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -5556,13 +5786,17 @@ pub enum GeoGridQuery {
 
 impl GeoGridQuery {
     /// Creates a builder for [`GeoGridQuery`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> GeoGridQueryBuilder {
         GeoGridQueryBuilder::new()
     }
 
     /// Creates a [`GeoGridQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoGridQueryBuilder) -> GeoGridQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoGridQuery>>(
+        f: impl FnOnce(GeoGridQueryBuilder) -> B,
     ) -> GeoGridQuery {
         f(Self::builder()).build()
     }
@@ -5641,23 +5875,34 @@ impl GeoGridQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl GeoGridQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoGridQueryBuilder<(S0,)> {
     /// Builds a [`GeoGridQuery`].
-    pub fn build(self) -> GeoGridQuery {
+    pub fn build(self) -> GeoGridQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<GeoGridQuery>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<GeoGridQueryBuilder<(crate::typed::builder::Set,)>> for GeoGridQuery {
-    fn from(builder: GeoGridQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoGridQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<GeoGridQuery>,
+{
+    type Output = GeoGridQuery;
+
+    fn build(self) -> GeoGridQuery {
+        Self::build(self)
     }
 }
 
-impl GeoGridQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> GeoGridQuery { match variant {} }
+impl<S0> From<GeoGridQueryBuilder<(S0,)>> for GeoGridQuery
+where
+    S0: crate::typed::builder::IsVariantSet<GeoGridQuery>,
+{
+    fn from(builder: GeoGridQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5667,18 +5912,27 @@ pub struct GeoPolygonPoints {
 
 impl GeoPolygonPoints {
     /// Creates a builder for [`GeoPolygonPoints`].
+    ///
+    /// Required: `points`.
     pub fn builder() -> GeoPolygonPointsBuilder {
         GeoPolygonPointsBuilder::new()
     }
 
     /// Creates a [`GeoPolygonPoints`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            GeoPolygonPointsBuilder,
-        ) -> GeoPolygonPointsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `points`.
+    pub fn of<B: crate::typed::builder::Build<Output = GeoPolygonPoints>>(
+        f: impl FnOnce(GeoPolygonPointsBuilder) -> B,
     ) -> GeoPolygonPoints {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`GeoPolygonPointsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod geo_polygon_points_members {
+    pub struct points;
 }
 
 /// Builder for [`GeoPolygonPoints`].
@@ -5707,6 +5961,7 @@ impl<S0> GeoPolygonPointsBuilder<(S0,)> {
 }
 
 impl GeoPolygonPointsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn points(
         self,
         value: impl Into<Vec<crate::typed::_types::GeoLocation>>,
@@ -5740,25 +5995,36 @@ impl GeoPolygonPointsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl GeoPolygonPointsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> GeoPolygonPointsBuilder<(S0,)> {
     /// Builds a [`GeoPolygonPoints`].
-    pub fn build(self) -> GeoPolygonPoints {
+    pub fn build(self) -> GeoPolygonPoints
+    where
+        S0: crate::typed::builder::IsSet<geo_polygon_points_members::points>,
+    {
         GeoPolygonPoints {
             points: self.points.unwrap(),
         }
     }
 }
 
-impl From<GeoPolygonPointsBuilder<(crate::typed::builder::Set,)>> for GeoPolygonPoints {
-    fn from(builder: GeoPolygonPointsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for GeoPolygonPointsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<geo_polygon_points_members::points>,
+{
+    type Output = GeoPolygonPoints;
+
+    fn build(self) -> GeoPolygonPoints {
+        Self::build(self)
     }
 }
 
-impl GeoPolygonPointsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `points` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, points: crate::typed::builder::MissingRequiredField) -> GeoPolygonPoints { match points {} }
+impl<S0> From<GeoPolygonPointsBuilder<(S0,)>> for GeoPolygonPoints
+where
+    S0: crate::typed::builder::IsSet<geo_polygon_points_members::points>,
+{
+    fn from(builder: GeoPolygonPointsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -5787,7 +6053,9 @@ impl GeoPolygonQuery {
     }
 
     /// Creates a [`GeoPolygonQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GeoPolygonQueryBuilder) -> GeoPolygonQueryBuilder) -> GeoPolygonQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = GeoPolygonQuery>>(
+        f: impl FnOnce(GeoPolygonQueryBuilder) -> B,
+    ) -> GeoPolygonQuery {
         f(Self::builder()).build()
     }
 }
@@ -5896,6 +6164,14 @@ impl GeoPolygonQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoPolygonQueryBuilder {
+    type Output = GeoPolygonQuery;
+
+    fn build(self) -> GeoPolygonQuery {
+        Self::build(self)
+    }
+}
+
 impl From<GeoPolygonQueryBuilder> for GeoPolygonQuery {
     fn from(builder: GeoPolygonQueryBuilder) -> Self {
         builder.build()
@@ -5921,8 +6197,8 @@ impl GeoShapeFieldQuery {
     }
 
     /// Creates a [`GeoShapeFieldQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(GeoShapeFieldQueryBuilder) -> GeoShapeFieldQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = GeoShapeFieldQuery>>(
+        f: impl FnOnce(GeoShapeFieldQueryBuilder) -> B,
     ) -> GeoShapeFieldQuery {
         f(Self::builder()).build()
     }
@@ -5971,9 +6247,9 @@ impl GeoShapeFieldQueryBuilder {
     }
 
     /// Sets [`indexed_shape`](Self::indexed_shape) with a builder.
-    pub fn indexed_shape_with(
+    pub fn indexed_shape_with<B: crate::typed::builder::Build<Output = FieldLookup>>(
         self,
-        f: impl FnOnce(FieldLookupBuilder) -> FieldLookupBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FieldLookupBuilder) -> B,
     ) -> Self {
         self.indexed_shape(f(FieldLookupBuilder::new()).build())
     }
@@ -5999,6 +6275,14 @@ impl GeoShapeFieldQueryBuilder {
             indexed_shape: self.indexed_shape,
             relation: self.relation,
         }
+    }
+}
+
+impl crate::typed::builder::Build for GeoShapeFieldQueryBuilder {
+    type Output = GeoShapeFieldQuery;
+
+    fn build(self) -> GeoShapeFieldQuery {
+        Self::build(self)
     }
 }
 
@@ -6034,7 +6318,9 @@ impl GeoShapeQuery {
     }
 
     /// Creates a [`GeoShapeQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(GeoShapeQueryBuilder) -> GeoShapeQueryBuilder) -> GeoShapeQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = GeoShapeQuery>>(
+        f: impl FnOnce(GeoShapeQueryBuilder) -> B,
+    ) -> GeoShapeQuery {
         f(Self::builder()).build()
     }
 }
@@ -6131,6 +6417,14 @@ impl GeoShapeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for GeoShapeQueryBuilder {
+    type Output = GeoShapeQuery;
+
+    fn build(self) -> GeoShapeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<GeoShapeQueryBuilder> for GeoShapeQuery {
     fn from(builder: GeoShapeQueryBuilder) -> Self {
         builder.build()
@@ -6185,19 +6479,28 @@ pub struct HasChildQuery {
 
 impl HasChildQuery {
     /// Creates a builder for [`HasChildQuery`].
+    ///
+    /// Required: `query`, `type`.
     pub fn builder() -> HasChildQueryBuilder {
         HasChildQueryBuilder::new()
     }
 
     /// Creates a [`HasChildQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HasChildQueryBuilder,
-        )
-            -> HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `query`, `type`.
+    pub fn of<B: crate::typed::builder::Build<Output = HasChildQuery>>(
+        f: impl FnOnce(HasChildQueryBuilder) -> B,
     ) -> HasChildQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HasChildQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod has_child_query_members {
+    pub struct query;
+    pub struct r#type;
 }
 
 /// Builder for [`HasChildQuery`].
@@ -6306,11 +6609,11 @@ impl<S0, S1> HasChildQueryBuilder<(S0, S1)> {
     }
 
     /// Sets [`inner_hits`](Self::inner_hits) with a builder.
-    pub fn inner_hits_with(
+    pub fn inner_hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::InnerHits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::InnerHitsBuilder,
-        ) -> crate::typed::_global::search::_types::InnerHitsBuilder,
+        f: impl FnOnce(crate::typed::_global::search::_types::InnerHitsBuilder) -> B,
     ) -> Self {
         self.inner_hits(f(crate::typed::_global::search::_types::InnerHitsBuilder::new()).build())
     }
@@ -6355,7 +6658,7 @@ impl<S0, S1> HasChildQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> HasChildQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Query you wish to run on child documents of the `type` field.
+    /// **Required.** Query you wish to run on child documents of the `type` field.
     /// If a child document matches the search, the query returns the parent document.
     pub fn query(
         self,
@@ -6367,16 +6670,16 @@ impl<S1> HasChildQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> HasChildQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.query(f(QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S0> HasChildQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Name of the child relationship mapped for the `join` field.
+    /// **Required.** Name of the child relationship mapped for the `join` field.
     pub fn r#type(
         self,
         value: impl Into<crate::typed::_types::RelationName>,
@@ -6387,9 +6690,13 @@ impl<S0> HasChildQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HasChildQueryBuilder<(S0, S1)> {
     /// Builds a [`HasChildQuery`].
-    pub fn build(self) -> HasChildQuery {
+    pub fn build(self) -> HasChildQuery
+    where
+        S0: crate::typed::builder::IsSet<has_child_query_members::query>,
+        S1: crate::typed::builder::IsSet<has_child_query_members::r#type>,
+    {
         HasChildQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -6404,26 +6711,26 @@ impl HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for HasChildQuery
+impl<S0, S1> crate::typed::builder::Build for HasChildQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<has_child_query_members::query>,
+    S1: crate::typed::builder::IsSet<has_child_query_members::r#type>,
 {
-    fn from(
-        builder: HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = HasChildQuery;
+
+    fn build(self) -> HasChildQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> HasChildQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> HasChildQuery { match query {} }
-}
-
-impl HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#type: crate::typed::builder::MissingRequiredField) -> HasChildQuery { match r#type {} }
+impl<S0, S1> From<HasChildQueryBuilder<(S0, S1)>> for HasChildQuery
+where
+    S0: crate::typed::builder::IsSet<has_child_query_members::query>,
+    S1: crate::typed::builder::IsSet<has_child_query_members::r#type>,
+{
+    fn from(builder: HasChildQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6455,21 +6762,28 @@ pub struct HasParentQuery {
 
 impl HasParentQuery {
     /// Creates a builder for [`HasParentQuery`].
+    ///
+    /// Required: `parent_type`, `query`.
     pub fn builder() -> HasParentQueryBuilder {
         HasParentQueryBuilder::new()
     }
 
     /// Creates a [`HasParentQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            HasParentQueryBuilder,
-        ) -> HasParentQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `parent_type`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = HasParentQuery>>(
+        f: impl FnOnce(HasParentQueryBuilder) -> B,
     ) -> HasParentQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`HasParentQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod has_parent_query_members {
+    pub struct parent_type;
+    pub struct query;
 }
 
 /// Builder for [`HasParentQuery`].
@@ -6573,11 +6887,11 @@ impl<S0, S1> HasParentQueryBuilder<(S0, S1)> {
     }
 
     /// Sets [`inner_hits`](Self::inner_hits) with a builder.
-    pub fn inner_hits_with(
+    pub fn inner_hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::InnerHits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::InnerHitsBuilder,
-        ) -> crate::typed::_global::search::_types::InnerHitsBuilder,
+        f: impl FnOnce(crate::typed::_global::search::_types::InnerHitsBuilder) -> B,
     ) -> Self {
         self.inner_hits(f(crate::typed::_global::search::_types::InnerHitsBuilder::new()).build())
     }
@@ -6596,7 +6910,7 @@ impl<S0, S1> HasParentQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> HasParentQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Name of the parent relationship mapped for the `join` field.
+    /// **Required.** Name of the parent relationship mapped for the `join` field.
     pub fn parent_type(
         self,
         value: impl Into<crate::typed::_types::RelationName>,
@@ -6608,7 +6922,7 @@ impl<S1> HasParentQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> HasParentQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Query you wish to run on parent documents of the `parent_type` field.
+    /// **Required.** Query you wish to run on parent documents of the `parent_type` field.
     /// If a parent document matches the search, the query returns its child documents.
     pub fn query(
         self,
@@ -6620,17 +6934,21 @@ impl<S0> HasParentQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> HasParentQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.query(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl HasParentQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> HasParentQueryBuilder<(S0, S1)> {
     /// Builds a [`HasParentQuery`].
-    pub fn build(self) -> HasParentQuery {
+    pub fn build(self) -> HasParentQuery
+    where
+        S0: crate::typed::builder::IsSet<has_parent_query_members::parent_type>,
+        S1: crate::typed::builder::IsSet<has_parent_query_members::query>,
+    {
         HasParentQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -6643,26 +6961,26 @@ impl HasParentQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<HasParentQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for HasParentQuery
+impl<S0, S1> crate::typed::builder::Build for HasParentQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<has_parent_query_members::parent_type>,
+    S1: crate::typed::builder::IsSet<has_parent_query_members::query>,
 {
-    fn from(
-        builder: HasParentQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = HasParentQuery;
+
+    fn build(self) -> HasParentQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> HasParentQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `parent_type` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, parent_type: crate::typed::builder::MissingRequiredField) -> HasParentQuery { match parent_type {} }
-}
-
-impl HasParentQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> HasParentQuery { match query {} }
+impl<S0, S1> From<HasParentQueryBuilder<(S0, S1)>> for HasParentQuery
+where
+    S0: crate::typed::builder::IsSet<has_parent_query_members::parent_type>,
+    S1: crate::typed::builder::IsSet<has_parent_query_members::query>,
+{
+    fn from(builder: HasParentQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6687,7 +7005,9 @@ impl IdsQuery {
     }
 
     /// Creates a [`IdsQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IdsQueryBuilder) -> IdsQueryBuilder) -> IdsQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = IdsQuery>>(
+        f: impl FnOnce(IdsQueryBuilder) -> B,
+    ) -> IdsQuery {
         f(Self::builder()).build()
     }
 }
@@ -6761,6 +7081,14 @@ impl IdsQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IdsQueryBuilder {
+    type Output = IdsQuery;
+
+    fn build(self) -> IdsQuery {
+        Self::build(self)
+    }
+}
+
 impl From<IdsQueryBuilder> for IdsQuery {
     fn from(builder: IdsQueryBuilder) -> Self {
         builder.build()
@@ -6785,16 +7113,27 @@ pub struct IntervalsAllOf {
 
 impl IntervalsAllOf {
     /// Creates a builder for [`IntervalsAllOf`].
+    ///
+    /// Required: `intervals`.
     pub fn builder() -> IntervalsAllOfBuilder {
         IntervalsAllOfBuilder::new()
     }
 
     /// Creates a [`IntervalsAllOf`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsAllOfBuilder) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `intervals`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsAllOf>>(
+        f: impl FnOnce(IntervalsAllOfBuilder) -> B,
     ) -> IntervalsAllOf {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsAllOfBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_all_of_members {
+    pub struct intervals;
 }
 
 /// Builder for [`IntervalsAllOf`].
@@ -6868,16 +7207,16 @@ impl<S0> IntervalsAllOfBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = IntervalsFilter>>(
         self,
-        f: impl FnOnce(IntervalsFilterBuilder) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsFilterBuilder) -> B,
     ) -> Self {
         self.filter(f(IntervalsFilterBuilder::new()).build())
     }
 }
 
 impl IntervalsAllOfBuilder<(crate::typed::builder::NotSet,)> {
-    /// An array of rules to combine. All rules must produce a match in a document for the overall source to match.
+    /// **Required.** An array of rules to combine. All rules must produce a match in a document for the overall source to match.
     pub fn intervals(
         self,
         value: impl Into<Vec<IntervalsContainer>>,
@@ -6901,11 +7240,9 @@ impl IntervalsAllOfBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`intervals`](Self::intervals), with a builder.
-    pub fn add_intervals_with(
+    pub fn add_intervals_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
         self.add_intervals(f(IntervalsContainerBuilder::new()).build())
     }
@@ -6921,19 +7258,20 @@ impl IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`intervals`](Self::intervals), with a builder.
-    pub fn add_intervals_with(
+    pub fn add_intervals_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> Self {
         self.add_intervals(f(IntervalsContainerBuilder::new()).build())
     }
 }
 
-impl IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsAllOfBuilder<(S0,)> {
     /// Builds a [`IntervalsAllOf`].
-    pub fn build(self) -> IntervalsAllOf {
+    pub fn build(self) -> IntervalsAllOf
+    where
+        S0: crate::typed::builder::IsSet<intervals_all_of_members::intervals>,
+    {
         IntervalsAllOf {
             intervals: self.intervals.unwrap(),
             max_gaps: self.max_gaps,
@@ -6943,16 +7281,24 @@ impl IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsAllOfBuilder<(crate::typed::builder::Set,)>> for IntervalsAllOf {
-    fn from(builder: IntervalsAllOfBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsAllOfBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_all_of_members::intervals>,
+{
+    type Output = IntervalsAllOf;
+
+    fn build(self) -> IntervalsAllOf {
+        Self::build(self)
     }
 }
 
-impl IntervalsAllOfBuilder<(crate::typed::builder::NotSet,)> {
-    /// `intervals` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, intervals: crate::typed::builder::MissingRequiredField) -> IntervalsAllOf { match intervals {} }
+impl<S0> From<IntervalsAllOfBuilder<(S0,)>> for IntervalsAllOf
+where
+    S0: crate::typed::builder::IsSet<intervals_all_of_members::intervals>,
+{
+    fn from(builder: IntervalsAllOfBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -6966,16 +7312,27 @@ pub struct IntervalsAnyOf {
 
 impl IntervalsAnyOf {
     /// Creates a builder for [`IntervalsAnyOf`].
+    ///
+    /// Required: `intervals`.
     pub fn builder() -> IntervalsAnyOfBuilder {
         IntervalsAnyOfBuilder::new()
     }
 
     /// Creates a [`IntervalsAnyOf`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsAnyOfBuilder) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `intervals`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsAnyOf>>(
+        f: impl FnOnce(IntervalsAnyOfBuilder) -> B,
     ) -> IntervalsAnyOf {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsAnyOfBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_any_of_members {
+    pub struct intervals;
 }
 
 /// Builder for [`IntervalsAnyOf`].
@@ -7018,16 +7375,16 @@ impl<S0> IntervalsAnyOfBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = IntervalsFilter>>(
         self,
-        f: impl FnOnce(IntervalsFilterBuilder) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsFilterBuilder) -> B,
     ) -> Self {
         self.filter(f(IntervalsFilterBuilder::new()).build())
     }
 }
 
 impl IntervalsAnyOfBuilder<(crate::typed::builder::NotSet,)> {
-    /// An array of rules to match.
+    /// **Required.** An array of rules to match.
     pub fn intervals(
         self,
         value: impl Into<Vec<IntervalsContainer>>,
@@ -7051,11 +7408,9 @@ impl IntervalsAnyOfBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`intervals`](Self::intervals), with a builder.
-    pub fn add_intervals_with(
+    pub fn add_intervals_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
         self.add_intervals(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7071,19 +7426,20 @@ impl IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`intervals`](Self::intervals), with a builder.
-    pub fn add_intervals_with(
+    pub fn add_intervals_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> Self {
         self.add_intervals(f(IntervalsContainerBuilder::new()).build())
     }
 }
 
-impl IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsAnyOfBuilder<(S0,)> {
     /// Builds a [`IntervalsAnyOf`].
-    pub fn build(self) -> IntervalsAnyOf {
+    pub fn build(self) -> IntervalsAnyOf
+    where
+        S0: crate::typed::builder::IsSet<intervals_any_of_members::intervals>,
+    {
         IntervalsAnyOf {
             intervals: self.intervals.unwrap(),
             filter: self.filter,
@@ -7091,16 +7447,24 @@ impl IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>> for IntervalsAnyOf {
-    fn from(builder: IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsAnyOfBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_any_of_members::intervals>,
+{
+    type Output = IntervalsAnyOf;
+
+    fn build(self) -> IntervalsAnyOf {
+        Self::build(self)
     }
 }
 
-impl IntervalsAnyOfBuilder<(crate::typed::builder::NotSet,)> {
-    /// `intervals` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, intervals: crate::typed::builder::MissingRequiredField) -> IntervalsAnyOf { match intervals {} }
+impl<S0> From<IntervalsAnyOfBuilder<(S0,)>> for IntervalsAnyOf
+where
+    S0: crate::typed::builder::IsSet<intervals_any_of_members::intervals>,
+{
+    fn from(builder: IntervalsAnyOfBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7227,15 +7591,17 @@ impl From<IntervalsWildcardBuilder<(crate::typed::builder::Set,)>> for Intervals
 
 impl IntervalsContainer {
     /// Creates a builder for [`IntervalsContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> IntervalsContainerBuilder {
         IntervalsContainerBuilder::new()
     }
 
     /// Creates a [`IntervalsContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsContainer {
         f(Self::builder()).build()
     }
@@ -7278,9 +7644,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`all_of`](Self::all_of) with a builder.
-    pub fn all_of_with(
+    pub fn all_of_with<B: crate::typed::builder::Build<Output = IntervalsAllOf>>(
         self,
-        f: impl FnOnce(IntervalsAllOfBuilder) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsAllOfBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.all_of(f(IntervalsAllOfBuilder::new()).build())
     }
@@ -7296,9 +7662,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`any_of`](Self::any_of) with a builder.
-    pub fn any_of_with(
+    pub fn any_of_with<B: crate::typed::builder::Build<Output = IntervalsAnyOf>>(
         self,
-        f: impl FnOnce(IntervalsAnyOfBuilder) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsAnyOfBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.any_of(f(IntervalsAnyOfBuilder::new()).build())
     }
@@ -7314,9 +7680,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fuzzy`](Self::fuzzy) with a builder.
-    pub fn fuzzy_with(
+    pub fn fuzzy_with<B: crate::typed::builder::Build<Output = IntervalsFuzzy>>(
         self,
-        f: impl FnOnce(IntervalsFuzzyBuilder) -> IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsFuzzyBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.fuzzy(f(IntervalsFuzzyBuilder::new()).build())
     }
@@ -7332,9 +7698,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<B: crate::typed::builder::Build<Output = IntervalsMatch>>(
         self,
-        f: impl FnOnce(IntervalsMatchBuilder) -> IntervalsMatchBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsMatchBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.r#match(f(IntervalsMatchBuilder::new()).build())
     }
@@ -7350,9 +7716,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`prefix`](Self::prefix) with a builder.
-    pub fn prefix_with(
+    pub fn prefix_with<B: crate::typed::builder::Build<Output = IntervalsPrefix>>(
         self,
-        f: impl FnOnce(IntervalsPrefixBuilder) -> IntervalsPrefixBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsPrefixBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.prefix(f(IntervalsPrefixBuilder::new()).build())
     }
@@ -7367,9 +7733,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`range`](Self::range) with a builder.
-    pub fn range_with(
+    pub fn range_with<B: crate::typed::builder::Build<Output = IntervalsRange>>(
         self,
-        f: impl FnOnce(IntervalsRangeBuilder) -> IntervalsRangeBuilder,
+        f: impl FnOnce(IntervalsRangeBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.range(f(IntervalsRangeBuilder::new()).build())
     }
@@ -7384,9 +7750,9 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regexp`](Self::regexp) with a builder.
-    pub fn regexp_with(
+    pub fn regexp_with<B: crate::typed::builder::Build<Output = IntervalsRegexp>>(
         self,
-        f: impl FnOnce(IntervalsRegexpBuilder) -> IntervalsRegexpBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsRegexpBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.regexp(f(IntervalsRegexpBuilder::new()).build())
     }
@@ -7402,33 +7768,42 @@ impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wildcard`](Self::wildcard) with a builder.
-    pub fn wildcard_with(
+    pub fn wildcard_with<B: crate::typed::builder::Build<Output = IntervalsWildcard>>(
         self,
-        f: impl FnOnce(
-            IntervalsWildcardBuilder,
-        ) -> IntervalsWildcardBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsWildcardBuilder) -> B,
     ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
         self.wildcard(f(IntervalsWildcardBuilder::new()).build())
     }
 }
 
-impl IntervalsContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsContainerBuilder<(S0,)> {
     /// Builds a [`IntervalsContainer`].
-    pub fn build(self) -> IntervalsContainer {
+    pub fn build(self) -> IntervalsContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<IntervalsContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<IntervalsContainerBuilder<(crate::typed::builder::Set,)>> for IntervalsContainer {
-    fn from(builder: IntervalsContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsContainer>,
+{
+    type Output = IntervalsContainer;
+
+    fn build(self) -> IntervalsContainer {
+        Self::build(self)
     }
 }
 
-impl IntervalsContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> IntervalsContainer { match variant {} }
+impl<S0> From<IntervalsContainerBuilder<(S0,)>> for IntervalsContainer
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsContainer>,
+{
+    fn from(builder: IntervalsContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7477,13 +7852,17 @@ impl From<crate::typed::_types::ScriptBuilder> for IntervalsFilter {
 
 impl IntervalsFilter {
     /// Creates a builder for [`IntervalsFilter`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> IntervalsFilterBuilder {
         IntervalsFilterBuilder::new()
     }
 
     /// Creates a [`IntervalsFilter`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsFilterBuilder) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsFilter>>(
+        f: impl FnOnce(IntervalsFilterBuilder) -> B,
     ) -> IntervalsFilter {
         f(Self::builder()).build()
     }
@@ -7526,11 +7905,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`after`](Self::after) with a builder.
-    pub fn after_with(
+    pub fn after_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.after(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7546,11 +7923,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`before`](Self::before) with a builder.
-    pub fn before_with(
+    pub fn before_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.before(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7566,11 +7941,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`contained_by`](Self::contained_by) with a builder.
-    pub fn contained_by_with(
+    pub fn contained_by_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.contained_by(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7586,11 +7959,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`containing`](Self::containing) with a builder.
-    pub fn containing_with(
+    pub fn containing_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.containing(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7606,11 +7977,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`not_contained_by`](Self::not_contained_by) with a builder.
-    pub fn not_contained_by_with(
+    pub fn not_contained_by_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.not_contained_by(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7626,11 +7995,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`not_containing`](Self::not_containing) with a builder.
-    pub fn not_containing_with(
+    pub fn not_containing_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.not_containing(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7646,11 +8013,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`not_overlapping`](Self::not_overlapping) with a builder.
-    pub fn not_overlapping_with(
+    pub fn not_overlapping_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.not_overlapping(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7666,11 +8031,9 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`overlapping`](Self::overlapping) with a builder.
-    pub fn overlapping_with(
+    pub fn overlapping_with<B: crate::typed::builder::Build<Output = IntervalsContainer>>(
         self,
-        f: impl FnOnce(
-            IntervalsContainerBuilder,
-        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsContainerBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.overlapping(f(IntervalsContainerBuilder::new()).build())
     }
@@ -7687,31 +8050,42 @@ impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl IntervalsFilterBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsFilterBuilder<(S0,)> {
     /// Builds a [`IntervalsFilter`].
-    pub fn build(self) -> IntervalsFilter {
+    pub fn build(self) -> IntervalsFilter
+    where
+        S0: crate::typed::builder::IsVariantSet<IntervalsFilter>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<IntervalsFilterBuilder<(crate::typed::builder::Set,)>> for IntervalsFilter {
-    fn from(builder: IntervalsFilterBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsFilterBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsFilter>,
+{
+    type Output = IntervalsFilter;
+
+    fn build(self) -> IntervalsFilter {
+        Self::build(self)
     }
 }
 
-impl IntervalsFilterBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> IntervalsFilter { match variant {} }
+impl<S0> From<IntervalsFilterBuilder<(S0,)>> for IntervalsFilter
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsFilter>,
+{
+    fn from(builder: IntervalsFilterBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7738,16 +8112,27 @@ pub struct IntervalsFuzzy {
 
 impl IntervalsFuzzy {
     /// Creates a builder for [`IntervalsFuzzy`].
+    ///
+    /// Required: `term`.
     pub fn builder() -> IntervalsFuzzyBuilder {
         IntervalsFuzzyBuilder::new()
     }
 
     /// Creates a [`IntervalsFuzzy`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsFuzzyBuilder) -> IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `term`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsFuzzy>>(
+        f: impl FnOnce(IntervalsFuzzyBuilder) -> B,
     ) -> IntervalsFuzzy {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsFuzzyBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_fuzzy_members {
+    pub struct term;
 }
 
 /// Builder for [`IntervalsFuzzy`].
@@ -7852,7 +8237,7 @@ impl<S0> IntervalsFuzzyBuilder<(S0,)> {
 }
 
 impl IntervalsFuzzyBuilder<(crate::typed::builder::NotSet,)> {
-    /// The term to match.
+    /// **Required.** The term to match.
     pub fn term(
         self,
         value: impl Into<String>,
@@ -7863,9 +8248,12 @@ impl IntervalsFuzzyBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntervalsFuzzyBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsFuzzyBuilder<(S0,)> {
     /// Builds a [`IntervalsFuzzy`].
-    pub fn build(self) -> IntervalsFuzzy {
+    pub fn build(self) -> IntervalsFuzzy
+    where
+        S0: crate::typed::builder::IsSet<intervals_fuzzy_members::term>,
+    {
         IntervalsFuzzy {
             analyzer: self.analyzer,
             fuzziness: self.fuzziness,
@@ -7877,16 +8265,24 @@ impl IntervalsFuzzyBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>> for IntervalsFuzzy {
-    fn from(builder: IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsFuzzyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_fuzzy_members::term>,
+{
+    type Output = IntervalsFuzzy;
+
+    fn build(self) -> IntervalsFuzzy {
+        Self::build(self)
     }
 }
 
-impl IntervalsFuzzyBuilder<(crate::typed::builder::NotSet,)> {
-    /// `term` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, term: crate::typed::builder::MissingRequiredField) -> IntervalsFuzzy { match term {} }
+impl<S0> From<IntervalsFuzzyBuilder<(S0,)>> for IntervalsFuzzy
+where
+    S0: crate::typed::builder::IsSet<intervals_fuzzy_members::term>,
+{
+    fn from(builder: IntervalsFuzzyBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -7914,16 +8310,27 @@ pub struct IntervalsMatch {
 
 impl IntervalsMatch {
     /// Creates a builder for [`IntervalsMatch`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> IntervalsMatchBuilder {
         IntervalsMatchBuilder::new()
     }
 
     /// Creates a [`IntervalsMatch`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsMatchBuilder) -> IntervalsMatchBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsMatch>>(
+        f: impl FnOnce(IntervalsMatchBuilder) -> B,
     ) -> IntervalsMatch {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsMatchBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_match_members {
+    pub struct query;
 }
 
 /// Builder for [`IntervalsMatch`].
@@ -8028,16 +8435,16 @@ impl<S0> IntervalsMatchBuilder<(S0,)> {
     }
 
     /// Sets [`filter`](Self::filter) with a builder.
-    pub fn filter_with(
+    pub fn filter_with<B: crate::typed::builder::Build<Output = IntervalsFilter>>(
         self,
-        f: impl FnOnce(IntervalsFilterBuilder) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsFilterBuilder) -> B,
     ) -> Self {
         self.filter(f(IntervalsFilterBuilder::new()).build())
     }
 }
 
 impl IntervalsMatchBuilder<(crate::typed::builder::NotSet,)> {
-    /// Text you wish to find in the provided field.
+    /// **Required.** Text you wish to find in the provided field.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -8048,9 +8455,12 @@ impl IntervalsMatchBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntervalsMatchBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsMatchBuilder<(S0,)> {
     /// Builds a [`IntervalsMatch`].
-    pub fn build(self) -> IntervalsMatch {
+    pub fn build(self) -> IntervalsMatch
+    where
+        S0: crate::typed::builder::IsSet<intervals_match_members::query>,
+    {
         IntervalsMatch {
             analyzer: self.analyzer,
             max_gaps: self.max_gaps,
@@ -8062,16 +8472,24 @@ impl IntervalsMatchBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsMatchBuilder<(crate::typed::builder::Set,)>> for IntervalsMatch {
-    fn from(builder: IntervalsMatchBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsMatchBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_match_members::query>,
+{
+    type Output = IntervalsMatch;
+
+    fn build(self) -> IntervalsMatch {
+        Self::build(self)
     }
 }
 
-impl IntervalsMatchBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> IntervalsMatch { match query {} }
+impl<S0> From<IntervalsMatchBuilder<(S0,)>> for IntervalsMatch
+where
+    S0: crate::typed::builder::IsSet<intervals_match_members::query>,
+{
+    fn from(builder: IntervalsMatchBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8089,16 +8507,27 @@ pub struct IntervalsPrefix {
 
 impl IntervalsPrefix {
     /// Creates a builder for [`IntervalsPrefix`].
+    ///
+    /// Required: `prefix`.
     pub fn builder() -> IntervalsPrefixBuilder {
         IntervalsPrefixBuilder::new()
     }
 
     /// Creates a [`IntervalsPrefix`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsPrefixBuilder) -> IntervalsPrefixBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `prefix`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsPrefix>>(
+        f: impl FnOnce(IntervalsPrefixBuilder) -> B,
     ) -> IntervalsPrefix {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsPrefixBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_prefix_members {
+    pub struct prefix;
 }
 
 /// Builder for [`IntervalsPrefix`].
@@ -8158,7 +8587,7 @@ impl<S0> IntervalsPrefixBuilder<(S0,)> {
 }
 
 impl IntervalsPrefixBuilder<(crate::typed::builder::NotSet,)> {
-    /// Beginning characters of terms you wish to find in the top-level field.
+    /// **Required.** Beginning characters of terms you wish to find in the top-level field.
     pub fn prefix(
         self,
         value: impl Into<String>,
@@ -8169,9 +8598,12 @@ impl IntervalsPrefixBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntervalsPrefixBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsPrefixBuilder<(S0,)> {
     /// Builds a [`IntervalsPrefix`].
-    pub fn build(self) -> IntervalsPrefix {
+    pub fn build(self) -> IntervalsPrefix
+    where
+        S0: crate::typed::builder::IsSet<intervals_prefix_members::prefix>,
+    {
         IntervalsPrefix {
             analyzer: self.analyzer,
             prefix: self.prefix.unwrap(),
@@ -8180,16 +8612,24 @@ impl IntervalsPrefixBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsPrefixBuilder<(crate::typed::builder::Set,)>> for IntervalsPrefix {
-    fn from(builder: IntervalsPrefixBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsPrefixBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_prefix_members::prefix>,
+{
+    type Output = IntervalsPrefix;
+
+    fn build(self) -> IntervalsPrefix {
+        Self::build(self)
     }
 }
 
-impl IntervalsPrefixBuilder<(crate::typed::builder::NotSet,)> {
-    /// `prefix` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, prefix: crate::typed::builder::MissingRequiredField) -> IntervalsPrefix { match prefix {} }
+impl<S0> From<IntervalsPrefixBuilder<(S0,)>> for IntervalsPrefix
+where
+    S0: crate::typed::builder::IsSet<intervals_prefix_members::prefix>,
+{
+    fn from(builder: IntervalsPrefixBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8324,13 +8764,17 @@ impl From<IntervalsWildcardBuilder<(crate::typed::builder::Set,)>> for Intervals
 
 impl IntervalsQuery {
     /// Creates a builder for [`IntervalsQuery`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> IntervalsQueryBuilder {
         IntervalsQueryBuilder::new()
     }
 
     /// Creates a [`IntervalsQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsQueryBuilder) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsQuery>>(
+        f: impl FnOnce(IntervalsQueryBuilder) -> B,
     ) -> IntervalsQuery {
         f(Self::builder()).build()
     }
@@ -8392,9 +8836,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`all_of`](Self::all_of) with a builder.
-    pub fn all_of_with(
+    pub fn all_of_with<B: crate::typed::builder::Build<Output = IntervalsAllOf>>(
         self,
-        f: impl FnOnce(IntervalsAllOfBuilder) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsAllOfBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.all_of(f(IntervalsAllOfBuilder::new()).build())
     }
@@ -8410,9 +8854,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`any_of`](Self::any_of) with a builder.
-    pub fn any_of_with(
+    pub fn any_of_with<B: crate::typed::builder::Build<Output = IntervalsAnyOf>>(
         self,
-        f: impl FnOnce(IntervalsAnyOfBuilder) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsAnyOfBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.any_of(f(IntervalsAnyOfBuilder::new()).build())
     }
@@ -8428,9 +8872,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fuzzy`](Self::fuzzy) with a builder.
-    pub fn fuzzy_with(
+    pub fn fuzzy_with<B: crate::typed::builder::Build<Output = IntervalsFuzzy>>(
         self,
-        f: impl FnOnce(IntervalsFuzzyBuilder) -> IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsFuzzyBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.fuzzy(f(IntervalsFuzzyBuilder::new()).build())
     }
@@ -8446,9 +8890,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<B: crate::typed::builder::Build<Output = IntervalsMatch>>(
         self,
-        f: impl FnOnce(IntervalsMatchBuilder) -> IntervalsMatchBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsMatchBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.r#match(f(IntervalsMatchBuilder::new()).build())
     }
@@ -8464,9 +8908,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`prefix`](Self::prefix) with a builder.
-    pub fn prefix_with(
+    pub fn prefix_with<B: crate::typed::builder::Build<Output = IntervalsPrefix>>(
         self,
-        f: impl FnOnce(IntervalsPrefixBuilder) -> IntervalsPrefixBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsPrefixBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.prefix(f(IntervalsPrefixBuilder::new()).build())
     }
@@ -8481,9 +8925,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`range`](Self::range) with a builder.
-    pub fn range_with(
+    pub fn range_with<B: crate::typed::builder::Build<Output = IntervalsRange>>(
         self,
-        f: impl FnOnce(IntervalsRangeBuilder) -> IntervalsRangeBuilder,
+        f: impl FnOnce(IntervalsRangeBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.range(f(IntervalsRangeBuilder::new()).build())
     }
@@ -8498,9 +8942,9 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regexp`](Self::regexp) with a builder.
-    pub fn regexp_with(
+    pub fn regexp_with<B: crate::typed::builder::Build<Output = IntervalsRegexp>>(
         self,
-        f: impl FnOnce(IntervalsRegexpBuilder) -> IntervalsRegexpBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsRegexpBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.regexp(f(IntervalsRegexpBuilder::new()).build())
     }
@@ -8516,33 +8960,42 @@ impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wildcard`](Self::wildcard) with a builder.
-    pub fn wildcard_with(
+    pub fn wildcard_with<B: crate::typed::builder::Build<Output = IntervalsWildcard>>(
         self,
-        f: impl FnOnce(
-            IntervalsWildcardBuilder,
-        ) -> IntervalsWildcardBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsWildcardBuilder) -> B,
     ) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
         self.wildcard(f(IntervalsWildcardBuilder::new()).build())
     }
 }
 
-impl IntervalsQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsQueryBuilder<(S0,)> {
     /// Builds a [`IntervalsQuery`].
-    pub fn build(self) -> IntervalsQuery {
+    pub fn build(self) -> IntervalsQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<IntervalsQuery>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<IntervalsQueryBuilder<(crate::typed::builder::Set,)>> for IntervalsQuery {
-    fn from(builder: IntervalsQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsQuery>,
+{
+    type Output = IntervalsQuery;
+
+    fn build(self) -> IntervalsQuery {
+        Self::build(self)
     }
 }
 
-impl IntervalsQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> IntervalsQuery { match variant {} }
+impl<S0> From<IntervalsQueryBuilder<(S0,)>> for IntervalsQuery
+where
+    S0: crate::typed::builder::IsVariantSet<IntervalsQuery>,
+{
+    fn from(builder: IntervalsQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8575,7 +9028,9 @@ impl IntervalsRange {
     }
 
     /// Creates a [`IntervalsRange`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(IntervalsRangeBuilder) -> IntervalsRangeBuilder) -> IntervalsRange {
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsRange>>(
+        f: impl FnOnce(IntervalsRangeBuilder) -> B,
+    ) -> IntervalsRange {
         f(Self::builder()).build()
     }
 }
@@ -8693,6 +9148,14 @@ impl IntervalsRangeBuilder {
     }
 }
 
+impl crate::typed::builder::Build for IntervalsRangeBuilder {
+    type Output = IntervalsRange;
+
+    fn build(self) -> IntervalsRange {
+        Self::build(self)
+    }
+}
+
 impl From<IntervalsRangeBuilder> for IntervalsRange {
     fn from(builder: IntervalsRangeBuilder) -> Self {
         builder.build()
@@ -8714,16 +9177,27 @@ pub struct IntervalsRegexp {
 
 impl IntervalsRegexp {
     /// Creates a builder for [`IntervalsRegexp`].
+    ///
+    /// Required: `pattern`.
     pub fn builder() -> IntervalsRegexpBuilder {
         IntervalsRegexpBuilder::new()
     }
 
     /// Creates a [`IntervalsRegexp`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IntervalsRegexpBuilder) -> IntervalsRegexpBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsRegexp>>(
+        f: impl FnOnce(IntervalsRegexpBuilder) -> B,
     ) -> IntervalsRegexp {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsRegexpBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_regexp_members {
+    pub struct pattern;
 }
 
 /// Builder for [`IntervalsRegexp`].
@@ -8783,7 +9257,7 @@ impl<S0> IntervalsRegexpBuilder<(S0,)> {
 }
 
 impl IntervalsRegexpBuilder<(crate::typed::builder::NotSet,)> {
-    /// Regex pattern.
+    /// **Required.** Regex pattern.
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -8794,9 +9268,12 @@ impl IntervalsRegexpBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntervalsRegexpBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsRegexpBuilder<(S0,)> {
     /// Builds a [`IntervalsRegexp`].
-    pub fn build(self) -> IntervalsRegexp {
+    pub fn build(self) -> IntervalsRegexp
+    where
+        S0: crate::typed::builder::IsSet<intervals_regexp_members::pattern>,
+    {
         IntervalsRegexp {
             analyzer: self.analyzer,
             pattern: self.pattern.unwrap(),
@@ -8805,16 +9282,24 @@ impl IntervalsRegexpBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsRegexpBuilder<(crate::typed::builder::Set,)>> for IntervalsRegexp {
-    fn from(builder: IntervalsRegexpBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsRegexpBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_regexp_members::pattern>,
+{
+    type Output = IntervalsRegexp;
+
+    fn build(self) -> IntervalsRegexp {
+        Self::build(self)
     }
 }
 
-impl IntervalsRegexpBuilder<(crate::typed::builder::NotSet,)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> IntervalsRegexp { match pattern {} }
+impl<S0> From<IntervalsRegexpBuilder<(S0,)>> for IntervalsRegexp
+where
+    S0: crate::typed::builder::IsSet<intervals_regexp_members::pattern>,
+{
+    fn from(builder: IntervalsRegexpBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -8833,18 +9318,27 @@ pub struct IntervalsWildcard {
 
 impl IntervalsWildcard {
     /// Creates a builder for [`IntervalsWildcard`].
+    ///
+    /// Required: `pattern`.
     pub fn builder() -> IntervalsWildcardBuilder {
         IntervalsWildcardBuilder::new()
     }
 
     /// Creates a [`IntervalsWildcard`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            IntervalsWildcardBuilder,
-        ) -> IntervalsWildcardBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `pattern`.
+    pub fn of<B: crate::typed::builder::Build<Output = IntervalsWildcard>>(
+        f: impl FnOnce(IntervalsWildcardBuilder) -> B,
     ) -> IntervalsWildcard {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IntervalsWildcardBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod intervals_wildcard_members {
+    pub struct pattern;
 }
 
 /// Builder for [`IntervalsWildcard`].
@@ -8905,7 +9399,7 @@ impl<S0> IntervalsWildcardBuilder<(S0,)> {
 }
 
 impl IntervalsWildcardBuilder<(crate::typed::builder::NotSet,)> {
-    /// Wildcard pattern used to find matching terms.
+    /// **Required.** Wildcard pattern used to find matching terms.
     pub fn pattern(
         self,
         value: impl Into<String>,
@@ -8916,9 +9410,12 @@ impl IntervalsWildcardBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl IntervalsWildcardBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IntervalsWildcardBuilder<(S0,)> {
     /// Builds a [`IntervalsWildcard`].
-    pub fn build(self) -> IntervalsWildcard {
+    pub fn build(self) -> IntervalsWildcard
+    where
+        S0: crate::typed::builder::IsSet<intervals_wildcard_members::pattern>,
+    {
         IntervalsWildcard {
             analyzer: self.analyzer,
             pattern: self.pattern.unwrap(),
@@ -8927,16 +9424,24 @@ impl IntervalsWildcardBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<IntervalsWildcardBuilder<(crate::typed::builder::Set,)>> for IntervalsWildcard {
-    fn from(builder: IntervalsWildcardBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IntervalsWildcardBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<intervals_wildcard_members::pattern>,
+{
+    type Output = IntervalsWildcard;
+
+    fn build(self) -> IntervalsWildcard {
+        Self::build(self)
     }
 }
 
-impl IntervalsWildcardBuilder<(crate::typed::builder::NotSet,)> {
-    /// `pattern` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pattern: crate::typed::builder::MissingRequiredField) -> IntervalsWildcard { match pattern {} }
+impl<S0> From<IntervalsWildcardBuilder<(S0,)>> for IntervalsWildcard
+where
+    S0: crate::typed::builder::IsSet<intervals_wildcard_members::pattern>,
+{
+    fn from(builder: IntervalsWildcardBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Returns documents matching a provided Kibana Query Language (KQL) expression.
@@ -8967,16 +9472,27 @@ pub struct KqlQuery {
 
 impl KqlQuery {
     /// Creates a builder for [`KqlQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> KqlQueryBuilder {
         KqlQueryBuilder::new()
     }
 
     /// Creates a [`KqlQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(KqlQueryBuilder) -> KqlQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = KqlQuery>>(
+        f: impl FnOnce(KqlQueryBuilder) -> B,
     ) -> KqlQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`KqlQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod kql_query_members {
+    pub struct query;
 }
 
 /// Builder for [`KqlQuery`].
@@ -9083,7 +9599,7 @@ impl<S0> KqlQueryBuilder<(S0,)> {
 }
 
 impl KqlQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// The KQL expression to parse.
+    /// **Required.** The KQL expression to parse.
     pub fn query(self, value: impl Into<String>) -> KqlQueryBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.query = Some(value.into());
@@ -9091,9 +9607,12 @@ impl KqlQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl KqlQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> KqlQueryBuilder<(S0,)> {
     /// Builds a [`KqlQuery`].
-    pub fn build(self) -> KqlQuery {
+    pub fn build(self) -> KqlQuery
+    where
+        S0: crate::typed::builder::IsSet<kql_query_members::query>,
+    {
         KqlQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -9105,16 +9624,24 @@ impl KqlQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<KqlQueryBuilder<(crate::typed::builder::Set,)>> for KqlQuery {
-    fn from(builder: KqlQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for KqlQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<kql_query_members::query>,
+{
+    type Output = KqlQuery;
+
+    fn build(self) -> KqlQuery {
+        Self::build(self)
     }
 }
 
-impl KqlQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> KqlQuery { match query {} }
+impl<S0> From<KqlQueryBuilder<(S0,)>> for KqlQuery
+where
+    S0: crate::typed::builder::IsSet<kql_query_members::query>,
+{
+    fn from(builder: KqlQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Text that we want similar documents for or a lookup to a document's field for the text.
@@ -9174,7 +9701,9 @@ impl LikeDocument {
     }
 
     /// Creates a [`LikeDocument`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(LikeDocumentBuilder) -> LikeDocumentBuilder) -> LikeDocument {
+    pub fn of<B: crate::typed::builder::Build<Output = LikeDocument>>(
+        f: impl FnOnce(LikeDocumentBuilder) -> B,
+    ) -> LikeDocument {
         f(Self::builder()).build()
     }
 }
@@ -9343,6 +9872,14 @@ impl LikeDocumentBuilder {
     }
 }
 
+impl crate::typed::builder::Build for LikeDocumentBuilder {
+    type Output = LikeDocument;
+
+    fn build(self) -> LikeDocument {
+        Self::build(self)
+    }
+}
+
 impl From<LikeDocumentBuilder> for LikeDocument {
     fn from(builder: LikeDocumentBuilder) -> Self {
         builder.build()
@@ -9383,8 +9920,8 @@ impl LongNumberRangeQuery {
     }
 
     /// Creates a [`LongNumberRangeQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(LongNumberRangeQueryBuilder) -> LongNumberRangeQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = LongNumberRangeQuery>>(
+        f: impl FnOnce(LongNumberRangeQueryBuilder) -> B,
     ) -> LongNumberRangeQuery {
         f(Self::builder()).build()
     }
@@ -9519,6 +10056,14 @@ impl LongNumberRangeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for LongNumberRangeQueryBuilder {
+    type Output = LongNumberRangeQuery;
+
+    fn build(self) -> LongNumberRangeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<LongNumberRangeQueryBuilder> for LongNumberRangeQuery {
     fn from(builder: LongNumberRangeQueryBuilder) -> Self {
         builder.build()
@@ -9544,7 +10089,9 @@ impl MatchAllQuery {
     }
 
     /// Creates a [`MatchAllQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MatchAllQueryBuilder) -> MatchAllQueryBuilder) -> MatchAllQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = MatchAllQuery>>(
+        f: impl FnOnce(MatchAllQueryBuilder) -> B,
+    ) -> MatchAllQuery {
         f(Self::builder()).build()
     }
 }
@@ -9603,6 +10150,14 @@ impl MatchAllQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MatchAllQueryBuilder {
+    type Output = MatchAllQuery;
+
+    fn build(self) -> MatchAllQuery {
+        Self::build(self)
+    }
+}
+
 impl From<MatchAllQueryBuilder> for MatchAllQuery {
     fn from(builder: MatchAllQueryBuilder) -> Self {
         builder.build()
@@ -9657,18 +10212,27 @@ pub struct MatchBoolPrefixQuery {
 
 impl MatchBoolPrefixQuery {
     /// Creates a builder for [`MatchBoolPrefixQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> MatchBoolPrefixQueryBuilder {
         MatchBoolPrefixQueryBuilder::new()
     }
 
     /// Creates a [`MatchBoolPrefixQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatchBoolPrefixQueryBuilder,
-        ) -> MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchBoolPrefixQuery>>(
+        f: impl FnOnce(MatchBoolPrefixQueryBuilder) -> B,
     ) -> MatchBoolPrefixQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchBoolPrefixQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod match_bool_prefix_query_members {
+    pub struct query;
 }
 
 /// Builder for [`MatchBoolPrefixQuery`].
@@ -9868,7 +10432,7 @@ impl<S0> MatchBoolPrefixQueryBuilder<(S0,)> {
 }
 
 impl MatchBoolPrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Terms you wish to find in the provided field.
+    /// **Required.** Terms you wish to find in the provided field.
     /// The last term is used in a prefix query.
     pub fn query(
         self,
@@ -9880,9 +10444,12 @@ impl MatchBoolPrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchBoolPrefixQueryBuilder<(S0,)> {
     /// Builds a [`MatchBoolPrefixQuery`].
-    pub fn build(self) -> MatchBoolPrefixQuery {
+    pub fn build(self) -> MatchBoolPrefixQuery
+    where
+        S0: crate::typed::builder::IsSet<match_bool_prefix_query_members::query>,
+    {
         MatchBoolPrefixQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -9899,16 +10466,24 @@ impl MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)>> for MatchBoolPrefixQuery {
-    fn from(builder: MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchBoolPrefixQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<match_bool_prefix_query_members::query>,
+{
+    type Output = MatchBoolPrefixQuery;
+
+    fn build(self) -> MatchBoolPrefixQuery {
+        Self::build(self)
     }
 }
 
-impl MatchBoolPrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> MatchBoolPrefixQuery { match query {} }
+impl<S0> From<MatchBoolPrefixQueryBuilder<(S0,)>> for MatchBoolPrefixQuery
+where
+    S0: crate::typed::builder::IsSet<match_bool_prefix_query_members::query>,
+{
+    fn from(builder: MatchBoolPrefixQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -9930,7 +10505,9 @@ impl MatchNoneQuery {
     }
 
     /// Creates a [`MatchNoneQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(MatchNoneQueryBuilder) -> MatchNoneQueryBuilder) -> MatchNoneQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = MatchNoneQuery>>(
+        f: impl FnOnce(MatchNoneQueryBuilder) -> B,
+    ) -> MatchNoneQuery {
         f(Self::builder()).build()
     }
 }
@@ -9989,6 +10566,14 @@ impl MatchNoneQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for MatchNoneQueryBuilder {
+    type Output = MatchNoneQuery;
+
+    fn build(self) -> MatchNoneQuery {
+        Self::build(self)
+    }
+}
+
 impl From<MatchNoneQueryBuilder> for MatchNoneQuery {
     fn from(builder: MatchNoneQueryBuilder) -> Self {
         builder.build()
@@ -10023,18 +10608,27 @@ pub struct MatchPhrasePrefixQuery {
 
 impl MatchPhrasePrefixQuery {
     /// Creates a builder for [`MatchPhrasePrefixQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> MatchPhrasePrefixQueryBuilder {
         MatchPhrasePrefixQueryBuilder::new()
     }
 
     /// Creates a [`MatchPhrasePrefixQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatchPhrasePrefixQueryBuilder,
-        ) -> MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchPhrasePrefixQuery>>(
+        f: impl FnOnce(MatchPhrasePrefixQueryBuilder) -> B,
     ) -> MatchPhrasePrefixQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchPhrasePrefixQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod match_phrase_prefix_query_members {
+    pub struct query;
 }
 
 /// Builder for [`MatchPhrasePrefixQuery`].
@@ -10155,7 +10749,7 @@ impl<S0> MatchPhrasePrefixQueryBuilder<(S0,)> {
 }
 
 impl MatchPhrasePrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Text you wish to find in the provided field.
+    /// **Required.** Text you wish to find in the provided field.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -10166,9 +10760,12 @@ impl MatchPhrasePrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchPhrasePrefixQueryBuilder<(S0,)> {
     /// Builds a [`MatchPhrasePrefixQuery`].
-    pub fn build(self) -> MatchPhrasePrefixQuery {
+    pub fn build(self) -> MatchPhrasePrefixQuery
+    where
+        S0: crate::typed::builder::IsSet<match_phrase_prefix_query_members::query>,
+    {
         MatchPhrasePrefixQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -10181,16 +10778,24 @@ impl MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)>> for MatchPhrasePrefixQuery {
-    fn from(builder: MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchPhrasePrefixQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<match_phrase_prefix_query_members::query>,
+{
+    type Output = MatchPhrasePrefixQuery;
+
+    fn build(self) -> MatchPhrasePrefixQuery {
+        Self::build(self)
     }
 }
 
-impl MatchPhrasePrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> MatchPhrasePrefixQuery { match query {} }
+impl<S0> From<MatchPhrasePrefixQueryBuilder<(S0,)>> for MatchPhrasePrefixQuery
+where
+    S0: crate::typed::builder::IsSet<match_phrase_prefix_query_members::query>,
+{
+    fn from(builder: MatchPhrasePrefixQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10218,18 +10823,27 @@ pub struct MatchPhraseQuery {
 
 impl MatchPhraseQuery {
     /// Creates a builder for [`MatchPhraseQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> MatchPhraseQueryBuilder {
         MatchPhraseQueryBuilder::new()
     }
 
     /// Creates a [`MatchPhraseQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MatchPhraseQueryBuilder,
-        ) -> MatchPhraseQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchPhraseQuery>>(
+        f: impl FnOnce(MatchPhraseQueryBuilder) -> B,
     ) -> MatchPhraseQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchPhraseQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod match_phrase_query_members {
+    pub struct query;
 }
 
 /// Builder for [`MatchPhraseQuery`].
@@ -10335,7 +10949,7 @@ impl<S0> MatchPhraseQueryBuilder<(S0,)> {
 }
 
 impl MatchPhraseQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Query terms that are analyzed and turned into a phrase query.
+    /// **Required.** Query terms that are analyzed and turned into a phrase query.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -10346,9 +10960,12 @@ impl MatchPhraseQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchPhraseQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchPhraseQueryBuilder<(S0,)> {
     /// Builds a [`MatchPhraseQuery`].
-    pub fn build(self) -> MatchPhraseQuery {
+    pub fn build(self) -> MatchPhraseQuery
+    where
+        S0: crate::typed::builder::IsSet<match_phrase_query_members::query>,
+    {
         MatchPhraseQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -10360,16 +10977,24 @@ impl MatchPhraseQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchPhraseQueryBuilder<(crate::typed::builder::Set,)>> for MatchPhraseQuery {
-    fn from(builder: MatchPhraseQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchPhraseQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<match_phrase_query_members::query>,
+{
+    type Output = MatchPhraseQuery;
+
+    fn build(self) -> MatchPhraseQuery {
+        Self::build(self)
     }
 }
 
-impl MatchPhraseQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> MatchPhraseQuery { match query {} }
+impl<S0> From<MatchPhraseQueryBuilder<(S0,)>> for MatchPhraseQuery
+where
+    S0: crate::typed::builder::IsSet<match_phrase_query_members::query>,
+{
+    fn from(builder: MatchPhraseQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10455,16 +11080,27 @@ impl From<&str> for MatchQueryQuery {
 
 impl MatchQuery {
     /// Creates a builder for [`MatchQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> MatchQueryBuilder {
         MatchQueryBuilder::new()
     }
 
     /// Creates a [`MatchQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MatchQueryBuilder) -> MatchQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = MatchQuery>>(
+        f: impl FnOnce(MatchQueryBuilder) -> B,
     ) -> MatchQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MatchQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod match_query_members {
+    pub struct query;
 }
 
 /// Builder for [`MatchQuery`].
@@ -10716,7 +11352,7 @@ impl<S0> MatchQueryBuilder<(S0,)> {
 }
 
 impl MatchQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Text, number, boolean value or date you wish to find in the provided field.
+    /// **Required.** Text, number, boolean value or date you wish to find in the provided field.
     pub fn query(
         self,
         value: impl Into<MatchQueryQuery>,
@@ -10727,9 +11363,12 @@ impl MatchQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MatchQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MatchQueryBuilder<(S0,)> {
     /// Builds a [`MatchQuery`].
-    pub fn build(self) -> MatchQuery {
+    pub fn build(self) -> MatchQuery
+    where
+        S0: crate::typed::builder::IsSet<match_query_members::query>,
+    {
         MatchQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -10750,16 +11389,24 @@ impl MatchQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MatchQueryBuilder<(crate::typed::builder::Set,)>> for MatchQuery {
-    fn from(builder: MatchQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MatchQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<match_query_members::query>,
+{
+    type Output = MatchQuery;
+
+    fn build(self) -> MatchQuery {
+        Self::build(self)
     }
 }
 
-impl MatchQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> MatchQuery { match query {} }
+impl<S0> From<MatchQueryBuilder<(S0,)>> for MatchQuery
+where
+    S0: crate::typed::builder::IsSet<match_query_members::query>,
+{
+    fn from(builder: MatchQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -10870,18 +11517,27 @@ impl From<Vec<Like>> for MoreLikeThisQueryUnlike {
 
 impl MoreLikeThisQuery {
     /// Creates a builder for [`MoreLikeThisQuery`].
+    ///
+    /// Required: `like`.
     pub fn builder() -> MoreLikeThisQueryBuilder {
         MoreLikeThisQueryBuilder::new()
     }
 
     /// Creates a [`MoreLikeThisQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            MoreLikeThisQueryBuilder,
-        ) -> MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `like`.
+    pub fn of<B: crate::typed::builder::Build<Output = MoreLikeThisQuery>>(
+        f: impl FnOnce(MoreLikeThisQueryBuilder) -> B,
     ) -> MoreLikeThisQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MoreLikeThisQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod more_like_this_query_members {
+    pub struct like;
 }
 
 /// Builder for [`MoreLikeThisQuery`].
@@ -11220,7 +11876,7 @@ impl<S0> MoreLikeThisQueryBuilder<(S0,)> {
 }
 
 impl MoreLikeThisQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Specifies free form text and/or a single or multiple documents for which you want to find similar documents.
+    /// **Required.** Specifies free form text and/or a single or multiple documents for which you want to find similar documents.
     pub fn like(
         self,
         value: impl Into<MoreLikeThisQueryLike>,
@@ -11231,9 +11887,12 @@ impl MoreLikeThisQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MoreLikeThisQueryBuilder<(S0,)> {
     /// Builds a [`MoreLikeThisQuery`].
-    pub fn build(self) -> MoreLikeThisQuery {
+    pub fn build(self) -> MoreLikeThisQuery
+    where
+        S0: crate::typed::builder::IsSet<more_like_this_query_members::like>,
+    {
         MoreLikeThisQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -11259,16 +11918,24 @@ impl MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)>> for MoreLikeThisQuery {
-    fn from(builder: MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MoreLikeThisQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<more_like_this_query_members::like>,
+{
+    type Output = MoreLikeThisQuery;
+
+    fn build(self) -> MoreLikeThisQuery {
+        Self::build(self)
     }
 }
 
-impl MoreLikeThisQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `like` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, like: crate::typed::builder::MissingRequiredField) -> MoreLikeThisQuery { match like {} }
+impl<S0> From<MoreLikeThisQueryBuilder<(S0,)>> for MoreLikeThisQuery
+where
+    S0: crate::typed::builder::IsSet<more_like_this_query_members::like>,
+{
+    fn from(builder: MoreLikeThisQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11336,16 +12003,27 @@ pub struct MultiMatchQuery {
 
 impl MultiMatchQuery {
     /// Creates a builder for [`MultiMatchQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> MultiMatchQueryBuilder {
         MultiMatchQueryBuilder::new()
     }
 
     /// Creates a [`MultiMatchQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(MultiMatchQueryBuilder) -> MultiMatchQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = MultiMatchQuery>>(
+        f: impl FnOnce(MultiMatchQueryBuilder) -> B,
     ) -> MultiMatchQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`MultiMatchQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod multi_match_query_members {
+    pub struct query;
 }
 
 /// Builder for [`MultiMatchQuery`].
@@ -11659,7 +12337,7 @@ impl<S0> MultiMatchQueryBuilder<(S0,)> {
 }
 
 impl MultiMatchQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Text, number, boolean value or date you wish to find in the provided field.
+    /// **Required.** Text, number, boolean value or date you wish to find in the provided field.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -11670,9 +12348,12 @@ impl MultiMatchQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl MultiMatchQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> MultiMatchQueryBuilder<(S0,)> {
     /// Builds a [`MultiMatchQuery`].
-    pub fn build(self) -> MultiMatchQuery {
+    pub fn build(self) -> MultiMatchQuery
+    where
+        S0: crate::typed::builder::IsSet<multi_match_query_members::query>,
+    {
         MultiMatchQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -11697,16 +12378,24 @@ impl MultiMatchQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<MultiMatchQueryBuilder<(crate::typed::builder::Set,)>> for MultiMatchQuery {
-    fn from(builder: MultiMatchQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for MultiMatchQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<multi_match_query_members::query>,
+{
+    type Output = MultiMatchQuery;
+
+    fn build(self) -> MultiMatchQuery {
+        Self::build(self)
     }
 }
 
-impl MultiMatchQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> MultiMatchQuery { match query {} }
+impl<S0> From<MultiMatchQueryBuilder<(S0,)>> for MultiMatchQuery
+where
+    S0: crate::typed::builder::IsSet<multi_match_query_members::query>,
+{
+    fn from(builder: MultiMatchQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -11752,19 +12441,28 @@ pub struct NestedQuery {
 
 impl NestedQuery {
     /// Creates a builder for [`NestedQuery`].
+    ///
+    /// Required: `path`, `query`.
     pub fn builder() -> NestedQueryBuilder {
         NestedQueryBuilder::new()
     }
 
     /// Creates a [`NestedQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            NestedQueryBuilder,
-        )
-            -> NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `path`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = NestedQuery>>(
+        f: impl FnOnce(NestedQueryBuilder) -> B,
     ) -> NestedQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`NestedQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod nested_query_members {
+    pub struct path;
+    pub struct query;
 }
 
 /// Builder for [`NestedQuery`].
@@ -11866,11 +12564,11 @@ impl<S0, S1> NestedQueryBuilder<(S0, S1)> {
     }
 
     /// Sets [`inner_hits`](Self::inner_hits) with a builder.
-    pub fn inner_hits_with(
+    pub fn inner_hits_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::InnerHits>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_global::search::_types::InnerHitsBuilder,
-        ) -> crate::typed::_global::search::_types::InnerHitsBuilder,
+        f: impl FnOnce(crate::typed::_global::search::_types::InnerHitsBuilder) -> B,
     ) -> Self {
         self.inner_hits(f(crate::typed::_global::search::_types::InnerHitsBuilder::new()).build())
     }
@@ -11889,7 +12587,7 @@ impl<S0, S1> NestedQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> NestedQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Path to the nested object you wish to search.
+    /// **Required.** Path to the nested object you wish to search.
     pub fn path(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -11901,7 +12599,7 @@ impl<S1> NestedQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> NestedQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Query you wish to run on nested objects in the path.
+    /// **Required.** Query you wish to run on nested objects in the path.
     pub fn query(
         self,
         value: impl Into<QueryContainer>,
@@ -11912,17 +12610,21 @@ impl<S0> NestedQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> NestedQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.query(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> NestedQueryBuilder<(S0, S1)> {
     /// Builds a [`NestedQuery`].
-    pub fn build(self) -> NestedQuery {
+    pub fn build(self) -> NestedQuery
+    where
+        S0: crate::typed::builder::IsSet<nested_query_members::path>,
+        S1: crate::typed::builder::IsSet<nested_query_members::query>,
+    {
         NestedQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -11935,26 +12637,26 @@ impl NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for NestedQuery
+impl<S0, S1> crate::typed::builder::Build for NestedQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<nested_query_members::path>,
+    S1: crate::typed::builder::IsSet<nested_query_members::query>,
 {
-    fn from(
-        builder: NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = NestedQuery;
+
+    fn build(self) -> NestedQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> NestedQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> NestedQuery { match path {} }
-}
-
-impl NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> NestedQuery { match query {} }
+impl<S0, S1> From<NestedQueryBuilder<(S0, S1)>> for NestedQuery
+where
+    S0: crate::typed::builder::IsSet<nested_query_members::path>,
+    S1: crate::typed::builder::IsSet<nested_query_members::query>,
+{
+    fn from(builder: NestedQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -11991,8 +12693,8 @@ impl NumberRangeQuery {
     }
 
     /// Creates a [`NumberRangeQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NumberRangeQueryBuilder) -> NumberRangeQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NumberRangeQuery>>(
+        f: impl FnOnce(NumberRangeQueryBuilder) -> B,
     ) -> NumberRangeQuery {
         f(Self::builder()).build()
     }
@@ -12127,6 +12829,14 @@ impl NumberRangeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NumberRangeQueryBuilder {
+    type Output = NumberRangeQuery;
+
+    fn build(self) -> NumberRangeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<NumberRangeQueryBuilder> for NumberRangeQuery {
     fn from(builder: NumberRangeQueryBuilder) -> Self {
         builder.build()
@@ -12151,8 +12861,8 @@ impl NumericDecayFunction {
     }
 
     /// Creates a [`NumericDecayFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(NumericDecayFunctionBuilder) -> NumericDecayFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = NumericDecayFunction>>(
+        f: impl FnOnce(NumericDecayFunctionBuilder) -> B,
     ) -> NumericDecayFunction {
         f(Self::builder()).build()
     }
@@ -12218,6 +12928,14 @@ impl NumericDecayFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for NumericDecayFunctionBuilder {
+    type Output = NumericDecayFunction;
+
+    fn build(self) -> NumericDecayFunction {
+        Self::build(self)
+    }
+}
+
 impl From<NumericDecayFunctionBuilder> for NumericDecayFunction {
     fn from(builder: NumericDecayFunctionBuilder) -> Self {
         builder.build()
@@ -12260,7 +12978,9 @@ impl ParentIdQuery {
     }
 
     /// Creates a [`ParentIdQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ParentIdQueryBuilder) -> ParentIdQueryBuilder) -> ParentIdQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = ParentIdQuery>>(
+        f: impl FnOnce(ParentIdQueryBuilder) -> B,
+    ) -> ParentIdQuery {
         f(Self::builder()).build()
     }
 }
@@ -12364,6 +13084,14 @@ impl ParentIdQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ParentIdQueryBuilder {
+    type Output = ParentIdQuery;
+
+    fn build(self) -> ParentIdQuery {
+        Self::build(self)
+    }
+}
+
 impl From<ParentIdQueryBuilder> for ParentIdQuery {
     fn from(builder: ParentIdQueryBuilder) -> Self {
         builder.build()
@@ -12410,16 +13138,27 @@ pub struct PercolateQuery {
 
 impl PercolateQuery {
     /// Creates a builder for [`PercolateQuery`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> PercolateQueryBuilder {
         PercolateQueryBuilder::new()
     }
 
     /// Creates a [`PercolateQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PercolateQueryBuilder) -> PercolateQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = PercolateQuery>>(
+        f: impl FnOnce(PercolateQueryBuilder) -> B,
     ) -> PercolateQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PercolateQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod percolate_query_members {
+    pub struct field;
 }
 
 /// Builder for [`PercolateQuery`].
@@ -12608,7 +13347,7 @@ impl<S0> PercolateQueryBuilder<(S0,)> {
 }
 
 impl PercolateQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Field that holds the indexed queries. The field must use the `percolator` mapping type.
+    /// **Required.** Field that holds the indexed queries. The field must use the `percolator` mapping type.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -12619,9 +13358,12 @@ impl PercolateQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PercolateQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PercolateQueryBuilder<(S0,)> {
     /// Builds a [`PercolateQuery`].
-    pub fn build(self) -> PercolateQuery {
+    pub fn build(self) -> PercolateQuery
+    where
+        S0: crate::typed::builder::IsSet<percolate_query_members::field>,
+    {
         PercolateQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -12638,16 +13380,24 @@ impl PercolateQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PercolateQueryBuilder<(crate::typed::builder::Set,)>> for PercolateQuery {
-    fn from(builder: PercolateQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PercolateQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<percolate_query_members::field>,
+{
+    type Output = PercolateQuery;
+
+    fn build(self) -> PercolateQuery {
+        Self::build(self)
     }
 }
 
-impl PercolateQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> PercolateQuery { match field {} }
+impl<S0> From<PercolateQueryBuilder<(S0,)>> for PercolateQuery
+where
+    S0: crate::typed::builder::IsSet<percolate_query_members::field>,
+{
+    fn from(builder: PercolateQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12662,16 +13412,27 @@ pub struct PinnedDoc {
 
 impl PinnedDoc {
     /// Creates a builder for [`PinnedDoc`].
+    ///
+    /// Required: `id`.
     pub fn builder() -> PinnedDocBuilder {
         PinnedDocBuilder::new()
     }
 
     /// Creates a [`PinnedDoc`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PinnedDocBuilder) -> PinnedDocBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `id`.
+    pub fn of<B: crate::typed::builder::Build<Output = PinnedDoc>>(
+        f: impl FnOnce(PinnedDocBuilder) -> B,
     ) -> PinnedDoc {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PinnedDocBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pinned_doc_members {
+    pub struct id;
 }
 
 /// Builder for [`PinnedDoc`].
@@ -12715,7 +13476,7 @@ impl<S0> PinnedDocBuilder<(S0,)> {
 }
 
 impl PinnedDocBuilder<(crate::typed::builder::NotSet,)> {
-    /// The unique document ID.
+    /// **Required.** The unique document ID.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -12726,9 +13487,12 @@ impl PinnedDocBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PinnedDocBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PinnedDocBuilder<(S0,)> {
     /// Builds a [`PinnedDoc`].
-    pub fn build(self) -> PinnedDoc {
+    pub fn build(self) -> PinnedDoc
+    where
+        S0: crate::typed::builder::IsSet<pinned_doc_members::id>,
+    {
         PinnedDoc {
             id: self.id.unwrap(),
             index: self.index,
@@ -12736,16 +13500,24 @@ impl PinnedDocBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PinnedDocBuilder<(crate::typed::builder::Set,)>> for PinnedDoc {
-    fn from(builder: PinnedDocBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PinnedDocBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<pinned_doc_members::id>,
+{
+    type Output = PinnedDoc;
+
+    fn build(self) -> PinnedDoc {
+        Self::build(self)
     }
 }
 
-impl PinnedDocBuilder<(crate::typed::builder::NotSet,)> {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> PinnedDoc { match id {} }
+impl<S0> From<PinnedDocBuilder<(S0,)>> for PinnedDoc
+where
+    S0: crate::typed::builder::IsSet<pinned_doc_members::id>,
+{
+    fn from(builder: PinnedDocBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12779,19 +13551,27 @@ pub enum PinnedQueryKind {
 
 impl PinnedQuery {
     /// Creates a builder for [`PinnedQuery`].
+    ///
+    /// Required: a variant, `organic`.
     pub fn builder() -> PinnedQueryBuilder {
         PinnedQueryBuilder::new()
     }
 
     /// Creates a [`PinnedQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            PinnedQueryBuilder,
-        )
-            -> PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: a variant, `organic`.
+    pub fn of<B: crate::typed::builder::Build<Output = PinnedQuery>>(
+        f: impl FnOnce(PinnedQueryBuilder) -> B,
     ) -> PinnedQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PinnedQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod pinned_query_members {
+    pub struct organic;
 }
 
 /// Builder for [`PinnedQuery`].
@@ -12823,7 +13603,7 @@ impl<S0, S1> PinnedQueryBuilder<(S0, S1)> {
 }
 
 impl<S0> PinnedQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Any choice of query used to rank documents which will be ranked below the "pinned" documents.
+    /// **Required.** Any choice of query used to rank documents which will be ranked below the "pinned" documents.
     pub fn organic(
         self,
         value: impl Into<QueryContainer>,
@@ -12834,9 +13614,9 @@ impl<S0> PinnedQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`organic`](Self::organic) with a builder.
-    pub fn organic_with(
+    pub fn organic_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> PinnedQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.organic(f(QueryContainerBuilder::new()).build())
     }
@@ -12885,9 +13665,13 @@ impl<S1> PinnedQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 }
 
-impl PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> PinnedQueryBuilder<(S0, S1)> {
     /// Builds a [`PinnedQuery`].
-    pub fn build(self) -> PinnedQuery {
+    pub fn build(self) -> PinnedQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<PinnedQuery>,
+        S1: crate::typed::builder::IsSet<pinned_query_members::organic>,
+    {
         PinnedQuery {
             organic: self.organic.unwrap(),
             kind: self.variant.unwrap(),
@@ -12895,26 +13679,26 @@ impl PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)
     }
 }
 
-impl From<PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for PinnedQuery
+impl<S0, S1> crate::typed::builder::Build for PinnedQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsVariantSet<PinnedQuery>,
+    S1: crate::typed::builder::IsSet<pinned_query_members::organic>,
 {
-    fn from(
-        builder: PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = PinnedQuery;
+
+    fn build(self) -> PinnedQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> PinnedQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> PinnedQuery { match variant {} }
-}
-
-impl PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `organic` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, organic: crate::typed::builder::MissingRequiredField) -> PinnedQuery { match organic {} }
+impl<S0, S1> From<PinnedQueryBuilder<(S0, S1)>> for PinnedQuery
+where
+    S0: crate::typed::builder::IsVariantSet<PinnedQuery>,
+    S1: crate::typed::builder::IsSet<pinned_query_members::organic>,
+{
+    fn from(builder: PinnedQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -12940,16 +13724,27 @@ pub struct PrefixQuery {
 
 impl PrefixQuery {
     /// Creates a builder for [`PrefixQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> PrefixQueryBuilder {
         PrefixQueryBuilder::new()
     }
 
     /// Creates a [`PrefixQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(PrefixQueryBuilder) -> PrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = PrefixQuery>>(
+        f: impl FnOnce(PrefixQueryBuilder) -> B,
     ) -> PrefixQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`PrefixQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod prefix_query_members {
+    pub struct value;
 }
 
 /// Builder for [`PrefixQuery`].
@@ -13047,7 +13842,7 @@ impl<S0> PrefixQueryBuilder<(S0,)> {
 }
 
 impl PrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Beginning characters of terms you wish to find in the provided field.
+    /// **Required.** Beginning characters of terms you wish to find in the provided field.
     pub fn value(
         self,
         value: impl Into<String>,
@@ -13058,9 +13853,12 @@ impl PrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl PrefixQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> PrefixQueryBuilder<(S0,)> {
     /// Builds a [`PrefixQuery`].
-    pub fn build(self) -> PrefixQuery {
+    pub fn build(self) -> PrefixQuery
+    where
+        S0: crate::typed::builder::IsSet<prefix_query_members::value>,
+    {
         PrefixQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -13071,16 +13869,24 @@ impl PrefixQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<PrefixQueryBuilder<(crate::typed::builder::Set,)>> for PrefixQuery {
-    fn from(builder: PrefixQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for PrefixQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<prefix_query_members::value>,
+{
+    type Output = PrefixQuery;
+
+    fn build(self) -> PrefixQuery {
+        Self::build(self)
     }
 }
 
-impl PrefixQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> PrefixQuery { match value {} }
+impl<S0> From<PrefixQueryBuilder<(S0,)>> for PrefixQuery
+where
+    S0: crate::typed::builder::IsSet<prefix_query_members::value>,
+{
+    fn from(builder: PrefixQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -13102,7 +13908,9 @@ impl QueryBase {
     }
 
     /// Creates a [`QueryBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(QueryBaseBuilder) -> QueryBaseBuilder) -> QueryBase {
+    pub fn of<B: crate::typed::builder::Build<Output = QueryBase>>(
+        f: impl FnOnce(QueryBaseBuilder) -> B,
+    ) -> QueryBase {
         f(Self::builder()).build()
     }
 }
@@ -13158,6 +13966,14 @@ impl QueryBaseBuilder {
             boost: self.boost,
             query_name: self.query_name,
         }
+    }
+}
+
+impl crate::typed::builder::Build for QueryBaseBuilder {
+    type Output = QueryBase;
+
+    fn build(self) -> QueryBase {
+        Self::build(self)
     }
 }
 
@@ -13986,13 +14802,17 @@ impl From<TypeQueryBuilder<(crate::typed::builder::Set,)>> for QueryContainer {
 
 impl QueryContainer {
     /// Creates a builder for [`QueryContainer`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> QueryContainerBuilder {
         QueryContainerBuilder::new()
     }
 
     /// Creates a [`QueryContainer`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryContainer>>(
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> QueryContainer {
         f(Self::builder()).build()
     }
@@ -14035,9 +14855,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`bool`](Self::bool) with a builder.
-    pub fn bool_with(
+    pub fn bool_with<B: crate::typed::builder::Build<Output = BoolQuery>>(
         self,
-        f: impl FnOnce(BoolQueryBuilder) -> BoolQueryBuilder,
+        f: impl FnOnce(BoolQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.bool(f(BoolQueryBuilder::new()).build())
     }
@@ -14053,15 +14873,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`boosting`](Self::boosting) with a builder.
-    pub fn boosting_with(
+    pub fn boosting_with<B: crate::typed::builder::Build<Output = BoostingQuery>>(
         self,
-        f: impl FnOnce(
-            BoostingQueryBuilder,
-        ) -> BoostingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(BoostingQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.boosting(f(BoostingQueryBuilder::new()).build())
     }
@@ -14080,12 +14894,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`common`](Self::common) with a builder.
-    pub fn common_with(
+    pub fn common_with<B: crate::typed::builder::Build<Output = CommonTermsQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            CommonTermsQueryBuilder,
-        ) -> CommonTermsQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(CommonTermsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.common(key, f(CommonTermsQueryBuilder::new()).build())
     }
@@ -14101,14 +14913,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`combined_fields`](Self::combined_fields) with a builder.
-    pub fn combined_fields_with(
+    pub fn combined_fields_with<B: crate::typed::builder::Build<Output = CombinedFieldsQuery>>(
         self,
-        f: impl FnOnce(
-            CombinedFieldsQueryBuilder,
-        ) -> CombinedFieldsQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(CombinedFieldsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.combined_fields(f(CombinedFieldsQueryBuilder::new()).build())
     }
@@ -14124,11 +14931,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`constant_score`](Self::constant_score) with a builder.
-    pub fn constant_score_with(
+    pub fn constant_score_with<B: crate::typed::builder::Build<Output = ConstantScoreQuery>>(
         self,
-        f: impl FnOnce(
-            ConstantScoreQueryBuilder,
-        ) -> ConstantScoreQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ConstantScoreQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.constant_score(f(ConstantScoreQueryBuilder::new()).build())
     }
@@ -14145,9 +14950,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`dis_max`](Self::dis_max) with a builder.
-    pub fn dis_max_with(
+    pub fn dis_max_with<B: crate::typed::builder::Build<Output = DisMaxQuery>>(
         self,
-        f: impl FnOnce(DisMaxQueryBuilder) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(DisMaxQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.dis_max(f(DisMaxQueryBuilder::new()).build())
     }
@@ -14174,9 +14979,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`exists`](Self::exists) with a builder.
-    pub fn exists_with(
+    pub fn exists_with<B: crate::typed::builder::Build<Output = ExistsQuery>>(
         self,
-        f: impl FnOnce(ExistsQueryBuilder) -> ExistsQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ExistsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.exists(f(ExistsQueryBuilder::new()).build())
     }
@@ -14192,9 +14997,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`function_score`](Self::function_score) with a builder.
-    pub fn function_score_with(
+    pub fn function_score_with<B: crate::typed::builder::Build<Output = FunctionScoreQuery>>(
         self,
-        f: impl FnOnce(FunctionScoreQueryBuilder) -> FunctionScoreQueryBuilder,
+        f: impl FnOnce(FunctionScoreQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.function_score(f(FunctionScoreQueryBuilder::new()).build())
     }
@@ -14214,10 +15019,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`fuzzy`](Self::fuzzy) with a builder.
-    pub fn fuzzy_with(
+    pub fn fuzzy_with<B: crate::typed::builder::Build<Output = FuzzyQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(FuzzyQueryBuilder) -> FuzzyQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FuzzyQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.fuzzy(key, f(FuzzyQueryBuilder::new()).build())
     }
@@ -14233,9 +15038,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_bounding_box`](Self::geo_bounding_box) with a builder.
-    pub fn geo_bounding_box_with(
+    pub fn geo_bounding_box_with<B: crate::typed::builder::Build<Output = GeoBoundingBoxQuery>>(
         self,
-        f: impl FnOnce(GeoBoundingBoxQueryBuilder) -> GeoBoundingBoxQueryBuilder,
+        f: impl FnOnce(GeoBoundingBoxQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_bounding_box(f(GeoBoundingBoxQueryBuilder::new()).build())
     }
@@ -14251,11 +15056,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_distance`](Self::geo_distance) with a builder.
-    pub fn geo_distance_with(
+    pub fn geo_distance_with<B: crate::typed::builder::Build<Output = GeoDistanceQuery>>(
         self,
-        f: impl FnOnce(
-            GeoDistanceQueryBuilder,
-        ) -> GeoDistanceQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoDistanceQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_distance(f(GeoDistanceQueryBuilder::new()).build())
     }
@@ -14275,10 +15078,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_grid`](Self::geo_grid) with a builder.
-    pub fn geo_grid_with(
+    pub fn geo_grid_with<B: crate::typed::builder::Build<Output = GeoGridQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(GeoGridQueryBuilder) -> GeoGridQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(GeoGridQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_grid(key, f(GeoGridQueryBuilder::new()).build())
     }
@@ -14293,9 +15096,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_polygon`](Self::geo_polygon) with a builder.
-    pub fn geo_polygon_with(
+    pub fn geo_polygon_with<B: crate::typed::builder::Build<Output = GeoPolygonQuery>>(
         self,
-        f: impl FnOnce(GeoPolygonQueryBuilder) -> GeoPolygonQueryBuilder,
+        f: impl FnOnce(GeoPolygonQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_polygon(f(GeoPolygonQueryBuilder::new()).build())
     }
@@ -14311,9 +15114,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`geo_shape`](Self::geo_shape) with a builder.
-    pub fn geo_shape_with(
+    pub fn geo_shape_with<B: crate::typed::builder::Build<Output = GeoShapeQuery>>(
         self,
-        f: impl FnOnce(GeoShapeQueryBuilder) -> GeoShapeQueryBuilder,
+        f: impl FnOnce(GeoShapeQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.geo_shape(f(GeoShapeQueryBuilder::new()).build())
     }
@@ -14329,12 +15132,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`has_child`](Self::has_child) with a builder.
-    pub fn has_child_with(
+    pub fn has_child_with<B: crate::typed::builder::Build<Output = HasChildQuery>>(
         self,
-        f: impl FnOnce(
-            HasChildQueryBuilder,
-        )
-            -> HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(HasChildQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.has_child(f(HasChildQueryBuilder::new()).build())
     }
@@ -14350,14 +15150,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`has_parent`](Self::has_parent) with a builder.
-    pub fn has_parent_with(
+    pub fn has_parent_with<B: crate::typed::builder::Build<Output = HasParentQuery>>(
         self,
-        f: impl FnOnce(
-            HasParentQueryBuilder,
-        ) -> HasParentQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(HasParentQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.has_parent(f(HasParentQueryBuilder::new()).build())
     }
@@ -14374,9 +15169,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`ids`](Self::ids) with a builder.
-    pub fn ids_with(
+    pub fn ids_with<B: crate::typed::builder::Build<Output = IdsQuery>>(
         self,
-        f: impl FnOnce(IdsQueryBuilder) -> IdsQueryBuilder,
+        f: impl FnOnce(IdsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.ids(f(IdsQueryBuilder::new()).build())
     }
@@ -14396,10 +15191,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`intervals`](Self::intervals) with a builder.
-    pub fn intervals_with(
+    pub fn intervals_with<B: crate::typed::builder::Build<Output = IntervalsQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(IntervalsQueryBuilder) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(IntervalsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.intervals(key, f(IntervalsQueryBuilder::new()).build())
     }
@@ -14417,11 +15212,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`knn`](Self::knn) with a builder.
-    pub fn knn_with(
+    pub fn knn_with<B: crate::typed::builder::Build<Output = crate::typed::_types::KnnQuery>>(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::KnnQueryBuilder,
-        ) -> crate::typed::_types::KnnQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(crate::typed::_types::KnnQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.knn(f(crate::typed::_types::KnnQueryBuilder::new()).build())
     }
@@ -14438,9 +15231,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`kql`](Self::kql) with a builder.
-    pub fn kql_with(
+    pub fn kql_with<B: crate::typed::builder::Build<Output = KqlQuery>>(
         self,
-        f: impl FnOnce(KqlQueryBuilder) -> KqlQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(KqlQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.kql(f(KqlQueryBuilder::new()).build())
     }
@@ -14461,10 +15254,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<B: crate::typed::builder::Build<Output = MatchQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(MatchQueryBuilder) -> MatchQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MatchQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.r#match(key, f(MatchQueryBuilder::new()).build())
     }
@@ -14480,9 +15273,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_all`](Self::match_all) with a builder.
-    pub fn match_all_with(
+    pub fn match_all_with<B: crate::typed::builder::Build<Output = MatchAllQuery>>(
         self,
-        f: impl FnOnce(MatchAllQueryBuilder) -> MatchAllQueryBuilder,
+        f: impl FnOnce(MatchAllQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_all(f(MatchAllQueryBuilder::new()).build())
     }
@@ -14503,12 +15296,12 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_bool_prefix`](Self::match_bool_prefix) with a builder.
-    pub fn match_bool_prefix_with(
+    pub fn match_bool_prefix_with<
+        B: crate::typed::builder::Build<Output = MatchBoolPrefixQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            MatchBoolPrefixQueryBuilder,
-        ) -> MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MatchBoolPrefixQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_bool_prefix(key, f(MatchBoolPrefixQueryBuilder::new()).build())
     }
@@ -14524,9 +15317,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_none`](Self::match_none) with a builder.
-    pub fn match_none_with(
+    pub fn match_none_with<B: crate::typed::builder::Build<Output = MatchNoneQuery>>(
         self,
-        f: impl FnOnce(MatchNoneQueryBuilder) -> MatchNoneQueryBuilder,
+        f: impl FnOnce(MatchNoneQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_none(f(MatchNoneQueryBuilder::new()).build())
     }
@@ -14546,12 +15339,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_phrase`](Self::match_phrase) with a builder.
-    pub fn match_phrase_with(
+    pub fn match_phrase_with<B: crate::typed::builder::Build<Output = MatchPhraseQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            MatchPhraseQueryBuilder,
-        ) -> MatchPhraseQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MatchPhraseQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_phrase(key, f(MatchPhraseQueryBuilder::new()).build())
     }
@@ -14571,12 +15362,12 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match_phrase_prefix`](Self::match_phrase_prefix) with a builder.
-    pub fn match_phrase_prefix_with(
+    pub fn match_phrase_prefix_with<
+        B: crate::typed::builder::Build<Output = MatchPhrasePrefixQuery>,
+    >(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            MatchPhrasePrefixQueryBuilder,
-        ) -> MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MatchPhrasePrefixQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.match_phrase_prefix(key, f(MatchPhrasePrefixQueryBuilder::new()).build())
     }
@@ -14592,11 +15383,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`more_like_this`](Self::more_like_this) with a builder.
-    pub fn more_like_this_with(
+    pub fn more_like_this_with<B: crate::typed::builder::Build<Output = MoreLikeThisQuery>>(
         self,
-        f: impl FnOnce(
-            MoreLikeThisQueryBuilder,
-        ) -> MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MoreLikeThisQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.more_like_this(f(MoreLikeThisQueryBuilder::new()).build())
     }
@@ -14613,9 +15402,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`multi_match`](Self::multi_match) with a builder.
-    pub fn multi_match_with(
+    pub fn multi_match_with<B: crate::typed::builder::Build<Output = MultiMatchQuery>>(
         self,
-        f: impl FnOnce(MultiMatchQueryBuilder) -> MultiMatchQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(MultiMatchQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.multi_match(f(MultiMatchQueryBuilder::new()).build())
     }
@@ -14632,12 +15421,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`nested`](Self::nested) with a builder.
-    pub fn nested_with(
+    pub fn nested_with<B: crate::typed::builder::Build<Output = NestedQuery>>(
         self,
-        f: impl FnOnce(
-            NestedQueryBuilder,
-        )
-            -> NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(NestedQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.nested(f(NestedQueryBuilder::new()).build())
     }
@@ -14653,9 +15439,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`parent_id`](Self::parent_id) with a builder.
-    pub fn parent_id_with(
+    pub fn parent_id_with<B: crate::typed::builder::Build<Output = ParentIdQuery>>(
         self,
-        f: impl FnOnce(ParentIdQueryBuilder) -> ParentIdQueryBuilder,
+        f: impl FnOnce(ParentIdQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.parent_id(f(ParentIdQueryBuilder::new()).build())
     }
@@ -14671,9 +15457,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`percolate`](Self::percolate) with a builder.
-    pub fn percolate_with(
+    pub fn percolate_with<B: crate::typed::builder::Build<Output = PercolateQuery>>(
         self,
-        f: impl FnOnce(PercolateQueryBuilder) -> PercolateQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PercolateQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.percolate(f(PercolateQueryBuilder::new()).build())
     }
@@ -14689,12 +15475,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`pinned`](Self::pinned) with a builder.
-    pub fn pinned_with(
+    pub fn pinned_with<B: crate::typed::builder::Build<Output = PinnedQuery>>(
         self,
-        f: impl FnOnce(
-            PinnedQueryBuilder,
-        )
-            -> PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(PinnedQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.pinned(f(PinnedQueryBuilder::new()).build())
     }
@@ -14714,10 +15497,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`prefix`](Self::prefix) with a builder.
-    pub fn prefix_with(
+    pub fn prefix_with<B: crate::typed::builder::Build<Output = PrefixQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(PrefixQueryBuilder) -> PrefixQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(PrefixQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.prefix(key, f(PrefixQueryBuilder::new()).build())
     }
@@ -14733,11 +15516,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`query_string`](Self::query_string) with a builder.
-    pub fn query_string_with(
+    pub fn query_string_with<B: crate::typed::builder::Build<Output = QueryStringQuery>>(
         self,
-        f: impl FnOnce(
-            QueryStringQueryBuilder,
-        ) -> QueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryStringQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.query_string(f(QueryStringQueryBuilder::new()).build())
     }
@@ -14767,11 +15548,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`rank_feature`](Self::rank_feature) with a builder.
-    pub fn rank_feature_with(
+    pub fn rank_feature_with<B: crate::typed::builder::Build<Output = RankFeatureQuery>>(
         self,
-        f: impl FnOnce(
-            RankFeatureQueryBuilder,
-        ) -> RankFeatureQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankFeatureQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.rank_feature(f(RankFeatureQueryBuilder::new()).build())
     }
@@ -14791,10 +15570,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`regexp`](Self::regexp) with a builder.
-    pub fn regexp_with(
+    pub fn regexp_with<B: crate::typed::builder::Build<Output = RegexpQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(RegexpQueryBuilder) -> RegexpQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RegexpQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.regexp(key, f(RegexpQueryBuilder::new()).build())
     }
@@ -14809,12 +15588,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`rule`](Self::rule) with a builder.
-    pub fn rule_with(
+    pub fn rule_with<B: crate::typed::builder::Build<Output = RuleQuery>>(
         self,
-        f: impl FnOnce(
-            RuleQueryBuilder,
-        )
-            -> RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(RuleQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.rule(f(RuleQueryBuilder::new()).build())
     }
@@ -14831,9 +15607,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = ScriptQuery>>(
         self,
-        f: impl FnOnce(ScriptQueryBuilder) -> ScriptQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(ScriptQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.script(f(ScriptQueryBuilder::new()).build())
     }
@@ -14849,14 +15625,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script_score`](Self::script_score) with a builder.
-    pub fn script_score_with(
+    pub fn script_score_with<B: crate::typed::builder::Build<Output = ScriptScoreQuery>>(
         self,
-        f: impl FnOnce(
-            ScriptScoreQueryBuilder,
-        ) -> ScriptScoreQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ScriptScoreQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.script_score(f(ScriptScoreQueryBuilder::new()).build())
     }
@@ -14872,12 +15643,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`semantic`](Self::semantic) with a builder.
-    pub fn semantic_with(
+    pub fn semantic_with<B: crate::typed::builder::Build<Output = SemanticQuery>>(
         self,
-        f: impl FnOnce(
-            SemanticQueryBuilder,
-        )
-            -> SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SemanticQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.semantic(f(SemanticQueryBuilder::new()).build())
     }
@@ -14893,9 +15661,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`shape`](Self::shape) with a builder.
-    pub fn shape_with(
+    pub fn shape_with<B: crate::typed::builder::Build<Output = ShapeQuery>>(
         self,
-        f: impl FnOnce(ShapeQueryBuilder) -> ShapeQueryBuilder,
+        f: impl FnOnce(ShapeQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.shape(f(ShapeQueryBuilder::new()).build())
     }
@@ -14911,11 +15679,11 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`simple_query_string`](Self::simple_query_string) with a builder.
-    pub fn simple_query_string_with(
+    pub fn simple_query_string_with<
+        B: crate::typed::builder::Build<Output = SimpleQueryStringQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            SimpleQueryStringQueryBuilder,
-        ) -> SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SimpleQueryStringQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.simple_query_string(f(SimpleQueryStringQueryBuilder::new()).build())
     }
@@ -14931,14 +15699,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_containing`](Self::span_containing) with a builder.
-    pub fn span_containing_with(
+    pub fn span_containing_with<B: crate::typed::builder::Build<Output = SpanContainingQuery>>(
         self,
-        f: impl FnOnce(
-            SpanContainingQueryBuilder,
-        ) -> SpanContainingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanContainingQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_containing(f(SpanContainingQueryBuilder::new()).build())
     }
@@ -14954,14 +15717,11 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_field_masking`](Self::span_field_masking) with a builder.
-    pub fn span_field_masking_with(
+    pub fn span_field_masking_with<
+        B: crate::typed::builder::Build<Output = SpanFieldMaskingQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            SpanFieldMaskingQueryBuilder,
-        ) -> SpanFieldMaskingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanFieldMaskingQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_field_masking(f(SpanFieldMaskingQueryBuilder::new()).build())
     }
@@ -14977,14 +15737,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_first`](Self::span_first) with a builder.
-    pub fn span_first_with(
+    pub fn span_first_with<B: crate::typed::builder::Build<Output = SpanFirstQuery>>(
         self,
-        f: impl FnOnce(
-            SpanFirstQueryBuilder,
-        ) -> SpanFirstQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanFirstQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_first(f(SpanFirstQueryBuilder::new()).build())
     }
@@ -15000,11 +15755,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_multi`](Self::span_multi) with a builder.
-    pub fn span_multi_with(
+    pub fn span_multi_with<B: crate::typed::builder::Build<Output = SpanMultiTermQuery>>(
         self,
-        f: impl FnOnce(
-            SpanMultiTermQueryBuilder,
-        ) -> SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanMultiTermQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_multi(f(SpanMultiTermQueryBuilder::new()).build())
     }
@@ -15021,9 +15774,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_near`](Self::span_near) with a builder.
-    pub fn span_near_with(
+    pub fn span_near_with<B: crate::typed::builder::Build<Output = SpanNearQuery>>(
         self,
-        f: impl FnOnce(SpanNearQueryBuilder) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanNearQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_near(f(SpanNearQueryBuilder::new()).build())
     }
@@ -15039,12 +15792,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_not`](Self::span_not) with a builder.
-    pub fn span_not_with(
+    pub fn span_not_with<B: crate::typed::builder::Build<Output = SpanNotQuery>>(
         self,
-        f: impl FnOnce(
-            SpanNotQueryBuilder,
-        )
-            -> SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SpanNotQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_not(f(SpanNotQueryBuilder::new()).build())
     }
@@ -15060,9 +15810,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_or`](Self::span_or) with a builder.
-    pub fn span_or_with(
+    pub fn span_or_with<B: crate::typed::builder::Build<Output = SpanOrQuery>>(
         self,
-        f: impl FnOnce(SpanOrQueryBuilder) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanOrQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_or(f(SpanOrQueryBuilder::new()).build())
     }
@@ -15082,10 +15832,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_term`](Self::span_term) with a builder.
-    pub fn span_term_with(
+    pub fn span_term_with<B: crate::typed::builder::Build<Output = SpanTermQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(SpanTermQueryBuilder) -> SpanTermQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanTermQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_term(key, f(SpanTermQueryBuilder::new()).build())
     }
@@ -15101,14 +15851,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_within`](Self::span_within) with a builder.
-    pub fn span_within_with(
+    pub fn span_within_with<B: crate::typed::builder::Build<Output = SpanWithinQuery>>(
         self,
-        f: impl FnOnce(
-            SpanWithinQueryBuilder,
-        ) -> SpanWithinQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanWithinQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.span_within(f(SpanWithinQueryBuilder::new()).build())
     }
@@ -15124,14 +15869,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`sparse_vector`](Self::sparse_vector) with a builder.
-    pub fn sparse_vector_with(
+    pub fn sparse_vector_with<B: crate::typed::builder::Build<Output = SparseVectorQuery>>(
         self,
-        f: impl FnOnce(
-            SparseVectorQueryBuilder,
-        ) -> SparseVectorQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SparseVectorQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.sparse_vector(f(SparseVectorQueryBuilder::new()).build())
     }
@@ -15152,10 +15892,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`term`](Self::term) with a builder.
-    pub fn term_with(
+    pub fn term_with<B: crate::typed::builder::Build<Output = TermQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(TermQueryBuilder) -> TermQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TermQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.term(key, f(TermQueryBuilder::new()).build())
     }
@@ -15172,9 +15912,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms`](Self::terms) with a builder.
-    pub fn terms_with(
+    pub fn terms_with<B: crate::typed::builder::Build<Output = TermsQuery>>(
         self,
-        f: impl FnOnce(TermsQueryBuilder) -> TermsQueryBuilder,
+        f: impl FnOnce(TermsQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms(f(TermsQueryBuilder::new()).build())
     }
@@ -15195,10 +15935,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`terms_set`](Self::terms_set) with a builder.
-    pub fn terms_set_with(
+    pub fn terms_set_with<B: crate::typed::builder::Build<Output = TermsSetQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(TermsSetQueryBuilder) -> TermsSetQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TermsSetQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.terms_set(key, f(TermsSetQueryBuilder::new()).build())
     }
@@ -15218,15 +15958,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`text_expansion`](Self::text_expansion) with a builder.
-    pub fn text_expansion_with(
+    pub fn text_expansion_with<B: crate::typed::builder::Build<Output = TextExpansionQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            TextExpansionQueryBuilder,
-        ) -> TextExpansionQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(TextExpansionQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.text_expansion(key, f(TextExpansionQueryBuilder::new()).build())
     }
@@ -15245,12 +15980,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`weighted_tokens`](Self::weighted_tokens) with a builder.
-    pub fn weighted_tokens_with(
+    pub fn weighted_tokens_with<B: crate::typed::builder::Build<Output = WeightedTokensQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(
-            WeightedTokensQueryBuilder,
-        ) -> WeightedTokensQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WeightedTokensQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.weighted_tokens(key, f(WeightedTokensQueryBuilder::new()).build())
     }
@@ -15270,10 +16003,10 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wildcard`](Self::wildcard) with a builder.
-    pub fn wildcard_with(
+    pub fn wildcard_with<B: crate::typed::builder::Build<Output = WildcardQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(WildcardQueryBuilder) -> WildcardQueryBuilder,
+        f: impl FnOnce(WildcardQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.wildcard(key, f(WildcardQueryBuilder::new()).build())
     }
@@ -15289,9 +16022,9 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`wrapper`](Self::wrapper) with a builder.
-    pub fn wrapper_with(
+    pub fn wrapper_with<B: crate::typed::builder::Build<Output = WrapperQuery>>(
         self,
-        f: impl FnOnce(WrapperQueryBuilder) -> WrapperQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(WrapperQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.wrapper(f(WrapperQueryBuilder::new()).build())
     }
@@ -15306,31 +16039,42 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`type`](Self::type) with a builder.
-    pub fn type_with(
+    pub fn type_with<B: crate::typed::builder::Build<Output = TypeQuery>>(
         self,
-        f: impl FnOnce(TypeQueryBuilder) -> TypeQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TypeQueryBuilder) -> B,
     ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
         self.r#type(f(TypeQueryBuilder::new()).build())
     }
 }
 
-impl QueryContainerBuilder<(crate::typed::builder::Set,)> {
+impl<S0> QueryContainerBuilder<(S0,)> {
     /// Builds a [`QueryContainer`].
-    pub fn build(self) -> QueryContainer {
+    pub fn build(self) -> QueryContainer
+    where
+        S0: crate::typed::builder::IsVariantSet<QueryContainer>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<QueryContainerBuilder<(crate::typed::builder::Set,)>> for QueryContainer {
-    fn from(builder: QueryContainerBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for QueryContainerBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<QueryContainer>,
+{
+    type Output = QueryContainer;
+
+    fn build(self) -> QueryContainer {
+        Self::build(self)
     }
 }
 
-impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> QueryContainer { match variant {} }
+impl<S0> From<QueryContainerBuilder<(S0,)>> for QueryContainer
+where
+    S0: crate::typed::builder::IsVariantSet<QueryContainer>,
+{
+    fn from(builder: QueryContainerBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15424,18 +16168,27 @@ pub struct QueryStringQuery {
 
 impl QueryStringQuery {
     /// Creates a builder for [`QueryStringQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> QueryStringQueryBuilder {
         QueryStringQueryBuilder::new()
     }
 
     /// Creates a [`QueryStringQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            QueryStringQueryBuilder,
-        ) -> QueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = QueryStringQuery>>(
+        f: impl FnOnce(QueryStringQueryBuilder) -> B,
     ) -> QueryStringQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`QueryStringQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod query_string_query_members {
+    pub struct query;
 }
 
 /// Builder for [`QueryStringQuery`].
@@ -15885,7 +16638,7 @@ impl<S0> QueryStringQueryBuilder<(S0,)> {
 }
 
 impl QueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Query string you wish to parse and use for search.
+    /// **Required.** Query string you wish to parse and use for search.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -15896,9 +16649,12 @@ impl QueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl QueryStringQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> QueryStringQueryBuilder<(S0,)> {
     /// Builds a [`QueryStringQuery`].
-    pub fn build(self) -> QueryStringQuery {
+    pub fn build(self) -> QueryStringQuery
+    where
+        S0: crate::typed::builder::IsSet<query_string_query_members::query>,
+    {
         QueryStringQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -15931,16 +16687,24 @@ impl QueryStringQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<QueryStringQueryBuilder<(crate::typed::builder::Set,)>> for QueryStringQuery {
-    fn from(builder: QueryStringQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for QueryStringQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<query_string_query_members::query>,
+{
+    type Output = QueryStringQuery;
+
+    fn build(self) -> QueryStringQuery {
+        Self::build(self)
     }
 }
 
-impl QueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> QueryStringQuery { match query {} }
+impl<S0> From<QueryStringQueryBuilder<(S0,)>> for QueryStringQuery
+where
+    S0: crate::typed::builder::IsSet<query_string_query_members::query>,
+{
+    fn from(builder: QueryStringQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15983,8 +16747,8 @@ impl RandomScoreFunction {
     }
 
     /// Creates a [`RandomScoreFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RandomScoreFunctionBuilder) -> RandomScoreFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RandomScoreFunction>>(
+        f: impl FnOnce(RandomScoreFunctionBuilder) -> B,
     ) -> RandomScoreFunction {
         f(Self::builder()).build()
     }
@@ -16040,6 +16804,14 @@ impl RandomScoreFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RandomScoreFunctionBuilder {
+    type Output = RandomScoreFunction;
+
+    fn build(self) -> RandomScoreFunction {
+        Self::build(self)
+    }
+}
+
 impl From<RandomScoreFunctionBuilder> for RandomScoreFunction {
     fn from(builder: RandomScoreFunctionBuilder) -> Self {
         builder.build()
@@ -16091,7 +16863,9 @@ impl RangeQueryBase {
     }
 
     /// Creates a [`RangeQueryBase`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RangeQueryBaseBuilder) -> RangeQueryBaseBuilder) -> RangeQueryBase {
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQueryBase>>(
+        f: impl FnOnce(RangeQueryBaseBuilder) -> B,
+    ) -> RangeQueryBase {
         f(Self::builder()).build()
     }
 }
@@ -16225,6 +16999,14 @@ impl RangeQueryBaseBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeQueryBaseBuilder {
+    type Output = RangeQueryBase;
+
+    fn build(self) -> RangeQueryBase {
+        Self::build(self)
+    }
+}
+
 impl From<RangeQueryBaseBuilder> for RangeQueryBase {
     fn from(builder: RangeQueryBaseBuilder) -> Self {
         builder.build()
@@ -16265,8 +17047,8 @@ impl RangeQueryBaseDateMath {
     }
 
     /// Creates a [`RangeQueryBaseDateMath`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeQueryBaseDateMathBuilder) -> RangeQueryBaseDateMathBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQueryBaseDateMath>>(
+        f: impl FnOnce(RangeQueryBaseDateMathBuilder) -> B,
     ) -> RangeQueryBaseDateMath {
         f(Self::builder()).build()
     }
@@ -16401,6 +17183,14 @@ impl RangeQueryBaseDateMathBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeQueryBaseDateMathBuilder {
+    type Output = RangeQueryBaseDateMath;
+
+    fn build(self) -> RangeQueryBaseDateMath {
+        Self::build(self)
+    }
+}
+
 impl From<RangeQueryBaseDateMathBuilder> for RangeQueryBaseDateMath {
     fn from(builder: RangeQueryBaseDateMathBuilder) -> Self {
         builder.build()
@@ -16441,8 +17231,8 @@ impl RangeQueryBasedouble {
     }
 
     /// Creates a [`RangeQueryBasedouble`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeQueryBasedoubleBuilder) -> RangeQueryBasedoubleBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQueryBasedouble>>(
+        f: impl FnOnce(RangeQueryBasedoubleBuilder) -> B,
     ) -> RangeQueryBasedouble {
         f(Self::builder()).build()
     }
@@ -16577,6 +17367,14 @@ impl RangeQueryBasedoubleBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeQueryBasedoubleBuilder {
+    type Output = RangeQueryBasedouble;
+
+    fn build(self) -> RangeQueryBasedouble {
+        Self::build(self)
+    }
+}
+
 impl From<RangeQueryBasedoubleBuilder> for RangeQueryBasedouble {
     fn from(builder: RangeQueryBasedoubleBuilder) -> Self {
         builder.build()
@@ -16617,8 +17415,8 @@ impl RangeQueryBaselong {
     }
 
     /// Creates a [`RangeQueryBaselong`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeQueryBaselongBuilder) -> RangeQueryBaselongBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQueryBaselong>>(
+        f: impl FnOnce(RangeQueryBaselongBuilder) -> B,
     ) -> RangeQueryBaselong {
         f(Self::builder()).build()
     }
@@ -16753,6 +17551,14 @@ impl RangeQueryBaselongBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeQueryBaselongBuilder {
+    type Output = RangeQueryBaselong;
+
+    fn build(self) -> RangeQueryBaselong {
+        Self::build(self)
+    }
+}
+
 impl From<RangeQueryBaselongBuilder> for RangeQueryBaselong {
     fn from(builder: RangeQueryBaselongBuilder) -> Self {
         builder.build()
@@ -16793,8 +17599,8 @@ impl RangeQueryBasestring {
     }
 
     /// Creates a [`RangeQueryBasestring`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RangeQueryBasestringBuilder) -> RangeQueryBasestringBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQueryBasestring>>(
+        f: impl FnOnce(RangeQueryBasestringBuilder) -> B,
     ) -> RangeQueryBasestring {
         f(Self::builder()).build()
     }
@@ -16929,6 +17735,14 @@ impl RangeQueryBasestringBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RangeQueryBasestringBuilder {
+    type Output = RangeQueryBasestring;
+
+    fn build(self) -> RangeQueryBasestring {
+        Self::build(self)
+    }
+}
+
 impl From<RangeQueryBasestringBuilder> for RangeQueryBasestring {
     fn from(builder: RangeQueryBasestringBuilder) -> Self {
         builder.build()
@@ -16958,8 +17772,8 @@ impl RankFeatureFunction {
     }
 
     /// Creates a [`RankFeatureFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankFeatureFunctionBuilder) -> RankFeatureFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureFunction>>(
+        f: impl FnOnce(RankFeatureFunctionBuilder) -> B,
     ) -> RankFeatureFunction {
         f(Self::builder()).build()
     }
@@ -16984,6 +17798,14 @@ impl RankFeatureFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankFeatureFunctionBuilder {
+    type Output = RankFeatureFunction;
+
+    fn build(self) -> RankFeatureFunction {
+        Self::build(self)
+    }
+}
+
 impl From<RankFeatureFunctionBuilder> for RankFeatureFunction {
     fn from(builder: RankFeatureFunctionBuilder) -> Self {
         builder.build()
@@ -17000,8 +17822,8 @@ impl RankFeatureFunctionLinear {
     }
 
     /// Creates a [`RankFeatureFunctionLinear`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankFeatureFunctionLinearBuilder) -> RankFeatureFunctionLinearBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureFunctionLinear>>(
+        f: impl FnOnce(RankFeatureFunctionLinearBuilder) -> B,
     ) -> RankFeatureFunctionLinear {
         f(Self::builder()).build()
     }
@@ -17026,6 +17848,14 @@ impl RankFeatureFunctionLinearBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankFeatureFunctionLinearBuilder {
+    type Output = RankFeatureFunctionLinear;
+
+    fn build(self) -> RankFeatureFunctionLinear {
+        Self::build(self)
+    }
+}
+
 impl From<RankFeatureFunctionLinearBuilder> for RankFeatureFunctionLinear {
     fn from(builder: RankFeatureFunctionLinearBuilder) -> Self {
         builder.build()
@@ -17040,18 +17870,27 @@ pub struct RankFeatureFunctionLogarithm {
 
 impl RankFeatureFunctionLogarithm {
     /// Creates a builder for [`RankFeatureFunctionLogarithm`].
+    ///
+    /// Required: `scaling_factor`.
     pub fn builder() -> RankFeatureFunctionLogarithmBuilder {
         RankFeatureFunctionLogarithmBuilder::new()
     }
 
     /// Creates a [`RankFeatureFunctionLogarithm`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankFeatureFunctionLogarithmBuilder,
-        ) -> RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `scaling_factor`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureFunctionLogarithm>>(
+        f: impl FnOnce(RankFeatureFunctionLogarithmBuilder) -> B,
     ) -> RankFeatureFunctionLogarithm {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankFeatureFunctionLogarithmBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_feature_function_logarithm_members {
+    pub struct scaling_factor;
 }
 
 /// Builder for [`RankFeatureFunctionLogarithm`].
@@ -17080,7 +17919,7 @@ impl<S0> RankFeatureFunctionLogarithmBuilder<(S0,)> {
 }
 
 impl RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::NotSet,)> {
-    /// Configurable scaling factor.
+    /// **Required.** Configurable scaling factor.
     pub fn scaling_factor(
         self,
         value: f32,
@@ -17091,27 +17930,36 @@ impl RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankFeatureFunctionLogarithmBuilder<(S0,)> {
     /// Builds a [`RankFeatureFunctionLogarithm`].
-    pub fn build(self) -> RankFeatureFunctionLogarithm {
+    pub fn build(self) -> RankFeatureFunctionLogarithm
+    where
+        S0: crate::typed::builder::IsSet<rank_feature_function_logarithm_members::scaling_factor>,
+    {
         RankFeatureFunctionLogarithm {
             scaling_factor: self.scaling_factor.unwrap(),
         }
     }
 }
 
-impl From<RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)>>
-    for RankFeatureFunctionLogarithm
+impl<S0> crate::typed::builder::Build for RankFeatureFunctionLogarithmBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_feature_function_logarithm_members::scaling_factor>,
 {
-    fn from(builder: RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = RankFeatureFunctionLogarithm;
+
+    fn build(self) -> RankFeatureFunctionLogarithm {
+        Self::build(self)
     }
 }
 
-impl RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::NotSet,)> {
-    /// `scaling_factor` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, scaling_factor: crate::typed::builder::MissingRequiredField) -> RankFeatureFunctionLogarithm { match scaling_factor {} }
+impl<S0> From<RankFeatureFunctionLogarithmBuilder<(S0,)>> for RankFeatureFunctionLogarithm
+where
+    S0: crate::typed::builder::IsSet<rank_feature_function_logarithm_members::scaling_factor>,
+{
+    fn from(builder: RankFeatureFunctionLogarithmBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17128,8 +17976,8 @@ impl RankFeatureFunctionSaturation {
     }
 
     /// Creates a [`RankFeatureFunctionSaturation`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RankFeatureFunctionSaturationBuilder) -> RankFeatureFunctionSaturationBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureFunctionSaturation>>(
+        f: impl FnOnce(RankFeatureFunctionSaturationBuilder) -> B,
     ) -> RankFeatureFunctionSaturation {
         f(Self::builder()).build()
     }
@@ -17168,6 +18016,14 @@ impl RankFeatureFunctionSaturationBuilder {
     }
 }
 
+impl crate::typed::builder::Build for RankFeatureFunctionSaturationBuilder {
+    type Output = RankFeatureFunctionSaturation;
+
+    fn build(self) -> RankFeatureFunctionSaturation {
+        Self::build(self)
+    }
+}
+
 impl From<RankFeatureFunctionSaturationBuilder> for RankFeatureFunctionSaturation {
     fn from(builder: RankFeatureFunctionSaturationBuilder) -> Self {
         builder.build()
@@ -17184,21 +18040,28 @@ pub struct RankFeatureFunctionSigmoid {
 
 impl RankFeatureFunctionSigmoid {
     /// Creates a builder for [`RankFeatureFunctionSigmoid`].
+    ///
+    /// Required: `pivot`, `exponent`.
     pub fn builder() -> RankFeatureFunctionSigmoidBuilder {
         RankFeatureFunctionSigmoidBuilder::new()
     }
 
     /// Creates a [`RankFeatureFunctionSigmoid`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankFeatureFunctionSigmoidBuilder,
-        ) -> RankFeatureFunctionSigmoidBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `pivot`, `exponent`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureFunctionSigmoid>>(
+        f: impl FnOnce(RankFeatureFunctionSigmoidBuilder) -> B,
     ) -> RankFeatureFunctionSigmoid {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankFeatureFunctionSigmoidBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_feature_function_sigmoid_members {
+    pub struct pivot;
+    pub struct exponent;
 }
 
 /// Builder for [`RankFeatureFunctionSigmoid`].
@@ -17237,7 +18100,7 @@ impl<S0, S1> RankFeatureFunctionSigmoidBuilder<(S0, S1)> {
 }
 
 impl<S1> RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Configurable pivot value so that the result will be less than 0.5.
+    /// **Required.** Configurable pivot value so that the result will be less than 0.5.
     pub fn pivot(
         self,
         value: f32,
@@ -17249,7 +18112,7 @@ impl<S1> RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::NotSet, S1)> 
 }
 
 impl<S0> RankFeatureFunctionSigmoidBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Configurable Exponent.
+    /// **Required.** Configurable Exponent.
     pub fn exponent(
         self,
         value: f32,
@@ -17260,9 +18123,13 @@ impl<S0> RankFeatureFunctionSigmoidBuilder<(S0, crate::typed::builder::NotSet)> 
     }
 }
 
-impl RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RankFeatureFunctionSigmoidBuilder<(S0, S1)> {
     /// Builds a [`RankFeatureFunctionSigmoid`].
-    pub fn build(self) -> RankFeatureFunctionSigmoid {
+    pub fn build(self) -> RankFeatureFunctionSigmoid
+    where
+        S0: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::pivot>,
+        S1: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::exponent>,
+    {
         RankFeatureFunctionSigmoid {
             pivot: self.pivot.unwrap(),
             exponent: self.exponent.unwrap(),
@@ -17270,33 +18137,26 @@ impl RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::Set, crate::typed
     }
 }
 
-impl
-    From<
-        RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    > for RankFeatureFunctionSigmoid
+impl<S0, S1> crate::typed::builder::Build for RankFeatureFunctionSigmoidBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::pivot>,
+    S1: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::exponent>,
 {
-    fn from(
-        builder: RankFeatureFunctionSigmoidBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = RankFeatureFunctionSigmoid;
+
+    fn build(self) -> RankFeatureFunctionSigmoid {
+        Self::build(self)
     }
 }
 
-impl<S1> RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> RankFeatureFunctionSigmoid { match pivot {} }
-}
-
-impl
-    RankFeatureFunctionSigmoidBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)>
+impl<S0, S1> From<RankFeatureFunctionSigmoidBuilder<(S0, S1)>> for RankFeatureFunctionSigmoid
+where
+    S0: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::pivot>,
+    S1: crate::typed::builder::IsSet<rank_feature_function_sigmoid_members::exponent>,
 {
-    /// `exponent` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exponent: crate::typed::builder::MissingRequiredField) -> RankFeatureFunctionSigmoid { match exponent {} }
+    fn from(builder: RankFeatureFunctionSigmoidBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17327,18 +18187,27 @@ pub struct RankFeatureQuery {
 
 impl RankFeatureQuery {
     /// Creates a builder for [`RankFeatureQuery`].
+    ///
+    /// Required: `field`.
     pub fn builder() -> RankFeatureQueryBuilder {
         RankFeatureQueryBuilder::new()
     }
 
     /// Creates a [`RankFeatureQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RankFeatureQueryBuilder,
-        ) -> RankFeatureQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = RankFeatureQuery>>(
+        f: impl FnOnce(RankFeatureQueryBuilder) -> B,
     ) -> RankFeatureQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RankFeatureQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rank_feature_query_members {
+    pub struct field;
 }
 
 /// Builder for [`RankFeatureQuery`].
@@ -17422,9 +18291,11 @@ impl<S0> RankFeatureQueryBuilder<(S0,)> {
     }
 
     /// Sets [`saturation`](Self::saturation) with a builder.
-    pub fn saturation_with(
+    pub fn saturation_with<
+        B: crate::typed::builder::Build<Output = RankFeatureFunctionSaturation>,
+    >(
         self,
-        f: impl FnOnce(RankFeatureFunctionSaturationBuilder) -> RankFeatureFunctionSaturationBuilder,
+        f: impl FnOnce(RankFeatureFunctionSaturationBuilder) -> B,
     ) -> Self {
         self.saturation(f(RankFeatureFunctionSaturationBuilder::new()).build())
     }
@@ -17442,11 +18313,9 @@ impl<S0> RankFeatureQueryBuilder<(S0,)> {
     }
 
     /// Sets [`log`](Self::log) with a builder.
-    pub fn log_with(
+    pub fn log_with<B: crate::typed::builder::Build<Output = RankFeatureFunctionLogarithm>>(
         self,
-        f: impl FnOnce(
-            RankFeatureFunctionLogarithmBuilder,
-        ) -> RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(RankFeatureFunctionLogarithmBuilder) -> B,
     ) -> Self {
         self.log(f(RankFeatureFunctionLogarithmBuilder::new()).build())
     }
@@ -17464,9 +18333,9 @@ impl<S0> RankFeatureQueryBuilder<(S0,)> {
     }
 
     /// Sets [`linear`](Self::linear) with a builder.
-    pub fn linear_with(
+    pub fn linear_with<B: crate::typed::builder::Build<Output = RankFeatureFunctionLinear>>(
         self,
-        f: impl FnOnce(RankFeatureFunctionLinearBuilder) -> RankFeatureFunctionLinearBuilder,
+        f: impl FnOnce(RankFeatureFunctionLinearBuilder) -> B,
     ) -> Self {
         self.linear(f(RankFeatureFunctionLinearBuilder::new()).build())
     }
@@ -17484,21 +18353,16 @@ impl<S0> RankFeatureQueryBuilder<(S0,)> {
     }
 
     /// Sets [`sigmoid`](Self::sigmoid) with a builder.
-    pub fn sigmoid_with(
+    pub fn sigmoid_with<B: crate::typed::builder::Build<Output = RankFeatureFunctionSigmoid>>(
         self,
-        f: impl FnOnce(
-            RankFeatureFunctionSigmoidBuilder,
-        ) -> RankFeatureFunctionSigmoidBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(RankFeatureFunctionSigmoidBuilder) -> B,
     ) -> Self {
         self.sigmoid(f(RankFeatureFunctionSigmoidBuilder::new()).build())
     }
 }
 
 impl RankFeatureQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `rank_feature` or `rank_features` field used to boost relevance scores.
+    /// **Required.** `rank_feature` or `rank_features` field used to boost relevance scores.
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -17509,9 +18373,12 @@ impl RankFeatureQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RankFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RankFeatureQueryBuilder<(S0,)> {
     /// Builds a [`RankFeatureQuery`].
-    pub fn build(self) -> RankFeatureQuery {
+    pub fn build(self) -> RankFeatureQuery
+    where
+        S0: crate::typed::builder::IsSet<rank_feature_query_members::field>,
+    {
         RankFeatureQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -17524,16 +18391,24 @@ impl RankFeatureQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RankFeatureQueryBuilder<(crate::typed::builder::Set,)>> for RankFeatureQuery {
-    fn from(builder: RankFeatureQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RankFeatureQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<rank_feature_query_members::field>,
+{
+    type Output = RankFeatureQuery;
+
+    fn build(self) -> RankFeatureQuery {
+        Self::build(self)
     }
 }
 
-impl RankFeatureQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> RankFeatureQuery { match field {} }
+impl<S0> From<RankFeatureQueryBuilder<(S0,)>> for RankFeatureQuery
+where
+    S0: crate::typed::builder::IsSet<rank_feature_query_members::field>,
+{
+    fn from(builder: RankFeatureQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17565,16 +18440,27 @@ pub struct RegexpQuery {
 
 impl RegexpQuery {
     /// Creates a builder for [`RegexpQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> RegexpQueryBuilder {
         RegexpQueryBuilder::new()
     }
 
     /// Creates a [`RegexpQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(RegexpQueryBuilder) -> RegexpQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = RegexpQuery>>(
+        f: impl FnOnce(RegexpQueryBuilder) -> B,
     ) -> RegexpQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RegexpQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod regexp_query_members {
+    pub struct value;
 }
 
 /// Builder for [`RegexpQuery`].
@@ -17702,7 +18588,7 @@ impl<S0> RegexpQueryBuilder<(S0,)> {
 }
 
 impl RegexpQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Regular expression for terms you wish to find in the provided field.
+    /// **Required.** Regular expression for terms you wish to find in the provided field.
     pub fn value(
         self,
         value: impl Into<String>,
@@ -17713,9 +18599,12 @@ impl RegexpQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl RegexpQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> RegexpQueryBuilder<(S0,)> {
     /// Builds a [`RegexpQuery`].
-    pub fn build(self) -> RegexpQuery {
+    pub fn build(self) -> RegexpQuery
+    where
+        S0: crate::typed::builder::IsSet<regexp_query_members::value>,
+    {
         RegexpQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -17728,16 +18617,24 @@ impl RegexpQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<RegexpQueryBuilder<(crate::typed::builder::Set,)>> for RegexpQuery {
-    fn from(builder: RegexpQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for RegexpQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<regexp_query_members::value>,
+{
+    type Output = RegexpQuery;
+
+    fn build(self) -> RegexpQuery {
+        Self::build(self)
     }
 }
 
-impl RegexpQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> RegexpQuery { match value {} }
+impl<S0> From<RegexpQueryBuilder<(S0,)>> for RegexpQuery
+where
+    S0: crate::typed::builder::IsSet<regexp_query_members::value>,
+{
+    fn from(builder: RegexpQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17785,19 +18682,28 @@ impl From<&str> for RuleQueryRulesetIds {
 
 impl RuleQuery {
     /// Creates a builder for [`RuleQuery`].
+    ///
+    /// Required: `organic`, `match_criteria`.
     pub fn builder() -> RuleQueryBuilder {
         RuleQueryBuilder::new()
     }
 
     /// Creates a [`RuleQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            RuleQueryBuilder,
-        )
-            -> RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `organic`, `match_criteria`.
+    pub fn of<B: crate::typed::builder::Build<Output = RuleQuery>>(
+        f: impl FnOnce(RuleQueryBuilder) -> B,
     ) -> RuleQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`RuleQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod rule_query_members {
+    pub struct organic;
+    pub struct match_criteria;
 }
 
 /// Builder for [`RuleQuery`].
@@ -17889,6 +18795,7 @@ impl<S0, S1> RuleQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> RuleQueryBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn organic(
         self,
         value: impl Into<QueryContainer>,
@@ -17899,15 +18806,16 @@ impl<S1> RuleQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`organic`](Self::organic) with a builder.
-    pub fn organic_with(
+    pub fn organic_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> RuleQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.organic(f(QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S0> RuleQueryBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn match_criteria(
         self,
         value: impl Into<serde_json::Value>,
@@ -17918,9 +18826,13 @@ impl<S0> RuleQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> RuleQueryBuilder<(S0, S1)> {
     /// Builds a [`RuleQuery`].
-    pub fn build(self) -> RuleQuery {
+    pub fn build(self) -> RuleQuery
+    where
+        S0: crate::typed::builder::IsSet<rule_query_members::organic>,
+        S1: crate::typed::builder::IsSet<rule_query_members::match_criteria>,
+    {
         RuleQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -17932,26 +18844,26 @@ impl RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> 
     }
 }
 
-impl From<RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for RuleQuery
+impl<S0, S1> crate::typed::builder::Build for RuleQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<rule_query_members::organic>,
+    S1: crate::typed::builder::IsSet<rule_query_members::match_criteria>,
 {
-    fn from(
-        builder: RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = RuleQuery;
+
+    fn build(self) -> RuleQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> RuleQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `organic` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, organic: crate::typed::builder::MissingRequiredField) -> RuleQuery { match organic {} }
-}
-
-impl RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `match_criteria` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, match_criteria: crate::typed::builder::MissingRequiredField) -> RuleQuery { match match_criteria {} }
+impl<S0, S1> From<RuleQueryBuilder<(S0, S1)>> for RuleQuery
+where
+    S0: crate::typed::builder::IsSet<rule_query_members::organic>,
+    S1: crate::typed::builder::IsSet<rule_query_members::match_criteria>,
+{
+    fn from(builder: RuleQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -17971,16 +18883,27 @@ pub struct ScriptQuery {
 
 impl ScriptQuery {
     /// Creates a builder for [`ScriptQuery`].
+    ///
+    /// Required: `script`.
     pub fn builder() -> ScriptQueryBuilder {
         ScriptQueryBuilder::new()
     }
 
     /// Creates a [`ScriptQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(ScriptQueryBuilder) -> ScriptQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptQuery>>(
+        f: impl FnOnce(ScriptQueryBuilder) -> B,
     ) -> ScriptQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScriptQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod script_query_members {
+    pub struct script;
 }
 
 /// Builder for [`ScriptQuery`].
@@ -18041,7 +18964,7 @@ impl<S0> ScriptQueryBuilder<(S0,)> {
 }
 
 impl ScriptQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Contains a script to run as a query.
+    /// **Required.** Contains a script to run as a query.
     /// This script must return a boolean value, `true` or `false`.
     pub fn script(
         self,
@@ -18053,17 +18976,20 @@ impl ScriptQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> ScriptQueryBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl ScriptQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScriptQueryBuilder<(S0,)> {
     /// Builds a [`ScriptQuery`].
-    pub fn build(self) -> ScriptQuery {
+    pub fn build(self) -> ScriptQuery
+    where
+        S0: crate::typed::builder::IsSet<script_query_members::script>,
+    {
         ScriptQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -18072,16 +18998,24 @@ impl ScriptQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<ScriptQueryBuilder<(crate::typed::builder::Set,)>> for ScriptQuery {
-    fn from(builder: ScriptQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ScriptQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<script_query_members::script>,
+{
+    type Output = ScriptQuery;
+
+    fn build(self) -> ScriptQuery {
+        Self::build(self)
     }
 }
 
-impl ScriptQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> ScriptQuery { match script {} }
+impl<S0> From<ScriptQueryBuilder<(S0,)>> for ScriptQuery
+where
+    S0: crate::typed::builder::IsSet<script_query_members::script>,
+{
+    fn from(builder: ScriptQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18092,18 +19026,27 @@ pub struct ScriptScoreFunction {
 
 impl ScriptScoreFunction {
     /// Creates a builder for [`ScriptScoreFunction`].
+    ///
+    /// Required: `script`.
     pub fn builder() -> ScriptScoreFunctionBuilder {
         ScriptScoreFunctionBuilder::new()
     }
 
     /// Creates a [`ScriptScoreFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScriptScoreFunctionBuilder,
-        ) -> ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptScoreFunction>>(
+        f: impl FnOnce(ScriptScoreFunctionBuilder) -> B,
     ) -> ScriptScoreFunction {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScriptScoreFunctionBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod script_score_function_members {
+    pub struct script;
 }
 
 /// Builder for [`ScriptScoreFunction`].
@@ -18132,7 +19075,7 @@ impl<S0> ScriptScoreFunctionBuilder<(S0,)> {
 }
 
 impl ScriptScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// A script that computes a score.
+    /// **Required.** A script that computes a score.
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
@@ -18143,33 +19086,44 @@ impl ScriptScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)> {
+impl<S0> ScriptScoreFunctionBuilder<(S0,)> {
     /// Builds a [`ScriptScoreFunction`].
-    pub fn build(self) -> ScriptScoreFunction {
+    pub fn build(self) -> ScriptScoreFunction
+    where
+        S0: crate::typed::builder::IsSet<script_score_function_members::script>,
+    {
         ScriptScoreFunction {
             script: self.script.unwrap(),
         }
     }
 }
 
-impl From<ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>> for ScriptScoreFunction {
-    fn from(builder: ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for ScriptScoreFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<script_score_function_members::script>,
+{
+    type Output = ScriptScoreFunction;
+
+    fn build(self) -> ScriptScoreFunction {
+        Self::build(self)
     }
 }
 
-impl ScriptScoreFunctionBuilder<(crate::typed::builder::NotSet,)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> ScriptScoreFunction { match script {} }
+impl<S0> From<ScriptScoreFunctionBuilder<(S0,)>> for ScriptScoreFunction
+where
+    S0: crate::typed::builder::IsSet<script_score_function_members::script>,
+{
+    fn from(builder: ScriptScoreFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18194,21 +19148,28 @@ pub struct ScriptScoreQuery {
 
 impl ScriptScoreQuery {
     /// Creates a builder for [`ScriptScoreQuery`].
+    ///
+    /// Required: `query`, `script`.
     pub fn builder() -> ScriptScoreQueryBuilder {
         ScriptScoreQueryBuilder::new()
     }
 
     /// Creates a [`ScriptScoreQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ScriptScoreQueryBuilder,
-        ) -> ScriptScoreQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `query`, `script`.
+    pub fn of<B: crate::typed::builder::Build<Output = ScriptScoreQuery>>(
+        f: impl FnOnce(ScriptScoreQueryBuilder) -> B,
     ) -> ScriptScoreQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ScriptScoreQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod script_score_query_members {
+    pub struct query;
+    pub struct script;
 }
 
 /// Builder for [`ScriptScoreQuery`].
@@ -18289,7 +19250,7 @@ impl<S0, S1> ScriptScoreQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> ScriptScoreQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Query used to return documents.
+    /// **Required.** Query used to return documents.
     pub fn query(
         self,
         value: impl Into<QueryContainer>,
@@ -18300,16 +19261,16 @@ impl<S1> ScriptScoreQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> ScriptScoreQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.query(f(QueryContainerBuilder::new()).build())
     }
 }
 
 impl<S0> ScriptScoreQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Script used to compute the score of documents returned by the query.
+    /// **Required.** Script used to compute the score of documents returned by the query.
     /// Important: final relevance scores from the `script_score` query cannot be negative.
     pub fn script(
         self,
@@ -18321,17 +19282,21 @@ impl<S0> ScriptScoreQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`script`](Self::script) with a builder.
-    pub fn script_with(
+    pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> ScriptScoreQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl ScriptScoreQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> ScriptScoreQueryBuilder<(S0, S1)> {
     /// Builds a [`ScriptScoreQuery`].
-    pub fn build(self) -> ScriptScoreQuery {
+    pub fn build(self) -> ScriptScoreQuery
+    where
+        S0: crate::typed::builder::IsSet<script_score_query_members::query>,
+        S1: crate::typed::builder::IsSet<script_score_query_members::script>,
+    {
         ScriptScoreQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -18342,26 +19307,26 @@ impl ScriptScoreQueryBuilder<(crate::typed::builder::Set, crate::typed::builder:
     }
 }
 
-impl From<ScriptScoreQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for ScriptScoreQuery
+impl<S0, S1> crate::typed::builder::Build for ScriptScoreQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<script_score_query_members::query>,
+    S1: crate::typed::builder::IsSet<script_score_query_members::script>,
 {
-    fn from(
-        builder: ScriptScoreQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = ScriptScoreQuery;
+
+    fn build(self) -> ScriptScoreQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> ScriptScoreQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> ScriptScoreQuery { match query {} }
-}
-
-impl ScriptScoreQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `script` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, script: crate::typed::builder::MissingRequiredField) -> ScriptScoreQuery { match script {} }
+impl<S0, S1> From<ScriptScoreQueryBuilder<(S0, S1)>> for ScriptScoreQuery
+where
+    S0: crate::typed::builder::IsSet<script_score_query_members::query>,
+    S1: crate::typed::builder::IsSet<script_score_query_members::script>,
+{
+    fn from(builder: ScriptScoreQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18382,19 +19347,28 @@ pub struct SemanticQuery {
 
 impl SemanticQuery {
     /// Creates a builder for [`SemanticQuery`].
+    ///
+    /// Required: `field`, `query`.
     pub fn builder() -> SemanticQueryBuilder {
         SemanticQueryBuilder::new()
     }
 
     /// Creates a [`SemanticQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SemanticQueryBuilder,
-        )
-            -> SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `field`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = SemanticQuery>>(
+        f: impl FnOnce(SemanticQueryBuilder) -> B,
     ) -> SemanticQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SemanticQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod semantic_query_members {
+    pub struct field;
+    pub struct query;
 }
 
 /// Builder for [`SemanticQuery`].
@@ -18459,7 +19433,7 @@ impl<S0, S1> SemanticQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SemanticQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The field to query, which must be a semantic_text field type
+    /// **Required.** The field to query, which must be a semantic_text field type
     pub fn field(
         self,
         value: impl Into<String>,
@@ -18471,7 +19445,7 @@ impl<S1> SemanticQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SemanticQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The query text
+    /// **Required.** The query text
     pub fn query(
         self,
         value: impl Into<String>,
@@ -18482,9 +19456,13 @@ impl<S0> SemanticQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SemanticQueryBuilder<(S0, S1)> {
     /// Builds a [`SemanticQuery`].
-    pub fn build(self) -> SemanticQuery {
+    pub fn build(self) -> SemanticQuery
+    where
+        S0: crate::typed::builder::IsSet<semantic_query_members::field>,
+        S1: crate::typed::builder::IsSet<semantic_query_members::query>,
+    {
         SemanticQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -18494,26 +19472,26 @@ impl SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Se
     }
 }
 
-impl From<SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SemanticQuery
+impl<S0, S1> crate::typed::builder::Build for SemanticQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<semantic_query_members::field>,
+    S1: crate::typed::builder::IsSet<semantic_query_members::query>,
 {
-    fn from(
-        builder: SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SemanticQuery;
+
+    fn build(self) -> SemanticQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SemanticQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SemanticQuery { match field {} }
-}
-
-impl SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> SemanticQuery { match query {} }
+impl<S0, S1> From<SemanticQueryBuilder<(S0, S1)>> for SemanticQuery
+where
+    S0: crate::typed::builder::IsSet<semantic_query_members::field>,
+    S1: crate::typed::builder::IsSet<semantic_query_members::query>,
+{
+    fn from(builder: SemanticQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -18536,7 +19514,9 @@ impl ShapeFieldQuery {
     }
 
     /// Creates a [`ShapeFieldQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ShapeFieldQueryBuilder) -> ShapeFieldQueryBuilder) -> ShapeFieldQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = ShapeFieldQuery>>(
+        f: impl FnOnce(ShapeFieldQueryBuilder) -> B,
+    ) -> ShapeFieldQuery {
         f(Self::builder()).build()
     }
 }
@@ -18573,9 +19553,9 @@ impl ShapeFieldQueryBuilder {
     }
 
     /// Sets [`indexed_shape`](Self::indexed_shape) with a builder.
-    pub fn indexed_shape_with(
+    pub fn indexed_shape_with<B: crate::typed::builder::Build<Output = FieldLookup>>(
         self,
-        f: impl FnOnce(FieldLookupBuilder) -> FieldLookupBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(FieldLookupBuilder) -> B,
     ) -> Self {
         self.indexed_shape(f(FieldLookupBuilder::new()).build())
     }
@@ -18616,6 +19596,14 @@ impl ShapeFieldQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for ShapeFieldQueryBuilder {
+    type Output = ShapeFieldQuery;
+
+    fn build(self) -> ShapeFieldQuery {
+        Self::build(self)
+    }
+}
+
 impl From<ShapeFieldQueryBuilder> for ShapeFieldQuery {
     fn from(builder: ShapeFieldQueryBuilder) -> Self {
         builder.build()
@@ -18647,7 +19635,9 @@ impl ShapeQuery {
     }
 
     /// Creates a [`ShapeQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(ShapeQueryBuilder) -> ShapeQueryBuilder) -> ShapeQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = ShapeQuery>>(
+        f: impl FnOnce(ShapeQueryBuilder) -> B,
+    ) -> ShapeQuery {
         f(Self::builder()).build()
     }
 }
@@ -18740,6 +19730,14 @@ impl ShapeQueryBuilder {
             ignore_unmapped: self.ignore_unmapped,
             additional_properties: self.additional_properties,
         }
+    }
+}
+
+impl crate::typed::builder::Build for ShapeQueryBuilder {
+    type Output = ShapeQuery;
+
+    fn build(self) -> ShapeQuery {
+        Self::build(self)
     }
 }
 
@@ -18853,18 +19851,27 @@ pub struct SimpleQueryStringQuery {
 
 impl SimpleQueryStringQuery {
     /// Creates a builder for [`SimpleQueryStringQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> SimpleQueryStringQueryBuilder {
         SimpleQueryStringQueryBuilder::new()
     }
 
     /// Creates a [`SimpleQueryStringQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SimpleQueryStringQueryBuilder,
-        ) -> SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = SimpleQueryStringQuery>>(
+        f: impl FnOnce(SimpleQueryStringQueryBuilder) -> B,
     ) -> SimpleQueryStringQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SimpleQueryStringQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod simple_query_string_query_members {
+    pub struct query;
 }
 
 /// Builder for [`SimpleQueryStringQuery`].
@@ -19122,7 +20129,7 @@ impl<S0> SimpleQueryStringQueryBuilder<(S0,)> {
 }
 
 impl SimpleQueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Query string in the simple query string syntax you wish to parse and use for search.
+    /// **Required.** Query string in the simple query string syntax you wish to parse and use for search.
     pub fn query(
         self,
         value: impl Into<String>,
@@ -19133,9 +20140,12 @@ impl SimpleQueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SimpleQueryStringQueryBuilder<(S0,)> {
     /// Builds a [`SimpleQueryStringQuery`].
-    pub fn build(self) -> SimpleQueryStringQuery {
+    pub fn build(self) -> SimpleQueryStringQuery
+    where
+        S0: crate::typed::builder::IsSet<simple_query_string_query_members::query>,
+    {
         SimpleQueryStringQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19156,16 +20166,24 @@ impl SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)>> for SimpleQueryStringQuery {
-    fn from(builder: SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SimpleQueryStringQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<simple_query_string_query_members::query>,
+{
+    type Output = SimpleQueryStringQuery;
+
+    fn build(self) -> SimpleQueryStringQuery {
+        Self::build(self)
     }
 }
 
-impl SimpleQueryStringQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> SimpleQueryStringQuery { match query {} }
+impl<S0> From<SimpleQueryStringQueryBuilder<(S0,)>> for SimpleQueryStringQuery
+where
+    S0: crate::typed::builder::IsSet<simple_query_string_query_members::query>,
+{
+    fn from(builder: SimpleQueryStringQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19188,21 +20206,28 @@ pub struct SpanContainingQuery {
 
 impl SpanContainingQuery {
     /// Creates a builder for [`SpanContainingQuery`].
+    ///
+    /// Required: `big`, `little`.
     pub fn builder() -> SpanContainingQueryBuilder {
         SpanContainingQueryBuilder::new()
     }
 
     /// Creates a [`SpanContainingQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanContainingQueryBuilder,
-        ) -> SpanContainingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `big`, `little`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanContainingQuery>>(
+        f: impl FnOnce(SpanContainingQueryBuilder) -> B,
     ) -> SpanContainingQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanContainingQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_containing_query_members {
+    pub struct big;
+    pub struct little;
 }
 
 /// Builder for [`SpanContainingQuery`].
@@ -19268,7 +20293,7 @@ impl<S0, S1> SpanContainingQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SpanContainingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Can be any span query.
+    /// **Required.** Can be any span query.
     /// Matching spans from `big` that contain matches from `little` are returned.
     pub fn big(
         self,
@@ -19280,16 +20305,16 @@ impl<S1> SpanContainingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`big`](Self::big) with a builder.
-    pub fn big_with(
+    pub fn big_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanContainingQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.big(f(SpanQueryBuilder::new()).build())
     }
 }
 
 impl<S0> SpanContainingQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Can be any span query.
+    /// **Required.** Can be any span query.
     /// Matching spans from `big` that contain matches from `little` are returned.
     pub fn little(
         self,
@@ -19301,17 +20326,21 @@ impl<S0> SpanContainingQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`little`](Self::little) with a builder.
-    pub fn little_with(
+    pub fn little_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanContainingQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.little(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanContainingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpanContainingQueryBuilder<(S0, S1)> {
     /// Builds a [`SpanContainingQuery`].
-    pub fn build(self) -> SpanContainingQuery {
+    pub fn build(self) -> SpanContainingQuery
+    where
+        S0: crate::typed::builder::IsSet<span_containing_query_members::big>,
+        S1: crate::typed::builder::IsSet<span_containing_query_members::little>,
+    {
         SpanContainingQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19321,29 +20350,26 @@ impl SpanContainingQueryBuilder<(crate::typed::builder::Set, crate::typed::build
     }
 }
 
-impl From<SpanContainingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SpanContainingQuery
+impl<S0, S1> crate::typed::builder::Build for SpanContainingQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<span_containing_query_members::big>,
+    S1: crate::typed::builder::IsSet<span_containing_query_members::little>,
 {
-    fn from(
-        builder: SpanContainingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SpanContainingQuery;
+
+    fn build(self) -> SpanContainingQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SpanContainingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `big` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, big: crate::typed::builder::MissingRequiredField) -> SpanContainingQuery { match big {} }
-}
-
-impl SpanContainingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `little` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, little: crate::typed::builder::MissingRequiredField) -> SpanContainingQuery { match little {} }
+impl<S0, S1> From<SpanContainingQueryBuilder<(S0, S1)>> for SpanContainingQuery
+where
+    S0: crate::typed::builder::IsSet<span_containing_query_members::big>,
+    S1: crate::typed::builder::IsSet<span_containing_query_members::little>,
+{
+    fn from(builder: SpanContainingQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19362,21 +20388,28 @@ pub struct SpanFieldMaskingQuery {
 
 impl SpanFieldMaskingQuery {
     /// Creates a builder for [`SpanFieldMaskingQuery`].
+    ///
+    /// Required: `field`, `query`.
     pub fn builder() -> SpanFieldMaskingQueryBuilder {
         SpanFieldMaskingQueryBuilder::new()
     }
 
     /// Creates a [`SpanFieldMaskingQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanFieldMaskingQueryBuilder,
-        ) -> SpanFieldMaskingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `field`, `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanFieldMaskingQuery>>(
+        f: impl FnOnce(SpanFieldMaskingQueryBuilder) -> B,
     ) -> SpanFieldMaskingQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanFieldMaskingQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_field_masking_query_members {
+    pub struct field;
+    pub struct query;
 }
 
 /// Builder for [`SpanFieldMaskingQuery`].
@@ -19442,6 +20475,7 @@ impl<S0, S1> SpanFieldMaskingQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SpanFieldMaskingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
+    /// **Required.**
     pub fn field(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -19453,6 +20487,7 @@ impl<S1> SpanFieldMaskingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SpanFieldMaskingQueryBuilder<(S0, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn query(
         self,
         value: impl Into<SpanQuery>,
@@ -19463,17 +20498,21 @@ impl<S0> SpanFieldMaskingQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`query`](Self::query) with a builder.
-    pub fn query_with(
+    pub fn query_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanFieldMaskingQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.query(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanFieldMaskingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpanFieldMaskingQueryBuilder<(S0, S1)> {
     /// Builds a [`SpanFieldMaskingQuery`].
-    pub fn build(self) -> SpanFieldMaskingQuery {
+    pub fn build(self) -> SpanFieldMaskingQuery
+    where
+        S0: crate::typed::builder::IsSet<span_field_masking_query_members::field>,
+        S1: crate::typed::builder::IsSet<span_field_masking_query_members::query>,
+    {
         SpanFieldMaskingQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19483,29 +20522,26 @@ impl SpanFieldMaskingQueryBuilder<(crate::typed::builder::Set, crate::typed::bui
     }
 }
 
-impl From<SpanFieldMaskingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SpanFieldMaskingQuery
+impl<S0, S1> crate::typed::builder::Build for SpanFieldMaskingQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<span_field_masking_query_members::field>,
+    S1: crate::typed::builder::IsSet<span_field_masking_query_members::query>,
 {
-    fn from(
-        builder: SpanFieldMaskingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = SpanFieldMaskingQuery;
+
+    fn build(self) -> SpanFieldMaskingQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SpanFieldMaskingQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SpanFieldMaskingQuery { match field {} }
-}
-
-impl SpanFieldMaskingQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> SpanFieldMaskingQuery { match query {} }
+impl<S0, S1> From<SpanFieldMaskingQueryBuilder<(S0, S1)>> for SpanFieldMaskingQuery
+where
+    S0: crate::typed::builder::IsSet<span_field_masking_query_members::field>,
+    S1: crate::typed::builder::IsSet<span_field_masking_query_members::query>,
+{
+    fn from(builder: SpanFieldMaskingQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19526,21 +20562,28 @@ pub struct SpanFirstQuery {
 
 impl SpanFirstQuery {
     /// Creates a builder for [`SpanFirstQuery`].
+    ///
+    /// Required: `end`, `match`.
     pub fn builder() -> SpanFirstQueryBuilder {
         SpanFirstQueryBuilder::new()
     }
 
     /// Creates a [`SpanFirstQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanFirstQueryBuilder,
-        ) -> SpanFirstQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `end`, `match`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanFirstQuery>>(
+        f: impl FnOnce(SpanFirstQueryBuilder) -> B,
     ) -> SpanFirstQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanFirstQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_first_query_members {
+    pub struct end;
+    pub struct r#match;
 }
 
 /// Builder for [`SpanFirstQuery`].
@@ -19605,7 +20648,7 @@ impl<S0, S1> SpanFirstQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SpanFirstQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Controls the maximum end position permitted in a match.
+    /// **Required.** Controls the maximum end position permitted in a match.
     pub fn end(self, value: i32) -> SpanFirstQueryBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.end = Some(value);
@@ -19614,7 +20657,7 @@ impl<S1> SpanFirstQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> SpanFirstQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Can be any other span type query.
+    /// **Required.** Can be any other span type query.
     pub fn r#match(
         self,
         value: impl Into<SpanQuery>,
@@ -19625,17 +20668,21 @@ impl<S0> SpanFirstQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanFirstQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.r#match(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanFirstQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpanFirstQueryBuilder<(S0, S1)> {
     /// Builds a [`SpanFirstQuery`].
-    pub fn build(self) -> SpanFirstQuery {
+    pub fn build(self) -> SpanFirstQuery
+    where
+        S0: crate::typed::builder::IsSet<span_first_query_members::end>,
+        S1: crate::typed::builder::IsSet<span_first_query_members::r#match>,
+    {
         SpanFirstQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19645,26 +20692,26 @@ impl SpanFirstQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::S
     }
 }
 
-impl From<SpanFirstQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SpanFirstQuery
+impl<S0, S1> crate::typed::builder::Build for SpanFirstQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<span_first_query_members::end>,
+    S1: crate::typed::builder::IsSet<span_first_query_members::r#match>,
 {
-    fn from(
-        builder: SpanFirstQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SpanFirstQuery;
+
+    fn build(self) -> SpanFirstQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SpanFirstQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `end` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, end: crate::typed::builder::MissingRequiredField) -> SpanFirstQuery { match end {} }
-}
-
-impl SpanFirstQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `match` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#match: crate::typed::builder::MissingRequiredField) -> SpanFirstQuery { match r#match {} }
+impl<S0, S1> From<SpanFirstQueryBuilder<(S0, S1)>> for SpanFirstQuery
+where
+    S0: crate::typed::builder::IsSet<span_first_query_members::end>,
+    S1: crate::typed::builder::IsSet<span_first_query_members::r#match>,
+{
+    fn from(builder: SpanFirstQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Can only be used as a clause in a span_near query.
@@ -19686,18 +20733,27 @@ pub struct SpanMultiTermQuery {
 
 impl SpanMultiTermQuery {
     /// Creates a builder for [`SpanMultiTermQuery`].
+    ///
+    /// Required: `match`.
     pub fn builder() -> SpanMultiTermQueryBuilder {
         SpanMultiTermQueryBuilder::new()
     }
 
     /// Creates a [`SpanMultiTermQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanMultiTermQueryBuilder,
-        ) -> SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `match`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanMultiTermQuery>>(
+        f: impl FnOnce(SpanMultiTermQueryBuilder) -> B,
     ) -> SpanMultiTermQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanMultiTermQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_multi_term_query_members {
+    pub struct r#match;
 }
 
 /// Builder for [`SpanMultiTermQuery`].
@@ -19758,7 +20814,7 @@ impl<S0> SpanMultiTermQueryBuilder<(S0,)> {
 }
 
 impl SpanMultiTermQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Should be a multi term query (one of `wildcard`, `fuzzy`, `prefix`, `range`, or `regexp` query).
+    /// **Required.** Should be a multi term query (one of `wildcard`, `fuzzy`, `prefix`, `range`, or `regexp` query).
     pub fn r#match(
         self,
         value: impl Into<QueryContainer>,
@@ -19769,17 +20825,20 @@ impl SpanMultiTermQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`match`](Self::match) with a builder.
-    pub fn match_with(
+    pub fn match_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
         self,
-        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
     ) -> SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)> {
         self.r#match(f(QueryContainerBuilder::new()).build())
     }
 }
 
-impl SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanMultiTermQueryBuilder<(S0,)> {
     /// Builds a [`SpanMultiTermQuery`].
-    pub fn build(self) -> SpanMultiTermQuery {
+    pub fn build(self) -> SpanMultiTermQuery
+    where
+        S0: crate::typed::builder::IsSet<span_multi_term_query_members::r#match>,
+    {
         SpanMultiTermQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19788,16 +20847,24 @@ impl SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>> for SpanMultiTermQuery {
-    fn from(builder: SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanMultiTermQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<span_multi_term_query_members::r#match>,
+{
+    type Output = SpanMultiTermQuery;
+
+    fn build(self) -> SpanMultiTermQuery {
+        Self::build(self)
     }
 }
 
-impl SpanMultiTermQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `match` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, r#match: crate::typed::builder::MissingRequiredField) -> SpanMultiTermQuery { match r#match {} }
+impl<S0> From<SpanMultiTermQueryBuilder<(S0,)>> for SpanMultiTermQuery
+where
+    S0: crate::typed::builder::IsSet<span_multi_term_query_members::r#match>,
+{
+    fn from(builder: SpanMultiTermQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -19822,16 +20889,27 @@ pub struct SpanNearQuery {
 
 impl SpanNearQuery {
     /// Creates a builder for [`SpanNearQuery`].
+    ///
+    /// Required: `clauses`.
     pub fn builder() -> SpanNearQueryBuilder {
         SpanNearQueryBuilder::new()
     }
 
     /// Creates a [`SpanNearQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SpanNearQueryBuilder) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `clauses`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanNearQuery>>(
+        f: impl FnOnce(SpanNearQueryBuilder) -> B,
     ) -> SpanNearQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanNearQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_near_query_members {
+    pub struct clauses;
 }
 
 /// Builder for [`SpanNearQuery`].
@@ -19922,7 +21000,7 @@ impl<S0> SpanNearQueryBuilder<(S0,)> {
 }
 
 impl SpanNearQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Array of one or more other span type queries.
+    /// **Required.** Array of one or more other span type queries.
     pub fn clauses(
         self,
         value: impl Into<Vec<SpanQuery>>,
@@ -19946,9 +21024,9 @@ impl SpanNearQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`clauses`](Self::clauses), with a builder.
-    pub fn add_clauses_with(
+    pub fn add_clauses_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
         self.add_clauses(f(SpanQueryBuilder::new()).build())
     }
@@ -19964,17 +21042,20 @@ impl SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`clauses`](Self::clauses), with a builder.
-    pub fn add_clauses_with(
+    pub fn add_clauses_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> Self {
         self.add_clauses(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanNearQueryBuilder<(S0,)> {
     /// Builds a [`SpanNearQuery`].
-    pub fn build(self) -> SpanNearQuery {
+    pub fn build(self) -> SpanNearQuery
+    where
+        S0: crate::typed::builder::IsSet<span_near_query_members::clauses>,
+    {
         SpanNearQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -19985,16 +21066,24 @@ impl SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SpanNearQueryBuilder<(crate::typed::builder::Set,)>> for SpanNearQuery {
-    fn from(builder: SpanNearQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanNearQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<span_near_query_members::clauses>,
+{
+    type Output = SpanNearQuery;
+
+    fn build(self) -> SpanNearQuery {
+        Self::build(self)
     }
 }
 
-impl SpanNearQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `clauses` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clauses: crate::typed::builder::MissingRequiredField) -> SpanNearQuery { match clauses {} }
+impl<S0> From<SpanNearQueryBuilder<(S0,)>> for SpanNearQuery
+where
+    S0: crate::typed::builder::IsSet<span_near_query_members::clauses>,
+{
+    fn from(builder: SpanNearQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20025,19 +21114,28 @@ pub struct SpanNotQuery {
 
 impl SpanNotQuery {
     /// Creates a builder for [`SpanNotQuery`].
+    ///
+    /// Required: `exclude`, `include`.
     pub fn builder() -> SpanNotQueryBuilder {
         SpanNotQueryBuilder::new()
     }
 
     /// Creates a [`SpanNotQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanNotQueryBuilder,
-        )
-            -> SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ///
+    /// Required: `exclude`, `include`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanNotQuery>>(
+        f: impl FnOnce(SpanNotQueryBuilder) -> B,
     ) -> SpanNotQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanNotQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_not_query_members {
+    pub struct exclude;
+    pub struct include;
 }
 
 /// Builder for [`SpanNotQuery`].
@@ -20147,7 +21245,7 @@ impl<S0, S1> SpanNotQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SpanNotQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Span query whose matches must not overlap those returned.
+    /// **Required.** Span query whose matches must not overlap those returned.
     pub fn exclude(
         self,
         value: impl Into<SpanQuery>,
@@ -20158,16 +21256,16 @@ impl<S1> SpanNotQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`exclude`](Self::exclude) with a builder.
-    pub fn exclude_with(
+    pub fn exclude_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanNotQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.exclude(f(SpanQueryBuilder::new()).build())
     }
 }
 
 impl<S0> SpanNotQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Span query whose matches are filtered.
+    /// **Required.** Span query whose matches are filtered.
     pub fn include(
         self,
         value: impl Into<SpanQuery>,
@@ -20178,17 +21276,21 @@ impl<S0> SpanNotQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`include`](Self::include) with a builder.
-    pub fn include_with(
+    pub fn include_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanNotQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.include(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpanNotQueryBuilder<(S0, S1)> {
     /// Builds a [`SpanNotQuery`].
-    pub fn build(self) -> SpanNotQuery {
+    pub fn build(self) -> SpanNotQuery
+    where
+        S0: crate::typed::builder::IsSet<span_not_query_members::exclude>,
+        S1: crate::typed::builder::IsSet<span_not_query_members::include>,
+    {
         SpanNotQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -20201,26 +21303,26 @@ impl SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set
     }
 }
 
-impl From<SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SpanNotQuery
+impl<S0, S1> crate::typed::builder::Build for SpanNotQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<span_not_query_members::exclude>,
+    S1: crate::typed::builder::IsSet<span_not_query_members::include>,
 {
-    fn from(
-        builder: SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SpanNotQuery;
+
+    fn build(self) -> SpanNotQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SpanNotQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `exclude` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, exclude: crate::typed::builder::MissingRequiredField) -> SpanNotQuery { match exclude {} }
-}
-
-impl SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `include` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, include: crate::typed::builder::MissingRequiredField) -> SpanNotQuery { match include {} }
+impl<S0, S1> From<SpanNotQueryBuilder<(S0, S1)>> for SpanNotQuery
+where
+    S0: crate::typed::builder::IsSet<span_not_query_members::exclude>,
+    S1: crate::typed::builder::IsSet<span_not_query_members::include>,
+{
+    fn from(builder: SpanNotQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20239,16 +21341,27 @@ pub struct SpanOrQuery {
 
 impl SpanOrQuery {
     /// Creates a builder for [`SpanOrQuery`].
+    ///
+    /// Required: `clauses`.
     pub fn builder() -> SpanOrQueryBuilder {
         SpanOrQueryBuilder::new()
     }
 
     /// Creates a [`SpanOrQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SpanOrQueryBuilder) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `clauses`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanOrQuery>>(
+        f: impl FnOnce(SpanOrQueryBuilder) -> B,
     ) -> SpanOrQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanOrQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_or_query_members {
+    pub struct clauses;
 }
 
 /// Builder for [`SpanOrQuery`].
@@ -20309,7 +21422,7 @@ impl<S0> SpanOrQueryBuilder<(S0,)> {
 }
 
 impl SpanOrQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Array of one or more other span type queries.
+    /// **Required.** Array of one or more other span type queries.
     pub fn clauses(
         self,
         value: impl Into<Vec<SpanQuery>>,
@@ -20333,9 +21446,9 @@ impl SpanOrQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Adds an element to [`clauses`](Self::clauses), with a builder.
-    pub fn add_clauses_with(
+    pub fn add_clauses_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
         self.add_clauses(f(SpanQueryBuilder::new()).build())
     }
@@ -20351,17 +21464,20 @@ impl SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
     }
 
     /// Adds an element to [`clauses`](Self::clauses), with a builder.
-    pub fn add_clauses_with(
+    pub fn add_clauses_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> Self {
         self.add_clauses(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanOrQueryBuilder<(S0,)> {
     /// Builds a [`SpanOrQuery`].
-    pub fn build(self) -> SpanOrQuery {
+    pub fn build(self) -> SpanOrQuery
+    where
+        S0: crate::typed::builder::IsSet<span_or_query_members::clauses>,
+    {
         SpanOrQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -20370,16 +21486,24 @@ impl SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SpanOrQueryBuilder<(crate::typed::builder::Set,)>> for SpanOrQuery {
-    fn from(builder: SpanOrQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanOrQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<span_or_query_members::clauses>,
+{
+    type Output = SpanOrQuery;
+
+    fn build(self) -> SpanOrQuery {
+        Self::build(self)
     }
 }
 
-impl SpanOrQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `clauses` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, clauses: crate::typed::builder::MissingRequiredField) -> SpanOrQuery { match clauses {} }
+impl<S0> From<SpanOrQueryBuilder<(S0,)>> for SpanOrQuery
+where
+    S0: crate::typed::builder::IsSet<span_or_query_members::clauses>,
+{
+    fn from(builder: SpanOrQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20539,13 +21663,17 @@ impl From<SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::buil
 
 impl SpanQuery {
     /// Creates a builder for [`SpanQuery`].
+    ///
+    /// Required: a variant.
     pub fn builder() -> SpanQueryBuilder {
         SpanQueryBuilder::new()
     }
 
     /// Creates a [`SpanQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanQuery>>(
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanQuery {
         f(Self::builder()).build()
     }
@@ -20588,14 +21716,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_containing`](Self::span_containing) with a builder.
-    pub fn span_containing_with(
+    pub fn span_containing_with<B: crate::typed::builder::Build<Output = SpanContainingQuery>>(
         self,
-        f: impl FnOnce(
-            SpanContainingQueryBuilder,
-        ) -> SpanContainingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanContainingQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_containing(f(SpanContainingQueryBuilder::new()).build())
     }
@@ -20611,14 +21734,11 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_field_masking`](Self::span_field_masking) with a builder.
-    pub fn span_field_masking_with(
+    pub fn span_field_masking_with<
+        B: crate::typed::builder::Build<Output = SpanFieldMaskingQuery>,
+    >(
         self,
-        f: impl FnOnce(
-            SpanFieldMaskingQueryBuilder,
-        ) -> SpanFieldMaskingQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanFieldMaskingQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_field_masking(f(SpanFieldMaskingQueryBuilder::new()).build())
     }
@@ -20634,14 +21754,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_first`](Self::span_first) with a builder.
-    pub fn span_first_with(
+    pub fn span_first_with<B: crate::typed::builder::Build<Output = SpanFirstQuery>>(
         self,
-        f: impl FnOnce(
-            SpanFirstQueryBuilder,
-        ) -> SpanFirstQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanFirstQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_first(f(SpanFirstQueryBuilder::new()).build())
     }
@@ -20666,11 +21781,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_multi`](Self::span_multi) with a builder.
-    pub fn span_multi_with(
+    pub fn span_multi_with<B: crate::typed::builder::Build<Output = SpanMultiTermQuery>>(
         self,
-        f: impl FnOnce(
-            SpanMultiTermQueryBuilder,
-        ) -> SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanMultiTermQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_multi(f(SpanMultiTermQueryBuilder::new()).build())
     }
@@ -20686,9 +21799,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_near`](Self::span_near) with a builder.
-    pub fn span_near_with(
+    pub fn span_near_with<B: crate::typed::builder::Build<Output = SpanNearQuery>>(
         self,
-        f: impl FnOnce(SpanNearQueryBuilder) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanNearQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_near(f(SpanNearQueryBuilder::new()).build())
     }
@@ -20704,12 +21817,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_not`](Self::span_not) with a builder.
-    pub fn span_not_with(
+    pub fn span_not_with<B: crate::typed::builder::Build<Output = SpanNotQuery>>(
         self,
-        f: impl FnOnce(
-            SpanNotQueryBuilder,
-        )
-            -> SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+        f: impl FnOnce(SpanNotQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_not(f(SpanNotQueryBuilder::new()).build())
     }
@@ -20725,9 +21835,9 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_or`](Self::span_or) with a builder.
-    pub fn span_or_with(
+    pub fn span_or_with<B: crate::typed::builder::Build<Output = SpanOrQuery>>(
         self,
-        f: impl FnOnce(SpanOrQueryBuilder) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanOrQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_or(f(SpanOrQueryBuilder::new()).build())
     }
@@ -20747,10 +21857,10 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_term`](Self::span_term) with a builder.
-    pub fn span_term_with(
+    pub fn span_term_with<B: crate::typed::builder::Build<Output = SpanTermQuery>>(
         self,
         key: impl Into<crate::typed::_types::Field>,
-        f: impl FnOnce(SpanTermQueryBuilder) -> SpanTermQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanTermQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_term(key, f(SpanTermQueryBuilder::new()).build())
     }
@@ -20766,36 +21876,42 @@ impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`span_within`](Self::span_within) with a builder.
-    pub fn span_within_with(
+    pub fn span_within_with<B: crate::typed::builder::Build<Output = SpanWithinQuery>>(
         self,
-        f: impl FnOnce(
-            SpanWithinQueryBuilder,
-        ) -> SpanWithinQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SpanWithinQueryBuilder) -> B,
     ) -> SpanQueryBuilder<(crate::typed::builder::Set,)> {
         self.span_within(f(SpanWithinQueryBuilder::new()).build())
     }
 }
 
-impl SpanQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanQueryBuilder<(S0,)> {
     /// Builds a [`SpanQuery`].
-    pub fn build(self) -> SpanQuery {
+    pub fn build(self) -> SpanQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<SpanQuery>,
+    {
         self.variant.unwrap()
     }
 }
 
-impl From<SpanQueryBuilder<(crate::typed::builder::Set,)>> for SpanQuery {
-    fn from(builder: SpanQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<SpanQuery>,
+{
+    type Output = SpanQuery;
+
+    fn build(self) -> SpanQuery {
+        Self::build(self)
     }
 }
 
-impl SpanQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> SpanQuery { match variant {} }
+impl<S0> From<SpanQueryBuilder<(S0,)>> for SpanQuery
+where
+    S0: crate::typed::builder::IsVariantSet<SpanQuery>,
+{
+    fn from(builder: SpanQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20814,16 +21930,27 @@ pub struct SpanTermQuery {
 
 impl SpanTermQuery {
     /// Creates a builder for [`SpanTermQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> SpanTermQueryBuilder {
         SpanTermQueryBuilder::new()
     }
 
     /// Creates a [`SpanTermQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(SpanTermQueryBuilder) -> SpanTermQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanTermQuery>>(
+        f: impl FnOnce(SpanTermQueryBuilder) -> B,
     ) -> SpanTermQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanTermQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_term_query_members {
+    pub struct value;
 }
 
 /// Builder for [`SpanTermQuery`].
@@ -20884,6 +22011,7 @@ impl<S0> SpanTermQueryBuilder<(S0,)> {
 }
 
 impl SpanTermQueryBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<crate::typed::_types::FieldValue>,
@@ -20894,9 +22022,12 @@ impl SpanTermQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl SpanTermQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> SpanTermQueryBuilder<(S0,)> {
     /// Builds a [`SpanTermQuery`].
-    pub fn build(self) -> SpanTermQuery {
+    pub fn build(self) -> SpanTermQuery
+    where
+        S0: crate::typed::builder::IsSet<span_term_query_members::value>,
+    {
         SpanTermQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -20905,16 +22036,24 @@ impl SpanTermQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<SpanTermQueryBuilder<(crate::typed::builder::Set,)>> for SpanTermQuery {
-    fn from(builder: SpanTermQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for SpanTermQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<span_term_query_members::value>,
+{
+    type Output = SpanTermQuery;
+
+    fn build(self) -> SpanTermQuery {
+        Self::build(self)
     }
 }
 
-impl SpanTermQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> SpanTermQuery { match value {} }
+impl<S0> From<SpanTermQueryBuilder<(S0,)>> for SpanTermQuery
+where
+    S0: crate::typed::builder::IsSet<span_term_query_members::value>,
+{
+    fn from(builder: SpanTermQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -20937,21 +22076,28 @@ pub struct SpanWithinQuery {
 
 impl SpanWithinQuery {
     /// Creates a builder for [`SpanWithinQuery`].
+    ///
+    /// Required: `big`, `little`.
     pub fn builder() -> SpanWithinQueryBuilder {
         SpanWithinQueryBuilder::new()
     }
 
     /// Creates a [`SpanWithinQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SpanWithinQueryBuilder,
-        ) -> SpanWithinQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `big`, `little`.
+    pub fn of<B: crate::typed::builder::Build<Output = SpanWithinQuery>>(
+        f: impl FnOnce(SpanWithinQueryBuilder) -> B,
     ) -> SpanWithinQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SpanWithinQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod span_within_query_members {
+    pub struct big;
+    pub struct little;
 }
 
 /// Builder for [`SpanWithinQuery`].
@@ -21017,7 +22163,7 @@ impl<S0, S1> SpanWithinQueryBuilder<(S0, S1)> {
 }
 
 impl<S1> SpanWithinQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// Can be any span query.
+    /// **Required.** Can be any span query.
     /// Matching spans from `little` that are enclosed within `big` are returned.
     pub fn big(
         self,
@@ -21029,16 +22175,16 @@ impl<S1> SpanWithinQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 
     /// Sets [`big`](Self::big) with a builder.
-    pub fn big_with(
+    pub fn big_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanWithinQueryBuilder<(crate::typed::builder::Set, S1)> {
         self.big(f(SpanQueryBuilder::new()).build())
     }
 }
 
 impl<S0> SpanWithinQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// Can be any span query.
+    /// **Required.** Can be any span query.
     /// Matching spans from `little` that are enclosed within `big` are returned.
     pub fn little(
         self,
@@ -21050,17 +22196,21 @@ impl<S0> SpanWithinQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 
     /// Sets [`little`](Self::little) with a builder.
-    pub fn little_with(
+    pub fn little_with<B: crate::typed::builder::Build<Output = SpanQuery>>(
         self,
-        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(SpanQueryBuilder) -> B,
     ) -> SpanWithinQueryBuilder<(S0, crate::typed::builder::Set)> {
         self.little(f(SpanQueryBuilder::new()).build())
     }
 }
 
-impl SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SpanWithinQueryBuilder<(S0, S1)> {
     /// Builds a [`SpanWithinQuery`].
-    pub fn build(self) -> SpanWithinQuery {
+    pub fn build(self) -> SpanWithinQuery
+    where
+        S0: crate::typed::builder::IsSet<span_within_query_members::big>,
+        S1: crate::typed::builder::IsSet<span_within_query_members::little>,
+    {
         SpanWithinQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -21070,26 +22220,26 @@ impl SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::
     }
 }
 
-impl From<SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SpanWithinQuery
+impl<S0, S1> crate::typed::builder::Build for SpanWithinQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<span_within_query_members::big>,
+    S1: crate::typed::builder::IsSet<span_within_query_members::little>,
 {
-    fn from(
-        builder: SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SpanWithinQuery;
+
+    fn build(self) -> SpanWithinQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SpanWithinQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `big` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, big: crate::typed::builder::MissingRequiredField) -> SpanWithinQuery { match big {} }
-}
-
-impl SpanWithinQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `little` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, little: crate::typed::builder::MissingRequiredField) -> SpanWithinQuery { match little {} }
+impl<S0, S1> From<SpanWithinQueryBuilder<(S0, S1)>> for SpanWithinQuery
+where
+    S0: crate::typed::builder::IsSet<span_within_query_members::big>,
+    S1: crate::typed::builder::IsSet<span_within_query_members::little>,
+{
+    fn from(builder: SpanWithinQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21142,21 +22292,27 @@ pub enum SparseVectorQueryKind {
 
 impl SparseVectorQuery {
     /// Creates a builder for [`SparseVectorQuery`].
+    ///
+    /// Required: a variant, `field`.
     pub fn builder() -> SparseVectorQueryBuilder {
         SparseVectorQueryBuilder::new()
     }
 
     /// Creates a [`SparseVectorQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SparseVectorQueryBuilder,
-        ) -> SparseVectorQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: a variant, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = SparseVectorQuery>>(
+        f: impl FnOnce(SparseVectorQueryBuilder) -> B,
     ) -> SparseVectorQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SparseVectorQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod sparse_vector_query_members {
+    pub struct field;
 }
 
 /// Builder for [`SparseVectorQuery`].
@@ -21246,18 +22402,18 @@ impl<S0, S1> SparseVectorQueryBuilder<(S0, S1)> {
     }
 
     /// Sets [`pruning_config`](Self::pruning_config) with a builder.
-    pub fn pruning_config_with(
+    pub fn pruning_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TokenPruningConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TokenPruningConfigBuilder,
-        ) -> crate::typed::_types::TokenPruningConfigBuilder,
+        f: impl FnOnce(crate::typed::_types::TokenPruningConfigBuilder) -> B,
     ) -> Self {
         self.pruning_config(f(crate::typed::_types::TokenPruningConfigBuilder::new()).build())
     }
 }
 
 impl<S0> SparseVectorQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The name of the field that contains the token-weight pairs to be searched against.
+    /// **Required.** The name of the field that contains the token-weight pairs to be searched against.
     /// This field must be a mapped sparse_vector field.
     pub fn field(
         self,
@@ -21315,9 +22471,13 @@ impl<S1> SparseVectorQueryBuilder<(crate::typed::builder::NotSet, S1)> {
     }
 }
 
-impl SparseVectorQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> SparseVectorQueryBuilder<(S0, S1)> {
     /// Builds a [`SparseVectorQuery`].
-    pub fn build(self) -> SparseVectorQuery {
+    pub fn build(self) -> SparseVectorQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<SparseVectorQuery>,
+        S1: crate::typed::builder::IsSet<sparse_vector_query_members::field>,
+    {
         SparseVectorQuery {
             field: self.field.unwrap(),
             query: self.query,
@@ -21328,26 +22488,26 @@ impl SparseVectorQueryBuilder<(crate::typed::builder::Set, crate::typed::builder
     }
 }
 
-impl From<SparseVectorQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for SparseVectorQuery
+impl<S0, S1> crate::typed::builder::Build for SparseVectorQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsVariantSet<SparseVectorQuery>,
+    S1: crate::typed::builder::IsSet<sparse_vector_query_members::field>,
 {
-    fn from(
-        builder: SparseVectorQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
-    ) -> Self {
-        builder.build()
+    type Output = SparseVectorQuery;
+
+    fn build(self) -> SparseVectorQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> SparseVectorQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `variant` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, variant: crate::typed::builder::MissingRequiredField) -> SparseVectorQuery { match variant {} }
-}
-
-impl SparseVectorQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> SparseVectorQuery { match field {} }
+impl<S0, S1> From<SparseVectorQueryBuilder<(S0, S1)>> for SparseVectorQuery
+where
+    S0: crate::typed::builder::IsVariantSet<SparseVectorQuery>,
+    S1: crate::typed::builder::IsSet<sparse_vector_query_members::field>,
+{
+    fn from(builder: SparseVectorQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21370,16 +22530,27 @@ pub struct TermQuery {
 
 impl TermQuery {
     /// Creates a builder for [`TermQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> TermQueryBuilder {
         TermQueryBuilder::new()
     }
 
     /// Creates a [`TermQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermQueryBuilder) -> TermQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermQuery>>(
+        f: impl FnOnce(TermQueryBuilder) -> B,
     ) -> TermQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod term_query_members {
+    pub struct value;
 }
 
 /// Builder for [`TermQuery`].
@@ -21456,7 +22627,7 @@ impl<S0> TermQueryBuilder<(S0,)> {
 }
 
 impl TermQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Term you wish to find in the provided field.
+    /// **Required.** Term you wish to find in the provided field.
     pub fn value(
         self,
         value: impl Into<crate::typed::_types::FieldValue>,
@@ -21467,9 +22638,12 @@ impl TermQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TermQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermQueryBuilder<(S0,)> {
     /// Builds a [`TermQuery`].
-    pub fn build(self) -> TermQuery {
+    pub fn build(self) -> TermQuery
+    where
+        S0: crate::typed::builder::IsSet<term_query_members::value>,
+    {
         TermQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -21479,16 +22653,24 @@ impl TermQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermQueryBuilder<(crate::typed::builder::Set,)>> for TermQuery {
-    fn from(builder: TermQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<term_query_members::value>,
+{
+    type Output = TermQuery;
+
+    fn build(self) -> TermQuery {
+        Self::build(self)
     }
 }
 
-impl TermQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> TermQuery { match value {} }
+impl<S0> From<TermQueryBuilder<(S0,)>> for TermQuery
+where
+    S0: crate::typed::builder::IsSet<term_query_members::value>,
+{
+    fn from(builder: TermQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21525,7 +22707,9 @@ impl TermRangeQuery {
     }
 
     /// Creates a [`TermRangeQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TermRangeQueryBuilder) -> TermRangeQueryBuilder) -> TermRangeQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = TermRangeQuery>>(
+        f: impl FnOnce(TermRangeQueryBuilder) -> B,
+    ) -> TermRangeQuery {
         f(Self::builder()).build()
     }
 }
@@ -21659,6 +22843,14 @@ impl TermRangeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TermRangeQueryBuilder {
+    type Output = TermRangeQuery;
+
+    fn build(self) -> TermRangeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<TermRangeQueryBuilder> for TermRangeQuery {
     fn from(builder: TermRangeQueryBuilder) -> Self {
         builder.build()
@@ -21676,22 +22868,29 @@ pub struct TermsLookup {
 
 impl TermsLookup {
     /// Creates a builder for [`TermsLookup`].
+    ///
+    /// Required: `index`, `id`, `path`.
     pub fn builder() -> TermsLookupBuilder {
         TermsLookupBuilder::new()
     }
 
     /// Creates a [`TermsLookup`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TermsLookupBuilder,
-        ) -> TermsLookupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `index`, `id`, `path`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsLookup>>(
+        f: impl FnOnce(TermsLookupBuilder) -> B,
     ) -> TermsLookup {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsLookupBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_lookup_members {
+    pub struct index;
+    pub struct id;
+    pub struct path;
 }
 
 /// Builder for [`TermsLookup`].
@@ -21752,6 +22951,7 @@ impl<S0, S1, S2> TermsLookupBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> TermsLookupBuilder<(crate::typed::builder::NotSet, S1, S2)> {
+    /// **Required.**
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
@@ -21763,6 +22963,7 @@ impl<S1, S2> TermsLookupBuilder<(crate::typed::builder::NotSet, S1, S2)> {
 }
 
 impl<S0, S2> TermsLookupBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+    /// **Required.**
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
@@ -21774,6 +22975,7 @@ impl<S0, S2> TermsLookupBuilder<(S0, crate::typed::builder::NotSet, S2)> {
 }
 
 impl<S0, S1> TermsLookupBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn path(
         self,
         value: impl Into<crate::typed::_types::Field>,
@@ -21784,15 +22986,14 @@ impl<S0, S1> TermsLookupBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     }
 }
 
-impl
-    TermsLookupBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> TermsLookupBuilder<(S0, S1, S2)> {
     /// Builds a [`TermsLookup`].
-    pub fn build(self) -> TermsLookup {
+    pub fn build(self) -> TermsLookup
+    where
+        S0: crate::typed::builder::IsSet<terms_lookup_members::index>,
+        S1: crate::typed::builder::IsSet<terms_lookup_members::id>,
+        S2: crate::typed::builder::IsSet<terms_lookup_members::path>,
+    {
         TermsLookup {
             index: self.index.unwrap(),
             id: self.id.unwrap(),
@@ -21802,54 +23003,28 @@ impl
     }
 }
 
-impl
-    From<
-        TermsLookupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for TermsLookup
+impl<S0, S1, S2> crate::typed::builder::Build for TermsLookupBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<terms_lookup_members::index>,
+    S1: crate::typed::builder::IsSet<terms_lookup_members::id>,
+    S2: crate::typed::builder::IsSet<terms_lookup_members::path>,
 {
-    fn from(
-        builder: TermsLookupBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TermsLookup;
+
+    fn build(self) -> TermsLookup {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> TermsLookupBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `index` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> TermsLookup { match index {} }
-}
-
-impl<S2>
-    TermsLookupBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<TermsLookupBuilder<(S0, S1, S2)>> for TermsLookup
+where
+    S0: crate::typed::builder::IsSet<terms_lookup_members::index>,
+    S1: crate::typed::builder::IsSet<terms_lookup_members::id>,
+    S2: crate::typed::builder::IsSet<terms_lookup_members::path>,
 {
-    /// `id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> TermsLookup { match id {} }
-}
-
-impl
-    TermsLookupBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `path` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, path: crate::typed::builder::MissingRequiredField) -> TermsLookup { match path {} }
+    fn from(builder: TermsLookupBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21874,7 +23049,9 @@ impl TermsQuery {
     }
 
     /// Creates a [`TermsQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(TermsQueryBuilder) -> TermsQueryBuilder) -> TermsQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = TermsQuery>>(
+        f: impl FnOnce(TermsQueryBuilder) -> B,
+    ) -> TermsQuery {
         f(Self::builder()).build()
     }
 }
@@ -21955,6 +23132,14 @@ impl TermsQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for TermsQueryBuilder {
+    type Output = TermsQuery;
+
+    fn build(self) -> TermsQuery {
+        Self::build(self)
+    }
+}
+
 impl From<TermsQueryBuilder> for TermsQuery {
     fn from(builder: TermsQueryBuilder) -> Self {
         builder.build()
@@ -22005,16 +23190,27 @@ pub struct TermsSetQuery {
 
 impl TermsSetQuery {
     /// Creates a builder for [`TermsSetQuery`].
+    ///
+    /// Required: `terms`.
     pub fn builder() -> TermsSetQueryBuilder {
         TermsSetQueryBuilder::new()
     }
 
     /// Creates a [`TermsSetQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TermsSetQueryBuilder) -> TermsSetQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `terms`.
+    pub fn of<B: crate::typed::builder::Build<Output = TermsSetQuery>>(
+        f: impl FnOnce(TermsSetQueryBuilder) -> B,
     ) -> TermsSetQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TermsSetQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod terms_set_query_members {
+    pub struct terms;
 }
 
 /// Builder for [`TermsSetQuery`].
@@ -22137,16 +23333,18 @@ impl<S0> TermsSetQueryBuilder<(S0,)> {
     }
 
     /// Sets [`minimum_should_match_script`](Self::minimum_should_match_script) with a builder.
-    pub fn minimum_should_match_script_with(
+    pub fn minimum_should_match_script_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::Script>,
+    >(
         self,
-        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> crate::typed::_types::ScriptBuilder,
+        f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
     ) -> Self {
         self.minimum_should_match_script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
 impl TermsSetQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// Array of terms you wish to find in the provided field.
+    /// **Required.** Array of terms you wish to find in the provided field.
     pub fn terms(
         self,
         value: impl Into<Vec<crate::typed::_types::FieldValue>>,
@@ -22180,9 +23378,12 @@ impl TermsSetQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl TermsSetQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TermsSetQueryBuilder<(S0,)> {
     /// Builds a [`TermsSetQuery`].
-    pub fn build(self) -> TermsSetQuery {
+    pub fn build(self) -> TermsSetQuery
+    where
+        S0: crate::typed::builder::IsSet<terms_set_query_members::terms>,
+    {
         TermsSetQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -22194,16 +23395,24 @@ impl TermsSetQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TermsSetQueryBuilder<(crate::typed::builder::Set,)>> for TermsSetQuery {
-    fn from(builder: TermsSetQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TermsSetQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<terms_set_query_members::terms>,
+{
+    type Output = TermsSetQuery;
+
+    fn build(self) -> TermsSetQuery {
+        Self::build(self)
     }
 }
 
-impl TermsSetQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `terms` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, terms: crate::typed::builder::MissingRequiredField) -> TermsSetQuery { match terms {} }
+impl<S0> From<TermsSetQueryBuilder<(S0,)>> for TermsSetQuery
+where
+    S0: crate::typed::builder::IsSet<terms_set_query_members::terms>,
+{
+    fn from(builder: TermsSetQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22227,21 +23436,28 @@ pub struct TextExpansionQuery {
 
 impl TextExpansionQuery {
     /// Creates a builder for [`TextExpansionQuery`].
+    ///
+    /// Required: `model_id`, `model_text`.
     pub fn builder() -> TextExpansionQueryBuilder {
         TextExpansionQueryBuilder::new()
     }
 
     /// Creates a [`TextExpansionQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TextExpansionQueryBuilder,
-        ) -> TextExpansionQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `model_id`, `model_text`.
+    pub fn of<B: crate::typed::builder::Build<Output = TextExpansionQuery>>(
+        f: impl FnOnce(TextExpansionQueryBuilder) -> B,
     ) -> TextExpansionQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TextExpansionQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod text_expansion_query_members {
+    pub struct model_id;
+    pub struct model_text;
 }
 
 /// Builder for [`TextExpansionQuery`].
@@ -22327,18 +23543,18 @@ impl<S0, S1> TextExpansionQueryBuilder<(S0, S1)> {
     }
 
     /// Sets [`pruning_config`](Self::pruning_config) with a builder.
-    pub fn pruning_config_with(
+    pub fn pruning_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TokenPruningConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TokenPruningConfigBuilder,
-        ) -> crate::typed::_types::TokenPruningConfigBuilder,
+        f: impl FnOnce(crate::typed::_types::TokenPruningConfigBuilder) -> B,
     ) -> Self {
         self.pruning_config(f(crate::typed::_types::TokenPruningConfigBuilder::new()).build())
     }
 }
 
 impl<S1> TextExpansionQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// The text expansion NLP model to use
+    /// **Required.** The text expansion NLP model to use
     pub fn model_id(
         self,
         value: impl Into<String>,
@@ -22350,7 +23566,7 @@ impl<S1> TextExpansionQueryBuilder<(crate::typed::builder::NotSet, S1)> {
 }
 
 impl<S0> TextExpansionQueryBuilder<(S0, crate::typed::builder::NotSet)> {
-    /// The query text
+    /// **Required.** The query text
     pub fn model_text(
         self,
         value: impl Into<String>,
@@ -22361,9 +23577,13 @@ impl<S0> TextExpansionQueryBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl TextExpansionQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
+impl<S0, S1> TextExpansionQueryBuilder<(S0, S1)> {
     /// Builds a [`TextExpansionQuery`].
-    pub fn build(self) -> TextExpansionQuery {
+    pub fn build(self) -> TextExpansionQuery
+    where
+        S0: crate::typed::builder::IsSet<text_expansion_query_members::model_id>,
+        S1: crate::typed::builder::IsSet<text_expansion_query_members::model_text>,
+    {
         TextExpansionQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -22374,29 +23594,26 @@ impl TextExpansionQueryBuilder<(crate::typed::builder::Set, crate::typed::builde
     }
 }
 
-impl From<TextExpansionQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
-    for TextExpansionQuery
+impl<S0, S1> crate::typed::builder::Build for TextExpansionQueryBuilder<(S0, S1)>
+where
+    S0: crate::typed::builder::IsSet<text_expansion_query_members::model_id>,
+    S1: crate::typed::builder::IsSet<text_expansion_query_members::model_text>,
 {
-    fn from(
-        builder: TextExpansionQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = TextExpansionQuery;
+
+    fn build(self) -> TextExpansionQuery {
+        Self::build(self)
     }
 }
 
-impl<S1> TextExpansionQueryBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// `model_id` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_id: crate::typed::builder::MissingRequiredField) -> TextExpansionQuery { match model_id {} }
-}
-
-impl TextExpansionQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet)> {
-    /// `model_text` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, model_text: crate::typed::builder::MissingRequiredField) -> TextExpansionQuery { match model_text {} }
+impl<S0, S1> From<TextExpansionQueryBuilder<(S0, S1)>> for TextExpansionQuery
+where
+    S0: crate::typed::builder::IsSet<text_expansion_query_members::model_id>,
+    S1: crate::typed::builder::IsSet<text_expansion_query_members::model_text>,
+{
+    fn from(builder: TextExpansionQueryBuilder<(S0, S1)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -22437,16 +23654,27 @@ pub struct TypeQuery {
 
 impl TypeQuery {
     /// Creates a builder for [`TypeQuery`].
+    ///
+    /// Required: `value`.
     pub fn builder() -> TypeQueryBuilder {
         TypeQueryBuilder::new()
     }
 
     /// Creates a [`TypeQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(TypeQueryBuilder) -> TypeQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `value`.
+    pub fn of<B: crate::typed::builder::Build<Output = TypeQuery>>(
+        f: impl FnOnce(TypeQueryBuilder) -> B,
     ) -> TypeQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TypeQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod type_query_members {
+    pub struct value;
 }
 
 /// Builder for [`TypeQuery`].
@@ -22507,6 +23735,7 @@ impl<S0> TypeQueryBuilder<(S0,)> {
 }
 
 impl TypeQueryBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn value(
         self,
         value: impl Into<String>,
@@ -22517,9 +23746,12 @@ impl TypeQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TypeQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TypeQueryBuilder<(S0,)> {
     /// Builds a [`TypeQuery`].
-    pub fn build(self) -> TypeQuery {
+    pub fn build(self) -> TypeQuery
+    where
+        S0: crate::typed::builder::IsSet<type_query_members::value>,
+    {
         TypeQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -22528,16 +23760,24 @@ impl TypeQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TypeQueryBuilder<(crate::typed::builder::Set,)>> for TypeQuery {
-    fn from(builder: TypeQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TypeQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<type_query_members::value>,
+{
+    type Output = TypeQuery;
+
+    fn build(self) -> TypeQuery {
+        Self::build(self)
     }
 }
 
-impl TypeQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `value` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, value: crate::typed::builder::MissingRequiredField) -> TypeQuery { match value {} }
+impl<S0> From<TypeQueryBuilder<(S0,)>> for TypeQuery
+where
+    S0: crate::typed::builder::IsSet<type_query_members::value>,
+{
+    fn from(builder: TypeQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22557,8 +23797,8 @@ impl UntypedDecayFunction {
     }
 
     /// Creates a [`UntypedDecayFunction`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(UntypedDecayFunctionBuilder) -> UntypedDecayFunctionBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = UntypedDecayFunction>>(
+        f: impl FnOnce(UntypedDecayFunctionBuilder) -> B,
     ) -> UntypedDecayFunction {
         f(Self::builder()).build()
     }
@@ -22623,6 +23863,14 @@ impl UntypedDecayFunctionBuilder {
     }
 }
 
+impl crate::typed::builder::Build for UntypedDecayFunctionBuilder {
+    type Output = UntypedDecayFunction;
+
+    fn build(self) -> UntypedDecayFunction {
+        Self::build(self)
+    }
+}
+
 impl From<UntypedDecayFunctionBuilder> for UntypedDecayFunction {
     fn from(builder: UntypedDecayFunctionBuilder) -> Self {
         builder.build()
@@ -22656,22 +23904,29 @@ pub struct UntypedDistanceFeatureQuery {
 
 impl UntypedDistanceFeatureQuery {
     /// Creates a builder for [`UntypedDistanceFeatureQuery`].
+    ///
+    /// Required: `origin`, `pivot`, `field`.
     pub fn builder() -> UntypedDistanceFeatureQueryBuilder {
         UntypedDistanceFeatureQueryBuilder::new()
     }
 
     /// Creates a [`UntypedDistanceFeatureQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            UntypedDistanceFeatureQueryBuilder,
-        ) -> UntypedDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `origin`, `pivot`, `field`.
+    pub fn of<B: crate::typed::builder::Build<Output = UntypedDistanceFeatureQuery>>(
+        f: impl FnOnce(UntypedDistanceFeatureQueryBuilder) -> B,
     ) -> UntypedDistanceFeatureQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`UntypedDistanceFeatureQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod untyped_distance_feature_query_members {
+    pub struct origin;
+    pub struct pivot;
+    pub struct field;
 }
 
 /// Builder for [`UntypedDistanceFeatureQuery`].
@@ -22750,7 +24005,7 @@ impl<S0, S1, S2> UntypedDistanceFeatureQueryBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> UntypedDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// Date or point of origin used to calculate distances.
+    /// **Required.** Date or point of origin used to calculate distances.
     /// If the `field` value is a `date` or `date_nanos` field, the `origin` value must be a date.
     /// Date Math, such as `now-1h`, is supported.
     /// If the field value is a `geo_point` field, the `origin` value must be a geopoint.
@@ -22765,7 +24020,7 @@ impl<S1, S2> UntypedDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, 
 }
 
 impl<S0, S2> UntypedDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// Distance from the `origin` at which relevance scores receive half of the `boost` value.
+    /// **Required.** Distance from the `origin` at which relevance scores receive half of the `boost` value.
     /// If the `field` value is a `date` or `date_nanos` field, the `pivot` value must be a time unit, such as `1h` or `10d`. If the `field` value is a `geo_point` field, the `pivot` value must be a distance unit, such as `1km` or `12m`.
     pub fn pivot(
         self,
@@ -22778,7 +24033,7 @@ impl<S0, S2> UntypedDistanceFeatureQueryBuilder<(S0, crate::typed::builder::NotS
 }
 
 impl<S0, S1> UntypedDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// Name of the field used to calculate distances. This field must meet the following criteria:
+    /// **Required.** Name of the field used to calculate distances. This field must meet the following criteria:
     /// be a `date`, `date_nanos` or `geo_point` field;
     /// have an `index` mapping parameter value of `true`, which is the default;
     /// have an `doc_values` mapping parameter value of `true`, which is the default.
@@ -22792,15 +24047,14 @@ impl<S0, S1> UntypedDistanceFeatureQueryBuilder<(S0, S1, crate::typed::builder::
     }
 }
 
-impl
-    UntypedDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> UntypedDistanceFeatureQueryBuilder<(S0, S1, S2)> {
     /// Builds a [`UntypedDistanceFeatureQuery`].
-    pub fn build(self) -> UntypedDistanceFeatureQuery {
+    pub fn build(self) -> UntypedDistanceFeatureQuery
+    where
+        S0: crate::typed::builder::IsSet<untyped_distance_feature_query_members::origin>,
+        S1: crate::typed::builder::IsSet<untyped_distance_feature_query_members::pivot>,
+        S2: crate::typed::builder::IsSet<untyped_distance_feature_query_members::field>,
+    {
         UntypedDistanceFeatureQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -22811,54 +24065,29 @@ impl
     }
 }
 
-impl
-    From<
-        UntypedDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for UntypedDistanceFeatureQuery
+impl<S0, S1, S2> crate::typed::builder::Build for UntypedDistanceFeatureQueryBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<untyped_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<untyped_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<untyped_distance_feature_query_members::field>,
 {
-    fn from(
-        builder: UntypedDistanceFeatureQueryBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = UntypedDistanceFeatureQuery;
+
+    fn build(self) -> UntypedDistanceFeatureQuery {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> UntypedDistanceFeatureQueryBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `origin` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, origin: crate::typed::builder::MissingRequiredField) -> UntypedDistanceFeatureQuery { match origin {} }
-}
-
-impl<S2>
-    UntypedDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<UntypedDistanceFeatureQueryBuilder<(S0, S1, S2)>>
+    for UntypedDistanceFeatureQuery
+where
+    S0: crate::typed::builder::IsSet<untyped_distance_feature_query_members::origin>,
+    S1: crate::typed::builder::IsSet<untyped_distance_feature_query_members::pivot>,
+    S2: crate::typed::builder::IsSet<untyped_distance_feature_query_members::field>,
 {
-    /// `pivot` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, pivot: crate::typed::builder::MissingRequiredField) -> UntypedDistanceFeatureQuery { match pivot {} }
-}
-
-impl
-    UntypedDistanceFeatureQueryBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `field` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, field: crate::typed::builder::MissingRequiredField) -> UntypedDistanceFeatureQuery { match field {} }
+    fn from(builder: UntypedDistanceFeatureQueryBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -22901,8 +24130,8 @@ impl UntypedRangeQuery {
     }
 
     /// Creates a [`UntypedRangeQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(UntypedRangeQueryBuilder) -> UntypedRangeQueryBuilder,
+    pub fn of<B: crate::typed::builder::Build<Output = UntypedRangeQuery>>(
+        f: impl FnOnce(UntypedRangeQueryBuilder) -> B,
     ) -> UntypedRangeQuery {
         f(Self::builder()).build()
     }
@@ -23067,6 +24296,14 @@ impl UntypedRangeQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for UntypedRangeQueryBuilder {
+    type Output = UntypedRangeQuery;
+
+    fn build(self) -> UntypedRangeQuery {
+        Self::build(self)
+    }
+}
+
 impl From<UntypedRangeQueryBuilder> for UntypedRangeQuery {
     fn from(builder: UntypedRangeQueryBuilder) -> Self {
         builder.build()
@@ -23111,18 +24348,27 @@ impl From<Vec<indexmap::IndexMap<String, f32>>> for WeightedTokensQueryTokens {
 
 impl WeightedTokensQuery {
     /// Creates a builder for [`WeightedTokensQuery`].
+    ///
+    /// Required: `tokens`.
     pub fn builder() -> WeightedTokensQueryBuilder {
         WeightedTokensQueryBuilder::new()
     }
 
     /// Creates a [`WeightedTokensQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            WeightedTokensQueryBuilder,
-        ) -> WeightedTokensQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `tokens`.
+    pub fn of<B: crate::typed::builder::Build<Output = WeightedTokensQuery>>(
+        f: impl FnOnce(WeightedTokensQueryBuilder) -> B,
     ) -> WeightedTokensQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WeightedTokensQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod weighted_tokens_query_members {
+    pub struct tokens;
 }
 
 /// Builder for [`WeightedTokensQuery`].
@@ -23203,18 +24449,18 @@ impl<S0> WeightedTokensQueryBuilder<(S0,)> {
     }
 
     /// Sets [`pruning_config`](Self::pruning_config) with a builder.
-    pub fn pruning_config_with(
+    pub fn pruning_config_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::TokenPruningConfig>,
+    >(
         self,
-        f: impl FnOnce(
-            crate::typed::_types::TokenPruningConfigBuilder,
-        ) -> crate::typed::_types::TokenPruningConfigBuilder,
+        f: impl FnOnce(crate::typed::_types::TokenPruningConfigBuilder) -> B,
     ) -> Self {
         self.pruning_config(f(crate::typed::_types::TokenPruningConfigBuilder::new()).build())
     }
 }
 
 impl WeightedTokensQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// The tokens representing this query
+    /// **Required.** The tokens representing this query
     pub fn tokens(
         self,
         value: impl Into<WeightedTokensQueryTokens>,
@@ -23225,9 +24471,12 @@ impl WeightedTokensQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WeightedTokensQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WeightedTokensQueryBuilder<(S0,)> {
     /// Builds a [`WeightedTokensQuery`].
-    pub fn build(self) -> WeightedTokensQuery {
+    pub fn build(self) -> WeightedTokensQuery
+    where
+        S0: crate::typed::builder::IsSet<weighted_tokens_query_members::tokens>,
+    {
         WeightedTokensQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -23237,16 +24486,24 @@ impl WeightedTokensQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WeightedTokensQueryBuilder<(crate::typed::builder::Set,)>> for WeightedTokensQuery {
-    fn from(builder: WeightedTokensQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WeightedTokensQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<weighted_tokens_query_members::tokens>,
+{
+    type Output = WeightedTokensQuery;
+
+    fn build(self) -> WeightedTokensQuery {
+        Self::build(self)
     }
 }
 
-impl WeightedTokensQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `tokens` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, tokens: crate::typed::builder::MissingRequiredField) -> WeightedTokensQuery { match tokens {} }
+impl<S0> From<WeightedTokensQueryBuilder<(S0,)>> for WeightedTokensQuery
+where
+    S0: crate::typed::builder::IsSet<weighted_tokens_query_members::tokens>,
+{
+    fn from(builder: WeightedTokensQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23280,7 +24537,9 @@ impl WildcardQuery {
     }
 
     /// Creates a [`WildcardQuery`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(WildcardQueryBuilder) -> WildcardQueryBuilder) -> WildcardQuery {
+    pub fn of<B: crate::typed::builder::Build<Output = WildcardQuery>>(
+        f: impl FnOnce(WildcardQueryBuilder) -> B,
+    ) -> WildcardQuery {
         f(Self::builder()).build()
     }
 }
@@ -23405,6 +24664,14 @@ impl WildcardQueryBuilder {
     }
 }
 
+impl crate::typed::builder::Build for WildcardQueryBuilder {
+    type Output = WildcardQuery;
+
+    fn build(self) -> WildcardQuery {
+        Self::build(self)
+    }
+}
+
 impl From<WildcardQueryBuilder> for WildcardQuery {
     fn from(builder: WildcardQueryBuilder) -> Self {
         builder.build()
@@ -23428,16 +24695,27 @@ pub struct WrapperQuery {
 
 impl WrapperQuery {
     /// Creates a builder for [`WrapperQuery`].
+    ///
+    /// Required: `query`.
     pub fn builder() -> WrapperQueryBuilder {
         WrapperQueryBuilder::new()
     }
 
     /// Creates a [`WrapperQuery`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(WrapperQueryBuilder) -> WrapperQueryBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `query`.
+    pub fn of<B: crate::typed::builder::Build<Output = WrapperQuery>>(
+        f: impl FnOnce(WrapperQueryBuilder) -> B,
     ) -> WrapperQuery {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`WrapperQueryBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod wrapper_query_members {
+    pub struct query;
 }
 
 /// Builder for [`WrapperQuery`].
@@ -23498,7 +24776,7 @@ impl<S0> WrapperQueryBuilder<(S0,)> {
 }
 
 impl WrapperQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// A base64 encoded query.
+    /// **Required.** A base64 encoded query.
     /// The binary data format can be any of JSON, YAML, CBOR or SMILE encodings
     pub fn query(
         self,
@@ -23510,9 +24788,12 @@ impl WrapperQueryBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl WrapperQueryBuilder<(crate::typed::builder::Set,)> {
+impl<S0> WrapperQueryBuilder<(S0,)> {
     /// Builds a [`WrapperQuery`].
-    pub fn build(self) -> WrapperQuery {
+    pub fn build(self) -> WrapperQuery
+    where
+        S0: crate::typed::builder::IsSet<wrapper_query_members::query>,
+    {
         WrapperQuery {
             boost: self.boost,
             query_name: self.query_name,
@@ -23521,16 +24802,24 @@ impl WrapperQueryBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<WrapperQueryBuilder<(crate::typed::builder::Set,)>> for WrapperQuery {
-    fn from(builder: WrapperQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for WrapperQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<wrapper_query_members::query>,
+{
+    type Output = WrapperQuery;
+
+    fn build(self) -> WrapperQuery {
+        Self::build(self)
     }
 }
 
-impl WrapperQueryBuilder<(crate::typed::builder::NotSet,)> {
-    /// `query` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, query: crate::typed::builder::MissingRequiredField) -> WrapperQuery { match query {} }
+impl<S0> From<WrapperQueryBuilder<(S0,)>> for WrapperQuery
+where
+    S0: crate::typed::builder::IsSet<wrapper_query_members::query>,
+{
+    fn from(builder: WrapperQueryBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]

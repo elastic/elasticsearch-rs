@@ -34,7 +34,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -129,6 +131,14 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
         }
+    }
+}
+
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
     }
 }
 
@@ -238,18 +248,27 @@ pub struct TransformNodeFullStats {
 
 impl TransformNodeFullStats {
     /// Creates a builder for [`TransformNodeFullStats`].
+    ///
+    /// Required: `total`.
     pub fn builder() -> TransformNodeFullStatsBuilder {
         TransformNodeFullStatsBuilder::new()
     }
 
     /// Creates a [`TransformNodeFullStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformNodeFullStatsBuilder,
-        ) -> TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `total`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformNodeFullStats>>(
+        f: impl FnOnce(TransformNodeFullStatsBuilder) -> B,
     ) -> TransformNodeFullStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformNodeFullStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_node_full_stats_members {
+    pub struct total;
 }
 
 /// Builder for [`TransformNodeFullStats`].
@@ -300,6 +319,7 @@ impl<S0> TransformNodeFullStatsBuilder<(S0,)> {
 }
 
 impl TransformNodeFullStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn total(
         self,
         value: impl Into<TransformNodeStats>,
@@ -310,19 +330,20 @@ impl TransformNodeFullStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`total`](Self::total) with a builder.
-    pub fn total_with(
+    pub fn total_with<B: crate::typed::builder::Build<Output = TransformNodeStats>>(
         self,
-        f: impl FnOnce(
-            TransformNodeStatsBuilder,
-        ) -> TransformNodeStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TransformNodeStatsBuilder) -> B,
     ) -> TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)> {
         self.total(f(TransformNodeStatsBuilder::new()).build())
     }
 }
 
-impl TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TransformNodeFullStatsBuilder<(S0,)> {
     /// Builds a [`TransformNodeFullStats`].
-    pub fn build(self) -> TransformNodeFullStats {
+    pub fn build(self) -> TransformNodeFullStats
+    where
+        S0: crate::typed::builder::IsSet<transform_node_full_stats_members::total>,
+    {
         TransformNodeFullStats {
             total: self.total.unwrap(),
             additional_properties: self.additional_properties,
@@ -330,16 +351,24 @@ impl TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)>> for TransformNodeFullStats {
-    fn from(builder: TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TransformNodeFullStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<transform_node_full_stats_members::total>,
+{
+    type Output = TransformNodeFullStats;
+
+    fn build(self) -> TransformNodeFullStats {
+        Self::build(self)
     }
 }
 
-impl TransformNodeFullStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `total` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, total: crate::typed::builder::MissingRequiredField) -> TransformNodeFullStats { match total {} }
+impl<S0> From<TransformNodeFullStatsBuilder<(S0,)>> for TransformNodeFullStats
+where
+    S0: crate::typed::builder::IsSet<transform_node_full_stats_members::total>,
+{
+    fn from(builder: TransformNodeFullStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -349,18 +378,27 @@ pub struct TransformNodeStats {
 
 impl TransformNodeStats {
     /// Creates a builder for [`TransformNodeStats`].
+    ///
+    /// Required: `scheduler`.
     pub fn builder() -> TransformNodeStatsBuilder {
         TransformNodeStatsBuilder::new()
     }
 
     /// Creates a [`TransformNodeStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformNodeStatsBuilder,
-        ) -> TransformNodeStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `scheduler`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformNodeStats>>(
+        f: impl FnOnce(TransformNodeStatsBuilder) -> B,
     ) -> TransformNodeStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformNodeStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_node_stats_members {
+    pub struct scheduler;
 }
 
 /// Builder for [`TransformNodeStats`].
@@ -389,6 +427,7 @@ impl<S0> TransformNodeStatsBuilder<(S0,)> {
 }
 
 impl TransformNodeStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn scheduler(
         self,
         value: impl Into<TransformSchedulerStats>,
@@ -399,35 +438,44 @@ impl TransformNodeStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 
     /// Sets [`scheduler`](Self::scheduler) with a builder.
-    pub fn scheduler_with(
+    pub fn scheduler_with<B: crate::typed::builder::Build<Output = TransformSchedulerStats>>(
         self,
-        f: impl FnOnce(
-            TransformSchedulerStatsBuilder,
-        ) -> TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)>,
+        f: impl FnOnce(TransformSchedulerStatsBuilder) -> B,
     ) -> TransformNodeStatsBuilder<(crate::typed::builder::Set,)> {
         self.scheduler(f(TransformSchedulerStatsBuilder::new()).build())
     }
 }
 
-impl TransformNodeStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TransformNodeStatsBuilder<(S0,)> {
     /// Builds a [`TransformNodeStats`].
-    pub fn build(self) -> TransformNodeStats {
+    pub fn build(self) -> TransformNodeStats
+    where
+        S0: crate::typed::builder::IsSet<transform_node_stats_members::scheduler>,
+    {
         TransformNodeStats {
             scheduler: self.scheduler.unwrap(),
         }
     }
 }
 
-impl From<TransformNodeStatsBuilder<(crate::typed::builder::Set,)>> for TransformNodeStats {
-    fn from(builder: TransformNodeStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for TransformNodeStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<transform_node_stats_members::scheduler>,
+{
+    type Output = TransformNodeStats;
+
+    fn build(self) -> TransformNodeStats {
+        Self::build(self)
     }
 }
 
-impl TransformNodeStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `scheduler` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, scheduler: crate::typed::builder::MissingRequiredField) -> TransformNodeStats { match scheduler {} }
+impl<S0> From<TransformNodeStatsBuilder<(S0,)>> for TransformNodeStats
+where
+    S0: crate::typed::builder::IsSet<transform_node_stats_members::scheduler>,
+{
+    fn from(builder: TransformNodeStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -439,18 +487,27 @@ pub struct TransformSchedulerStats {
 
 impl TransformSchedulerStats {
     /// Creates a builder for [`TransformSchedulerStats`].
+    ///
+    /// Required: `registered_transform_count`.
     pub fn builder() -> TransformSchedulerStatsBuilder {
         TransformSchedulerStatsBuilder::new()
     }
 
     /// Creates a [`TransformSchedulerStats`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            TransformSchedulerStatsBuilder,
-        ) -> TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `registered_transform_count`.
+    pub fn of<B: crate::typed::builder::Build<Output = TransformSchedulerStats>>(
+        f: impl FnOnce(TransformSchedulerStatsBuilder) -> B,
     ) -> TransformSchedulerStats {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`TransformSchedulerStatsBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod transform_scheduler_stats_members {
+    pub struct registered_transform_count;
 }
 
 /// Builder for [`TransformSchedulerStats`].
@@ -493,6 +550,7 @@ impl<S0> TransformSchedulerStatsBuilder<(S0,)> {
 }
 
 impl TransformSchedulerStatsBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn registered_transform_count(
         self,
         value: i32,
@@ -503,9 +561,14 @@ impl TransformSchedulerStatsBuilder<(crate::typed::builder::NotSet,)> {
     }
 }
 
-impl TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)> {
+impl<S0> TransformSchedulerStatsBuilder<(S0,)> {
     /// Builds a [`TransformSchedulerStats`].
-    pub fn build(self) -> TransformSchedulerStats {
+    pub fn build(self) -> TransformSchedulerStats
+    where
+        S0: crate::typed::builder::IsSet<
+            transform_scheduler_stats_members::registered_transform_count,
+        >,
+    {
         TransformSchedulerStats {
             registered_transform_count: self.registered_transform_count.unwrap(),
             peek_transform: self.peek_transform,
@@ -513,16 +576,22 @@ impl TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl From<TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)>>
-    for TransformSchedulerStats
+impl<S0> crate::typed::builder::Build for TransformSchedulerStatsBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<transform_scheduler_stats_members::registered_transform_count>,
 {
-    fn from(builder: TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+    type Output = TransformSchedulerStats;
+
+    fn build(self) -> TransformSchedulerStats {
+        Self::build(self)
     }
 }
 
-impl TransformSchedulerStatsBuilder<(crate::typed::builder::NotSet,)> {
-    /// `registered_transform_count` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, registered_transform_count: crate::typed::builder::MissingRequiredField) -> TransformSchedulerStats { match registered_transform_count {} }
+impl<S0> From<TransformSchedulerStatsBuilder<(S0,)>> for TransformSchedulerStats
+where
+    S0: crate::typed::builder::IsSet<transform_scheduler_stats_members::registered_transform_count>,
+{
+    fn from(builder: TransformSchedulerStatsBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }

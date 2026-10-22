@@ -27,16 +27,27 @@ impl From<Vec<ShardsSegment>> for IndexSegmentShards {
 
 impl IndexSegment {
     /// Creates a builder for [`IndexSegment`].
+    ///
+    /// Required: `shards`.
     pub fn builder() -> IndexSegmentBuilder {
         IndexSegmentBuilder::new()
     }
 
     /// Creates a [`IndexSegment`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(IndexSegmentBuilder) -> IndexSegmentBuilder<(crate::typed::builder::Set,)>,
+    ///
+    /// Required: `shards`.
+    pub fn of<B: crate::typed::builder::Build<Output = IndexSegment>>(
+        f: impl FnOnce(IndexSegmentBuilder) -> B,
     ) -> IndexSegment {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`IndexSegmentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod index_segment_members {
+    pub struct shards;
 }
 
 /// Builder for [`IndexSegment`].
@@ -65,6 +76,7 @@ impl<S0> IndexSegmentBuilder<(S0,)> {
 }
 
 impl IndexSegmentBuilder<(crate::typed::builder::NotSet,)> {
+    /// **Required.**
     pub fn shards(
         self,
         value: impl Into<indexmap::IndexMap<String, IndexSegmentShards>>,
@@ -103,25 +115,36 @@ impl IndexSegmentBuilder<(crate::typed::builder::Set,)> {
     }
 }
 
-impl IndexSegmentBuilder<(crate::typed::builder::Set,)> {
+impl<S0> IndexSegmentBuilder<(S0,)> {
     /// Builds a [`IndexSegment`].
-    pub fn build(self) -> IndexSegment {
+    pub fn build(self) -> IndexSegment
+    where
+        S0: crate::typed::builder::IsSet<index_segment_members::shards>,
+    {
         IndexSegment {
             shards: self.shards.unwrap(),
         }
     }
 }
 
-impl From<IndexSegmentBuilder<(crate::typed::builder::Set,)>> for IndexSegment {
-    fn from(builder: IndexSegmentBuilder<(crate::typed::builder::Set,)>) -> Self {
-        builder.build()
+impl<S0> crate::typed::builder::Build for IndexSegmentBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsSet<index_segment_members::shards>,
+{
+    type Output = IndexSegment;
+
+    fn build(self) -> IndexSegment {
+        Self::build(self)
     }
 }
 
-impl IndexSegmentBuilder<(crate::typed::builder::NotSet,)> {
-    /// `shards` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, shards: crate::typed::builder::MissingRequiredField) -> IndexSegment { match shards {} }
+impl<S0> From<IndexSegmentBuilder<(S0,)>> for IndexSegment
+where
+    S0: crate::typed::builder::IsSet<index_segment_members::shards>,
+{
+    fn from(builder: IndexSegmentBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
 }
 
 /// Request of [`indices.segments`](crate::typed::indices::IndicesClient::segments).
@@ -177,7 +200,9 @@ impl Request {
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
-    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+    pub fn of<B: crate::typed::builder::Build<Output = Request>>(
+        f: impl FnOnce(RequestBuilder) -> B,
+    ) -> Request {
         f(Self::builder()).build()
     }
 }
@@ -352,6 +377,14 @@ impl<C> RequestBuilder<(), C> {
     }
 }
 
+impl<C> crate::typed::builder::Build for RequestBuilder<(), C> {
+    type Output = Request;
+
+    fn build(self) -> Request {
+        Self::build(self)
+    }
+}
+
 impl RequestBuilder<(), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -505,28 +538,35 @@ pub struct Segment {
 
 impl Segment {
     /// Creates a builder for [`Segment`].
+    ///
+    /// Required: `attributes`, `committed`, `compound`, `deleted_docs`, `generation`, `search`, `size_in_bytes`, `num_docs`, `version`.
     pub fn builder() -> SegmentBuilder {
         SegmentBuilder::new()
     }
 
     /// Creates a [`Segment`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            SegmentBuilder,
-        ) -> SegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `attributes`, `committed`, `compound`, `deleted_docs`, `generation`, `search`, `size_in_bytes`, `num_docs`, `version`.
+    pub fn of<B: crate::typed::builder::Build<Output = Segment>>(
+        f: impl FnOnce(SegmentBuilder) -> B,
     ) -> Segment {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`SegmentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod segment_members {
+    pub struct attributes;
+    pub struct committed;
+    pub struct compound;
+    pub struct deleted_docs;
+    pub struct generation;
+    pub struct search;
+    pub struct size_in_bytes;
+    pub struct num_docs;
+    pub struct version;
 }
 
 /// Builder for [`Segment`].
@@ -615,7 +655,7 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Contains information about whether high compression was enabled and per-field vector formats.
+    /// **Required.** Contains information about whether high compression was enabled and per-field vector formats.
     pub fn attributes(
         self,
         value: impl Into<indexmap::IndexMap<String, String>>,
@@ -665,7 +705,7 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// If `true`, the segment is synced to disk. Segments that are synced can survive a hard reboot.
+    /// **Required.** If `true`, the segment is synced to disk. Segments that are synced can survive a hard reboot.
     /// If `false`, the data from uncommitted segments is also stored in the transaction log so that Elasticsearch is able to replay changes on the next start.
     pub fn committed(
         self,
@@ -690,7 +730,7 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// If `true`, Lucene merged all files from the segment into a single file to save file descriptors.
+    /// **Required.** If `true`, Lucene merged all files from the segment into a single file to save file descriptors.
     pub fn compound(
         self,
         value: bool,
@@ -714,7 +754,7 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// The number of deleted documents as reported by Lucene, which may be higher or lower than the number of delete operations you have performed.
+    /// **Required.** The number of deleted documents as reported by Lucene, which may be higher or lower than the number of delete operations you have performed.
     /// This number excludes deletes that were performed recently and do not yet belong to a segment.
     /// Deleted documents are cleaned up by the automatic merge process if it makes sense to do so.
     /// Also, Elasticsearch creates extra deleted documents to internally track the recent history of operations on a shard.
@@ -741,7 +781,7 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         S8,
     )>
 {
-    /// Generation number, such as `0`. Elasticsearch increments this generation number for each segment written then uses this number to derive the segment name.
+    /// **Required.** Generation number, such as `0`. Elasticsearch increments this generation number for each segment written then uses this number to derive the segment name.
     pub fn generation(
         self,
         value: i32,
@@ -765,7 +805,7 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         S8,
     )>
 {
-    /// If `true`, the segment is searchable.
+    /// **Required.** If `true`, the segment is searchable.
     /// If `false`, the segment has most likely been written to disk but needs a refresh to be searchable.
     pub fn search(
         self,
@@ -790,7 +830,7 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         S8,
     )>
 {
-    /// Disk space used by the segment, in bytes.
+    /// **Required.** Disk space used by the segment, in bytes.
     pub fn size_in_bytes(
         self,
         value: impl Into<crate::typed::support::Float64>,
@@ -814,7 +854,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         S8,
     )>
 {
-    /// The number of documents as reported by Lucene.
+    /// **Required.** The number of documents as reported by Lucene.
     /// This excludes deleted documents and counts any nested documents separately from their parents.
     /// It also excludes documents which were indexed recently and do not yet belong to a segment.
     pub fn num_docs(
@@ -840,7 +880,7 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         crate::typed::builder::NotSet,
     )>
 {
-    /// Version of Lucene used to write the segment.
+    /// **Required.** Version of Lucene used to write the segment.
     pub fn version(
         self,
         value: impl Into<crate::typed::_types::VersionString>,
@@ -851,21 +891,20 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
     }
 }
 
-impl
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> SegmentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)> {
     /// Builds a [`Segment`].
-    pub fn build(self) -> Segment {
+    pub fn build(self) -> Segment
+    where
+        S0: crate::typed::builder::IsSet<segment_members::attributes>,
+        S1: crate::typed::builder::IsSet<segment_members::committed>,
+        S2: crate::typed::builder::IsSet<segment_members::compound>,
+        S3: crate::typed::builder::IsSet<segment_members::deleted_docs>,
+        S4: crate::typed::builder::IsSet<segment_members::generation>,
+        S5: crate::typed::builder::IsSet<segment_members::search>,
+        S6: crate::typed::builder::IsSet<segment_members::size_in_bytes>,
+        S7: crate::typed::builder::IsSet<segment_members::num_docs>,
+        S8: crate::typed::builder::IsSet<segment_members::version>,
+    {
         Segment {
             attributes: self.attributes.unwrap(),
             committed: self.committed.unwrap(),
@@ -880,198 +919,42 @@ impl
     }
 }
 
-impl
-    From<
-        SegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for Segment
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> crate::typed::builder::Build
+    for SegmentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>
+where
+    S0: crate::typed::builder::IsSet<segment_members::attributes>,
+    S1: crate::typed::builder::IsSet<segment_members::committed>,
+    S2: crate::typed::builder::IsSet<segment_members::compound>,
+    S3: crate::typed::builder::IsSet<segment_members::deleted_docs>,
+    S4: crate::typed::builder::IsSet<segment_members::generation>,
+    S5: crate::typed::builder::IsSet<segment_members::search>,
+    S6: crate::typed::builder::IsSet<segment_members::size_in_bytes>,
+    S7: crate::typed::builder::IsSet<segment_members::num_docs>,
+    S8: crate::typed::builder::IsSet<segment_members::version>,
 {
-    fn from(
-        builder: SegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = Segment;
+
+    fn build(self) -> Segment {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3, S4, S5, S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::NotSet,
-        S1,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8> From<SegmentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>>
+    for Segment
+where
+    S0: crate::typed::builder::IsSet<segment_members::attributes>,
+    S1: crate::typed::builder::IsSet<segment_members::committed>,
+    S2: crate::typed::builder::IsSet<segment_members::compound>,
+    S3: crate::typed::builder::IsSet<segment_members::deleted_docs>,
+    S4: crate::typed::builder::IsSet<segment_members::generation>,
+    S5: crate::typed::builder::IsSet<segment_members::search>,
+    S6: crate::typed::builder::IsSet<segment_members::size_in_bytes>,
+    S7: crate::typed::builder::IsSet<segment_members::num_docs>,
+    S8: crate::typed::builder::IsSet<segment_members::version>,
 {
-    /// `attributes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, attributes: crate::typed::builder::MissingRequiredField) -> Segment { match attributes {} }
-}
-
-impl<S2, S3, S4, S5, S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `committed` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, committed: crate::typed::builder::MissingRequiredField) -> Segment { match committed {} }
-}
-
-impl<S3, S4, S5, S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `compound` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, compound: crate::typed::builder::MissingRequiredField) -> Segment { match compound {} }
-}
-
-impl<S4, S5, S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S4,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `deleted_docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, deleted_docs: crate::typed::builder::MissingRequiredField) -> Segment { match deleted_docs {} }
-}
-
-impl<S5, S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S5,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `generation` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, generation: crate::typed::builder::MissingRequiredField) -> Segment { match generation {} }
-}
-
-impl<S6, S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S6,
-        S7,
-        S8,
-    )>
-{
-    /// `search` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, search: crate::typed::builder::MissingRequiredField) -> Segment { match search {} }
-}
-
-impl<S7, S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S7,
-        S8,
-    )>
-{
-    /// `size_in_bytes` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, size_in_bytes: crate::typed::builder::MissingRequiredField) -> Segment { match size_in_bytes {} }
-}
-
-impl<S8>
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S8,
-    )>
-{
-    /// `num_docs` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_docs: crate::typed::builder::MissingRequiredField) -> Segment { match num_docs {} }
-}
-
-impl
-    SegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `version` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, version: crate::typed::builder::MissingRequiredField) -> Segment { match version {} }
+    fn from(builder: SegmentBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, S8)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1086,22 +969,29 @@ pub struct ShardSegmentRouting {
 
 impl ShardSegmentRouting {
     /// Creates a builder for [`ShardSegmentRouting`].
+    ///
+    /// Required: `node`, `primary`, `state`.
     pub fn builder() -> ShardSegmentRoutingBuilder {
         ShardSegmentRoutingBuilder::new()
     }
 
     /// Creates a [`ShardSegmentRouting`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardSegmentRoutingBuilder,
-        ) -> ShardSegmentRoutingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `node`, `primary`, `state`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardSegmentRouting>>(
+        f: impl FnOnce(ShardSegmentRoutingBuilder) -> B,
     ) -> ShardSegmentRouting {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardSegmentRoutingBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shard_segment_routing_members {
+    pub struct node;
+    pub struct primary;
+    pub struct state;
 }
 
 /// Builder for [`ShardSegmentRouting`].
@@ -1148,7 +1038,7 @@ impl<S0, S1, S2> ShardSegmentRoutingBuilder<(S0, S1, S2)> {
 }
 
 impl<S1, S2> ShardSegmentRoutingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// The node ID of the node that holds the shard.
+    /// **Required.** The node ID of the node that holds the shard.
     pub fn node(
         self,
         value: impl Into<String>,
@@ -1160,7 +1050,7 @@ impl<S1, S2> ShardSegmentRoutingBuilder<(crate::typed::builder::NotSet, S1, S2)>
 }
 
 impl<S0, S2> ShardSegmentRoutingBuilder<(S0, crate::typed::builder::NotSet, S2)> {
-    /// If `true`, the shard is a primary shard.
+    /// **Required.** If `true`, the shard is a primary shard.
     pub fn primary(
         self,
         value: bool,
@@ -1172,7 +1062,7 @@ impl<S0, S2> ShardSegmentRoutingBuilder<(S0, crate::typed::builder::NotSet, S2)>
 }
 
 impl<S0, S1> ShardSegmentRoutingBuilder<(S0, S1, crate::typed::builder::NotSet)> {
-    /// The state of the shard, such as `STARTED` or `RELOCATING`.
+    /// **Required.** The state of the shard, such as `STARTED` or `RELOCATING`.
     pub fn state(
         self,
         value: impl Into<String>,
@@ -1183,15 +1073,14 @@ impl<S0, S1> ShardSegmentRoutingBuilder<(S0, S1, crate::typed::builder::NotSet)>
     }
 }
 
-impl
-    ShardSegmentRoutingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2> ShardSegmentRoutingBuilder<(S0, S1, S2)> {
     /// Builds a [`ShardSegmentRouting`].
-    pub fn build(self) -> ShardSegmentRouting {
+    pub fn build(self) -> ShardSegmentRouting
+    where
+        S0: crate::typed::builder::IsSet<shard_segment_routing_members::node>,
+        S1: crate::typed::builder::IsSet<shard_segment_routing_members::primary>,
+        S2: crate::typed::builder::IsSet<shard_segment_routing_members::state>,
+    {
         ShardSegmentRouting {
             node: self.node.unwrap(),
             primary: self.primary.unwrap(),
@@ -1200,54 +1089,28 @@ impl
     }
 }
 
-impl
-    From<
-        ShardSegmentRoutingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardSegmentRouting
+impl<S0, S1, S2> crate::typed::builder::Build for ShardSegmentRoutingBuilder<(S0, S1, S2)>
+where
+    S0: crate::typed::builder::IsSet<shard_segment_routing_members::node>,
+    S1: crate::typed::builder::IsSet<shard_segment_routing_members::primary>,
+    S2: crate::typed::builder::IsSet<shard_segment_routing_members::state>,
 {
-    fn from(
-        builder: ShardSegmentRoutingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardSegmentRouting;
+
+    fn build(self) -> ShardSegmentRouting {
+        Self::build(self)
     }
 }
 
-impl<S1, S2> ShardSegmentRoutingBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// `node` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, node: crate::typed::builder::MissingRequiredField) -> ShardSegmentRouting { match node {} }
-}
-
-impl<S2>
-    ShardSegmentRoutingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-    )>
+impl<S0, S1, S2> From<ShardSegmentRoutingBuilder<(S0, S1, S2)>> for ShardSegmentRouting
+where
+    S0: crate::typed::builder::IsSet<shard_segment_routing_members::node>,
+    S1: crate::typed::builder::IsSet<shard_segment_routing_members::primary>,
+    S2: crate::typed::builder::IsSet<shard_segment_routing_members::state>,
 {
-    /// `primary` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, primary: crate::typed::builder::MissingRequiredField) -> ShardSegmentRouting { match primary {} }
-}
-
-impl
-    ShardSegmentRoutingBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `state` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, state: crate::typed::builder::MissingRequiredField) -> ShardSegmentRouting { match state {} }
+    fn from(builder: ShardSegmentRoutingBuilder<(S0, S1, S2)>) -> Self {
+        builder.build()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -1260,23 +1123,30 @@ pub struct ShardsSegment {
 
 impl ShardsSegment {
     /// Creates a builder for [`ShardsSegment`].
+    ///
+    /// Required: `num_committed_segments`, `routing`, `num_search_segments`, `segments`.
     pub fn builder() -> ShardsSegmentBuilder {
         ShardsSegmentBuilder::new()
     }
 
     /// Creates a [`ShardsSegment`] from a function that sets the members of its builder.
-    pub fn of(
-        f: impl FnOnce(
-            ShardsSegmentBuilder,
-        ) -> ShardsSegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+    ///
+    /// Required: `num_committed_segments`, `routing`, `num_search_segments`, `segments`.
+    pub fn of<B: crate::typed::builder::Build<Output = ShardsSegment>>(
+        f: impl FnOnce(ShardsSegmentBuilder) -> B,
     ) -> ShardsSegment {
         f(Self::builder()).build()
     }
+}
+
+/// Markers of the required members of [`ShardsSegmentBuilder`], named in compilation errors when they're missing.
+#[doc(hidden)]
+#[allow(non_camel_case_types)]
+pub mod shards_segment_members {
+    pub struct num_committed_segments;
+    pub struct routing;
+    pub struct num_search_segments;
+    pub struct segments;
 }
 
 /// Builder for [`ShardsSegment`].
@@ -1328,6 +1198,7 @@ impl<S0, S1, S2, S3> ShardsSegmentBuilder<(S0, S1, S2, S3)> {
 }
 
 impl<S1, S2, S3> ShardsSegmentBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
+    /// **Required.**
     pub fn num_committed_segments(
         self,
         value: i32,
@@ -1339,6 +1210,7 @@ impl<S1, S2, S3> ShardsSegmentBuilder<(crate::typed::builder::NotSet, S1, S2, S3
 }
 
 impl<S0, S2, S3> ShardsSegmentBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+    /// **Required.**
     pub fn routing(
         self,
         value: impl Into<ShardSegmentRouting>,
@@ -1349,21 +1221,16 @@ impl<S0, S2, S3> ShardsSegmentBuilder<(S0, crate::typed::builder::NotSet, S2, S3
     }
 
     /// Sets [`routing`](Self::routing) with a builder.
-    pub fn routing_with(
+    pub fn routing_with<B: crate::typed::builder::Build<Output = ShardSegmentRouting>>(
         self,
-        f: impl FnOnce(
-            ShardSegmentRoutingBuilder,
-        ) -> ShardSegmentRoutingBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(ShardSegmentRoutingBuilder) -> B,
     ) -> ShardsSegmentBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
         self.routing(f(ShardSegmentRoutingBuilder::new()).build())
     }
 }
 
 impl<S0, S1, S3> ShardsSegmentBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+    /// **Required.**
     pub fn num_search_segments(
         self,
         value: i32,
@@ -1375,6 +1242,7 @@ impl<S0, S1, S3> ShardsSegmentBuilder<(S0, S1, crate::typed::builder::NotSet, S3
 }
 
 impl<S0, S1, S2> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+    /// **Required.**
     pub fn segments(
         self,
         value: impl Into<indexmap::IndexMap<String, Segment>>,
@@ -1399,22 +1267,10 @@ impl<S0, S1, S2> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::NotSet
     }
 
     /// Adds an entry to [`segments`](Self::segments), with a builder.
-    pub fn add_segments_with(
+    pub fn add_segments_with<B: crate::typed::builder::Build<Output = Segment>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SegmentBuilder,
-        ) -> SegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SegmentBuilder) -> B,
     ) -> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
         self.add_segments(key, f(SegmentBuilder::new()).build())
     }
@@ -1430,37 +1286,24 @@ impl<S0, S1, S2> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> 
     }
 
     /// Adds an entry to [`segments`](Self::segments), with a builder.
-    pub fn add_segments_with(
+    pub fn add_segments_with<B: crate::typed::builder::Build<Output = Segment>>(
         self,
         key: impl Into<String>,
-        f: impl FnOnce(
-            SegmentBuilder,
-        ) -> SegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
+        f: impl FnOnce(SegmentBuilder) -> B,
     ) -> Self {
         self.add_segments(key, f(SegmentBuilder::new()).build())
     }
 }
 
-impl
-    ShardsSegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-    )>
-{
+impl<S0, S1, S2, S3> ShardsSegmentBuilder<(S0, S1, S2, S3)> {
     /// Builds a [`ShardsSegment`].
-    pub fn build(self) -> ShardsSegment {
+    pub fn build(self) -> ShardsSegment
+    where
+        S0: crate::typed::builder::IsSet<shards_segment_members::num_committed_segments>,
+        S1: crate::typed::builder::IsSet<shards_segment_members::routing>,
+        S2: crate::typed::builder::IsSet<shards_segment_members::num_search_segments>,
+        S3: crate::typed::builder::IsSet<shards_segment_members::segments>,
+    {
         ShardsSegment {
             num_committed_segments: self.num_committed_segments.unwrap(),
             routing: self.routing.unwrap(),
@@ -1470,69 +1313,28 @@ impl
     }
 }
 
-impl
-    From<
-        ShardsSegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    > for ShardsSegment
+impl<S0, S1, S2, S3> crate::typed::builder::Build for ShardsSegmentBuilder<(S0, S1, S2, S3)>
+where
+    S0: crate::typed::builder::IsSet<shards_segment_members::num_committed_segments>,
+    S1: crate::typed::builder::IsSet<shards_segment_members::routing>,
+    S2: crate::typed::builder::IsSet<shards_segment_members::num_search_segments>,
+    S3: crate::typed::builder::IsSet<shards_segment_members::segments>,
 {
-    fn from(
-        builder: ShardsSegmentBuilder<(
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-            crate::typed::builder::Set,
-        )>,
-    ) -> Self {
-        builder.build()
+    type Output = ShardsSegment;
+
+    fn build(self) -> ShardsSegment {
+        Self::build(self)
     }
 }
 
-impl<S1, S2, S3> ShardsSegmentBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// `num_committed_segments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_committed_segments: crate::typed::builder::MissingRequiredField) -> ShardsSegment { match num_committed_segments {} }
-}
-
-impl<S2, S3>
-    ShardsSegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S2,
-        S3,
-    )>
+impl<S0, S1, S2, S3> From<ShardsSegmentBuilder<(S0, S1, S2, S3)>> for ShardsSegment
+where
+    S0: crate::typed::builder::IsSet<shards_segment_members::num_committed_segments>,
+    S1: crate::typed::builder::IsSet<shards_segment_members::routing>,
+    S2: crate::typed::builder::IsSet<shards_segment_members::num_search_segments>,
+    S3: crate::typed::builder::IsSet<shards_segment_members::segments>,
 {
-    /// `routing` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, routing: crate::typed::builder::MissingRequiredField) -> ShardsSegment { match routing {} }
-}
-
-impl<S3>
-    ShardsSegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-        S3,
-    )>
-{
-    /// `num_search_segments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, num_search_segments: crate::typed::builder::MissingRequiredField) -> ShardsSegment { match num_search_segments {} }
-}
-
-impl
-    ShardsSegmentBuilder<(
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::Set,
-        crate::typed::builder::NotSet,
-    )>
-{
-    /// `segments` is missing: set it before calling `build()`.
-    #[rustfmt::skip]
-    pub fn build(self, segments: crate::typed::builder::MissingRequiredField) -> ShardsSegment { match segments {} }
+    fn from(builder: ShardsSegmentBuilder<(S0, S1, S2, S3)>) -> Self {
+        builder.build()
+    }
 }
