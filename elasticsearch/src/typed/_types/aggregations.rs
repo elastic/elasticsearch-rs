@@ -9170,6 +9170,16 @@ impl<S0> CategorizeTextAggregationBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`categorization_analyzer`](Self::categorization_analyzer) with a builder.
+    pub fn categorization_analyzer_with<
+        B: crate::typed::builder::Build<Output = CustomCategorizeTextAnalyzer>,
+    >(
+        self,
+        f: impl FnOnce(CustomCategorizeTextAnalyzerBuilder) -> B,
+    ) -> Self {
+        self.categorization_analyzer(f(CustomCategorizeTextAnalyzerBuilder::new()).build())
+    }
+
     /// The number of categorization buckets to return from each shard before merging all the results.
     pub fn shard_size(mut self, value: i32) -> Self {
         self.shard_size = Some(value);
@@ -19212,6 +19222,14 @@ impl<S0> FrequentItemSetsFieldBuilder<(S0,)> {
     pub fn maybe_include(mut self, value: Option<TermsInclude>) -> Self {
         self.include = value;
         self
+    }
+
+    /// Sets [`include`](Self::include) with a builder.
+    pub fn include_with<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        self,
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
+    ) -> Self {
+        self.include(f(TermsPartitionBuilder::new()).build())
     }
 }
 
@@ -36661,6 +36679,14 @@ impl RareTermsAggregationBuilder {
         self
     }
 
+    /// Sets [`include`](Self::include) with a builder.
+    pub fn include_with<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        self,
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
+    ) -> Self {
+        self.include(f(TermsPartitionBuilder::new()).build())
+    }
+
     /// The maximum number of documents a term should appear in.
     pub fn max_doc_count(mut self, value: i64) -> Self {
         self.max_doc_count = Some(value);
@@ -39645,6 +39671,14 @@ impl SignificantTermsAggregationBuilder {
         self
     }
 
+    /// Sets [`include`](Self::include) with a builder.
+    pub fn include_with<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        self,
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
+    ) -> Self {
+        self.include(f(TermsPartitionBuilder::new()).build())
+    }
+
     /// Use JLH score as the significance score.
     pub fn jlh(mut self, value: impl Into<crate::typed::_types::EmptyObject>) -> Self {
         self.jlh = Some(value.into());
@@ -40268,6 +40302,14 @@ impl SignificantTextAggregationBuilder {
     pub fn maybe_include(mut self, value: Option<TermsInclude>) -> Self {
         self.include = value;
         self
+    }
+
+    /// Sets [`include`](Self::include) with a builder.
+    pub fn include_with<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        self,
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
+    ) -> Self {
+        self.include(f(TermsPartitionBuilder::new()).build())
     }
 
     /// Use JLH score as the significance score.
@@ -46107,6 +46149,14 @@ impl TermsAggregationBuilder {
         self
     }
 
+    /// Sets [`include`](Self::include) with a builder.
+    pub fn include_with<B: crate::typed::builder::Build<Output = TermsPartition>>(
+        self,
+        f: impl FnOnce(TermsPartitionBuilder) -> B,
+    ) -> Self {
+        self.include(f(TermsPartitionBuilder::new()).build())
+    }
+
     /// Only return values that are found in more than `min_doc_count` hits.
     pub fn min_doc_count(mut self, value: i32) -> Self {
         self.min_doc_count = Some(value);
@@ -47700,6 +47750,16 @@ impl TopHitsAggregationBuilder {
         self
     }
 
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+    }
+
     /// Returns values for the specified stored fields (fields that use the `store` mapping option).
     pub fn stored_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
         self.stored_fields = Some(value.into());
@@ -48281,6 +48341,14 @@ impl TopMetricsAggregationBuilder {
     pub fn maybe_metrics(mut self, value: Option<TopMetricsAggregationMetrics>) -> Self {
         self.metrics = value;
         self
+    }
+
+    /// Sets [`metrics`](Self::metrics) with a builder.
+    pub fn metrics_with<B: crate::typed::builder::Build<Output = TopMetricsValue>>(
+        self,
+        f: impl FnOnce(TopMetricsValueBuilder) -> B,
+    ) -> Self {
+        self.metrics(f(TopMetricsValueBuilder::new()).build())
     }
 
     /// The number of top documents from which to return metrics.

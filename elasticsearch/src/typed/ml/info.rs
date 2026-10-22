@@ -103,6 +103,20 @@ impl<S1, S2, S3, S4> AnomalyDetectorsBuilder<(crate::typed::builder::NotSet, S1,
         builder.categorization_analyzer = Some(value.into());
         builder
     }
+
+    /// Sets [`categorization_analyzer`](Self::categorization_analyzer) with a builder.
+    pub fn categorization_analyzer_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::ml::_types::CategorizationAnalyzerDefinition,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::ml::_types::CategorizationAnalyzerDefinitionBuilder) -> B,
+    ) -> AnomalyDetectorsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        self.categorization_analyzer(
+            f(crate::typed::ml::_types::CategorizationAnalyzerDefinitionBuilder::new()).build(),
+        )
+    }
 }
 
 impl<S0, S2, S3, S4> AnomalyDetectorsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {

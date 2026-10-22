@@ -2447,6 +2447,16 @@ impl UpdateActionBuilder {
         self
     }
 
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+    }
+
     /// If the document does not already exist, the contents of `upsert` are inserted as a new document.
     /// If the document exists, the `script` is run.
     pub fn upsert(mut self, value: impl Into<serde_json::Value>) -> Self {

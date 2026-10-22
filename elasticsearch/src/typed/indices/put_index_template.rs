@@ -235,6 +235,20 @@ impl IndexTemplateMappingBuilder {
         self.data_stream_options = value;
         self
     }
+
+    /// Sets [`data_stream_options`](Self::data_stream_options) with a builder.
+    pub fn data_stream_options_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::indices::_types::DataStreamOptionsTemplate,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::indices::_types::DataStreamOptionsTemplateBuilder) -> B,
+    ) -> Self {
+        self.data_stream_options(
+            f(crate::typed::indices::_types::DataStreamOptionsTemplateBuilder::new()).build(),
+        )
+    }
 }
 
 impl IndexTemplateMappingBuilder {

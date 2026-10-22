@@ -1515,6 +1515,14 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Sets [`knn`](Self::knn) with a builder.
+    pub fn knn_with<B: crate::typed::builder::Build<Output = crate::typed::_types::KnnSearch>>(
+        self,
+        f: impl FnOnce(crate::typed::_types::KnnSearchBuilder) -> B,
+    ) -> Self {
+        self.knn(f(crate::typed::_types::KnnSearchBuilder::new()).build())
+    }
+
     /// The Reciprocal Rank Fusion (RRF) to use.
     pub fn rank(mut self, value: impl Into<crate::typed::_types::RankContainer>) -> Self {
         self.rank = Some(value.into());
@@ -1631,6 +1639,14 @@ impl<C> RequestBuilder<(), C> {
     pub fn maybe_rescore(mut self, value: Option<RequestRescore>) -> Self {
         self.rescore = value;
         self
+    }
+
+    /// Sets [`rescore`](Self::rescore) with a builder.
+    pub fn rescore_with<B: crate::typed::builder::Build<Output = _types::Rescore>>(
+        self,
+        f: impl FnOnce(_types::RescoreBuilder) -> B,
+    ) -> Self {
+        self.rescore(f(_types::RescoreBuilder::new()).build())
     }
 
     /// A retriever is a specification to describe top documents returned from a search.
@@ -1784,6 +1800,14 @@ impl<C> RequestBuilder<(), C> {
     pub fn maybe_source2(mut self, value: Option<_types::SourceConfig>) -> Self {
         self.source2 = value;
         self
+    }
+
+    /// Sets [`source2`](Self::source2) with a builder.
+    pub fn source2_with<B: crate::typed::builder::Build<Output = _types::SourceFilter>>(
+        self,
+        f: impl FnOnce(_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source2(f(_types::SourceFilterBuilder::new()).build())
     }
 
     /// An array of wildcard (`*`) field patterns.

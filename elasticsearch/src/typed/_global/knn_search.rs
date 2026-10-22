@@ -230,6 +230,16 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+    }
+
     /// The request returns doc values for field names matching these patterns
     /// in the `hits.fields` property of the response.
     /// It accepts wildcard (`*`) patterns.
@@ -314,6 +324,16 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     pub fn maybe_filter(mut self, value: Option<RequestFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 }
 

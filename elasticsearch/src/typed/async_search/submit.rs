@@ -1318,6 +1318,14 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Sets [`knn`](Self::knn) with a builder.
+    pub fn knn_with<B: crate::typed::builder::Build<Output = crate::typed::_types::KnnSearch>>(
+        self,
+        f: impl FnOnce(crate::typed::_types::KnnSearchBuilder) -> B,
+    ) -> Self {
+        self.knn(f(crate::typed::_types::KnnSearchBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are
     /// not included in search results and results collected by aggregations.
     pub fn min_score(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -1406,6 +1414,16 @@ impl<C> RequestBuilder<(), C> {
     pub fn maybe_rescore(mut self, value: Option<RequestRescore>) -> Self {
         self.rescore = value;
         self
+    }
+
+    /// Sets [`rescore`](Self::rescore) with a builder.
+    pub fn rescore_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Rescore>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::RescoreBuilder) -> B,
+    ) -> Self {
+        self.rescore(f(crate::typed::_global::search::_types::RescoreBuilder::new()).build())
     }
 
     /// Retrieve a script evaluation (based on different fields) for each hit.
@@ -1534,6 +1552,16 @@ impl<C> RequestBuilder<(), C> {
     ) -> Self {
         self.source2 = value;
         self
+    }
+
+    /// Sets [`source2`](Self::source2) with a builder.
+    pub fn source2_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source2(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
     }
 
     /// Array of wildcard (*) patterns. The request returns values for field names

@@ -298,6 +298,16 @@ impl<S0> OperationBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+    }
+
     /// The stored fields you want to retrieve.
     pub fn stored_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
         self.stored_fields = Some(value.into());

@@ -1140,6 +1140,14 @@ impl BinaryPropertyBuilder {
         self.doc_values = value;
         self
     }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
 }
 
 impl BinaryPropertyBuilder {
@@ -1434,6 +1442,14 @@ impl BooleanPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -1855,6 +1871,14 @@ impl ByteNumberPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -2774,6 +2798,14 @@ impl CompletionPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn analyzer(mut self, value: impl Into<String>) -> Self {
@@ -4059,6 +4091,14 @@ impl DateNanosPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -4463,6 +4503,14 @@ impl DatePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -4885,6 +4933,14 @@ impl DateRangePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -6261,6 +6317,14 @@ impl DocValuesPropertyBaseBuilder {
         self.doc_values = value;
         self
     }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
 }
 
 impl DocValuesPropertyBaseBuilder {
@@ -6560,6 +6624,14 @@ impl DoubleNumberPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -6952,6 +7024,14 @@ impl DoubleRangePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -7365,6 +7445,14 @@ impl DynamicPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn enabled(mut self, value: bool) -> Self {
         self.enabled = Some(value);
         self
@@ -7525,6 +7613,14 @@ impl DynamicPropertyBuilder {
     pub fn maybe_index_prefixes(mut self, value: Option<DynamicPropertyIndexPrefixes>) -> Self {
         self.index_prefixes = value;
         self
+    }
+
+    /// Sets [`index_prefixes`](Self::index_prefixes) with a builder.
+    pub fn index_prefixes_with<B: crate::typed::builder::Build<Output = TextIndexPrefixes>>(
+        self,
+        f: impl FnOnce(TextIndexPrefixesBuilder) -> B,
+    ) -> Self {
+        self.index_prefixes(f(TextIndexPrefixesBuilder::new()).build())
     }
 
     pub fn norms(mut self, value: bool) -> Self {
@@ -9587,6 +9683,14 @@ impl FloatNumberPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -9979,6 +10083,14 @@ impl FloatRangePropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -10326,6 +10438,14 @@ impl GeoPointPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn ignore_malformed(mut self, value: bool) -> Self {
@@ -10708,6 +10828,14 @@ impl GeoShapePropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn coerce(mut self, value: bool) -> Self {
         self.coerce = Some(value);
         self
@@ -11086,6 +11214,14 @@ impl HalfFloatNumberPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -11780,6 +11916,14 @@ impl IcuCollationPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn norms(mut self, value: bool) -> Self {
         self.norms = Some(value);
         self
@@ -12406,6 +12550,14 @@ impl IntegerNumberPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -12798,6 +12950,14 @@ impl IntegerRangePropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -13123,6 +13283,14 @@ impl IpPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -13490,6 +13658,14 @@ impl IpRangePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -14151,6 +14327,14 @@ impl KeywordPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -14604,6 +14788,14 @@ impl LongNumberPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -14994,6 +15186,14 @@ impl LongRangePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -15452,6 +15652,14 @@ impl Murmur3HashPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 }
 
@@ -16042,6 +16250,14 @@ impl NumberPropertyBaseBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -17216,6 +17432,14 @@ impl PointPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn ignore_malformed(mut self, value: bool) -> Self {
@@ -19785,6 +20009,14 @@ impl RangePropertyBaseBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -21383,6 +21615,14 @@ impl ScaledFloatNumberPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -22233,6 +22473,14 @@ impl SemanticTextPropertyBuilder {
         self
     }
 
+    /// Sets [`chunking_settings`](Self::chunking_settings) with a builder.
+    pub fn chunking_settings_with<B: crate::typed::builder::Build<Output = ChunkingSettings>>(
+        self,
+        f: impl FnOnce(ChunkingSettingsBuilder) -> B,
+    ) -> Self {
+        self.chunking_settings(f(ChunkingSettingsBuilder::new()).build())
+    }
+
     /// Multi-fields allow the same string value to be indexed in multiple ways for different purposes, such as one
     /// field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
     pub fn fields(
@@ -22548,6 +22796,14 @@ impl ShapePropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn coerce(mut self, value: bool) -> Self {
@@ -22896,6 +23152,14 @@ impl ShortNumberPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
@@ -24406,6 +24670,14 @@ impl TextPropertyBuilder {
         self
     }
 
+    /// Sets [`index_prefixes`](Self::index_prefixes) with a builder.
+    pub fn index_prefixes_with<B: crate::typed::builder::Build<Output = TextIndexPrefixes>>(
+        self,
+        f: impl FnOnce(TextIndexPrefixesBuilder) -> B,
+    ) -> Self {
+        self.index_prefixes(f(TextIndexPrefixesBuilder::new()).build())
+    }
+
     pub fn norms(mut self, value: bool) -> Self {
         self.norms = Some(value);
         self
@@ -24780,6 +25052,14 @@ impl TokenCountPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn analyzer(mut self, value: impl Into<String>) -> Self {
@@ -25614,6 +25894,14 @@ impl UnsignedLongNumberPropertyBuilder {
         self
     }
 
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
+
     pub fn boost(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.boost = Some(value.into());
         self
@@ -25993,6 +26281,14 @@ impl VersionPropertyBuilder {
         self.doc_values = value;
         self
     }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
+    }
 }
 
 impl VersionPropertyBuilder {
@@ -26258,6 +26554,14 @@ impl WildcardPropertyBuilder {
     pub fn maybe_doc_values(mut self, value: Option<DocValues>) -> Self {
         self.doc_values = value;
         self
+    }
+
+    /// Sets [`doc_values`](Self::doc_values) with a builder.
+    pub fn doc_values_with<B: crate::typed::builder::Build<Output = DocValuesConfig>>(
+        self,
+        f: impl FnOnce(DocValuesConfigBuilder) -> B,
+    ) -> Self {
+        self.doc_values(f(DocValuesConfigBuilder::new()).build())
     }
 
     pub fn null_value(mut self, value: impl Into<String>) -> Self {

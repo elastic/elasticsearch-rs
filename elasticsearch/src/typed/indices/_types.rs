@@ -1656,6 +1656,16 @@ impl DataStreamFailureStoreTemplateBuilder {
         self.lifecycle = value;
         self
     }
+
+    /// Sets [`lifecycle`](Self::lifecycle) with a builder.
+    pub fn lifecycle_with<
+        B: crate::typed::builder::Build<Output = FailureStoreLifecycleTemplate>,
+    >(
+        self,
+        f: impl FnOnce(FailureStoreLifecycleTemplateBuilder) -> B,
+    ) -> Self {
+        self.lifecycle(f(FailureStoreLifecycleTemplateBuilder::new()).build())
+    }
 }
 
 impl DataStreamFailureStoreTemplateBuilder {
@@ -2707,6 +2717,16 @@ impl DataStreamOptionsTemplateBuilder {
     ) -> Self {
         self.failure_store = value;
         self
+    }
+
+    /// Sets [`failure_store`](Self::failure_store) with a builder.
+    pub fn failure_store_with<
+        B: crate::typed::builder::Build<Output = DataStreamFailureStoreTemplate>,
+    >(
+        self,
+        f: impl FnOnce(DataStreamFailureStoreTemplateBuilder) -> B,
+    ) -> Self {
+        self.failure_store(f(DataStreamFailureStoreTemplateBuilder::new()).build())
     }
 }
 

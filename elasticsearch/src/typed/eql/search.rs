@@ -530,6 +530,16 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     pub fn keep_alive2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
         self.keep_alive2 = Some(value.into());
         self
@@ -619,6 +629,16 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     pub fn maybe_fields(mut self, value: Option<RequestFields>) -> Self {
         self.fields = value;
         self
+    }
+
+    /// Sets [`fields`](Self::fields) with a builder.
+    pub fn fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
+    ) -> Self {
+        self.fields(f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build())
     }
 
     pub fn result_position(mut self, value: impl Into<ResultPosition>) -> Self {

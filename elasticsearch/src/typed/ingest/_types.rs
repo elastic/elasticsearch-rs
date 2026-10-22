@@ -8542,6 +8542,14 @@ impl<S0> InferenceProcessorBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`input_output`](Self::input_output) with a builder.
+    pub fn input_output_with<B: crate::typed::builder::Build<Output = InputConfig>>(
+        self,
+        f: impl FnOnce(InputConfigBuilder) -> B,
+    ) -> Self {
+        self.input_output(f(InputConfigBuilder::new()).build())
+    }
+
     /// If true and any of the input fields defined in input_ouput are missing
     /// then those missing fields are quietly ignored, otherwise a missing field causes a failure.
     /// Only applies when using input_output configurations to explicitly list the input fields.
@@ -15823,6 +15831,20 @@ impl ScriptProcessorBuilder {
     pub fn maybe_source(mut self, value: Option<crate::typed::_types::ScriptSource>) -> Self {
         self.source = value;
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::SearchRequestBody,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SearchRequestBodyBuilder) -> B,
+    ) -> Self {
+        self.source(
+            f(crate::typed::_global::search::_types::SearchRequestBodyBuilder::new()).build(),
+        )
     }
 }
 

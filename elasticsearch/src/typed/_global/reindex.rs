@@ -1477,6 +1477,18 @@ impl<S0> SourceBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`source_fields`](Self::source_fields) with a builder.
+    pub fn source_fields_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source_fields(
+            f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build(),
+        )
+    }
+
     pub fn runtime_mappings(
         mut self,
         value: impl Into<crate::typed::_types::mapping::RuntimeFields>,

@@ -649,6 +649,16 @@ impl<S0, S1, C, TDocument, TPartialDocument>
         self
     }
 
+    /// Sets [`source2`](Self::source2) with a builder.
+    pub fn source2_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source2(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+    }
+
     /// If the document does not already exist, the contents of 'upsert' are inserted as a new document.
     /// If the document exists, the 'script' is run.
     pub fn upsert<T: serde::Serialize>(

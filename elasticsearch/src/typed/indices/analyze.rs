@@ -1436,6 +1436,16 @@ impl<C> RequestBuilder<(), C> {
         self.tokenizer = value;
         self
     }
+
+    /// Sets [`tokenizer`](Self::tokenizer) with a builder.
+    pub fn tokenizer_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::analysis::TokenizerDefinition>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::analysis::TokenizerDefinitionBuilder) -> B,
+    ) -> Self {
+        self.tokenizer(f(crate::typed::_types::analysis::TokenizerDefinitionBuilder::new()).build())
+    }
 }
 
 impl<C> RequestBuilder<(), C> {

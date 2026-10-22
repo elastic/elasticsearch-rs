@@ -8498,6 +8498,14 @@ impl EmbeddingContentObjectBuilder<(crate::typed::builder::NotSet,)> {
         builder.content = Some(value.into());
         builder
     }
+
+    /// Sets [`content`](Self::content) with a builder.
+    pub fn content_with<B: crate::typed::builder::Build<Output = EmbeddingContentObjectItem>>(
+        self,
+        f: impl FnOnce(EmbeddingContentObjectItemBuilder) -> B,
+    ) -> EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)> {
+        self.content(f(EmbeddingContentObjectItemBuilder::new()).build())
+    }
 }
 
 impl<S0> EmbeddingContentObjectBuilder<(S0,)> {
@@ -21786,6 +21794,14 @@ impl<S0> RequestChatCompletionBuilder<(S0,)> {
     pub fn maybe_tool_choice(mut self, value: Option<CompletionToolType>) -> Self {
         self.tool_choice = value;
         self
+    }
+
+    /// Sets [`tool_choice`](Self::tool_choice) with a builder.
+    pub fn tool_choice_with<B: crate::typed::builder::Build<Output = CompletionToolChoice>>(
+        self,
+        f: impl FnOnce(CompletionToolChoiceBuilder) -> B,
+    ) -> Self {
+        self.tool_choice(f(CompletionToolChoiceBuilder::new()).build())
     }
 
     /// A list of tools that the model can call.

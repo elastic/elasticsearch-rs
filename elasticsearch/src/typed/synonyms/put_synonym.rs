@@ -224,6 +224,16 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.synonyms_set = Some(value.into());
         builder
     }
+
+    /// Sets [`synonyms_set`](Self::synonyms_set) with a builder.
+    pub fn synonyms_set_with<
+        B: crate::typed::builder::Build<Output = crate::typed::synonyms::_types::SynonymRule>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::synonyms::_types::SynonymRuleBuilder) -> B,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        self.synonyms_set(f(crate::typed::synonyms::_types::SynonymRuleBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1), C> {

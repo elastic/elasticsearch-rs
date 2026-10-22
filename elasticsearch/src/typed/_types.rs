@@ -2104,6 +2104,14 @@ impl<S0, S1, S2> DiversifyRetrieverBuilder<(S0, S1, S2)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
     pub fn min_score(mut self, value: f32) -> Self {
         self.min_score = Some(value);
@@ -8173,6 +8181,14 @@ impl<S0> KnnQueryBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// The minimum similarity for a vector to be considered a match
     pub fn similarity(mut self, value: f32) -> Self {
         self.similarity = Some(value);
@@ -8401,6 +8417,14 @@ impl<S0, S1> KnnRetrieverBuilder<(S0, S1)> {
     pub fn maybe_filter(mut self, value: Option<KnnRetrieverFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
     }
 
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
@@ -8833,6 +8857,14 @@ impl<S0> KnnSearchBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// The minimum similarity for a vector to be considered a match
     pub fn similarity(mut self, value: f32) -> Self {
         self.similarity = Some(value);
@@ -9197,6 +9229,14 @@ impl LinearRetrieverBuilder {
     pub fn maybe_filter(mut self, value: Option<LinearRetrieverFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
     }
 
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
@@ -11389,6 +11429,14 @@ impl<S0> PinnedRetrieverBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
     pub fn min_score(mut self, value: f32) -> Self {
         self.min_score = Some(value);
@@ -12566,6 +12614,14 @@ impl<S0> RRFRetrieverBuilder<(S0,)> {
     pub fn maybe_filter(mut self, value: Option<RRFRetrieverFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
     }
 
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
@@ -15218,6 +15274,14 @@ impl<S0, S1> RescorerRetrieverBuilder<(S0, S1)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
     pub fn min_score(mut self, value: f32) -> Self {
         self.min_score = Some(value);
@@ -15272,6 +15336,16 @@ impl<S0> RescorerRetrieverBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.rescore = Some(value.into());
         builder
+    }
+
+    /// Sets [`rescore`](Self::rescore) with a builder.
+    pub fn rescore_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Rescore>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::RescoreBuilder) -> B,
+    ) -> RescorerRetrieverBuilder<(S0, crate::typed::builder::Set)> {
+        self.rescore(f(crate::typed::_global::search::_types::RescoreBuilder::new()).build())
     }
 }
 
@@ -15519,6 +15593,14 @@ impl RetrieverBaseBuilder {
     pub fn maybe_filter(mut self, value: Option<RetrieverBaseFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
     }
 
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
@@ -16278,6 +16360,14 @@ impl<S0, S1, S2> RuleRetrieverBuilder<(S0, S1, S2)> {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
     pub fn min_score(mut self, value: f32) -> Self {
         self.min_score = Some(value);
@@ -16592,6 +16682,20 @@ impl ScriptBuilder {
     pub fn maybe_source(mut self, value: Option<ScriptSource>) -> Self {
         self.source = value.map(Box::new);
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::SearchRequestBody,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SearchRequestBodyBuilder) -> B,
+    ) -> Self {
+        self.source(
+            f(crate::typed::_global::search::_types::SearchRequestBodyBuilder::new()).build(),
+        )
     }
 
     /// The `id` for a stored script.
@@ -17150,6 +17254,20 @@ impl ScriptTransformBuilder {
     pub fn maybe_source(mut self, value: Option<ScriptSource>) -> Self {
         self.source = value;
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::SearchRequestBody,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SearchRequestBodyBuilder) -> B,
+    ) -> Self {
+        self.source(
+            f(crate::typed::_global::search::_types::SearchRequestBodyBuilder::new()).build(),
+        )
     }
 
     pub fn id(mut self, value: impl Into<String>) -> Self {
@@ -20598,6 +20716,14 @@ impl StandardRetrieverBuilder {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.
     pub fn min_score(mut self, value: f32) -> Self {
         self.min_score = Some(value);
@@ -21055,6 +21181,20 @@ impl<S0> StoredScriptBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.source = Some(value.into());
         builder
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::SearchRequestBody,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SearchRequestBodyBuilder) -> B,
+    ) -> StoredScriptBuilder<(S0, crate::typed::builder::Set)> {
+        self.source(
+            f(crate::typed::_global::search::_types::SearchRequestBodyBuilder::new()).build(),
+        )
     }
 }
 
@@ -21565,6 +21705,14 @@ impl<S0, S1, S2> TextSimilarityRerankerBuilder<(S0, S1, S2)> {
     pub fn maybe_filter(mut self, value: Option<TextSimilarityRerankerFilter>) -> Self {
         self.filter = value;
         self
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = query_dsl::QueryContainer>>(
+        self,
+        f: impl FnOnce(query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(query_dsl::QueryContainerBuilder::new()).build())
     }
 
     /// Minimum _score for matching documents. Documents with a lower _score are not included in the top documents.

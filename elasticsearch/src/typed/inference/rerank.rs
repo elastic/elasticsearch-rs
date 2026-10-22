@@ -372,6 +372,14 @@ impl<S0, S2, C> RequestBuilder<(S0, crate::typed::builder::NotSet, S2), C> {
         builder.query = Some(value.into());
         builder
     }
+
+    /// Sets [`query`](Self::query) with a builder.
+    pub fn query_with<B: crate::typed::builder::Build<Output = RerankInputObject>>(
+        self,
+        f: impl FnOnce(RerankInputObjectBuilder) -> B,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set, S2), C> {
+        self.query(f(RerankInputObjectBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {

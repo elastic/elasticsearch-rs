@@ -1397,6 +1397,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Sets [`rescore`](Self::rescore) with a builder.
+    pub fn rescore_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::Rescore>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::RescoreBuilder) -> B,
+    ) -> Self {
+        self.rescore(f(crate::typed::_global::search::_types::RescoreBuilder::new()).build())
+    }
+
     /// Retrieve a script evaluation (based on different fields) for each hit.
     pub fn script_fields(
         mut self,
@@ -1523,6 +1533,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     ) -> Self {
         self.source2 = value;
         self
+    }
+
+    /// Sets [`source2`](Self::source2) with a builder.
+    pub fn source2_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source2(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
     }
 
     /// Array of wildcard (*) patterns. The request returns values for field names

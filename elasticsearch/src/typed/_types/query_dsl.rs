@@ -186,6 +186,14 @@ impl BoolQueryBuilder {
         self
     }
 
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.filter(f(QueryContainerBuilder::new()).build())
+    }
+
     /// Specifies the number or percentage of `should` clauses returned documents must match.
     pub fn minimum_should_match(
         mut self,
@@ -216,6 +224,14 @@ impl BoolQueryBuilder {
         self
     }
 
+    /// Sets [`must`](Self::must) with a builder.
+    pub fn must_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.must(f(QueryContainerBuilder::new()).build())
+    }
+
     /// The clause (query) must not appear in the matching documents.
     /// Because scoring is ignored, a score of `0` is returned for all documents.
     pub fn must_not(mut self, value: impl Into<BoolQueryMustNot>) -> Self {
@@ -229,6 +245,14 @@ impl BoolQueryBuilder {
         self
     }
 
+    /// Sets [`must_not`](Self::must_not) with a builder.
+    pub fn must_not_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.must_not(f(QueryContainerBuilder::new()).build())
+    }
+
     /// The clause (query) should appear in the matching document.
     pub fn should(mut self, value: impl Into<BoolQueryShould>) -> Self {
         self.should = Some(value.into());
@@ -239,6 +263,14 @@ impl BoolQueryBuilder {
     pub fn maybe_should(mut self, value: Option<BoolQueryShould>) -> Self {
         self.should = value;
         self
+    }
+
+    /// Sets [`should`](Self::should) with a builder.
+    pub fn should_with<B: crate::typed::builder::Build<Output = QueryContainer>>(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.should(f(QueryContainerBuilder::new()).build())
     }
 }
 

@@ -185,6 +185,16 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.rules = Some(value.into());
         builder
     }
+
+    /// Sets [`rules`](Self::rules) with a builder.
+    pub fn rules_with<
+        B: crate::typed::builder::Build<Output = crate::typed::query_rules::_types::QueryRule>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::query_rules::_types::QueryRuleBuilder) -> B,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        self.rules(f(crate::typed::query_rules::_types::QueryRuleBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1), C> {

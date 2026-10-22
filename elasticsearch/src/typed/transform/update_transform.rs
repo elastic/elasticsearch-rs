@@ -406,6 +406,20 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Sets [`retention_policy`](Self::retention_policy) with a builder.
+    pub fn retention_policy_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::transform::_types::RetentionPolicyContainer,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::transform::_types::RetentionPolicyContainerBuilder) -> B,
+    ) -> Self {
+        self.retention_policy(
+            f(crate::typed::transform::_types::RetentionPolicyContainerBuilder::new()).build(),
+        )
+    }
+
     /// When true, force reminting of the transform's internal cloud API key from the
     /// caller's cloud credential without requiring other configuration changes.
     /// Requires a cloud-authenticated caller and an environment that supports

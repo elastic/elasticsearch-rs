@@ -566,6 +566,16 @@ impl SnapshotsRecordBuilder {
         self
     }
 
+    /// Sets [`start_time`](Self::start_time) with a builder.
+    pub fn start_time_with<
+        B: crate::typed::builder::Build<Output = crate::typed::watcher::_types::HourAndMinute>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::watcher::_types::HourAndMinuteBuilder) -> B,
+    ) -> Self {
+        self.start_time(f(crate::typed::watcher::_types::HourAndMinuteBuilder::new()).build())
+    }
+
     /// The Unix epoch time (seconds since 1970-01-01 00:00:00) at which the snapshot process ended.
     pub fn end_epoch(
         mut self,

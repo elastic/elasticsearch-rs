@@ -2268,6 +2268,16 @@ impl EsqlQuerySettingsBuilder {
         self
     }
 
+    /// Sets [`approximation`](Self::approximation) with a builder.
+    pub fn approximation_with<
+        B: crate::typed::builder::Build<Output = EsqlApproximationSettings>,
+    >(
+        self,
+        f: impl FnOnce(EsqlApproximationSettingsBuilder) -> B,
+    ) -> Self {
+        self.approximation(f(EsqlApproximationSettingsBuilder::new()).build())
+    }
+
     /// When enabled, column metadata is added to the query response as additional `_meta` properties.
     /// Currently, only `_meta.bucket` is added for columns corresponding to the `BUCKET` function, containing the bucket interval and unit for queries where it can be determined.
     pub fn column_metadata(

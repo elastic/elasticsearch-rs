@@ -674,6 +674,20 @@ impl TemplateConfigBuilder {
         self.source = value;
         self
     }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<
+            Output = crate::typed::_global::search::_types::SearchRequestBody,
+        >,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_global::search::_types::SearchRequestBodyBuilder) -> B,
+    ) -> Self {
+        self.source(
+            f(crate::typed::_global::search::_types::SearchRequestBodyBuilder::new()).build(),
+        )
+    }
 }
 
 impl TemplateConfigBuilder {

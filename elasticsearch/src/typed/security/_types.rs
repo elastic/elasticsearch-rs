@@ -5883,6 +5883,16 @@ impl RoleTemplateScriptBuilder {
         self
     }
 
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::QueryContainer>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::query_dsl::QueryContainerBuilder) -> B,
+    ) -> Self {
+        self.source(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
+    }
+
     /// The `id` for a stored script.
     pub fn id(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
         self.id = Some(value.into());

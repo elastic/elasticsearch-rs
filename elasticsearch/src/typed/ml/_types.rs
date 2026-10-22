@@ -286,6 +286,16 @@ impl<S0> AnalysisConfigBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`categorization_analyzer`](Self::categorization_analyzer) with a builder.
+    pub fn categorization_analyzer_with<
+        B: crate::typed::builder::Build<Output = CategorizationAnalyzerDefinition>,
+    >(
+        self,
+        f: impl FnOnce(CategorizationAnalyzerDefinitionBuilder) -> B,
+    ) -> Self {
+        self.categorization_analyzer(f(CategorizationAnalyzerDefinitionBuilder::new()).build())
+    }
+
     /// If this property is specified, the values of the specified field will be categorized. The resulting categories must be used in a detector by setting `by_field_name`, `over_field_name`, or `partition_field_name` to the keyword `mlcategory`.
     pub fn categorization_field_name(
         mut self,
@@ -661,6 +671,16 @@ impl<S0, S1, S2> AnalysisConfigReadBuilder<(S0, S1, S2)> {
     pub fn maybe_categorization_analyzer(mut self, value: Option<CategorizationAnalyzer>) -> Self {
         self.categorization_analyzer = value;
         self
+    }
+
+    /// Sets [`categorization_analyzer`](Self::categorization_analyzer) with a builder.
+    pub fn categorization_analyzer_with<
+        B: crate::typed::builder::Build<Output = CategorizationAnalyzerDefinition>,
+    >(
+        self,
+        f: impl FnOnce(CategorizationAnalyzerDefinitionBuilder) -> B,
+    ) -> Self {
+        self.categorization_analyzer(f(CategorizationAnalyzerDefinitionBuilder::new()).build())
     }
 
     /// If this property is specified, the values of the specified field will be categorized. The resulting categories must be used in a detector by setting `by_field_name`, `over_field_name`, or `partition_field_name` to the keyword `mlcategory`.
@@ -4314,6 +4334,16 @@ impl CategorizationAnalyzerDefinitionBuilder {
     ) -> Self {
         self.tokenizer = value;
         self
+    }
+
+    /// Sets [`tokenizer`](Self::tokenizer) with a builder.
+    pub fn tokenizer_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::analysis::TokenizerDefinition>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::_types::analysis::TokenizerDefinitionBuilder) -> B,
+    ) -> Self {
+        self.tokenizer(f(crate::typed::_types::analysis::TokenizerDefinitionBuilder::new()).build())
     }
 }
 
@@ -30413,6 +30443,16 @@ impl<S0, S1, S2, S3> TrainedModelAssignmentBuilder<(S0, S1, S2, S3)> {
     ) -> Self {
         self.adaptive_allocations = value;
         self
+    }
+
+    /// Sets [`adaptive_allocations`](Self::adaptive_allocations) with a builder.
+    pub fn adaptive_allocations_with<
+        B: crate::typed::builder::Build<Output = AdaptiveAllocationsSettings>,
+    >(
+        self,
+        f: impl FnOnce(AdaptiveAllocationsSettingsBuilder) -> B,
+    ) -> Self {
+        self.adaptive_allocations(f(AdaptiveAllocationsSettingsBuilder::new()).build())
     }
 
     pub fn max_assigned_allocations(mut self, value: i32) -> Self {

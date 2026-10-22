@@ -2123,6 +2123,14 @@ impl<S0, S1, S2> CompletionSuggestBuilder<(S0, S1, S2, crate::typed::builder::No
         builder.options = Some(value.into());
         builder
     }
+
+    /// Sets [`options`](Self::options) with a builder.
+    pub fn options_with<B: crate::typed::builder::Build<Output = CompletionSuggestOption>>(
+        self,
+        f: impl FnOnce(CompletionSuggestOptionBuilder) -> B,
+    ) -> CompletionSuggestBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.options(f(CompletionSuggestOptionBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3> CompletionSuggestBuilder<(S0, S1, S2, S3)> {
@@ -4606,6 +4614,14 @@ impl<S0> FieldCollapseBuilder<(S0,)> {
     pub fn maybe_inner_hits(mut self, value: Option<FieldCollapseInnerHits>) -> Self {
         self.inner_hits = value;
         self
+    }
+
+    /// Sets [`inner_hits`](Self::inner_hits) with a builder.
+    pub fn inner_hits_with<B: crate::typed::builder::Build<Output = InnerHits>>(
+        self,
+        f: impl FnOnce(InnerHitsBuilder) -> B,
+    ) -> Self {
+        self.inner_hits(f(InnerHitsBuilder::new()).build())
     }
 
     /// The number of concurrent requests allowed to retrieve the inner_hits per group
@@ -7383,6 +7399,14 @@ impl<S0> HitsMetadataBuilder<(S0,)> {
         self
     }
 
+    /// Sets [`total`](Self::total) with a builder.
+    pub fn total_with<B: crate::typed::builder::Build<Output = TotalHits>>(
+        self,
+        f: impl FnOnce(TotalHitsBuilder) -> B,
+    ) -> Self {
+        self.total(f(TotalHitsBuilder::new()).build())
+    }
+
     pub fn max_score(mut self, value: impl Into<HitsMetadataMaxScore>) -> Self {
         self.max_score = Some(value.into());
         self
@@ -7861,6 +7885,14 @@ impl InnerHitsBuilder {
     pub fn maybe_source(mut self, value: Option<SourceConfig>) -> Self {
         self.source = value;
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<B: crate::typed::builder::Build<Output = SourceFilter>>(
+        self,
+        f: impl FnOnce(SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(SourceFilterBuilder::new()).build())
     }
 
     pub fn stored_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
@@ -10761,6 +10793,14 @@ impl<S0, S1, S2> PhraseSuggestBuilder<(S0, S1, S2, crate::typed::builder::NotSet
         builder.options = Some(value.into());
         builder
     }
+
+    /// Sets [`options`](Self::options) with a builder.
+    pub fn options_with<B: crate::typed::builder::Build<Output = PhraseSuggestOption>>(
+        self,
+        f: impl FnOnce(PhraseSuggestOptionBuilder) -> B,
+    ) -> PhraseSuggestBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.options(f(PhraseSuggestOptionBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3> PhraseSuggestBuilder<(S0, S1, S2, S3)> {
@@ -11034,6 +11074,14 @@ impl PhraseSuggestCollateQueryBuilder {
     pub fn maybe_source(mut self, value: Option<crate::typed::_types::ScriptSource>) -> Self {
         self.source = value;
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<B: crate::typed::builder::Build<Output = SearchRequestBody>>(
+        self,
+        f: impl FnOnce(SearchRequestBodyBuilder) -> B,
+    ) -> Self {
+        self.source(f(SearchRequestBodyBuilder::new()).build())
     }
 }
 
@@ -15214,6 +15262,14 @@ impl SearchRequestBodyBuilder {
         self
     }
 
+    /// Sets [`knn`](Self::knn) with a builder.
+    pub fn knn_with<B: crate::typed::builder::Build<Output = crate::typed::_types::KnnSearch>>(
+        self,
+        f: impl FnOnce(crate::typed::_types::KnnSearchBuilder) -> B,
+    ) -> Self {
+        self.knn(f(crate::typed::_types::KnnSearchBuilder::new()).build())
+    }
+
     /// The Reciprocal Rank Fusion (RRF) to use.
     pub fn rank(mut self, value: impl Into<crate::typed::_types::RankContainer>) -> Self {
         self.rank = Some(value.into());
@@ -15330,6 +15386,14 @@ impl SearchRequestBodyBuilder {
     pub fn maybe_rescore(mut self, value: Option<SearchRequestBodyRescore>) -> Self {
         self.rescore = value;
         self
+    }
+
+    /// Sets [`rescore`](Self::rescore) with a builder.
+    pub fn rescore_with<B: crate::typed::builder::Build<Output = Rescore>>(
+        self,
+        f: impl FnOnce(RescoreBuilder) -> B,
+    ) -> Self {
+        self.rescore(f(RescoreBuilder::new()).build())
     }
 
     /// A retriever is a specification to describe top documents returned from a search.
@@ -15483,6 +15547,14 @@ impl SearchRequestBodyBuilder {
     pub fn maybe_source(mut self, value: Option<SourceConfig>) -> Self {
         self.source = value;
         self
+    }
+
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<B: crate::typed::builder::Build<Output = SourceFilter>>(
+        self,
+        f: impl FnOnce(SourceFilterBuilder) -> B,
+    ) -> Self {
+        self.source(f(SourceFilterBuilder::new()).build())
     }
 
     /// An array of wildcard (`*`) field patterns.
@@ -17450,6 +17522,14 @@ impl<S0, S1, S2> TermSuggestBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
         let mut builder = self.with_state();
         builder.options = Some(value.into());
         builder
+    }
+
+    /// Sets [`options`](Self::options) with a builder.
+    pub fn options_with<B: crate::typed::builder::Build<Output = TermSuggestOption>>(
+        self,
+        f: impl FnOnce(TermSuggestOptionBuilder) -> B,
+    ) -> TermSuggestBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.options(f(TermSuggestOptionBuilder::new()).build())
     }
 }
 
