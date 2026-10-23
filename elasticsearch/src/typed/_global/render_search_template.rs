@@ -10,9 +10,6 @@
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-render-search-template)
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Request {
-    /// The ID of the search template to render.
-    /// If no `source` is specified, this or the `id` request body parameter is required.
-    pub id: Option<crate::typed::_types::Id>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -31,7 +28,7 @@ pub struct Request {
     /// The ID of the search template to render.
     /// If no `source` is specified, this or the `<template-id>` request path parameter is required.
     /// If you specify both this parameter and the `<template-id>` parameter, the API uses only `<template-id>`.
-    pub id2: Option<crate::typed::_types::Id>,
+    pub id: Option<crate::typed::_types::Id>,
     pub file: Option<String>,
     /// Key-value pairs used to replace Mustache variables in the template.
     /// The key is the variable name.
@@ -61,12 +58,11 @@ impl Request {
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
-    id: Option<crate::typed::_types::Id>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    id2: Option<crate::typed::_types::Id>,
+    id: Option<crate::typed::_types::Id>,
     file: Option<String>,
     params: Option<indexmap::IndexMap<String, serde_json::Value>>,
     source: Option<crate::typed::_types::ScriptSource>,
@@ -77,12 +73,11 @@ pub struct RequestBuilder<S = (), C = ()> {
 impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
-            id: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            id2: None,
+            id: None,
             file: None,
             params: None,
             source: None,
@@ -93,19 +88,6 @@ impl<C> RequestBuilder<(), C> {
 }
 
 impl<C> RequestBuilder<(), C> {
-    /// The ID of the search template to render.
-    /// If no `source` is specified, this or the `id` request body parameter is required.
-    pub fn id(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.id = Some(value.into());
-        self
-    }
-
-    /// Sets [`id`](Self::id) if `value` is `Some`.
-    pub fn maybe_id(mut self, value: Option<crate::typed::_types::Id>) -> Self {
-        self.id = value;
-        self
-    }
-
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub fn error_trace(mut self, value: bool) -> Self {
@@ -164,14 +146,14 @@ impl<C> RequestBuilder<(), C> {
     /// The ID of the search template to render.
     /// If no `source` is specified, this or the `<template-id>` request path parameter is required.
     /// If you specify both this parameter and the `<template-id>` parameter, the API uses only `<template-id>`.
-    pub fn id2(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.id2 = Some(value.into());
+    pub fn id(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
+        self.id = Some(value.into());
         self
     }
 
-    /// Sets [`id2`](Self::id2) if `value` is `Some`.
-    pub fn maybe_id2(mut self, value: Option<crate::typed::_types::Id>) -> Self {
-        self.id2 = value;
+    /// Sets [`id`](Self::id) if `value` is `Some`.
+    pub fn maybe_id(mut self, value: Option<crate::typed::_types::Id>) -> Self {
+        self.id = value;
         self
     }
 
@@ -252,12 +234,11 @@ impl<C> RequestBuilder<(), C> {
     /// Builds a [`Request`].
     pub fn build(self) -> Request {
         Request {
-            id: self.id,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            id2: self.id2,
+            id: self.id,
             file: self.file,
             params: self.params,
             source: self.source,
@@ -284,12 +265,6 @@ impl RequestBuilder<(), &crate::Elasticsearch> {
 impl Request {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
-        if let Some(id) = &self.id {
-            return (
-                crate::http::Method::Post,
-                format!("/_render/template/{}", crate::typed::support::path_part(id)),
-            );
-        }
         (crate::http::Method::Post, "/_render/template".to_string())
     }
 
@@ -324,7 +299,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            id2: self.id2.as_ref(),
+            id: self.id.as_ref(),
             file: self.file.as_ref(),
             params: self.params.as_ref(),
             source: self.source.as_ref(),
@@ -357,8 +332,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-    id2: Option<&'a crate::typed::_types::Id>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    id: Option<&'a crate::typed::_types::Id>,
     #[serde(skip_serializing_if = "Option::is_none")]
     file: Option<&'a String>,
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -1074,8 +1074,6 @@ pub struct Request {
     /// Typically, this adds a small overhead to a request.
     /// However, using computationally expensive named queries on a large number of hits may add significant overhead.
     pub include_named_queries_score: Option<bool>,
-    /// Comma-separated list of data streams, indices, and index aliases to use as default
-    pub index2: Option<crate::typed::_types::Indices>,
     /// Maximum number of concurrent searches the multi search API can execute.
     /// Defaults to `max(1, (# of data nodes * min(search thread pool size, 10)))`.
     pub max_concurrent_searches: Option<i32>,
@@ -1162,7 +1160,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_named_queries_score: Option<bool>,
-    index2: Option<crate::typed::_types::Indices>,
     max_concurrent_searches: Option<i32>,
     max_concurrent_shard_requests: Option<i32>,
     pre_filter_shard_size: Option<i64>,
@@ -1191,7 +1188,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             ignore_throttled: None,
             ignore_unavailable: None,
             include_named_queries_score: None,
-            index2: None,
             max_concurrent_searches: None,
             max_concurrent_shard_requests: None,
             pre_filter_shard_size: None,
@@ -1222,7 +1218,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             ignore_throttled: self.ignore_throttled,
             ignore_unavailable: self.ignore_unavailable,
             include_named_queries_score: self.include_named_queries_score,
-            index2: self.index2,
             max_concurrent_searches: self.max_concurrent_searches,
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
             pre_filter_shard_size: self.pre_filter_shard_size,
@@ -1341,18 +1336,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`include_named_queries_score`](Self::include_named_queries_score) if `value` is `Some`.
     pub fn maybe_include_named_queries_score(mut self, value: Option<bool>) -> Self {
         self.include_named_queries_score = value;
-        self
-    }
-
-    /// Comma-separated list of data streams, indices, and index aliases to use as default
-    pub fn index2(mut self, value: impl Into<crate::typed::_types::Indices>) -> Self {
-        self.index2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`index2`](Self::index2) if `value` is `Some`.
-    pub fn maybe_index2(mut self, value: Option<crate::typed::_types::Indices>) -> Self {
-        self.index2 = value;
         self
     }
 
@@ -1589,7 +1572,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             ignore_throttled: self.ignore_throttled,
             ignore_unavailable: self.ignore_unavailable,
             include_named_queries_score: self.include_named_queries_score,
-            index2: self.index2,
             max_concurrent_searches: self.max_concurrent_searches,
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
             pre_filter_shard_size: self.pre_filter_shard_size,
@@ -1690,9 +1672,6 @@ impl Request {
                 "include_named_queries_score",
                 crate::typed::support::query_value(value),
             ));
-        }
-        if let Some(value) = &self.index2 {
-            query.push(("index", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.max_concurrent_searches {
             query.push((

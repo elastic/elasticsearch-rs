@@ -16,20 +16,6 @@ pub struct Request {
     /// Identifier for the anomaly detection job. The job must be open when you
     /// create a forecast; otherwise, an error occurs.
     pub job_id: crate::typed::_types::Id,
-    /// A period of time that indicates how far into the future to forecast. For
-    /// example, `30d` corresponds to 30 days. The forecast starts at the last
-    /// record that was processed.
-    pub duration: Option<crate::typed::_types::Duration>,
-    /// The period of time that forecast results are retained. After a forecast
-    /// expires, the results are deleted. If set to a value of 0, the forecast is
-    /// never automatically deleted.
-    pub expires_in: Option<crate::typed::_types::Duration>,
-    /// The maximum memory the forecast can use. If the forecast needs to use
-    /// more than the provided amount, it will spool to disk. Default is 20mb,
-    /// maximum is 500mb and minimum is 1mb. If set to 40% or more of the job’s
-    /// configured memory limit, it is automatically reduced to below that
-    /// amount.
-    pub max_model_memory: Option<String>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -46,11 +32,11 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `duration` query parameter.
-    pub duration2: Option<crate::typed::_types::Duration>,
+    pub duration: Option<crate::typed::_types::Duration>,
     /// Refer to the description for the `expires_in` query parameter.
-    pub expires_in2: Option<crate::typed::_types::Duration>,
+    pub expires_in: Option<crate::typed::_types::Duration>,
     /// Refer to the description for the `max_model_memory` query parameter.
-    pub max_model_memory2: Option<String>,
+    pub max_model_memory: Option<String>,
 }
 
 impl Request {
@@ -82,16 +68,13 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     job_id: Option<crate::typed::_types::Id>,
-    duration: Option<crate::typed::_types::Duration>,
-    expires_in: Option<crate::typed::_types::Duration>,
-    max_model_memory: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    duration2: Option<crate::typed::_types::Duration>,
-    expires_in2: Option<crate::typed::_types::Duration>,
-    max_model_memory2: Option<String>,
+    duration: Option<crate::typed::_types::Duration>,
+    expires_in: Option<crate::typed::_types::Duration>,
+    max_model_memory: Option<String>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -100,16 +83,13 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             job_id: None,
-            duration: None,
-            expires_in: None,
-            max_model_memory: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            duration2: None,
-            expires_in2: None,
-            max_model_memory2: None,
+            duration: None,
+            expires_in: None,
+            max_model_memory: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -120,63 +100,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             job_id: self.job_id,
-            duration: self.duration,
-            expires_in: self.expires_in,
-            max_model_memory: self.max_model_memory,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            duration2: self.duration2,
-            expires_in2: self.expires_in2,
-            max_model_memory2: self.max_model_memory2,
+            duration: self.duration,
+            expires_in: self.expires_in,
+            max_model_memory: self.max_model_memory,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// A period of time that indicates how far into the future to forecast. For
-    /// example, `30d` corresponds to 30 days. The forecast starts at the last
-    /// record that was processed.
-    pub fn duration(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.duration = Some(value.into());
-        self
-    }
-
-    /// Sets [`duration`](Self::duration) if `value` is `Some`.
-    pub fn maybe_duration(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.duration = value;
-        self
-    }
-
-    /// The period of time that forecast results are retained. After a forecast
-    /// expires, the results are deleted. If set to a value of 0, the forecast is
-    /// never automatically deleted.
-    pub fn expires_in(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.expires_in = Some(value.into());
-        self
-    }
-
-    /// Sets [`expires_in`](Self::expires_in) if `value` is `Some`.
-    pub fn maybe_expires_in(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.expires_in = value;
-        self
-    }
-
-    /// The maximum memory the forecast can use. If the forecast needs to use
-    /// more than the provided amount, it will spool to disk. Default is 20mb,
-    /// maximum is 500mb and minimum is 1mb. If set to 40% or more of the job’s
-    /// configured memory limit, it is automatically reduced to below that
-    /// amount.
-    pub fn max_model_memory(mut self, value: impl Into<String>) -> Self {
-        self.max_model_memory = Some(value.into());
-        self
-    }
-
-    /// Sets [`max_model_memory`](Self::max_model_memory) if `value` is `Some`.
-    pub fn maybe_max_model_memory(mut self, value: Option<String>) -> Self {
-        self.max_model_memory = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -235,38 +168,38 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the description for the `duration` query parameter.
-    pub fn duration2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.duration2 = Some(value.into());
+    pub fn duration(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.duration = Some(value.into());
         self
     }
 
-    /// Sets [`duration2`](Self::duration2) if `value` is `Some`.
-    pub fn maybe_duration2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.duration2 = value;
+    /// Sets [`duration`](Self::duration) if `value` is `Some`.
+    pub fn maybe_duration(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.duration = value;
         self
     }
 
     /// Refer to the description for the `expires_in` query parameter.
-    pub fn expires_in2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.expires_in2 = Some(value.into());
+    pub fn expires_in(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.expires_in = Some(value.into());
         self
     }
 
-    /// Sets [`expires_in2`](Self::expires_in2) if `value` is `Some`.
-    pub fn maybe_expires_in2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.expires_in2 = value;
+    /// Sets [`expires_in`](Self::expires_in) if `value` is `Some`.
+    pub fn maybe_expires_in(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.expires_in = value;
         self
     }
 
     /// Refer to the description for the `max_model_memory` query parameter.
-    pub fn max_model_memory2(mut self, value: impl Into<String>) -> Self {
-        self.max_model_memory2 = Some(value.into());
+    pub fn max_model_memory(mut self, value: impl Into<String>) -> Self {
+        self.max_model_memory = Some(value.into());
         self
     }
 
-    /// Sets [`max_model_memory2`](Self::max_model_memory2) if `value` is `Some`.
-    pub fn maybe_max_model_memory2(mut self, value: Option<String>) -> Self {
-        self.max_model_memory2 = value;
+    /// Sets [`max_model_memory`](Self::max_model_memory) if `value` is `Some`.
+    pub fn maybe_max_model_memory(mut self, value: Option<String>) -> Self {
+        self.max_model_memory = value;
         self
     }
 }
@@ -292,16 +225,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             job_id: self.job_id.unwrap(),
-            duration: self.duration,
-            expires_in: self.expires_in,
-            max_model_memory: self.max_model_memory,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            duration2: self.duration2,
-            expires_in2: self.expires_in2,
-            max_model_memory2: self.max_model_memory2,
+            duration: self.duration,
+            expires_in: self.expires_in,
+            max_model_memory: self.max_model_memory,
         }
     }
 }
@@ -353,18 +283,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.duration {
-            query.push(("duration", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.expires_in {
-            query.push(("expires_in", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.max_model_memory {
-            query.push((
-                "max_model_memory",
-                crate::typed::support::query_value(value),
-            ));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -383,9 +301,9 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            duration2: self.duration2.as_ref(),
-            expires_in2: self.expires_in2.as_ref(),
-            max_model_memory2: self.max_model_memory2.as_ref(),
+            duration: self.duration.as_ref(),
+            expires_in: self.expires_in.as_ref(),
+            max_model_memory: self.max_model_memory.as_ref(),
         }
     }
 
@@ -415,12 +333,12 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "duration", skip_serializing_if = "Option::is_none")]
-    duration2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(rename = "expires_in", skip_serializing_if = "Option::is_none")]
-    expires_in2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(rename = "max_model_memory", skip_serializing_if = "Option::is_none")]
-    max_model_memory2: Option<&'a String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    duration: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    expires_in: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_model_memory: Option<&'a String>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

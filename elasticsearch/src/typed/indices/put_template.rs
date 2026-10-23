@@ -36,12 +36,6 @@ pub struct Request {
     /// Period to wait for a connection to the master node. If no response is
     /// received before the timeout expires, the request fails and returns an error.
     pub master_timeout: Option<crate::typed::_types::Duration>,
-    /// Order in which Elasticsearch applies this template if index
-    /// matches multiple templates.
-    ///
-    /// Templates with lower 'order' values are merged first. Templates with higher
-    /// 'order' values are merged later, overriding templates with lower values.
-    pub order: Option<i32>,
     /// User defined reason for creating or updating the index template
     pub cause: Option<String>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -73,7 +67,7 @@ pub struct Request {
     ///
     /// Templates with lower 'order' values are merged first. Templates with higher
     /// 'order' values are merged later, overriding templates with lower values.
-    pub order2: Option<i32>,
+    pub order: Option<i32>,
     /// Configuration options for the index.
     pub settings: Option<crate::typed::indices::_types::IndexSettings>,
     /// Version number used to manage index templates externally. This number
@@ -113,7 +107,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     name: Option<crate::typed::_types::Name>,
     create: Option<bool>,
     master_timeout: Option<crate::typed::_types::Duration>,
-    order: Option<i32>,
     cause: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
@@ -124,7 +117,7 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     >,
     index_patterns: Option<RequestIndexPatterns>,
     mappings: Option<crate::typed::_types::mapping::TypeMapping>,
-    order2: Option<i32>,
+    order: Option<i32>,
     settings: Option<crate::typed::indices::_types::IndexSettings>,
     version: Option<crate::typed::_types::VersionNumber>,
     bound_client: C,
@@ -137,7 +130,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             name: None,
             create: None,
             master_timeout: None,
-            order: None,
             cause: None,
             error_trace: None,
             filter_path: None,
@@ -146,7 +138,7 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             aliases: None,
             index_patterns: None,
             mappings: None,
-            order2: None,
+            order: None,
             settings: None,
             version: None,
             bound_client: client,
@@ -161,7 +153,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             name: self.name,
             create: self.create,
             master_timeout: self.master_timeout,
-            order: self.order,
             cause: self.cause,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -170,7 +161,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             aliases: self.aliases,
             index_patterns: self.index_patterns,
             mappings: self.mappings,
-            order2: self.order2,
+            order: self.order,
             settings: self.settings,
             version: self.version,
             bound_client: self.bound_client,
@@ -200,22 +191,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`master_timeout`](Self::master_timeout) if `value` is `Some`.
     pub fn maybe_master_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
         self.master_timeout = value;
-        self
-    }
-
-    /// Order in which Elasticsearch applies this template if index
-    /// matches multiple templates.
-    ///
-    /// Templates with lower 'order' values are merged first. Templates with higher
-    /// 'order' values are merged later, overriding templates with lower values.
-    pub fn order(mut self, value: i32) -> Self {
-        self.order = Some(value);
-        self
-    }
-
-    /// Sets [`order`](Self::order) if `value` is `Some`.
-    pub fn maybe_order(mut self, value: Option<i32>) -> Self {
-        self.order = value;
         self
     }
 
@@ -386,14 +361,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     ///
     /// Templates with lower 'order' values are merged first. Templates with higher
     /// 'order' values are merged later, overriding templates with lower values.
-    pub fn order2(mut self, value: i32) -> Self {
-        self.order2 = Some(value);
+    pub fn order(mut self, value: i32) -> Self {
+        self.order = Some(value);
         self
     }
 
-    /// Sets [`order2`](Self::order2) if `value` is `Some`.
-    pub fn maybe_order2(mut self, value: Option<i32>) -> Self {
-        self.order2 = value;
+    /// Sets [`order`](Self::order) if `value` is `Some`.
+    pub fn maybe_order(mut self, value: Option<i32>) -> Self {
+        self.order = value;
         self
     }
 
@@ -462,7 +437,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             name: self.name.unwrap(),
             create: self.create,
             master_timeout: self.master_timeout,
-            order: self.order,
             cause: self.cause,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -471,7 +445,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             aliases: self.aliases,
             index_patterns: self.index_patterns,
             mappings: self.mappings,
-            order2: self.order2,
+            order: self.order,
             settings: self.settings,
             version: self.version,
         }
@@ -531,9 +505,6 @@ impl Request {
         if let Some(value) = &self.master_timeout {
             query.push(("master_timeout", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.order {
-            query.push(("order", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.cause {
             query.push(("cause", crate::typed::support::query_value(value)));
         }
@@ -558,7 +529,7 @@ impl Request {
             aliases: self.aliases.as_ref(),
             index_patterns: self.index_patterns.as_ref(),
             mappings: self.mappings.as_ref(),
-            order2: self.order2.as_ref(),
+            order: self.order.as_ref(),
             settings: self.settings.as_ref(),
             version: self.version.as_ref(),
         }
@@ -601,8 +572,8 @@ pub struct RequestBody<'a> {
     index_patterns: Option<&'a RequestIndexPatterns>,
     #[serde(skip_serializing_if = "Option::is_none")]
     mappings: Option<&'a crate::typed::_types::mapping::TypeMapping>,
-    #[serde(rename = "order", skip_serializing_if = "Option::is_none")]
-    order2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    order: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     settings: Option<&'a crate::typed::indices::_types::IndexSettings>,
     #[serde(skip_serializing_if = "Option::is_none")]

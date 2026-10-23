@@ -507,8 +507,6 @@ pub struct Request {
     pub allow_no_indices: Option<bool>,
     /// The type of index that wildcard patterns can match. If the request can target data streams, this argument determines whether wildcard expressions match hidden data streams. Supports comma-separated values, such as `open,hidden`.
     pub expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    /// A comma-separated list of fields to retrieve capabilities for. Wildcard (`*`) expressions are supported.
-    pub fields: Option<crate::typed::_types::Fields>,
     /// If `false`, the request returns an error if it targets a concrete (non-wildcarded)
     /// index, alias, or data stream that is missing, closed, or otherwise unavailable.
     /// If `true`, unavailable concrete targets are silently ignored.
@@ -539,7 +537,7 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// A list of fields to retrieve capabilities for. Wildcard (`*`) expressions are supported.
-    pub fields2: Option<crate::typed::_types::Fields>,
+    pub fields: Option<crate::typed::_types::Fields>,
     /// Filter indices if the provided query rewrites to `match_none` on every shard.
     ///
     /// IMPORTANT: The filtering is done on a best-effort basis, it uses index statistics and mappings to rewrite queries to `match_none` instead of fully running the request.
@@ -580,7 +578,6 @@ pub struct RequestBuilder<S = (), C = ()> {
     index: Option<crate::typed::_types::Indices>,
     allow_no_indices: Option<bool>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    fields: Option<crate::typed::_types::Fields>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
     filters: Option<RequestFilters>,
@@ -590,7 +587,7 @@ pub struct RequestBuilder<S = (), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    fields2: Option<crate::typed::_types::Fields>,
+    fields: Option<crate::typed::_types::Fields>,
     index_filter: Option<crate::typed::_types::query_dsl::QueryContainer>,
     runtime_mappings: Option<crate::typed::_types::mapping::RuntimeFields>,
     project_routing: Option<crate::typed::_types::ProjectRouting>,
@@ -604,7 +601,6 @@ impl<C> RequestBuilder<(), C> {
             index: None,
             allow_no_indices: None,
             expand_wildcards: None,
-            fields: None,
             ignore_unavailable: None,
             include_unmapped: None,
             filters: None,
@@ -614,7 +610,7 @@ impl<C> RequestBuilder<(), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            fields2: None,
+            fields: None,
             index_filter: None,
             runtime_mappings: None,
             project_routing: None,
@@ -669,18 +665,6 @@ impl<C> RequestBuilder<(), C> {
         value: Option<crate::typed::_types::ExpandWildcards>,
     ) -> Self {
         self.expand_wildcards = value;
-        self
-    }
-
-    /// A comma-separated list of fields to retrieve capabilities for. Wildcard (`*`) expressions are supported.
-    pub fn fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.fields = Some(value.into());
-        self
-    }
-
-    /// Sets [`fields`](Self::fields) if `value` is `Some`.
-    pub fn maybe_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.fields = value;
         self
     }
 
@@ -812,14 +796,14 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// A list of fields to retrieve capabilities for. Wildcard (`*`) expressions are supported.
-    pub fn fields2(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.fields2 = Some(value.into());
+    pub fn fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
+        self.fields = Some(value.into());
         self
     }
 
-    /// Sets [`fields2`](Self::fields2) if `value` is `Some`.
-    pub fn maybe_fields2(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.fields2 = value;
+    /// Sets [`fields`](Self::fields) if `value` is `Some`.
+    pub fn maybe_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
+        self.fields = value;
         self
     }
 
@@ -933,7 +917,6 @@ impl<C> RequestBuilder<(), C> {
             index: self.index,
             allow_no_indices: self.allow_no_indices,
             expand_wildcards: self.expand_wildcards,
-            fields: self.fields,
             ignore_unavailable: self.ignore_unavailable,
             include_unmapped: self.include_unmapped,
             filters: self.filters,
@@ -943,7 +926,7 @@ impl<C> RequestBuilder<(), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            fields2: self.fields2,
+            fields: self.fields,
             index_filter: self.index_filter,
             runtime_mappings: self.runtime_mappings,
             project_routing: self.project_routing,
@@ -1004,9 +987,6 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.fields {
-            query.push(("fields", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.ignore_unavailable {
             query.push((
                 "ignore_unavailable",
@@ -1049,7 +1029,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            fields2: self.fields2.as_ref(),
+            fields: self.fields.as_ref(),
             index_filter: self.index_filter.as_ref(),
             runtime_mappings: self.runtime_mappings.as_ref(),
             project_routing: self.project_routing.as_ref(),
@@ -1082,8 +1062,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "fields", skip_serializing_if = "Option::is_none")]
-    fields2: Option<&'a crate::typed::_types::Fields>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    fields: Option<&'a crate::typed::_types::Fields>,
     #[serde(skip_serializing_if = "Option::is_none")]
     index_filter: Option<&'a crate::typed::_types::query_dsl::QueryContainer>,
     #[serde(skip_serializing_if = "Option::is_none")]

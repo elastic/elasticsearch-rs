@@ -63,9 +63,6 @@ pub struct Request<TDocument = serde_json::Value, TPartialDocument = serde_json:
     /// Set to 'all' or any positive integer up to the total number of shards in the index (`number_of_replicas`+1).
     /// The default value of `1` means it waits for each primary shard to be active.
     pub wait_for_active_shards: Option<crate::typed::_types::WaitForActiveShards>,
-    /// If `false`, source retrieval is turned off.
-    /// You can also specify a comma-separated list of the fields you want to retrieve.
-    pub source: Option<crate::typed::_global::search::_types::SourceConfigParam>,
     /// The source fields you want to exclude.
     pub source_excludes: Option<crate::typed::_types::Fields>,
     /// The source fields you want to retrieve.
@@ -99,7 +96,7 @@ pub struct Request<TDocument = serde_json::Value, TPartialDocument = serde_json:
     pub scripted_upsert: Option<bool>,
     /// If `false`, turn off source retrieval.
     /// You can also specify a comma-separated list of the fields you want to retrieve.
-    pub source2: Option<crate::typed::_global::search::_types::SourceConfig>,
+    pub source: Option<crate::typed::_global::search::_types::SourceConfig>,
     /// If the document does not already exist, the contents of 'upsert' are inserted as a new document.
     /// If the document exists, the 'script' is run.
     pub upsert: Option<TDocument>,
@@ -156,7 +153,6 @@ pub struct RequestBuilder<
     route_slice: Option<String>,
     timeout: Option<crate::typed::_types::Duration>,
     wait_for_active_shards: Option<crate::typed::_types::WaitForActiveShards>,
-    source: Option<crate::typed::_global::search::_types::SourceConfigParam>,
     source_excludes: Option<crate::typed::_types::Fields>,
     source_includes: Option<crate::typed::_types::Fields>,
     error_trace: Option<bool>,
@@ -168,7 +164,7 @@ pub struct RequestBuilder<
     doc_as_upsert: Option<bool>,
     script: Option<crate::typed::_types::Script>,
     scripted_upsert: Option<bool>,
-    source2: Option<crate::typed::_global::search::_types::SourceConfig>,
+    source: Option<crate::typed::_global::search::_types::SourceConfig>,
     upsert: Option<TDocument>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -197,7 +193,6 @@ impl<C>
             route_slice: None,
             timeout: None,
             wait_for_active_shards: None,
-            source: None,
             source_excludes: None,
             source_includes: None,
             error_trace: None,
@@ -209,7 +204,7 @@ impl<C>
             doc_as_upsert: None,
             script: None,
             scripted_upsert: None,
-            source2: None,
+            source: None,
             upsert: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -235,7 +230,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -247,7 +241,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: self.upsert,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
@@ -401,25 +395,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
         self
     }
 
-    /// If `false`, source retrieval is turned off.
-    /// You can also specify a comma-separated list of the fields you want to retrieve.
-    pub fn source(
-        mut self,
-        value: impl Into<crate::typed::_global::search::_types::SourceConfigParam>,
-    ) -> Self {
-        self.source = Some(value.into());
-        self
-    }
-
-    /// Sets [`source`](Self::source) if `value` is `Some`.
-    pub fn maybe_source(
-        mut self,
-        value: Option<crate::typed::_global::search::_types::SourceConfigParam>,
-    ) -> Self {
-        self.source = value;
-        self
-    }
-
     /// The source fields you want to exclude.
     pub fn source_excludes(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
         self.source_excludes = Some(value.into());
@@ -528,7 +503,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -540,7 +514,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: self.upsert,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
@@ -566,7 +540,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -578,7 +551,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: self.upsert,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
@@ -632,31 +605,31 @@ impl<S0, S1, C, TDocument, TPartialDocument>
 
     /// If `false`, turn off source retrieval.
     /// You can also specify a comma-separated list of the fields you want to retrieve.
-    pub fn source2(
+    pub fn source(
         mut self,
         value: impl Into<crate::typed::_global::search::_types::SourceConfig>,
     ) -> Self {
-        self.source2 = Some(value.into());
+        self.source = Some(value.into());
         self
     }
 
-    /// Sets [`source2`](Self::source2) if `value` is `Some`.
-    pub fn maybe_source2(
+    /// Sets [`source`](Self::source) if `value` is `Some`.
+    pub fn maybe_source(
         mut self,
         value: Option<crate::typed::_global::search::_types::SourceConfig>,
     ) -> Self {
-        self.source2 = value;
+        self.source = value;
         self
     }
 
-    /// Sets [`source2`](Self::source2) with a builder.
-    pub fn source2_with<
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<
         B: crate::typed::builder::Build<Output = crate::typed::_global::search::_types::SourceFilter>,
     >(
         self,
         f: impl FnOnce(crate::typed::_global::search::_types::SourceFilterBuilder) -> B,
     ) -> Self {
-        self.source2(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
+        self.source(f(crate::typed::_global::search::_types::SourceFilterBuilder::new()).build())
     }
 
     /// If the document does not already exist, the contents of 'upsert' are inserted as a new document.
@@ -679,7 +652,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -691,7 +663,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: Some(value),
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
@@ -717,7 +689,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -729,7 +700,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: value,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
@@ -789,7 +760,6 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             route_slice: self.route_slice,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_includes: self.source_includes,
             error_trace: self.error_trace,
@@ -801,7 +771,7 @@ impl<S0, S1, C, TDocument, TPartialDocument>
             doc_as_upsert: self.doc_as_upsert,
             script: self.script,
             scripted_upsert: self.scripted_upsert,
-            source2: self.source2,
+            source: self.source,
             upsert: self.upsert,
         }
     }
@@ -904,9 +874,6 @@ impl<TDocument, TPartialDocument> Request<TDocument, TPartialDocument> {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.source {
-            query.push(("_source", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.source_excludes {
             query.push((
                 "_source_excludes",
@@ -942,7 +909,7 @@ impl<TDocument, TPartialDocument> Request<TDocument, TPartialDocument> {
             doc_as_upsert: self.doc_as_upsert.as_ref(),
             script: self.script.as_ref(),
             scripted_upsert: self.scripted_upsert.as_ref(),
-            source2: self.source2.as_ref(),
+            source: self.source.as_ref(),
             upsert: self.upsert.as_ref(),
         }
     }
@@ -988,7 +955,7 @@ pub struct RequestBody<'a, TDocument, TPartialDocument> {
     #[serde(skip_serializing_if = "Option::is_none")]
     scripted_upsert: Option<&'a bool>,
     #[serde(rename = "_source", skip_serializing_if = "Option::is_none")]
-    source2: Option<&'a crate::typed::_global::search::_types::SourceConfig>,
+    source: Option<&'a crate::typed::_global::search::_types::SourceConfig>,
     #[serde(skip_serializing_if = "Option::is_none")]
     upsert: Option<&'a TDocument>,
 }

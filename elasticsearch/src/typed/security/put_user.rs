@@ -36,7 +36,6 @@ pub struct Request {
     /// If set to `true` the returned JSON will be "pretty-formatted". Only use
     /// this option for debugging only.
     pub pretty: Option<bool>,
-    pub username2: Option<crate::typed::_types::Username>,
     /// The email of the user.
     pub email: Option<RequestEmail>,
     /// The full name of the user.
@@ -96,7 +95,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    username2: Option<crate::typed::_types::Username>,
     email: Option<RequestEmail>,
     full_name: Option<RequestFullName>,
     metadata: Option<crate::typed::_types::Metadata>,
@@ -117,7 +115,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            username2: None,
             email: None,
             full_name: None,
             metadata: None,
@@ -140,7 +137,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            username2: self.username2,
             email: self.email,
             full_name: self.full_name,
             metadata: self.metadata,
@@ -218,17 +214,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`pretty`](Self::pretty) if `value` is `Some`.
     pub fn maybe_pretty(mut self, value: Option<bool>) -> Self {
         self.pretty = value;
-        self
-    }
-
-    pub fn username2(mut self, value: impl Into<crate::typed::_types::Username>) -> Self {
-        self.username2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`username2`](Self::username2) if `value` is `Some`.
-    pub fn maybe_username2(mut self, value: Option<crate::typed::_types::Username>) -> Self {
-        self.username2 = value;
         self
     }
 
@@ -375,7 +360,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            username2: self.username2,
             email: self.email,
             full_name: self.full_name,
             metadata: self.metadata,
@@ -455,7 +439,6 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            username2: self.username2.as_ref(),
             email: self.email.as_ref(),
             full_name: self.full_name.as_ref(),
             metadata: self.metadata.as_ref(),
@@ -492,8 +475,6 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "username", skip_serializing_if = "Option::is_none")]
-    username2: Option<&'a crate::typed::_types::Username>,
     #[serde(skip_serializing_if = "Option::is_none")]
     email: Option<&'a RequestEmail>,
     #[serde(skip_serializing_if = "Option::is_none")]

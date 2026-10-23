@@ -515,15 +515,6 @@ pub struct Request {
     /// This setting will use one slice per shard, up to a certain limit.
     /// If there are multiple sources, it will choose the number of slices based on the index or backing index with the smallest number of shards.
     pub slices: Option<crate::typed::_types::Slices>,
-    /// The maximum number of documents to reindex.
-    /// By default, all documents are reindexed.
-    /// If it is a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
-    ///
-    /// If `conflicts` is set to `proceed`, the reindex operation could attempt to reindex more documents from the source than `max_docs` until it has successfully indexed `max_docs` documents into the target or it has gone through every document in the source query.
-    ///
-    /// If `slices` is set, the `max_docs` limit is split evenly across the slices.
-    /// If the number of documents in the source is equal to or slightly more than `max_docs`, this could result in slightly fewer than `max_docs` documents being reindexed, due to skew in the slicing.
-    pub max_docs: Option<i32>,
     /// The period each indexing waits for automatic index creation, dynamic mapping updates, and waiting for active shards.
     /// By default, Elasticsearch waits for at least one minute before failing.
     /// The actual wait time could be longer, particularly when multiple waits occur.
@@ -562,7 +553,7 @@ pub struct Request {
     /// If it is a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
     ///
     /// If `conflicts` is set to `proceed`, the reindex operation could attempt to reindex more documents from the source than `max_docs` until it has successfully indexed `max_docs` documents into the target or it has gone through every document in the source query.
-    pub max_docs2: Option<i64>,
+    pub max_docs: Option<i64>,
     /// The script to run to update the document source or metadata when reindexing.
     pub script: Option<crate::typed::_types::Script>,
     /// The source you are copying from.
@@ -605,7 +596,6 @@ pub struct RequestBuilder<
     requests_per_second: Option<f32>,
     scroll: Option<crate::typed::_types::Duration>,
     slices: Option<crate::typed::_types::Slices>,
-    max_docs: Option<i32>,
     timeout: Option<crate::typed::_types::Duration>,
     wait_for_active_shards: Option<crate::typed::_types::WaitForActiveShards>,
     wait_for_completion: Option<bool>,
@@ -616,7 +606,7 @@ pub struct RequestBuilder<
     pretty: Option<bool>,
     conflicts: Option<crate::typed::_types::Conflicts>,
     dest: Option<Destination>,
-    max_docs2: Option<i64>,
+    max_docs: Option<i64>,
     script: Option<crate::typed::_types::Script>,
     source: Option<Source>,
     bound_client: C,
@@ -630,7 +620,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
             requests_per_second: None,
             scroll: None,
             slices: None,
-            max_docs: None,
             timeout: None,
             wait_for_active_shards: None,
             wait_for_completion: None,
@@ -641,7 +630,7 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
             pretty: None,
             conflicts: None,
             dest: None,
-            max_docs2: None,
+            max_docs: None,
             script: None,
             source: None,
             bound_client: client,
@@ -657,7 +646,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             requests_per_second: self.requests_per_second,
             scroll: self.scroll,
             slices: self.slices,
-            max_docs: self.max_docs,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
             wait_for_completion: self.wait_for_completion,
@@ -668,7 +656,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             pretty: self.pretty,
             conflicts: self.conflicts,
             dest: self.dest,
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             script: self.script,
             source: self.source,
             bound_client: self.bound_client,
@@ -735,25 +723,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Sets [`slices`](Self::slices) if `value` is `Some`.
     pub fn maybe_slices(mut self, value: Option<crate::typed::_types::Slices>) -> Self {
         self.slices = value;
-        self
-    }
-
-    /// The maximum number of documents to reindex.
-    /// By default, all documents are reindexed.
-    /// If it is a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
-    ///
-    /// If `conflicts` is set to `proceed`, the reindex operation could attempt to reindex more documents from the source than `max_docs` until it has successfully indexed `max_docs` documents into the target or it has gone through every document in the source query.
-    ///
-    /// If `slices` is set, the `max_docs` limit is split evenly across the slices.
-    /// If the number of documents in the source is equal to or slightly more than `max_docs`, this could result in slightly fewer than `max_docs` documents being reindexed, due to skew in the slicing.
-    pub fn max_docs(mut self, value: i32) -> Self {
-        self.max_docs = Some(value);
-        self
-    }
-
-    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
-    pub fn maybe_max_docs(mut self, value: Option<i32>) -> Self {
-        self.max_docs = value;
         self
     }
 
@@ -889,14 +858,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// If it is a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
     ///
     /// If `conflicts` is set to `proceed`, the reindex operation could attempt to reindex more documents from the source than `max_docs` until it has successfully indexed `max_docs` documents into the target or it has gone through every document in the source query.
-    pub fn max_docs2(mut self, value: i64) -> Self {
-        self.max_docs2 = Some(value);
+    pub fn max_docs(mut self, value: i64) -> Self {
+        self.max_docs = Some(value);
         self
     }
 
-    /// Sets [`max_docs2`](Self::max_docs2) if `value` is `Some`.
-    pub fn maybe_max_docs2(mut self, value: Option<i64>) -> Self {
-        self.max_docs2 = value;
+    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
+    pub fn maybe_max_docs(mut self, value: Option<i64>) -> Self {
+        self.max_docs = value;
         self
     }
 
@@ -973,7 +942,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             requests_per_second: self.requests_per_second,
             scroll: self.scroll,
             slices: self.slices,
-            max_docs: self.max_docs,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
             wait_for_completion: self.wait_for_completion,
@@ -984,7 +952,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             pretty: self.pretty,
             conflicts: self.conflicts,
             dest: self.dest.unwrap(),
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             script: self.script,
             source: self.source.unwrap(),
         }
@@ -1049,9 +1017,6 @@ impl Request {
         if let Some(value) = &self.slices {
             query.push(("slices", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.max_docs {
-            query.push(("max_docs", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.timeout {
             query.push(("timeout", crate::typed::support::query_value(value)));
         }
@@ -1090,7 +1055,7 @@ impl Request {
         RequestBody {
             conflicts: self.conflicts.as_ref(),
             dest: &self.dest,
-            max_docs2: self.max_docs2.as_ref(),
+            max_docs: self.max_docs.as_ref(),
             script: self.script.as_ref(),
             source: &self.source,
         }
@@ -1125,8 +1090,8 @@ pub struct RequestBody<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     conflicts: Option<&'a crate::typed::_types::Conflicts>,
     dest: &'a Destination,
-    #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
-    max_docs2: Option<&'a i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_docs: Option<&'a i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     script: Option<&'a crate::typed::_types::Script>,
     source: &'a Source,

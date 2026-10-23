@@ -15,8 +15,6 @@ pub struct Request {
     pub metric: Option<RequestMetric>,
     /// Defines whether stack traces are generated for each watch that is running.
     pub emit_stacktraces: Option<bool>,
-    /// Defines which additional metrics are included in the response.
-    pub metric2: Option<RequestMetric2>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -53,7 +51,6 @@ impl Request {
 pub struct RequestBuilder<S = (), C = ()> {
     metric: Option<RequestMetric>,
     emit_stacktraces: Option<bool>,
-    metric2: Option<RequestMetric2>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -67,7 +64,6 @@ impl<C> RequestBuilder<(), C> {
         RequestBuilder {
             metric: None,
             emit_stacktraces: None,
-            metric2: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -100,18 +96,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`emit_stacktraces`](Self::emit_stacktraces) if `value` is `Some`.
     pub fn maybe_emit_stacktraces(mut self, value: Option<bool>) -> Self {
         self.emit_stacktraces = value;
-        self
-    }
-
-    /// Defines which additional metrics are included in the response.
-    pub fn metric2(mut self, value: impl Into<RequestMetric2>) -> Self {
-        self.metric2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`metric2`](Self::metric2) if `value` is `Some`.
-    pub fn maybe_metric2(mut self, value: Option<RequestMetric2>) -> Self {
-        self.metric2 = value;
         self
     }
 
@@ -177,7 +161,6 @@ impl<C> RequestBuilder<(), C> {
         Request {
             metric: self.metric,
             emit_stacktraces: self.emit_stacktraces,
-            metric2: self.metric2,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -236,9 +219,6 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.metric2 {
-            query.push(("metric", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -293,25 +273,6 @@ impl From<WatcherMetric> for RequestMetric {
 impl From<Vec<WatcherMetric>> for RequestMetric {
     fn from(value: Vec<WatcherMetric>) -> Self {
         RequestMetric::WatcherMetricList(value)
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(untagged)]
-pub enum RequestMetric2 {
-    WatcherMetric(WatcherMetric),
-    WatcherMetricList(Vec<WatcherMetric>),
-}
-
-impl From<WatcherMetric> for RequestMetric2 {
-    fn from(value: WatcherMetric) -> Self {
-        RequestMetric2::WatcherMetric(value)
-    }
-}
-
-impl From<Vec<WatcherMetric>> for RequestMetric2 {
-    fn from(value: Vec<WatcherMetric>) -> Self {
-        RequestMetric2::WatcherMetricList(value)
     }
 }
 

@@ -19,10 +19,6 @@ pub struct Request {
     /// Supports wildcards (`*`).
     /// To target all data streams and indices, omit this parameter or use `*` or `_all`.
     pub index: Option<crate::typed::_types::Indices>,
-    /// Comma-separated list of data streams, indices, and aliases used to limit the request.
-    /// Supports wildcards (`*`).
-    /// To target all data streams and indices, omit this parameter or use `*` or `_all`.
-    pub index2: Option<crate::typed::_types::Indices>,
     /// A setting that does two separate checks on the index expression.
     /// If `false`, the request returns an error (1) if any wildcard expression
     /// (including `_all` and `*`) resolves to zero matching indices or (2) if the
@@ -82,7 +78,6 @@ impl Request {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
     index: Option<crate::typed::_types::Indices>,
-    index2: Option<crate::typed::_types::Indices>,
     allow_no_indices: Option<bool>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
     fielddata: Option<bool>,
@@ -102,7 +97,6 @@ impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             index: None,
-            index2: None,
             allow_no_indices: None,
             expand_wildcards: None,
             fielddata: None,
@@ -132,20 +126,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`index`](Self::index) if `value` is `Some`.
     pub fn maybe_index(mut self, value: Option<crate::typed::_types::Indices>) -> Self {
         self.index = value;
-        self
-    }
-
-    /// Comma-separated list of data streams, indices, and aliases used to limit the request.
-    /// Supports wildcards (`*`).
-    /// To target all data streams and indices, omit this parameter or use `*` or `_all`.
-    pub fn index2(mut self, value: impl Into<crate::typed::_types::Indices>) -> Self {
-        self.index2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`index2`](Self::index2) if `value` is `Some`.
-    pub fn maybe_index2(mut self, value: Option<crate::typed::_types::Indices>) -> Self {
-        self.index2 = value;
         self
     }
 
@@ -310,7 +290,6 @@ impl<C> RequestBuilder<(), C> {
     pub fn build(self) -> Request {
         Request {
             index: self.index,
-            index2: self.index2,
             allow_no_indices: self.allow_no_indices,
             expand_wildcards: self.expand_wildcards,
             fielddata: self.fielddata,
@@ -367,9 +346,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.index2 {
-            query.push(("index", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.allow_no_indices {
             query.push((
                 "allow_no_indices",

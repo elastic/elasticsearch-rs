@@ -242,6 +242,25 @@ pub struct Request {
     pub local: Option<bool>,
     /// Period to wait for a connection to the master node.
     pub master_timeout: Option<crate::typed::_types::Duration>,
+    /// Specifies the format to return the columnar data in, can be set to
+    /// `text`, `json`, `cbor`, `yaml`, or `smile`.
+    pub format: Option<String>,
+    /// When set to `true` will output available columns. This option
+    /// can't be combined with any other query string option.
+    pub help: Option<bool>,
+    /// When set to `true` will enable verbose output.
+    pub v: Option<bool>,
+    /// Sets the units for columns that contain a byte-size value.
+    /// Note that byte-size value units work in terms of powers of 1024. For instance `1kb` means 1024 bytes, not 1000 bytes.
+    /// If omitted, byte-size values are rendered with a suffix such as `kb`, `mb`, or `gb`, chosen such that the numeric value of the column is as small as possible whilst still being at least `1.0`.
+    /// If given, byte-size values are rendered as an integer with no suffix, representing the value of the column in the chosen unit.
+    /// Values that are not an exact multiple of the chosen unit are rounded down.
+    pub bytes: Option<crate::typed::_types::Bytes>,
+    /// Sets the units for columns that contain a time duration.
+    /// If omitted, time duration values are rendered with a suffix such as `ms`, `s`, `m` or `h`, chosen such that the numeric value of the column is as small as possible whilst still being at least `1.0`.
+    /// If given, time duration values are rendered as an integer with no suffix.
+    /// Values that are not an exact multiple of the chosen unit are rounded down.
+    pub time: Option<crate::typed::_types::TimeUnit>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -281,6 +300,11 @@ pub struct RequestBuilder<S = (), C = ()> {
     s: Option<crate::typed::_types::Names>,
     local: Option<bool>,
     master_timeout: Option<crate::typed::_types::Duration>,
+    format: Option<String>,
+    help: Option<bool>,
+    v: Option<bool>,
+    bytes: Option<crate::typed::_types::Bytes>,
+    time: Option<crate::typed::_types::TimeUnit>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -297,6 +321,11 @@ impl<C> RequestBuilder<(), C> {
             s: None,
             local: None,
             master_timeout: None,
+            format: None,
+            help: None,
+            v: None,
+            bytes: None,
+            time: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -385,6 +414,75 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Specifies the format to return the columnar data in, can be set to
+    /// `text`, `json`, `cbor`, `yaml`, or `smile`.
+    pub fn format(mut self, value: impl Into<String>) -> Self {
+        self.format = Some(value.into());
+        self
+    }
+
+    /// Sets [`format`](Self::format) if `value` is `Some`.
+    pub fn maybe_format(mut self, value: Option<String>) -> Self {
+        self.format = value;
+        self
+    }
+
+    /// When set to `true` will output available columns. This option
+    /// can't be combined with any other query string option.
+    pub fn help(mut self, value: bool) -> Self {
+        self.help = Some(value);
+        self
+    }
+
+    /// Sets [`help`](Self::help) if `value` is `Some`.
+    pub fn maybe_help(mut self, value: Option<bool>) -> Self {
+        self.help = value;
+        self
+    }
+
+    /// When set to `true` will enable verbose output.
+    pub fn v(mut self, value: bool) -> Self {
+        self.v = Some(value);
+        self
+    }
+
+    /// Sets [`v`](Self::v) if `value` is `Some`.
+    pub fn maybe_v(mut self, value: Option<bool>) -> Self {
+        self.v = value;
+        self
+    }
+
+    /// Sets the units for columns that contain a byte-size value.
+    /// Note that byte-size value units work in terms of powers of 1024. For instance `1kb` means 1024 bytes, not 1000 bytes.
+    /// If omitted, byte-size values are rendered with a suffix such as `kb`, `mb`, or `gb`, chosen such that the numeric value of the column is as small as possible whilst still being at least `1.0`.
+    /// If given, byte-size values are rendered as an integer with no suffix, representing the value of the column in the chosen unit.
+    /// Values that are not an exact multiple of the chosen unit are rounded down.
+    pub fn bytes(mut self, value: impl Into<crate::typed::_types::Bytes>) -> Self {
+        self.bytes = Some(value.into());
+        self
+    }
+
+    /// Sets [`bytes`](Self::bytes) if `value` is `Some`.
+    pub fn maybe_bytes(mut self, value: Option<crate::typed::_types::Bytes>) -> Self {
+        self.bytes = value;
+        self
+    }
+
+    /// Sets the units for columns that contain a time duration.
+    /// If omitted, time duration values are rendered with a suffix such as `ms`, `s`, `m` or `h`, chosen such that the numeric value of the column is as small as possible whilst still being at least `1.0`.
+    /// If given, time duration values are rendered as an integer with no suffix.
+    /// Values that are not an exact multiple of the chosen unit are rounded down.
+    pub fn time(mut self, value: impl Into<crate::typed::_types::TimeUnit>) -> Self {
+        self.time = Some(value.into());
+        self
+    }
+
+    /// Sets [`time`](Self::time) if `value` is `Some`.
+    pub fn maybe_time(mut self, value: Option<crate::typed::_types::TimeUnit>) -> Self {
+        self.time = value;
+        self
+    }
+
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub fn error_trace(mut self, value: bool) -> Self {
@@ -450,6 +548,11 @@ impl<C> RequestBuilder<(), C> {
             s: self.s,
             local: self.local,
             master_timeout: self.master_timeout,
+            format: self.format,
+            help: self.help,
+            v: self.v,
+            bytes: self.bytes,
+            time: self.time,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -516,6 +619,21 @@ impl Request {
         }
         if let Some(value) = &self.master_timeout {
             query.push(("master_timeout", crate::typed::support::query_value(value)));
+        }
+        if let Some(value) = &self.format {
+            query.push(("format", crate::typed::support::query_value(value)));
+        }
+        if let Some(value) = &self.help {
+            query.push(("help", crate::typed::support::query_value(value)));
+        }
+        if let Some(value) = &self.v {
+            query.push(("v", crate::typed::support::query_value(value)));
+        }
+        if let Some(value) = &self.bytes {
+            query.push(("bytes", crate::typed::support::query_value(value)));
+        }
+        if let Some(value) = &self.time {
+            query.push(("time", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));

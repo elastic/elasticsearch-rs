@@ -24,27 +24,6 @@ pub struct Request {
     /// alphanumeric characters (a-z and 0-9), hyphens, and underscores. It must start and end with alphanumeric
     /// characters.
     pub datafeed_id: crate::typed::_types::Id,
-    /// The time that the datafeed should end, which can be specified by using one of the following formats:
-    ///
-    /// * ISO 8601 format with milliseconds, for example `2017-01-22T06:00:00.000Z`
-    /// * ISO 8601 format without milliseconds, for example `2017-01-22T06:00:00+00:00`
-    /// * Milliseconds since the epoch, for example `1485061200000`
-    ///
-    /// Date-time arguments using either of the ISO 8601 formats must have a time zone designator, where `Z` is accepted
-    /// as an abbreviation for UTC time. When a URL is expected (for example, in browsers), the `+` used in time zone
-    /// designators must be encoded as `%2B`.
-    /// The end time value is exclusive. If you do not specify an end time, the datafeed
-    /// runs continuously.
-    pub end: Option<crate::typed::_types::DateTime>,
-    /// The time that the datafeed should begin, which can be specified by using the same formats as the `end` parameter.
-    /// This value is inclusive.
-    /// If you do not specify a start time and the datafeed is associated with a new anomaly detection job, the analysis
-    /// starts from the earliest time for which data is available.
-    /// If you restart a stopped datafeed and specify a start value that is earlier than the timestamp of the latest
-    /// processed record, the datafeed continues from 1 millisecond after the timestamp of the latest processed record.
-    pub start: Option<crate::typed::_types::DateTime>,
-    /// Specifies the amount of time to wait until a datafeed starts.
-    pub timeout: Option<crate::typed::_types::Duration>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -61,11 +40,11 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `end` query parameter.
-    pub end2: Option<crate::typed::_types::DateTime>,
+    pub end: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `start` query parameter.
-    pub start2: Option<crate::typed::_types::DateTime>,
+    pub start: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `timeout` query parameter.
-    pub timeout2: Option<crate::typed::_types::Duration>,
+    pub timeout: Option<crate::typed::_types::Duration>,
 }
 
 impl Request {
@@ -97,16 +76,13 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     datafeed_id: Option<crate::typed::_types::Id>,
-    end: Option<crate::typed::_types::DateTime>,
-    start: Option<crate::typed::_types::DateTime>,
-    timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    end2: Option<crate::typed::_types::DateTime>,
-    start2: Option<crate::typed::_types::DateTime>,
-    timeout2: Option<crate::typed::_types::Duration>,
+    end: Option<crate::typed::_types::DateTime>,
+    start: Option<crate::typed::_types::DateTime>,
+    timeout: Option<crate::typed::_types::Duration>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -115,16 +91,13 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             datafeed_id: None,
-            end: None,
-            start: None,
-            timeout: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            end2: None,
-            start2: None,
-            timeout2: None,
+            end: None,
+            start: None,
+            timeout: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -135,70 +108,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             datafeed_id: self.datafeed_id,
-            end: self.end,
-            start: self.start,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            end2: self.end2,
-            start2: self.start2,
-            timeout2: self.timeout2,
+            end: self.end,
+            start: self.start,
+            timeout: self.timeout,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// The time that the datafeed should end, which can be specified by using one of the following formats:
-    ///
-    /// * ISO 8601 format with milliseconds, for example `2017-01-22T06:00:00.000Z`
-    /// * ISO 8601 format without milliseconds, for example `2017-01-22T06:00:00+00:00`
-    /// * Milliseconds since the epoch, for example `1485061200000`
-    ///
-    /// Date-time arguments using either of the ISO 8601 formats must have a time zone designator, where `Z` is accepted
-    /// as an abbreviation for UTC time. When a URL is expected (for example, in browsers), the `+` used in time zone
-    /// designators must be encoded as `%2B`.
-    /// The end time value is exclusive. If you do not specify an end time, the datafeed
-    /// runs continuously.
-    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end = Some(value.into());
-        self
-    }
-
-    /// Sets [`end`](Self::end) if `value` is `Some`.
-    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end = value;
-        self
-    }
-
-    /// The time that the datafeed should begin, which can be specified by using the same formats as the `end` parameter.
-    /// This value is inclusive.
-    /// If you do not specify a start time and the datafeed is associated with a new anomaly detection job, the analysis
-    /// starts from the earliest time for which data is available.
-    /// If you restart a stopped datafeed and specify a start value that is earlier than the timestamp of the latest
-    /// processed record, the datafeed continues from 1 millisecond after the timestamp of the latest processed record.
-    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start = Some(value.into());
-        self
-    }
-
-    /// Sets [`start`](Self::start) if `value` is `Some`.
-    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start = value;
-        self
-    }
-
-    /// Specifies the amount of time to wait until a datafeed starts.
-    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
-    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -257,38 +176,38 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the description for the `end` query parameter.
-    pub fn end2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = Some(value.into());
+    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.end = Some(value.into());
         self
     }
 
-    /// Sets [`end2`](Self::end2) if `value` is `Some`.
-    pub fn maybe_end2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = value;
+    /// Sets [`end`](Self::end) if `value` is `Some`.
+    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.end = value;
         self
     }
 
     /// Refer to the description for the `start` query parameter.
-    pub fn start2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = Some(value.into());
+    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.start = Some(value.into());
         self
     }
 
-    /// Sets [`start2`](Self::start2) if `value` is `Some`.
-    pub fn maybe_start2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = value;
+    /// Sets [`start`](Self::start) if `value` is `Some`.
+    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.start = value;
         self
     }
 
     /// Refer to the description for the `timeout` query parameter.
-    pub fn timeout2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = Some(value.into());
+    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.timeout = Some(value.into());
         self
     }
 
-    /// Sets [`timeout2`](Self::timeout2) if `value` is `Some`.
-    pub fn maybe_timeout2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = value;
+    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
+    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.timeout = value;
         self
     }
 }
@@ -315,16 +234,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             datafeed_id: self.datafeed_id.unwrap(),
-            end: self.end,
-            start: self.start,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            end2: self.end2,
-            start2: self.start2,
-            timeout2: self.timeout2,
+            end: self.end,
+            start: self.start,
+            timeout: self.timeout,
         }
     }
 }
@@ -376,15 +292,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.end {
-            query.push(("end", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.start {
-            query.push(("start", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.timeout {
-            query.push(("timeout", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -403,9 +310,9 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            end2: self.end2.as_ref(),
-            start2: self.start2.as_ref(),
-            timeout2: self.timeout2.as_ref(),
+            end: self.end.as_ref(),
+            start: self.start.as_ref(),
+            timeout: self.timeout.as_ref(),
         }
     }
 
@@ -435,12 +342,12 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "end", skip_serializing_if = "Option::is_none")]
-    end2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "start", skip_serializing_if = "Option::is_none")]
-    start2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    timeout2: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    end: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    start: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timeout: Option<&'a crate::typed::_types::Duration>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

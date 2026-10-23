@@ -20,11 +20,6 @@ pub struct Request {
     /// Identifier for an anomaly detection job. It can be a job identifier, a
     /// group name, or a wildcard expression.
     pub job_id: Option<crate::typed::_types::Id>,
-    /// The desired requests per second for the deletion processes. The default
-    /// behavior is no throttling.
-    pub requests_per_second: Option<f32>,
-    /// How long can the underlying delete processes run until they are canceled.
-    pub timeout: Option<crate::typed::_types::Duration>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -42,9 +37,9 @@ pub struct Request {
     pub pretty: Option<bool>,
     /// The desired requests per second for the deletion processes. The default
     /// behavior is no throttling.
-    pub requests_per_second2: Option<f32>,
+    pub requests_per_second: Option<f32>,
     /// How long can the underlying delete processes run until they are canceled.
-    pub timeout2: Option<crate::typed::_types::Duration>,
+    pub timeout: Option<crate::typed::_types::Duration>,
 }
 
 impl Request {
@@ -65,14 +60,12 @@ impl Request {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
     job_id: Option<crate::typed::_types::Id>,
-    requests_per_second: Option<f32>,
-    timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    requests_per_second2: Option<f32>,
-    timeout2: Option<crate::typed::_types::Duration>,
+    requests_per_second: Option<f32>,
+    timeout: Option<crate::typed::_types::Duration>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -81,14 +74,12 @@ impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             job_id: None,
-            requests_per_second: None,
-            timeout: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            requests_per_second2: None,
-            timeout2: None,
+            requests_per_second: None,
+            timeout: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -106,31 +97,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`job_id`](Self::job_id) if `value` is `Some`.
     pub fn maybe_job_id(mut self, value: Option<crate::typed::_types::Id>) -> Self {
         self.job_id = value;
-        self
-    }
-
-    /// The desired requests per second for the deletion processes. The default
-    /// behavior is no throttling.
-    pub fn requests_per_second(mut self, value: f32) -> Self {
-        self.requests_per_second = Some(value);
-        self
-    }
-
-    /// Sets [`requests_per_second`](Self::requests_per_second) if `value` is `Some`.
-    pub fn maybe_requests_per_second(mut self, value: Option<f32>) -> Self {
-        self.requests_per_second = value;
-        self
-    }
-
-    /// How long can the underlying delete processes run until they are canceled.
-    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
-    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout = value;
         self
     }
 
@@ -191,26 +157,26 @@ impl<C> RequestBuilder<(), C> {
 
     /// The desired requests per second for the deletion processes. The default
     /// behavior is no throttling.
-    pub fn requests_per_second2(mut self, value: f32) -> Self {
-        self.requests_per_second2 = Some(value);
+    pub fn requests_per_second(mut self, value: f32) -> Self {
+        self.requests_per_second = Some(value);
         self
     }
 
-    /// Sets [`requests_per_second2`](Self::requests_per_second2) if `value` is `Some`.
-    pub fn maybe_requests_per_second2(mut self, value: Option<f32>) -> Self {
-        self.requests_per_second2 = value;
+    /// Sets [`requests_per_second`](Self::requests_per_second) if `value` is `Some`.
+    pub fn maybe_requests_per_second(mut self, value: Option<f32>) -> Self {
+        self.requests_per_second = value;
         self
     }
 
     /// How long can the underlying delete processes run until they are canceled.
-    pub fn timeout2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = Some(value.into());
+    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.timeout = Some(value.into());
         self
     }
 
-    /// Sets [`timeout2`](Self::timeout2) if `value` is `Some`.
-    pub fn maybe_timeout2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = value;
+    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
+    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.timeout = value;
         self
     }
 }
@@ -220,14 +186,12 @@ impl<C> RequestBuilder<(), C> {
     pub fn build(self) -> Request {
         Request {
             job_id: self.job_id,
-            requests_per_second: self.requests_per_second,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            requests_per_second2: self.requests_per_second2,
-            timeout2: self.timeout2,
+            requests_per_second: self.requests_per_second,
+            timeout: self.timeout,
         }
     }
 }
@@ -279,15 +243,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.requests_per_second {
-            query.push((
-                "requests_per_second",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.timeout {
-            query.push(("timeout", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -306,8 +261,8 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            requests_per_second2: self.requests_per_second2.as_ref(),
-            timeout2: self.timeout2.as_ref(),
+            requests_per_second: self.requests_per_second.as_ref(),
+            timeout: self.timeout.as_ref(),
         }
     }
 
@@ -337,13 +292,10 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(
-        rename = "requests_per_second",
-        skip_serializing_if = "Option::is_none"
-    )]
-    requests_per_second2: Option<&'a f32>,
-    #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    timeout2: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    requests_per_second: Option<&'a f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timeout: Option<&'a crate::typed::_types::Duration>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

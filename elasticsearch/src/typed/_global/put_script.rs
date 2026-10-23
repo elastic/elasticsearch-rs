@@ -16,10 +16,6 @@ pub struct Request {
     /// The context in which the script or search template should run.
     /// To prevent errors, the API immediately compiles the script or template in this context.
     pub context: Option<crate::typed::_types::Name>,
-    /// The context in which the script or search template should run.
-    /// To prevent errors, the API immediately compiles the script or template in this context.
-    /// If you specify both this and the `<context>` path parameter, the API uses the request path parameter.
-    pub context2: Option<crate::typed::_types::Name>,
     /// The period to wait for a connection to the master node.
     /// If no response is received before the timeout expires, the request fails and returns an error.
     /// It can also be set to `-1` to indicate that the request should never timeout.
@@ -81,7 +77,6 @@ pub struct RequestBuilder<
 > {
     id: Option<crate::typed::_types::Id>,
     context: Option<crate::typed::_types::Name>,
-    context2: Option<crate::typed::_types::Name>,
     master_timeout: Option<crate::typed::_types::Duration>,
     timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
@@ -98,7 +93,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
         RequestBuilder {
             id: None,
             context: None,
-            context2: None,
             master_timeout: None,
             timeout: None,
             error_trace: None,
@@ -117,7 +111,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         RequestBuilder {
             id: self.id,
             context: self.context,
-            context2: self.context2,
             master_timeout: self.master_timeout,
             timeout: self.timeout,
             error_trace: self.error_trace,
@@ -140,20 +133,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Sets [`context`](Self::context) if `value` is `Some`.
     pub fn maybe_context(mut self, value: Option<crate::typed::_types::Name>) -> Self {
         self.context = value;
-        self
-    }
-
-    /// The context in which the script or search template should run.
-    /// To prevent errors, the API immediately compiles the script or template in this context.
-    /// If you specify both this and the `<context>` path parameter, the API uses the request path parameter.
-    pub fn context2(mut self, value: impl Into<crate::typed::_types::Name>) -> Self {
-        self.context2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`context2`](Self::context2) if `value` is `Some`.
-    pub fn maybe_context2(mut self, value: Option<crate::typed::_types::Name>) -> Self {
-        self.context2 = value;
         self
     }
 
@@ -286,7 +265,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         Request {
             id: self.id.unwrap(),
             context: self.context,
-            context2: self.context2,
             master_timeout: self.master_timeout,
             timeout: self.timeout,
             error_trace: self.error_trace,
@@ -354,9 +332,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.context2 {
-            query.push(("context", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.master_timeout {
             query.push(("master_timeout", crate::typed::support::query_value(value)));
         }

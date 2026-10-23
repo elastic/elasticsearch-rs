@@ -33,37 +33,6 @@ pub struct Request {
     /// You can summarize the bucket results for all anomaly detection jobs by
     /// using `_all` or by specifying `*` as the `<job_id>`.
     pub job_id: crate::typed::_types::Id,
-    /// Specifies what to do when the request:
-    ///
-    /// 1. Contains wildcard expressions and there are no jobs that match.
-    /// 2. Contains the `_all` string or no identifiers and there are no matches.
-    /// 3. Contains wildcard expressions and there are only partial matches.
-    ///
-    /// If `true`, the request returns an empty `jobs` array when there are no
-    /// matches and the subset of results when there are partial matches. If this
-    /// parameter is `false`, the request returns a `404` status code when there
-    /// are no matches or only partial matches.
-    pub allow_no_match: Option<bool>,
-    /// The span of the overall buckets. Must be greater or equal to the largest
-    /// bucket span of the specified anomaly detection jobs, which is the default
-    /// value.
-    ///
-    /// By default, an overall bucket has a span equal to the largest bucket span
-    /// of the specified anomaly detection jobs. To override that behavior, use
-    /// the optional `bucket_span` parameter.
-    pub bucket_span: Option<crate::typed::_types::Duration>,
-    /// Returns overall buckets with timestamps earlier than this time.
-    pub end: Option<crate::typed::_types::DateTime>,
-    /// If `true`, the output excludes interim results.
-    pub exclude_interim: Option<bool>,
-    /// Returns overall buckets with overall scores greater than or equal to this
-    /// value.
-    pub overall_score: Option<crate::typed::support::Float64>,
-    /// Returns overall buckets with timestamps after this time.
-    pub start: Option<crate::typed::_types::DateTime>,
-    /// The number of top anomaly detection job bucket scores to be used in the
-    /// `overall_score` calculation.
-    pub top_n: Option<i32>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -80,19 +49,19 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `allow_no_match` query parameter.
-    pub allow_no_match2: Option<bool>,
+    pub allow_no_match: Option<bool>,
     /// Refer to the description for the `bucket_span` query parameter.
-    pub bucket_span2: Option<crate::typed::_types::Duration>,
+    pub bucket_span: Option<crate::typed::_types::Duration>,
     /// Refer to the description for the `end` query parameter.
-    pub end2: Option<crate::typed::_types::DateTime>,
+    pub end: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `exclude_interim` query parameter.
-    pub exclude_interim2: Option<bool>,
+    pub exclude_interim: Option<bool>,
     /// Refer to the description for the `overall_score` query parameter.
-    pub overall_score2: Option<crate::typed::support::Float64>,
+    pub overall_score: Option<crate::typed::support::Float64>,
     /// Refer to the description for the `start` query parameter.
-    pub start2: Option<crate::typed::_types::DateTime>,
+    pub start: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `top_n` query parameter.
-    pub top_n2: Option<i32>,
+    pub top_n: Option<i32>,
 }
 
 impl Request {
@@ -124,6 +93,10 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     job_id: Option<crate::typed::_types::Id>,
+    error_trace: Option<bool>,
+    filter_path: Option<RequestFilterPath>,
+    human: Option<bool>,
+    pretty: Option<bool>,
     allow_no_match: Option<bool>,
     bucket_span: Option<crate::typed::_types::Duration>,
     end: Option<crate::typed::_types::DateTime>,
@@ -131,17 +104,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     overall_score: Option<crate::typed::support::Float64>,
     start: Option<crate::typed::_types::DateTime>,
     top_n: Option<i32>,
-    error_trace: Option<bool>,
-    filter_path: Option<RequestFilterPath>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    allow_no_match2: Option<bool>,
-    bucket_span2: Option<crate::typed::_types::Duration>,
-    end2: Option<crate::typed::_types::DateTime>,
-    exclude_interim2: Option<bool>,
-    overall_score2: Option<crate::typed::support::Float64>,
-    start2: Option<crate::typed::_types::DateTime>,
-    top_n2: Option<i32>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -150,6 +112,10 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             job_id: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
             allow_no_match: None,
             bucket_span: None,
             end: None,
@@ -157,17 +123,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             overall_score: None,
             start: None,
             top_n: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            allow_no_match2: None,
-            bucket_span2: None,
-            end2: None,
-            exclude_interim2: None,
-            overall_score2: None,
-            start2: None,
-            top_n2: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -178,6 +133,10 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             job_id: self.job_id,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             allow_no_match: self.allow_no_match,
             bucket_span: self.bucket_span,
             end: self.end,
@@ -185,121 +144,9 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             overall_score: self.overall_score,
             start: self.start,
             top_n: self.top_n,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            allow_no_match2: self.allow_no_match2,
-            bucket_span2: self.bucket_span2,
-            end2: self.end2,
-            exclude_interim2: self.exclude_interim2,
-            overall_score2: self.overall_score2,
-            start2: self.start2,
-            top_n2: self.top_n2,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// Specifies what to do when the request:
-    ///
-    /// 1. Contains wildcard expressions and there are no jobs that match.
-    /// 2. Contains the `_all` string or no identifiers and there are no matches.
-    /// 3. Contains wildcard expressions and there are only partial matches.
-    ///
-    /// If `true`, the request returns an empty `jobs` array when there are no
-    /// matches and the subset of results when there are partial matches. If this
-    /// parameter is `false`, the request returns a `404` status code when there
-    /// are no matches or only partial matches.
-    pub fn allow_no_match(mut self, value: bool) -> Self {
-        self.allow_no_match = Some(value);
-        self
-    }
-
-    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
-    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match = value;
-        self
-    }
-
-    /// The span of the overall buckets. Must be greater or equal to the largest
-    /// bucket span of the specified anomaly detection jobs, which is the default
-    /// value.
-    ///
-    /// By default, an overall bucket has a span equal to the largest bucket span
-    /// of the specified anomaly detection jobs. To override that behavior, use
-    /// the optional `bucket_span` parameter.
-    pub fn bucket_span(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.bucket_span = Some(value.into());
-        self
-    }
-
-    /// Sets [`bucket_span`](Self::bucket_span) if `value` is `Some`.
-    pub fn maybe_bucket_span(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.bucket_span = value;
-        self
-    }
-
-    /// Returns overall buckets with timestamps earlier than this time.
-    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end = Some(value.into());
-        self
-    }
-
-    /// Sets [`end`](Self::end) if `value` is `Some`.
-    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end = value;
-        self
-    }
-
-    /// If `true`, the output excludes interim results.
-    pub fn exclude_interim(mut self, value: bool) -> Self {
-        self.exclude_interim = Some(value);
-        self
-    }
-
-    /// Sets [`exclude_interim`](Self::exclude_interim) if `value` is `Some`.
-    pub fn maybe_exclude_interim(mut self, value: Option<bool>) -> Self {
-        self.exclude_interim = value;
-        self
-    }
-
-    /// Returns overall buckets with overall scores greater than or equal to this
-    /// value.
-    pub fn overall_score(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
-        self.overall_score = Some(value.into());
-        self
-    }
-
-    /// Sets [`overall_score`](Self::overall_score) if `value` is `Some`.
-    pub fn maybe_overall_score(mut self, value: Option<crate::typed::support::Float64>) -> Self {
-        self.overall_score = value;
-        self
-    }
-
-    /// Returns overall buckets with timestamps after this time.
-    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start = Some(value.into());
-        self
-    }
-
-    /// Sets [`start`](Self::start) if `value` is `Some`.
-    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start = value;
-        self
-    }
-
-    /// The number of top anomaly detection job bucket scores to be used in the
-    /// `overall_score` calculation.
-    pub fn top_n(mut self, value: i32) -> Self {
-        self.top_n = Some(value);
-        self
-    }
-
-    /// Sets [`top_n`](Self::top_n) if `value` is `Some`.
-    pub fn maybe_top_n(mut self, value: Option<i32>) -> Self {
-        self.top_n = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -358,86 +205,86 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the description for the `allow_no_match` query parameter.
-    pub fn allow_no_match2(mut self, value: bool) -> Self {
-        self.allow_no_match2 = Some(value);
+    pub fn allow_no_match(mut self, value: bool) -> Self {
+        self.allow_no_match = Some(value);
         self
     }
 
-    /// Sets [`allow_no_match2`](Self::allow_no_match2) if `value` is `Some`.
-    pub fn maybe_allow_no_match2(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match2 = value;
+    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
+    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
+        self.allow_no_match = value;
         self
     }
 
     /// Refer to the description for the `bucket_span` query parameter.
-    pub fn bucket_span2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.bucket_span2 = Some(value.into());
+    pub fn bucket_span(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.bucket_span = Some(value.into());
         self
     }
 
-    /// Sets [`bucket_span2`](Self::bucket_span2) if `value` is `Some`.
-    pub fn maybe_bucket_span2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.bucket_span2 = value;
+    /// Sets [`bucket_span`](Self::bucket_span) if `value` is `Some`.
+    pub fn maybe_bucket_span(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.bucket_span = value;
         self
     }
 
     /// Refer to the description for the `end` query parameter.
-    pub fn end2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = Some(value.into());
+    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.end = Some(value.into());
         self
     }
 
-    /// Sets [`end2`](Self::end2) if `value` is `Some`.
-    pub fn maybe_end2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = value;
+    /// Sets [`end`](Self::end) if `value` is `Some`.
+    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.end = value;
         self
     }
 
     /// Refer to the description for the `exclude_interim` query parameter.
-    pub fn exclude_interim2(mut self, value: bool) -> Self {
-        self.exclude_interim2 = Some(value);
+    pub fn exclude_interim(mut self, value: bool) -> Self {
+        self.exclude_interim = Some(value);
         self
     }
 
-    /// Sets [`exclude_interim2`](Self::exclude_interim2) if `value` is `Some`.
-    pub fn maybe_exclude_interim2(mut self, value: Option<bool>) -> Self {
-        self.exclude_interim2 = value;
+    /// Sets [`exclude_interim`](Self::exclude_interim) if `value` is `Some`.
+    pub fn maybe_exclude_interim(mut self, value: Option<bool>) -> Self {
+        self.exclude_interim = value;
         self
     }
 
     /// Refer to the description for the `overall_score` query parameter.
-    pub fn overall_score2(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
-        self.overall_score2 = Some(value.into());
+    pub fn overall_score(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
+        self.overall_score = Some(value.into());
         self
     }
 
-    /// Sets [`overall_score2`](Self::overall_score2) if `value` is `Some`.
-    pub fn maybe_overall_score2(mut self, value: Option<crate::typed::support::Float64>) -> Self {
-        self.overall_score2 = value;
+    /// Sets [`overall_score`](Self::overall_score) if `value` is `Some`.
+    pub fn maybe_overall_score(mut self, value: Option<crate::typed::support::Float64>) -> Self {
+        self.overall_score = value;
         self
     }
 
     /// Refer to the description for the `start` query parameter.
-    pub fn start2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = Some(value.into());
+    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.start = Some(value.into());
         self
     }
 
-    /// Sets [`start2`](Self::start2) if `value` is `Some`.
-    pub fn maybe_start2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = value;
+    /// Sets [`start`](Self::start) if `value` is `Some`.
+    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.start = value;
         self
     }
 
     /// Refer to the description for the `top_n` query parameter.
-    pub fn top_n2(mut self, value: i32) -> Self {
-        self.top_n2 = Some(value);
+    pub fn top_n(mut self, value: i32) -> Self {
+        self.top_n = Some(value);
         self
     }
 
-    /// Sets [`top_n2`](Self::top_n2) if `value` is `Some`.
-    pub fn maybe_top_n2(mut self, value: Option<i32>) -> Self {
-        self.top_n2 = value;
+    /// Sets [`top_n`](Self::top_n) if `value` is `Some`.
+    pub fn maybe_top_n(mut self, value: Option<i32>) -> Self {
+        self.top_n = value;
         self
     }
 }
@@ -467,6 +314,10 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             job_id: self.job_id.unwrap(),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             allow_no_match: self.allow_no_match,
             bucket_span: self.bucket_span,
             end: self.end,
@@ -474,17 +325,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             overall_score: self.overall_score,
             start: self.start,
             top_n: self.top_n,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            allow_no_match2: self.allow_no_match2,
-            bucket_span2: self.bucket_span2,
-            end2: self.end2,
-            exclude_interim2: self.exclude_interim2,
-            overall_score2: self.overall_score2,
-            start2: self.start2,
-            top_n2: self.top_n2,
         }
     }
 }
@@ -536,27 +376,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.allow_no_match {
-            query.push(("allow_no_match", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.bucket_span {
-            query.push(("bucket_span", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.end {
-            query.push(("end", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.exclude_interim {
-            query.push(("exclude_interim", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.overall_score {
-            query.push(("overall_score", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.start {
-            query.push(("start", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.top_n {
-            query.push(("top_n", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -575,13 +394,13 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            allow_no_match2: self.allow_no_match2.as_ref(),
-            bucket_span2: self.bucket_span2.as_ref(),
-            end2: self.end2.as_ref(),
-            exclude_interim2: self.exclude_interim2.as_ref(),
-            overall_score2: self.overall_score2.as_ref(),
-            start2: self.start2.as_ref(),
-            top_n2: self.top_n2.as_ref(),
+            allow_no_match: self.allow_no_match.as_ref(),
+            bucket_span: self.bucket_span.as_ref(),
+            end: self.end.as_ref(),
+            exclude_interim: self.exclude_interim.as_ref(),
+            overall_score: self.overall_score.as_ref(),
+            start: self.start.as_ref(),
+            top_n: self.top_n.as_ref(),
         }
     }
 
@@ -611,20 +430,20 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
-    allow_no_match2: Option<&'a bool>,
-    #[serde(rename = "bucket_span", skip_serializing_if = "Option::is_none")]
-    bucket_span2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(rename = "end", skip_serializing_if = "Option::is_none")]
-    end2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "exclude_interim", skip_serializing_if = "Option::is_none")]
-    exclude_interim2: Option<&'a bool>,
-    #[serde(rename = "overall_score", skip_serializing_if = "Option::is_none")]
-    overall_score2: Option<&'a crate::typed::support::Float64>,
-    #[serde(rename = "start", skip_serializing_if = "Option::is_none")]
-    start2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "top_n", skip_serializing_if = "Option::is_none")]
-    top_n2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    allow_no_match: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    bucket_span: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    end: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    exclude_interim: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    overall_score: Option<&'a crate::typed::support::Float64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    start: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    top_n: Option<&'a i32>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

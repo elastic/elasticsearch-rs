@@ -1090,10 +1090,6 @@ pub struct Request {
     /// If specified, the `analyzer` or field parameter overrides this value.
     /// If no index is specified or the index does not have a default analyzer, the analyze API uses the standard analyzer.
     pub index: Option<crate::typed::_types::IndexName>,
-    /// Index used to derive the analyzer.
-    /// If specified, the `analyzer` or field parameter overrides this value.
-    /// If no index is specified or the index does not have a default analyzer, the analyze API uses the standard analyzer.
-    pub index2: Option<crate::typed::_types::IndexName>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -1151,7 +1147,6 @@ impl Request {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
     index: Option<crate::typed::_types::IndexName>,
-    index2: Option<crate::typed::_types::IndexName>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -1173,7 +1168,6 @@ impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             index: None,
-            index2: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1205,20 +1199,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`index`](Self::index) if `value` is `Some`.
     pub fn maybe_index(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
         self.index = value;
-        self
-    }
-
-    /// Index used to derive the analyzer.
-    /// If specified, the `analyzer` or field parameter overrides this value.
-    /// If no index is specified or the index does not have a default analyzer, the analyze API uses the standard analyzer.
-    pub fn index2(mut self, value: impl Into<crate::typed::_types::IndexName>) -> Self {
-        self.index2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`index2`](Self::index2) if `value` is `Some`.
-    pub fn maybe_index2(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
-        self.index2 = value;
         self
     }
 
@@ -1453,7 +1433,6 @@ impl<C> RequestBuilder<(), C> {
     pub fn build(self) -> Request {
         Request {
             index: self.index,
-            index2: self.index2,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1512,9 +1491,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.index2 {
-            query.push(("index", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }

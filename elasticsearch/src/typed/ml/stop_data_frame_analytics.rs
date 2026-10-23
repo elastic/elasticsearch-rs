@@ -15,6 +15,21 @@ pub struct Request {
     /// lowercase alphanumeric characters (a-z and 0-9), hyphens, and
     /// underscores. It must start and end with alphanumeric characters.
     pub id: crate::typed::_types::Id,
+    /// When set to `true` Elasticsearch will include the full stack trace of errors
+    /// when they occur.
+    pub error_trace: Option<bool>,
+    /// Comma-separated list of filters in dot notation which reduce the response
+    /// returned by Elasticsearch.
+    pub filter_path: Option<RequestFilterPath>,
+    /// When set to `true` will return statistics in a format suitable for humans.
+    /// For example `"exists_time": "1h"` for humans and
+    /// `"exists_time_in_millis": 3600000` for computers. When disabled the human
+    /// readable values will be omitted. This makes sense for responses being consumed
+    /// only by machines.
+    pub human: Option<bool>,
+    /// If set to `true` the returned JSON will be "pretty-formatted". Only use
+    /// this option for debugging only.
+    pub pretty: Option<bool>,
     /// Specifies what to do when the request:
     ///
     /// 1. Contains wildcard expressions and there are no data frame analytics
@@ -32,40 +47,6 @@ pub struct Request {
     /// Controls the amount of time to wait until the data frame analytics job
     /// stops. Defaults to 20 seconds.
     pub timeout: Option<crate::typed::_types::Duration>,
-    /// When set to `true` Elasticsearch will include the full stack trace of errors
-    /// when they occur.
-    pub error_trace: Option<bool>,
-    /// Comma-separated list of filters in dot notation which reduce the response
-    /// returned by Elasticsearch.
-    pub filter_path: Option<RequestFilterPath>,
-    /// When set to `true` will return statistics in a format suitable for humans.
-    /// For example `"exists_time": "1h"` for humans and
-    /// `"exists_time_in_millis": 3600000` for computers. When disabled the human
-    /// readable values will be omitted. This makes sense for responses being consumed
-    /// only by machines.
-    pub human: Option<bool>,
-    /// If set to `true` the returned JSON will be "pretty-formatted". Only use
-    /// this option for debugging only.
-    pub pretty: Option<bool>,
-    /// If provided, must be the same identifier as in the path.
-    pub id2: Option<crate::typed::_types::Id>,
-    /// Specifies what to do when the request:
-    ///
-    /// 1. Contains wildcard expressions and there are no data frame analytics
-    /// jobs that match.
-    /// 2. Contains the _all string or no identifiers and there are no matches.
-    /// 3. Contains wildcard expressions and there are only partial matches.
-    ///
-    /// The default value is true, which returns an empty data_frame_analytics
-    /// array when there are no matches and the subset of results when there are
-    /// partial matches. If this parameter is false, the request returns a 404
-    /// status code when there are no matches or only partial matches.
-    pub allow_no_match2: Option<bool>,
-    /// If true, the data frame analytics job is stopped forcefully.
-    pub force2: Option<bool>,
-    /// Controls the amount of time to wait until the data frame analytics job
-    /// stops. Defaults to 20 seconds.
-    pub timeout2: Option<crate::typed::_types::Duration>,
 }
 
 impl Request {
@@ -97,17 +78,13 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     id: Option<crate::typed::_types::Id>,
-    allow_no_match: Option<bool>,
-    force: Option<bool>,
-    timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    id2: Option<crate::typed::_types::Id>,
-    allow_no_match2: Option<bool>,
-    force2: Option<bool>,
-    timeout2: Option<crate::typed::_types::Duration>,
+    allow_no_match: Option<bool>,
+    force: Option<bool>,
+    timeout: Option<crate::typed::_types::Duration>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -116,17 +93,13 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             id: None,
-            allow_no_match: None,
-            force: None,
-            timeout: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            id2: None,
-            allow_no_match2: None,
-            force2: None,
-            timeout2: None,
+            allow_no_match: None,
+            force: None,
+            timeout: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -137,67 +110,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             id: self.id,
-            allow_no_match: self.allow_no_match,
-            force: self.force,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            id2: self.id2,
-            allow_no_match2: self.allow_no_match2,
-            force2: self.force2,
-            timeout2: self.timeout2,
+            allow_no_match: self.allow_no_match,
+            force: self.force,
+            timeout: self.timeout,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// Specifies what to do when the request:
-    ///
-    /// 1. Contains wildcard expressions and there are no data frame analytics
-    /// jobs that match.
-    /// 2. Contains the _all string or no identifiers and there are no matches.
-    /// 3. Contains wildcard expressions and there are only partial matches.
-    ///
-    /// The default value is true, which returns an empty data_frame_analytics
-    /// array when there are no matches and the subset of results when there are
-    /// partial matches. If this parameter is false, the request returns a 404
-    /// status code when there are no matches or only partial matches.
-    pub fn allow_no_match(mut self, value: bool) -> Self {
-        self.allow_no_match = Some(value);
-        self
-    }
-
-    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
-    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match = value;
-        self
-    }
-
-    /// If true, the data frame analytics job is stopped forcefully.
-    pub fn force(mut self, value: bool) -> Self {
-        self.force = Some(value);
-        self
-    }
-
-    /// Sets [`force`](Self::force) if `value` is `Some`.
-    pub fn maybe_force(mut self, value: Option<bool>) -> Self {
-        self.force = value;
-        self
-    }
-
-    /// Controls the amount of time to wait until the data frame analytics job
-    /// stops. Defaults to 20 seconds.
-    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
-    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -255,18 +177,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
-    /// If provided, must be the same identifier as in the path.
-    pub fn id2(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.id2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`id2`](Self::id2) if `value` is `Some`.
-    pub fn maybe_id2(mut self, value: Option<crate::typed::_types::Id>) -> Self {
-        self.id2 = value;
-        self
-    }
-
     /// Specifies what to do when the request:
     ///
     /// 1. Contains wildcard expressions and there are no data frame analytics
@@ -278,39 +188,39 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// array when there are no matches and the subset of results when there are
     /// partial matches. If this parameter is false, the request returns a 404
     /// status code when there are no matches or only partial matches.
-    pub fn allow_no_match2(mut self, value: bool) -> Self {
-        self.allow_no_match2 = Some(value);
+    pub fn allow_no_match(mut self, value: bool) -> Self {
+        self.allow_no_match = Some(value);
         self
     }
 
-    /// Sets [`allow_no_match2`](Self::allow_no_match2) if `value` is `Some`.
-    pub fn maybe_allow_no_match2(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match2 = value;
+    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
+    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
+        self.allow_no_match = value;
         self
     }
 
     /// If true, the data frame analytics job is stopped forcefully.
-    pub fn force2(mut self, value: bool) -> Self {
-        self.force2 = Some(value);
+    pub fn force(mut self, value: bool) -> Self {
+        self.force = Some(value);
         self
     }
 
-    /// Sets [`force2`](Self::force2) if `value` is `Some`.
-    pub fn maybe_force2(mut self, value: Option<bool>) -> Self {
-        self.force2 = value;
+    /// Sets [`force`](Self::force) if `value` is `Some`.
+    pub fn maybe_force(mut self, value: Option<bool>) -> Self {
+        self.force = value;
         self
     }
 
     /// Controls the amount of time to wait until the data frame analytics job
     /// stops. Defaults to 20 seconds.
-    pub fn timeout2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = Some(value.into());
+    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.timeout = Some(value.into());
         self
     }
 
-    /// Sets [`timeout2`](Self::timeout2) if `value` is `Some`.
-    pub fn maybe_timeout2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = value;
+    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
+    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.timeout = value;
         self
     }
 }
@@ -337,17 +247,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             id: self.id.unwrap(),
-            allow_no_match: self.allow_no_match,
-            force: self.force,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            id2: self.id2,
-            allow_no_match2: self.allow_no_match2,
-            force2: self.force2,
-            timeout2: self.timeout2,
+            allow_no_match: self.allow_no_match,
+            force: self.force,
+            timeout: self.timeout,
         }
     }
 }
@@ -399,15 +305,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.allow_no_match {
-            query.push(("allow_no_match", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.force {
-            query.push(("force", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.timeout {
-            query.push(("timeout", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -426,10 +323,9 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            id2: self.id2.as_ref(),
-            allow_no_match2: self.allow_no_match2.as_ref(),
-            force2: self.force2.as_ref(),
-            timeout2: self.timeout2.as_ref(),
+            allow_no_match: self.allow_no_match.as_ref(),
+            force: self.force.as_ref(),
+            timeout: self.timeout.as_ref(),
         }
     }
 
@@ -459,14 +355,12 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-    id2: Option<&'a crate::typed::_types::Id>,
-    #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
-    allow_no_match2: Option<&'a bool>,
-    #[serde(rename = "force", skip_serializing_if = "Option::is_none")]
-    force2: Option<&'a bool>,
-    #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    timeout2: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    allow_no_match: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    force: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timeout: Option<&'a crate::typed::_types::Duration>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

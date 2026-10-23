@@ -20,11 +20,6 @@ pub struct Request {
     /// expressions are evaluated. If `true`, index expressions that resolve to no
     /// indices are allowed and the request returns an empty result.
     pub allow_no_indices: Option<bool>,
-    /// If true, returns partial results if there are shard failures. If false, returns an error with no partial results.
-    pub allow_partial_search_results: Option<bool>,
-    /// If true, sequence queries will return partial results in case of shard failures. If false, they will return no results at all.
-    /// This flag has effect only if allow_partial_search_results is true.
-    pub allow_partial_sequence_results: Option<bool>,
     /// Whether to expand wildcard expression to concrete indices that are open, closed or both.
     pub expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
     /// Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution
@@ -33,12 +28,6 @@ pub struct Request {
     /// index, alias, or data stream that is missing, closed, or otherwise unavailable.
     /// If `true`, unavailable concrete targets are silently ignored.
     pub ignore_unavailable: Option<bool>,
-    /// Period for which the search and its results are stored on the cluster.
-    pub keep_alive: Option<crate::typed::_types::Duration>,
-    /// If true, the search and its results are stored on the cluster.
-    pub keep_on_completion: Option<bool>,
-    /// Timeout duration to wait for the request to finish. Defaults to no timeout, meaning the request waits for complete search results.
-    pub wait_for_completion_timeout: Option<crate::typed::_types::Duration>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -76,17 +65,17 @@ pub struct Request {
     pub fetch_size: Option<u32>,
     /// Query, written in Query DSL, used to filter the events on which the EQL query runs.
     pub filter: Option<RequestFilter>,
-    pub keep_alive2: Option<crate::typed::_types::Duration>,
-    pub keep_on_completion2: Option<bool>,
-    pub wait_for_completion_timeout2: Option<crate::typed::_types::Duration>,
+    pub keep_alive: Option<crate::typed::_types::Duration>,
+    pub keep_on_completion: Option<bool>,
+    pub wait_for_completion_timeout: Option<crate::typed::_types::Duration>,
     /// Allow query execution also in case of shard failures.
     /// If true, the query will keep running and will return results based on the available shards.
     /// For sequences, the behavior can be further refined using allow_partial_sequence_results
-    pub allow_partial_search_results2: Option<bool>,
+    pub allow_partial_search_results: Option<bool>,
     /// This flag applies only to sequences and has effect only if allow_partial_search_results=true.
     /// If true, the sequence query will return results based on the available shards, ignoring the others.
     /// If false, the sequence query will return successfully, but will always have empty results.
-    pub allow_partial_sequence_results2: Option<bool>,
+    pub allow_partial_sequence_results: Option<bool>,
     /// For basic queries, the maximum number of matching events to return. Defaults to 10
     pub size: Option<u32>,
     /// Array of wildcard (*) patterns. The response returns values for field names matching these patterns in the fields property of each hit.
@@ -133,14 +122,9 @@ pub struct RequestBuilder<
 > {
     index: Option<crate::typed::_types::Indices>,
     allow_no_indices: Option<bool>,
-    allow_partial_search_results: Option<bool>,
-    allow_partial_sequence_results: Option<bool>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
     ccs_minimize_roundtrips: Option<bool>,
     ignore_unavailable: Option<bool>,
-    keep_alive: Option<crate::typed::_types::Duration>,
-    keep_on_completion: Option<bool>,
-    wait_for_completion_timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -153,11 +137,11 @@ pub struct RequestBuilder<
     timestamp_field: Option<crate::typed::_types::Field>,
     fetch_size: Option<u32>,
     filter: Option<RequestFilter>,
-    keep_alive2: Option<crate::typed::_types::Duration>,
-    keep_on_completion2: Option<bool>,
-    wait_for_completion_timeout2: Option<crate::typed::_types::Duration>,
-    allow_partial_search_results2: Option<bool>,
-    allow_partial_sequence_results2: Option<bool>,
+    keep_alive: Option<crate::typed::_types::Duration>,
+    keep_on_completion: Option<bool>,
+    wait_for_completion_timeout: Option<crate::typed::_types::Duration>,
+    allow_partial_search_results: Option<bool>,
+    allow_partial_sequence_results: Option<bool>,
     size: Option<u32>,
     fields: Option<RequestFields>,
     result_position: Option<ResultPosition>,
@@ -172,14 +156,9 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
         RequestBuilder {
             index: None,
             allow_no_indices: None,
-            allow_partial_search_results: None,
-            allow_partial_sequence_results: None,
             expand_wildcards: None,
             ccs_minimize_roundtrips: None,
             ignore_unavailable: None,
-            keep_alive: None,
-            keep_on_completion: None,
-            wait_for_completion_timeout: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -192,11 +171,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
             timestamp_field: None,
             fetch_size: None,
             filter: None,
-            keep_alive2: None,
-            keep_on_completion2: None,
-            wait_for_completion_timeout2: None,
-            allow_partial_search_results2: None,
-            allow_partial_sequence_results2: None,
+            keep_alive: None,
+            keep_on_completion: None,
+            wait_for_completion_timeout: None,
+            allow_partial_search_results: None,
+            allow_partial_sequence_results: None,
             size: None,
             fields: None,
             result_position: None,
@@ -213,14 +192,9 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         RequestBuilder {
             index: self.index,
             allow_no_indices: self.allow_no_indices,
-            allow_partial_search_results: self.allow_partial_search_results,
-            allow_partial_sequence_results: self.allow_partial_sequence_results,
             expand_wildcards: self.expand_wildcards,
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             ignore_unavailable: self.ignore_unavailable,
-            keep_alive: self.keep_alive,
-            keep_on_completion: self.keep_on_completion,
-            wait_for_completion_timeout: self.wait_for_completion_timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -233,11 +207,11 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             timestamp_field: self.timestamp_field,
             fetch_size: self.fetch_size,
             filter: self.filter,
-            keep_alive2: self.keep_alive2,
-            keep_on_completion2: self.keep_on_completion2,
-            wait_for_completion_timeout2: self.wait_for_completion_timeout2,
-            allow_partial_search_results2: self.allow_partial_search_results2,
-            allow_partial_sequence_results2: self.allow_partial_sequence_results2,
+            keep_alive: self.keep_alive,
+            keep_on_completion: self.keep_on_completion,
+            wait_for_completion_timeout: self.wait_for_completion_timeout,
+            allow_partial_search_results: self.allow_partial_search_results,
+            allow_partial_sequence_results: self.allow_partial_sequence_results,
             size: self.size,
             fields: self.fields,
             result_position: self.result_position,
@@ -262,31 +236,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Sets [`allow_no_indices`](Self::allow_no_indices) if `value` is `Some`.
     pub fn maybe_allow_no_indices(mut self, value: Option<bool>) -> Self {
         self.allow_no_indices = value;
-        self
-    }
-
-    /// If true, returns partial results if there are shard failures. If false, returns an error with no partial results.
-    pub fn allow_partial_search_results(mut self, value: bool) -> Self {
-        self.allow_partial_search_results = Some(value);
-        self
-    }
-
-    /// Sets [`allow_partial_search_results`](Self::allow_partial_search_results) if `value` is `Some`.
-    pub fn maybe_allow_partial_search_results(mut self, value: Option<bool>) -> Self {
-        self.allow_partial_search_results = value;
-        self
-    }
-
-    /// If true, sequence queries will return partial results in case of shard failures. If false, they will return no results at all.
-    /// This flag has effect only if allow_partial_search_results is true.
-    pub fn allow_partial_sequence_results(mut self, value: bool) -> Self {
-        self.allow_partial_sequence_results = Some(value);
-        self
-    }
-
-    /// Sets [`allow_partial_sequence_results`](Self::allow_partial_sequence_results) if `value` is `Some`.
-    pub fn maybe_allow_partial_sequence_results(mut self, value: Option<bool>) -> Self {
-        self.allow_partial_sequence_results = value;
         self
     }
 
@@ -331,48 +280,6 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     /// Sets [`ignore_unavailable`](Self::ignore_unavailable) if `value` is `Some`.
     pub fn maybe_ignore_unavailable(mut self, value: Option<bool>) -> Self {
         self.ignore_unavailable = value;
-        self
-    }
-
-    /// Period for which the search and its results are stored on the cluster.
-    pub fn keep_alive(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.keep_alive = Some(value.into());
-        self
-    }
-
-    /// Sets [`keep_alive`](Self::keep_alive) if `value` is `Some`.
-    pub fn maybe_keep_alive(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.keep_alive = value;
-        self
-    }
-
-    /// If true, the search and its results are stored on the cluster.
-    pub fn keep_on_completion(mut self, value: bool) -> Self {
-        self.keep_on_completion = Some(value);
-        self
-    }
-
-    /// Sets [`keep_on_completion`](Self::keep_on_completion) if `value` is `Some`.
-    pub fn maybe_keep_on_completion(mut self, value: Option<bool>) -> Self {
-        self.keep_on_completion = value;
-        self
-    }
-
-    /// Timeout duration to wait for the request to finish. Defaults to no timeout, meaning the request waits for complete search results.
-    pub fn wait_for_completion_timeout(
-        mut self,
-        value: impl Into<crate::typed::_types::Duration>,
-    ) -> Self {
-        self.wait_for_completion_timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`wait_for_completion_timeout`](Self::wait_for_completion_timeout) if `value` is `Some`.
-    pub fn maybe_wait_for_completion_timeout(
-        mut self,
-        value: Option<crate::typed::_types::Duration>,
-    ) -> Self {
-        self.wait_for_completion_timeout = value;
         self
     }
 
@@ -540,70 +447,70 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self.filter(f(crate::typed::_types::query_dsl::QueryContainerBuilder::new()).build())
     }
 
-    pub fn keep_alive2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.keep_alive2 = Some(value.into());
+    pub fn keep_alive(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.keep_alive = Some(value.into());
         self
     }
 
-    /// Sets [`keep_alive2`](Self::keep_alive2) if `value` is `Some`.
-    pub fn maybe_keep_alive2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.keep_alive2 = value;
+    /// Sets [`keep_alive`](Self::keep_alive) if `value` is `Some`.
+    pub fn maybe_keep_alive(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.keep_alive = value;
         self
     }
 
-    pub fn keep_on_completion2(mut self, value: bool) -> Self {
-        self.keep_on_completion2 = Some(value);
+    pub fn keep_on_completion(mut self, value: bool) -> Self {
+        self.keep_on_completion = Some(value);
         self
     }
 
-    /// Sets [`keep_on_completion2`](Self::keep_on_completion2) if `value` is `Some`.
-    pub fn maybe_keep_on_completion2(mut self, value: Option<bool>) -> Self {
-        self.keep_on_completion2 = value;
+    /// Sets [`keep_on_completion`](Self::keep_on_completion) if `value` is `Some`.
+    pub fn maybe_keep_on_completion(mut self, value: Option<bool>) -> Self {
+        self.keep_on_completion = value;
         self
     }
 
-    pub fn wait_for_completion_timeout2(
+    pub fn wait_for_completion_timeout(
         mut self,
         value: impl Into<crate::typed::_types::Duration>,
     ) -> Self {
-        self.wait_for_completion_timeout2 = Some(value.into());
+        self.wait_for_completion_timeout = Some(value.into());
         self
     }
 
-    /// Sets [`wait_for_completion_timeout2`](Self::wait_for_completion_timeout2) if `value` is `Some`.
-    pub fn maybe_wait_for_completion_timeout2(
+    /// Sets [`wait_for_completion_timeout`](Self::wait_for_completion_timeout) if `value` is `Some`.
+    pub fn maybe_wait_for_completion_timeout(
         mut self,
         value: Option<crate::typed::_types::Duration>,
     ) -> Self {
-        self.wait_for_completion_timeout2 = value;
+        self.wait_for_completion_timeout = value;
         self
     }
 
     /// Allow query execution also in case of shard failures.
     /// If true, the query will keep running and will return results based on the available shards.
     /// For sequences, the behavior can be further refined using allow_partial_sequence_results
-    pub fn allow_partial_search_results2(mut self, value: bool) -> Self {
-        self.allow_partial_search_results2 = Some(value);
+    pub fn allow_partial_search_results(mut self, value: bool) -> Self {
+        self.allow_partial_search_results = Some(value);
         self
     }
 
-    /// Sets [`allow_partial_search_results2`](Self::allow_partial_search_results2) if `value` is `Some`.
-    pub fn maybe_allow_partial_search_results2(mut self, value: Option<bool>) -> Self {
-        self.allow_partial_search_results2 = value;
+    /// Sets [`allow_partial_search_results`](Self::allow_partial_search_results) if `value` is `Some`.
+    pub fn maybe_allow_partial_search_results(mut self, value: Option<bool>) -> Self {
+        self.allow_partial_search_results = value;
         self
     }
 
     /// This flag applies only to sequences and has effect only if allow_partial_search_results=true.
     /// If true, the sequence query will return results based on the available shards, ignoring the others.
     /// If false, the sequence query will return successfully, but will always have empty results.
-    pub fn allow_partial_sequence_results2(mut self, value: bool) -> Self {
-        self.allow_partial_sequence_results2 = Some(value);
+    pub fn allow_partial_sequence_results(mut self, value: bool) -> Self {
+        self.allow_partial_sequence_results = Some(value);
         self
     }
 
-    /// Sets [`allow_partial_sequence_results2`](Self::allow_partial_sequence_results2) if `value` is `Some`.
-    pub fn maybe_allow_partial_sequence_results2(mut self, value: Option<bool>) -> Self {
-        self.allow_partial_sequence_results2 = value;
+    /// Sets [`allow_partial_sequence_results`](Self::allow_partial_sequence_results) if `value` is `Some`.
+    pub fn maybe_allow_partial_sequence_results(mut self, value: Option<bool>) -> Self {
+        self.allow_partial_sequence_results = value;
         self
     }
 
@@ -744,14 +651,9 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         Request {
             index: self.index.unwrap(),
             allow_no_indices: self.allow_no_indices,
-            allow_partial_search_results: self.allow_partial_search_results,
-            allow_partial_sequence_results: self.allow_partial_sequence_results,
             expand_wildcards: self.expand_wildcards,
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             ignore_unavailable: self.ignore_unavailable,
-            keep_alive: self.keep_alive,
-            keep_on_completion: self.keep_on_completion,
-            wait_for_completion_timeout: self.wait_for_completion_timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -764,11 +666,11 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
             timestamp_field: self.timestamp_field,
             fetch_size: self.fetch_size,
             filter: self.filter,
-            keep_alive2: self.keep_alive2,
-            keep_on_completion2: self.keep_on_completion2,
-            wait_for_completion_timeout2: self.wait_for_completion_timeout2,
-            allow_partial_search_results2: self.allow_partial_search_results2,
-            allow_partial_sequence_results2: self.allow_partial_sequence_results2,
+            keep_alive: self.keep_alive,
+            keep_on_completion: self.keep_on_completion,
+            wait_for_completion_timeout: self.wait_for_completion_timeout,
+            allow_partial_search_results: self.allow_partial_search_results,
+            allow_partial_sequence_results: self.allow_partial_sequence_results,
             size: self.size,
             fields: self.fields,
             result_position: self.result_position,
@@ -833,18 +735,6 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.allow_partial_search_results {
-            query.push((
-                "allow_partial_search_results",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.allow_partial_sequence_results {
-            query.push((
-                "allow_partial_sequence_results",
-                crate::typed::support::query_value(value),
-            ));
-        }
         if let Some(value) = &self.expand_wildcards {
             query.push((
                 "expand_wildcards",
@@ -860,21 +750,6 @@ impl Request {
         if let Some(value) = &self.ignore_unavailable {
             query.push((
                 "ignore_unavailable",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.keep_alive {
-            query.push(("keep_alive", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.keep_on_completion {
-            query.push((
-                "keep_on_completion",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.wait_for_completion_timeout {
-            query.push((
-                "wait_for_completion_timeout",
                 crate::typed::support::query_value(value),
             ));
         }
@@ -904,11 +779,11 @@ impl Request {
             timestamp_field: self.timestamp_field.as_ref(),
             fetch_size: self.fetch_size.as_ref(),
             filter: self.filter.as_ref(),
-            keep_alive2: self.keep_alive2.as_ref(),
-            keep_on_completion2: self.keep_on_completion2.as_ref(),
-            wait_for_completion_timeout2: self.wait_for_completion_timeout2.as_ref(),
-            allow_partial_search_results2: self.allow_partial_search_results2.as_ref(),
-            allow_partial_sequence_results2: self.allow_partial_sequence_results2.as_ref(),
+            keep_alive: self.keep_alive.as_ref(),
+            keep_on_completion: self.keep_on_completion.as_ref(),
+            wait_for_completion_timeout: self.wait_for_completion_timeout.as_ref(),
+            allow_partial_search_results: self.allow_partial_search_results.as_ref(),
+            allow_partial_sequence_results: self.allow_partial_sequence_results.as_ref(),
             size: self.size.as_ref(),
             fields: self.fields.as_ref(),
             result_position: self.result_position.as_ref(),
@@ -958,25 +833,16 @@ pub struct RequestBody<'a> {
     fetch_size: Option<&'a u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     filter: Option<&'a RequestFilter>,
-    #[serde(rename = "keep_alive", skip_serializing_if = "Option::is_none")]
-    keep_alive2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(rename = "keep_on_completion", skip_serializing_if = "Option::is_none")]
-    keep_on_completion2: Option<&'a bool>,
-    #[serde(
-        rename = "wait_for_completion_timeout",
-        skip_serializing_if = "Option::is_none"
-    )]
-    wait_for_completion_timeout2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(
-        rename = "allow_partial_search_results",
-        skip_serializing_if = "Option::is_none"
-    )]
-    allow_partial_search_results2: Option<&'a bool>,
-    #[serde(
-        rename = "allow_partial_sequence_results",
-        skip_serializing_if = "Option::is_none"
-    )]
-    allow_partial_sequence_results2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    keep_alive: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    keep_on_completion: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    wait_for_completion_timeout: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    allow_partial_search_results: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    allow_partial_sequence_results: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     size: Option<&'a u32>,
     #[serde(skip_serializing_if = "Option::is_none")]

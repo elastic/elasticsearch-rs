@@ -324,8 +324,6 @@ impl From<OperationBuilder> for Operation {
 pub struct Request {
     /// The name of the index that contains the documents.
     pub index: Option<crate::typed::_types::IndexName>,
-    /// A comma-separated list of documents ids. You must define ids as parameter or set "ids" or "docs" in the request body
-    pub ids: Option<Vec<crate::typed::_types::Id>>,
     /// A comma-separated list or wildcard expressions of fields to include in the statistics.
     /// It is used as the default list unless a specific field list is provided in the `completion_fields` or `fielddata_fields` parameters.
     pub fields: Option<crate::typed::_types::Fields>,
@@ -373,7 +371,7 @@ pub struct Request {
     /// An array of existing or artificial documents.
     pub docs: Option<Vec<Operation>>,
     /// A simplified syntax to specify documents by their ID if they're in the same index.
-    pub ids2: Option<Vec<crate::typed::_types::Id>>,
+    pub ids: Option<Vec<crate::typed::_types::Id>>,
 }
 
 impl Request {
@@ -394,7 +392,6 @@ impl Request {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
     index: Option<crate::typed::_types::IndexName>,
-    ids: Option<Vec<crate::typed::_types::Id>>,
     fields: Option<crate::typed::_types::Fields>,
     field_statistics: Option<bool>,
     offsets: Option<bool>,
@@ -412,7 +409,7 @@ pub struct RequestBuilder<S = (), C = ()> {
     human: Option<bool>,
     pretty: Option<bool>,
     docs: Option<Vec<Operation>>,
-    ids2: Option<Vec<crate::typed::_types::Id>>,
+    ids: Option<Vec<crate::typed::_types::Id>>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -421,7 +418,6 @@ impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             index: None,
-            ids: None,
             fields: None,
             field_statistics: None,
             offsets: None,
@@ -439,7 +435,7 @@ impl<C> RequestBuilder<(), C> {
             human: None,
             pretty: None,
             docs: None,
-            ids2: None,
+            ids: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -456,26 +452,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`index`](Self::index) if `value` is `Some`.
     pub fn maybe_index(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
         self.index = value;
-        self
-    }
-
-    /// A comma-separated list of documents ids. You must define ids as parameter or set "ids" or "docs" in the request body
-    pub fn ids(mut self, value: impl Into<Vec<crate::typed::_types::Id>>) -> Self {
-        self.ids = Some(value.into());
-        self
-    }
-
-    /// Sets [`ids`](Self::ids) if `value` is `Some`.
-    pub fn maybe_ids(mut self, value: Option<Vec<crate::typed::_types::Id>>) -> Self {
-        self.ids = value;
-        self
-    }
-
-    /// Adds an element to [`ids`](Self::ids).
-    pub fn add_ids(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.ids
-            .get_or_insert_with(Default::default)
-            .push(value.into());
         self
     }
 
@@ -712,20 +688,20 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// A simplified syntax to specify documents by their ID if they're in the same index.
-    pub fn ids2(mut self, value: impl Into<Vec<crate::typed::_types::Id>>) -> Self {
-        self.ids2 = Some(value.into());
+    pub fn ids(mut self, value: impl Into<Vec<crate::typed::_types::Id>>) -> Self {
+        self.ids = Some(value.into());
         self
     }
 
-    /// Sets [`ids2`](Self::ids2) if `value` is `Some`.
-    pub fn maybe_ids2(mut self, value: Option<Vec<crate::typed::_types::Id>>) -> Self {
-        self.ids2 = value;
+    /// Sets [`ids`](Self::ids) if `value` is `Some`.
+    pub fn maybe_ids(mut self, value: Option<Vec<crate::typed::_types::Id>>) -> Self {
+        self.ids = value;
         self
     }
 
-    /// Adds an element to [`ids2`](Self::ids2).
-    pub fn add_ids2(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.ids2
+    /// Adds an element to [`ids`](Self::ids).
+    pub fn add_ids(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
+        self.ids
             .get_or_insert_with(Default::default)
             .push(value.into());
         self
@@ -737,7 +713,6 @@ impl<C> RequestBuilder<(), C> {
     pub fn build(self) -> Request {
         Request {
             index: self.index,
-            ids: self.ids,
             fields: self.fields,
             field_statistics: self.field_statistics,
             offsets: self.offsets,
@@ -755,7 +730,7 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             pretty: self.pretty,
             docs: self.docs,
-            ids2: self.ids2,
+            ids: self.ids,
         }
     }
 }
@@ -801,9 +776,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.ids {
-            query.push(("ids", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.fields {
             query.push(("fields", crate::typed::support::query_value(value)));
         }
@@ -862,7 +834,7 @@ impl Request {
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
             docs: self.docs.as_ref(),
-            ids2: self.ids2.as_ref(),
+            ids: self.ids.as_ref(),
         }
     }
 
@@ -894,8 +866,8 @@ impl Request {
 pub struct RequestBody<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     docs: Option<&'a Vec<Operation>>,
-    #[serde(rename = "ids", skip_serializing_if = "Option::is_none")]
-    ids2: Option<&'a Vec<crate::typed::_types::Id>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    ids: Option<&'a Vec<crate::typed::_types::Id>>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

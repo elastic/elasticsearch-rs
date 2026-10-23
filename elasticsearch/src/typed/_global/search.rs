@@ -62,14 +62,10 @@ pub struct Request {
     /// The field to use as a default when no field prefix is given in the query string.
     /// This parameter can be used only when the `q` query string parameter is specified.
     pub df: Option<String>,
-    /// A comma-separated list of fields to return as the docvalue representation of a field for each hit.
-    pub docvalue_fields: Option<crate::typed::_types::Fields>,
     /// The type of index that wildcard patterns can match.
     /// If the request can target data streams, this argument determines whether wildcard expressions match hidden data streams.
     /// It supports comma-separated values such as `open,hidden`.
     pub expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    /// If `true`, the request returns detailed information about score computation as part of a hit.
-    pub explain: Option<bool>,
     /// If `true`, concrete, expanded or aliased indices will be ignored when frozen.
     pub ignore_throttled: Option<bool>,
     /// If `false`, the request returns an error if it targets a concrete (non-wildcarded)
@@ -123,13 +119,6 @@ pub struct Request {
     pub scroll: Option<crate::typed::_types::Duration>,
     /// Indicates how distributed term frequencies are calculated for relevance scoring.
     pub search_type: Option<crate::typed::_types::SearchType>,
-    /// Specific `tag` of the request for logging and statistical purposes.
-    pub stats: Option<RequestStats>,
-    /// A comma-separated list of stored fields to return as part of a hit.
-    /// If no fields are specified, no stored fields are included in the response.
-    /// If this field is specified, the `_source` parameter defaults to `false`.
-    /// You can pass `_source: true` to return both source fields and stored fields in the search response.
-    pub stored_fields: Option<crate::typed::_types::Fields>,
     /// The field to use for suggestions.
     pub suggest_field: Option<crate::typed::_types::Field>,
     /// The suggest mode.
@@ -141,42 +130,12 @@ pub struct Request {
     /// The source text for which the suggestions should be returned.
     /// This parameter can be used only when the `suggest_field` and `suggest_text` query string parameters are specified.
     pub suggest_text: Option<String>,
-    /// The maximum number of documents to collect for each shard.
-    /// If a query reaches this limit, Elasticsearch terminates the query early.
-    /// Elasticsearch collects documents before sorting.
-    ///
-    /// IMPORTANT: Use with caution.
-    /// Elasticsearch applies this parameter to each shard handling the request.
-    /// When possible, let Elasticsearch perform early termination automatically.
-    /// Avoid specifying this parameter for requests that target data streams with backing indices across multiple data tiers.
-    /// If set to `0` (default), the query does not terminate early.
-    pub terminate_after: Option<i64>,
-    /// The period of time to wait for a response from each shard.
-    /// If no response is received before the timeout expires, the request fails and returns an error.
-    /// It defaults to no timeout.
-    pub timeout: Option<crate::typed::_types::Duration>,
-    /// The number of hits matching the query to count accurately.
-    /// If `true`, the exact number of hits is returned at the cost of some performance.
-    /// If `false`, the response does not include the total number of hits matching the query.
-    pub track_total_hits: Option<_types::TrackHits>,
-    /// If `true`, the request calculates and returns document scores, even if the scores are not used for sorting.
-    pub track_scores: Option<bool>,
     /// If `true`, aggregation and suggester names are be prefixed by their respective types in the response.
     ///
     /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// Indicates whether `hits.total` should be rendered as an integer or an object in the rest search response.
     pub rest_total_hits_as_int: Option<bool>,
-    /// If `true`, the request returns the document version as part of a hit.
-    pub version: Option<bool>,
-    /// The source fields that are returned for matching documents.
-    /// These fields are returned in the `hits._source` property of the search response.
-    /// Valid values are:
-    ///
-    /// * `true` to return the entire document source.
-    /// * `false` to not return the document source.
-    /// * `<string>` to return the source fields that are specified as a comma-separated list that supports wildcard (`*`) patterns.
-    pub source: Option<_types::SourceConfigParam>,
     /// A comma-separated list of source fields to exclude from the response.
     /// You can also use this parameter to exclude fields from the subset specified in `_source_includes` query parameter.
     /// If the `_source` parameter is `false`, this parameter is ignored.
@@ -188,24 +147,12 @@ pub struct Request {
     /// You can exclude fields from this subset using the `_source_excludes` query parameter.
     /// If the `_source` parameter is `false`, this parameter is ignored.
     pub source_includes: Option<crate::typed::_types::Fields>,
-    /// If `true`, the request returns the sequence number and primary term of the last modification of each hit.
-    pub seq_no_primary_term: Option<bool>,
     /// A query in the Lucene query string syntax.
     /// Query parameter searches do not support the full Elasticsearch Query DSL but are handy for testing.
     ///
     /// IMPORTANT: This parameter overrides the query parameter in the request body.
     /// If both parameters are specified, documents matching the query request body parameter are not returned.
     pub q: Option<String>,
-    /// The number of hits to return.
-    /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-    /// To page through more hits, use the `search_after` parameter.
-    pub size: Option<i32>,
-    /// The starting document offset, which must be non-negative.
-    /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-    /// To page through more hits, use the `search_after` parameter.
-    pub from: Option<i32>,
-    /// A comma-separated list of `<field>:<direction>` pairs.
-    pub sort: Option<RequestSort>,
     /// Should this request force synthetic _source?
     /// Use this to test if the mapping supports synthetic _source and to get a sense of the worst case performance.
     /// Fetches with this enabled will be slower the enabling synthetic source natively in the index.
@@ -232,19 +179,19 @@ pub struct Request {
     /// Collapses search results the values of the specified field.
     pub collapse: Option<_types::FieldCollapse>,
     /// If `true`, the request returns detailed information about score computation as part of a hit.
-    pub explain2: Option<bool>,
+    pub explain: Option<bool>,
     /// Configuration of search extensions defined by Elasticsearch plugins.
     pub ext: Option<indexmap::IndexMap<String, serde_json::Value>>,
     /// The starting document offset, which must be non-negative.
     /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
     /// To page through more hits, use the `search_after` parameter.
-    pub from2: Option<i32>,
+    pub from: Option<i32>,
     /// Specifies the highlighter to use for retrieving highlighted snippets from one or more fields in your search results.
     pub highlight: Option<_types::Highlight>,
     /// Number of hits matching the query to count accurately.
     /// If `true`, the exact number of hits is returned at the cost of some performance.
     /// If `false`, the  response does not include the total number of hits matching the query.
-    pub track_total_hits2: Option<_types::TrackHits>,
+    pub track_total_hits: Option<_types::TrackHits>,
     /// Boost the `_score` of documents from specified indices.
     /// The boost value is the factor by which scores are multiplied.
     /// A boost value greater than `1.0` increases the score.
@@ -254,7 +201,7 @@ pub struct Request {
     >,
     /// An array of wildcard (`*`) field patterns.
     /// The request returns doc values for field names matching these patterns in the `hits.fields` property of the response.
-    pub docvalue_fields2: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
+    pub docvalue_fields: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     /// The approximate kNN search to run.
     pub knn: Option<RequestKnn>,
     /// The Reciprocal Rank Fusion (RRF) to use.
@@ -283,16 +230,16 @@ pub struct Request {
     /// The number of hits to return, which must not be negative.
     /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
     /// To page through more hits, use the `search_after` property.
-    pub size2: Option<i32>,
+    pub size: Option<i32>,
     /// Split a scrolled search into multiple slices that can be consumed independently.
     pub slice: Option<crate::typed::_types::SlicedScroll>,
     /// A comma-separated list of <field>:<direction> pairs.
-    pub sort2: Option<crate::typed::_types::Sort>,
+    pub sort: Option<crate::typed::_types::Sort>,
     /// The source fields that are returned for matching documents.
     /// These fields are returned in the `hits._source` property of the search response.
     /// If the `stored_fields` property is specified, the `_source` property defaults to `false`.
     /// Otherwise, it defaults to `true`.
-    pub source2: Option<_types::SourceConfig>,
+    pub source: Option<_types::SourceConfig>,
     /// An array of wildcard (`*`) field patterns.
     /// The request returns values for field names matching these patterns in the `hits.fields` property of the response.
     pub fields: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
@@ -308,22 +255,22 @@ pub struct Request {
     /// Avoid specifying this property for requests that target data streams with backing indices across multiple data tiers.
     ///
     /// If set to `0` (default), the query does not terminate early.
-    pub terminate_after2: Option<i64>,
+    pub terminate_after: Option<i64>,
     /// The period of time to wait for a response from each shard.
     /// If no response is received before the timeout expires, the request fails and returns an error.
     /// Defaults to no timeout.
-    pub timeout2: Option<String>,
+    pub timeout: Option<String>,
     /// If `true`, calculate and return document scores, even if the scores are not used for sorting.
-    pub track_scores2: Option<bool>,
+    pub track_scores: Option<bool>,
     /// If `true`, the request returns the document version as part of a hit.
-    pub version2: Option<bool>,
+    pub version: Option<bool>,
     /// If `true`, the request returns sequence number and primary term of the last modification of each hit.
-    pub seq_no_primary_term2: Option<bool>,
+    pub seq_no_primary_term: Option<bool>,
     /// A comma-separated list of stored fields to return as part of a hit.
     /// If no fields are specified, no stored fields are included in the response.
     /// If this field is specified, the `_source` property defaults to `false`.
     /// You can pass `_source: true` to return both source fields and stored fields in the search response.
-    pub stored_fields2: Option<crate::typed::_types::Fields>,
+    pub stored_fields: Option<crate::typed::_types::Fields>,
     /// Limit the search to a point in time (PIT).
     /// If you provide a PIT, you cannot specify an `<index>` in the request path.
     pub pit: Option<_types::PointInTimeReference>,
@@ -333,7 +280,7 @@ pub struct Request {
     /// The stats groups to associate with the search.
     /// Each group maintains a statistics aggregation for its associated searches.
     /// You can retrieve these stats using the indices stats API.
-    pub stats2: Option<Vec<String>>,
+    pub stats: Option<Vec<String>>,
     /// Specifies a subset of projects to target for the search using project
     /// metadata tags in a subset of Lucene query syntax.
     /// Allowed Lucene queries: the _alias tag and a single value (possibly wildcarded).
@@ -371,9 +318,7 @@ pub struct RequestBuilder<S = (), C = ()> {
     ccs_minimize_roundtrips: Option<bool>,
     default_operator: Option<crate::typed::_types::query_dsl::Operator>,
     df: Option<String>,
-    docvalue_fields: Option<crate::typed::_types::Fields>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    explain: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_named_queries_score: Option<bool>,
@@ -386,28 +331,16 @@ pub struct RequestBuilder<S = (), C = ()> {
     route_slice: Option<String>,
     scroll: Option<crate::typed::_types::Duration>,
     search_type: Option<crate::typed::_types::SearchType>,
-    stats: Option<RequestStats>,
-    stored_fields: Option<crate::typed::_types::Fields>,
     suggest_field: Option<crate::typed::_types::Field>,
     suggest_mode: Option<crate::typed::_types::SuggestMode>,
     suggest_size: Option<i64>,
     suggest_text: Option<String>,
-    terminate_after: Option<i64>,
-    timeout: Option<crate::typed::_types::Duration>,
-    track_total_hits: Option<_types::TrackHits>,
-    track_scores: Option<bool>,
     typed_keys: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
-    version: Option<bool>,
-    source: Option<_types::SourceConfigParam>,
     source_excludes: Option<crate::typed::_types::Fields>,
     source_exclude_vectors: Option<bool>,
     source_includes: Option<crate::typed::_types::Fields>,
-    seq_no_primary_term: Option<bool>,
     q: Option<String>,
-    size: Option<i32>,
-    from: Option<i32>,
-    sort: Option<RequestSort>,
     force_synthetic_source: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
@@ -417,15 +350,15 @@ pub struct RequestBuilder<S = (), C = ()> {
         indexmap::IndexMap<String, crate::typed::_types::aggregations::AggregationContainer>,
     >,
     collapse: Option<_types::FieldCollapse>,
-    explain2: Option<bool>,
+    explain: Option<bool>,
     ext: Option<indexmap::IndexMap<String, serde_json::Value>>,
-    from2: Option<i32>,
+    from: Option<i32>,
     highlight: Option<_types::Highlight>,
-    track_total_hits2: Option<_types::TrackHits>,
+    track_total_hits: Option<_types::TrackHits>,
     indices_boost: Option<
         Vec<indexmap::IndexMap<crate::typed::_types::IndexName, crate::typed::support::Float64>>,
     >,
-    docvalue_fields2: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
+    docvalue_fields: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     knn: Option<RequestKnn>,
     rank: Option<crate::typed::_types::RankContainer>,
     min_score: Option<crate::typed::support::Float64>,
@@ -436,21 +369,21 @@ pub struct RequestBuilder<S = (), C = ()> {
     retriever: Option<crate::typed::_types::RetrieverContainer>,
     script_fields: Option<indexmap::IndexMap<String, crate::typed::_types::ScriptField>>,
     search_after: Option<crate::typed::_types::SortResults>,
-    size2: Option<i32>,
+    size: Option<i32>,
     slice: Option<crate::typed::_types::SlicedScroll>,
-    sort2: Option<crate::typed::_types::Sort>,
-    source2: Option<_types::SourceConfig>,
+    sort: Option<crate::typed::_types::Sort>,
+    source: Option<_types::SourceConfig>,
     fields: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     suggest: Option<_types::Suggester>,
-    terminate_after2: Option<i64>,
-    timeout2: Option<String>,
-    track_scores2: Option<bool>,
-    version2: Option<bool>,
-    seq_no_primary_term2: Option<bool>,
-    stored_fields2: Option<crate::typed::_types::Fields>,
+    terminate_after: Option<i64>,
+    timeout: Option<String>,
+    track_scores: Option<bool>,
+    version: Option<bool>,
+    seq_no_primary_term: Option<bool>,
+    stored_fields: Option<crate::typed::_types::Fields>,
     pit: Option<_types::PointInTimeReference>,
     runtime_mappings: Option<crate::typed::_types::mapping::RuntimeFields>,
-    stats2: Option<Vec<String>>,
+    stats: Option<Vec<String>>,
     project_routing: Option<crate::typed::_types::ProjectRouting>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -468,9 +401,7 @@ impl<C> RequestBuilder<(), C> {
             ccs_minimize_roundtrips: None,
             default_operator: None,
             df: None,
-            docvalue_fields: None,
             expand_wildcards: None,
-            explain: None,
             ignore_throttled: None,
             ignore_unavailable: None,
             include_named_queries_score: None,
@@ -483,28 +414,16 @@ impl<C> RequestBuilder<(), C> {
             route_slice: None,
             scroll: None,
             search_type: None,
-            stats: None,
-            stored_fields: None,
             suggest_field: None,
             suggest_mode: None,
             suggest_size: None,
             suggest_text: None,
-            terminate_after: None,
-            timeout: None,
-            track_total_hits: None,
-            track_scores: None,
             typed_keys: None,
             rest_total_hits_as_int: None,
-            version: None,
-            source: None,
             source_excludes: None,
             source_exclude_vectors: None,
             source_includes: None,
-            seq_no_primary_term: None,
             q: None,
-            size: None,
-            from: None,
-            sort: None,
             force_synthetic_source: None,
             error_trace: None,
             filter_path: None,
@@ -512,13 +431,13 @@ impl<C> RequestBuilder<(), C> {
             pretty: None,
             aggregations: None,
             collapse: None,
-            explain2: None,
+            explain: None,
             ext: None,
-            from2: None,
+            from: None,
             highlight: None,
-            track_total_hits2: None,
+            track_total_hits: None,
             indices_boost: None,
-            docvalue_fields2: None,
+            docvalue_fields: None,
             knn: None,
             rank: None,
             min_score: None,
@@ -529,21 +448,21 @@ impl<C> RequestBuilder<(), C> {
             retriever: None,
             script_fields: None,
             search_after: None,
-            size2: None,
+            size: None,
             slice: None,
-            sort2: None,
-            source2: None,
+            sort: None,
+            source: None,
             fields: None,
             suggest: None,
-            terminate_after2: None,
-            timeout2: None,
-            track_scores2: None,
-            version2: None,
-            seq_no_primary_term2: None,
-            stored_fields2: None,
+            terminate_after: None,
+            timeout: None,
+            track_scores: None,
+            version: None,
+            seq_no_primary_term: None,
+            stored_fields: None,
             pit: None,
             runtime_mappings: None,
-            stats2: None,
+            stats: None,
             project_routing: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -681,18 +600,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// A comma-separated list of fields to return as the docvalue representation of a field for each hit.
-    pub fn docvalue_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.docvalue_fields = Some(value.into());
-        self
-    }
-
-    /// Sets [`docvalue_fields`](Self::docvalue_fields) if `value` is `Some`.
-    pub fn maybe_docvalue_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.docvalue_fields = value;
-        self
-    }
-
     /// The type of index that wildcard patterns can match.
     /// If the request can target data streams, this argument determines whether wildcard expressions match hidden data streams.
     /// It supports comma-separated values such as `open,hidden`.
@@ -710,18 +617,6 @@ impl<C> RequestBuilder<(), C> {
         value: Option<crate::typed::_types::ExpandWildcards>,
     ) -> Self {
         self.expand_wildcards = value;
-        self
-    }
-
-    /// If `true`, the request returns detailed information about score computation as part of a hit.
-    pub fn explain(mut self, value: bool) -> Self {
-        self.explain = Some(value);
-        self
-    }
-
-    /// Sets [`explain`](Self::explain) if `value` is `Some`.
-    pub fn maybe_explain(mut self, value: Option<bool>) -> Self {
-        self.explain = value;
         self
     }
 
@@ -898,33 +793,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// Specific `tag` of the request for logging and statistical purposes.
-    pub fn stats(mut self, value: impl Into<RequestStats>) -> Self {
-        self.stats = Some(value.into());
-        self
-    }
-
-    /// Sets [`stats`](Self::stats) if `value` is `Some`.
-    pub fn maybe_stats(mut self, value: Option<RequestStats>) -> Self {
-        self.stats = value;
-        self
-    }
-
-    /// A comma-separated list of stored fields to return as part of a hit.
-    /// If no fields are specified, no stored fields are included in the response.
-    /// If this field is specified, the `_source` parameter defaults to `false`.
-    /// You can pass `_source: true` to return both source fields and stored fields in the search response.
-    pub fn stored_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.stored_fields = Some(value.into());
-        self
-    }
-
-    /// Sets [`stored_fields`](Self::stored_fields) if `value` is `Some`.
-    pub fn maybe_stored_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.stored_fields = value;
-        self
-    }
-
     /// The field to use for suggestions.
     pub fn suggest_field(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
         self.suggest_field = Some(value.into());
@@ -976,66 +844,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// The maximum number of documents to collect for each shard.
-    /// If a query reaches this limit, Elasticsearch terminates the query early.
-    /// Elasticsearch collects documents before sorting.
-    ///
-    /// IMPORTANT: Use with caution.
-    /// Elasticsearch applies this parameter to each shard handling the request.
-    /// When possible, let Elasticsearch perform early termination automatically.
-    /// Avoid specifying this parameter for requests that target data streams with backing indices across multiple data tiers.
-    /// If set to `0` (default), the query does not terminate early.
-    pub fn terminate_after(mut self, value: i64) -> Self {
-        self.terminate_after = Some(value);
-        self
-    }
-
-    /// Sets [`terminate_after`](Self::terminate_after) if `value` is `Some`.
-    pub fn maybe_terminate_after(mut self, value: Option<i64>) -> Self {
-        self.terminate_after = value;
-        self
-    }
-
-    /// The period of time to wait for a response from each shard.
-    /// If no response is received before the timeout expires, the request fails and returns an error.
-    /// It defaults to no timeout.
-    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
-    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout = value;
-        self
-    }
-
-    /// The number of hits matching the query to count accurately.
-    /// If `true`, the exact number of hits is returned at the cost of some performance.
-    /// If `false`, the response does not include the total number of hits matching the query.
-    pub fn track_total_hits(mut self, value: impl Into<_types::TrackHits>) -> Self {
-        self.track_total_hits = Some(value.into());
-        self
-    }
-
-    /// Sets [`track_total_hits`](Self::track_total_hits) if `value` is `Some`.
-    pub fn maybe_track_total_hits(mut self, value: Option<_types::TrackHits>) -> Self {
-        self.track_total_hits = value;
-        self
-    }
-
-    /// If `true`, the request calculates and returns document scores, even if the scores are not used for sorting.
-    pub fn track_scores(mut self, value: bool) -> Self {
-        self.track_scores = Some(value);
-        self
-    }
-
-    /// Sets [`track_scores`](Self::track_scores) if `value` is `Some`.
-    pub fn maybe_track_scores(mut self, value: Option<bool>) -> Self {
-        self.track_scores = value;
-        self
-    }
-
     /// If `true`, aggregation and suggester names are be prefixed by their respective types in the response.
     ///
     /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
@@ -1059,36 +867,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`rest_total_hits_as_int`](Self::rest_total_hits_as_int) if `value` is `Some`.
     pub fn maybe_rest_total_hits_as_int(mut self, value: Option<bool>) -> Self {
         self.rest_total_hits_as_int = value;
-        self
-    }
-
-    /// If `true`, the request returns the document version as part of a hit.
-    pub fn version(mut self, value: bool) -> Self {
-        self.version = Some(value);
-        self
-    }
-
-    /// Sets [`version`](Self::version) if `value` is `Some`.
-    pub fn maybe_version(mut self, value: Option<bool>) -> Self {
-        self.version = value;
-        self
-    }
-
-    /// The source fields that are returned for matching documents.
-    /// These fields are returned in the `hits._source` property of the search response.
-    /// Valid values are:
-    ///
-    /// * `true` to return the entire document source.
-    /// * `false` to not return the document source.
-    /// * `<string>` to return the source fields that are specified as a comma-separated list that supports wildcard (`*`) patterns.
-    pub fn source(mut self, value: impl Into<_types::SourceConfigParam>) -> Self {
-        self.source = Some(value.into());
-        self
-    }
-
-    /// Sets [`source`](Self::source) if `value` is `Some`.
-    pub fn maybe_source(mut self, value: Option<_types::SourceConfigParam>) -> Self {
-        self.source = value;
         self
     }
 
@@ -1133,18 +911,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// If `true`, the request returns the sequence number and primary term of the last modification of each hit.
-    pub fn seq_no_primary_term(mut self, value: bool) -> Self {
-        self.seq_no_primary_term = Some(value);
-        self
-    }
-
-    /// Sets [`seq_no_primary_term`](Self::seq_no_primary_term) if `value` is `Some`.
-    pub fn maybe_seq_no_primary_term(mut self, value: Option<bool>) -> Self {
-        self.seq_no_primary_term = value;
-        self
-    }
-
     /// A query in the Lucene query string syntax.
     /// Query parameter searches do not support the full Elasticsearch Query DSL but are handy for testing.
     ///
@@ -1158,46 +924,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`q`](Self::q) if `value` is `Some`.
     pub fn maybe_q(mut self, value: Option<String>) -> Self {
         self.q = value;
-        self
-    }
-
-    /// The number of hits to return.
-    /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-    /// To page through more hits, use the `search_after` parameter.
-    pub fn size(mut self, value: i32) -> Self {
-        self.size = Some(value);
-        self
-    }
-
-    /// Sets [`size`](Self::size) if `value` is `Some`.
-    pub fn maybe_size(mut self, value: Option<i32>) -> Self {
-        self.size = value;
-        self
-    }
-
-    /// The starting document offset, which must be non-negative.
-    /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-    /// To page through more hits, use the `search_after` parameter.
-    pub fn from(mut self, value: i32) -> Self {
-        self.from = Some(value);
-        self
-    }
-
-    /// Sets [`from`](Self::from) if `value` is `Some`.
-    pub fn maybe_from(mut self, value: Option<i32>) -> Self {
-        self.from = value;
-        self
-    }
-
-    /// A comma-separated list of `<field>:<direction>` pairs.
-    pub fn sort(mut self, value: impl Into<RequestSort>) -> Self {
-        self.sort = Some(value.into());
-        self
-    }
-
-    /// Sets [`sort`](Self::sort) if `value` is `Some`.
-    pub fn maybe_sort(mut self, value: Option<RequestSort>) -> Self {
-        self.sort = value;
         self
     }
 
@@ -1341,14 +1067,14 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// If `true`, the request returns detailed information about score computation as part of a hit.
-    pub fn explain2(mut self, value: bool) -> Self {
-        self.explain2 = Some(value);
+    pub fn explain(mut self, value: bool) -> Self {
+        self.explain = Some(value);
         self
     }
 
-    /// Sets [`explain2`](Self::explain2) if `value` is `Some`.
-    pub fn maybe_explain2(mut self, value: Option<bool>) -> Self {
-        self.explain2 = value;
+    /// Sets [`explain`](Self::explain) if `value` is `Some`.
+    pub fn maybe_explain(mut self, value: Option<bool>) -> Self {
+        self.explain = value;
         self
     }
 
@@ -1378,14 +1104,14 @@ impl<C> RequestBuilder<(), C> {
     /// The starting document offset, which must be non-negative.
     /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
     /// To page through more hits, use the `search_after` parameter.
-    pub fn from2(mut self, value: i32) -> Self {
-        self.from2 = Some(value);
+    pub fn from(mut self, value: i32) -> Self {
+        self.from = Some(value);
         self
     }
 
-    /// Sets [`from2`](Self::from2) if `value` is `Some`.
-    pub fn maybe_from2(mut self, value: Option<i32>) -> Self {
-        self.from2 = value;
+    /// Sets [`from`](Self::from) if `value` is `Some`.
+    pub fn maybe_from(mut self, value: Option<i32>) -> Self {
+        self.from = value;
         self
     }
 
@@ -1412,14 +1138,14 @@ impl<C> RequestBuilder<(), C> {
     /// Number of hits matching the query to count accurately.
     /// If `true`, the exact number of hits is returned at the cost of some performance.
     /// If `false`, the  response does not include the total number of hits matching the query.
-    pub fn track_total_hits2(mut self, value: impl Into<_types::TrackHits>) -> Self {
-        self.track_total_hits2 = Some(value.into());
+    pub fn track_total_hits(mut self, value: impl Into<_types::TrackHits>) -> Self {
+        self.track_total_hits = Some(value.into());
         self
     }
 
-    /// Sets [`track_total_hits2`](Self::track_total_hits2) if `value` is `Some`.
-    pub fn maybe_track_total_hits2(mut self, value: Option<_types::TrackHits>) -> Self {
-        self.track_total_hits2 = value;
+    /// Sets [`track_total_hits`](Self::track_total_hits) if `value` is `Some`.
+    pub fn maybe_track_total_hits(mut self, value: Option<_types::TrackHits>) -> Self {
+        self.track_total_hits = value;
         self
     }
 
@@ -1467,42 +1193,42 @@ impl<C> RequestBuilder<(), C> {
 
     /// An array of wildcard (`*`) field patterns.
     /// The request returns doc values for field names matching these patterns in the `hits.fields` property of the response.
-    pub fn docvalue_fields2(
+    pub fn docvalue_fields(
         mut self,
         value: impl Into<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     ) -> Self {
-        self.docvalue_fields2 = Some(value.into());
+        self.docvalue_fields = Some(value.into());
         self
     }
 
-    /// Sets [`docvalue_fields2`](Self::docvalue_fields2) if `value` is `Some`.
-    pub fn maybe_docvalue_fields2(
+    /// Sets [`docvalue_fields`](Self::docvalue_fields) if `value` is `Some`.
+    pub fn maybe_docvalue_fields(
         mut self,
         value: Option<Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     ) -> Self {
-        self.docvalue_fields2 = value;
+        self.docvalue_fields = value;
         self
     }
 
-    /// Adds an element to [`docvalue_fields2`](Self::docvalue_fields2).
-    pub fn add_docvalue_fields2(
+    /// Adds an element to [`docvalue_fields`](Self::docvalue_fields).
+    pub fn add_docvalue_fields(
         mut self,
         value: impl Into<crate::typed::_types::query_dsl::FieldAndFormat>,
     ) -> Self {
-        self.docvalue_fields2
+        self.docvalue_fields
             .get_or_insert_with(Default::default)
             .push(value.into());
         self
     }
 
-    /// Adds an element to [`docvalue_fields2`](Self::docvalue_fields2), with a builder.
-    pub fn add_docvalue_fields2_with<
+    /// Adds an element to [`docvalue_fields`](Self::docvalue_fields), with a builder.
+    pub fn add_docvalue_fields_with<
         B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::FieldAndFormat>,
     >(
         self,
         f: impl FnOnce(crate::typed::_types::query_dsl::FieldAndFormatBuilder) -> B,
     ) -> Self {
-        self.add_docvalue_fields2(
+        self.add_docvalue_fields(
             f(crate::typed::_types::query_dsl::FieldAndFormatBuilder::new()).build(),
         )
     }
@@ -1746,14 +1472,14 @@ impl<C> RequestBuilder<(), C> {
     /// The number of hits to return, which must not be negative.
     /// By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
     /// To page through more hits, use the `search_after` property.
-    pub fn size2(mut self, value: i32) -> Self {
-        self.size2 = Some(value);
+    pub fn size(mut self, value: i32) -> Self {
+        self.size = Some(value);
         self
     }
 
-    /// Sets [`size2`](Self::size2) if `value` is `Some`.
-    pub fn maybe_size2(mut self, value: Option<i32>) -> Self {
-        self.size2 = value;
+    /// Sets [`size`](Self::size) if `value` is `Some`.
+    pub fn maybe_size(mut self, value: Option<i32>) -> Self {
+        self.size = value;
         self
     }
 
@@ -1780,14 +1506,14 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// A comma-separated list of <field>:<direction> pairs.
-    pub fn sort2(mut self, value: impl Into<crate::typed::_types::Sort>) -> Self {
-        self.sort2 = Some(value.into());
+    pub fn sort(mut self, value: impl Into<crate::typed::_types::Sort>) -> Self {
+        self.sort = Some(value.into());
         self
     }
 
-    /// Sets [`sort2`](Self::sort2) if `value` is `Some`.
-    pub fn maybe_sort2(mut self, value: Option<crate::typed::_types::Sort>) -> Self {
-        self.sort2 = value;
+    /// Sets [`sort`](Self::sort) if `value` is `Some`.
+    pub fn maybe_sort(mut self, value: Option<crate::typed::_types::Sort>) -> Self {
+        self.sort = value;
         self
     }
 
@@ -1795,23 +1521,23 @@ impl<C> RequestBuilder<(), C> {
     /// These fields are returned in the `hits._source` property of the search response.
     /// If the `stored_fields` property is specified, the `_source` property defaults to `false`.
     /// Otherwise, it defaults to `true`.
-    pub fn source2(mut self, value: impl Into<_types::SourceConfig>) -> Self {
-        self.source2 = Some(value.into());
+    pub fn source(mut self, value: impl Into<_types::SourceConfig>) -> Self {
+        self.source = Some(value.into());
         self
     }
 
-    /// Sets [`source2`](Self::source2) if `value` is `Some`.
-    pub fn maybe_source2(mut self, value: Option<_types::SourceConfig>) -> Self {
-        self.source2 = value;
+    /// Sets [`source`](Self::source) if `value` is `Some`.
+    pub fn maybe_source(mut self, value: Option<_types::SourceConfig>) -> Self {
+        self.source = value;
         self
     }
 
-    /// Sets [`source2`](Self::source2) with a builder.
-    pub fn source2_with<B: crate::typed::builder::Build<Output = _types::SourceFilter>>(
+    /// Sets [`source`](Self::source) with a builder.
+    pub fn source_with<B: crate::typed::builder::Build<Output = _types::SourceFilter>>(
         self,
         f: impl FnOnce(_types::SourceFilterBuilder) -> B,
     ) -> Self {
-        self.source2(f(_types::SourceFilterBuilder::new()).build())
+        self.source(f(_types::SourceFilterBuilder::new()).build())
     }
 
     /// An array of wildcard (`*`) field patterns.
@@ -1884,64 +1610,64 @@ impl<C> RequestBuilder<(), C> {
     /// Avoid specifying this property for requests that target data streams with backing indices across multiple data tiers.
     ///
     /// If set to `0` (default), the query does not terminate early.
-    pub fn terminate_after2(mut self, value: i64) -> Self {
-        self.terminate_after2 = Some(value);
+    pub fn terminate_after(mut self, value: i64) -> Self {
+        self.terminate_after = Some(value);
         self
     }
 
-    /// Sets [`terminate_after2`](Self::terminate_after2) if `value` is `Some`.
-    pub fn maybe_terminate_after2(mut self, value: Option<i64>) -> Self {
-        self.terminate_after2 = value;
+    /// Sets [`terminate_after`](Self::terminate_after) if `value` is `Some`.
+    pub fn maybe_terminate_after(mut self, value: Option<i64>) -> Self {
+        self.terminate_after = value;
         self
     }
 
     /// The period of time to wait for a response from each shard.
     /// If no response is received before the timeout expires, the request fails and returns an error.
     /// Defaults to no timeout.
-    pub fn timeout2(mut self, value: impl Into<String>) -> Self {
-        self.timeout2 = Some(value.into());
+    pub fn timeout(mut self, value: impl Into<String>) -> Self {
+        self.timeout = Some(value.into());
         self
     }
 
-    /// Sets [`timeout2`](Self::timeout2) if `value` is `Some`.
-    pub fn maybe_timeout2(mut self, value: Option<String>) -> Self {
-        self.timeout2 = value;
+    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
+    pub fn maybe_timeout(mut self, value: Option<String>) -> Self {
+        self.timeout = value;
         self
     }
 
     /// If `true`, calculate and return document scores, even if the scores are not used for sorting.
-    pub fn track_scores2(mut self, value: bool) -> Self {
-        self.track_scores2 = Some(value);
+    pub fn track_scores(mut self, value: bool) -> Self {
+        self.track_scores = Some(value);
         self
     }
 
-    /// Sets [`track_scores2`](Self::track_scores2) if `value` is `Some`.
-    pub fn maybe_track_scores2(mut self, value: Option<bool>) -> Self {
-        self.track_scores2 = value;
+    /// Sets [`track_scores`](Self::track_scores) if `value` is `Some`.
+    pub fn maybe_track_scores(mut self, value: Option<bool>) -> Self {
+        self.track_scores = value;
         self
     }
 
     /// If `true`, the request returns the document version as part of a hit.
-    pub fn version2(mut self, value: bool) -> Self {
-        self.version2 = Some(value);
+    pub fn version(mut self, value: bool) -> Self {
+        self.version = Some(value);
         self
     }
 
-    /// Sets [`version2`](Self::version2) if `value` is `Some`.
-    pub fn maybe_version2(mut self, value: Option<bool>) -> Self {
-        self.version2 = value;
+    /// Sets [`version`](Self::version) if `value` is `Some`.
+    pub fn maybe_version(mut self, value: Option<bool>) -> Self {
+        self.version = value;
         self
     }
 
     /// If `true`, the request returns sequence number and primary term of the last modification of each hit.
-    pub fn seq_no_primary_term2(mut self, value: bool) -> Self {
-        self.seq_no_primary_term2 = Some(value);
+    pub fn seq_no_primary_term(mut self, value: bool) -> Self {
+        self.seq_no_primary_term = Some(value);
         self
     }
 
-    /// Sets [`seq_no_primary_term2`](Self::seq_no_primary_term2) if `value` is `Some`.
-    pub fn maybe_seq_no_primary_term2(mut self, value: Option<bool>) -> Self {
-        self.seq_no_primary_term2 = value;
+    /// Sets [`seq_no_primary_term`](Self::seq_no_primary_term) if `value` is `Some`.
+    pub fn maybe_seq_no_primary_term(mut self, value: Option<bool>) -> Self {
+        self.seq_no_primary_term = value;
         self
     }
 
@@ -1949,14 +1675,14 @@ impl<C> RequestBuilder<(), C> {
     /// If no fields are specified, no stored fields are included in the response.
     /// If this field is specified, the `_source` property defaults to `false`.
     /// You can pass `_source: true` to return both source fields and stored fields in the search response.
-    pub fn stored_fields2(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.stored_fields2 = Some(value.into());
+    pub fn stored_fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
+        self.stored_fields = Some(value.into());
         self
     }
 
-    /// Sets [`stored_fields2`](Self::stored_fields2) if `value` is `Some`.
-    pub fn maybe_stored_fields2(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.stored_fields2 = value;
+    /// Sets [`stored_fields`](Self::stored_fields) if `value` is `Some`.
+    pub fn maybe_stored_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
+        self.stored_fields = value;
         self
     }
 
@@ -2029,20 +1755,20 @@ impl<C> RequestBuilder<(), C> {
     /// The stats groups to associate with the search.
     /// Each group maintains a statistics aggregation for its associated searches.
     /// You can retrieve these stats using the indices stats API.
-    pub fn stats2(mut self, value: impl Into<Vec<String>>) -> Self {
-        self.stats2 = Some(value.into());
+    pub fn stats(mut self, value: impl Into<Vec<String>>) -> Self {
+        self.stats = Some(value.into());
         self
     }
 
-    /// Sets [`stats2`](Self::stats2) if `value` is `Some`.
-    pub fn maybe_stats2(mut self, value: Option<Vec<String>>) -> Self {
-        self.stats2 = value;
+    /// Sets [`stats`](Self::stats) if `value` is `Some`.
+    pub fn maybe_stats(mut self, value: Option<Vec<String>>) -> Self {
+        self.stats = value;
         self
     }
 
-    /// Adds an element to [`stats2`](Self::stats2).
-    pub fn add_stats2(mut self, value: impl Into<String>) -> Self {
-        self.stats2
+    /// Adds an element to [`stats`](Self::stats).
+    pub fn add_stats(mut self, value: impl Into<String>) -> Self {
+        self.stats
             .get_or_insert_with(Default::default)
             .push(value.into());
         self
@@ -2087,9 +1813,7 @@ impl<C> RequestBuilder<(), C> {
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             default_operator: self.default_operator,
             df: self.df,
-            docvalue_fields: self.docvalue_fields,
             expand_wildcards: self.expand_wildcards,
-            explain: self.explain,
             ignore_throttled: self.ignore_throttled,
             ignore_unavailable: self.ignore_unavailable,
             include_named_queries_score: self.include_named_queries_score,
@@ -2102,28 +1826,16 @@ impl<C> RequestBuilder<(), C> {
             route_slice: self.route_slice,
             scroll: self.scroll,
             search_type: self.search_type,
-            stats: self.stats,
-            stored_fields: self.stored_fields,
             suggest_field: self.suggest_field,
             suggest_mode: self.suggest_mode,
             suggest_size: self.suggest_size,
             suggest_text: self.suggest_text,
-            terminate_after: self.terminate_after,
-            timeout: self.timeout,
-            track_total_hits: self.track_total_hits,
-            track_scores: self.track_scores,
             typed_keys: self.typed_keys,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
-            version: self.version,
-            source: self.source,
             source_excludes: self.source_excludes,
             source_exclude_vectors: self.source_exclude_vectors,
             source_includes: self.source_includes,
-            seq_no_primary_term: self.seq_no_primary_term,
             q: self.q,
-            size: self.size,
-            from: self.from,
-            sort: self.sort,
             force_synthetic_source: self.force_synthetic_source,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -2131,13 +1843,13 @@ impl<C> RequestBuilder<(), C> {
             pretty: self.pretty,
             aggregations: self.aggregations,
             collapse: self.collapse,
-            explain2: self.explain2,
+            explain: self.explain,
             ext: self.ext,
-            from2: self.from2,
+            from: self.from,
             highlight: self.highlight,
-            track_total_hits2: self.track_total_hits2,
+            track_total_hits: self.track_total_hits,
             indices_boost: self.indices_boost,
-            docvalue_fields2: self.docvalue_fields2,
+            docvalue_fields: self.docvalue_fields,
             knn: self.knn,
             rank: self.rank,
             min_score: self.min_score,
@@ -2148,21 +1860,21 @@ impl<C> RequestBuilder<(), C> {
             retriever: self.retriever,
             script_fields: self.script_fields,
             search_after: self.search_after,
-            size2: self.size2,
+            size: self.size,
             slice: self.slice,
-            sort2: self.sort2,
-            source2: self.source2,
+            sort: self.sort,
+            source: self.source,
             fields: self.fields,
             suggest: self.suggest,
-            terminate_after2: self.terminate_after2,
-            timeout2: self.timeout2,
-            track_scores2: self.track_scores2,
-            version2: self.version2,
-            seq_no_primary_term2: self.seq_no_primary_term2,
-            stored_fields2: self.stored_fields2,
+            terminate_after: self.terminate_after,
+            timeout: self.timeout,
+            track_scores: self.track_scores,
+            version: self.version,
+            seq_no_primary_term: self.seq_no_primary_term,
+            stored_fields: self.stored_fields,
             pit: self.pit,
             runtime_mappings: self.runtime_mappings,
-            stats2: self.stats2,
+            stats: self.stats,
             project_routing: self.project_routing,
         }
     }
@@ -2251,17 +1963,11 @@ impl Request {
         if let Some(value) = &self.df {
             query.push(("df", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.docvalue_fields {
-            query.push(("docvalue_fields", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.expand_wildcards {
             query.push((
                 "expand_wildcards",
                 crate::typed::support::query_value(value),
             ));
-        }
-        if let Some(value) = &self.explain {
-            query.push(("explain", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.ignore_throttled {
             query.push((
@@ -2314,12 +2020,6 @@ impl Request {
         if let Some(value) = &self.search_type {
             query.push(("search_type", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.stats {
-            query.push(("stats", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.stored_fields {
-            query.push(("stored_fields", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.suggest_field {
             query.push(("suggest_field", crate::typed::support::query_value(value)));
         }
@@ -2332,21 +2032,6 @@ impl Request {
         if let Some(value) = &self.suggest_text {
             query.push(("suggest_text", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.terminate_after {
-            query.push(("terminate_after", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.timeout {
-            query.push(("timeout", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.track_total_hits {
-            query.push((
-                "track_total_hits",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.track_scores {
-            query.push(("track_scores", crate::typed::support::query_value(value)));
-        }
         query.push((
             "typed_keys",
             crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
@@ -2356,12 +2041,6 @@ impl Request {
                 "rest_total_hits_as_int",
                 crate::typed::support::query_value(value),
             ));
-        }
-        if let Some(value) = &self.version {
-            query.push(("version", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.source {
-            query.push(("_source", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.source_excludes {
             query.push((
@@ -2381,23 +2060,8 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.seq_no_primary_term {
-            query.push((
-                "seq_no_primary_term",
-                crate::typed::support::query_value(value),
-            ));
-        }
         if let Some(value) = &self.q {
             query.push(("q", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.size {
-            query.push(("size", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.from {
-            query.push(("from", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.sort {
-            query.push(("sort", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.force_synthetic_source {
             query.push((
@@ -2425,13 +2089,13 @@ impl Request {
         RequestBody {
             aggregations: self.aggregations.as_ref(),
             collapse: self.collapse.as_ref(),
-            explain2: self.explain2.as_ref(),
+            explain: self.explain.as_ref(),
             ext: self.ext.as_ref(),
-            from2: self.from2.as_ref(),
+            from: self.from.as_ref(),
             highlight: self.highlight.as_ref(),
-            track_total_hits2: self.track_total_hits2.as_ref(),
+            track_total_hits: self.track_total_hits.as_ref(),
             indices_boost: self.indices_boost.as_ref(),
-            docvalue_fields2: self.docvalue_fields2.as_ref(),
+            docvalue_fields: self.docvalue_fields.as_ref(),
             knn: self.knn.as_ref(),
             rank: self.rank.as_ref(),
             min_score: self.min_score.as_ref(),
@@ -2442,21 +2106,21 @@ impl Request {
             retriever: self.retriever.as_ref(),
             script_fields: self.script_fields.as_ref(),
             search_after: self.search_after.as_ref(),
-            size2: self.size2.as_ref(),
+            size: self.size.as_ref(),
             slice: self.slice.as_ref(),
-            sort2: self.sort2.as_ref(),
-            source2: self.source2.as_ref(),
+            sort: self.sort.as_ref(),
+            source: self.source.as_ref(),
             fields: self.fields.as_ref(),
             suggest: self.suggest.as_ref(),
-            terminate_after2: self.terminate_after2.as_ref(),
-            timeout2: self.timeout2.as_ref(),
-            track_scores2: self.track_scores2.as_ref(),
-            version2: self.version2.as_ref(),
-            seq_no_primary_term2: self.seq_no_primary_term2.as_ref(),
-            stored_fields2: self.stored_fields2.as_ref(),
+            terminate_after: self.terminate_after.as_ref(),
+            timeout: self.timeout.as_ref(),
+            track_scores: self.track_scores.as_ref(),
+            version: self.version.as_ref(),
+            seq_no_primary_term: self.seq_no_primary_term.as_ref(),
+            stored_fields: self.stored_fields.as_ref(),
             pit: self.pit.as_ref(),
             runtime_mappings: self.runtime_mappings.as_ref(),
-            stats2: self.stats2.as_ref(),
+            stats: self.stats.as_ref(),
             project_routing: self.project_routing.as_ref(),
         }
     }
@@ -2493,24 +2157,24 @@ pub struct RequestBody<'a> {
     >,
     #[serde(skip_serializing_if = "Option::is_none")]
     collapse: Option<&'a _types::FieldCollapse>,
-    #[serde(rename = "explain", skip_serializing_if = "Option::is_none")]
-    explain2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    explain: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     ext: Option<&'a indexmap::IndexMap<String, serde_json::Value>>,
-    #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
-    from2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    from: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     highlight: Option<&'a _types::Highlight>,
-    #[serde(rename = "track_total_hits", skip_serializing_if = "Option::is_none")]
-    track_total_hits2: Option<&'a _types::TrackHits>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    track_total_hits: Option<&'a _types::TrackHits>,
     #[serde(skip_serializing_if = "Option::is_none")]
     indices_boost: Option<
         &'a Vec<
             indexmap::IndexMap<crate::typed::_types::IndexName, crate::typed::support::Float64>,
         >,
     >,
-    #[serde(rename = "docvalue_fields", skip_serializing_if = "Option::is_none")]
-    docvalue_fields2: Option<&'a Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    docvalue_fields: Option<&'a Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     knn: Option<&'a RequestKnn>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2531,91 +2195,38 @@ pub struct RequestBody<'a> {
     script_fields: Option<&'a indexmap::IndexMap<String, crate::typed::_types::ScriptField>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     search_after: Option<&'a crate::typed::_types::SortResults>,
-    #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    size2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    size: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     slice: Option<&'a crate::typed::_types::SlicedScroll>,
-    #[serde(rename = "sort", skip_serializing_if = "Option::is_none")]
-    sort2: Option<&'a crate::typed::_types::Sort>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    sort: Option<&'a crate::typed::_types::Sort>,
     #[serde(rename = "_source", skip_serializing_if = "Option::is_none")]
-    source2: Option<&'a _types::SourceConfig>,
+    source: Option<&'a _types::SourceConfig>,
     #[serde(skip_serializing_if = "Option::is_none")]
     fields: Option<&'a Vec<crate::typed::_types::query_dsl::FieldAndFormat>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     suggest: Option<&'a _types::Suggester>,
-    #[serde(rename = "terminate_after", skip_serializing_if = "Option::is_none")]
-    terminate_after2: Option<&'a i64>,
-    #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    timeout2: Option<&'a String>,
-    #[serde(rename = "track_scores", skip_serializing_if = "Option::is_none")]
-    track_scores2: Option<&'a bool>,
-    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
-    version2: Option<&'a bool>,
-    #[serde(
-        rename = "seq_no_primary_term",
-        skip_serializing_if = "Option::is_none"
-    )]
-    seq_no_primary_term2: Option<&'a bool>,
-    #[serde(rename = "stored_fields", skip_serializing_if = "Option::is_none")]
-    stored_fields2: Option<&'a crate::typed::_types::Fields>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    terminate_after: Option<&'a i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timeout: Option<&'a String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    track_scores: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    version: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    seq_no_primary_term: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    stored_fields: Option<&'a crate::typed::_types::Fields>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pit: Option<&'a _types::PointInTimeReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
     runtime_mappings: Option<&'a crate::typed::_types::mapping::RuntimeFields>,
-    #[serde(rename = "stats", skip_serializing_if = "Option::is_none")]
-    stats2: Option<&'a Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    stats: Option<&'a Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     project_routing: Option<&'a crate::typed::_types::ProjectRouting>,
-}
-
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(untagged)]
-pub enum RequestStats {
-    StringList(Vec<String>),
-    String(String),
-}
-
-impl From<Vec<String>> for RequestStats {
-    fn from(value: Vec<String>) -> Self {
-        RequestStats::StringList(value)
-    }
-}
-
-impl From<String> for RequestStats {
-    fn from(value: String) -> Self {
-        RequestStats::String(value)
-    }
-}
-
-impl From<&str> for RequestStats {
-    fn from(value: &str) -> Self {
-        RequestStats::String(value.into())
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(untagged)]
-pub enum RequestSort {
-    String(String),
-    StringList(Vec<String>),
-}
-
-impl From<String> for RequestSort {
-    fn from(value: String) -> Self {
-        RequestSort::String(value)
-    }
-}
-
-impl From<Vec<String>> for RequestSort {
-    fn from(value: Vec<String>) -> Self {
-        RequestSort::StringList(value)
-    }
-}
-
-impl From<&str> for RequestSort {
-    fn from(value: &str) -> Self {
-        RequestSort::String(value.into())
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

@@ -24,9 +24,6 @@ pub struct Request {
     /// lowercase alphanumeric characters (a-z and 0-9), hyphens, and
     /// underscores. It must start and end with alphanumeric characters.
     pub id: crate::typed::_types::Id,
-    /// Controls the amount of time to wait until the data frame analytics job
-    /// starts.
-    pub timeout: Option<crate::typed::_types::Duration>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -42,11 +39,9 @@ pub struct Request {
     /// If set to `true` the returned JSON will be "pretty-formatted". Only use
     /// this option for debugging only.
     pub pretty: Option<bool>,
-    /// If provided, must be the same identifier as in the path.
-    pub id2: Option<crate::typed::_types::Id>,
     /// Controls the amount of time to wait until the data frame analytics job
     /// starts.
-    pub timeout2: Option<crate::typed::_types::Duration>,
+    pub timeout: Option<crate::typed::_types::Duration>,
 }
 
 impl Request {
@@ -78,13 +73,11 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     id: Option<crate::typed::_types::Id>,
-    timeout: Option<crate::typed::_types::Duration>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    id2: Option<crate::typed::_types::Id>,
-    timeout2: Option<crate::typed::_types::Duration>,
+    timeout: Option<crate::typed::_types::Duration>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -93,13 +86,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             id: None,
-            timeout: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            id2: None,
-            timeout2: None,
+            timeout: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -110,29 +101,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             id: self.id,
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            id2: self.id2,
-            timeout2: self.timeout2,
+            timeout: self.timeout,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// Controls the amount of time to wait until the data frame analytics job
-    /// starts.
-    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout = Some(value.into());
-        self
-    }
-
-    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
-    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -190,28 +166,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
-    /// If provided, must be the same identifier as in the path.
-    pub fn id2(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.id2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`id2`](Self::id2) if `value` is `Some`.
-    pub fn maybe_id2(mut self, value: Option<crate::typed::_types::Id>) -> Self {
-        self.id2 = value;
-        self
-    }
-
     /// Controls the amount of time to wait until the data frame analytics job
     /// starts.
-    pub fn timeout2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = Some(value.into());
+    pub fn timeout(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.timeout = Some(value.into());
         self
     }
 
-    /// Sets [`timeout2`](Self::timeout2) if `value` is `Some`.
-    pub fn maybe_timeout2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.timeout2 = value;
+    /// Sets [`timeout`](Self::timeout) if `value` is `Some`.
+    pub fn maybe_timeout(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.timeout = value;
         self
     }
 }
@@ -238,13 +202,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             id: self.id.unwrap(),
-            timeout: self.timeout,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            id2: self.id2,
-            timeout2: self.timeout2,
+            timeout: self.timeout,
         }
     }
 }
@@ -296,9 +258,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.timeout {
-            query.push(("timeout", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -317,8 +276,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            id2: self.id2.as_ref(),
-            timeout2: self.timeout2.as_ref(),
+            timeout: self.timeout.as_ref(),
         }
     }
 
@@ -348,10 +306,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-    id2: Option<&'a crate::typed::_types::Id>,
-    #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    timeout2: Option<&'a crate::typed::_types::Duration>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timeout: Option<&'a crate::typed::_types::Duration>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

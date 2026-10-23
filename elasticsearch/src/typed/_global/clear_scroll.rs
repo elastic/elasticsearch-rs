@@ -10,10 +10,6 @@
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-clear-scroll)
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Request {
-    /// A comma-separated list of scroll IDs to clear.
-    /// To clear all scroll IDs, use `_all`.
-    /// IMPORTANT: Scroll IDs can be long. It is recommended to specify scroll IDs in the request body parameter.
-    pub scroll_id: Option<crate::typed::_types::ScrollIds>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -31,7 +27,7 @@ pub struct Request {
     pub pretty: Option<bool>,
     /// The scroll IDs to clear.
     /// To clear all scroll IDs, use `_all`.
-    pub scroll_id2: Option<crate::typed::_types::ScrollIds>,
+    pub scroll_id: Option<crate::typed::_types::ScrollIds>,
 }
 
 impl Request {
@@ -51,12 +47,11 @@ impl Request {
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
-    scroll_id: Option<crate::typed::_types::ScrollIds>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    scroll_id2: Option<crate::typed::_types::ScrollIds>,
+    scroll_id: Option<crate::typed::_types::ScrollIds>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -64,12 +59,11 @@ pub struct RequestBuilder<S = (), C = ()> {
 impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
-            scroll_id: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            scroll_id2: None,
+            scroll_id: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -77,20 +71,6 @@ impl<C> RequestBuilder<(), C> {
 }
 
 impl<C> RequestBuilder<(), C> {
-    /// A comma-separated list of scroll IDs to clear.
-    /// To clear all scroll IDs, use `_all`.
-    /// IMPORTANT: Scroll IDs can be long. It is recommended to specify scroll IDs in the request body parameter.
-    pub fn scroll_id(mut self, value: impl Into<crate::typed::_types::ScrollIds>) -> Self {
-        self.scroll_id = Some(value.into());
-        self
-    }
-
-    /// Sets [`scroll_id`](Self::scroll_id) if `value` is `Some`.
-    pub fn maybe_scroll_id(mut self, value: Option<crate::typed::_types::ScrollIds>) -> Self {
-        self.scroll_id = value;
-        self
-    }
-
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub fn error_trace(mut self, value: bool) -> Self {
@@ -148,14 +128,14 @@ impl<C> RequestBuilder<(), C> {
 
     /// The scroll IDs to clear.
     /// To clear all scroll IDs, use `_all`.
-    pub fn scroll_id2(mut self, value: impl Into<crate::typed::_types::ScrollIds>) -> Self {
-        self.scroll_id2 = Some(value.into());
+    pub fn scroll_id(mut self, value: impl Into<crate::typed::_types::ScrollIds>) -> Self {
+        self.scroll_id = Some(value.into());
         self
     }
 
-    /// Sets [`scroll_id2`](Self::scroll_id2) if `value` is `Some`.
-    pub fn maybe_scroll_id2(mut self, value: Option<crate::typed::_types::ScrollIds>) -> Self {
-        self.scroll_id2 = value;
+    /// Sets [`scroll_id`](Self::scroll_id) if `value` is `Some`.
+    pub fn maybe_scroll_id(mut self, value: Option<crate::typed::_types::ScrollIds>) -> Self {
+        self.scroll_id = value;
         self
     }
 }
@@ -164,12 +144,11 @@ impl<C> RequestBuilder<(), C> {
     /// Builds a [`Request`].
     pub fn build(self) -> Request {
         Request {
-            scroll_id: self.scroll_id,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            scroll_id2: self.scroll_id2,
+            scroll_id: self.scroll_id,
         }
     }
 }
@@ -193,15 +172,6 @@ impl RequestBuilder<(), &crate::Elasticsearch> {
 impl Request {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
-        if let Some(scroll_id) = &self.scroll_id {
-            return (
-                crate::http::Method::Delete,
-                format!(
-                    "/_search/scroll/{}",
-                    crate::typed::support::path_part(scroll_id)
-                ),
-            );
-        }
         (crate::http::Method::Delete, "/_search/scroll".to_string())
     }
 
@@ -236,7 +206,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            scroll_id2: self.scroll_id2.as_ref(),
+            scroll_id: self.scroll_id.as_ref(),
         }
     }
 
@@ -266,8 +236,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "scroll_id", skip_serializing_if = "Option::is_none")]
-    scroll_id2: Option<&'a crate::typed::_types::ScrollIds>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    scroll_id: Option<&'a crate::typed::_types::ScrollIds>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

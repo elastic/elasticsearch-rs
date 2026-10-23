@@ -24,8 +24,6 @@ pub struct Request {
     /// If the request can target data streams, this argument determines whether wildcard expressions match hidden data streams.
     /// Supports comma-separated values, such as `open,hidden`.
     pub expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    /// If `true`, the response includes additional details about score computation as part of a hit.
-    pub explain: Option<bool>,
     /// If `true`, specified concrete, expanded, or aliased indices are not included in the response when throttled.
     pub ignore_throttled: Option<bool>,
     /// If `false`, the request returns an error if it targets a concrete (non-wildcarded)
@@ -35,8 +33,6 @@ pub struct Request {
     /// The node or shard the operation should be performed on.
     /// It is random by default.
     pub preference: Option<String>,
-    /// If `true`, the query execution is profiled.
-    pub profile: Option<bool>,
     /// A custom value used to route operations to a specific shard.
     pub routing: Option<crate::typed::_types::Routing>,
     /// Specifies how long a consistent view of the index
@@ -68,7 +64,7 @@ pub struct Request {
     pub pretty: Option<bool>,
     /// If `true`, returns detailed information about score calculation as part of each hit.
     /// If you specify both this and the `explain` query parameter, the API uses only the query parameter.
-    pub explain2: Option<bool>,
+    pub explain: Option<bool>,
     /// The ID of the search template to use. If no `source` is specified,
     /// this parameter is required.
     pub id: Option<crate::typed::_types::Id>,
@@ -77,7 +73,7 @@ pub struct Request {
     /// The value is the variable value.
     pub params: Option<indexmap::IndexMap<String, serde_json::Value>>,
     /// If `true`, the query execution is profiled.
-    pub profile2: Option<bool>,
+    pub profile: Option<bool>,
     /// An inline search template. Supports the same parameters as the search API's
     /// request body. It also supports Mustache variables. If no `id` is specified, this
     /// parameter is required.
@@ -114,11 +110,9 @@ pub struct RequestBuilder<S = (), C = ()> {
     allow_no_indices: Option<bool>,
     ccs_minimize_roundtrips: Option<bool>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
-    explain: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     preference: Option<String>,
-    profile: Option<bool>,
     routing: Option<crate::typed::_types::Routing>,
     scroll: Option<crate::typed::_types::Duration>,
     search_type: Option<crate::typed::_types::SearchType>,
@@ -128,10 +122,10 @@ pub struct RequestBuilder<S = (), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    explain2: Option<bool>,
+    explain: Option<bool>,
     id: Option<crate::typed::_types::Id>,
     params: Option<indexmap::IndexMap<String, serde_json::Value>>,
-    profile2: Option<bool>,
+    profile: Option<bool>,
     source: Option<crate::typed::_types::ScriptSource>,
     project_routing: Option<crate::typed::_types::ProjectRouting>,
     bound_client: C,
@@ -145,11 +139,9 @@ impl<C> RequestBuilder<(), C> {
             allow_no_indices: None,
             ccs_minimize_roundtrips: None,
             expand_wildcards: None,
-            explain: None,
             ignore_throttled: None,
             ignore_unavailable: None,
             preference: None,
-            profile: None,
             routing: None,
             scroll: None,
             search_type: None,
@@ -159,10 +151,10 @@ impl<C> RequestBuilder<(), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            explain2: None,
+            explain: None,
             id: None,
             params: None,
-            profile2: None,
+            profile: None,
             source: None,
             project_routing: None,
             bound_client: client,
@@ -234,18 +226,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// If `true`, the response includes additional details about score computation as part of a hit.
-    pub fn explain(mut self, value: bool) -> Self {
-        self.explain = Some(value);
-        self
-    }
-
-    /// Sets [`explain`](Self::explain) if `value` is `Some`.
-    pub fn maybe_explain(mut self, value: Option<bool>) -> Self {
-        self.explain = value;
-        self
-    }
-
     /// If `true`, specified concrete, expanded, or aliased indices are not included in the response when throttled.
     pub fn ignore_throttled(mut self, value: bool) -> Self {
         self.ignore_throttled = Some(value);
@@ -282,18 +262,6 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`preference`](Self::preference) if `value` is `Some`.
     pub fn maybe_preference(mut self, value: Option<String>) -> Self {
         self.preference = value;
-        self
-    }
-
-    /// If `true`, the query execution is profiled.
-    pub fn profile(mut self, value: bool) -> Self {
-        self.profile = Some(value);
-        self
-    }
-
-    /// Sets [`profile`](Self::profile) if `value` is `Some`.
-    pub fn maybe_profile(mut self, value: Option<bool>) -> Self {
-        self.profile = value;
         self
     }
 
@@ -418,14 +386,14 @@ impl<C> RequestBuilder<(), C> {
 
     /// If `true`, returns detailed information about score calculation as part of each hit.
     /// If you specify both this and the `explain` query parameter, the API uses only the query parameter.
-    pub fn explain2(mut self, value: bool) -> Self {
-        self.explain2 = Some(value);
+    pub fn explain(mut self, value: bool) -> Self {
+        self.explain = Some(value);
         self
     }
 
-    /// Sets [`explain2`](Self::explain2) if `value` is `Some`.
-    pub fn maybe_explain2(mut self, value: Option<bool>) -> Self {
-        self.explain2 = value;
+    /// Sets [`explain`](Self::explain) if `value` is `Some`.
+    pub fn maybe_explain(mut self, value: Option<bool>) -> Self {
+        self.explain = value;
         self
     }
 
@@ -475,14 +443,14 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// If `true`, the query execution is profiled.
-    pub fn profile2(mut self, value: bool) -> Self {
-        self.profile2 = Some(value);
+    pub fn profile(mut self, value: bool) -> Self {
+        self.profile = Some(value);
         self
     }
 
-    /// Sets [`profile2`](Self::profile2) if `value` is `Some`.
-    pub fn maybe_profile2(mut self, value: Option<bool>) -> Self {
-        self.profile2 = value;
+    /// Sets [`profile`](Self::profile) if `value` is `Some`.
+    pub fn maybe_profile(mut self, value: Option<bool>) -> Self {
+        self.profile = value;
         self
     }
 
@@ -548,11 +516,9 @@ impl<C> RequestBuilder<(), C> {
             allow_no_indices: self.allow_no_indices,
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             expand_wildcards: self.expand_wildcards,
-            explain: self.explain,
             ignore_throttled: self.ignore_throttled,
             ignore_unavailable: self.ignore_unavailable,
             preference: self.preference,
-            profile: self.profile,
             routing: self.routing,
             scroll: self.scroll,
             search_type: self.search_type,
@@ -562,10 +528,10 @@ impl<C> RequestBuilder<(), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            explain2: self.explain2,
+            explain: self.explain,
             id: self.id,
             params: self.params,
-            profile2: self.profile2,
+            profile: self.profile,
             source: self.source,
             project_routing: self.project_routing,
         }
@@ -634,9 +600,6 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.explain {
-            query.push(("explain", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.ignore_throttled {
             query.push((
                 "ignore_throttled",
@@ -651,9 +614,6 @@ impl Request {
         }
         if let Some(value) = &self.preference {
             query.push(("preference", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.profile {
-            query.push(("profile", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.routing {
             query.push(("routing", crate::typed::support::query_value(value)));
@@ -692,10 +652,10 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            explain2: self.explain2.as_ref(),
+            explain: self.explain.as_ref(),
             id: self.id.as_ref(),
             params: self.params.as_ref(),
-            profile2: self.profile2.as_ref(),
+            profile: self.profile.as_ref(),
             source: self.source.as_ref(),
             project_routing: self.project_routing.as_ref(),
         }
@@ -727,14 +687,14 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "explain", skip_serializing_if = "Option::is_none")]
-    explain2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    explain: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<&'a crate::typed::_types::Id>,
     #[serde(skip_serializing_if = "Option::is_none")]
     params: Option<&'a indexmap::IndexMap<String, serde_json::Value>>,
-    #[serde(rename = "profile", skip_serializing_if = "Option::is_none")]
-    profile2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    profile: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     source: Option<&'a crate::typed::_types::ScriptSource>,
     #[serde(skip_serializing_if = "Option::is_none")]

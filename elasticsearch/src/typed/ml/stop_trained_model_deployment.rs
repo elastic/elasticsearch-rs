@@ -10,14 +10,6 @@
 pub struct Request {
     /// The unique identifier of the trained model.
     pub model_id: crate::typed::_types::Id,
-    /// Specifies what to do when the request: contains wildcard expressions and there are no deployments that match;
-    /// contains the  `_all` string or no identifiers and there are no matches; or contains wildcard expressions and
-    /// there are only partial matches. By default, it returns an empty array when there are no matches and the subset of results when there are partial matches.
-    /// If `false`, the request returns a 404 status code when there are no matches or only partial matches.
-    pub allow_no_match: Option<bool>,
-    /// Forcefully stops the deployment, even if it is used by ingest pipelines. You can't use these pipelines until you
-    /// restart the model deployment.
-    pub force: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -39,10 +31,10 @@ pub struct Request {
     /// contains the  `_all` string or no identifiers and there are no matches; or contains wildcard expressions and
     /// there are only partial matches. By default, it returns an empty array when there are no matches and the subset of results when there are partial matches.
     /// If `false`, the request returns a 404 status code when there are no matches or only partial matches.
-    pub allow_no_match2: Option<bool>,
+    pub allow_no_match: Option<bool>,
     /// Forcefully stops the deployment, even if it is used by ingest pipelines. You can't use these pipelines until you
     /// restart the model deployment.
-    pub force2: Option<bool>,
+    pub force: Option<bool>,
 }
 
 impl Request {
@@ -74,15 +66,13 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     model_id: Option<crate::typed::_types::Id>,
-    allow_no_match: Option<bool>,
-    force: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
     id: Option<crate::typed::_types::Id>,
-    allow_no_match2: Option<bool>,
-    force2: Option<bool>,
+    allow_no_match: Option<bool>,
+    force: Option<bool>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -91,15 +81,13 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             model_id: None,
-            allow_no_match: None,
-            force: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             id: None,
-            allow_no_match2: None,
-            force2: None,
+            allow_no_match: None,
+            force: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -110,46 +98,16 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             model_id: self.model_id,
-            allow_no_match: self.allow_no_match,
-            force: self.force,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
             id: self.id,
-            allow_no_match2: self.allow_no_match2,
-            force2: self.force2,
+            allow_no_match: self.allow_no_match,
+            force: self.force,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// Specifies what to do when the request: contains wildcard expressions and there are no deployments that match;
-    /// contains the  `_all` string or no identifiers and there are no matches; or contains wildcard expressions and
-    /// there are only partial matches. By default, it returns an empty array when there are no matches and the subset of results when there are partial matches.
-    /// If `false`, the request returns a 404 status code when there are no matches or only partial matches.
-    pub fn allow_no_match(mut self, value: bool) -> Self {
-        self.allow_no_match = Some(value);
-        self
-    }
-
-    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
-    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match = value;
-        self
-    }
-
-    /// Forcefully stops the deployment, even if it is used by ingest pipelines. You can't use these pipelines until you
-    /// restart the model deployment.
-    pub fn force(mut self, value: bool) -> Self {
-        self.force = Some(value);
-        self
-    }
-
-    /// Sets [`force`](Self::force) if `value` is `Some`.
-    pub fn maybe_force(mut self, value: Option<bool>) -> Self {
-        self.force = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -223,27 +181,27 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// contains the  `_all` string or no identifiers and there are no matches; or contains wildcard expressions and
     /// there are only partial matches. By default, it returns an empty array when there are no matches and the subset of results when there are partial matches.
     /// If `false`, the request returns a 404 status code when there are no matches or only partial matches.
-    pub fn allow_no_match2(mut self, value: bool) -> Self {
-        self.allow_no_match2 = Some(value);
+    pub fn allow_no_match(mut self, value: bool) -> Self {
+        self.allow_no_match = Some(value);
         self
     }
 
-    /// Sets [`allow_no_match2`](Self::allow_no_match2) if `value` is `Some`.
-    pub fn maybe_allow_no_match2(mut self, value: Option<bool>) -> Self {
-        self.allow_no_match2 = value;
+    /// Sets [`allow_no_match`](Self::allow_no_match) if `value` is `Some`.
+    pub fn maybe_allow_no_match(mut self, value: Option<bool>) -> Self {
+        self.allow_no_match = value;
         self
     }
 
     /// Forcefully stops the deployment, even if it is used by ingest pipelines. You can't use these pipelines until you
     /// restart the model deployment.
-    pub fn force2(mut self, value: bool) -> Self {
-        self.force2 = Some(value);
+    pub fn force(mut self, value: bool) -> Self {
+        self.force = Some(value);
         self
     }
 
-    /// Sets [`force2`](Self::force2) if `value` is `Some`.
-    pub fn maybe_force2(mut self, value: Option<bool>) -> Self {
-        self.force2 = value;
+    /// Sets [`force`](Self::force) if `value` is `Some`.
+    pub fn maybe_force(mut self, value: Option<bool>) -> Self {
+        self.force = value;
         self
     }
 }
@@ -268,15 +226,13 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             model_id: self.model_id.unwrap(),
-            allow_no_match: self.allow_no_match,
-            force: self.force,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
             id: self.id,
-            allow_no_match2: self.allow_no_match2,
-            force2: self.force2,
+            allow_no_match: self.allow_no_match,
+            force: self.force,
         }
     }
 }
@@ -328,12 +284,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.allow_no_match {
-            query.push(("allow_no_match", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.force {
-            query.push(("force", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -353,8 +303,8 @@ impl Request {
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
             id: self.id.as_ref(),
-            allow_no_match2: self.allow_no_match2.as_ref(),
-            force2: self.force2.as_ref(),
+            allow_no_match: self.allow_no_match.as_ref(),
+            force: self.force.as_ref(),
         }
     }
 
@@ -386,10 +336,10 @@ impl Request {
 pub struct RequestBody<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<&'a crate::typed::_types::Id>,
-    #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
-    allow_no_match2: Option<&'a bool>,
-    #[serde(rename = "force", skip_serializing_if = "Option::is_none")]
-    force2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    allow_no_match: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    force: Option<&'a bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

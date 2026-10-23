@@ -1800,14 +1800,6 @@ where
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-allocation-explain)
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Request {
-    /// The name of the index that you would like an explanation for.
-    pub index: Option<crate::typed::_types::IndexName>,
-    /// An identifier for the shard that you would like an explanation for.
-    pub shard: Option<i32>,
-    /// If true, returns an explanation for the primary shard for the specified shard ID.
-    pub primary: Option<bool>,
-    /// Explain a shard only if it is currently located on the specified node name or node ID.
-    pub current_node: Option<crate::typed::_types::NodeId>,
     /// If true, returns information about disk usage and shard sizes.
     pub include_disk_info: Option<bool>,
     /// If true, returns YES decisions in explanation.
@@ -1830,13 +1822,13 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// The name of the index that you would like an explanation for.
-    pub index2: Option<crate::typed::_types::IndexName>,
+    pub index: Option<crate::typed::_types::IndexName>,
     /// An identifier for the shard that you would like an explanation for.
-    pub shard2: Option<i32>,
+    pub shard: Option<i32>,
     /// If true, returns an explanation for the primary shard for the specified shard ID.
-    pub primary2: Option<bool>,
+    pub primary: Option<bool>,
     /// Explain a shard only if it is currently located on the specified node name or node ID.
-    pub current_node2: Option<crate::typed::_types::NodeId>,
+    pub current_node: Option<crate::typed::_types::NodeId>,
 }
 
 impl Request {
@@ -1856,10 +1848,6 @@ impl Request {
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
-    index: Option<crate::typed::_types::IndexName>,
-    shard: Option<i32>,
-    primary: Option<bool>,
-    current_node: Option<crate::typed::_types::NodeId>,
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
     master_timeout: Option<crate::typed::_types::Duration>,
@@ -1867,10 +1855,10 @@ pub struct RequestBuilder<S = (), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    index2: Option<crate::typed::_types::IndexName>,
-    shard2: Option<i32>,
-    primary2: Option<bool>,
-    current_node2: Option<crate::typed::_types::NodeId>,
+    index: Option<crate::typed::_types::IndexName>,
+    shard: Option<i32>,
+    primary: Option<bool>,
+    current_node: Option<crate::typed::_types::NodeId>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -1878,10 +1866,6 @@ pub struct RequestBuilder<S = (), C = ()> {
 impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
-            index: None,
-            shard: None,
-            primary: None,
-            current_node: None,
             include_disk_info: None,
             include_yes_decisions: None,
             master_timeout: None,
@@ -1889,10 +1873,10 @@ impl<C> RequestBuilder<(), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            index2: None,
-            shard2: None,
-            primary2: None,
-            current_node2: None,
+            index: None,
+            shard: None,
+            primary: None,
+            current_node: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -1900,54 +1884,6 @@ impl<C> RequestBuilder<(), C> {
 }
 
 impl<C> RequestBuilder<(), C> {
-    /// The name of the index that you would like an explanation for.
-    pub fn index(mut self, value: impl Into<crate::typed::_types::IndexName>) -> Self {
-        self.index = Some(value.into());
-        self
-    }
-
-    /// Sets [`index`](Self::index) if `value` is `Some`.
-    pub fn maybe_index(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
-        self.index = value;
-        self
-    }
-
-    /// An identifier for the shard that you would like an explanation for.
-    pub fn shard(mut self, value: i32) -> Self {
-        self.shard = Some(value);
-        self
-    }
-
-    /// Sets [`shard`](Self::shard) if `value` is `Some`.
-    pub fn maybe_shard(mut self, value: Option<i32>) -> Self {
-        self.shard = value;
-        self
-    }
-
-    /// If true, returns an explanation for the primary shard for the specified shard ID.
-    pub fn primary(mut self, value: bool) -> Self {
-        self.primary = Some(value);
-        self
-    }
-
-    /// Sets [`primary`](Self::primary) if `value` is `Some`.
-    pub fn maybe_primary(mut self, value: Option<bool>) -> Self {
-        self.primary = value;
-        self
-    }
-
-    /// Explain a shard only if it is currently located on the specified node name or node ID.
-    pub fn current_node(mut self, value: impl Into<crate::typed::_types::NodeId>) -> Self {
-        self.current_node = Some(value.into());
-        self
-    }
-
-    /// Sets [`current_node`](Self::current_node) if `value` is `Some`.
-    pub fn maybe_current_node(mut self, value: Option<crate::typed::_types::NodeId>) -> Self {
-        self.current_node = value;
-        self
-    }
-
     /// If true, returns information about disk usage and shard sizes.
     pub fn include_disk_info(mut self, value: bool) -> Self {
         self.include_disk_info = Some(value);
@@ -2040,50 +1976,50 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// The name of the index that you would like an explanation for.
-    pub fn index2(mut self, value: impl Into<crate::typed::_types::IndexName>) -> Self {
-        self.index2 = Some(value.into());
+    pub fn index(mut self, value: impl Into<crate::typed::_types::IndexName>) -> Self {
+        self.index = Some(value.into());
         self
     }
 
-    /// Sets [`index2`](Self::index2) if `value` is `Some`.
-    pub fn maybe_index2(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
-        self.index2 = value;
+    /// Sets [`index`](Self::index) if `value` is `Some`.
+    pub fn maybe_index(mut self, value: Option<crate::typed::_types::IndexName>) -> Self {
+        self.index = value;
         self
     }
 
     /// An identifier for the shard that you would like an explanation for.
-    pub fn shard2(mut self, value: i32) -> Self {
-        self.shard2 = Some(value);
+    pub fn shard(mut self, value: i32) -> Self {
+        self.shard = Some(value);
         self
     }
 
-    /// Sets [`shard2`](Self::shard2) if `value` is `Some`.
-    pub fn maybe_shard2(mut self, value: Option<i32>) -> Self {
-        self.shard2 = value;
+    /// Sets [`shard`](Self::shard) if `value` is `Some`.
+    pub fn maybe_shard(mut self, value: Option<i32>) -> Self {
+        self.shard = value;
         self
     }
 
     /// If true, returns an explanation for the primary shard for the specified shard ID.
-    pub fn primary2(mut self, value: bool) -> Self {
-        self.primary2 = Some(value);
+    pub fn primary(mut self, value: bool) -> Self {
+        self.primary = Some(value);
         self
     }
 
-    /// Sets [`primary2`](Self::primary2) if `value` is `Some`.
-    pub fn maybe_primary2(mut self, value: Option<bool>) -> Self {
-        self.primary2 = value;
+    /// Sets [`primary`](Self::primary) if `value` is `Some`.
+    pub fn maybe_primary(mut self, value: Option<bool>) -> Self {
+        self.primary = value;
         self
     }
 
     /// Explain a shard only if it is currently located on the specified node name or node ID.
-    pub fn current_node2(mut self, value: impl Into<crate::typed::_types::NodeId>) -> Self {
-        self.current_node2 = Some(value.into());
+    pub fn current_node(mut self, value: impl Into<crate::typed::_types::NodeId>) -> Self {
+        self.current_node = Some(value.into());
         self
     }
 
-    /// Sets [`current_node2`](Self::current_node2) if `value` is `Some`.
-    pub fn maybe_current_node2(mut self, value: Option<crate::typed::_types::NodeId>) -> Self {
-        self.current_node2 = value;
+    /// Sets [`current_node`](Self::current_node) if `value` is `Some`.
+    pub fn maybe_current_node(mut self, value: Option<crate::typed::_types::NodeId>) -> Self {
+        self.current_node = value;
         self
     }
 }
@@ -2092,10 +2028,6 @@ impl<C> RequestBuilder<(), C> {
     /// Builds a [`Request`].
     pub fn build(self) -> Request {
         Request {
-            index: self.index,
-            shard: self.shard,
-            primary: self.primary,
-            current_node: self.current_node,
             include_disk_info: self.include_disk_info,
             include_yes_decisions: self.include_yes_decisions,
             master_timeout: self.master_timeout,
@@ -2103,10 +2035,10 @@ impl<C> RequestBuilder<(), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            index2: self.index2,
-            shard2: self.shard2,
-            primary2: self.primary2,
-            current_node2: self.current_node2,
+            index: self.index,
+            shard: self.shard,
+            primary: self.primary,
+            current_node: self.current_node,
         }
     }
 }
@@ -2149,18 +2081,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.index {
-            query.push(("index", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.shard {
-            query.push(("shard", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.primary {
-            query.push(("primary", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.current_node {
-            query.push(("current_node", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.include_disk_info {
             query.push((
                 "include_disk_info",
@@ -2194,10 +2114,10 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            index2: self.index2.as_ref(),
-            shard2: self.shard2.as_ref(),
-            primary2: self.primary2.as_ref(),
-            current_node2: self.current_node2.as_ref(),
+            index: self.index.as_ref(),
+            shard: self.shard.as_ref(),
+            primary: self.primary.as_ref(),
+            current_node: self.current_node.as_ref(),
         }
     }
 
@@ -2227,14 +2147,14 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "index", skip_serializing_if = "Option::is_none")]
-    index2: Option<&'a crate::typed::_types::IndexName>,
-    #[serde(rename = "shard", skip_serializing_if = "Option::is_none")]
-    shard2: Option<&'a i32>,
-    #[serde(rename = "primary", skip_serializing_if = "Option::is_none")]
-    primary2: Option<&'a bool>,
-    #[serde(rename = "current_node", skip_serializing_if = "Option::is_none")]
-    current_node2: Option<&'a crate::typed::_types::NodeId>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    index: Option<&'a crate::typed::_types::IndexName>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    shard: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    primary: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    current_node: Option<&'a crate::typed::_types::NodeId>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

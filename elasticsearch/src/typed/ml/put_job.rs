@@ -62,8 +62,6 @@ pub struct Request {
     pub datafeed_config: Option<crate::typed::ml::_types::DatafeedConfig>,
     /// A description of the job.
     pub description: Option<String>,
-    /// The identifier for the anomaly detection job. This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores. It must start and end with alphanumeric characters.
-    pub job_id2: Option<crate::typed::_types::Id>,
     /// A list of job groups. A job can belong to no groups or many.
     pub groups: Option<Vec<String>>,
     /// This advanced configuration option stores model information along with the results. It provides a more detailed view into anomaly detection. If you enable model plot it can add considerable overhead to the performance of the system; it is not feasible for jobs with many entities. Model plot provides a simplified and indicative view of the model and its bounds. It does not display complex features such as multivariate correlations or multimodal data. As such, anomalies may occasionally be reported which cannot be seen in the model plot. Model plot config can be configured when the job is created or updated later. It must be disabled if performance issues are experienced.
@@ -133,7 +131,6 @@ pub struct RequestBuilder<
     data_description: Option<crate::typed::ml::_types::DataDescription>,
     datafeed_config: Option<crate::typed::ml::_types::DatafeedConfig>,
     description: Option<String>,
-    job_id2: Option<crate::typed::_types::Id>,
     groups: Option<Vec<String>>,
     model_plot_config: Option<crate::typed::ml::_types::ModelPlotConfig>,
     model_snapshot_retention_days: Option<i64>,
@@ -174,7 +171,6 @@ impl<C>
             data_description: None,
             datafeed_config: None,
             description: None,
-            job_id2: None,
             groups: None,
             model_plot_config: None,
             model_snapshot_retention_days: None,
@@ -209,7 +205,6 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
             data_description: self.data_description,
             datafeed_config: self.datafeed_config,
             description: self.description,
-            job_id2: self.job_id2,
             groups: self.groups,
             model_plot_config: self.model_plot_config,
             model_snapshot_retention_days: self.model_snapshot_retention_days,
@@ -466,18 +461,6 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
         self
     }
 
-    /// The identifier for the anomaly detection job. This identifier can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores. It must start and end with alphanumeric characters.
-    pub fn job_id2(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
-        self.job_id2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`job_id2`](Self::job_id2) if `value` is `Some`.
-    pub fn maybe_job_id2(mut self, value: Option<crate::typed::_types::Id>) -> Self {
-        self.job_id2 = value;
-        self
-    }
-
     /// A list of job groups. A job can belong to no groups or many.
     pub fn groups(mut self, value: impl Into<Vec<String>>) -> Self {
         self.groups = Some(value.into());
@@ -662,7 +645,6 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
             data_description: self.data_description.unwrap(),
             datafeed_config: self.datafeed_config,
             description: self.description,
-            job_id2: self.job_id2,
             groups: self.groups,
             model_plot_config: self.model_plot_config,
             model_snapshot_retention_days: self.model_snapshot_retention_days,
@@ -777,7 +759,6 @@ impl Request {
             data_description: &self.data_description,
             datafeed_config: self.datafeed_config.as_ref(),
             description: self.description.as_ref(),
-            job_id2: self.job_id2.as_ref(),
             groups: self.groups.as_ref(),
             model_plot_config: self.model_plot_config.as_ref(),
             model_snapshot_retention_days: self.model_snapshot_retention_days.as_ref(),
@@ -829,8 +810,6 @@ pub struct RequestBody<'a> {
     datafeed_config: Option<&'a crate::typed::ml::_types::DatafeedConfig>,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<&'a String>,
-    #[serde(rename = "job_id", skip_serializing_if = "Option::is_none")]
-    job_id2: Option<&'a crate::typed::_types::Id>,
     #[serde(skip_serializing_if = "Option::is_none")]
     groups: Option<&'a Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]

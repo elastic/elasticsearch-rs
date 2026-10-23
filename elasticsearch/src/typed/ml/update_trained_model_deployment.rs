@@ -10,13 +10,6 @@
 pub struct Request {
     /// The unique identifier of the trained model. Currently, only PyTorch models are supported.
     pub model_id: crate::typed::_types::Id,
-    /// The number of model allocations on each node where the model is deployed.
-    /// All allocations on a node share the same copy of the model in memory but use
-    /// a separate set of threads to evaluate the model.
-    /// Increasing this value generally increases the throughput.
-    /// If this setting is greater than the number of hardware threads
-    /// it will automatically be changed to a value less than the number of hardware threads.
-    pub number_of_allocations: Option<i32>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -39,7 +32,7 @@ pub struct Request {
     /// If this setting is greater than the number of hardware threads
     /// it will automatically be changed to a value less than the number of hardware threads.
     /// If adaptive_allocations is enabled, do not set this value, because it’s automatically set.
-    pub number_of_allocations2: Option<i32>,
+    pub number_of_allocations: Option<i32>,
     /// Adaptive allocations configuration. When enabled, the number of allocations
     /// is set based on the current load.
     /// If adaptive_allocations is enabled, do not set the number of allocations manually.
@@ -75,12 +68,11 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     model_id: Option<crate::typed::_types::Id>,
-    number_of_allocations: Option<i32>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    number_of_allocations2: Option<i32>,
+    number_of_allocations: Option<i32>,
     adaptive_allocations: Option<crate::typed::ml::_types::AdaptiveAllocationsSettings>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -90,12 +82,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             model_id: None,
-            number_of_allocations: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            number_of_allocations2: None,
+            number_of_allocations: None,
             adaptive_allocations: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -107,33 +98,15 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             model_id: self.model_id,
-            number_of_allocations: self.number_of_allocations,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            number_of_allocations2: self.number_of_allocations2,
+            number_of_allocations: self.number_of_allocations,
             adaptive_allocations: self.adaptive_allocations,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// The number of model allocations on each node where the model is deployed.
-    /// All allocations on a node share the same copy of the model in memory but use
-    /// a separate set of threads to evaluate the model.
-    /// Increasing this value generally increases the throughput.
-    /// If this setting is greater than the number of hardware threads
-    /// it will automatically be changed to a value less than the number of hardware threads.
-    pub fn number_of_allocations(mut self, value: i32) -> Self {
-        self.number_of_allocations = Some(value);
-        self
-    }
-
-    /// Sets [`number_of_allocations`](Self::number_of_allocations) if `value` is `Some`.
-    pub fn maybe_number_of_allocations(mut self, value: Option<i32>) -> Self {
-        self.number_of_allocations = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -198,14 +171,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// If this setting is greater than the number of hardware threads
     /// it will automatically be changed to a value less than the number of hardware threads.
     /// If adaptive_allocations is enabled, do not set this value, because it’s automatically set.
-    pub fn number_of_allocations2(mut self, value: i32) -> Self {
-        self.number_of_allocations2 = Some(value);
+    pub fn number_of_allocations(mut self, value: i32) -> Self {
+        self.number_of_allocations = Some(value);
         self
     }
 
-    /// Sets [`number_of_allocations2`](Self::number_of_allocations2) if `value` is `Some`.
-    pub fn maybe_number_of_allocations2(mut self, value: Option<i32>) -> Self {
-        self.number_of_allocations2 = value;
+    /// Sets [`number_of_allocations`](Self::number_of_allocations) if `value` is `Some`.
+    pub fn maybe_number_of_allocations(mut self, value: Option<i32>) -> Self {
+        self.number_of_allocations = value;
         self
     }
 
@@ -264,12 +237,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             model_id: self.model_id.unwrap(),
-            number_of_allocations: self.number_of_allocations,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            number_of_allocations2: self.number_of_allocations2,
+            number_of_allocations: self.number_of_allocations,
             adaptive_allocations: self.adaptive_allocations,
         }
     }
@@ -322,12 +294,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.number_of_allocations {
-            query.push((
-                "number_of_allocations",
-                crate::typed::support::query_value(value),
-            ));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -346,7 +312,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            number_of_allocations2: self.number_of_allocations2.as_ref(),
+            number_of_allocations: self.number_of_allocations.as_ref(),
             adaptive_allocations: self.adaptive_allocations.as_ref(),
         }
     }
@@ -377,11 +343,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(
-        rename = "number_of_allocations",
-        skip_serializing_if = "Option::is_none"
-    )]
-    number_of_allocations2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    number_of_allocations: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     adaptive_allocations: Option<&'a crate::typed::ml::_types::AdaptiveAllocationsSettings>,
 }

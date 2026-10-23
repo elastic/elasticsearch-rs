@@ -108,8 +108,6 @@ pub struct Request {
     /// If `true`, wildcard and prefix queries are analyzed.
     /// This parameter can be used only when the `q` query string parameter is specified.
     pub analyze_wildcard: Option<bool>,
-    /// The preferred behavior when update by query hits version conflicts: `abort` or `proceed`.
-    pub conflicts: Option<crate::typed::_types::Conflicts>,
     /// The default operator for query string query: `and` or `or`.
     /// This parameter can be used only when the `q` query string parameter is specified.
     pub default_operator: Option<crate::typed::_types::query_dsl::Operator>,
@@ -129,10 +127,6 @@ pub struct Request {
     /// If `true`, format-based query failures (such as providing text to a numeric field) in the query string will be ignored.
     /// This parameter can be used only when the `q` query string parameter is specified.
     pub lenient: Option<bool>,
-    /// The maximum number of documents to process.
-    /// It defaults to all documents.
-    /// When set to a value less than or equal to `scroll_size` and `conflicts` is set to `abort`, a scroll will not be used to retrieve the results for the operation.
-    pub max_docs: Option<i64>,
     /// The ID of the pipeline to use to preprocess incoming documents.
     /// If the index has a default ingest pipeline specified, then setting the value to `_none` disables the default ingest pipeline for this request.
     /// If a final pipeline is configured it will always run, regardless of the value of this parameter.
@@ -217,7 +211,7 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// The maximum number of documents to update.
-    pub max_docs2: Option<i64>,
+    pub max_docs: Option<i64>,
     /// The documents to update using the Query DSL.
     pub query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     /// The script to run to update the document source or metadata when updating.
@@ -225,7 +219,7 @@ pub struct Request {
     /// Slice the request manually using the provided slice ID and total number of slices.
     pub slice: Option<crate::typed::_types::SlicedScroll>,
     /// The preferred behavior when update by query hits version conflicts: `abort` or `proceed`.
-    pub conflicts2: Option<crate::typed::_types::Conflicts>,
+    pub conflicts: Option<crate::typed::_types::Conflicts>,
 }
 
 impl Request {
@@ -260,14 +254,12 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     allow_no_indices: Option<bool>,
     analyzer: Option<String>,
     analyze_wildcard: Option<bool>,
-    conflicts: Option<crate::typed::_types::Conflicts>,
     default_operator: Option<crate::typed::_types::query_dsl::Operator>,
     df: Option<String>,
     expand_wildcards: Option<crate::typed::_types::ExpandWildcards>,
     from: Option<i64>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
-    max_docs: Option<i64>,
     pipeline: Option<String>,
     preference: Option<String>,
     q: Option<String>,
@@ -293,11 +285,11 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    max_docs2: Option<i64>,
+    max_docs: Option<i64>,
     query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     script: Option<crate::typed::_types::Script>,
     slice: Option<crate::typed::_types::SlicedScroll>,
-    conflicts2: Option<crate::typed::_types::Conflicts>,
+    conflicts: Option<crate::typed::_types::Conflicts>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -309,14 +301,12 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             allow_no_indices: None,
             analyzer: None,
             analyze_wildcard: None,
-            conflicts: None,
             default_operator: None,
             df: None,
             expand_wildcards: None,
             from: None,
             ignore_unavailable: None,
             lenient: None,
-            max_docs: None,
             pipeline: None,
             preference: None,
             q: None,
@@ -342,11 +332,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            max_docs2: None,
+            max_docs: None,
             query: None,
             script: None,
             slice: None,
-            conflicts2: None,
+            conflicts: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -360,14 +350,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             allow_no_indices: self.allow_no_indices,
             analyzer: self.analyzer,
             analyze_wildcard: self.analyze_wildcard,
-            conflicts: self.conflicts,
             default_operator: self.default_operator,
             df: self.df,
             expand_wildcards: self.expand_wildcards,
             from: self.from,
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
-            max_docs: self.max_docs,
             pipeline: self.pipeline,
             preference: self.preference,
             q: self.q,
@@ -393,11 +381,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             query: self.query,
             script: self.script,
             slice: self.slice,
-            conflicts2: self.conflicts2,
+            conflicts: self.conflicts,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -443,18 +431,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`analyze_wildcard`](Self::analyze_wildcard) if `value` is `Some`.
     pub fn maybe_analyze_wildcard(mut self, value: Option<bool>) -> Self {
         self.analyze_wildcard = value;
-        self
-    }
-
-    /// The preferred behavior when update by query hits version conflicts: `abort` or `proceed`.
-    pub fn conflicts(mut self, value: impl Into<crate::typed::_types::Conflicts>) -> Self {
-        self.conflicts = Some(value.into());
-        self
-    }
-
-    /// Sets [`conflicts`](Self::conflicts) if `value` is `Some`.
-    pub fn maybe_conflicts(mut self, value: Option<crate::typed::_types::Conflicts>) -> Self {
-        self.conflicts = value;
         self
     }
 
@@ -546,20 +522,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`lenient`](Self::lenient) if `value` is `Some`.
     pub fn maybe_lenient(mut self, value: Option<bool>) -> Self {
         self.lenient = value;
-        self
-    }
-
-    /// The maximum number of documents to process.
-    /// It defaults to all documents.
-    /// When set to a value less than or equal to `scroll_size` and `conflicts` is set to `abort`, a scroll will not be used to retrieve the results for the operation.
-    pub fn max_docs(mut self, value: i64) -> Self {
-        self.max_docs = Some(value);
-        self
-    }
-
-    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
-    pub fn maybe_max_docs(mut self, value: Option<i64>) -> Self {
-        self.max_docs = value;
         self
     }
 
@@ -919,14 +881,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// The maximum number of documents to update.
-    pub fn max_docs2(mut self, value: i64) -> Self {
-        self.max_docs2 = Some(value);
+    pub fn max_docs(mut self, value: i64) -> Self {
+        self.max_docs = Some(value);
         self
     }
 
-    /// Sets [`max_docs2`](Self::max_docs2) if `value` is `Some`.
-    pub fn maybe_max_docs2(mut self, value: Option<i64>) -> Self {
-        self.max_docs2 = value;
+    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
+    pub fn maybe_max_docs(mut self, value: Option<i64>) -> Self {
+        self.max_docs = value;
         self
     }
 
@@ -1001,14 +963,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// The preferred behavior when update by query hits version conflicts: `abort` or `proceed`.
-    pub fn conflicts2(mut self, value: impl Into<crate::typed::_types::Conflicts>) -> Self {
-        self.conflicts2 = Some(value.into());
+    pub fn conflicts(mut self, value: impl Into<crate::typed::_types::Conflicts>) -> Self {
+        self.conflicts = Some(value.into());
         self
     }
 
-    /// Sets [`conflicts2`](Self::conflicts2) if `value` is `Some`.
-    pub fn maybe_conflicts2(mut self, value: Option<crate::typed::_types::Conflicts>) -> Self {
-        self.conflicts2 = value;
+    /// Sets [`conflicts`](Self::conflicts) if `value` is `Some`.
+    pub fn maybe_conflicts(mut self, value: Option<crate::typed::_types::Conflicts>) -> Self {
+        self.conflicts = value;
         self
     }
 }
@@ -1038,14 +1000,12 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             allow_no_indices: self.allow_no_indices,
             analyzer: self.analyzer,
             analyze_wildcard: self.analyze_wildcard,
-            conflicts: self.conflicts,
             default_operator: self.default_operator,
             df: self.df,
             expand_wildcards: self.expand_wildcards,
             from: self.from,
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
-            max_docs: self.max_docs,
             pipeline: self.pipeline,
             preference: self.preference,
             q: self.q,
@@ -1071,11 +1031,11 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             query: self.query,
             script: self.script,
             slice: self.slice,
-            conflicts2: self.conflicts2,
+            conflicts: self.conflicts,
         }
     }
 }
@@ -1142,9 +1102,6 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.conflicts {
-            query.push(("conflicts", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.default_operator {
             query.push((
                 "default_operator",
@@ -1171,9 +1128,6 @@ impl Request {
         }
         if let Some(value) = &self.lenient {
             query.push(("lenient", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.max_docs {
-            query.push(("max_docs", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.pipeline {
             query.push(("pipeline", crate::typed::support::query_value(value)));
@@ -1265,11 +1219,11 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            max_docs2: self.max_docs2.as_ref(),
+            max_docs: self.max_docs.as_ref(),
             query: self.query.as_ref(),
             script: self.script.as_ref(),
             slice: self.slice.as_ref(),
-            conflicts2: self.conflicts2.as_ref(),
+            conflicts: self.conflicts.as_ref(),
         }
     }
 
@@ -1299,16 +1253,16 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
-    max_docs2: Option<&'a i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_docs: Option<&'a i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     query: Option<&'a crate::typed::_types::query_dsl::QueryContainer>,
     #[serde(skip_serializing_if = "Option::is_none")]
     script: Option<&'a crate::typed::_types::Script>,
     #[serde(skip_serializing_if = "Option::is_none")]
     slice: Option<&'a crate::typed::_types::SlicedScroll>,
-    #[serde(rename = "conflicts", skip_serializing_if = "Option::is_none")]
-    conflicts2: Option<&'a crate::typed::_types::Conflicts>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    conflicts: Option<&'a crate::typed::_types::Conflicts>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

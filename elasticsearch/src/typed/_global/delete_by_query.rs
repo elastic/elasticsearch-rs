@@ -125,10 +125,6 @@ pub struct Request {
     /// If `true`, format-based query failures (such as providing text to a numeric field) in the query string will be ignored.
     /// This parameter can be used only when the `q` query string parameter is specified.
     pub lenient: Option<bool>,
-    /// The maximum number of documents to process.
-    /// Defaults to all documents.
-    /// When set to a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
-    pub max_docs: Option<i64>,
     /// The node or shard the operation should be performed on.
     /// It is random by default.
     pub preference: Option<String>,
@@ -163,8 +159,6 @@ pub struct Request {
     pub search_type: Option<crate::typed::_types::SearchType>,
     /// The number of slices this task should be divided into.
     pub slices: Option<crate::typed::_types::Slices>,
-    /// A comma-separated list of `<field>:<direction>` pairs.
-    pub sort: Option<Vec<String>>,
     /// The specific `tag` of the request for logging and statistical purposes.
     pub stats: Option<Vec<String>>,
     /// The maximum number of documents to collect for each shard.
@@ -203,13 +197,13 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// The maximum number of documents to delete.
-    pub max_docs2: Option<i64>,
+    pub max_docs: Option<i64>,
     /// The documents to delete specified with Query DSL.
     pub query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     /// Slice the request manually using the provided slice ID and total number of slices.
     pub slice: Option<crate::typed::_types::SlicedScroll>,
     /// A sort object that specifies the order of deleted documents.
-    pub sort2: Option<crate::typed::_types::Sort>,
+    pub sort: Option<crate::typed::_types::Sort>,
 }
 
 impl Request {
@@ -251,7 +245,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     from: Option<i64>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
-    max_docs: Option<i64>,
     preference: Option<String>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
@@ -264,7 +257,6 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     search_timeout: Option<crate::typed::_types::Duration>,
     search_type: Option<crate::typed::_types::SearchType>,
     slices: Option<crate::typed::_types::Slices>,
-    sort: Option<Vec<String>>,
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<crate::typed::_types::Duration>,
@@ -275,10 +267,10 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    max_docs2: Option<i64>,
+    max_docs: Option<i64>,
     query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     slice: Option<crate::typed::_types::SlicedScroll>,
-    sort2: Option<crate::typed::_types::Sort>,
+    sort: Option<crate::typed::_types::Sort>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -297,7 +289,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             from: None,
             ignore_unavailable: None,
             lenient: None,
-            max_docs: None,
             preference: None,
             refresh: None,
             request_cache: None,
@@ -310,7 +301,6 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             search_timeout: None,
             search_type: None,
             slices: None,
-            sort: None,
             stats: None,
             terminate_after: None,
             timeout: None,
@@ -321,10 +311,10 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
             filter_path: None,
             human: None,
             pretty: None,
-            max_docs2: None,
+            max_docs: None,
             query: None,
             slice: None,
-            sort2: None,
+            sort: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -345,7 +335,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             from: self.from,
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
-            max_docs: self.max_docs,
             preference: self.preference,
             refresh: self.refresh,
             request_cache: self.request_cache,
@@ -358,7 +347,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             search_timeout: self.search_timeout,
             search_type: self.search_type,
             slices: self.slices,
-            sort: self.sort,
             stats: self.stats,
             terminate_after: self.terminate_after,
             timeout: self.timeout,
@@ -369,10 +357,10 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             query: self.query,
             slice: self.slice,
-            sort2: self.sort2,
+            sort: self.sort,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -521,20 +509,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`lenient`](Self::lenient) if `value` is `Some`.
     pub fn maybe_lenient(mut self, value: Option<bool>) -> Self {
         self.lenient = value;
-        self
-    }
-
-    /// The maximum number of documents to process.
-    /// Defaults to all documents.
-    /// When set to a value less then or equal to `scroll_size`, a scroll will not be used to retrieve the results for the operation.
-    pub fn max_docs(mut self, value: i64) -> Self {
-        self.max_docs = Some(value);
-        self
-    }
-
-    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
-    pub fn maybe_max_docs(mut self, value: Option<i64>) -> Self {
-        self.max_docs = value;
         self
     }
 
@@ -692,26 +666,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
-    /// A comma-separated list of `<field>:<direction>` pairs.
-    pub fn sort(mut self, value: impl Into<Vec<String>>) -> Self {
-        self.sort = Some(value.into());
-        self
-    }
-
-    /// Sets [`sort`](Self::sort) if `value` is `Some`.
-    pub fn maybe_sort(mut self, value: Option<Vec<String>>) -> Self {
-        self.sort = value;
-        self
-    }
-
-    /// Adds an element to [`sort`](Self::sort).
-    pub fn add_sort(mut self, value: impl Into<String>) -> Self {
-        self.sort
-            .get_or_insert_with(Default::default)
-            .push(value.into());
-        self
-    }
-
     /// The specific `tag` of the request for logging and statistical purposes.
     pub fn stats(mut self, value: impl Into<Vec<String>>) -> Self {
         self.stats = Some(value.into());
@@ -864,14 +818,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// The maximum number of documents to delete.
-    pub fn max_docs2(mut self, value: i64) -> Self {
-        self.max_docs2 = Some(value);
+    pub fn max_docs(mut self, value: i64) -> Self {
+        self.max_docs = Some(value);
         self
     }
 
-    /// Sets [`max_docs2`](Self::max_docs2) if `value` is `Some`.
-    pub fn maybe_max_docs2(mut self, value: Option<i64>) -> Self {
-        self.max_docs2 = value;
+    /// Sets [`max_docs`](Self::max_docs) if `value` is `Some`.
+    pub fn maybe_max_docs(mut self, value: Option<i64>) -> Self {
+        self.max_docs = value;
         self
     }
 
@@ -926,14 +880,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// A sort object that specifies the order of deleted documents.
-    pub fn sort2(mut self, value: impl Into<crate::typed::_types::Sort>) -> Self {
-        self.sort2 = Some(value.into());
+    pub fn sort(mut self, value: impl Into<crate::typed::_types::Sort>) -> Self {
+        self.sort = Some(value.into());
         self
     }
 
-    /// Sets [`sort2`](Self::sort2) if `value` is `Some`.
-    pub fn maybe_sort2(mut self, value: Option<crate::typed::_types::Sort>) -> Self {
-        self.sort2 = value;
+    /// Sets [`sort`](Self::sort) if `value` is `Some`.
+    pub fn maybe_sort(mut self, value: Option<crate::typed::_types::Sort>) -> Self {
+        self.sort = value;
         self
     }
 }
@@ -970,7 +924,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             from: self.from,
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
-            max_docs: self.max_docs,
             preference: self.preference,
             refresh: self.refresh,
             request_cache: self.request_cache,
@@ -983,7 +936,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             search_timeout: self.search_timeout,
             search_type: self.search_type,
             slices: self.slices,
-            sort: self.sort,
             stats: self.stats,
             terminate_after: self.terminate_after,
             timeout: self.timeout,
@@ -994,10 +946,10 @@ impl<S0, C> RequestBuilder<(S0,), C> {
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            max_docs2: self.max_docs2,
+            max_docs: self.max_docs,
             query: self.query,
             slice: self.slice,
-            sort2: self.sort2,
+            sort: self.sort,
         }
     }
 }
@@ -1094,9 +1046,6 @@ impl Request {
         if let Some(value) = &self.lenient {
             query.push(("lenient", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.max_docs {
-            query.push(("max_docs", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.preference {
             query.push(("preference", crate::typed::support::query_value(value)));
         }
@@ -1135,9 +1084,6 @@ impl Request {
         }
         if let Some(value) = &self.slices {
             query.push(("slices", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.sort {
-            query.push(("sort", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.stats {
             query.push(("stats", crate::typed::support::query_value(value)));
@@ -1181,10 +1127,10 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            max_docs2: self.max_docs2.as_ref(),
+            max_docs: self.max_docs.as_ref(),
             query: self.query.as_ref(),
             slice: self.slice.as_ref(),
-            sort2: self.sort2.as_ref(),
+            sort: self.sort.as_ref(),
         }
     }
 
@@ -1214,14 +1160,14 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
-    max_docs2: Option<&'a i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_docs: Option<&'a i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     query: Option<&'a crate::typed::_types::query_dsl::QueryContainer>,
     #[serde(skip_serializing_if = "Option::is_none")]
     slice: Option<&'a crate::typed::_types::SlicedScroll>,
-    #[serde(rename = "sort", skip_serializing_if = "Option::is_none")]
-    sort2: Option<&'a crate::typed::_types::Sort>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    sort: Option<&'a crate::typed::_types::Sort>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

@@ -21,12 +21,6 @@
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-scroll)
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request {
-    /// The scroll ID
-    pub scroll_id: Option<crate::typed::_types::ScrollId>,
-    /// The period to retain the search context for scrolling.
-    pub scroll: Option<crate::typed::_types::Duration>,
-    /// The scroll ID
-    pub scroll_id2: Option<crate::typed::_types::ScrollId>,
     /// If true, the API response’s hit.total property is returned as an integer. If false, the API response’s hit.total property is returned as an object.
     pub rest_total_hits_as_int: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -45,22 +39,22 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// The period to retain the search context for scrolling.
-    pub scroll2: Option<crate::typed::_types::Duration>,
+    pub scroll: Option<crate::typed::_types::Duration>,
     /// The scroll ID of the search.
-    pub scroll_id3: crate::typed::_types::ScrollId,
+    pub scroll_id: crate::typed::_types::ScrollId,
 }
 
 impl Request {
     /// Creates a builder for [`Request`].
     ///
-    /// Required: `scroll_id3`.
+    /// Required: `scroll_id`.
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
 
     /// Creates a [`Request`] from a function that sets the members of its builder.
     ///
-    /// Required: `scroll_id3`.
+    /// Required: `scroll_id`.
     pub fn of<B: crate::typed::builder::Build<Output = Request>>(
         f: impl FnOnce(RequestBuilder) -> B,
     ) -> Request {
@@ -72,22 +66,19 @@ impl Request {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod request_members {
-    pub struct scroll_id3;
+    pub struct scroll_id;
 }
 
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
-    scroll_id: Option<crate::typed::_types::ScrollId>,
-    scroll: Option<crate::typed::_types::Duration>,
-    scroll_id2: Option<crate::typed::_types::ScrollId>,
     rest_total_hits_as_int: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    scroll2: Option<crate::typed::_types::Duration>,
-    scroll_id3: Option<crate::typed::_types::ScrollId>,
+    scroll: Option<crate::typed::_types::Duration>,
+    scroll_id: Option<crate::typed::_types::ScrollId>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -95,16 +86,13 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
-            scroll_id: None,
-            scroll: None,
-            scroll_id2: None,
             rest_total_hits_as_int: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            scroll2: None,
-            scroll_id3: None,
+            scroll: None,
+            scroll_id: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -114,55 +102,16 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
 impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
-            scroll_id: self.scroll_id,
-            scroll: self.scroll,
-            scroll_id2: self.scroll_id2,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            scroll2: self.scroll2,
-            scroll_id3: self.scroll_id3,
+            scroll: self.scroll,
+            scroll_id: self.scroll_id,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// The scroll ID
-    pub fn scroll_id(mut self, value: impl Into<crate::typed::_types::ScrollId>) -> Self {
-        self.scroll_id = Some(value.into());
-        self
-    }
-
-    /// Sets [`scroll_id`](Self::scroll_id) if `value` is `Some`.
-    pub fn maybe_scroll_id(mut self, value: Option<crate::typed::_types::ScrollId>) -> Self {
-        self.scroll_id = value;
-        self
-    }
-
-    /// The period to retain the search context for scrolling.
-    pub fn scroll(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.scroll = Some(value.into());
-        self
-    }
-
-    /// Sets [`scroll`](Self::scroll) if `value` is `Some`.
-    pub fn maybe_scroll(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.scroll = value;
-        self
-    }
-
-    /// The scroll ID
-    pub fn scroll_id2(mut self, value: impl Into<crate::typed::_types::ScrollId>) -> Self {
-        self.scroll_id2 = Some(value.into());
-        self
-    }
-
-    /// Sets [`scroll_id2`](Self::scroll_id2) if `value` is `Some`.
-    pub fn maybe_scroll_id2(mut self, value: Option<crate::typed::_types::ScrollId>) -> Self {
-        self.scroll_id2 = value;
-        self
     }
 
     /// If true, the API response’s hit.total property is returned as an integer. If false, the API response’s hit.total property is returned as an object.
@@ -233,26 +182,26 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// The period to retain the search context for scrolling.
-    pub fn scroll2(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
-        self.scroll2 = Some(value.into());
+    pub fn scroll(mut self, value: impl Into<crate::typed::_types::Duration>) -> Self {
+        self.scroll = Some(value.into());
         self
     }
 
-    /// Sets [`scroll2`](Self::scroll2) if `value` is `Some`.
-    pub fn maybe_scroll2(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
-        self.scroll2 = value;
+    /// Sets [`scroll`](Self::scroll) if `value` is `Some`.
+    pub fn maybe_scroll(mut self, value: Option<crate::typed::_types::Duration>) -> Self {
+        self.scroll = value;
         self
     }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     /// **Required.** The scroll ID of the search.
-    pub fn scroll_id3(
+    pub fn scroll_id(
         self,
         value: impl Into<crate::typed::_types::ScrollId>,
     ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
         let mut builder = self.with_state();
-        builder.scroll_id3 = Some(value.into());
+        builder.scroll_id = Some(value.into());
         builder
     }
 }
@@ -261,26 +210,23 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Builds a [`Request`].
     pub fn build(self) -> Request
     where
-        S0: crate::typed::builder::IsSet<request_members::scroll_id3>,
+        S0: crate::typed::builder::IsSet<request_members::scroll_id>,
     {
         Request {
-            scroll_id: self.scroll_id,
-            scroll: self.scroll,
-            scroll_id2: self.scroll_id2,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            scroll2: self.scroll2,
-            scroll_id3: self.scroll_id3.unwrap(),
+            scroll: self.scroll,
+            scroll_id: self.scroll_id.unwrap(),
         }
     }
 }
 
 impl<S0, C> crate::typed::builder::Build for RequestBuilder<(S0,), C>
 where
-    S0: crate::typed::builder::IsSet<request_members::scroll_id3>,
+    S0: crate::typed::builder::IsSet<request_members::scroll_id>,
 {
     type Output = Request;
 
@@ -293,7 +239,7 @@ impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error>
     where
-        S0: crate::typed::builder::IsSet<request_members::scroll_id3>,
+        S0: crate::typed::builder::IsSet<request_members::scroll_id>,
     {
         let client = self.bound_client;
         self.build().send(client).await
@@ -303,15 +249,6 @@ impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
 impl Request {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
-        if let Some(scroll_id) = &self.scroll_id {
-            return (
-                crate::http::Method::Post,
-                format!(
-                    "/_search/scroll/{}",
-                    crate::typed::support::path_part(scroll_id)
-                ),
-            );
-        }
         (crate::http::Method::Post, "/_search/scroll".to_string())
     }
 
@@ -328,12 +265,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.scroll {
-            query.push(("scroll", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.scroll_id2 {
-            query.push(("scroll_id", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.rest_total_hits_as_int {
             query.push((
                 "rest_total_hits_as_int",
@@ -358,8 +289,8 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            scroll2: self.scroll2.as_ref(),
-            scroll_id3: &self.scroll_id3,
+            scroll: self.scroll.as_ref(),
+            scroll_id: &self.scroll_id,
         }
     }
 
@@ -389,10 +320,9 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-    scroll2: Option<&'a crate::typed::_types::Duration>,
-    #[serde(rename = "scroll_id")]
-    scroll_id3: &'a crate::typed::_types::ScrollId,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    scroll: Option<&'a crate::typed::_types::Duration>,
+    scroll_id: &'a crate::typed::_types::ScrollId,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

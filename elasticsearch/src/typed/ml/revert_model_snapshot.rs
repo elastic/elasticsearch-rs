@@ -22,13 +22,6 @@ pub struct Request {
     /// snapshot means the anomaly detection job starts learning a new model from
     /// scratch when it is started.
     pub snapshot_id: crate::typed::_types::Id,
-    /// If true, deletes the results in the time period between the latest
-    /// results and the time of the reverted snapshot. It also resets the model
-    /// to accept records for this time period. If you choose not to delete
-    /// intervening results when reverting a snapshot, the job will not accept
-    /// input data that is older than the current time. If you want to resend
-    /// data, then delete the intervening results.
-    pub delete_intervening_results: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -45,7 +38,7 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `delete_intervening_results` query parameter.
-    pub delete_intervening_results2: Option<bool>,
+    pub delete_intervening_results: Option<bool>,
 }
 
 impl Request {
@@ -82,12 +75,11 @@ pub struct RequestBuilder<
 > {
     job_id: Option<crate::typed::_types::Id>,
     snapshot_id: Option<crate::typed::_types::Id>,
-    delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    delete_intervening_results2: Option<bool>,
+    delete_intervening_results: Option<bool>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -97,12 +89,11 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
         RequestBuilder {
             job_id: None,
             snapshot_id: None,
-            delete_intervening_results: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            delete_intervening_results2: None,
+            delete_intervening_results: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -114,32 +105,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         RequestBuilder {
             job_id: self.job_id,
             snapshot_id: self.snapshot_id,
-            delete_intervening_results: self.delete_intervening_results,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            delete_intervening_results2: self.delete_intervening_results2,
+            delete_intervening_results: self.delete_intervening_results,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// If true, deletes the results in the time period between the latest
-    /// results and the time of the reverted snapshot. It also resets the model
-    /// to accept records for this time period. If you choose not to delete
-    /// intervening results when reverting a snapshot, the job will not accept
-    /// input data that is older than the current time. If you want to resend
-    /// data, then delete the intervening results.
-    pub fn delete_intervening_results(mut self, value: bool) -> Self {
-        self.delete_intervening_results = Some(value);
-        self
-    }
-
-    /// Sets [`delete_intervening_results`](Self::delete_intervening_results) if `value` is `Some`.
-    pub fn maybe_delete_intervening_results(mut self, value: Option<bool>) -> Self {
-        self.delete_intervening_results = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -198,14 +171,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 
     /// Refer to the description for the `delete_intervening_results` query parameter.
-    pub fn delete_intervening_results2(mut self, value: bool) -> Self {
-        self.delete_intervening_results2 = Some(value);
+    pub fn delete_intervening_results(mut self, value: bool) -> Self {
+        self.delete_intervening_results = Some(value);
         self
     }
 
-    /// Sets [`delete_intervening_results2`](Self::delete_intervening_results2) if `value` is `Some`.
-    pub fn maybe_delete_intervening_results2(mut self, value: Option<bool>) -> Self {
-        self.delete_intervening_results2 = value;
+    /// Sets [`delete_intervening_results`](Self::delete_intervening_results) if `value` is `Some`.
+    pub fn maybe_delete_intervening_results(mut self, value: Option<bool>) -> Self {
+        self.delete_intervening_results = value;
         self
     }
 }
@@ -246,12 +219,11 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         Request {
             job_id: self.job_id.unwrap(),
             snapshot_id: self.snapshot_id.unwrap(),
-            delete_intervening_results: self.delete_intervening_results,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
-            delete_intervening_results2: self.delete_intervening_results2,
+            delete_intervening_results: self.delete_intervening_results,
         }
     }
 }
@@ -306,12 +278,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.delete_intervening_results {
-            query.push((
-                "delete_intervening_results",
-                crate::typed::support::query_value(value),
-            ));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -330,7 +296,7 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            delete_intervening_results2: self.delete_intervening_results2.as_ref(),
+            delete_intervening_results: self.delete_intervening_results.as_ref(),
         }
     }
 
@@ -360,11 +326,8 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(
-        rename = "delete_intervening_results",
-        skip_serializing_if = "Option::is_none"
-    )]
-    delete_intervening_results2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    delete_intervening_results: Option<&'a bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

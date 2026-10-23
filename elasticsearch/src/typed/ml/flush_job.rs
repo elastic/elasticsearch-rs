@@ -19,21 +19,6 @@
 pub struct Request {
     /// Identifier for the anomaly detection job.
     pub job_id: crate::typed::_types::Id,
-    /// Specifies to advance to a particular time value. Results are generated
-    /// and the model is updated for data from the specified time interval.
-    pub advance_time: Option<crate::typed::_types::DateTime>,
-    /// If true, calculates the interim results for the most recent bucket or all
-    /// buckets within the latency period.
-    pub calc_interim: Option<bool>,
-    /// When used in conjunction with `calc_interim` and `start`, specifies the
-    /// range of buckets on which to calculate interim results.
-    pub end: Option<crate::typed::_types::DateTime>,
-    /// Specifies to skip to a particular time value. Results are not generated
-    /// and the model is not updated for data from the specified time interval.
-    pub skip_time: Option<crate::typed::_types::DateTime>,
-    /// When used in conjunction with `calc_interim`, specifies the range of
-    /// buckets on which to calculate interim results.
-    pub start: Option<crate::typed::_types::DateTime>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -50,15 +35,15 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `advance_time` query parameter.
-    pub advance_time2: Option<crate::typed::_types::DateTime>,
+    pub advance_time: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `calc_interim` query parameter.
-    pub calc_interim2: Option<bool>,
+    pub calc_interim: Option<bool>,
     /// Refer to the description for the `end` query parameter.
-    pub end2: Option<crate::typed::_types::DateTime>,
+    pub end: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `skip_time` query parameter.
-    pub skip_time2: Option<crate::typed::_types::DateTime>,
+    pub skip_time: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `start` query parameter.
-    pub start2: Option<crate::typed::_types::DateTime>,
+    pub start: Option<crate::typed::_types::DateTime>,
 }
 
 impl Request {
@@ -90,20 +75,15 @@ pub mod request_members {
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     job_id: Option<crate::typed::_types::Id>,
+    error_trace: Option<bool>,
+    filter_path: Option<RequestFilterPath>,
+    human: Option<bool>,
+    pretty: Option<bool>,
     advance_time: Option<crate::typed::_types::DateTime>,
     calc_interim: Option<bool>,
     end: Option<crate::typed::_types::DateTime>,
     skip_time: Option<crate::typed::_types::DateTime>,
     start: Option<crate::typed::_types::DateTime>,
-    error_trace: Option<bool>,
-    filter_path: Option<RequestFilterPath>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    advance_time2: Option<crate::typed::_types::DateTime>,
-    calc_interim2: Option<bool>,
-    end2: Option<crate::typed::_types::DateTime>,
-    skip_time2: Option<crate::typed::_types::DateTime>,
-    start2: Option<crate::typed::_types::DateTime>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -112,20 +92,15 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             job_id: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
             advance_time: None,
             calc_interim: None,
             end: None,
             skip_time: None,
             start: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            advance_time2: None,
-            calc_interim2: None,
-            end2: None,
-            skip_time2: None,
-            start2: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -136,88 +111,18 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     fn with_state<N>(self) -> RequestBuilder<N, C> {
         RequestBuilder {
             job_id: self.job_id,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             advance_time: self.advance_time,
             calc_interim: self.calc_interim,
             end: self.end,
             skip_time: self.skip_time,
             start: self.start,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            advance_time2: self.advance_time2,
-            calc_interim2: self.calc_interim2,
-            end2: self.end2,
-            skip_time2: self.skip_time2,
-            start2: self.start2,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// Specifies to advance to a particular time value. Results are generated
-    /// and the model is updated for data from the specified time interval.
-    pub fn advance_time(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.advance_time = Some(value.into());
-        self
-    }
-
-    /// Sets [`advance_time`](Self::advance_time) if `value` is `Some`.
-    pub fn maybe_advance_time(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.advance_time = value;
-        self
-    }
-
-    /// If true, calculates the interim results for the most recent bucket or all
-    /// buckets within the latency period.
-    pub fn calc_interim(mut self, value: bool) -> Self {
-        self.calc_interim = Some(value);
-        self
-    }
-
-    /// Sets [`calc_interim`](Self::calc_interim) if `value` is `Some`.
-    pub fn maybe_calc_interim(mut self, value: Option<bool>) -> Self {
-        self.calc_interim = value;
-        self
-    }
-
-    /// When used in conjunction with `calc_interim` and `start`, specifies the
-    /// range of buckets on which to calculate interim results.
-    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end = Some(value.into());
-        self
-    }
-
-    /// Sets [`end`](Self::end) if `value` is `Some`.
-    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end = value;
-        self
-    }
-
-    /// Specifies to skip to a particular time value. Results are not generated
-    /// and the model is not updated for data from the specified time interval.
-    pub fn skip_time(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.skip_time = Some(value.into());
-        self
-    }
-
-    /// Sets [`skip_time`](Self::skip_time) if `value` is `Some`.
-    pub fn maybe_skip_time(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.skip_time = value;
-        self
-    }
-
-    /// When used in conjunction with `calc_interim`, specifies the range of
-    /// buckets on which to calculate interim results.
-    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start = Some(value.into());
-        self
-    }
-
-    /// Sets [`start`](Self::start) if `value` is `Some`.
-    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -276,62 +181,62 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the description for the `advance_time` query parameter.
-    pub fn advance_time2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.advance_time2 = Some(value.into());
+    pub fn advance_time(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.advance_time = Some(value.into());
         self
     }
 
-    /// Sets [`advance_time2`](Self::advance_time2) if `value` is `Some`.
-    pub fn maybe_advance_time2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.advance_time2 = value;
+    /// Sets [`advance_time`](Self::advance_time) if `value` is `Some`.
+    pub fn maybe_advance_time(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.advance_time = value;
         self
     }
 
     /// Refer to the description for the `calc_interim` query parameter.
-    pub fn calc_interim2(mut self, value: bool) -> Self {
-        self.calc_interim2 = Some(value);
+    pub fn calc_interim(mut self, value: bool) -> Self {
+        self.calc_interim = Some(value);
         self
     }
 
-    /// Sets [`calc_interim2`](Self::calc_interim2) if `value` is `Some`.
-    pub fn maybe_calc_interim2(mut self, value: Option<bool>) -> Self {
-        self.calc_interim2 = value;
+    /// Sets [`calc_interim`](Self::calc_interim) if `value` is `Some`.
+    pub fn maybe_calc_interim(mut self, value: Option<bool>) -> Self {
+        self.calc_interim = value;
         self
     }
 
     /// Refer to the description for the `end` query parameter.
-    pub fn end2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = Some(value.into());
+    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.end = Some(value.into());
         self
     }
 
-    /// Sets [`end2`](Self::end2) if `value` is `Some`.
-    pub fn maybe_end2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = value;
+    /// Sets [`end`](Self::end) if `value` is `Some`.
+    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.end = value;
         self
     }
 
     /// Refer to the description for the `skip_time` query parameter.
-    pub fn skip_time2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.skip_time2 = Some(value.into());
+    pub fn skip_time(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.skip_time = Some(value.into());
         self
     }
 
-    /// Sets [`skip_time2`](Self::skip_time2) if `value` is `Some`.
-    pub fn maybe_skip_time2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.skip_time2 = value;
+    /// Sets [`skip_time`](Self::skip_time) if `value` is `Some`.
+    pub fn maybe_skip_time(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.skip_time = value;
         self
     }
 
     /// Refer to the description for the `start` query parameter.
-    pub fn start2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = Some(value.into());
+    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.start = Some(value.into());
         self
     }
 
-    /// Sets [`start2`](Self::start2) if `value` is `Some`.
-    pub fn maybe_start2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = value;
+    /// Sets [`start`](Self::start) if `value` is `Some`.
+    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.start = value;
         self
     }
 }
@@ -356,20 +261,15 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     {
         Request {
             job_id: self.job_id.unwrap(),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             advance_time: self.advance_time,
             calc_interim: self.calc_interim,
             end: self.end,
             skip_time: self.skip_time,
             start: self.start,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            advance_time2: self.advance_time2,
-            calc_interim2: self.calc_interim2,
-            end2: self.end2,
-            skip_time2: self.skip_time2,
-            start2: self.start2,
         }
     }
 }
@@ -421,21 +321,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.advance_time {
-            query.push(("advance_time", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.calc_interim {
-            query.push(("calc_interim", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.end {
-            query.push(("end", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.skip_time {
-            query.push(("skip_time", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.start {
-            query.push(("start", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -454,11 +339,11 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            advance_time2: self.advance_time2.as_ref(),
-            calc_interim2: self.calc_interim2.as_ref(),
-            end2: self.end2.as_ref(),
-            skip_time2: self.skip_time2.as_ref(),
-            start2: self.start2.as_ref(),
+            advance_time: self.advance_time.as_ref(),
+            calc_interim: self.calc_interim.as_ref(),
+            end: self.end.as_ref(),
+            skip_time: self.skip_time.as_ref(),
+            start: self.start.as_ref(),
         }
     }
 
@@ -488,16 +373,16 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "advance_time", skip_serializing_if = "Option::is_none")]
-    advance_time2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "calc_interim", skip_serializing_if = "Option::is_none")]
-    calc_interim2: Option<&'a bool>,
-    #[serde(rename = "end", skip_serializing_if = "Option::is_none")]
-    end2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "skip_time", skip_serializing_if = "Option::is_none")]
-    skip_time2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "start", skip_serializing_if = "Option::is_none")]
-    start2: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    advance_time: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    calc_interim: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    end: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    skip_time: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    start: Option<&'a crate::typed::_types::DateTime>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

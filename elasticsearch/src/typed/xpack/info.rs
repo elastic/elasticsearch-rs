@@ -4902,12 +4902,6 @@ pub struct Request {
     /// Comma-separated list of filters in dot notation which reduce the response
     /// returned by Elasticsearch.
     pub filter_path: Option<RequestFilterPath>,
-    /// When set to `true` will return statistics in a format suitable for humans.
-    /// For example `"exists_time": "1h"` for humans and
-    /// `"exists_time_in_millis": 3600000` for computers. When disabled the human
-    /// readable values will be omitted. This makes sense for responses being consumed
-    /// only by machines.
-    pub human2: Option<bool>,
     /// If set to `true` the returned JSON will be "pretty-formatted". Only use
     /// this option for debugging only.
     pub pretty: Option<bool>,
@@ -4935,7 +4929,6 @@ pub struct RequestBuilder<S = (), C = ()> {
     human: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
-    human2: Option<bool>,
     pretty: Option<bool>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -4949,7 +4942,6 @@ impl<C> RequestBuilder<(), C> {
             human: None,
             error_trace: None,
             filter_path: None,
-            human2: None,
             pretty: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -5030,22 +5022,6 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
-    /// When set to `true` will return statistics in a format suitable for humans.
-    /// For example `"exists_time": "1h"` for humans and
-    /// `"exists_time_in_millis": 3600000` for computers. When disabled the human
-    /// readable values will be omitted. This makes sense for responses being consumed
-    /// only by machines.
-    pub fn human2(mut self, value: bool) -> Self {
-        self.human2 = Some(value);
-        self
-    }
-
-    /// Sets [`human2`](Self::human2) if `value` is `Some`.
-    pub fn maybe_human2(mut self, value: Option<bool>) -> Self {
-        self.human2 = value;
-        self
-    }
-
     /// If set to `true` the returned JSON will be "pretty-formatted". Only use
     /// this option for debugging only.
     pub fn pretty(mut self, value: bool) -> Self {
@@ -5069,7 +5045,6 @@ impl<C> RequestBuilder<(), C> {
             human: self.human,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
-            human2: self.human2,
             pretty: self.pretty,
         }
     }
@@ -5127,9 +5102,6 @@ impl Request {
         }
         if let Some(value) = &self.filter_path {
             query.push(("filter_path", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.human2 {
-            query.push(("human", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.pretty {
             query.push(("pretty", crate::typed::support::query_value(value)));

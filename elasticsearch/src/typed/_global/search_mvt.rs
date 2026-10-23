@@ -118,43 +118,6 @@ pub struct Request {
     pub x: _types::Coordinate,
     /// The Y coordinate for the vector tile to search.
     pub y: _types::Coordinate,
-    /// If `false`, the meta layer's feature is the bounding box of the tile.
-    /// If true, the meta layer's feature is a bounding box resulting from a
-    /// geo_bounds aggregation. The aggregation runs on <field> values that intersect
-    /// the <zoom>/<x>/<y> tile with wrap_longitude set to false. The resulting
-    /// bounding box may be larger than the vector tile.
-    pub exact_bounds: Option<bool>,
-    /// The size, in pixels, of a side of the tile. Vector tiles are square with equal sides.
-    pub extent: Option<i32>,
-    /// Aggregation used to create a grid for `field`.
-    pub grid_agg: Option<_types::GridAggregationType>,
-    /// Additional zoom levels available through the aggs layer. For example, if <zoom> is 7
-    /// and grid_precision is 8, you can zoom in up to level 15. Accepts 0-8. If 0, results
-    /// don't include the aggs layer.
-    pub grid_precision: Option<i32>,
-    /// Determines the geometry type for features in the aggs layer. In the aggs layer,
-    /// each feature represents a geotile_grid cell. If 'grid' each feature is a Polygon
-    /// of the cells bounding box. If 'point' each feature is a Point that is the centroid
-    /// of the cell.
-    pub grid_type: Option<_types::GridType>,
-    /// Maximum number of features to return in the hits layer. Accepts 0-10000.
-    /// If 0, results don't include the hits layer.
-    pub size: Option<i32>,
-    /// The number of hits matching the query to count accurately.
-    /// If `true`, the exact number of hits is returned at the cost of some performance.
-    /// If `false`, the response does not include the total number of hits matching the query.
-    pub track_total_hits: Option<crate::typed::_global::search::_types::TrackHits>,
-    /// If `true`, the hits and aggs layers will contain additional point features representing
-    /// suggested label positions for the original features.
-    ///
-    /// * `Point` and `MultiPoint` features will have one of the points selected.
-    /// * `Polygon` and `MultiPolygon` features will have a single point generated, either the centroid, if it is within the polygon, or another point within the polygon selected from the sorted triangle-tree.
-    /// * `LineString` features will likewise provide a roughly central point selected from the triangle-tree.
-    /// * The aggregation results will provide one central point for each aggregation bucket.
-    ///
-    /// All attributes from the original features will also be copied to the new label features.
-    /// In addition, the new features will be distinguishable using the tag `_mvt_label_position`.
-    pub with_labels: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -199,25 +162,25 @@ pub struct Request {
     /// `geo_bounds` aggregation. The aggregation runs on <field> values that intersect
     /// the `<zoom>/<x>/<y>` tile with `wrap_longitude` set to `false`. The resulting
     /// bounding box may be larger than the vector tile.
-    pub exact_bounds2: Option<bool>,
+    pub exact_bounds: Option<bool>,
     /// The size, in pixels, of a side of the tile. Vector tiles are square with equal sides.
-    pub extent2: Option<i32>,
+    pub extent: Option<i32>,
     /// The fields to return in the `hits` layer.
     /// It supports wildcards (`*`).
     /// This parameter does not support fields with array values. Fields with array
     /// values may return inconsistent results.
     pub fields: Option<crate::typed::_types::Fields>,
     /// The aggregation used to create a grid for the `field`.
-    pub grid_agg2: Option<_types::GridAggregationType>,
+    pub grid_agg: Option<_types::GridAggregationType>,
     /// Additional zoom levels available through the aggs layer. For example, if `<zoom>` is `7`
     /// and `grid_precision` is `8`, you can zoom in up to level 15. Accepts 0-8. If 0, results
     /// don't include the aggs layer.
-    pub grid_precision2: Option<i32>,
+    pub grid_precision: Option<i32>,
     /// Determines the geometry type for features in the aggs layer. In the aggs layer,
     /// each feature represents a `geotile_grid` cell. If `grid, each feature is a polygon
     /// of the cells bounding box. If `point`, each feature is a Point that is the centroid
     /// of the cell.
-    pub grid_type2: Option<_types::GridType>,
+    pub grid_type: Option<_types::GridType>,
     /// The query DSL used to filter documents for the search.
     pub query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     /// Defines one or more runtime fields in the search request. These fields take
@@ -225,7 +188,7 @@ pub struct Request {
     pub runtime_mappings: Option<crate::typed::_types::mapping::RuntimeFields>,
     /// The maximum number of features to return in the hits layer. Accepts 0-10000.
     /// If 0, results don't include the hits layer.
-    pub size2: Option<i32>,
+    pub size: Option<i32>,
     /// Sort the features in the hits layer. By default, the API calculates a bounding
     /// box for each feature. It sorts features based on this box's diagonal length,
     /// from longest to shortest.
@@ -233,7 +196,7 @@ pub struct Request {
     /// The number of hits matching the query to count accurately. If `true`, the exact number
     /// of hits is returned at the cost of some performance. If `false`, the response does
     /// not include the total number of hits matching the query.
-    pub track_total_hits2: Option<crate::typed::_global::search::_types::TrackHits>,
+    pub track_total_hits: Option<crate::typed::_global::search::_types::TrackHits>,
     /// If `true`, the hits and aggs layers will contain additional point features representing
     /// suggested label positions for the original features.
     ///
@@ -244,7 +207,7 @@ pub struct Request {
     ///
     /// All attributes from the original features will also be copied to the new label features.
     /// In addition, the new features will be distinguishable using the tag `_mvt_label_position`.
-    pub with_labels2: Option<bool>,
+    pub with_labels: Option<bool>,
     /// Specifies a subset of projects to target for the search using project
     /// metadata tags in a subset of Lucene query syntax.
     /// Allowed Lucene queries: the _alias tag and a single value (possibly wildcarded).
@@ -302,14 +265,6 @@ pub struct RequestBuilder<
     zoom: Option<_types::ZoomLevel>,
     x: Option<_types::Coordinate>,
     y: Option<_types::Coordinate>,
-    exact_bounds: Option<bool>,
-    extent: Option<i32>,
-    grid_agg: Option<_types::GridAggregationType>,
-    grid_precision: Option<i32>,
-    grid_type: Option<_types::GridType>,
-    size: Option<i32>,
-    track_total_hits: Option<crate::typed::_global::search::_types::TrackHits>,
-    with_labels: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -318,18 +273,18 @@ pub struct RequestBuilder<
         indexmap::IndexMap<String, crate::typed::_types::aggregations::AggregationContainer>,
     >,
     buffer: Option<i32>,
-    exact_bounds2: Option<bool>,
-    extent2: Option<i32>,
+    exact_bounds: Option<bool>,
+    extent: Option<i32>,
     fields: Option<crate::typed::_types::Fields>,
-    grid_agg2: Option<_types::GridAggregationType>,
-    grid_precision2: Option<i32>,
-    grid_type2: Option<_types::GridType>,
+    grid_agg: Option<_types::GridAggregationType>,
+    grid_precision: Option<i32>,
+    grid_type: Option<_types::GridType>,
     query: Option<crate::typed::_types::query_dsl::QueryContainer>,
     runtime_mappings: Option<crate::typed::_types::mapping::RuntimeFields>,
-    size2: Option<i32>,
+    size: Option<i32>,
     sort: Option<crate::typed::_types::Sort>,
-    track_total_hits2: Option<crate::typed::_global::search::_types::TrackHits>,
-    with_labels2: Option<bool>,
+    track_total_hits: Option<crate::typed::_global::search::_types::TrackHits>,
+    with_labels: Option<bool>,
     project_routing: Option<crate::typed::_types::ProjectRouting>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -354,32 +309,24 @@ impl<C>
             zoom: None,
             x: None,
             y: None,
-            exact_bounds: None,
-            extent: None,
-            grid_agg: None,
-            grid_precision: None,
-            grid_type: None,
-            size: None,
-            track_total_hits: None,
-            with_labels: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             aggs: None,
             buffer: None,
-            exact_bounds2: None,
-            extent2: None,
+            exact_bounds: None,
+            extent: None,
             fields: None,
-            grid_agg2: None,
-            grid_precision2: None,
-            grid_type2: None,
+            grid_agg: None,
+            grid_precision: None,
+            grid_type: None,
             query: None,
             runtime_mappings: None,
-            size2: None,
+            size: None,
             sort: None,
-            track_total_hits2: None,
-            with_labels2: None,
+            track_total_hits: None,
+            with_labels: None,
             project_routing: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -395,159 +342,28 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
             zoom: self.zoom,
             x: self.x,
             y: self.y,
-            exact_bounds: self.exact_bounds,
-            extent: self.extent,
-            grid_agg: self.grid_agg,
-            grid_precision: self.grid_precision,
-            grid_type: self.grid_type,
-            size: self.size,
-            track_total_hits: self.track_total_hits,
-            with_labels: self.with_labels,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
             aggs: self.aggs,
             buffer: self.buffer,
-            exact_bounds2: self.exact_bounds2,
-            extent2: self.extent2,
+            exact_bounds: self.exact_bounds,
+            extent: self.extent,
             fields: self.fields,
-            grid_agg2: self.grid_agg2,
-            grid_precision2: self.grid_precision2,
-            grid_type2: self.grid_type2,
+            grid_agg: self.grid_agg,
+            grid_precision: self.grid_precision,
+            grid_type: self.grid_type,
             query: self.query,
             runtime_mappings: self.runtime_mappings,
-            size2: self.size2,
+            size: self.size,
             sort: self.sort,
-            track_total_hits2: self.track_total_hits2,
-            with_labels2: self.with_labels2,
+            track_total_hits: self.track_total_hits,
+            with_labels: self.with_labels,
             project_routing: self.project_routing,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
-    }
-
-    /// If `false`, the meta layer's feature is the bounding box of the tile.
-    /// If true, the meta layer's feature is a bounding box resulting from a
-    /// geo_bounds aggregation. The aggregation runs on <field> values that intersect
-    /// the <zoom>/<x>/<y> tile with wrap_longitude set to false. The resulting
-    /// bounding box may be larger than the vector tile.
-    pub fn exact_bounds(mut self, value: bool) -> Self {
-        self.exact_bounds = Some(value);
-        self
-    }
-
-    /// Sets [`exact_bounds`](Self::exact_bounds) if `value` is `Some`.
-    pub fn maybe_exact_bounds(mut self, value: Option<bool>) -> Self {
-        self.exact_bounds = value;
-        self
-    }
-
-    /// The size, in pixels, of a side of the tile. Vector tiles are square with equal sides.
-    pub fn extent(mut self, value: i32) -> Self {
-        self.extent = Some(value);
-        self
-    }
-
-    /// Sets [`extent`](Self::extent) if `value` is `Some`.
-    pub fn maybe_extent(mut self, value: Option<i32>) -> Self {
-        self.extent = value;
-        self
-    }
-
-    /// Aggregation used to create a grid for `field`.
-    pub fn grid_agg(mut self, value: impl Into<_types::GridAggregationType>) -> Self {
-        self.grid_agg = Some(value.into());
-        self
-    }
-
-    /// Sets [`grid_agg`](Self::grid_agg) if `value` is `Some`.
-    pub fn maybe_grid_agg(mut self, value: Option<_types::GridAggregationType>) -> Self {
-        self.grid_agg = value;
-        self
-    }
-
-    /// Additional zoom levels available through the aggs layer. For example, if <zoom> is 7
-    /// and grid_precision is 8, you can zoom in up to level 15. Accepts 0-8. If 0, results
-    /// don't include the aggs layer.
-    pub fn grid_precision(mut self, value: i32) -> Self {
-        self.grid_precision = Some(value);
-        self
-    }
-
-    /// Sets [`grid_precision`](Self::grid_precision) if `value` is `Some`.
-    pub fn maybe_grid_precision(mut self, value: Option<i32>) -> Self {
-        self.grid_precision = value;
-        self
-    }
-
-    /// Determines the geometry type for features in the aggs layer. In the aggs layer,
-    /// each feature represents a geotile_grid cell. If 'grid' each feature is a Polygon
-    /// of the cells bounding box. If 'point' each feature is a Point that is the centroid
-    /// of the cell.
-    pub fn grid_type(mut self, value: impl Into<_types::GridType>) -> Self {
-        self.grid_type = Some(value.into());
-        self
-    }
-
-    /// Sets [`grid_type`](Self::grid_type) if `value` is `Some`.
-    pub fn maybe_grid_type(mut self, value: Option<_types::GridType>) -> Self {
-        self.grid_type = value;
-        self
-    }
-
-    /// Maximum number of features to return in the hits layer. Accepts 0-10000.
-    /// If 0, results don't include the hits layer.
-    pub fn size(mut self, value: i32) -> Self {
-        self.size = Some(value);
-        self
-    }
-
-    /// Sets [`size`](Self::size) if `value` is `Some`.
-    pub fn maybe_size(mut self, value: Option<i32>) -> Self {
-        self.size = value;
-        self
-    }
-
-    /// The number of hits matching the query to count accurately.
-    /// If `true`, the exact number of hits is returned at the cost of some performance.
-    /// If `false`, the response does not include the total number of hits matching the query.
-    pub fn track_total_hits(
-        mut self,
-        value: impl Into<crate::typed::_global::search::_types::TrackHits>,
-    ) -> Self {
-        self.track_total_hits = Some(value.into());
-        self
-    }
-
-    /// Sets [`track_total_hits`](Self::track_total_hits) if `value` is `Some`.
-    pub fn maybe_track_total_hits(
-        mut self,
-        value: Option<crate::typed::_global::search::_types::TrackHits>,
-    ) -> Self {
-        self.track_total_hits = value;
-        self
-    }
-
-    /// If `true`, the hits and aggs layers will contain additional point features representing
-    /// suggested label positions for the original features.
-    ///
-    /// * `Point` and `MultiPoint` features will have one of the points selected.
-    /// * `Polygon` and `MultiPolygon` features will have a single point generated, either the centroid, if it is within the polygon, or another point within the polygon selected from the sorted triangle-tree.
-    /// * `LineString` features will likewise provide a roughly central point selected from the triangle-tree.
-    /// * The aggregation results will provide one central point for each aggregation bucket.
-    ///
-    /// All attributes from the original features will also be copied to the new label features.
-    /// In addition, the new features will be distinguishable using the tag `_mvt_label_position`.
-    pub fn with_labels(mut self, value: bool) -> Self {
-        self.with_labels = Some(value);
-        self
-    }
-
-    /// Sets [`with_labels`](Self::with_labels) if `value` is `Some`.
-    pub fn maybe_with_labels(mut self, value: Option<bool>) -> Self {
-        self.with_labels = value;
-        self
     }
 
     /// When set to `true` Elasticsearch will include the full stack trace of errors
@@ -690,26 +506,26 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// `geo_bounds` aggregation. The aggregation runs on <field> values that intersect
     /// the `<zoom>/<x>/<y>` tile with `wrap_longitude` set to `false`. The resulting
     /// bounding box may be larger than the vector tile.
-    pub fn exact_bounds2(mut self, value: bool) -> Self {
-        self.exact_bounds2 = Some(value);
+    pub fn exact_bounds(mut self, value: bool) -> Self {
+        self.exact_bounds = Some(value);
         self
     }
 
-    /// Sets [`exact_bounds2`](Self::exact_bounds2) if `value` is `Some`.
-    pub fn maybe_exact_bounds2(mut self, value: Option<bool>) -> Self {
-        self.exact_bounds2 = value;
+    /// Sets [`exact_bounds`](Self::exact_bounds) if `value` is `Some`.
+    pub fn maybe_exact_bounds(mut self, value: Option<bool>) -> Self {
+        self.exact_bounds = value;
         self
     }
 
     /// The size, in pixels, of a side of the tile. Vector tiles are square with equal sides.
-    pub fn extent2(mut self, value: i32) -> Self {
-        self.extent2 = Some(value);
+    pub fn extent(mut self, value: i32) -> Self {
+        self.extent = Some(value);
         self
     }
 
-    /// Sets [`extent2`](Self::extent2) if `value` is `Some`.
-    pub fn maybe_extent2(mut self, value: Option<i32>) -> Self {
-        self.extent2 = value;
+    /// Sets [`extent`](Self::extent) if `value` is `Some`.
+    pub fn maybe_extent(mut self, value: Option<i32>) -> Self {
+        self.extent = value;
         self
     }
 
@@ -729,28 +545,28 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     }
 
     /// The aggregation used to create a grid for the `field`.
-    pub fn grid_agg2(mut self, value: impl Into<_types::GridAggregationType>) -> Self {
-        self.grid_agg2 = Some(value.into());
+    pub fn grid_agg(mut self, value: impl Into<_types::GridAggregationType>) -> Self {
+        self.grid_agg = Some(value.into());
         self
     }
 
-    /// Sets [`grid_agg2`](Self::grid_agg2) if `value` is `Some`.
-    pub fn maybe_grid_agg2(mut self, value: Option<_types::GridAggregationType>) -> Self {
-        self.grid_agg2 = value;
+    /// Sets [`grid_agg`](Self::grid_agg) if `value` is `Some`.
+    pub fn maybe_grid_agg(mut self, value: Option<_types::GridAggregationType>) -> Self {
+        self.grid_agg = value;
         self
     }
 
     /// Additional zoom levels available through the aggs layer. For example, if `<zoom>` is `7`
     /// and `grid_precision` is `8`, you can zoom in up to level 15. Accepts 0-8. If 0, results
     /// don't include the aggs layer.
-    pub fn grid_precision2(mut self, value: i32) -> Self {
-        self.grid_precision2 = Some(value);
+    pub fn grid_precision(mut self, value: i32) -> Self {
+        self.grid_precision = Some(value);
         self
     }
 
-    /// Sets [`grid_precision2`](Self::grid_precision2) if `value` is `Some`.
-    pub fn maybe_grid_precision2(mut self, value: Option<i32>) -> Self {
-        self.grid_precision2 = value;
+    /// Sets [`grid_precision`](Self::grid_precision) if `value` is `Some`.
+    pub fn maybe_grid_precision(mut self, value: Option<i32>) -> Self {
+        self.grid_precision = value;
         self
     }
 
@@ -758,14 +574,14 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// each feature represents a `geotile_grid` cell. If `grid, each feature is a polygon
     /// of the cells bounding box. If `point`, each feature is a Point that is the centroid
     /// of the cell.
-    pub fn grid_type2(mut self, value: impl Into<_types::GridType>) -> Self {
-        self.grid_type2 = Some(value.into());
+    pub fn grid_type(mut self, value: impl Into<_types::GridType>) -> Self {
+        self.grid_type = Some(value.into());
         self
     }
 
-    /// Sets [`grid_type2`](Self::grid_type2) if `value` is `Some`.
-    pub fn maybe_grid_type2(mut self, value: Option<_types::GridType>) -> Self {
-        self.grid_type2 = value;
+    /// Sets [`grid_type`](Self::grid_type) if `value` is `Some`.
+    pub fn maybe_grid_type(mut self, value: Option<_types::GridType>) -> Self {
+        self.grid_type = value;
         self
     }
 
@@ -844,14 +660,14 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
 
     /// The maximum number of features to return in the hits layer. Accepts 0-10000.
     /// If 0, results don't include the hits layer.
-    pub fn size2(mut self, value: i32) -> Self {
-        self.size2 = Some(value);
+    pub fn size(mut self, value: i32) -> Self {
+        self.size = Some(value);
         self
     }
 
-    /// Sets [`size2`](Self::size2) if `value` is `Some`.
-    pub fn maybe_size2(mut self, value: Option<i32>) -> Self {
-        self.size2 = value;
+    /// Sets [`size`](Self::size) if `value` is `Some`.
+    pub fn maybe_size(mut self, value: Option<i32>) -> Self {
+        self.size = value;
         self
     }
 
@@ -872,20 +688,20 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     /// The number of hits matching the query to count accurately. If `true`, the exact number
     /// of hits is returned at the cost of some performance. If `false`, the response does
     /// not include the total number of hits matching the query.
-    pub fn track_total_hits2(
+    pub fn track_total_hits(
         mut self,
         value: impl Into<crate::typed::_global::search::_types::TrackHits>,
     ) -> Self {
-        self.track_total_hits2 = Some(value.into());
+        self.track_total_hits = Some(value.into());
         self
     }
 
-    /// Sets [`track_total_hits2`](Self::track_total_hits2) if `value` is `Some`.
-    pub fn maybe_track_total_hits2(
+    /// Sets [`track_total_hits`](Self::track_total_hits) if `value` is `Some`.
+    pub fn maybe_track_total_hits(
         mut self,
         value: Option<crate::typed::_global::search::_types::TrackHits>,
     ) -> Self {
-        self.track_total_hits2 = value;
+        self.track_total_hits = value;
         self
     }
 
@@ -899,14 +715,14 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
     ///
     /// All attributes from the original features will also be copied to the new label features.
     /// In addition, the new features will be distinguishable using the tag `_mvt_label_position`.
-    pub fn with_labels2(mut self, value: bool) -> Self {
-        self.with_labels2 = Some(value);
+    pub fn with_labels(mut self, value: bool) -> Self {
+        self.with_labels = Some(value);
         self
     }
 
-    /// Sets [`with_labels2`](Self::with_labels2) if `value` is `Some`.
-    pub fn maybe_with_labels2(mut self, value: Option<bool>) -> Self {
-        self.with_labels2 = value;
+    /// Sets [`with_labels`](Self::with_labels) if `value` is `Some`.
+    pub fn maybe_with_labels(mut self, value: Option<bool>) -> Self {
+        self.with_labels = value;
         self
     }
 
@@ -1021,32 +837,24 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
             zoom: self.zoom.unwrap(),
             x: self.x.unwrap(),
             y: self.y.unwrap(),
-            exact_bounds: self.exact_bounds,
-            extent: self.extent,
-            grid_agg: self.grid_agg,
-            grid_precision: self.grid_precision,
-            grid_type: self.grid_type,
-            size: self.size,
-            track_total_hits: self.track_total_hits,
-            with_labels: self.with_labels,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
             aggs: self.aggs,
             buffer: self.buffer,
-            exact_bounds2: self.exact_bounds2,
-            extent2: self.extent2,
+            exact_bounds: self.exact_bounds,
+            extent: self.extent,
             fields: self.fields,
-            grid_agg2: self.grid_agg2,
-            grid_precision2: self.grid_precision2,
-            grid_type2: self.grid_type2,
+            grid_agg: self.grid_agg,
+            grid_precision: self.grid_precision,
+            grid_type: self.grid_type,
             query: self.query,
             runtime_mappings: self.runtime_mappings,
-            size2: self.size2,
+            size: self.size,
             sort: self.sort,
-            track_total_hits2: self.track_total_hits2,
-            with_labels2: self.with_labels2,
+            track_total_hits: self.track_total_hits,
+            with_labels: self.with_labels,
             project_routing: self.project_routing,
         }
     }
@@ -1111,33 +919,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.exact_bounds {
-            query.push(("exact_bounds", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.extent {
-            query.push(("extent", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.grid_agg {
-            query.push(("grid_agg", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.grid_precision {
-            query.push(("grid_precision", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.grid_type {
-            query.push(("grid_type", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.size {
-            query.push(("size", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.track_total_hits {
-            query.push((
-                "track_total_hits",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.with_labels {
-            query.push(("with_labels", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -1158,18 +939,18 @@ impl Request {
         RequestBody {
             aggs: self.aggs.as_ref(),
             buffer: self.buffer.as_ref(),
-            exact_bounds2: self.exact_bounds2.as_ref(),
-            extent2: self.extent2.as_ref(),
+            exact_bounds: self.exact_bounds.as_ref(),
+            extent: self.extent.as_ref(),
             fields: self.fields.as_ref(),
-            grid_agg2: self.grid_agg2.as_ref(),
-            grid_precision2: self.grid_precision2.as_ref(),
-            grid_type2: self.grid_type2.as_ref(),
+            grid_agg: self.grid_agg.as_ref(),
+            grid_precision: self.grid_precision.as_ref(),
+            grid_type: self.grid_type.as_ref(),
             query: self.query.as_ref(),
             runtime_mappings: self.runtime_mappings.as_ref(),
-            size2: self.size2.as_ref(),
+            size: self.size.as_ref(),
             sort: self.sort.as_ref(),
-            track_total_hits2: self.track_total_hits2.as_ref(),
-            with_labels2: self.with_labels2.as_ref(),
+            track_total_hits: self.track_total_hits.as_ref(),
+            with_labels: self.with_labels.as_ref(),
             project_routing: self.project_routing.as_ref(),
         }
     }
@@ -1206,30 +987,30 @@ pub struct RequestBody<'a> {
     >,
     #[serde(skip_serializing_if = "Option::is_none")]
     buffer: Option<&'a i32>,
-    #[serde(rename = "exact_bounds", skip_serializing_if = "Option::is_none")]
-    exact_bounds2: Option<&'a bool>,
-    #[serde(rename = "extent", skip_serializing_if = "Option::is_none")]
-    extent2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    exact_bounds: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    extent: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     fields: Option<&'a crate::typed::_types::Fields>,
-    #[serde(rename = "grid_agg", skip_serializing_if = "Option::is_none")]
-    grid_agg2: Option<&'a _types::GridAggregationType>,
-    #[serde(rename = "grid_precision", skip_serializing_if = "Option::is_none")]
-    grid_precision2: Option<&'a i32>,
-    #[serde(rename = "grid_type", skip_serializing_if = "Option::is_none")]
-    grid_type2: Option<&'a _types::GridType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    grid_agg: Option<&'a _types::GridAggregationType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    grid_precision: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    grid_type: Option<&'a _types::GridType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     query: Option<&'a crate::typed::_types::query_dsl::QueryContainer>,
     #[serde(skip_serializing_if = "Option::is_none")]
     runtime_mappings: Option<&'a crate::typed::_types::mapping::RuntimeFields>,
-    #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    size2: Option<&'a i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    size: Option<&'a i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     sort: Option<&'a crate::typed::_types::Sort>,
-    #[serde(rename = "track_total_hits", skip_serializing_if = "Option::is_none")]
-    track_total_hits2: Option<&'a crate::typed::_global::search::_types::TrackHits>,
-    #[serde(rename = "with_labels", skip_serializing_if = "Option::is_none")]
-    with_labels2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    track_total_hits: Option<&'a crate::typed::_global::search::_types::TrackHits>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    with_labels: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     project_routing: Option<&'a crate::typed::_types::ProjectRouting>,
 }

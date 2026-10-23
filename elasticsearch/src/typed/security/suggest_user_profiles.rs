@@ -158,12 +158,6 @@ impl From<HintBuilder> for Hint {
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-suggest-user-profiles)
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Request {
-    /// A comma-separated list of filters for the `data` field of the profile document.
-    /// To return all content use `data=*`.
-    /// To return a subset of content, use `data=<key>` to retrieve content nested under the specified `<key>`.
-    /// By default, the API returns no `data` content.
-    /// It is an error to specify `data` as both the query parameter and the request body field.
-    pub data: Option<RequestData>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -189,7 +183,7 @@ pub struct Request {
     /// To return a subset of content, use `data=<key>` to retrieve content nested under the specified `<key>`.
     /// By default, the API returns no `data` content.
     /// It is an error to specify `data` as both the query parameter and the request body field.
-    pub data2: Option<RequestData2>,
+    pub data: Option<RequestData>,
     /// Extra search criteria to improve relevance of the suggestion result.
     /// Profiles matching the spcified hint are ranked higher in the response.
     /// Profiles not matching the hint aren't excluded from the response as long as the profile matches the `name` field query.
@@ -213,14 +207,13 @@ impl Request {
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct RequestBuilder<S = (), C = ()> {
-    data: Option<RequestData>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
     name: Option<String>,
     size: Option<i64>,
-    data2: Option<RequestData2>,
+    data: Option<RequestData>,
     hint: Option<Hint>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
@@ -229,14 +222,13 @@ pub struct RequestBuilder<S = (), C = ()> {
 impl<C> RequestBuilder<(), C> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
-            data: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             name: None,
             size: None,
-            data2: None,
+            data: None,
             hint: None,
             bound_client: client,
             _state: std::marker::PhantomData,
@@ -245,22 +237,6 @@ impl<C> RequestBuilder<(), C> {
 }
 
 impl<C> RequestBuilder<(), C> {
-    /// A comma-separated list of filters for the `data` field of the profile document.
-    /// To return all content use `data=*`.
-    /// To return a subset of content, use `data=<key>` to retrieve content nested under the specified `<key>`.
-    /// By default, the API returns no `data` content.
-    /// It is an error to specify `data` as both the query parameter and the request body field.
-    pub fn data(mut self, value: impl Into<RequestData>) -> Self {
-        self.data = Some(value.into());
-        self
-    }
-
-    /// Sets [`data`](Self::data) if `value` is `Some`.
-    pub fn maybe_data(mut self, value: Option<RequestData>) -> Self {
-        self.data = value;
-        self
-    }
-
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub fn error_trace(mut self, value: bool) -> Self {
@@ -346,14 +322,14 @@ impl<C> RequestBuilder<(), C> {
     /// To return a subset of content, use `data=<key>` to retrieve content nested under the specified `<key>`.
     /// By default, the API returns no `data` content.
     /// It is an error to specify `data` as both the query parameter and the request body field.
-    pub fn data2(mut self, value: impl Into<RequestData2>) -> Self {
-        self.data2 = Some(value.into());
+    pub fn data(mut self, value: impl Into<RequestData>) -> Self {
+        self.data = Some(value.into());
         self
     }
 
-    /// Sets [`data2`](Self::data2) if `value` is `Some`.
-    pub fn maybe_data2(mut self, value: Option<RequestData2>) -> Self {
-        self.data2 = value;
+    /// Sets [`data`](Self::data) if `value` is `Some`.
+    pub fn maybe_data(mut self, value: Option<RequestData>) -> Self {
+        self.data = value;
         self
     }
 
@@ -384,14 +360,13 @@ impl<C> RequestBuilder<(), C> {
     /// Builds a [`Request`].
     pub fn build(self) -> Request {
         Request {
-            data: self.data,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
             pretty: self.pretty,
             name: self.name,
             size: self.size,
-            data2: self.data2,
+            data: self.data,
             hint: self.hint,
         }
     }
@@ -435,9 +410,6 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.data {
-            query.push(("data", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -458,7 +430,7 @@ impl Request {
         RequestBody {
             name: self.name.as_ref(),
             size: self.size.as_ref(),
-            data2: self.data2.as_ref(),
+            data: self.data.as_ref(),
             hint: self.hint.as_ref(),
         }
     }
@@ -493,35 +465,10 @@ pub struct RequestBody<'a> {
     name: Option<&'a String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     size: Option<&'a i64>,
-    #[serde(rename = "data", skip_serializing_if = "Option::is_none")]
-    data2: Option<&'a RequestData2>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    data: Option<&'a RequestData>,
     #[serde(skip_serializing_if = "Option::is_none")]
     hint: Option<&'a Hint>,
-}
-
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(untagged)]
-pub enum RequestData {
-    String(String),
-    StringList(Vec<String>),
-}
-
-impl From<String> for RequestData {
-    fn from(value: String) -> Self {
-        RequestData::String(value)
-    }
-}
-
-impl From<Vec<String>> for RequestData {
-    fn from(value: Vec<String>) -> Self {
-        RequestData::StringList(value)
-    }
-}
-
-impl From<&str> for RequestData {
-    fn from(value: &str) -> Self {
-        RequestData::String(value.into())
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -551,26 +498,26 @@ impl From<&str> for RequestFilterPath {
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
-pub enum RequestData2 {
+pub enum RequestData {
     String(String),
     StringList(Vec<String>),
 }
 
-impl From<String> for RequestData2 {
+impl From<String> for RequestData {
     fn from(value: String) -> Self {
-        RequestData2::String(value)
+        RequestData::String(value)
     }
 }
 
-impl From<Vec<String>> for RequestData2 {
+impl From<Vec<String>> for RequestData {
     fn from(value: Vec<String>) -> Self {
-        RequestData2::StringList(value)
+        RequestData::StringList(value)
     }
 }
 
-impl From<&str> for RequestData2 {
+impl From<&str> for RequestData {
     fn from(value: &str) -> Self {
-        RequestData2::String(value.into())
+        RequestData::String(value.into())
     }
 }
 

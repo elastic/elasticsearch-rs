@@ -15,26 +15,10 @@ pub struct Request {
     /// The timestamp of a single bucket result. If you do not specify this
     /// parameter, the API returns information about all buckets.
     pub timestamp: Option<crate::typed::_types::DateTime>,
-    /// Returns buckets with anomaly scores greater or equal than this value.
-    pub anomaly_score: Option<crate::typed::support::Float64>,
-    /// If `true`, the buckets are sorted in descending order.
-    pub desc: Option<bool>,
-    /// Returns buckets with timestamps earlier than this time. `-1` means it is
-    /// unset and results are not limited to specific timestamps.
-    pub end: Option<crate::typed::_types::DateTime>,
-    /// If `true`, the output excludes interim results.
-    pub exclude_interim: Option<bool>,
-    /// If true, the output includes anomaly records.
-    pub expand: Option<bool>,
     /// Skips the specified number of buckets.
     pub from: Option<i32>,
     /// Specifies the maximum number of buckets to obtain.
     pub size: Option<i32>,
-    /// Specifies the sort field for the requested buckets.
-    pub sort: Option<crate::typed::_types::Field>,
-    /// Returns buckets with timestamps after this time. `-1` means it is unset
-    /// and results are not limited to specific timestamps.
-    pub start: Option<crate::typed::_types::DateTime>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -51,20 +35,20 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Refer to the description for the `anomaly_score` query parameter.
-    pub anomaly_score2: Option<crate::typed::support::Float64>,
+    pub anomaly_score: Option<crate::typed::support::Float64>,
     /// Refer to the description for the `desc` query parameter.
-    pub desc2: Option<bool>,
+    pub desc: Option<bool>,
     /// Refer to the description for the `end` query parameter.
-    pub end2: Option<crate::typed::_types::DateTime>,
+    pub end: Option<crate::typed::_types::DateTime>,
     /// Refer to the description for the `exclude_interim` query parameter.
-    pub exclude_interim2: Option<bool>,
+    pub exclude_interim: Option<bool>,
     /// Refer to the description for the `expand` query parameter.
-    pub expand2: Option<bool>,
+    pub expand: Option<bool>,
     pub page: Option<crate::typed::ml::_types::Page>,
     /// Refer to the desription for the `sort` query parameter.
-    pub sort2: Option<crate::typed::_types::Field>,
+    pub sort: Option<crate::typed::_types::Field>,
     /// Refer to the description for the `start` query parameter.
-    pub start2: Option<crate::typed::_types::DateTime>,
+    pub start: Option<crate::typed::_types::DateTime>,
 }
 
 impl Request {
@@ -97,27 +81,20 @@ pub mod request_members {
 pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     job_id: Option<crate::typed::_types::Id>,
     timestamp: Option<crate::typed::_types::DateTime>,
+    from: Option<i32>,
+    size: Option<i32>,
+    error_trace: Option<bool>,
+    filter_path: Option<RequestFilterPath>,
+    human: Option<bool>,
+    pretty: Option<bool>,
     anomaly_score: Option<crate::typed::support::Float64>,
     desc: Option<bool>,
     end: Option<crate::typed::_types::DateTime>,
     exclude_interim: Option<bool>,
     expand: Option<bool>,
-    from: Option<i32>,
-    size: Option<i32>,
+    page: Option<crate::typed::ml::_types::Page>,
     sort: Option<crate::typed::_types::Field>,
     start: Option<crate::typed::_types::DateTime>,
-    error_trace: Option<bool>,
-    filter_path: Option<RequestFilterPath>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    anomaly_score2: Option<crate::typed::support::Float64>,
-    desc2: Option<bool>,
-    end2: Option<crate::typed::_types::DateTime>,
-    exclude_interim2: Option<bool>,
-    expand2: Option<bool>,
-    page: Option<crate::typed::ml::_types::Page>,
-    sort2: Option<crate::typed::_types::Field>,
-    start2: Option<crate::typed::_types::DateTime>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -127,27 +104,20 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         RequestBuilder {
             job_id: None,
             timestamp: None,
+            from: None,
+            size: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
             anomaly_score: None,
             desc: None,
             end: None,
             exclude_interim: None,
             expand: None,
-            from: None,
-            size: None,
+            page: None,
             sort: None,
             start: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            anomaly_score2: None,
-            desc2: None,
-            end2: None,
-            exclude_interim2: None,
-            expand2: None,
-            page: None,
-            sort2: None,
-            start2: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -159,27 +129,20 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         RequestBuilder {
             job_id: self.job_id,
             timestamp: self.timestamp,
+            from: self.from,
+            size: self.size,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             anomaly_score: self.anomaly_score,
             desc: self.desc,
             end: self.end,
             exclude_interim: self.exclude_interim,
             expand: self.expand,
-            from: self.from,
-            size: self.size,
+            page: self.page,
             sort: self.sort,
             start: self.start,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            anomaly_score2: self.anomaly_score2,
-            desc2: self.desc2,
-            end2: self.end2,
-            exclude_interim2: self.exclude_interim2,
-            expand2: self.expand2,
-            page: self.page,
-            sort2: self.sort2,
-            start2: self.start2,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -195,67 +158,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`timestamp`](Self::timestamp) if `value` is `Some`.
     pub fn maybe_timestamp(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
         self.timestamp = value;
-        self
-    }
-
-    /// Returns buckets with anomaly scores greater or equal than this value.
-    pub fn anomaly_score(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
-        self.anomaly_score = Some(value.into());
-        self
-    }
-
-    /// Sets [`anomaly_score`](Self::anomaly_score) if `value` is `Some`.
-    pub fn maybe_anomaly_score(mut self, value: Option<crate::typed::support::Float64>) -> Self {
-        self.anomaly_score = value;
-        self
-    }
-
-    /// If `true`, the buckets are sorted in descending order.
-    pub fn desc(mut self, value: bool) -> Self {
-        self.desc = Some(value);
-        self
-    }
-
-    /// Sets [`desc`](Self::desc) if `value` is `Some`.
-    pub fn maybe_desc(mut self, value: Option<bool>) -> Self {
-        self.desc = value;
-        self
-    }
-
-    /// Returns buckets with timestamps earlier than this time. `-1` means it is
-    /// unset and results are not limited to specific timestamps.
-    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end = Some(value.into());
-        self
-    }
-
-    /// Sets [`end`](Self::end) if `value` is `Some`.
-    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end = value;
-        self
-    }
-
-    /// If `true`, the output excludes interim results.
-    pub fn exclude_interim(mut self, value: bool) -> Self {
-        self.exclude_interim = Some(value);
-        self
-    }
-
-    /// Sets [`exclude_interim`](Self::exclude_interim) if `value` is `Some`.
-    pub fn maybe_exclude_interim(mut self, value: Option<bool>) -> Self {
-        self.exclude_interim = value;
-        self
-    }
-
-    /// If true, the output includes anomaly records.
-    pub fn expand(mut self, value: bool) -> Self {
-        self.expand = Some(value);
-        self
-    }
-
-    /// Sets [`expand`](Self::expand) if `value` is `Some`.
-    pub fn maybe_expand(mut self, value: Option<bool>) -> Self {
-        self.expand = value;
         self
     }
 
@@ -280,31 +182,6 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     /// Sets [`size`](Self::size) if `value` is `Some`.
     pub fn maybe_size(mut self, value: Option<i32>) -> Self {
         self.size = value;
-        self
-    }
-
-    /// Specifies the sort field for the requested buckets.
-    pub fn sort(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
-        self.sort = Some(value.into());
-        self
-    }
-
-    /// Sets [`sort`](Self::sort) if `value` is `Some`.
-    pub fn maybe_sort(mut self, value: Option<crate::typed::_types::Field>) -> Self {
-        self.sort = value;
-        self
-    }
-
-    /// Returns buckets with timestamps after this time. `-1` means it is unset
-    /// and results are not limited to specific timestamps.
-    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start = Some(value.into());
-        self
-    }
-
-    /// Sets [`start`](Self::start) if `value` is `Some`.
-    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start = value;
         self
     }
 
@@ -364,62 +241,62 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the description for the `anomaly_score` query parameter.
-    pub fn anomaly_score2(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
-        self.anomaly_score2 = Some(value.into());
+    pub fn anomaly_score(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
+        self.anomaly_score = Some(value.into());
         self
     }
 
-    /// Sets [`anomaly_score2`](Self::anomaly_score2) if `value` is `Some`.
-    pub fn maybe_anomaly_score2(mut self, value: Option<crate::typed::support::Float64>) -> Self {
-        self.anomaly_score2 = value;
+    /// Sets [`anomaly_score`](Self::anomaly_score) if `value` is `Some`.
+    pub fn maybe_anomaly_score(mut self, value: Option<crate::typed::support::Float64>) -> Self {
+        self.anomaly_score = value;
         self
     }
 
     /// Refer to the description for the `desc` query parameter.
-    pub fn desc2(mut self, value: bool) -> Self {
-        self.desc2 = Some(value);
+    pub fn desc(mut self, value: bool) -> Self {
+        self.desc = Some(value);
         self
     }
 
-    /// Sets [`desc2`](Self::desc2) if `value` is `Some`.
-    pub fn maybe_desc2(mut self, value: Option<bool>) -> Self {
-        self.desc2 = value;
+    /// Sets [`desc`](Self::desc) if `value` is `Some`.
+    pub fn maybe_desc(mut self, value: Option<bool>) -> Self {
+        self.desc = value;
         self
     }
 
     /// Refer to the description for the `end` query parameter.
-    pub fn end2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = Some(value.into());
+    pub fn end(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.end = Some(value.into());
         self
     }
 
-    /// Sets [`end2`](Self::end2) if `value` is `Some`.
-    pub fn maybe_end2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.end2 = value;
+    /// Sets [`end`](Self::end) if `value` is `Some`.
+    pub fn maybe_end(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.end = value;
         self
     }
 
     /// Refer to the description for the `exclude_interim` query parameter.
-    pub fn exclude_interim2(mut self, value: bool) -> Self {
-        self.exclude_interim2 = Some(value);
+    pub fn exclude_interim(mut self, value: bool) -> Self {
+        self.exclude_interim = Some(value);
         self
     }
 
-    /// Sets [`exclude_interim2`](Self::exclude_interim2) if `value` is `Some`.
-    pub fn maybe_exclude_interim2(mut self, value: Option<bool>) -> Self {
-        self.exclude_interim2 = value;
+    /// Sets [`exclude_interim`](Self::exclude_interim) if `value` is `Some`.
+    pub fn maybe_exclude_interim(mut self, value: Option<bool>) -> Self {
+        self.exclude_interim = value;
         self
     }
 
     /// Refer to the description for the `expand` query parameter.
-    pub fn expand2(mut self, value: bool) -> Self {
-        self.expand2 = Some(value);
+    pub fn expand(mut self, value: bool) -> Self {
+        self.expand = Some(value);
         self
     }
 
-    /// Sets [`expand2`](Self::expand2) if `value` is `Some`.
-    pub fn maybe_expand2(mut self, value: Option<bool>) -> Self {
-        self.expand2 = value;
+    /// Sets [`expand`](Self::expand) if `value` is `Some`.
+    pub fn maybe_expand(mut self, value: Option<bool>) -> Self {
+        self.expand = value;
         self
     }
 
@@ -443,26 +320,26 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Refer to the desription for the `sort` query parameter.
-    pub fn sort2(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
-        self.sort2 = Some(value.into());
+    pub fn sort(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
+        self.sort = Some(value.into());
         self
     }
 
-    /// Sets [`sort2`](Self::sort2) if `value` is `Some`.
-    pub fn maybe_sort2(mut self, value: Option<crate::typed::_types::Field>) -> Self {
-        self.sort2 = value;
+    /// Sets [`sort`](Self::sort) if `value` is `Some`.
+    pub fn maybe_sort(mut self, value: Option<crate::typed::_types::Field>) -> Self {
+        self.sort = value;
         self
     }
 
     /// Refer to the description for the `start` query parameter.
-    pub fn start2(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = Some(value.into());
+    pub fn start(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
+        self.start = Some(value.into());
         self
     }
 
-    /// Sets [`start2`](Self::start2) if `value` is `Some`.
-    pub fn maybe_start2(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
-        self.start2 = value;
+    /// Sets [`start`](Self::start) if `value` is `Some`.
+    pub fn maybe_start(mut self, value: Option<crate::typed::_types::DateTime>) -> Self {
+        self.start = value;
         self
     }
 }
@@ -488,27 +365,20 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         Request {
             job_id: self.job_id.unwrap(),
             timestamp: self.timestamp,
+            from: self.from,
+            size: self.size,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
             anomaly_score: self.anomaly_score,
             desc: self.desc,
             end: self.end,
             exclude_interim: self.exclude_interim,
             expand: self.expand,
-            from: self.from,
-            size: self.size,
+            page: self.page,
             sort: self.sort,
             start: self.start,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            anomaly_score2: self.anomaly_score2,
-            desc2: self.desc2,
-            end2: self.end2,
-            exclude_interim2: self.exclude_interim2,
-            expand2: self.expand2,
-            page: self.page,
-            sort2: self.sort2,
-            start2: self.start2,
         }
     }
 }
@@ -570,32 +440,11 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.anomaly_score {
-            query.push(("anomaly_score", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.desc {
-            query.push(("desc", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.end {
-            query.push(("end", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.exclude_interim {
-            query.push(("exclude_interim", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.expand {
-            query.push(("expand", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.from {
             query.push(("from", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.size {
             query.push(("size", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.sort {
-            query.push(("sort", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.start {
-            query.push(("start", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
@@ -615,14 +464,14 @@ impl Request {
     /// Body of the request.
     pub fn body(&self) -> RequestBody<'_> {
         RequestBody {
-            anomaly_score2: self.anomaly_score2.as_ref(),
-            desc2: self.desc2.as_ref(),
-            end2: self.end2.as_ref(),
-            exclude_interim2: self.exclude_interim2.as_ref(),
-            expand2: self.expand2.as_ref(),
+            anomaly_score: self.anomaly_score.as_ref(),
+            desc: self.desc.as_ref(),
+            end: self.end.as_ref(),
+            exclude_interim: self.exclude_interim.as_ref(),
+            expand: self.expand.as_ref(),
             page: self.page.as_ref(),
-            sort2: self.sort2.as_ref(),
-            start2: self.start2.as_ref(),
+            sort: self.sort.as_ref(),
+            start: self.start.as_ref(),
         }
     }
 
@@ -652,22 +501,22 @@ impl Request {
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
 pub struct RequestBody<'a> {
-    #[serde(rename = "anomaly_score", skip_serializing_if = "Option::is_none")]
-    anomaly_score2: Option<&'a crate::typed::support::Float64>,
-    #[serde(rename = "desc", skip_serializing_if = "Option::is_none")]
-    desc2: Option<&'a bool>,
-    #[serde(rename = "end", skip_serializing_if = "Option::is_none")]
-    end2: Option<&'a crate::typed::_types::DateTime>,
-    #[serde(rename = "exclude_interim", skip_serializing_if = "Option::is_none")]
-    exclude_interim2: Option<&'a bool>,
-    #[serde(rename = "expand", skip_serializing_if = "Option::is_none")]
-    expand2: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    anomaly_score: Option<&'a crate::typed::support::Float64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    desc: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    end: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    exclude_interim: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    expand: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     page: Option<&'a crate::typed::ml::_types::Page>,
-    #[serde(rename = "sort", skip_serializing_if = "Option::is_none")]
-    sort2: Option<&'a crate::typed::_types::Field>,
-    #[serde(rename = "start", skip_serializing_if = "Option::is_none")]
-    start2: Option<&'a crate::typed::_types::DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    sort: Option<&'a crate::typed::_types::Field>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    start: Option<&'a crate::typed::_types::DateTime>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

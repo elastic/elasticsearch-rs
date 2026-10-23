@@ -392,44 +392,15 @@ pub struct Request<TDocument = serde_json::Value> {
     pub index: crate::typed::_types::IndexName,
     /// A unique identifier for the document.
     pub id: Option<crate::typed::_types::Id>,
-    /// A comma-separated list or wildcard expressions of fields to include in the statistics.
-    /// It is used as the default list unless a specific field list is provided in the `completion_fields` or `fielddata_fields` parameters.
-    pub fields: Option<crate::typed::_types::Fields>,
-    /// If `true`, the response includes:
-    ///
-    /// * The document count (how many documents contain this field).
-    /// * The sum of document frequencies (the sum of document frequencies for all terms in this field).
-    /// * The sum of total term frequencies (the sum of total term frequencies of each term in this field).
-    pub field_statistics: Option<bool>,
-    /// If `true`, the response includes term offsets.
-    pub offsets: Option<bool>,
-    /// If `true`, the response includes term payloads.
-    pub payloads: Option<bool>,
-    /// If `true`, the response includes term positions.
-    pub positions: Option<bool>,
     /// The node or shard the operation should be performed on.
     /// It is random by default.
     pub preference: Option<String>,
     /// If true, the request is real-time as opposed to near-real-time.
     pub realtime: Option<bool>,
-    /// A custom value that is used to route operations to a specific shard.
-    /// Not allowed when `index.slice.enabled` is `true` for the target index; use `_slice` instead.
-    pub routing: Option<crate::typed::_types::Routing>,
     /// The slice identifier used to route the operation to a specific slice.
     /// Use the special value `_all` to target all slices without restricting to a routing value.
     /// Required when `index.slice.enabled` is `true` for the target index; not allowed when `index.slice.enabled` is `false`.
     pub route_slice: Option<String>,
-    /// If `true`, the response includes:
-    ///
-    /// * The total term frequency (how often a term occurs in all documents).
-    /// * The document frequency (the number of documents containing the current term).
-    ///
-    /// By default these values are not returned since term statistics can have a serious performance impact.
-    pub term_statistics: Option<bool>,
-    /// If `true`, returns the document version as part of a hit.
-    pub version: Option<crate::typed::_types::VersionNumber>,
-    /// The version type.
-    pub version_type: Option<crate::typed::_types::VersionType>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
     pub error_trace: Option<bool>,
@@ -457,32 +428,32 @@ pub struct Request<TDocument = serde_json::Value> {
     pub per_field_analyzer: Option<indexmap::IndexMap<crate::typed::_types::Field, String>>,
     /// A list of fields to include in the statistics.
     /// It is used as the default list unless a specific field list is provided in the `completion_fields` or `fielddata_fields` parameters.
-    pub fields2: Option<Vec<crate::typed::_types::Field>>,
+    pub fields: Option<Vec<crate::typed::_types::Field>>,
     /// If `true`, the response includes:
     ///
     /// * The document count (how many documents contain this field).
     /// * The sum of document frequencies (the sum of document frequencies for all terms in this field).
     /// * The sum of total term frequencies (the sum of total term frequencies of each term in this field).
-    pub field_statistics2: Option<bool>,
+    pub field_statistics: Option<bool>,
     /// If `true`, the response includes term offsets.
-    pub offsets2: Option<bool>,
+    pub offsets: Option<bool>,
     /// If `true`, the response includes term payloads.
-    pub payloads2: Option<bool>,
+    pub payloads: Option<bool>,
     /// If `true`, the response includes term positions.
-    pub positions2: Option<bool>,
+    pub positions: Option<bool>,
     /// If `true`, the response includes:
     ///
     /// * The total term frequency (how often a term occurs in all documents).
     /// * The document frequency (the number of documents containing the current term).
     ///
     /// By default these values are not returned since term statistics can have a serious performance impact.
-    pub term_statistics2: Option<bool>,
+    pub term_statistics: Option<bool>,
     /// A custom value that is used to route operations to a specific shard.
-    pub routing2: Option<crate::typed::_types::Routing>,
+    pub routing: Option<crate::typed::_types::Routing>,
     /// If `true`, returns the document version as part of a hit.
-    pub version2: Option<crate::typed::_types::VersionNumber>,
+    pub version: Option<crate::typed::_types::VersionNumber>,
     /// The version type.
-    pub version_type2: Option<crate::typed::_types::VersionType>,
+    pub version_type: Option<crate::typed::_types::VersionType>,
 }
 
 impl Request {
@@ -519,18 +490,9 @@ pub struct RequestBuilder<
 > {
     index: Option<crate::typed::_types::IndexName>,
     id: Option<crate::typed::_types::Id>,
-    fields: Option<crate::typed::_types::Fields>,
-    field_statistics: Option<bool>,
-    offsets: Option<bool>,
-    payloads: Option<bool>,
-    positions: Option<bool>,
     preference: Option<String>,
     realtime: Option<bool>,
-    routing: Option<crate::typed::_types::Routing>,
     route_slice: Option<String>,
-    term_statistics: Option<bool>,
-    version: Option<crate::typed::_types::VersionNumber>,
-    version_type: Option<crate::typed::_types::VersionType>,
     error_trace: Option<bool>,
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
@@ -538,15 +500,15 @@ pub struct RequestBuilder<
     doc: Option<TDocument>,
     filter: Option<Filter>,
     per_field_analyzer: Option<indexmap::IndexMap<crate::typed::_types::Field, String>>,
-    fields2: Option<Vec<crate::typed::_types::Field>>,
-    field_statistics2: Option<bool>,
-    offsets2: Option<bool>,
-    payloads2: Option<bool>,
-    positions2: Option<bool>,
-    term_statistics2: Option<bool>,
-    routing2: Option<crate::typed::_types::Routing>,
-    version2: Option<crate::typed::_types::VersionNumber>,
-    version_type2: Option<crate::typed::_types::VersionType>,
+    fields: Option<Vec<crate::typed::_types::Field>>,
+    field_statistics: Option<bool>,
+    offsets: Option<bool>,
+    payloads: Option<bool>,
+    positions: Option<bool>,
+    term_statistics: Option<bool>,
+    routing: Option<crate::typed::_types::Routing>,
+    version: Option<crate::typed::_types::VersionNumber>,
+    version_type: Option<crate::typed::_types::VersionType>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
@@ -556,18 +518,9 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C, serde_json::Value> {
         RequestBuilder {
             index: None,
             id: None,
-            fields: None,
-            field_statistics: None,
-            offsets: None,
-            payloads: None,
-            positions: None,
             preference: None,
             realtime: None,
-            routing: None,
             route_slice: None,
-            term_statistics: None,
-            version: None,
-            version_type: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -575,15 +528,15 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C, serde_json::Value> {
             doc: None,
             filter: None,
             per_field_analyzer: None,
-            fields2: None,
-            field_statistics2: None,
-            offsets2: None,
-            payloads2: None,
-            positions2: None,
-            term_statistics2: None,
-            routing2: None,
-            version2: None,
-            version_type2: None,
+            fields: None,
+            field_statistics: None,
+            offsets: None,
+            payloads: None,
+            positions: None,
+            term_statistics: None,
+            routing: None,
+            version: None,
+            version_type: None,
             bound_client: client,
             _state: std::marker::PhantomData,
         }
@@ -595,18 +548,9 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
         RequestBuilder {
             index: self.index,
             id: self.id,
-            fields: self.fields,
-            field_statistics: self.field_statistics,
-            offsets: self.offsets,
-            payloads: self.payloads,
-            positions: self.positions,
             preference: self.preference,
             realtime: self.realtime,
-            routing: self.routing,
             route_slice: self.route_slice,
-            term_statistics: self.term_statistics,
-            version: self.version,
-            version_type: self.version_type,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -614,15 +558,15 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
             doc: self.doc,
             filter: self.filter,
             per_field_analyzer: self.per_field_analyzer,
-            fields2: self.fields2,
-            field_statistics2: self.field_statistics2,
-            offsets2: self.offsets2,
-            payloads2: self.payloads2,
-            positions2: self.positions2,
-            term_statistics2: self.term_statistics2,
-            routing2: self.routing2,
-            version2: self.version2,
-            version_type2: self.version_type2,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            term_statistics: self.term_statistics,
+            routing: self.routing,
+            version: self.version,
+            version_type: self.version_type,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -637,71 +581,6 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     /// Sets [`id`](Self::id) if `value` is `Some`.
     pub fn maybe_id(mut self, value: Option<crate::typed::_types::Id>) -> Self {
         self.id = value;
-        self
-    }
-
-    /// A comma-separated list or wildcard expressions of fields to include in the statistics.
-    /// It is used as the default list unless a specific field list is provided in the `completion_fields` or `fielddata_fields` parameters.
-    pub fn fields(mut self, value: impl Into<crate::typed::_types::Fields>) -> Self {
-        self.fields = Some(value.into());
-        self
-    }
-
-    /// Sets [`fields`](Self::fields) if `value` is `Some`.
-    pub fn maybe_fields(mut self, value: Option<crate::typed::_types::Fields>) -> Self {
-        self.fields = value;
-        self
-    }
-
-    /// If `true`, the response includes:
-    ///
-    /// * The document count (how many documents contain this field).
-    /// * The sum of document frequencies (the sum of document frequencies for all terms in this field).
-    /// * The sum of total term frequencies (the sum of total term frequencies of each term in this field).
-    pub fn field_statistics(mut self, value: bool) -> Self {
-        self.field_statistics = Some(value);
-        self
-    }
-
-    /// Sets [`field_statistics`](Self::field_statistics) if `value` is `Some`.
-    pub fn maybe_field_statistics(mut self, value: Option<bool>) -> Self {
-        self.field_statistics = value;
-        self
-    }
-
-    /// If `true`, the response includes term offsets.
-    pub fn offsets(mut self, value: bool) -> Self {
-        self.offsets = Some(value);
-        self
-    }
-
-    /// Sets [`offsets`](Self::offsets) if `value` is `Some`.
-    pub fn maybe_offsets(mut self, value: Option<bool>) -> Self {
-        self.offsets = value;
-        self
-    }
-
-    /// If `true`, the response includes term payloads.
-    pub fn payloads(mut self, value: bool) -> Self {
-        self.payloads = Some(value);
-        self
-    }
-
-    /// Sets [`payloads`](Self::payloads) if `value` is `Some`.
-    pub fn maybe_payloads(mut self, value: Option<bool>) -> Self {
-        self.payloads = value;
-        self
-    }
-
-    /// If `true`, the response includes term positions.
-    pub fn positions(mut self, value: bool) -> Self {
-        self.positions = Some(value);
-        self
-    }
-
-    /// Sets [`positions`](Self::positions) if `value` is `Some`.
-    pub fn maybe_positions(mut self, value: Option<bool>) -> Self {
-        self.positions = value;
         self
     }
 
@@ -730,19 +609,6 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
         self
     }
 
-    /// A custom value that is used to route operations to a specific shard.
-    /// Not allowed when `index.slice.enabled` is `true` for the target index; use `_slice` instead.
-    pub fn routing(mut self, value: impl Into<crate::typed::_types::Routing>) -> Self {
-        self.routing = Some(value.into());
-        self
-    }
-
-    /// Sets [`routing`](Self::routing) if `value` is `Some`.
-    pub fn maybe_routing(mut self, value: Option<crate::typed::_types::Routing>) -> Self {
-        self.routing = value;
-        self
-    }
-
     /// The slice identifier used to route the operation to a specific slice.
     /// Use the special value `_all` to target all slices without restricting to a routing value.
     /// Required when `index.slice.enabled` is `true` for the target index; not allowed when `index.slice.enabled` is `false`.
@@ -754,47 +620,6 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     /// Sets [`route_slice`](Self::route_slice) if `value` is `Some`.
     pub fn maybe_route_slice(mut self, value: Option<String>) -> Self {
         self.route_slice = value;
-        self
-    }
-
-    /// If `true`, the response includes:
-    ///
-    /// * The total term frequency (how often a term occurs in all documents).
-    /// * The document frequency (the number of documents containing the current term).
-    ///
-    /// By default these values are not returned since term statistics can have a serious performance impact.
-    pub fn term_statistics(mut self, value: bool) -> Self {
-        self.term_statistics = Some(value);
-        self
-    }
-
-    /// Sets [`term_statistics`](Self::term_statistics) if `value` is `Some`.
-    pub fn maybe_term_statistics(mut self, value: Option<bool>) -> Self {
-        self.term_statistics = value;
-        self
-    }
-
-    /// If `true`, returns the document version as part of a hit.
-    pub fn version(mut self, value: impl Into<crate::typed::_types::VersionNumber>) -> Self {
-        self.version = Some(value.into());
-        self
-    }
-
-    /// Sets [`version`](Self::version) if `value` is `Some`.
-    pub fn maybe_version(mut self, value: Option<crate::typed::_types::VersionNumber>) -> Self {
-        self.version = value;
-        self
-    }
-
-    /// The version type.
-    pub fn version_type(mut self, value: impl Into<crate::typed::_types::VersionType>) -> Self {
-        self.version_type = Some(value.into());
-        self
-    }
-
-    /// Sets [`version_type`](Self::version_type) if `value` is `Some`.
-    pub fn maybe_version_type(mut self, value: Option<crate::typed::_types::VersionType>) -> Self {
-        self.version_type = value;
         self
     }
 
@@ -858,18 +683,9 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
         RequestBuilder {
             index: self.index,
             id: self.id,
-            fields: self.fields,
-            field_statistics: self.field_statistics,
-            offsets: self.offsets,
-            payloads: self.payloads,
-            positions: self.positions,
             preference: self.preference,
             realtime: self.realtime,
-            routing: self.routing,
             route_slice: self.route_slice,
-            term_statistics: self.term_statistics,
-            version: self.version,
-            version_type: self.version_type,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -877,15 +693,15 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
             doc: Some(value),
             filter: self.filter,
             per_field_analyzer: self.per_field_analyzer,
-            fields2: self.fields2,
-            field_statistics2: self.field_statistics2,
-            offsets2: self.offsets2,
-            payloads2: self.payloads2,
-            positions2: self.positions2,
-            term_statistics2: self.term_statistics2,
-            routing2: self.routing2,
-            version2: self.version2,
-            version_type2: self.version_type2,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            term_statistics: self.term_statistics,
+            routing: self.routing,
+            version: self.version,
+            version_type: self.version_type,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -896,18 +712,9 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
         RequestBuilder {
             index: self.index,
             id: self.id,
-            fields: self.fields,
-            field_statistics: self.field_statistics,
-            offsets: self.offsets,
-            payloads: self.payloads,
-            positions: self.positions,
             preference: self.preference,
             realtime: self.realtime,
-            routing: self.routing,
             route_slice: self.route_slice,
-            term_statistics: self.term_statistics,
-            version: self.version,
-            version_type: self.version_type,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -915,15 +722,15 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
             doc: value,
             filter: self.filter,
             per_field_analyzer: self.per_field_analyzer,
-            fields2: self.fields2,
-            field_statistics2: self.field_statistics2,
-            offsets2: self.offsets2,
-            payloads2: self.payloads2,
-            positions2: self.positions2,
-            term_statistics2: self.term_statistics2,
-            routing2: self.routing2,
-            version2: self.version2,
-            version_type2: self.version_type2,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            term_statistics: self.term_statistics,
+            routing: self.routing,
+            version: self.version,
+            version_type: self.version_type,
             bound_client: self.bound_client,
             _state: std::marker::PhantomData,
         }
@@ -985,20 +792,20 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
 
     /// A list of fields to include in the statistics.
     /// It is used as the default list unless a specific field list is provided in the `completion_fields` or `fielddata_fields` parameters.
-    pub fn fields2(mut self, value: impl Into<Vec<crate::typed::_types::Field>>) -> Self {
-        self.fields2 = Some(value.into());
+    pub fn fields(mut self, value: impl Into<Vec<crate::typed::_types::Field>>) -> Self {
+        self.fields = Some(value.into());
         self
     }
 
-    /// Sets [`fields2`](Self::fields2) if `value` is `Some`.
-    pub fn maybe_fields2(mut self, value: Option<Vec<crate::typed::_types::Field>>) -> Self {
-        self.fields2 = value;
+    /// Sets [`fields`](Self::fields) if `value` is `Some`.
+    pub fn maybe_fields(mut self, value: Option<Vec<crate::typed::_types::Field>>) -> Self {
+        self.fields = value;
         self
     }
 
-    /// Adds an element to [`fields2`](Self::fields2).
-    pub fn add_fields2(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
-        self.fields2
+    /// Adds an element to [`fields`](Self::fields).
+    pub fn add_fields(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
+        self.fields
             .get_or_insert_with(Default::default)
             .push(value.into());
         self
@@ -1009,50 +816,50 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     /// * The document count (how many documents contain this field).
     /// * The sum of document frequencies (the sum of document frequencies for all terms in this field).
     /// * The sum of total term frequencies (the sum of total term frequencies of each term in this field).
-    pub fn field_statistics2(mut self, value: bool) -> Self {
-        self.field_statistics2 = Some(value);
+    pub fn field_statistics(mut self, value: bool) -> Self {
+        self.field_statistics = Some(value);
         self
     }
 
-    /// Sets [`field_statistics2`](Self::field_statistics2) if `value` is `Some`.
-    pub fn maybe_field_statistics2(mut self, value: Option<bool>) -> Self {
-        self.field_statistics2 = value;
+    /// Sets [`field_statistics`](Self::field_statistics) if `value` is `Some`.
+    pub fn maybe_field_statistics(mut self, value: Option<bool>) -> Self {
+        self.field_statistics = value;
         self
     }
 
     /// If `true`, the response includes term offsets.
-    pub fn offsets2(mut self, value: bool) -> Self {
-        self.offsets2 = Some(value);
+    pub fn offsets(mut self, value: bool) -> Self {
+        self.offsets = Some(value);
         self
     }
 
-    /// Sets [`offsets2`](Self::offsets2) if `value` is `Some`.
-    pub fn maybe_offsets2(mut self, value: Option<bool>) -> Self {
-        self.offsets2 = value;
+    /// Sets [`offsets`](Self::offsets) if `value` is `Some`.
+    pub fn maybe_offsets(mut self, value: Option<bool>) -> Self {
+        self.offsets = value;
         self
     }
 
     /// If `true`, the response includes term payloads.
-    pub fn payloads2(mut self, value: bool) -> Self {
-        self.payloads2 = Some(value);
+    pub fn payloads(mut self, value: bool) -> Self {
+        self.payloads = Some(value);
         self
     }
 
-    /// Sets [`payloads2`](Self::payloads2) if `value` is `Some`.
-    pub fn maybe_payloads2(mut self, value: Option<bool>) -> Self {
-        self.payloads2 = value;
+    /// Sets [`payloads`](Self::payloads) if `value` is `Some`.
+    pub fn maybe_payloads(mut self, value: Option<bool>) -> Self {
+        self.payloads = value;
         self
     }
 
     /// If `true`, the response includes term positions.
-    pub fn positions2(mut self, value: bool) -> Self {
-        self.positions2 = Some(value);
+    pub fn positions(mut self, value: bool) -> Self {
+        self.positions = Some(value);
         self
     }
 
-    /// Sets [`positions2`](Self::positions2) if `value` is `Some`.
-    pub fn maybe_positions2(mut self, value: Option<bool>) -> Self {
-        self.positions2 = value;
+    /// Sets [`positions`](Self::positions) if `value` is `Some`.
+    pub fn maybe_positions(mut self, value: Option<bool>) -> Self {
+        self.positions = value;
         self
     }
 
@@ -1062,50 +869,50 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
     /// * The document frequency (the number of documents containing the current term).
     ///
     /// By default these values are not returned since term statistics can have a serious performance impact.
-    pub fn term_statistics2(mut self, value: bool) -> Self {
-        self.term_statistics2 = Some(value);
+    pub fn term_statistics(mut self, value: bool) -> Self {
+        self.term_statistics = Some(value);
         self
     }
 
-    /// Sets [`term_statistics2`](Self::term_statistics2) if `value` is `Some`.
-    pub fn maybe_term_statistics2(mut self, value: Option<bool>) -> Self {
-        self.term_statistics2 = value;
+    /// Sets [`term_statistics`](Self::term_statistics) if `value` is `Some`.
+    pub fn maybe_term_statistics(mut self, value: Option<bool>) -> Self {
+        self.term_statistics = value;
         self
     }
 
     /// A custom value that is used to route operations to a specific shard.
-    pub fn routing2(mut self, value: impl Into<crate::typed::_types::Routing>) -> Self {
-        self.routing2 = Some(value.into());
+    pub fn routing(mut self, value: impl Into<crate::typed::_types::Routing>) -> Self {
+        self.routing = Some(value.into());
         self
     }
 
-    /// Sets [`routing2`](Self::routing2) if `value` is `Some`.
-    pub fn maybe_routing2(mut self, value: Option<crate::typed::_types::Routing>) -> Self {
-        self.routing2 = value;
+    /// Sets [`routing`](Self::routing) if `value` is `Some`.
+    pub fn maybe_routing(mut self, value: Option<crate::typed::_types::Routing>) -> Self {
+        self.routing = value;
         self
     }
 
     /// If `true`, returns the document version as part of a hit.
-    pub fn version2(mut self, value: impl Into<crate::typed::_types::VersionNumber>) -> Self {
-        self.version2 = Some(value.into());
+    pub fn version(mut self, value: impl Into<crate::typed::_types::VersionNumber>) -> Self {
+        self.version = Some(value.into());
         self
     }
 
-    /// Sets [`version2`](Self::version2) if `value` is `Some`.
-    pub fn maybe_version2(mut self, value: Option<crate::typed::_types::VersionNumber>) -> Self {
-        self.version2 = value;
+    /// Sets [`version`](Self::version) if `value` is `Some`.
+    pub fn maybe_version(mut self, value: Option<crate::typed::_types::VersionNumber>) -> Self {
+        self.version = value;
         self
     }
 
     /// The version type.
-    pub fn version_type2(mut self, value: impl Into<crate::typed::_types::VersionType>) -> Self {
-        self.version_type2 = Some(value.into());
+    pub fn version_type(mut self, value: impl Into<crate::typed::_types::VersionType>) -> Self {
+        self.version_type = Some(value.into());
         self
     }
 
-    /// Sets [`version_type2`](Self::version_type2) if `value` is `Some`.
-    pub fn maybe_version_type2(mut self, value: Option<crate::typed::_types::VersionType>) -> Self {
-        self.version_type2 = value;
+    /// Sets [`version_type`](Self::version_type) if `value` is `Some`.
+    pub fn maybe_version_type(mut self, value: Option<crate::typed::_types::VersionType>) -> Self {
+        self.version_type = value;
         self
     }
 }
@@ -1131,18 +938,9 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
         Request {
             index: self.index.unwrap(),
             id: self.id,
-            fields: self.fields,
-            field_statistics: self.field_statistics,
-            offsets: self.offsets,
-            payloads: self.payloads,
-            positions: self.positions,
             preference: self.preference,
             realtime: self.realtime,
-            routing: self.routing,
             route_slice: self.route_slice,
-            term_statistics: self.term_statistics,
-            version: self.version,
-            version_type: self.version_type,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1150,15 +948,15 @@ impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
             doc: self.doc,
             filter: self.filter,
             per_field_analyzer: self.per_field_analyzer,
-            fields2: self.fields2,
-            field_statistics2: self.field_statistics2,
-            offsets2: self.offsets2,
-            payloads2: self.payloads2,
-            positions2: self.positions2,
-            term_statistics2: self.term_statistics2,
-            routing2: self.routing2,
-            version2: self.version2,
-            version_type2: self.version_type2,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            term_statistics: self.term_statistics,
+            routing: self.routing,
+            version: self.version,
+            version_type: self.version_type,
         }
     }
 }
@@ -1221,44 +1019,14 @@ impl<TDocument> Request<TDocument> {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.fields {
-            query.push(("fields", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.field_statistics {
-            query.push((
-                "field_statistics",
-                crate::typed::support::query_value(value),
-            ));
-        }
-        if let Some(value) = &self.offsets {
-            query.push(("offsets", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.payloads {
-            query.push(("payloads", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.positions {
-            query.push(("positions", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.preference {
             query.push(("preference", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.realtime {
             query.push(("realtime", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.routing {
-            query.push(("routing", crate::typed::support::query_value(value)));
-        }
         if let Some(value) = &self.route_slice {
             query.push(("_slice", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.term_statistics {
-            query.push(("term_statistics", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.version {
-            query.push(("version", crate::typed::support::query_value(value)));
-        }
-        if let Some(value) = &self.version_type {
-            query.push(("version_type", crate::typed::support::query_value(value)));
         }
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
@@ -1281,15 +1049,15 @@ impl<TDocument> Request<TDocument> {
             doc: self.doc.as_ref(),
             filter: self.filter.as_ref(),
             per_field_analyzer: self.per_field_analyzer.as_ref(),
-            fields2: self.fields2.as_ref(),
-            field_statistics2: self.field_statistics2.as_ref(),
-            offsets2: self.offsets2.as_ref(),
-            payloads2: self.payloads2.as_ref(),
-            positions2: self.positions2.as_ref(),
-            term_statistics2: self.term_statistics2.as_ref(),
-            routing2: self.routing2.as_ref(),
-            version2: self.version2.as_ref(),
-            version_type2: self.version_type2.as_ref(),
+            fields: self.fields.as_ref(),
+            field_statistics: self.field_statistics.as_ref(),
+            offsets: self.offsets.as_ref(),
+            payloads: self.payloads.as_ref(),
+            positions: self.positions.as_ref(),
+            term_statistics: self.term_statistics.as_ref(),
+            routing: self.routing.as_ref(),
+            version: self.version.as_ref(),
+            version_type: self.version_type.as_ref(),
         }
     }
 
@@ -1328,24 +1096,24 @@ pub struct RequestBody<'a, TDocument> {
     filter: Option<&'a Filter>,
     #[serde(skip_serializing_if = "Option::is_none")]
     per_field_analyzer: Option<&'a indexmap::IndexMap<crate::typed::_types::Field, String>>,
-    #[serde(rename = "fields", skip_serializing_if = "Option::is_none")]
-    fields2: Option<&'a Vec<crate::typed::_types::Field>>,
-    #[serde(rename = "field_statistics", skip_serializing_if = "Option::is_none")]
-    field_statistics2: Option<&'a bool>,
-    #[serde(rename = "offsets", skip_serializing_if = "Option::is_none")]
-    offsets2: Option<&'a bool>,
-    #[serde(rename = "payloads", skip_serializing_if = "Option::is_none")]
-    payloads2: Option<&'a bool>,
-    #[serde(rename = "positions", skip_serializing_if = "Option::is_none")]
-    positions2: Option<&'a bool>,
-    #[serde(rename = "term_statistics", skip_serializing_if = "Option::is_none")]
-    term_statistics2: Option<&'a bool>,
-    #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-    routing2: Option<&'a crate::typed::_types::Routing>,
-    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
-    version2: Option<&'a crate::typed::_types::VersionNumber>,
-    #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
-    version_type2: Option<&'a crate::typed::_types::VersionType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    fields: Option<&'a Vec<crate::typed::_types::Field>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    field_statistics: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    offsets: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    payloads: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    positions: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    term_statistics: Option<&'a bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    routing: Option<&'a crate::typed::_types::Routing>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    version: Option<&'a crate::typed::_types::VersionNumber>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    version_type: Option<&'a crate::typed::_types::VersionType>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
