@@ -231,7 +231,7 @@ impl Request {
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(username) = &self.username {
             return (
-                crate::http::Method::Post,
+                crate::http::Method::Put,
                 format!(
                     "/_security/user/{}/_password",
                     crate::typed::support::path_part(username)
@@ -239,7 +239,7 @@ impl Request {
             );
         }
         (
-            crate::http::Method::Post,
+            crate::http::Method::Put,
             "/_security/user/_password".to_string(),
         )
     }

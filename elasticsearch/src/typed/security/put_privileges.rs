@@ -449,10 +449,7 @@ impl<S0> RequestBuilder<(S0,), &crate::Elasticsearch> {
 impl Request {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
-        (
-            crate::http::Method::Post,
-            "/_security/privilege".to_string(),
-        )
+        (crate::http::Method::Put, "/_security/privilege".to_string())
     }
 
     /// HTTP method of the request.

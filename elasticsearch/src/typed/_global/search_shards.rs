@@ -354,14 +354,14 @@ impl Request {
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(index) = &self.index {
             return (
-                crate::http::Method::Get,
+                crate::http::Method::Post,
                 format!(
                     "/{}/_search_shards",
                     crate::typed::support::path_part(index)
                 ),
             );
         }
-        (crate::http::Method::Get, "/_search_shards".to_string())
+        (crate::http::Method::Post, "/_search_shards".to_string())
     }
 
     /// HTTP method of the request.

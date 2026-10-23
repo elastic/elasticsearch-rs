@@ -411,7 +411,7 @@ impl Request {
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(id) = &self.id {
             return (
-                crate::http::Method::Post,
+                crate::http::Method::Put,
                 format!(
                     "/_watcher/watch/{}/_execute",
                     crate::typed::support::path_part(id)
@@ -419,7 +419,7 @@ impl Request {
             );
         }
         (
-            crate::http::Method::Post,
+            crate::http::Method::Put,
             "/_watcher/watch/_execute".to_string(),
         )
     }

@@ -700,7 +700,7 @@ impl<TDocument> Request<TDocument> {
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(id) = &self.id {
             return (
-                crate::http::Method::Post,
+                crate::http::Method::Put,
                 format!(
                     "/{}/_doc/{}",
                     crate::typed::support::path_part(&self.index),

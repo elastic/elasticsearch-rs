@@ -327,7 +327,7 @@ impl Request {
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(context) = &self.context {
             return (
-                crate::http::Method::Post,
+                crate::http::Method::Put,
                 format!(
                     "/_scripts/{}/{}",
                     crate::typed::support::path_part(&self.id),
@@ -336,7 +336,7 @@ impl Request {
             );
         }
         (
-            crate::http::Method::Post,
+            crate::http::Method::Put,
             format!("/_scripts/{}", crate::typed::support::path_part(&self.id)),
         )
     }
