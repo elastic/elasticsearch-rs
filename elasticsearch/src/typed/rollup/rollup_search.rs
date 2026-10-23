@@ -30,6 +30,8 @@ pub struct Request {
     /// Indicates whether hits.total should be rendered as an integer or an object in the rest search response
     pub rest_total_hits_as_int: Option<bool>,
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
@@ -150,6 +152,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -399,9 +403,10 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }
@@ -497,7 +502,11 @@ pub struct Response {
     #[serde(rename = "_shards")]
     pub shards: crate::typed::_types::ShardStatistics,
     pub hits: crate::typed::_global::search::_types::HitsMetadata,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub aggregations: Option<
         indexmap::IndexMap<
             crate::typed::_types::AggregateName,

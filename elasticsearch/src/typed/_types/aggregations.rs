@@ -377,7 +377,7 @@ pub struct AdjacencyMatrixBucket {
     pub doc_count: i64,
     pub key: String,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -520,14 +520,2895 @@ where
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct Aggregate(pub serde_json::Value);
+/// Variants are identified by the type prefix of their name in responses, e.g. `cardinality#name`, which Elasticsearch adds with the `typed_keys` parameter. Values without a prefix, or with one that is unknown to this client, are kept as JSON values in `Unknown`.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Aggregate {
+    Cardinality(CardinalityAggregate),
+    HdrPercentiles(HdrPercentilesAggregate),
+    HdrPercentileRanks(HdrPercentileRanksAggregate),
+    TdigestPercentiles(TDigestPercentilesAggregate),
+    TdigestPercentileRanks(TDigestPercentileRanksAggregate),
+    PercentilesBucket(PercentilesBucketAggregate),
+    MedianAbsoluteDeviation(MedianAbsoluteDeviationAggregate),
+    Min(MinAggregate),
+    Max(MaxAggregate),
+    /// Sum aggregation result. `value` is always present and is zero if there were no values to process.
+    Sum(SumAggregate),
+    Avg(AvgAggregate),
+    /// Weighted average aggregation result. `value` is missing if the weight was set to zero.
+    WeightedAvg(WeightedAvgAggregate),
+    /// Value count aggregation result. `value` is always present.
+    ValueCount(ValueCountAggregate),
+    SimpleValue(SimpleValueAggregate),
+    Derivative(DerivativeAggregate),
+    BucketMetricValue(BucketMetricValueAggregate),
+    ChangePoint(ChangePointAggregate),
+    /// Statistics aggregation result. `min`, `max` and `avg` are missing if there were no values to process
+    /// (`count` is zero).
+    Stats(StatsAggregate),
+    StatsBucket(StatsBucketAggregate),
+    ExtendedStats(ExtendedStatsAggregate),
+    ExtendedStatsBucket(ExtendedStatsBucketAggregate),
+    CartesianBounds(CartesianBoundsAggregate),
+    CartesianCentroid(CartesianCentroidAggregate),
+    GeoBounds(GeoBoundsAggregate),
+    GeoCentroid(GeoCentroidAggregate),
+    Histogram(HistogramAggregate),
+    DateHistogram(DateHistogramAggregate),
+    AutoDateHistogram(AutoDateHistogramAggregate),
+    VariableWidthHistogram(VariableWidthHistogramAggregate),
+    /// Result of a `terms` aggregation when the field is a string.
+    Sterms(StringTermsAggregate),
+    /// Result of a `terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
+    Lterms(LongTermsAggregate),
+    /// Result of a `terms` aggregation when the field is some kind of decimal number like a float, double, or distance.
+    Dterms(DoubleTermsAggregate),
+    /// Result of a `terms` aggregation when the field is unmapped. `buckets` is always empty.
+    Umterms(UnmappedTermsAggregate),
+    /// Result of the `rare_terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
+    Lrareterms(LongRareTermsAggregate),
+    /// Result of the `rare_terms` aggregation when the field is a string.
+    Srareterms(StringRareTermsAggregate),
+    /// Result of a `rare_terms` aggregation when the field is unmapped. `buckets` is always empty.
+    Umrareterms(UnmappedRareTermsAggregate),
+    MultiTerms(MultiTermsAggregate),
+    Missing(MissingAggregate),
+    Nested(NestedAggregate),
+    ReverseNested(ReverseNestedAggregate),
+    Global(GlobalAggregate),
+    Filter(FilterAggregate),
+    Children(ChildrenAggregate),
+    Parent(ParentAggregate),
+    Sampler(SamplerAggregate),
+    UnmappedSampler(UnmappedSamplerAggregate),
+    GeohashGrid(GeoHashGridAggregate),
+    GeotileGrid(GeoTileGridAggregate),
+    GeohexGrid(GeoHexGridAggregate),
+    Range(RangeAggregate),
+    /// Result of a `date_range` aggregation. Same format as a for a `range` aggregation: `from` and `to`
+    /// in `buckets` are milliseconds since the Epoch, represented as a floating point number.
+    DateRange(DateRangeAggregate),
+    /// Result of a `geo_distance` aggregation. The unit for `from` and `to` is meters by default.
+    GeoDistance(GeoDistanceAggregate),
+    IpRange(IpRangeAggregate),
+    IpPrefix(IpPrefixAggregate),
+    Filters(FiltersAggregate),
+    AdjacencyMatrix(AdjacencyMatrixAggregate),
+    Siglterms(SignificantLongTermsAggregate),
+    Sigsterms(SignificantStringTermsAggregate),
+    /// Result of the `significant_terms` aggregation on an unmapped field. `buckets` is always empty.
+    Umsigterms(UnmappedSignificantTermsAggregate),
+    Composite(CompositeAggregate),
+    FrequentItemSets(FrequentItemSetsAggregate),
+    TimeSeries(TimeSeriesAggregate),
+    ScriptedMetric(ScriptedMetricAggregate),
+    TopHits(TopHitsAggregate),
+    Inference(InferenceAggregate),
+    StringStats(StringStatsAggregate),
+    Boxplot(BoxPlotAggregate),
+    TopMetrics(TopMetricsAggregate),
+    TTest(TTestAggregate),
+    Rate(RateAggregate),
+    /// Result of the `cumulative_cardinality` aggregation
+    SimpleLongValue(CumulativeCardinalityAggregate),
+    MatrixStats(MatrixStatsAggregate),
+    GeoLine(GeoLineAggregate),
+    /// A value without a type prefix, or whose type is unknown to this client.
+    Unknown {
+        /// Type prefix, if any.
+        type_key: Option<String>,
+        value: serde_json::Value,
+    },
+}
 
-impl From<serde_json::Value> for Aggregate {
-    fn from(value: serde_json::Value) -> Self {
-        Aggregate(value)
+impl serde::Serialize for Aggregate {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            Aggregate::Cardinality(value) => value.serialize(serializer),
+            Aggregate::HdrPercentiles(value) => value.serialize(serializer),
+            Aggregate::HdrPercentileRanks(value) => value.serialize(serializer),
+            Aggregate::TdigestPercentiles(value) => value.serialize(serializer),
+            Aggregate::TdigestPercentileRanks(value) => value.serialize(serializer),
+            Aggregate::PercentilesBucket(value) => value.serialize(serializer),
+            Aggregate::MedianAbsoluteDeviation(value) => value.serialize(serializer),
+            Aggregate::Min(value) => value.serialize(serializer),
+            Aggregate::Max(value) => value.serialize(serializer),
+            Aggregate::Sum(value) => value.serialize(serializer),
+            Aggregate::Avg(value) => value.serialize(serializer),
+            Aggregate::WeightedAvg(value) => value.serialize(serializer),
+            Aggregate::ValueCount(value) => value.serialize(serializer),
+            Aggregate::SimpleValue(value) => value.serialize(serializer),
+            Aggregate::Derivative(value) => value.serialize(serializer),
+            Aggregate::BucketMetricValue(value) => value.serialize(serializer),
+            Aggregate::ChangePoint(value) => value.serialize(serializer),
+            Aggregate::Stats(value) => value.serialize(serializer),
+            Aggregate::StatsBucket(value) => value.serialize(serializer),
+            Aggregate::ExtendedStats(value) => value.serialize(serializer),
+            Aggregate::ExtendedStatsBucket(value) => value.serialize(serializer),
+            Aggregate::CartesianBounds(value) => value.serialize(serializer),
+            Aggregate::CartesianCentroid(value) => value.serialize(serializer),
+            Aggregate::GeoBounds(value) => value.serialize(serializer),
+            Aggregate::GeoCentroid(value) => value.serialize(serializer),
+            Aggregate::Histogram(value) => value.serialize(serializer),
+            Aggregate::DateHistogram(value) => value.serialize(serializer),
+            Aggregate::AutoDateHistogram(value) => value.serialize(serializer),
+            Aggregate::VariableWidthHistogram(value) => value.serialize(serializer),
+            Aggregate::Sterms(value) => value.serialize(serializer),
+            Aggregate::Lterms(value) => value.serialize(serializer),
+            Aggregate::Dterms(value) => value.serialize(serializer),
+            Aggregate::Umterms(value) => value.serialize(serializer),
+            Aggregate::Lrareterms(value) => value.serialize(serializer),
+            Aggregate::Srareterms(value) => value.serialize(serializer),
+            Aggregate::Umrareterms(value) => value.serialize(serializer),
+            Aggregate::MultiTerms(value) => value.serialize(serializer),
+            Aggregate::Missing(value) => value.serialize(serializer),
+            Aggregate::Nested(value) => value.serialize(serializer),
+            Aggregate::ReverseNested(value) => value.serialize(serializer),
+            Aggregate::Global(value) => value.serialize(serializer),
+            Aggregate::Filter(value) => value.serialize(serializer),
+            Aggregate::Children(value) => value.serialize(serializer),
+            Aggregate::Parent(value) => value.serialize(serializer),
+            Aggregate::Sampler(value) => value.serialize(serializer),
+            Aggregate::UnmappedSampler(value) => value.serialize(serializer),
+            Aggregate::GeohashGrid(value) => value.serialize(serializer),
+            Aggregate::GeotileGrid(value) => value.serialize(serializer),
+            Aggregate::GeohexGrid(value) => value.serialize(serializer),
+            Aggregate::Range(value) => value.serialize(serializer),
+            Aggregate::DateRange(value) => value.serialize(serializer),
+            Aggregate::GeoDistance(value) => value.serialize(serializer),
+            Aggregate::IpRange(value) => value.serialize(serializer),
+            Aggregate::IpPrefix(value) => value.serialize(serializer),
+            Aggregate::Filters(value) => value.serialize(serializer),
+            Aggregate::AdjacencyMatrix(value) => value.serialize(serializer),
+            Aggregate::Siglterms(value) => value.serialize(serializer),
+            Aggregate::Sigsterms(value) => value.serialize(serializer),
+            Aggregate::Umsigterms(value) => value.serialize(serializer),
+            Aggregate::Composite(value) => value.serialize(serializer),
+            Aggregate::FrequentItemSets(value) => value.serialize(serializer),
+            Aggregate::TimeSeries(value) => value.serialize(serializer),
+            Aggregate::ScriptedMetric(value) => value.serialize(serializer),
+            Aggregate::TopHits(value) => value.serialize(serializer),
+            Aggregate::Inference(value) => value.serialize(serializer),
+            Aggregate::StringStats(value) => value.serialize(serializer),
+            Aggregate::Boxplot(value) => value.serialize(serializer),
+            Aggregate::TopMetrics(value) => value.serialize(serializer),
+            Aggregate::TTest(value) => value.serialize(serializer),
+            Aggregate::Rate(value) => value.serialize(serializer),
+            Aggregate::SimpleLongValue(value) => value.serialize(serializer),
+            Aggregate::MatrixStats(value) => value.serialize(serializer),
+            Aggregate::GeoLine(value) => value.serialize(serializer),
+            Aggregate::Unknown { value, .. } => value.serialize(serializer),
+        }
+    }
+}
+
+/// Without a type prefix, values are deserialized as `Unknown`.
+impl<'de> serde::Deserialize<'de> for Aggregate {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        <Self as crate::typed::support::typed_keys::TypedKeys>::deserialize_typed(
+            None,
+            deserializer,
+        )
+    }
+}
+
+impl crate::typed::support::typed_keys::TypedKeys for Aggregate {
+    fn type_key(&self) -> Option<&str> {
+        match self {
+            Aggregate::Cardinality(_) => Some("cardinality"),
+            Aggregate::HdrPercentiles(_) => Some("hdr_percentiles"),
+            Aggregate::HdrPercentileRanks(_) => Some("hdr_percentile_ranks"),
+            Aggregate::TdigestPercentiles(_) => Some("tdigest_percentiles"),
+            Aggregate::TdigestPercentileRanks(_) => Some("tdigest_percentile_ranks"),
+            Aggregate::PercentilesBucket(_) => Some("percentiles_bucket"),
+            Aggregate::MedianAbsoluteDeviation(_) => Some("median_absolute_deviation"),
+            Aggregate::Min(_) => Some("min"),
+            Aggregate::Max(_) => Some("max"),
+            Aggregate::Sum(_) => Some("sum"),
+            Aggregate::Avg(_) => Some("avg"),
+            Aggregate::WeightedAvg(_) => Some("weighted_avg"),
+            Aggregate::ValueCount(_) => Some("value_count"),
+            Aggregate::SimpleValue(_) => Some("simple_value"),
+            Aggregate::Derivative(_) => Some("derivative"),
+            Aggregate::BucketMetricValue(_) => Some("bucket_metric_value"),
+            Aggregate::ChangePoint(_) => Some("change_point"),
+            Aggregate::Stats(_) => Some("stats"),
+            Aggregate::StatsBucket(_) => Some("stats_bucket"),
+            Aggregate::ExtendedStats(_) => Some("extended_stats"),
+            Aggregate::ExtendedStatsBucket(_) => Some("extended_stats_bucket"),
+            Aggregate::CartesianBounds(_) => Some("cartesian_bounds"),
+            Aggregate::CartesianCentroid(_) => Some("cartesian_centroid"),
+            Aggregate::GeoBounds(_) => Some("geo_bounds"),
+            Aggregate::GeoCentroid(_) => Some("geo_centroid"),
+            Aggregate::Histogram(_) => Some("histogram"),
+            Aggregate::DateHistogram(_) => Some("date_histogram"),
+            Aggregate::AutoDateHistogram(_) => Some("auto_date_histogram"),
+            Aggregate::VariableWidthHistogram(_) => Some("variable_width_histogram"),
+            Aggregate::Sterms(_) => Some("sterms"),
+            Aggregate::Lterms(_) => Some("lterms"),
+            Aggregate::Dterms(_) => Some("dterms"),
+            Aggregate::Umterms(_) => Some("umterms"),
+            Aggregate::Lrareterms(_) => Some("lrareterms"),
+            Aggregate::Srareterms(_) => Some("srareterms"),
+            Aggregate::Umrareterms(_) => Some("umrareterms"),
+            Aggregate::MultiTerms(_) => Some("multi_terms"),
+            Aggregate::Missing(_) => Some("missing"),
+            Aggregate::Nested(_) => Some("nested"),
+            Aggregate::ReverseNested(_) => Some("reverse_nested"),
+            Aggregate::Global(_) => Some("global"),
+            Aggregate::Filter(_) => Some("filter"),
+            Aggregate::Children(_) => Some("children"),
+            Aggregate::Parent(_) => Some("parent"),
+            Aggregate::Sampler(_) => Some("sampler"),
+            Aggregate::UnmappedSampler(_) => Some("unmapped_sampler"),
+            Aggregate::GeohashGrid(_) => Some("geohash_grid"),
+            Aggregate::GeotileGrid(_) => Some("geotile_grid"),
+            Aggregate::GeohexGrid(_) => Some("geohex_grid"),
+            Aggregate::Range(_) => Some("range"),
+            Aggregate::DateRange(_) => Some("date_range"),
+            Aggregate::GeoDistance(_) => Some("geo_distance"),
+            Aggregate::IpRange(_) => Some("ip_range"),
+            Aggregate::IpPrefix(_) => Some("ip_prefix"),
+            Aggregate::Filters(_) => Some("filters"),
+            Aggregate::AdjacencyMatrix(_) => Some("adjacency_matrix"),
+            Aggregate::Siglterms(_) => Some("siglterms"),
+            Aggregate::Sigsterms(_) => Some("sigsterms"),
+            Aggregate::Umsigterms(_) => Some("umsigterms"),
+            Aggregate::Composite(_) => Some("composite"),
+            Aggregate::FrequentItemSets(_) => Some("frequent_item_sets"),
+            Aggregate::TimeSeries(_) => Some("time_series"),
+            Aggregate::ScriptedMetric(_) => Some("scripted_metric"),
+            Aggregate::TopHits(_) => Some("top_hits"),
+            Aggregate::Inference(_) => Some("inference"),
+            Aggregate::StringStats(_) => Some("string_stats"),
+            Aggregate::Boxplot(_) => Some("boxplot"),
+            Aggregate::TopMetrics(_) => Some("top_metrics"),
+            Aggregate::TTest(_) => Some("t_test"),
+            Aggregate::Rate(_) => Some("rate"),
+            Aggregate::SimpleLongValue(_) => Some("simple_long_value"),
+            Aggregate::MatrixStats(_) => Some("matrix_stats"),
+            Aggregate::GeoLine(_) => Some("geo_line"),
+            Aggregate::Unknown { type_key, .. } => type_key.as_deref(),
+        }
+    }
+    fn deserialize_typed<'de, D: serde::Deserializer<'de>>(
+        type_key: Option<&str>,
+        deserializer: D,
+    ) -> Result<Self, D::Error> {
+        use serde::Deserialize;
+        match type_key {
+            Some("cardinality") => {
+                CardinalityAggregate::deserialize(deserializer).map(Aggregate::Cardinality)
+            }
+            Some("hdr_percentiles") => {
+                HdrPercentilesAggregate::deserialize(deserializer).map(Aggregate::HdrPercentiles)
+            }
+            Some("hdr_percentile_ranks") => HdrPercentileRanksAggregate::deserialize(deserializer)
+                .map(Aggregate::HdrPercentileRanks),
+            Some("tdigest_percentiles") => TDigestPercentilesAggregate::deserialize(deserializer)
+                .map(Aggregate::TdigestPercentiles),
+            Some("tdigest_percentile_ranks") => {
+                TDigestPercentileRanksAggregate::deserialize(deserializer)
+                    .map(Aggregate::TdigestPercentileRanks)
+            }
+            Some("percentiles_bucket") => PercentilesBucketAggregate::deserialize(deserializer)
+                .map(Aggregate::PercentilesBucket),
+            Some("median_absolute_deviation") => {
+                MedianAbsoluteDeviationAggregate::deserialize(deserializer)
+                    .map(Aggregate::MedianAbsoluteDeviation)
+            }
+            Some("min") => MinAggregate::deserialize(deserializer).map(Aggregate::Min),
+            Some("max") => MaxAggregate::deserialize(deserializer).map(Aggregate::Max),
+            Some("sum") => SumAggregate::deserialize(deserializer).map(Aggregate::Sum),
+            Some("avg") => AvgAggregate::deserialize(deserializer).map(Aggregate::Avg),
+            Some("weighted_avg") => {
+                WeightedAvgAggregate::deserialize(deserializer).map(Aggregate::WeightedAvg)
+            }
+            Some("value_count") => {
+                ValueCountAggregate::deserialize(deserializer).map(Aggregate::ValueCount)
+            }
+            Some("simple_value") => {
+                SimpleValueAggregate::deserialize(deserializer).map(Aggregate::SimpleValue)
+            }
+            Some("derivative") => {
+                DerivativeAggregate::deserialize(deserializer).map(Aggregate::Derivative)
+            }
+            Some("bucket_metric_value") => BucketMetricValueAggregate::deserialize(deserializer)
+                .map(Aggregate::BucketMetricValue),
+            Some("change_point") => {
+                ChangePointAggregate::deserialize(deserializer).map(Aggregate::ChangePoint)
+            }
+            Some("stats") => StatsAggregate::deserialize(deserializer).map(Aggregate::Stats),
+            Some("stats_bucket") => {
+                StatsBucketAggregate::deserialize(deserializer).map(Aggregate::StatsBucket)
+            }
+            Some("extended_stats") => {
+                ExtendedStatsAggregate::deserialize(deserializer).map(Aggregate::ExtendedStats)
+            }
+            Some("extended_stats_bucket") => {
+                ExtendedStatsBucketAggregate::deserialize(deserializer)
+                    .map(Aggregate::ExtendedStatsBucket)
+            }
+            Some("cartesian_bounds") => {
+                CartesianBoundsAggregate::deserialize(deserializer).map(Aggregate::CartesianBounds)
+            }
+            Some("cartesian_centroid") => CartesianCentroidAggregate::deserialize(deserializer)
+                .map(Aggregate::CartesianCentroid),
+            Some("geo_bounds") => {
+                GeoBoundsAggregate::deserialize(deserializer).map(Aggregate::GeoBounds)
+            }
+            Some("geo_centroid") => {
+                GeoCentroidAggregate::deserialize(deserializer).map(Aggregate::GeoCentroid)
+            }
+            Some("histogram") => {
+                HistogramAggregate::deserialize(deserializer).map(Aggregate::Histogram)
+            }
+            Some("date_histogram") => {
+                DateHistogramAggregate::deserialize(deserializer).map(Aggregate::DateHistogram)
+            }
+            Some("auto_date_histogram") => AutoDateHistogramAggregate::deserialize(deserializer)
+                .map(Aggregate::AutoDateHistogram),
+            Some("variable_width_histogram") => {
+                VariableWidthHistogramAggregate::deserialize(deserializer)
+                    .map(Aggregate::VariableWidthHistogram)
+            }
+            Some("sterms") => {
+                StringTermsAggregate::deserialize(deserializer).map(Aggregate::Sterms)
+            }
+            Some("lterms") => LongTermsAggregate::deserialize(deserializer).map(Aggregate::Lterms),
+            Some("dterms") => {
+                DoubleTermsAggregate::deserialize(deserializer).map(Aggregate::Dterms)
+            }
+            Some("umterms") => {
+                UnmappedTermsAggregate::deserialize(deserializer).map(Aggregate::Umterms)
+            }
+            Some("lrareterms") => {
+                LongRareTermsAggregate::deserialize(deserializer).map(Aggregate::Lrareterms)
+            }
+            Some("srareterms") => {
+                StringRareTermsAggregate::deserialize(deserializer).map(Aggregate::Srareterms)
+            }
+            Some("umrareterms") => {
+                UnmappedRareTermsAggregate::deserialize(deserializer).map(Aggregate::Umrareterms)
+            }
+            Some("multi_terms") => {
+                MultiTermsAggregate::deserialize(deserializer).map(Aggregate::MultiTerms)
+            }
+            Some("missing") => MissingAggregate::deserialize(deserializer).map(Aggregate::Missing),
+            Some("nested") => NestedAggregate::deserialize(deserializer).map(Aggregate::Nested),
+            Some("reverse_nested") => {
+                ReverseNestedAggregate::deserialize(deserializer).map(Aggregate::ReverseNested)
+            }
+            Some("global") => GlobalAggregate::deserialize(deserializer).map(Aggregate::Global),
+            Some("filter") => FilterAggregate::deserialize(deserializer).map(Aggregate::Filter),
+            Some("children") => {
+                ChildrenAggregate::deserialize(deserializer).map(Aggregate::Children)
+            }
+            Some("parent") => ParentAggregate::deserialize(deserializer).map(Aggregate::Parent),
+            Some("sampler") => SamplerAggregate::deserialize(deserializer).map(Aggregate::Sampler),
+            Some("unmapped_sampler") => {
+                UnmappedSamplerAggregate::deserialize(deserializer).map(Aggregate::UnmappedSampler)
+            }
+            Some("geohash_grid") => {
+                GeoHashGridAggregate::deserialize(deserializer).map(Aggregate::GeohashGrid)
+            }
+            Some("geotile_grid") => {
+                GeoTileGridAggregate::deserialize(deserializer).map(Aggregate::GeotileGrid)
+            }
+            Some("geohex_grid") => {
+                GeoHexGridAggregate::deserialize(deserializer).map(Aggregate::GeohexGrid)
+            }
+            Some("range") => RangeAggregate::deserialize(deserializer).map(Aggregate::Range),
+            Some("date_range") => {
+                DateRangeAggregate::deserialize(deserializer).map(Aggregate::DateRange)
+            }
+            Some("geo_distance") => {
+                GeoDistanceAggregate::deserialize(deserializer).map(Aggregate::GeoDistance)
+            }
+            Some("ip_range") => IpRangeAggregate::deserialize(deserializer).map(Aggregate::IpRange),
+            Some("ip_prefix") => {
+                IpPrefixAggregate::deserialize(deserializer).map(Aggregate::IpPrefix)
+            }
+            Some("filters") => FiltersAggregate::deserialize(deserializer).map(Aggregate::Filters),
+            Some("adjacency_matrix") => {
+                AdjacencyMatrixAggregate::deserialize(deserializer).map(Aggregate::AdjacencyMatrix)
+            }
+            Some("siglterms") => {
+                SignificantLongTermsAggregate::deserialize(deserializer).map(Aggregate::Siglterms)
+            }
+            Some("sigsterms") => {
+                SignificantStringTermsAggregate::deserialize(deserializer).map(Aggregate::Sigsterms)
+            }
+            Some("umsigterms") => UnmappedSignificantTermsAggregate::deserialize(deserializer)
+                .map(Aggregate::Umsigterms),
+            Some("composite") => {
+                CompositeAggregate::deserialize(deserializer).map(Aggregate::Composite)
+            }
+            Some("frequent_item_sets") => FrequentItemSetsAggregate::deserialize(deserializer)
+                .map(Aggregate::FrequentItemSets),
+            Some("time_series") => {
+                TimeSeriesAggregate::deserialize(deserializer).map(Aggregate::TimeSeries)
+            }
+            Some("scripted_metric") => {
+                ScriptedMetricAggregate::deserialize(deserializer).map(Aggregate::ScriptedMetric)
+            }
+            Some("top_hits") => TopHitsAggregate::deserialize(deserializer).map(Aggregate::TopHits),
+            Some("inference") => {
+                InferenceAggregate::deserialize(deserializer).map(Aggregate::Inference)
+            }
+            Some("string_stats") => {
+                StringStatsAggregate::deserialize(deserializer).map(Aggregate::StringStats)
+            }
+            Some("boxplot") => BoxPlotAggregate::deserialize(deserializer).map(Aggregate::Boxplot),
+            Some("top_metrics") => {
+                TopMetricsAggregate::deserialize(deserializer).map(Aggregate::TopMetrics)
+            }
+            Some("t_test") => TTestAggregate::deserialize(deserializer).map(Aggregate::TTest),
+            Some("rate") => RateAggregate::deserialize(deserializer).map(Aggregate::Rate),
+            Some("simple_long_value") => CumulativeCardinalityAggregate::deserialize(deserializer)
+                .map(Aggregate::SimpleLongValue),
+            Some("matrix_stats") => {
+                MatrixStatsAggregate::deserialize(deserializer).map(Aggregate::MatrixStats)
+            }
+            Some("geo_line") => GeoLineAggregate::deserialize(deserializer).map(Aggregate::GeoLine),
+            _ => serde_json::Value::deserialize(deserializer).map(|value| Aggregate::Unknown {
+                type_key: type_key.map(str::to_string),
+                value,
+            }),
+        }
+    }
+}
+
+impl From<CardinalityAggregate> for Aggregate {
+    fn from(value: CardinalityAggregate) -> Self {
+        Aggregate::Cardinality(value)
+    }
+}
+
+impl From<HdrPercentilesAggregate> for Aggregate {
+    fn from(value: HdrPercentilesAggregate) -> Self {
+        Aggregate::HdrPercentiles(value)
+    }
+}
+
+impl From<HdrPercentileRanksAggregate> for Aggregate {
+    fn from(value: HdrPercentileRanksAggregate) -> Self {
+        Aggregate::HdrPercentileRanks(value)
+    }
+}
+
+impl From<TDigestPercentilesAggregate> for Aggregate {
+    fn from(value: TDigestPercentilesAggregate) -> Self {
+        Aggregate::TdigestPercentiles(value)
+    }
+}
+
+impl From<TDigestPercentileRanksAggregate> for Aggregate {
+    fn from(value: TDigestPercentileRanksAggregate) -> Self {
+        Aggregate::TdigestPercentileRanks(value)
+    }
+}
+
+impl From<PercentilesBucketAggregate> for Aggregate {
+    fn from(value: PercentilesBucketAggregate) -> Self {
+        Aggregate::PercentilesBucket(value)
+    }
+}
+
+impl From<MedianAbsoluteDeviationAggregate> for Aggregate {
+    fn from(value: MedianAbsoluteDeviationAggregate) -> Self {
+        Aggregate::MedianAbsoluteDeviation(value)
+    }
+}
+
+impl From<MinAggregate> for Aggregate {
+    fn from(value: MinAggregate) -> Self {
+        Aggregate::Min(value)
+    }
+}
+
+impl From<MaxAggregate> for Aggregate {
+    fn from(value: MaxAggregate) -> Self {
+        Aggregate::Max(value)
+    }
+}
+
+impl From<SumAggregate> for Aggregate {
+    fn from(value: SumAggregate) -> Self {
+        Aggregate::Sum(value)
+    }
+}
+
+impl From<AvgAggregate> for Aggregate {
+    fn from(value: AvgAggregate) -> Self {
+        Aggregate::Avg(value)
+    }
+}
+
+impl From<WeightedAvgAggregate> for Aggregate {
+    fn from(value: WeightedAvgAggregate) -> Self {
+        Aggregate::WeightedAvg(value)
+    }
+}
+
+impl From<ValueCountAggregate> for Aggregate {
+    fn from(value: ValueCountAggregate) -> Self {
+        Aggregate::ValueCount(value)
+    }
+}
+
+impl From<SimpleValueAggregate> for Aggregate {
+    fn from(value: SimpleValueAggregate) -> Self {
+        Aggregate::SimpleValue(value)
+    }
+}
+
+impl From<DerivativeAggregate> for Aggregate {
+    fn from(value: DerivativeAggregate) -> Self {
+        Aggregate::Derivative(value)
+    }
+}
+
+impl From<BucketMetricValueAggregate> for Aggregate {
+    fn from(value: BucketMetricValueAggregate) -> Self {
+        Aggregate::BucketMetricValue(value)
+    }
+}
+
+impl From<ChangePointAggregate> for Aggregate {
+    fn from(value: ChangePointAggregate) -> Self {
+        Aggregate::ChangePoint(value)
+    }
+}
+
+impl From<StatsAggregate> for Aggregate {
+    fn from(value: StatsAggregate) -> Self {
+        Aggregate::Stats(value)
+    }
+}
+
+impl From<StatsBucketAggregate> for Aggregate {
+    fn from(value: StatsBucketAggregate) -> Self {
+        Aggregate::StatsBucket(value)
+    }
+}
+
+impl From<ExtendedStatsAggregate> for Aggregate {
+    fn from(value: ExtendedStatsAggregate) -> Self {
+        Aggregate::ExtendedStats(value)
+    }
+}
+
+impl From<ExtendedStatsBucketAggregate> for Aggregate {
+    fn from(value: ExtendedStatsBucketAggregate) -> Self {
+        Aggregate::ExtendedStatsBucket(value)
+    }
+}
+
+impl From<CartesianBoundsAggregate> for Aggregate {
+    fn from(value: CartesianBoundsAggregate) -> Self {
+        Aggregate::CartesianBounds(value)
+    }
+}
+
+impl From<CartesianCentroidAggregate> for Aggregate {
+    fn from(value: CartesianCentroidAggregate) -> Self {
+        Aggregate::CartesianCentroid(value)
+    }
+}
+
+impl From<GeoBoundsAggregate> for Aggregate {
+    fn from(value: GeoBoundsAggregate) -> Self {
+        Aggregate::GeoBounds(value)
+    }
+}
+
+impl From<GeoCentroidAggregate> for Aggregate {
+    fn from(value: GeoCentroidAggregate) -> Self {
+        Aggregate::GeoCentroid(value)
+    }
+}
+
+impl From<HistogramAggregate> for Aggregate {
+    fn from(value: HistogramAggregate) -> Self {
+        Aggregate::Histogram(value)
+    }
+}
+
+impl From<DateHistogramAggregate> for Aggregate {
+    fn from(value: DateHistogramAggregate) -> Self {
+        Aggregate::DateHistogram(value)
+    }
+}
+
+impl From<AutoDateHistogramAggregate> for Aggregate {
+    fn from(value: AutoDateHistogramAggregate) -> Self {
+        Aggregate::AutoDateHistogram(value)
+    }
+}
+
+impl From<VariableWidthHistogramAggregate> for Aggregate {
+    fn from(value: VariableWidthHistogramAggregate) -> Self {
+        Aggregate::VariableWidthHistogram(value)
+    }
+}
+
+impl From<StringTermsAggregate> for Aggregate {
+    fn from(value: StringTermsAggregate) -> Self {
+        Aggregate::Sterms(value)
+    }
+}
+
+impl From<LongTermsAggregate> for Aggregate {
+    fn from(value: LongTermsAggregate) -> Self {
+        Aggregate::Lterms(value)
+    }
+}
+
+impl From<DoubleTermsAggregate> for Aggregate {
+    fn from(value: DoubleTermsAggregate) -> Self {
+        Aggregate::Dterms(value)
+    }
+}
+
+impl From<UnmappedTermsAggregate> for Aggregate {
+    fn from(value: UnmappedTermsAggregate) -> Self {
+        Aggregate::Umterms(value)
+    }
+}
+
+impl From<LongRareTermsAggregate> for Aggregate {
+    fn from(value: LongRareTermsAggregate) -> Self {
+        Aggregate::Lrareterms(value)
+    }
+}
+
+impl From<StringRareTermsAggregate> for Aggregate {
+    fn from(value: StringRareTermsAggregate) -> Self {
+        Aggregate::Srareterms(value)
+    }
+}
+
+impl From<UnmappedRareTermsAggregate> for Aggregate {
+    fn from(value: UnmappedRareTermsAggregate) -> Self {
+        Aggregate::Umrareterms(value)
+    }
+}
+
+impl From<MultiTermsAggregate> for Aggregate {
+    fn from(value: MultiTermsAggregate) -> Self {
+        Aggregate::MultiTerms(value)
+    }
+}
+
+impl From<MissingAggregate> for Aggregate {
+    fn from(value: MissingAggregate) -> Self {
+        Aggregate::Missing(value)
+    }
+}
+
+impl From<NestedAggregate> for Aggregate {
+    fn from(value: NestedAggregate) -> Self {
+        Aggregate::Nested(value)
+    }
+}
+
+impl From<ReverseNestedAggregate> for Aggregate {
+    fn from(value: ReverseNestedAggregate) -> Self {
+        Aggregate::ReverseNested(value)
+    }
+}
+
+impl From<GlobalAggregate> for Aggregate {
+    fn from(value: GlobalAggregate) -> Self {
+        Aggregate::Global(value)
+    }
+}
+
+impl From<FilterAggregate> for Aggregate {
+    fn from(value: FilterAggregate) -> Self {
+        Aggregate::Filter(value)
+    }
+}
+
+impl From<ChildrenAggregate> for Aggregate {
+    fn from(value: ChildrenAggregate) -> Self {
+        Aggregate::Children(value)
+    }
+}
+
+impl From<ParentAggregate> for Aggregate {
+    fn from(value: ParentAggregate) -> Self {
+        Aggregate::Parent(value)
+    }
+}
+
+impl From<SamplerAggregate> for Aggregate {
+    fn from(value: SamplerAggregate) -> Self {
+        Aggregate::Sampler(value)
+    }
+}
+
+impl From<UnmappedSamplerAggregate> for Aggregate {
+    fn from(value: UnmappedSamplerAggregate) -> Self {
+        Aggregate::UnmappedSampler(value)
+    }
+}
+
+impl From<GeoHashGridAggregate> for Aggregate {
+    fn from(value: GeoHashGridAggregate) -> Self {
+        Aggregate::GeohashGrid(value)
+    }
+}
+
+impl From<GeoTileGridAggregate> for Aggregate {
+    fn from(value: GeoTileGridAggregate) -> Self {
+        Aggregate::GeotileGrid(value)
+    }
+}
+
+impl From<GeoHexGridAggregate> for Aggregate {
+    fn from(value: GeoHexGridAggregate) -> Self {
+        Aggregate::GeohexGrid(value)
+    }
+}
+
+impl From<RangeAggregate> for Aggregate {
+    fn from(value: RangeAggregate) -> Self {
+        Aggregate::Range(value)
+    }
+}
+
+impl From<DateRangeAggregate> for Aggregate {
+    fn from(value: DateRangeAggregate) -> Self {
+        Aggregate::DateRange(value)
+    }
+}
+
+impl From<GeoDistanceAggregate> for Aggregate {
+    fn from(value: GeoDistanceAggregate) -> Self {
+        Aggregate::GeoDistance(value)
+    }
+}
+
+impl From<IpRangeAggregate> for Aggregate {
+    fn from(value: IpRangeAggregate) -> Self {
+        Aggregate::IpRange(value)
+    }
+}
+
+impl From<IpPrefixAggregate> for Aggregate {
+    fn from(value: IpPrefixAggregate) -> Self {
+        Aggregate::IpPrefix(value)
+    }
+}
+
+impl From<FiltersAggregate> for Aggregate {
+    fn from(value: FiltersAggregate) -> Self {
+        Aggregate::Filters(value)
+    }
+}
+
+impl From<AdjacencyMatrixAggregate> for Aggregate {
+    fn from(value: AdjacencyMatrixAggregate) -> Self {
+        Aggregate::AdjacencyMatrix(value)
+    }
+}
+
+impl From<SignificantLongTermsAggregate> for Aggregate {
+    fn from(value: SignificantLongTermsAggregate) -> Self {
+        Aggregate::Siglterms(value)
+    }
+}
+
+impl From<SignificantStringTermsAggregate> for Aggregate {
+    fn from(value: SignificantStringTermsAggregate) -> Self {
+        Aggregate::Sigsterms(value)
+    }
+}
+
+impl From<UnmappedSignificantTermsAggregate> for Aggregate {
+    fn from(value: UnmappedSignificantTermsAggregate) -> Self {
+        Aggregate::Umsigterms(value)
+    }
+}
+
+impl From<CompositeAggregate> for Aggregate {
+    fn from(value: CompositeAggregate) -> Self {
+        Aggregate::Composite(value)
+    }
+}
+
+impl From<FrequentItemSetsAggregate> for Aggregate {
+    fn from(value: FrequentItemSetsAggregate) -> Self {
+        Aggregate::FrequentItemSets(value)
+    }
+}
+
+impl From<TimeSeriesAggregate> for Aggregate {
+    fn from(value: TimeSeriesAggregate) -> Self {
+        Aggregate::TimeSeries(value)
+    }
+}
+
+impl From<ScriptedMetricAggregate> for Aggregate {
+    fn from(value: ScriptedMetricAggregate) -> Self {
+        Aggregate::ScriptedMetric(value)
+    }
+}
+
+impl From<TopHitsAggregate> for Aggregate {
+    fn from(value: TopHitsAggregate) -> Self {
+        Aggregate::TopHits(value)
+    }
+}
+
+impl From<InferenceAggregate> for Aggregate {
+    fn from(value: InferenceAggregate) -> Self {
+        Aggregate::Inference(value)
+    }
+}
+
+impl From<StringStatsAggregate> for Aggregate {
+    fn from(value: StringStatsAggregate) -> Self {
+        Aggregate::StringStats(value)
+    }
+}
+
+impl From<BoxPlotAggregate> for Aggregate {
+    fn from(value: BoxPlotAggregate) -> Self {
+        Aggregate::Boxplot(value)
+    }
+}
+
+impl From<TopMetricsAggregate> for Aggregate {
+    fn from(value: TopMetricsAggregate) -> Self {
+        Aggregate::TopMetrics(value)
+    }
+}
+
+impl From<TTestAggregate> for Aggregate {
+    fn from(value: TTestAggregate) -> Self {
+        Aggregate::TTest(value)
+    }
+}
+
+impl From<RateAggregate> for Aggregate {
+    fn from(value: RateAggregate) -> Self {
+        Aggregate::Rate(value)
+    }
+}
+
+impl From<CumulativeCardinalityAggregate> for Aggregate {
+    fn from(value: CumulativeCardinalityAggregate) -> Self {
+        Aggregate::SimpleLongValue(value)
+    }
+}
+
+impl From<MatrixStatsAggregate> for Aggregate {
+    fn from(value: MatrixStatsAggregate) -> Self {
+        Aggregate::MatrixStats(value)
+    }
+}
+
+impl From<GeoLineAggregate> for Aggregate {
+    fn from(value: GeoLineAggregate) -> Self {
+        Aggregate::GeoLine(value)
+    }
+}
+
+impl From<CardinalityAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: CardinalityAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(
+        builder: TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(
+        builder: MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MinAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: MinAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MaxAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: MaxAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SumAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: SumAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<AvgAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: AvgAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ValueCountAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ValueCountAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DerivativeAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: DerivativeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        BucketMetricValueAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    > for Aggregate
+{
+    fn from(
+        builder: BucketMetricValueAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ChangePointAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ChangePointAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        StatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: StatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        StatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: StatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        ExtendedStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: ExtendedStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        ExtendedStatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: ExtendedStatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CartesianBoundsAggregateBuilder> for Aggregate {
+    fn from(builder: CartesianBoundsAggregateBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoBoundsAggregateBuilder> for Aggregate {
+    fn from(builder: GeoBoundsAggregateBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HistogramAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: HistogramAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        AutoDateHistogramAggregateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    > for Aggregate
+{
+    fn from(
+        builder: AutoDateHistogramAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(
+        builder: VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<StringTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: StringTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<LongTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: LongTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MissingAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: MissingAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<NestedAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: NestedAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GlobalAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GlobalAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FilterAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: FilterAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ChildrenAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ChildrenAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ParentAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ParentAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SamplerAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: SamplerAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RangeAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: RangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateRangeAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: DateRangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IpRangeAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: IpRangeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FiltersAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: FiltersAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(
+        builder: SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(
+        builder: UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CompositeAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: CompositeAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TopHitsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: TopHitsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<InferenceAggregateBuilder> for Aggregate {
+    fn from(builder: InferenceAggregateBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        StringStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: StringStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        BoxPlotAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: BoxPlotAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TTestAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: TTestAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RateAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: RateAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>> for Aggregate {
+    fn from(builder: MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        GeoLineAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Aggregate
+{
+    fn from(
+        builder: GeoLineAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl Aggregate {
+    /// Creates a builder for [`Aggregate`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> AggregateBuilder {
+        AggregateBuilder::new()
+    }
+
+    /// Creates a [`Aggregate`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Aggregate>>(
+        f: impl FnOnce(AggregateBuilder) -> B,
+    ) -> Aggregate {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`Aggregate`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct AggregateBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<Aggregate>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl AggregateBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        AggregateBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> AggregateBuilder<(S0,)> {
+    fn with_state<N>(self) -> AggregateBuilder<N> {
+        AggregateBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl AggregateBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn cardinality(
+        self,
+        value: impl Into<CardinalityAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Cardinality(value.into()));
+        builder
+    }
+
+    /// Sets [`cardinality`](Self::cardinality) with a builder.
+    pub fn cardinality_with<B: crate::typed::builder::Build<Output = CardinalityAggregate>>(
+        self,
+        f: impl FnOnce(CardinalityAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.cardinality(f(CardinalityAggregateBuilder::new()).build())
+    }
+
+    pub fn hdr_percentiles(
+        self,
+        value: impl Into<HdrPercentilesAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::HdrPercentiles(value.into()));
+        builder
+    }
+
+    /// Sets [`hdr_percentiles`](Self::hdr_percentiles) with a builder.
+    pub fn hdr_percentiles_with<
+        B: crate::typed::builder::Build<Output = HdrPercentilesAggregate>,
+    >(
+        self,
+        f: impl FnOnce(HdrPercentilesAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.hdr_percentiles(f(HdrPercentilesAggregateBuilder::new()).build())
+    }
+
+    pub fn hdr_percentile_ranks(
+        self,
+        value: impl Into<HdrPercentileRanksAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::HdrPercentileRanks(value.into()));
+        builder
+    }
+
+    /// Sets [`hdr_percentile_ranks`](Self::hdr_percentile_ranks) with a builder.
+    pub fn hdr_percentile_ranks_with<
+        B: crate::typed::builder::Build<Output = HdrPercentileRanksAggregate>,
+    >(
+        self,
+        f: impl FnOnce(HdrPercentileRanksAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.hdr_percentile_ranks(f(HdrPercentileRanksAggregateBuilder::new()).build())
+    }
+
+    pub fn tdigest_percentiles(
+        self,
+        value: impl Into<TDigestPercentilesAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TdigestPercentiles(value.into()));
+        builder
+    }
+
+    /// Sets [`tdigest_percentiles`](Self::tdigest_percentiles) with a builder.
+    pub fn tdigest_percentiles_with<
+        B: crate::typed::builder::Build<Output = TDigestPercentilesAggregate>,
+    >(
+        self,
+        f: impl FnOnce(TDigestPercentilesAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.tdigest_percentiles(f(TDigestPercentilesAggregateBuilder::new()).build())
+    }
+
+    pub fn tdigest_percentile_ranks(
+        self,
+        value: impl Into<TDigestPercentileRanksAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TdigestPercentileRanks(value.into()));
+        builder
+    }
+
+    /// Sets [`tdigest_percentile_ranks`](Self::tdigest_percentile_ranks) with a builder.
+    pub fn tdigest_percentile_ranks_with<
+        B: crate::typed::builder::Build<Output = TDigestPercentileRanksAggregate>,
+    >(
+        self,
+        f: impl FnOnce(TDigestPercentileRanksAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.tdigest_percentile_ranks(f(TDigestPercentileRanksAggregateBuilder::new()).build())
+    }
+
+    pub fn percentiles_bucket(
+        self,
+        value: impl Into<PercentilesBucketAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::PercentilesBucket(value.into()));
+        builder
+    }
+
+    /// Sets [`percentiles_bucket`](Self::percentiles_bucket) with a builder.
+    pub fn percentiles_bucket_with<
+        B: crate::typed::builder::Build<Output = PercentilesBucketAggregate>,
+    >(
+        self,
+        f: impl FnOnce(PercentilesBucketAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.percentiles_bucket(f(PercentilesBucketAggregateBuilder::new()).build())
+    }
+
+    pub fn median_absolute_deviation(
+        self,
+        value: impl Into<MedianAbsoluteDeviationAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::MedianAbsoluteDeviation(value.into()));
+        builder
+    }
+
+    /// Sets [`median_absolute_deviation`](Self::median_absolute_deviation) with a builder.
+    pub fn median_absolute_deviation_with<
+        B: crate::typed::builder::Build<Output = MedianAbsoluteDeviationAggregate>,
+    >(
+        self,
+        f: impl FnOnce(MedianAbsoluteDeviationAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.median_absolute_deviation(f(MedianAbsoluteDeviationAggregateBuilder::new()).build())
+    }
+
+    pub fn min(
+        self,
+        value: impl Into<MinAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Min(value.into()));
+        builder
+    }
+
+    /// Sets [`min`](Self::min) with a builder.
+    pub fn min_with<B: crate::typed::builder::Build<Output = MinAggregate>>(
+        self,
+        f: impl FnOnce(MinAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.min(f(MinAggregateBuilder::new()).build())
+    }
+
+    pub fn max(
+        self,
+        value: impl Into<MaxAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Max(value.into()));
+        builder
+    }
+
+    /// Sets [`max`](Self::max) with a builder.
+    pub fn max_with<B: crate::typed::builder::Build<Output = MaxAggregate>>(
+        self,
+        f: impl FnOnce(MaxAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.max(f(MaxAggregateBuilder::new()).build())
+    }
+
+    /// Sum aggregation result. `value` is always present and is zero if there were no values to process.
+    pub fn sum(
+        self,
+        value: impl Into<SumAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Sum(value.into()));
+        builder
+    }
+
+    /// Sets [`sum`](Self::sum) with a builder.
+    pub fn sum_with<B: crate::typed::builder::Build<Output = SumAggregate>>(
+        self,
+        f: impl FnOnce(SumAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.sum(f(SumAggregateBuilder::new()).build())
+    }
+
+    pub fn avg(
+        self,
+        value: impl Into<AvgAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Avg(value.into()));
+        builder
+    }
+
+    /// Sets [`avg`](Self::avg) with a builder.
+    pub fn avg_with<B: crate::typed::builder::Build<Output = AvgAggregate>>(
+        self,
+        f: impl FnOnce(AvgAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.avg(f(AvgAggregateBuilder::new()).build())
+    }
+
+    /// Weighted average aggregation result. `value` is missing if the weight was set to zero.
+    pub fn weighted_avg(
+        self,
+        value: impl Into<WeightedAvgAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::WeightedAvg(value.into()));
+        builder
+    }
+
+    /// Sets [`weighted_avg`](Self::weighted_avg) with a builder.
+    pub fn weighted_avg_with<B: crate::typed::builder::Build<Output = WeightedAvgAggregate>>(
+        self,
+        f: impl FnOnce(WeightedAvgAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.weighted_avg(f(WeightedAvgAggregateBuilder::new()).build())
+    }
+
+    /// Value count aggregation result. `value` is always present.
+    pub fn value_count(
+        self,
+        value: impl Into<ValueCountAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ValueCount(value.into()));
+        builder
+    }
+
+    /// Sets [`value_count`](Self::value_count) with a builder.
+    pub fn value_count_with<B: crate::typed::builder::Build<Output = ValueCountAggregate>>(
+        self,
+        f: impl FnOnce(ValueCountAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.value_count(f(ValueCountAggregateBuilder::new()).build())
+    }
+
+    pub fn simple_value(
+        self,
+        value: impl Into<SimpleValueAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::SimpleValue(value.into()));
+        builder
+    }
+
+    /// Sets [`simple_value`](Self::simple_value) with a builder.
+    pub fn simple_value_with<B: crate::typed::builder::Build<Output = SimpleValueAggregate>>(
+        self,
+        f: impl FnOnce(SimpleValueAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.simple_value(f(SimpleValueAggregateBuilder::new()).build())
+    }
+
+    pub fn derivative(
+        self,
+        value: impl Into<DerivativeAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Derivative(value.into()));
+        builder
+    }
+
+    /// Sets [`derivative`](Self::derivative) with a builder.
+    pub fn derivative_with<B: crate::typed::builder::Build<Output = DerivativeAggregate>>(
+        self,
+        f: impl FnOnce(DerivativeAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.derivative(f(DerivativeAggregateBuilder::new()).build())
+    }
+
+    pub fn bucket_metric_value(
+        self,
+        value: impl Into<BucketMetricValueAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::BucketMetricValue(value.into()));
+        builder
+    }
+
+    /// Sets [`bucket_metric_value`](Self::bucket_metric_value) with a builder.
+    pub fn bucket_metric_value_with<
+        B: crate::typed::builder::Build<Output = BucketMetricValueAggregate>,
+    >(
+        self,
+        f: impl FnOnce(BucketMetricValueAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.bucket_metric_value(f(BucketMetricValueAggregateBuilder::new()).build())
+    }
+
+    pub fn change_point(
+        self,
+        value: impl Into<ChangePointAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ChangePoint(value.into()));
+        builder
+    }
+
+    /// Sets [`change_point`](Self::change_point) with a builder.
+    pub fn change_point_with<B: crate::typed::builder::Build<Output = ChangePointAggregate>>(
+        self,
+        f: impl FnOnce(ChangePointAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.change_point(f(ChangePointAggregateBuilder::new()).build())
+    }
+
+    /// Statistics aggregation result. `min`, `max` and `avg` are missing if there were no values to process
+    /// (`count` is zero).
+    pub fn stats(
+        self,
+        value: impl Into<StatsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Stats(value.into()));
+        builder
+    }
+
+    /// Sets [`stats`](Self::stats) with a builder.
+    pub fn stats_with<B: crate::typed::builder::Build<Output = StatsAggregate>>(
+        self,
+        f: impl FnOnce(StatsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.stats(f(StatsAggregateBuilder::new()).build())
+    }
+
+    pub fn stats_bucket(
+        self,
+        value: impl Into<StatsBucketAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::StatsBucket(value.into()));
+        builder
+    }
+
+    /// Sets [`stats_bucket`](Self::stats_bucket) with a builder.
+    pub fn stats_bucket_with<B: crate::typed::builder::Build<Output = StatsBucketAggregate>>(
+        self,
+        f: impl FnOnce(StatsBucketAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.stats_bucket(f(StatsBucketAggregateBuilder::new()).build())
+    }
+
+    pub fn extended_stats(
+        self,
+        value: impl Into<ExtendedStatsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ExtendedStats(value.into()));
+        builder
+    }
+
+    /// Sets [`extended_stats`](Self::extended_stats) with a builder.
+    pub fn extended_stats_with<B: crate::typed::builder::Build<Output = ExtendedStatsAggregate>>(
+        self,
+        f: impl FnOnce(ExtendedStatsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.extended_stats(f(ExtendedStatsAggregateBuilder::new()).build())
+    }
+
+    pub fn extended_stats_bucket(
+        self,
+        value: impl Into<ExtendedStatsBucketAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ExtendedStatsBucket(value.into()));
+        builder
+    }
+
+    /// Sets [`extended_stats_bucket`](Self::extended_stats_bucket) with a builder.
+    pub fn extended_stats_bucket_with<
+        B: crate::typed::builder::Build<Output = ExtendedStatsBucketAggregate>,
+    >(
+        self,
+        f: impl FnOnce(ExtendedStatsBucketAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.extended_stats_bucket(f(ExtendedStatsBucketAggregateBuilder::new()).build())
+    }
+
+    pub fn cartesian_bounds(
+        self,
+        value: impl Into<CartesianBoundsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::CartesianBounds(value.into()));
+        builder
+    }
+
+    /// Sets [`cartesian_bounds`](Self::cartesian_bounds) with a builder.
+    pub fn cartesian_bounds_with<
+        B: crate::typed::builder::Build<Output = CartesianBoundsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(CartesianBoundsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.cartesian_bounds(f(CartesianBoundsAggregateBuilder::new()).build())
+    }
+
+    pub fn cartesian_centroid(
+        self,
+        value: impl Into<CartesianCentroidAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::CartesianCentroid(value.into()));
+        builder
+    }
+
+    /// Sets [`cartesian_centroid`](Self::cartesian_centroid) with a builder.
+    pub fn cartesian_centroid_with<
+        B: crate::typed::builder::Build<Output = CartesianCentroidAggregate>,
+    >(
+        self,
+        f: impl FnOnce(CartesianCentroidAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.cartesian_centroid(f(CartesianCentroidAggregateBuilder::new()).build())
+    }
+
+    pub fn geo_bounds(
+        self,
+        value: impl Into<GeoBoundsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeoBounds(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_bounds`](Self::geo_bounds) with a builder.
+    pub fn geo_bounds_with<B: crate::typed::builder::Build<Output = GeoBoundsAggregate>>(
+        self,
+        f: impl FnOnce(GeoBoundsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geo_bounds(f(GeoBoundsAggregateBuilder::new()).build())
+    }
+
+    pub fn geo_centroid(
+        self,
+        value: impl Into<GeoCentroidAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeoCentroid(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_centroid`](Self::geo_centroid) with a builder.
+    pub fn geo_centroid_with<B: crate::typed::builder::Build<Output = GeoCentroidAggregate>>(
+        self,
+        f: impl FnOnce(GeoCentroidAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geo_centroid(f(GeoCentroidAggregateBuilder::new()).build())
+    }
+
+    pub fn histogram(
+        self,
+        value: impl Into<HistogramAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Histogram(value.into()));
+        builder
+    }
+
+    /// Sets [`histogram`](Self::histogram) with a builder.
+    pub fn histogram_with<B: crate::typed::builder::Build<Output = HistogramAggregate>>(
+        self,
+        f: impl FnOnce(HistogramAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.histogram(f(HistogramAggregateBuilder::new()).build())
+    }
+
+    pub fn date_histogram(
+        self,
+        value: impl Into<DateHistogramAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::DateHistogram(value.into()));
+        builder
+    }
+
+    /// Sets [`date_histogram`](Self::date_histogram) with a builder.
+    pub fn date_histogram_with<B: crate::typed::builder::Build<Output = DateHistogramAggregate>>(
+        self,
+        f: impl FnOnce(DateHistogramAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.date_histogram(f(DateHistogramAggregateBuilder::new()).build())
+    }
+
+    pub fn auto_date_histogram(
+        self,
+        value: impl Into<AutoDateHistogramAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::AutoDateHistogram(value.into()));
+        builder
+    }
+
+    /// Sets [`auto_date_histogram`](Self::auto_date_histogram) with a builder.
+    pub fn auto_date_histogram_with<
+        B: crate::typed::builder::Build<Output = AutoDateHistogramAggregate>,
+    >(
+        self,
+        f: impl FnOnce(AutoDateHistogramAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.auto_date_histogram(f(AutoDateHistogramAggregateBuilder::new()).build())
+    }
+
+    pub fn variable_width_histogram(
+        self,
+        value: impl Into<VariableWidthHistogramAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::VariableWidthHistogram(value.into()));
+        builder
+    }
+
+    /// Sets [`variable_width_histogram`](Self::variable_width_histogram) with a builder.
+    pub fn variable_width_histogram_with<
+        B: crate::typed::builder::Build<Output = VariableWidthHistogramAggregate>,
+    >(
+        self,
+        f: impl FnOnce(VariableWidthHistogramAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.variable_width_histogram(f(VariableWidthHistogramAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `terms` aggregation when the field is a string.
+    pub fn sterms(
+        self,
+        value: impl Into<StringTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Sterms(value.into()));
+        builder
+    }
+
+    /// Sets [`sterms`](Self::sterms) with a builder.
+    pub fn sterms_with<B: crate::typed::builder::Build<Output = StringTermsAggregate>>(
+        self,
+        f: impl FnOnce(StringTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.sterms(f(StringTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
+    pub fn lterms(
+        self,
+        value: impl Into<LongTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Lterms(value.into()));
+        builder
+    }
+
+    /// Sets [`lterms`](Self::lterms) with a builder.
+    pub fn lterms_with<B: crate::typed::builder::Build<Output = LongTermsAggregate>>(
+        self,
+        f: impl FnOnce(LongTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.lterms(f(LongTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `terms` aggregation when the field is some kind of decimal number like a float, double, or distance.
+    pub fn dterms(
+        self,
+        value: impl Into<DoubleTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Dterms(value.into()));
+        builder
+    }
+
+    /// Sets [`dterms`](Self::dterms) with a builder.
+    pub fn dterms_with<B: crate::typed::builder::Build<Output = DoubleTermsAggregate>>(
+        self,
+        f: impl FnOnce(DoubleTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.dterms(f(DoubleTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `terms` aggregation when the field is unmapped. `buckets` is always empty.
+    pub fn umterms(
+        self,
+        value: impl Into<UnmappedTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Umterms(value.into()));
+        builder
+    }
+
+    /// Sets [`umterms`](Self::umterms) with a builder.
+    pub fn umterms_with<B: crate::typed::builder::Build<Output = UnmappedTermsAggregate>>(
+        self,
+        f: impl FnOnce(UnmappedTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.umterms(f(UnmappedTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of the `rare_terms` aggregation when the field is some kind of whole number like a integer, long, or a date.
+    pub fn lrareterms(
+        self,
+        value: impl Into<LongRareTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Lrareterms(value.into()));
+        builder
+    }
+
+    /// Sets [`lrareterms`](Self::lrareterms) with a builder.
+    pub fn lrareterms_with<B: crate::typed::builder::Build<Output = LongRareTermsAggregate>>(
+        self,
+        f: impl FnOnce(LongRareTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.lrareterms(f(LongRareTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of the `rare_terms` aggregation when the field is a string.
+    pub fn srareterms(
+        self,
+        value: impl Into<StringRareTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Srareterms(value.into()));
+        builder
+    }
+
+    /// Sets [`srareterms`](Self::srareterms) with a builder.
+    pub fn srareterms_with<B: crate::typed::builder::Build<Output = StringRareTermsAggregate>>(
+        self,
+        f: impl FnOnce(StringRareTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.srareterms(f(StringRareTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `rare_terms` aggregation when the field is unmapped. `buckets` is always empty.
+    pub fn umrareterms(
+        self,
+        value: impl Into<UnmappedRareTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Umrareterms(value.into()));
+        builder
+    }
+
+    /// Sets [`umrareterms`](Self::umrareterms) with a builder.
+    pub fn umrareterms_with<
+        B: crate::typed::builder::Build<Output = UnmappedRareTermsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(UnmappedRareTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.umrareterms(f(UnmappedRareTermsAggregateBuilder::new()).build())
+    }
+
+    pub fn multi_terms(
+        self,
+        value: impl Into<MultiTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::MultiTerms(value.into()));
+        builder
+    }
+
+    /// Sets [`multi_terms`](Self::multi_terms) with a builder.
+    pub fn multi_terms_with<B: crate::typed::builder::Build<Output = MultiTermsAggregate>>(
+        self,
+        f: impl FnOnce(MultiTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.multi_terms(f(MultiTermsAggregateBuilder::new()).build())
+    }
+
+    pub fn missing(
+        self,
+        value: impl Into<MissingAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Missing(value.into()));
+        builder
+    }
+
+    /// Sets [`missing`](Self::missing) with a builder.
+    pub fn missing_with<B: crate::typed::builder::Build<Output = MissingAggregate>>(
+        self,
+        f: impl FnOnce(MissingAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.missing(f(MissingAggregateBuilder::new()).build())
+    }
+
+    pub fn nested(
+        self,
+        value: impl Into<NestedAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Nested(value.into()));
+        builder
+    }
+
+    /// Sets [`nested`](Self::nested) with a builder.
+    pub fn nested_with<B: crate::typed::builder::Build<Output = NestedAggregate>>(
+        self,
+        f: impl FnOnce(NestedAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.nested(f(NestedAggregateBuilder::new()).build())
+    }
+
+    pub fn reverse_nested(
+        self,
+        value: impl Into<ReverseNestedAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ReverseNested(value.into()));
+        builder
+    }
+
+    /// Sets [`reverse_nested`](Self::reverse_nested) with a builder.
+    pub fn reverse_nested_with<B: crate::typed::builder::Build<Output = ReverseNestedAggregate>>(
+        self,
+        f: impl FnOnce(ReverseNestedAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.reverse_nested(f(ReverseNestedAggregateBuilder::new()).build())
+    }
+
+    pub fn global(
+        self,
+        value: impl Into<GlobalAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Global(value.into()));
+        builder
+    }
+
+    /// Sets [`global`](Self::global) with a builder.
+    pub fn global_with<B: crate::typed::builder::Build<Output = GlobalAggregate>>(
+        self,
+        f: impl FnOnce(GlobalAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.global(f(GlobalAggregateBuilder::new()).build())
+    }
+
+    pub fn filter(
+        self,
+        value: impl Into<FilterAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Filter(value.into()));
+        builder
+    }
+
+    /// Sets [`filter`](Self::filter) with a builder.
+    pub fn filter_with<B: crate::typed::builder::Build<Output = FilterAggregate>>(
+        self,
+        f: impl FnOnce(FilterAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.filter(f(FilterAggregateBuilder::new()).build())
+    }
+
+    pub fn children(
+        self,
+        value: impl Into<ChildrenAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Children(value.into()));
+        builder
+    }
+
+    /// Sets [`children`](Self::children) with a builder.
+    pub fn children_with<B: crate::typed::builder::Build<Output = ChildrenAggregate>>(
+        self,
+        f: impl FnOnce(ChildrenAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.children(f(ChildrenAggregateBuilder::new()).build())
+    }
+
+    pub fn parent(
+        self,
+        value: impl Into<ParentAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Parent(value.into()));
+        builder
+    }
+
+    /// Sets [`parent`](Self::parent) with a builder.
+    pub fn parent_with<B: crate::typed::builder::Build<Output = ParentAggregate>>(
+        self,
+        f: impl FnOnce(ParentAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.parent(f(ParentAggregateBuilder::new()).build())
+    }
+
+    pub fn sampler(
+        self,
+        value: impl Into<SamplerAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Sampler(value.into()));
+        builder
+    }
+
+    /// Sets [`sampler`](Self::sampler) with a builder.
+    pub fn sampler_with<B: crate::typed::builder::Build<Output = SamplerAggregate>>(
+        self,
+        f: impl FnOnce(SamplerAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.sampler(f(SamplerAggregateBuilder::new()).build())
+    }
+
+    pub fn unmapped_sampler(
+        self,
+        value: impl Into<UnmappedSamplerAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::UnmappedSampler(value.into()));
+        builder
+    }
+
+    /// Sets [`unmapped_sampler`](Self::unmapped_sampler) with a builder.
+    pub fn unmapped_sampler_with<
+        B: crate::typed::builder::Build<Output = UnmappedSamplerAggregate>,
+    >(
+        self,
+        f: impl FnOnce(UnmappedSamplerAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.unmapped_sampler(f(UnmappedSamplerAggregateBuilder::new()).build())
+    }
+
+    pub fn geohash_grid(
+        self,
+        value: impl Into<GeoHashGridAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeohashGrid(value.into()));
+        builder
+    }
+
+    /// Sets [`geohash_grid`](Self::geohash_grid) with a builder.
+    pub fn geohash_grid_with<B: crate::typed::builder::Build<Output = GeoHashGridAggregate>>(
+        self,
+        f: impl FnOnce(GeoHashGridAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geohash_grid(f(GeoHashGridAggregateBuilder::new()).build())
+    }
+
+    pub fn geotile_grid(
+        self,
+        value: impl Into<GeoTileGridAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeotileGrid(value.into()));
+        builder
+    }
+
+    /// Sets [`geotile_grid`](Self::geotile_grid) with a builder.
+    pub fn geotile_grid_with<B: crate::typed::builder::Build<Output = GeoTileGridAggregate>>(
+        self,
+        f: impl FnOnce(GeoTileGridAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geotile_grid(f(GeoTileGridAggregateBuilder::new()).build())
+    }
+
+    pub fn geohex_grid(
+        self,
+        value: impl Into<GeoHexGridAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeohexGrid(value.into()));
+        builder
+    }
+
+    /// Sets [`geohex_grid`](Self::geohex_grid) with a builder.
+    pub fn geohex_grid_with<B: crate::typed::builder::Build<Output = GeoHexGridAggregate>>(
+        self,
+        f: impl FnOnce(GeoHexGridAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geohex_grid(f(GeoHexGridAggregateBuilder::new()).build())
+    }
+
+    pub fn range(
+        self,
+        value: impl Into<RangeAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Range(value.into()));
+        builder
+    }
+
+    /// Sets [`range`](Self::range) with a builder.
+    pub fn range_with<B: crate::typed::builder::Build<Output = RangeAggregate>>(
+        self,
+        f: impl FnOnce(RangeAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.range(f(RangeAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `date_range` aggregation. Same format as a for a `range` aggregation: `from` and `to`
+    /// in `buckets` are milliseconds since the Epoch, represented as a floating point number.
+    pub fn date_range(
+        self,
+        value: impl Into<DateRangeAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::DateRange(value.into()));
+        builder
+    }
+
+    /// Sets [`date_range`](Self::date_range) with a builder.
+    pub fn date_range_with<B: crate::typed::builder::Build<Output = DateRangeAggregate>>(
+        self,
+        f: impl FnOnce(DateRangeAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.date_range(f(DateRangeAggregateBuilder::new()).build())
+    }
+
+    /// Result of a `geo_distance` aggregation. The unit for `from` and `to` is meters by default.
+    pub fn geo_distance(
+        self,
+        value: impl Into<GeoDistanceAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeoDistance(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_distance`](Self::geo_distance) with a builder.
+    pub fn geo_distance_with<B: crate::typed::builder::Build<Output = GeoDistanceAggregate>>(
+        self,
+        f: impl FnOnce(GeoDistanceAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geo_distance(f(GeoDistanceAggregateBuilder::new()).build())
+    }
+
+    pub fn ip_range(
+        self,
+        value: impl Into<IpRangeAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::IpRange(value.into()));
+        builder
+    }
+
+    /// Sets [`ip_range`](Self::ip_range) with a builder.
+    pub fn ip_range_with<B: crate::typed::builder::Build<Output = IpRangeAggregate>>(
+        self,
+        f: impl FnOnce(IpRangeAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.ip_range(f(IpRangeAggregateBuilder::new()).build())
+    }
+
+    pub fn ip_prefix(
+        self,
+        value: impl Into<IpPrefixAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::IpPrefix(value.into()));
+        builder
+    }
+
+    /// Sets [`ip_prefix`](Self::ip_prefix) with a builder.
+    pub fn ip_prefix_with<B: crate::typed::builder::Build<Output = IpPrefixAggregate>>(
+        self,
+        f: impl FnOnce(IpPrefixAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.ip_prefix(f(IpPrefixAggregateBuilder::new()).build())
+    }
+
+    pub fn filters(
+        self,
+        value: impl Into<FiltersAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Filters(value.into()));
+        builder
+    }
+
+    /// Sets [`filters`](Self::filters) with a builder.
+    pub fn filters_with<B: crate::typed::builder::Build<Output = FiltersAggregate>>(
+        self,
+        f: impl FnOnce(FiltersAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.filters(f(FiltersAggregateBuilder::new()).build())
+    }
+
+    pub fn adjacency_matrix(
+        self,
+        value: impl Into<AdjacencyMatrixAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::AdjacencyMatrix(value.into()));
+        builder
+    }
+
+    /// Sets [`adjacency_matrix`](Self::adjacency_matrix) with a builder.
+    pub fn adjacency_matrix_with<
+        B: crate::typed::builder::Build<Output = AdjacencyMatrixAggregate>,
+    >(
+        self,
+        f: impl FnOnce(AdjacencyMatrixAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.adjacency_matrix(f(AdjacencyMatrixAggregateBuilder::new()).build())
+    }
+
+    pub fn siglterms(
+        self,
+        value: impl Into<SignificantLongTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Siglterms(value.into()));
+        builder
+    }
+
+    /// Sets [`siglterms`](Self::siglterms) with a builder.
+    pub fn siglterms_with<
+        B: crate::typed::builder::Build<Output = SignificantLongTermsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(SignificantLongTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.siglterms(f(SignificantLongTermsAggregateBuilder::new()).build())
+    }
+
+    pub fn sigsterms(
+        self,
+        value: impl Into<SignificantStringTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Sigsterms(value.into()));
+        builder
+    }
+
+    /// Sets [`sigsterms`](Self::sigsterms) with a builder.
+    pub fn sigsterms_with<
+        B: crate::typed::builder::Build<Output = SignificantStringTermsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(SignificantStringTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.sigsterms(f(SignificantStringTermsAggregateBuilder::new()).build())
+    }
+
+    /// Result of the `significant_terms` aggregation on an unmapped field. `buckets` is always empty.
+    pub fn umsigterms(
+        self,
+        value: impl Into<UnmappedSignificantTermsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Umsigterms(value.into()));
+        builder
+    }
+
+    /// Sets [`umsigterms`](Self::umsigterms) with a builder.
+    pub fn umsigterms_with<
+        B: crate::typed::builder::Build<Output = UnmappedSignificantTermsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(UnmappedSignificantTermsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.umsigterms(f(UnmappedSignificantTermsAggregateBuilder::new()).build())
+    }
+
+    pub fn composite(
+        self,
+        value: impl Into<CompositeAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Composite(value.into()));
+        builder
+    }
+
+    /// Sets [`composite`](Self::composite) with a builder.
+    pub fn composite_with<B: crate::typed::builder::Build<Output = CompositeAggregate>>(
+        self,
+        f: impl FnOnce(CompositeAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.composite(f(CompositeAggregateBuilder::new()).build())
+    }
+
+    pub fn frequent_item_sets(
+        self,
+        value: impl Into<FrequentItemSetsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::FrequentItemSets(value.into()));
+        builder
+    }
+
+    /// Sets [`frequent_item_sets`](Self::frequent_item_sets) with a builder.
+    pub fn frequent_item_sets_with<
+        B: crate::typed::builder::Build<Output = FrequentItemSetsAggregate>,
+    >(
+        self,
+        f: impl FnOnce(FrequentItemSetsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.frequent_item_sets(f(FrequentItemSetsAggregateBuilder::new()).build())
+    }
+
+    pub fn time_series(
+        self,
+        value: impl Into<TimeSeriesAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TimeSeries(value.into()));
+        builder
+    }
+
+    /// Sets [`time_series`](Self::time_series) with a builder.
+    pub fn time_series_with<B: crate::typed::builder::Build<Output = TimeSeriesAggregate>>(
+        self,
+        f: impl FnOnce(TimeSeriesAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.time_series(f(TimeSeriesAggregateBuilder::new()).build())
+    }
+
+    pub fn scripted_metric(
+        self,
+        value: impl Into<ScriptedMetricAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::ScriptedMetric(value.into()));
+        builder
+    }
+
+    /// Sets [`scripted_metric`](Self::scripted_metric) with a builder.
+    pub fn scripted_metric_with<
+        B: crate::typed::builder::Build<Output = ScriptedMetricAggregate>,
+    >(
+        self,
+        f: impl FnOnce(ScriptedMetricAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.scripted_metric(f(ScriptedMetricAggregateBuilder::new()).build())
+    }
+
+    pub fn top_hits(
+        self,
+        value: impl Into<TopHitsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TopHits(value.into()));
+        builder
+    }
+
+    /// Sets [`top_hits`](Self::top_hits) with a builder.
+    pub fn top_hits_with<B: crate::typed::builder::Build<Output = TopHitsAggregate>>(
+        self,
+        f: impl FnOnce(TopHitsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.top_hits(f(TopHitsAggregateBuilder::new()).build())
+    }
+
+    pub fn inference(
+        self,
+        value: impl Into<InferenceAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Inference(value.into()));
+        builder
+    }
+
+    /// Sets [`inference`](Self::inference) with a builder.
+    pub fn inference_with<B: crate::typed::builder::Build<Output = InferenceAggregate>>(
+        self,
+        f: impl FnOnce(InferenceAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.inference(f(InferenceAggregateBuilder::new()).build())
+    }
+
+    pub fn string_stats(
+        self,
+        value: impl Into<StringStatsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::StringStats(value.into()));
+        builder
+    }
+
+    /// Sets [`string_stats`](Self::string_stats) with a builder.
+    pub fn string_stats_with<B: crate::typed::builder::Build<Output = StringStatsAggregate>>(
+        self,
+        f: impl FnOnce(StringStatsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.string_stats(f(StringStatsAggregateBuilder::new()).build())
+    }
+
+    pub fn boxplot(
+        self,
+        value: impl Into<BoxPlotAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Boxplot(value.into()));
+        builder
+    }
+
+    /// Sets [`boxplot`](Self::boxplot) with a builder.
+    pub fn boxplot_with<B: crate::typed::builder::Build<Output = BoxPlotAggregate>>(
+        self,
+        f: impl FnOnce(BoxPlotAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.boxplot(f(BoxPlotAggregateBuilder::new()).build())
+    }
+
+    pub fn top_metrics(
+        self,
+        value: impl Into<TopMetricsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TopMetrics(value.into()));
+        builder
+    }
+
+    /// Sets [`top_metrics`](Self::top_metrics) with a builder.
+    pub fn top_metrics_with<B: crate::typed::builder::Build<Output = TopMetricsAggregate>>(
+        self,
+        f: impl FnOnce(TopMetricsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.top_metrics(f(TopMetricsAggregateBuilder::new()).build())
+    }
+
+    pub fn t_test(
+        self,
+        value: impl Into<TTestAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::TTest(value.into()));
+        builder
+    }
+
+    /// Sets [`t_test`](Self::t_test) with a builder.
+    pub fn t_test_with<B: crate::typed::builder::Build<Output = TTestAggregate>>(
+        self,
+        f: impl FnOnce(TTestAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.t_test(f(TTestAggregateBuilder::new()).build())
+    }
+
+    pub fn rate(
+        self,
+        value: impl Into<RateAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::Rate(value.into()));
+        builder
+    }
+
+    /// Sets [`rate`](Self::rate) with a builder.
+    pub fn rate_with<B: crate::typed::builder::Build<Output = RateAggregate>>(
+        self,
+        f: impl FnOnce(RateAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.rate(f(RateAggregateBuilder::new()).build())
+    }
+
+    /// Result of the `cumulative_cardinality` aggregation
+    pub fn simple_long_value(
+        self,
+        value: impl Into<CumulativeCardinalityAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::SimpleLongValue(value.into()));
+        builder
+    }
+
+    /// Sets [`simple_long_value`](Self::simple_long_value) with a builder.
+    pub fn simple_long_value_with<
+        B: crate::typed::builder::Build<Output = CumulativeCardinalityAggregate>,
+    >(
+        self,
+        f: impl FnOnce(CumulativeCardinalityAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.simple_long_value(f(CumulativeCardinalityAggregateBuilder::new()).build())
+    }
+
+    pub fn matrix_stats(
+        self,
+        value: impl Into<MatrixStatsAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::MatrixStats(value.into()));
+        builder
+    }
+
+    /// Sets [`matrix_stats`](Self::matrix_stats) with a builder.
+    pub fn matrix_stats_with<B: crate::typed::builder::Build<Output = MatrixStatsAggregate>>(
+        self,
+        f: impl FnOnce(MatrixStatsAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.matrix_stats(f(MatrixStatsAggregateBuilder::new()).build())
+    }
+
+    pub fn geo_line(
+        self,
+        value: impl Into<GeoLineAggregate>,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Aggregate::GeoLine(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_line`](Self::geo_line) with a builder.
+    pub fn geo_line_with<B: crate::typed::builder::Build<Output = GeoLineAggregate>>(
+        self,
+        f: impl FnOnce(GeoLineAggregateBuilder) -> B,
+    ) -> AggregateBuilder<(crate::typed::builder::Set,)> {
+        self.geo_line(f(GeoLineAggregateBuilder::new()).build())
+    }
+}
+
+impl<S0> AggregateBuilder<(S0,)> {
+    /// Builds a [`Aggregate`].
+    pub fn build(self) -> Aggregate
+    where
+        S0: crate::typed::builder::IsVariantSet<Aggregate>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for AggregateBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Aggregate>,
+{
+    type Output = Aggregate;
+
+    fn build(self) -> Aggregate {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<AggregateBuilder<(S0,)>> for Aggregate
+where
+    S0: crate::typed::builder::IsVariantSet<Aggregate>,
+{
+    fn from(builder: AggregateBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -9579,7 +12460,7 @@ pub struct ChangePointBucket {
     pub doc_count: i64,
     pub key: crate::typed::_types::FieldValue,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -10219,7 +13100,7 @@ pub struct ChildrenAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -11111,7 +13992,7 @@ pub struct CompositeBucket {
     pub doc_count: i64,
     pub key: CompositeAggregateKey,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -13088,7 +15969,7 @@ pub struct DateHistogramBucket {
     pub key_as_string: Option<String>,
     pub key: crate::typed::_types::EpochTimeUnitMillis,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -14524,7 +17405,7 @@ pub struct DoubleTermsBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key_as_string: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -17772,7 +20653,7 @@ pub struct FilterAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -18171,7 +21052,7 @@ pub struct FiltersBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -18929,7 +21810,7 @@ pub struct FrequentItemSetsBucket {
     pub key: indexmap::IndexMap<crate::typed::_types::Field, Vec<String>>,
     pub support: crate::typed::support::Float64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -20379,7 +23260,7 @@ pub struct GeoHashGridBucket {
     pub doc_count: i64,
     pub key: crate::typed::_types::GeoHash,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -20651,7 +23532,7 @@ pub struct GeoHexGridBucket {
     pub doc_count: i64,
     pub key: crate::typed::_types::GeoHexCell,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -21660,7 +24541,7 @@ pub struct GeoTileGridBucket {
     pub doc_count: i64,
     pub key: crate::typed::_types::GeoTile,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -21989,7 +24870,7 @@ pub struct GlobalAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -22987,7 +25868,7 @@ pub struct HistogramBucket {
     pub key_as_string: Option<String>,
     pub key: crate::typed::support::Float64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -25234,7 +28115,7 @@ pub struct IpPrefixBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub netmask: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -25830,7 +28711,7 @@ pub struct IpRangeBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -26378,7 +29259,7 @@ pub struct LongRareTermsBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key_as_string: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -26701,7 +29582,7 @@ pub struct LongTermsBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key_as_string: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -28954,7 +31835,7 @@ pub struct MissingAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -33028,7 +35909,7 @@ where
 pub struct MultiBucketBase {
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -33757,7 +36638,7 @@ pub struct MultiTermsBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_count_error_upper_bound: Option<i64>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -34049,7 +36930,7 @@ pub struct NestedAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -34659,7 +37540,7 @@ pub struct ParentAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -36382,7 +39263,7 @@ pub struct RangeBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -37093,7 +39974,7 @@ pub struct ReverseNestedAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -37313,7 +40194,7 @@ pub struct SamplerAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -38339,7 +41220,7 @@ pub struct SignificantLongTermsBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key_as_string: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -38716,7 +41597,7 @@ pub struct SignificantStringTermsBucket {
     pub bg_count: i64,
     pub key: String,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -39882,7 +42763,7 @@ pub struct SignificantTermsBucketBase {
     pub score: crate::typed::support::Float64,
     pub bg_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -40885,7 +43766,7 @@ pub struct SingleBucketAggregateBase {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -43151,7 +46032,7 @@ pub struct StringRareTermsBucket {
     pub doc_count: i64,
     pub key: String,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -43967,7 +46848,7 @@ pub struct StringTermsBucket {
     pub doc_count_error_upper_bound: Option<i64>,
     pub key: crate::typed::_types::FieldValue,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -46377,7 +49258,7 @@ pub struct TermsBucketBase {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_count_error_upper_bound: Option<i64>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -47066,7 +49947,7 @@ pub struct TimeSeriesBucket {
     pub doc_count: i64,
     pub key: indexmap::IndexMap<crate::typed::_types::Field, crate::typed::_types::FieldValue>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -48788,7 +51669,7 @@ pub struct UnmappedSamplerAggregate {
     pub meta: Option<crate::typed::_types::Metadata>,
     pub doc_count: i64,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 
@@ -49861,7 +52742,7 @@ pub struct VariableWidthHistogramBucket {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub max_as_string: Option<String>,
     /// Additional properties.
-    #[serde(flatten)]
+    #[serde(flatten, with = "crate::typed::support::typed_keys")]
     pub additional_properties: indexmap::IndexMap<crate::typed::_types::AggregateName, Aggregate>,
 }
 

@@ -16821,14 +16821,276 @@ where
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct Suggest(pub serde_json::Value);
+/// Variants are identified by the type prefix of their name in responses, e.g. `completion#name`, which Elasticsearch adds with the `typed_keys` parameter. Values without a prefix, or with one that is unknown to this client, are kept as JSON values in `Unknown`.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Suggest {
+    Completion(CompletionSuggest),
+    Phrase(PhraseSuggest),
+    Term(TermSuggest),
+    /// A value without a type prefix, or whose type is unknown to this client.
+    Unknown {
+        /// Type prefix, if any.
+        type_key: Option<String>,
+        value: serde_json::Value,
+    },
+}
 
-impl From<serde_json::Value> for Suggest {
-    fn from(value: serde_json::Value) -> Self {
-        Suggest(value)
+impl serde::Serialize for Suggest {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            Suggest::Completion(value) => value.serialize(serializer),
+            Suggest::Phrase(value) => value.serialize(serializer),
+            Suggest::Term(value) => value.serialize(serializer),
+            Suggest::Unknown { value, .. } => value.serialize(serializer),
+        }
+    }
+}
+
+/// Without a type prefix, values are deserialized as `Unknown`.
+impl<'de> serde::Deserialize<'de> for Suggest {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        <Self as crate::typed::support::typed_keys::TypedKeys>::deserialize_typed(
+            None,
+            deserializer,
+        )
+    }
+}
+
+impl crate::typed::support::typed_keys::TypedKeys for Suggest {
+    fn type_key(&self) -> Option<&str> {
+        match self {
+            Suggest::Completion(_) => Some("completion"),
+            Suggest::Phrase(_) => Some("phrase"),
+            Suggest::Term(_) => Some("term"),
+            Suggest::Unknown { type_key, .. } => type_key.as_deref(),
+        }
+    }
+    fn deserialize_typed<'de, D: serde::Deserializer<'de>>(
+        type_key: Option<&str>,
+        deserializer: D,
+    ) -> Result<Self, D::Error> {
+        use serde::Deserialize;
+        match type_key {
+            Some("completion") => {
+                CompletionSuggest::deserialize(deserializer).map(Suggest::Completion)
+            }
+            Some("phrase") => PhraseSuggest::deserialize(deserializer).map(Suggest::Phrase),
+            Some("term") => TermSuggest::deserialize(deserializer).map(Suggest::Term),
+            _ => serde_json::Value::deserialize(deserializer).map(|value| Suggest::Unknown {
+                type_key: type_key.map(str::to_string),
+                value,
+            }),
+        }
+    }
+}
+
+impl From<CompletionSuggest> for Suggest {
+    fn from(value: CompletionSuggest) -> Self {
+        Suggest::Completion(value)
+    }
+}
+
+impl From<PhraseSuggest> for Suggest {
+    fn from(value: PhraseSuggest) -> Self {
+        Suggest::Phrase(value)
+    }
+}
+
+impl From<TermSuggest> for Suggest {
+    fn from(value: TermSuggest) -> Self {
+        Suggest::Term(value)
+    }
+}
+
+impl
+    From<
+        CompletionSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Suggest
+{
+    fn from(
+        builder: CompletionSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        PhraseSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Suggest
+{
+    fn from(
+        builder: PhraseSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        TermSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Suggest
+{
+    fn from(
+        builder: TermSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl Suggest {
+    /// Creates a builder for [`Suggest`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> SuggestBuilder {
+        SuggestBuilder::new()
+    }
+
+    /// Creates a [`Suggest`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Suggest>>(
+        f: impl FnOnce(SuggestBuilder) -> B,
+    ) -> Suggest {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`Suggest`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct SuggestBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<Suggest>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl SuggestBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        SuggestBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> SuggestBuilder<(S0,)> {
+    fn with_state<N>(self) -> SuggestBuilder<N> {
+        SuggestBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl SuggestBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn completion(
+        self,
+        value: impl Into<CompletionSuggest>,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Suggest::Completion(value.into()));
+        builder
+    }
+
+    /// Sets [`completion`](Self::completion) with a builder.
+    pub fn completion_with<B: crate::typed::builder::Build<Output = CompletionSuggest>>(
+        self,
+        f: impl FnOnce(CompletionSuggestBuilder) -> B,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        self.completion(f(CompletionSuggestBuilder::new()).build())
+    }
+
+    pub fn phrase(
+        self,
+        value: impl Into<PhraseSuggest>,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Suggest::Phrase(value.into()));
+        builder
+    }
+
+    /// Sets [`phrase`](Self::phrase) with a builder.
+    pub fn phrase_with<B: crate::typed::builder::Build<Output = PhraseSuggest>>(
+        self,
+        f: impl FnOnce(PhraseSuggestBuilder) -> B,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        self.phrase(f(PhraseSuggestBuilder::new()).build())
+    }
+
+    pub fn term(
+        self,
+        value: impl Into<TermSuggest>,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Suggest::Term(value.into()));
+        builder
+    }
+
+    /// Sets [`term`](Self::term) with a builder.
+    pub fn term_with<B: crate::typed::builder::Build<Output = TermSuggest>>(
+        self,
+        f: impl FnOnce(TermSuggestBuilder) -> B,
+    ) -> SuggestBuilder<(crate::typed::builder::Set,)> {
+        self.term(f(TermSuggestBuilder::new()).build())
+    }
+}
+
+impl<S0> SuggestBuilder<(S0,)> {
+    /// Builds a [`Suggest`].
+    pub fn build(self) -> Suggest
+    where
+        S0: crate::typed::builder::IsVariantSet<Suggest>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for SuggestBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Suggest>,
+{
+    type Output = Suggest;
+
+    fn build(self) -> Suggest {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<SuggestBuilder<(S0,)>> for Suggest
+where
+    S0: crate::typed::builder::IsVariantSet<Suggest>,
+{
+    fn from(builder: SuggestBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 

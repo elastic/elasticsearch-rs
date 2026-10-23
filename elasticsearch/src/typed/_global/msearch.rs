@@ -24,7 +24,11 @@ pub struct MultiSearchItem {
     pub shards: crate::typed::_types::ShardStatistics,
     /// The returned documents and metadata.
     pub hits: crate::typed::_global::search::_types::HitsMetadata,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub aggregations: Option<
         indexmap::IndexMap<
             crate::typed::_types::AggregateName,
@@ -58,7 +62,11 @@ pub struct MultiSearchItem {
         skip_serializing_if = "Option::is_none"
     )]
     pub scroll_id: Option<crate::typed::_types::ScrollId>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub suggest: Option<
         indexmap::IndexMap<
             crate::typed::_types::SuggestionName,
@@ -226,6 +234,20 @@ impl<S0, S1, S2, S3> MultiSearchItemBuilder<(S0, S1, S2, S3)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::Aggregate>,
+    >(
+        self,
+        key: impl Into<crate::typed::_types::AggregateName>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregateBuilder) -> B,
+    ) -> Self {
+        self.add_aggregations(
+            key,
+            f(crate::typed::_types::aggregations::AggregateBuilder::new()).build(),
+        )
     }
 
     pub fn clusters(mut self, value: impl Into<crate::typed::_types::ClusterStatistics>) -> Self {
@@ -1083,6 +1105,8 @@ pub struct Request {
     /// Individual sub-search headers can also specify `_slice` to override the top-level setting.
     pub route_slice: Option<String>,
     /// Specifies whether aggregation and suggester names should be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
@@ -1447,6 +1471,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Specifies whether aggregation and suggester names should be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -1704,9 +1730,10 @@ impl Request {
         if let Some(value) = &self.route_slice {
             query.push(("_slice", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }

@@ -54,6 +54,7 @@ pub struct Request {
     pub timeout: Option<crate::typed::_types::Duration>,
     pub track_total_hits: Option<crate::typed::_global::search::_types::TrackHits>,
     pub track_scores: Option<bool>,
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     pub rest_total_hits_as_int: Option<bool>,
     pub version: Option<bool>,
@@ -826,6 +827,7 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -2065,9 +2067,10 @@ impl Request {
         if let Some(value) = &self.track_scores {
             query.push(("track_scores", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.rest_total_hits_as_int {
             query.push((
                 "rest_total_hits_as_int",
@@ -2350,7 +2353,11 @@ pub struct Response {
     #[serde(rename = "_shards")]
     pub shards: crate::typed::_types::ShardStatistics,
     pub hits: crate::typed::_global::search::_types::HitsMetadata,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub aggregations: Option<
         indexmap::IndexMap<
             crate::typed::_types::AggregateName,
@@ -2375,7 +2382,11 @@ pub struct Response {
         skip_serializing_if = "Option::is_none"
     )]
     pub scroll_id: Option<crate::typed::_types::ScrollId>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub suggest: Option<
         indexmap::IndexMap<
             crate::typed::_types::SuggestionName,

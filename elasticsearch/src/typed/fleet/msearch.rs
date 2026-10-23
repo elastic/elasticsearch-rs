@@ -42,6 +42,8 @@ pub struct Request {
     /// If true, hits.total are returned as an integer in the response. Defaults to false, which returns an object.
     pub rest_total_hits_as_int: Option<bool>,
     /// Specifies whether aggregation and suggester names should be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// A comma separated list of checkpoints. When configured, the search API will only be executed on a shard
     /// after the relevant checkpoint has become visible for search. Defaults to an empty list which will cause
@@ -322,6 +324,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Specifies whether aggregation and suggester names should be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -612,9 +616,10 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.wait_for_checkpoints {
             query.push((
                 "wait_for_checkpoints",

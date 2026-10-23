@@ -14,6 +14,8 @@ pub struct Request {
     /// The name of the search application to be searched.
     pub name: crate::typed::_types::Name,
     /// Determines whether aggregation names are prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
@@ -105,6 +107,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Determines whether aggregation names are prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -279,9 +283,10 @@ impl Request {
     /// Query string parameters of the request.
     pub fn query(&self) -> Vec<(&'static str, String)> {
         let mut query = Vec::new();
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }

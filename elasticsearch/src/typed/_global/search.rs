@@ -162,6 +162,8 @@ pub struct Request {
     /// If `true`, the request calculates and returns document scores, even if the scores are not used for sorting.
     pub track_scores: Option<bool>,
     /// If `true`, aggregation and suggester names are be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// Indicates whether `hits.total` should be rendered as an integer or an object in the rest search response.
     pub rest_total_hits_as_int: Option<bool>,
@@ -1035,6 +1037,8 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// If `true`, aggregation and suggester names are be prefixed by their respective types in the response.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -2343,9 +2347,10 @@ impl Request {
         if let Some(value) = &self.track_scores {
             query.push(("track_scores", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.rest_total_hits_as_int {
             query.push((
                 "rest_total_hits_as_int",
@@ -2702,7 +2707,11 @@ pub struct ResponseBody {
     pub shards: crate::typed::_types::ShardStatistics,
     /// The returned documents and metadata.
     pub hits: _types::HitsMetadata,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub aggregations: Option<
         indexmap::IndexMap<
             crate::typed::_types::AggregateName,
@@ -2736,7 +2745,11 @@ pub struct ResponseBody {
         skip_serializing_if = "Option::is_none"
     )]
     pub scroll_id: Option<crate::typed::_types::ScrollId>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub suggest:
         Option<indexmap::IndexMap<crate::typed::_types::SuggestionName, Vec<_types::Suggest>>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2890,6 +2903,20 @@ impl<S0, S1, S2, S3> ResponseBodyBuilder<(S0, S1, S2, S3)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::Aggregate>,
+    >(
+        self,
+        key: impl Into<crate::typed::_types::AggregateName>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregateBuilder) -> B,
+    ) -> Self {
+        self.add_aggregations(
+            key,
+            f(crate::typed::_types::aggregations::AggregateBuilder::new()).build(),
+        )
     }
 
     pub fn clusters(mut self, value: impl Into<crate::typed::_types::ClusterStatistics>) -> Self {

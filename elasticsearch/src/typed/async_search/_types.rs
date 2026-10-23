@@ -4,7 +4,11 @@
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct AsyncSearch {
     /// Partial aggregations results, coming from the shards that have already completed running the query.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub aggregations: Option<
         indexmap::IndexMap<
             crate::typed::_types::AggregateName,
@@ -36,7 +40,11 @@ pub struct AsyncSearch {
     /// Note that in order for shard results to be included in the search response, they need to be reduced first.
     #[serde(rename = "_shards")]
     pub shards: crate::typed::_types::ShardStatistics,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        with = "crate::typed::support::typed_keys::option"
+    )]
     pub suggest: Option<
         indexmap::IndexMap<
             crate::typed::_types::SuggestionName,
@@ -202,6 +210,20 @@ impl<S0, S1, S2, S3> AsyncSearchBuilder<(S0, S1, S2, S3)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`aggregations`](Self::aggregations), with a builder.
+    pub fn add_aggregations_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::aggregations::Aggregate>,
+    >(
+        self,
+        key: impl Into<crate::typed::_types::AggregateName>,
+        f: impl FnOnce(crate::typed::_types::aggregations::AggregateBuilder) -> B,
+    ) -> Self {
+        self.add_aggregations(
+            key,
+            f(crate::typed::_types::aggregations::AggregateBuilder::new()).build(),
+        )
     }
 
     pub fn clusters(mut self, value: impl Into<crate::typed::_types::ClusterStatistics>) -> Self {

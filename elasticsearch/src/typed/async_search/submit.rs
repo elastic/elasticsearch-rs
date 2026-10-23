@@ -94,6 +94,8 @@ pub struct Request {
     /// Whether to calculate and return scores even if they are not used for sorting
     pub track_scores: Option<bool>,
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// Indicates whether hits.total should be rendered as an integer or an object in the rest search response
     pub rest_total_hits_as_int: Option<bool>,
@@ -860,6 +862,8 @@ impl<C> RequestBuilder<(), C> {
     }
 
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -2102,9 +2106,10 @@ impl Request {
         if let Some(value) = &self.track_scores {
             query.push(("track_scores", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.rest_total_hits_as_int {
             query.push((
                 "rest_total_hits_as_int",

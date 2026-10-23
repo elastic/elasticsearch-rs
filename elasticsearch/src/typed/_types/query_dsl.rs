@@ -1739,14 +1739,221 @@ impl From<DateRangeQueryBuilder> for DateRangeQuery {
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct DecayFunction(pub serde_json::Value);
+/// Variants have the same JSON shape, and can't be told apart: values are deserialized as `Untyped`. The other variants have typed properties, to build requests.
+#[derive(Debug, Clone, PartialEq)]
+pub enum DecayFunction {
+    Untyped(UntypedDecayFunction),
+    Date(DateDecayFunction),
+    Numeric(NumericDecayFunction),
+    Geo(GeoDecayFunction),
+}
 
-impl From<serde_json::Value> for DecayFunction {
-    fn from(value: serde_json::Value) -> Self {
-        DecayFunction(value)
+impl serde::Serialize for DecayFunction {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            DecayFunction::Untyped(value) => value.serialize(serializer),
+            DecayFunction::Date(value) => value.serialize(serializer),
+            DecayFunction::Numeric(value) => value.serialize(serializer),
+            DecayFunction::Geo(value) => value.serialize(serializer),
+        }
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for DecayFunction {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        <UntypedDecayFunction as serde::Deserialize>::deserialize(deserializer)
+            .map(DecayFunction::Untyped)
+    }
+}
+
+impl From<UntypedDecayFunction> for DecayFunction {
+    fn from(value: UntypedDecayFunction) -> Self {
+        DecayFunction::Untyped(value)
+    }
+}
+
+impl From<DateDecayFunction> for DecayFunction {
+    fn from(value: DateDecayFunction) -> Self {
+        DecayFunction::Date(value)
+    }
+}
+
+impl From<NumericDecayFunction> for DecayFunction {
+    fn from(value: NumericDecayFunction) -> Self {
+        DecayFunction::Numeric(value)
+    }
+}
+
+impl From<GeoDecayFunction> for DecayFunction {
+    fn from(value: GeoDecayFunction) -> Self {
+        DecayFunction::Geo(value)
+    }
+}
+
+impl From<UntypedDecayFunctionBuilder> for DecayFunction {
+    fn from(builder: UntypedDecayFunctionBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateDecayFunctionBuilder> for DecayFunction {
+    fn from(builder: DateDecayFunctionBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<NumericDecayFunctionBuilder> for DecayFunction {
+    fn from(builder: NumericDecayFunctionBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoDecayFunctionBuilder> for DecayFunction {
+    fn from(builder: GeoDecayFunctionBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl DecayFunction {
+    /// Creates a builder for [`DecayFunction`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> DecayFunctionBuilder {
+        DecayFunctionBuilder::new()
+    }
+
+    /// Creates a [`DecayFunction`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DecayFunction>>(
+        f: impl FnOnce(DecayFunctionBuilder) -> B,
+    ) -> DecayFunction {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`DecayFunction`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct DecayFunctionBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<DecayFunction>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl DecayFunctionBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        DecayFunctionBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> DecayFunctionBuilder<(S0,)> {
+    fn with_state<N>(self) -> DecayFunctionBuilder<N> {
+        DecayFunctionBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl DecayFunctionBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn untyped(
+        self,
+        value: impl Into<UntypedDecayFunction>,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DecayFunction::Untyped(value.into()));
+        builder
+    }
+
+    /// Sets [`untyped`](Self::untyped) with a builder.
+    pub fn untyped_with<B: crate::typed::builder::Build<Output = UntypedDecayFunction>>(
+        self,
+        f: impl FnOnce(UntypedDecayFunctionBuilder) -> B,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        self.untyped(f(UntypedDecayFunctionBuilder::new()).build())
+    }
+
+    pub fn date(
+        self,
+        value: impl Into<DateDecayFunction>,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DecayFunction::Date(value.into()));
+        builder
+    }
+
+    /// Sets [`date`](Self::date) with a builder.
+    pub fn date_with<B: crate::typed::builder::Build<Output = DateDecayFunction>>(
+        self,
+        f: impl FnOnce(DateDecayFunctionBuilder) -> B,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        self.date(f(DateDecayFunctionBuilder::new()).build())
+    }
+
+    pub fn numeric(
+        self,
+        value: impl Into<NumericDecayFunction>,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DecayFunction::Numeric(value.into()));
+        builder
+    }
+
+    /// Sets [`numeric`](Self::numeric) with a builder.
+    pub fn numeric_with<B: crate::typed::builder::Build<Output = NumericDecayFunction>>(
+        self,
+        f: impl FnOnce(NumericDecayFunctionBuilder) -> B,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        self.numeric(f(NumericDecayFunctionBuilder::new()).build())
+    }
+
+    pub fn geo(
+        self,
+        value: impl Into<GeoDecayFunction>,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DecayFunction::Geo(value.into()));
+        builder
+    }
+
+    /// Sets [`geo`](Self::geo) with a builder.
+    pub fn geo_with<B: crate::typed::builder::Build<Output = GeoDecayFunction>>(
+        self,
+        f: impl FnOnce(GeoDecayFunctionBuilder) -> B,
+    ) -> DecayFunctionBuilder<(crate::typed::builder::Set,)> {
+        self.geo(f(GeoDecayFunctionBuilder::new()).build())
+    }
+}
+
+impl<S0> DecayFunctionBuilder<(S0,)> {
+    /// Builds a [`DecayFunction`].
+    pub fn build(self) -> DecayFunction
+    where
+        S0: crate::typed::builder::IsVariantSet<DecayFunction>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for DecayFunctionBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DecayFunction>,
+{
+    type Output = DecayFunction;
+
+    fn build(self) -> DecayFunction {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<DecayFunctionBuilder<(S0,)>> for DecayFunction
+where
+    S0: crate::typed::builder::IsVariantSet<DecayFunction>,
+{
+    fn from(builder: DecayFunctionBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -2852,14 +3059,232 @@ where
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct DistanceFeatureQuery(pub serde_json::Value);
+/// Variants have the same JSON shape, and can't be told apart: values are deserialized as `Untyped`. The other variants have typed properties, to build requests.
+#[derive(Debug, Clone, PartialEq)]
+pub enum DistanceFeatureQuery {
+    Untyped(UntypedDistanceFeatureQuery),
+    Geo(GeoDistanceFeatureQuery),
+    Date(DateDistanceFeatureQuery),
+}
 
-impl From<serde_json::Value> for DistanceFeatureQuery {
-    fn from(value: serde_json::Value) -> Self {
-        DistanceFeatureQuery(value)
+impl serde::Serialize for DistanceFeatureQuery {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            DistanceFeatureQuery::Untyped(value) => value.serialize(serializer),
+            DistanceFeatureQuery::Geo(value) => value.serialize(serializer),
+            DistanceFeatureQuery::Date(value) => value.serialize(serializer),
+        }
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for DistanceFeatureQuery {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        <UntypedDistanceFeatureQuery as serde::Deserialize>::deserialize(deserializer)
+            .map(DistanceFeatureQuery::Untyped)
+    }
+}
+
+impl From<UntypedDistanceFeatureQuery> for DistanceFeatureQuery {
+    fn from(value: UntypedDistanceFeatureQuery) -> Self {
+        DistanceFeatureQuery::Untyped(value)
+    }
+}
+
+impl From<GeoDistanceFeatureQuery> for DistanceFeatureQuery {
+    fn from(value: GeoDistanceFeatureQuery) -> Self {
+        DistanceFeatureQuery::Geo(value)
+    }
+}
+
+impl From<DateDistanceFeatureQuery> for DistanceFeatureQuery {
+    fn from(value: DateDistanceFeatureQuery) -> Self {
+        DistanceFeatureQuery::Date(value)
+    }
+}
+
+impl
+    From<
+        UntypedDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for DistanceFeatureQuery
+{
+    fn from(
+        builder: UntypedDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        GeoDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for DistanceFeatureQuery
+{
+    fn from(
+        builder: GeoDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        DateDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for DistanceFeatureQuery
+{
+    fn from(
+        builder: DateDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl DistanceFeatureQuery {
+    /// Creates a builder for [`DistanceFeatureQuery`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> DistanceFeatureQueryBuilder {
+        DistanceFeatureQueryBuilder::new()
+    }
+
+    /// Creates a [`DistanceFeatureQuery`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = DistanceFeatureQuery>>(
+        f: impl FnOnce(DistanceFeatureQueryBuilder) -> B,
+    ) -> DistanceFeatureQuery {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`DistanceFeatureQuery`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct DistanceFeatureQueryBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<DistanceFeatureQuery>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl DistanceFeatureQueryBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        DistanceFeatureQueryBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> DistanceFeatureQueryBuilder<(S0,)> {
+    fn with_state<N>(self) -> DistanceFeatureQueryBuilder<N> {
+        DistanceFeatureQueryBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl DistanceFeatureQueryBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn untyped(
+        self,
+        value: impl Into<UntypedDistanceFeatureQuery>,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DistanceFeatureQuery::Untyped(value.into()));
+        builder
+    }
+
+    /// Sets [`untyped`](Self::untyped) with a builder.
+    pub fn untyped_with<B: crate::typed::builder::Build<Output = UntypedDistanceFeatureQuery>>(
+        self,
+        f: impl FnOnce(UntypedDistanceFeatureQueryBuilder) -> B,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        self.untyped(f(UntypedDistanceFeatureQueryBuilder::new()).build())
+    }
+
+    pub fn geo(
+        self,
+        value: impl Into<GeoDistanceFeatureQuery>,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DistanceFeatureQuery::Geo(value.into()));
+        builder
+    }
+
+    /// Sets [`geo`](Self::geo) with a builder.
+    pub fn geo_with<B: crate::typed::builder::Build<Output = GeoDistanceFeatureQuery>>(
+        self,
+        f: impl FnOnce(GeoDistanceFeatureQueryBuilder) -> B,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        self.geo(f(GeoDistanceFeatureQueryBuilder::new()).build())
+    }
+
+    pub fn date(
+        self,
+        value: impl Into<DateDistanceFeatureQuery>,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(DistanceFeatureQuery::Date(value.into()));
+        builder
+    }
+
+    /// Sets [`date`](Self::date) with a builder.
+    pub fn date_with<B: crate::typed::builder::Build<Output = DateDistanceFeatureQuery>>(
+        self,
+        f: impl FnOnce(DateDistanceFeatureQueryBuilder) -> B,
+    ) -> DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)> {
+        self.date(f(DateDistanceFeatureQueryBuilder::new()).build())
+    }
+}
+
+impl<S0> DistanceFeatureQueryBuilder<(S0,)> {
+    /// Builds a [`DistanceFeatureQuery`].
+    pub fn build(self) -> DistanceFeatureQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<DistanceFeatureQuery>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for DistanceFeatureQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<DistanceFeatureQuery>,
+{
+    type Output = DistanceFeatureQuery;
+
+    fn build(self) -> DistanceFeatureQuery {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<DistanceFeatureQueryBuilder<(S0,)>> for DistanceFeatureQuery
+where
+    S0: crate::typed::builder::IsVariantSet<DistanceFeatureQuery>,
+{
+    fn from(builder: DistanceFeatureQueryBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -4418,6 +4843,14 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
         builder
     }
 
+    /// Sets [`exp`](Self::exp) with a builder.
+    pub fn exp_with<B: crate::typed::builder::Build<Output = DecayFunction>>(
+        self,
+        f: impl FnOnce(DecayFunctionBuilder) -> B,
+    ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
+        self.exp(f(DecayFunctionBuilder::new()).build())
+    }
+
     /// Function that scores a document with a normal decay, depending on the distance of a numeric field value of the document from an origin.
     pub fn gauss(
         self,
@@ -4428,6 +4861,14 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
         builder
     }
 
+    /// Sets [`gauss`](Self::gauss) with a builder.
+    pub fn gauss_with<B: crate::typed::builder::Build<Output = DecayFunction>>(
+        self,
+        f: impl FnOnce(DecayFunctionBuilder) -> B,
+    ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
+        self.gauss(f(DecayFunctionBuilder::new()).build())
+    }
+
     /// Function that scores a document with a linear decay, depending on the distance of a numeric field value of the document from an origin.
     pub fn linear(
         self,
@@ -4436,6 +4877,14 @@ impl FunctionScoreContainerBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.variant = Some(FunctionScoreContainerKind::Linear(value.into()));
         builder
+    }
+
+    /// Sets [`linear`](Self::linear) with a builder.
+    pub fn linear_with<B: crate::typed::builder::Build<Output = DecayFunction>>(
+        self,
+        f: impl FnOnce(DecayFunctionBuilder) -> B,
+    ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)> {
+        self.linear(f(DecayFunctionBuilder::new()).build())
     }
 
     /// Function allows you to use a field from a document to influence the score.
@@ -14540,6 +14989,12 @@ impl From<DisMaxQueryBuilder<(crate::typed::builder::Set,)>> for QueryContainer 
     }
 }
 
+impl From<DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)>> for QueryContainer {
+    fn from(builder: DistanceFeatureQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
 impl From<ExistsQueryBuilder<(crate::typed::builder::Set,)>> for QueryContainer {
     fn from(builder: ExistsQueryBuilder<(crate::typed::builder::Set,)>) -> Self {
         builder.build().into()
@@ -14998,6 +15453,14 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.variant = Some(QueryContainer::DistanceFeature(value.into()));
         builder
+    }
+
+    /// Sets [`distance_feature`](Self::distance_feature) with a builder.
+    pub fn distance_feature_with<B: crate::typed::builder::Build<Output = DistanceFeatureQuery>>(
+        self,
+        f: impl FnOnce(DistanceFeatureQueryBuilder) -> B,
+    ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
+        self.distance_feature(f(DistanceFeatureQueryBuilder::new()).build())
     }
 
     /// Returns documents that contain an indexed value for a field.
@@ -15567,6 +16030,15 @@ impl QueryContainerBuilder<(crate::typed::builder::NotSet,)> {
             value.into(),
         )])));
         builder
+    }
+
+    /// Sets [`range`](Self::range) with a builder.
+    pub fn range_with<B: crate::typed::builder::Build<Output = RangeQuery>>(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(RangeQueryBuilder) -> B,
+    ) -> QueryContainerBuilder<(crate::typed::builder::Set,)> {
+        self.range(key, f(RangeQueryBuilder::new()).build())
     }
 
     /// Boosts the relevance score of documents based on the numeric value of a `rank_feature` or `rank_features` field.
@@ -16850,14 +17322,252 @@ impl From<RandomScoreFunctionBuilder> for RandomScoreFunction {
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct RangeQuery(pub serde_json::Value);
+/// Variants have the same JSON shape, and can't be told apart: values are deserialized as `Untyped`. The other variants have typed properties, to build requests.
+#[derive(Debug, Clone, PartialEq)]
+pub enum RangeQuery {
+    Untyped(UntypedRangeQuery),
+    Date(DateRangeQuery),
+    Number(NumberRangeQuery),
+    LongNumber(LongNumberRangeQuery),
+    Term(TermRangeQuery),
+}
 
-impl From<serde_json::Value> for RangeQuery {
-    fn from(value: serde_json::Value) -> Self {
-        RangeQuery(value)
+impl serde::Serialize for RangeQuery {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            RangeQuery::Untyped(value) => value.serialize(serializer),
+            RangeQuery::Date(value) => value.serialize(serializer),
+            RangeQuery::Number(value) => value.serialize(serializer),
+            RangeQuery::LongNumber(value) => value.serialize(serializer),
+            RangeQuery::Term(value) => value.serialize(serializer),
+        }
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for RangeQuery {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        <UntypedRangeQuery as serde::Deserialize>::deserialize(deserializer)
+            .map(RangeQuery::Untyped)
+    }
+}
+
+impl From<UntypedRangeQuery> for RangeQuery {
+    fn from(value: UntypedRangeQuery) -> Self {
+        RangeQuery::Untyped(value)
+    }
+}
+
+impl From<DateRangeQuery> for RangeQuery {
+    fn from(value: DateRangeQuery) -> Self {
+        RangeQuery::Date(value)
+    }
+}
+
+impl From<NumberRangeQuery> for RangeQuery {
+    fn from(value: NumberRangeQuery) -> Self {
+        RangeQuery::Number(value)
+    }
+}
+
+impl From<LongNumberRangeQuery> for RangeQuery {
+    fn from(value: LongNumberRangeQuery) -> Self {
+        RangeQuery::LongNumber(value)
+    }
+}
+
+impl From<TermRangeQuery> for RangeQuery {
+    fn from(value: TermRangeQuery) -> Self {
+        RangeQuery::Term(value)
+    }
+}
+
+impl From<UntypedRangeQueryBuilder> for RangeQuery {
+    fn from(builder: UntypedRangeQueryBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateRangeQueryBuilder> for RangeQuery {
+    fn from(builder: DateRangeQueryBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<NumberRangeQueryBuilder> for RangeQuery {
+    fn from(builder: NumberRangeQueryBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<LongNumberRangeQueryBuilder> for RangeQuery {
+    fn from(builder: LongNumberRangeQueryBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TermRangeQueryBuilder> for RangeQuery {
+    fn from(builder: TermRangeQueryBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl RangeQuery {
+    /// Creates a builder for [`RangeQuery`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> RangeQueryBuilder {
+        RangeQueryBuilder::new()
+    }
+
+    /// Creates a [`RangeQuery`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = RangeQuery>>(
+        f: impl FnOnce(RangeQueryBuilder) -> B,
+    ) -> RangeQuery {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`RangeQuery`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct RangeQueryBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<RangeQuery>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl RangeQueryBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        RangeQueryBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> RangeQueryBuilder<(S0,)> {
+    fn with_state<N>(self) -> RangeQueryBuilder<N> {
+        RangeQueryBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl RangeQueryBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn untyped(
+        self,
+        value: impl Into<UntypedRangeQuery>,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(RangeQuery::Untyped(value.into()));
+        builder
+    }
+
+    /// Sets [`untyped`](Self::untyped) with a builder.
+    pub fn untyped_with<B: crate::typed::builder::Build<Output = UntypedRangeQuery>>(
+        self,
+        f: impl FnOnce(UntypedRangeQueryBuilder) -> B,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        self.untyped(f(UntypedRangeQueryBuilder::new()).build())
+    }
+
+    pub fn date(
+        self,
+        value: impl Into<DateRangeQuery>,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(RangeQuery::Date(value.into()));
+        builder
+    }
+
+    /// Sets [`date`](Self::date) with a builder.
+    pub fn date_with<B: crate::typed::builder::Build<Output = DateRangeQuery>>(
+        self,
+        f: impl FnOnce(DateRangeQueryBuilder) -> B,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        self.date(f(DateRangeQueryBuilder::new()).build())
+    }
+
+    pub fn number(
+        self,
+        value: impl Into<NumberRangeQuery>,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(RangeQuery::Number(value.into()));
+        builder
+    }
+
+    /// Sets [`number`](Self::number) with a builder.
+    pub fn number_with<B: crate::typed::builder::Build<Output = NumberRangeQuery>>(
+        self,
+        f: impl FnOnce(NumberRangeQueryBuilder) -> B,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        self.number(f(NumberRangeQueryBuilder::new()).build())
+    }
+
+    pub fn long_number(
+        self,
+        value: impl Into<LongNumberRangeQuery>,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(RangeQuery::LongNumber(value.into()));
+        builder
+    }
+
+    /// Sets [`long_number`](Self::long_number) with a builder.
+    pub fn long_number_with<B: crate::typed::builder::Build<Output = LongNumberRangeQuery>>(
+        self,
+        f: impl FnOnce(LongNumberRangeQueryBuilder) -> B,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        self.long_number(f(LongNumberRangeQueryBuilder::new()).build())
+    }
+
+    pub fn term(
+        self,
+        value: impl Into<TermRangeQuery>,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(RangeQuery::Term(value.into()));
+        builder
+    }
+
+    /// Sets [`term`](Self::term) with a builder.
+    pub fn term_with<B: crate::typed::builder::Build<Output = TermRangeQuery>>(
+        self,
+        f: impl FnOnce(TermRangeQueryBuilder) -> B,
+    ) -> RangeQueryBuilder<(crate::typed::builder::Set,)> {
+        self.term(f(TermRangeQueryBuilder::new()).build())
+    }
+}
+
+impl<S0> RangeQueryBuilder<(S0,)> {
+    /// Builds a [`RangeQuery`].
+    pub fn build(self) -> RangeQuery
+    where
+        S0: crate::typed::builder::IsVariantSet<RangeQuery>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for RangeQueryBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<RangeQuery>,
+{
+    type Output = RangeQuery;
+
+    fn build(self) -> RangeQuery {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<RangeQueryBuilder<(S0,)>> for RangeQuery
+where
+    S0: crate::typed::builder::IsVariantSet<RangeQuery>,
+{
+    fn from(builder: RangeQueryBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 

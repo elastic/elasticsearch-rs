@@ -45,6 +45,8 @@ pub struct Request {
     /// If `false`, it returns `hits.total` as an object.
     pub rest_total_hits_as_int: Option<bool>,
     /// If `true`, the response prefixes aggregation and suggester names with their respective types.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// When set to `true` Elasticsearch will include the full stack trace of errors
     /// when they occur.
@@ -239,6 +241,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// If `true`, the response prefixes aggregation and suggester names with their respective types.
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -438,9 +442,10 @@ impl Request {
                 crate::typed::support::query_value(value),
             ));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.error_trace {
             query.push(("error_trace", crate::typed::support::query_value(value)));
         }

@@ -20,6 +20,8 @@ pub struct Request {
     /// If the search is completed, its saved results are deleted.
     pub keep_alive: Option<crate::typed::_types::Duration>,
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub typed_keys: Option<bool>,
     /// Specifies to wait for the search to be completed up until the provided timeout.
     /// Final results will be returned if available before the timeout expires, otherwise the currently available results will be returned once the timeout expires.
@@ -143,6 +145,8 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// Specify whether aggregation and suggester names should be prefixed by their respective types in the response
+    ///
+    /// Defaults to `true` in this client, so that aggregations and suggestions are typed in the response.
     pub fn typed_keys(mut self, value: bool) -> Self {
         self.typed_keys = Some(value);
         self
@@ -330,9 +334,10 @@ impl Request {
         if let Some(value) = &self.keep_alive {
             query.push(("keep_alive", crate::typed::support::query_value(value)));
         }
-        if let Some(value) = &self.typed_keys {
-            query.push(("typed_keys", crate::typed::support::query_value(value)));
-        }
+        query.push((
+            "typed_keys",
+            crate::typed::support::query_value(self.typed_keys.as_ref().unwrap_or(&true)),
+        ));
         if let Some(value) = &self.wait_for_completion_timeout {
             query.push((
                 "wait_for_completion_timeout",

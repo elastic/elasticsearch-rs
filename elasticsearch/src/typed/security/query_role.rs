@@ -1297,6 +1297,20 @@ impl RoleQueryContainerBuilder<(crate::typed::builder::NotSet,)> {
         builder
     }
 
+    /// Sets [`range`](Self::range) with a builder.
+    pub fn range_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::query_dsl::RangeQuery>,
+    >(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(crate::typed::_types::query_dsl::RangeQueryBuilder) -> B,
+    ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)> {
+        self.range(
+            key,
+            f(crate::typed::_types::query_dsl::RangeQueryBuilder::new()).build(),
+        )
+    }
+
     /// Returns roles based on a provided query string, using a parser with a limited but fault-tolerant syntax.
     pub fn simple_query_string(
         self,

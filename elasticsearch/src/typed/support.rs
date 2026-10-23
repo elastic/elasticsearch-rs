@@ -96,3 +96,176 @@ pub fn query_value<T: Serialize>(value: &T) -> String {
         .map(|v| to_string(&v))
         .unwrap_or_default()
 }
+
+/// Maps of values whose type is a prefix of their key, e.g. `"sterms#by_tag"` for a `terms` aggregation on
+/// strings named `by_tag`. Elasticsearch adds these prefixes to aggregations and suggestions when requests
+/// have the `typed_keys` parameter. Maps are used with `#[serde(with = "typed_keys")]`: their keys are the
+/// names without the prefix, and their values are deserialized according to the prefix.
+pub mod typed_keys {
+    use indexmap::IndexMap;
+    use serde::de::{DeserializeSeed, MapAccess, SeqAccess, Visitor};
+    use serde::ser::SerializeMap;
+    use serde::{Deserializer, Serialize, Serializer};
+    use std::fmt;
+    use std::marker::PhantomData;
+
+    /// A value identified by the type prefix of its key.
+    pub trait TypedKeys: Sized {
+        /// Type prefix of the value, `None` if it's unknown.
+        fn type_key(&self) -> Option<&str>;
+
+        /// Deserializes a value whose key has the type prefix `type_key`.
+        fn deserialize_typed<'de, D: Deserializer<'de>>(
+            type_key: Option<&str>,
+            deserializer: D,
+        ) -> Result<Self, D::Error>;
+    }
+
+    /// Lists of values have the type of their values, e.g. suggestions.
+    impl<T: TypedKeys> TypedKeys for Vec<T> {
+        fn type_key(&self) -> Option<&str> {
+            self.first().and_then(T::type_key)
+        }
+
+        fn deserialize_typed<'de, D: Deserializer<'de>>(
+            type_key: Option<&str>,
+            deserializer: D,
+        ) -> Result<Self, D::Error> {
+            struct ListVisitor<'k, T>(Option<&'k str>, PhantomData<T>);
+
+            impl<'de, T: TypedKeys> Visitor<'de> for ListVisitor<'_, T> {
+                type Value = Vec<T>;
+
+                fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                    f.write_str("a list")
+                }
+
+                fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Vec<T>, A::Error> {
+                    let mut values = Vec::with_capacity(seq.size_hint().unwrap_or(0));
+                    while let Some(value) = seq.next_element_seed(Typed(self.0, PhantomData))? {
+                        values.push(value);
+                    }
+                    Ok(values)
+                }
+            }
+
+            deserializer.deserialize_seq(ListVisitor(type_key, PhantomData))
+        }
+    }
+
+    /// Deserializes a value with a type prefix.
+    struct Typed<'k, T>(Option<&'k str>, PhantomData<T>);
+
+    impl<'de, T: TypedKeys> DeserializeSeed<'de> for Typed<'_, T> {
+        type Value = T;
+
+        fn deserialize<D: Deserializer<'de>>(self, deserializer: D) -> Result<T, D::Error> {
+            T::deserialize_typed(self.0, deserializer)
+        }
+    }
+
+    pub fn serialize<V, S>(map: &IndexMap<String, V>, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        V: TypedKeys + Serialize,
+        S: Serializer,
+    {
+        let mut out = serializer.serialize_map(Some(map.len()))?;
+        for (name, value) in map {
+            match value.type_key() {
+                Some(type_key) => out.serialize_entry(&format!("{type_key}#{name}"), value)?,
+                None => out.serialize_entry(name, value)?,
+            }
+        }
+        out.end()
+    }
+
+    pub fn deserialize<'de, V, D>(deserializer: D) -> Result<IndexMap<String, V>, D::Error>
+    where
+        V: TypedKeys,
+        D: Deserializer<'de>,
+    {
+        struct MapVisitor<V>(PhantomData<V>);
+
+        impl<'de, V: TypedKeys> Visitor<'de> for MapVisitor<V> {
+            type Value = IndexMap<String, V>;
+
+            fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.write_str("a map")
+            }
+
+            fn visit_map<A: MapAccess<'de>>(self, mut access: A) -> Result<Self::Value, A::Error> {
+                let mut map = IndexMap::with_capacity(access.size_hint().unwrap_or(0));
+                while let Some(mut key) = access.next_key::<String>()? {
+                    // Names can contain `#`, types can't
+                    let (name, type_key) = match key.find('#') {
+                        Some(i) => {
+                            let name = key[i + 1..].to_string();
+                            key.truncate(i);
+                            (name, Some(key))
+                        }
+                        None => (key, None),
+                    };
+                    let value = access.next_value_seed(Typed(type_key.as_deref(), PhantomData))?;
+                    map.insert(name, value);
+                }
+                Ok(map)
+            }
+        }
+
+        deserializer.deserialize_map(MapVisitor(PhantomData))
+    }
+
+    /// For optional maps, with `#[serde(with = "typed_keys::option", default)]`.
+    pub mod option {
+        use super::*;
+
+        pub fn serialize<V, S>(
+            map: &Option<IndexMap<String, V>>,
+            serializer: S,
+        ) -> Result<S::Ok, S::Error>
+        where
+            V: TypedKeys + Serialize,
+            S: Serializer,
+        {
+            match map {
+                Some(map) => super::serialize(map, serializer),
+                None => serializer.serialize_none(),
+            }
+        }
+
+        pub fn deserialize<'de, V, D>(
+            deserializer: D,
+        ) -> Result<Option<IndexMap<String, V>>, D::Error>
+        where
+            V: TypedKeys,
+            D: Deserializer<'de>,
+        {
+            struct OptionVisitor<V>(PhantomData<V>);
+
+            impl<'de, V: TypedKeys> Visitor<'de> for OptionVisitor<V> {
+                type Value = Option<IndexMap<String, V>>;
+
+                fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                    f.write_str("a map or null")
+                }
+
+                fn visit_none<E>(self) -> Result<Self::Value, E> {
+                    Ok(None)
+                }
+
+                fn visit_unit<E>(self) -> Result<Self::Value, E> {
+                    Ok(None)
+                }
+
+                fn visit_some<D: Deserializer<'de>>(
+                    self,
+                    deserializer: D,
+                ) -> Result<Self::Value, D::Error> {
+                    super::deserialize(deserializer).map(Some)
+                }
+            }
+
+            deserializer.deserialize_option(OptionVisitor(PhantomData))
+        }
+    }
+}
