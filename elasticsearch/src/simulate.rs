@@ -71,7 +71,7 @@ impl<'b> SimulateIngestParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+#[doc = "Builder for the [Simulate Ingest API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-simulate-ingest)\n\nSimulate data ingestion"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -83,6 +83,7 @@ pub struct SimulateIngest<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    merge_type: Option<MergeType>,
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -104,6 +105,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            merge_type: None,
             pipeline: None,
             pretty: None,
             request_timeout: None,
@@ -123,6 +125,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            merge_type: self.merge_type,
             pipeline: self.pipeline,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
@@ -147,6 +150,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "The mapping merge type if mapping overrides are being provided in mapping_addition.\nThe allowed values are one of index or template.\nThe index option merges mappings the way they would be merged into an existing index.\nThe template option merges mappings the way they would be merged into a template."]
+    pub fn merge_type(mut self, merge_type: MergeType) -> Self {
+        self.merge_type = Some(merge_type);
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with if no pipeline is given for a particular document"]
@@ -186,6 +194,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                merge_type: Option<MergeType>,
                 pipeline: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -194,6 +203,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                merge_type: self.merge_type,
                 pipeline: self.pipeline,
                 pretty: self.pretty,
                 source: self.source,
@@ -223,7 +233,7 @@ impl<'a> Simulate<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+    #[doc = "[Simulate Ingest API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-simulate-ingest)\n\nSimulate data ingestion"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn ingest<'b>(&'a self, parts: SimulateIngestParts<'b>) -> SimulateIngest<'a, 'b, ()> {
