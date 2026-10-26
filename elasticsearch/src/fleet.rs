@@ -64,7 +64,7 @@ impl<'b> FleetDeleteSecretParts<'b> {
         }
     }
 }
-#[doc = "Builder for the Fleet Delete Secret API\n\nDeletes a secret stored by Fleet."]
+#[doc = "Builder for the Fleet Delete Secret API\n\nDeletes a secret stored by Fleet"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -187,7 +187,7 @@ impl<'b> FleetGetSecretParts<'b> {
         }
     }
 }
-#[doc = "Builder for the Fleet Get Secret API\n\nRetrieves a secret stored by Fleet."]
+#[doc = "Builder for the Fleet Get Secret API\n\nRetrieves a secret stored by Fleet"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -310,7 +310,7 @@ impl<'b> FleetGlobalCheckpointsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-fleet)\n\nGet global checkpoints"]
 #[derive(Clone, Debug)]
 pub struct FleetGlobalCheckpoints<'a, 'b> {
     transport: &'a Transport,
@@ -472,7 +472,7 @@ impl<'b> FleetMsearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the Fleet Msearch API\n\nMulti Search API where the search will only be executed after specified checkpoints are available due to a refresh. This API is designed for internal use by the fleet server project."]
+#[doc = "Builder for the Fleet Msearch API\n\nRun multiple Fleet searches"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -615,7 +615,7 @@ impl FleetPostSecretParts {
         }
     }
 }
-#[doc = "Builder for the Fleet Post Secret API\n\nCreates a secret stored by Fleet."]
+#[doc = "Builder for the Fleet Post Secret API\n\nCreates a secret stored by Fleet"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -745,6 +745,8 @@ where
 pub enum FleetSearchParts<'b> {
     #[doc = "Index"]
     Index(&'b str),
+    #[doc = "Index and Slice"]
+    IndexSlice(&'b str, &'b [&'b str]),
 }
 #[cfg(feature = "experimental-apis")]
 impl<'b> FleetSearchParts<'b> {
@@ -760,10 +762,25 @@ impl<'b> FleetSearchParts<'b> {
                 p.push_str("/_fleet/_fleet_search");
                 p.into()
             }
+            FleetSearchParts::IndexSlice(index, _slice) => {
+                let _slice_str = _slice.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded__slice: Cow<str> =
+                    percent_encode(_slice_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(23usize + encoded_index.len() + encoded__slice.len());
+                p.push('/');
+                p.push_str(encoded_index.as_ref());
+                p.push('/');
+                p.push_str(encoded__slice.as_ref());
+                p.push_str("/_fleet/_fleet_search");
+                p.into()
+            }
         }
     }
 }
-#[doc = "Builder for the Fleet Search API\n\nSearch API where the search will only be executed after specified checkpoints are available due to a refresh. This API is designed for internal use by the fleet server project."]
+#[doc = "Builder for the Fleet Search API\n\nRun a Fleet search"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -933,7 +950,7 @@ impl<'a> Fleet<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "Fleet Delete Secret API\n\nDeletes a secret stored by Fleet."]
+    #[doc = "Fleet Delete Secret API\n\nDeletes a secret stored by Fleet"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete_secret<'b>(
@@ -942,32 +959,32 @@ impl<'a> Fleet<'a> {
     ) -> FleetDeleteSecret<'a, 'b> {
         FleetDeleteSecret::new(self.transport(), parts)
     }
-    #[doc = "Fleet Get Secret API\n\nRetrieves a secret stored by Fleet."]
+    #[doc = "Fleet Get Secret API\n\nRetrieves a secret stored by Fleet"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_secret<'b>(&'a self, parts: FleetGetSecretParts<'b>) -> FleetGetSecret<'a, 'b> {
         FleetGetSecret::new(self.transport(), parts)
     }
-    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-fleet)\n\nGet global checkpoints"]
     pub fn global_checkpoints<'b>(
         &'a self,
         parts: FleetGlobalCheckpointsParts<'b>,
     ) -> FleetGlobalCheckpoints<'a, 'b> {
         FleetGlobalCheckpoints::new(self.transport(), parts)
     }
-    #[doc = "Fleet Msearch API\n\nMulti Search API where the search will only be executed after specified checkpoints are available due to a refresh. This API is designed for internal use by the fleet server project."]
+    #[doc = "Fleet Msearch API\n\nRun multiple Fleet searches"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn msearch<'b>(&'a self, parts: FleetMsearchParts<'b>) -> FleetMsearch<'a, 'b, ()> {
         FleetMsearch::new(self.transport(), parts)
     }
-    #[doc = "Fleet Post Secret API\n\nCreates a secret stored by Fleet."]
+    #[doc = "Fleet Post Secret API\n\nCreates a secret stored by Fleet"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn post_secret<'b>(&'a self) -> FleetPostSecret<'a, 'b, ()> {
         FleetPostSecret::new(self.transport())
     }
-    #[doc = "Fleet Search API\n\nSearch API where the search will only be executed after specified checkpoints are available due to a refresh. This API is designed for internal use by the fleet server project."]
+    #[doc = "Fleet Search API\n\nRun a Fleet search"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn search<'b>(&'a self, parts: FleetSearchParts<'b>) -> FleetSearch<'a, 'b, ()> {

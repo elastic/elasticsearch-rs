@@ -73,7 +73,7 @@ impl<'b> TasksCancelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nCancel a task"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -262,7 +262,7 @@ impl<'b> TasksGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns information about a task."]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nGet task information"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -271,6 +271,7 @@ pub struct TasksGet<'a, 'b> {
     parts: TasksGetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    follow_relocations: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -290,6 +291,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
             headers,
             error_trace: None,
             filter_path: None,
+            follow_relocations: None,
             human: None,
             pretty: None,
             request_timeout: None,
@@ -306,6 +308,11 @@ impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Internal use only"]
+    pub fn follow_relocations(mut self, follow_relocations: bool) -> Self {
+        self.follow_relocations = Some(follow_relocations);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -356,6 +363,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                follow_relocations: Option<bool>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -365,6 +373,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                follow_relocations: self.follow_relocations,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
@@ -397,7 +406,7 @@ impl TasksListParts {
         }
     }
 }
-#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns a list of tasks."]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nGet all tasks"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -578,19 +587,19 @@ impl<'a> Tasks<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[doc = "[Tasks Cancel API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nCancel a task"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(self.transport(), parts)
     }
-    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns information about a task."]
+    #[doc = "[Tasks Get API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nGet task information"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(self.transport(), parts)
     }
-    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns a list of tasks."]
+    #[doc = "[Tasks List API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks)\n\nGet all tasks"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
