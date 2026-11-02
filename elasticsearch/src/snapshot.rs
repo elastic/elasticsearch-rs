@@ -69,7 +69,7 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
+#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-cleanup-repository)\n\nClean up the snapshot repository"]
 #[derive(Clone, Debug)]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -248,7 +248,7 @@ impl<'b> SnapshotCloneParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+#[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-clone)\n\nClone a snapshot"]
 #[derive(Clone, Debug)]
 pub struct SnapshotClone<'a, 'b, B> {
     transport: &'a Transport,
@@ -406,7 +406,7 @@ impl<'b> SnapshotCreateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-create)\n\nCreate a snapshot"]
 #[derive(Clone, Debug)]
 pub struct SnapshotCreate<'a, 'b, B> {
     transport: &'a Transport,
@@ -568,7 +568,7 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nCreates a repository."]
+#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-create-repository)\n\nCreate or update a snapshot repository"]
 #[derive(Clone, Debug)]
 pub struct SnapshotCreateRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -747,7 +747,7 @@ impl<'b> SnapshotDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nDeletes one or more snapshots."]
+#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-delete)\n\nDelete snapshots"]
 #[derive(Clone, Debug)]
 pub struct SnapshotDelete<'a, 'b> {
     transport: &'a Transport,
@@ -885,7 +885,7 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nDeletes a repository."]
+#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-delete-repository)\n\nDelete snapshot repositories"]
 #[derive(Clone, Debug)]
 pub struct SnapshotDeleteRepository<'a, 'b> {
     transport: &'a Transport,
@@ -1029,7 +1029,7 @@ impl<'b> SnapshotGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about a snapshot."]
+#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-get)\n\nGet snapshot information"]
 #[derive(Clone, Debug)]
 pub struct SnapshotGet<'a, 'b> {
     transport: &'a Transport,
@@ -1045,11 +1045,11 @@ pub struct SnapshotGet<'a, 'b> {
     index_details: Option<bool>,
     index_names: Option<bool>,
     master_timeout: Option<&'b str>,
-    offset: Option<&'b str>,
+    offset: Option<i32>,
     order: Option<Order>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
-    size: Option<&'b str>,
+    size: Option<i32>,
     slm_policy_filter: Option<&'b str>,
     sort: Option<Sort>,
     source: Option<&'b str>,
@@ -1142,7 +1142,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
         self
     }
     #[doc = "Numeric offset to start pagination based on the snapshots matching the request. Defaults to 0"]
-    pub fn offset(mut self, offset: &'b str) -> Self {
+    pub fn offset(mut self, offset: i32) -> Self {
         self.offset = Some(offset);
         self
     }
@@ -1162,7 +1162,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
         self
     }
     #[doc = "Maximum number of snapshots to return. Defaults to 0 which means return all that match without limit."]
-    pub fn size(mut self, size: &'b str) -> Self {
+    pub fn size(mut self, size: i32) -> Self {
         self.size = Some(size);
         self
     }
@@ -1212,10 +1212,10 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
                 index_details: Option<bool>,
                 index_names: Option<bool>,
                 master_timeout: Option<&'b str>,
-                offset: Option<&'b str>,
+                offset: Option<i32>,
                 order: Option<Order>,
                 pretty: Option<bool>,
-                size: Option<&'b str>,
+                size: Option<i32>,
                 slm_policy_filter: Option<&'b str>,
                 sort: Option<Sort>,
                 source: Option<&'b str>,
@@ -1279,7 +1279,7 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about a repository."]
+#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-get-repository)\n\nGet snapshot repository information"]
 #[derive(Clone, Debug)]
 pub struct SnapshotGetRepository<'a, 'b> {
     transport: &'a Transport,
@@ -1417,16 +1417,16 @@ impl<'b> SnapshotRepositoryAnalyzeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+#[doc = "Builder for the [Snapshot Repository Analyze API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-repository-analyze)\n\nAnalyze a snapshot repository"]
 #[derive(Clone, Debug)]
 pub struct SnapshotRepositoryAnalyze<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotRepositoryAnalyzeParts<'b>,
-    blob_count: Option<i64>,
+    blob_count: Option<i32>,
     body: Option<B>,
-    concurrency: Option<i64>,
+    concurrency: Option<i32>,
     detailed: Option<bool>,
-    early_read_node_count: Option<i64>,
+    early_read_node_count: Option<i32>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -1434,12 +1434,12 @@ pub struct SnapshotRepositoryAnalyze<'a, 'b, B> {
     max_blob_size: Option<&'b str>,
     max_total_data_size: Option<&'b str>,
     pretty: Option<bool>,
-    rare_action_probability: Option<i64>,
+    rare_action_probability: Option<f64>,
     rarely_abort_writes: Option<bool>,
-    read_node_count: Option<i64>,
-    register_operation_count: Option<i64>,
+    read_node_count: Option<i32>,
+    register_operation_count: Option<i32>,
     request_timeout: Option<Duration>,
-    seed: Option<i64>,
+    seed: Option<i32>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1476,7 +1476,7 @@ where
         }
     }
     #[doc = "Number of blobs to create during the test. Defaults to 100."]
-    pub fn blob_count(mut self, blob_count: i64) -> Self {
+    pub fn blob_count(mut self, blob_count: i32) -> Self {
         self.blob_count = Some(blob_count);
         self
     }
@@ -1511,7 +1511,7 @@ where
         }
     }
     #[doc = "Number of operations to run concurrently during the test. Defaults to 10."]
-    pub fn concurrency(mut self, concurrency: i64) -> Self {
+    pub fn concurrency(mut self, concurrency: i32) -> Self {
         self.concurrency = Some(concurrency);
         self
     }
@@ -1521,7 +1521,7 @@ where
         self
     }
     #[doc = "Number of nodes on which to perform an early read on a blob, i.e. before writing has completed. Early reads are rare actions so the 'rare_action_probability' parameter is also relevant. Defaults to 2."]
-    pub fn early_read_node_count(mut self, early_read_node_count: i64) -> Self {
+    pub fn early_read_node_count(mut self, early_read_node_count: i32) -> Self {
         self.early_read_node_count = Some(early_read_node_count);
         self
     }
@@ -1561,7 +1561,7 @@ where
         self
     }
     #[doc = "Probability of taking a rare action such as an early read or an overwrite. Defaults to 0.02."]
-    pub fn rare_action_probability(mut self, rare_action_probability: i64) -> Self {
+    pub fn rare_action_probability(mut self, rare_action_probability: f64) -> Self {
         self.rare_action_probability = Some(rare_action_probability);
         self
     }
@@ -1571,12 +1571,12 @@ where
         self
     }
     #[doc = "Number of nodes on which to read a blob after writing. Defaults to 10."]
-    pub fn read_node_count(mut self, read_node_count: i64) -> Self {
+    pub fn read_node_count(mut self, read_node_count: i32) -> Self {
         self.read_node_count = Some(read_node_count);
         self
     }
     #[doc = "The minimum number of linearizable register operations to perform in total. Defaults to 10."]
-    pub fn register_operation_count(mut self, register_operation_count: i64) -> Self {
+    pub fn register_operation_count(mut self, register_operation_count: i32) -> Self {
         self.register_operation_count = Some(register_operation_count);
         self
     }
@@ -1586,7 +1586,7 @@ where
         self
     }
     #[doc = "Seed for the random number generator used to create the test workload. Defaults to a random value."]
-    pub fn seed(mut self, seed: i64) -> Self {
+    pub fn seed(mut self, seed: i32) -> Self {
         self.seed = Some(seed);
         self
     }
@@ -1610,10 +1610,10 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                blob_count: Option<i64>,
-                concurrency: Option<i64>,
+                blob_count: Option<i32>,
+                concurrency: Option<i32>,
                 detailed: Option<bool>,
-                early_read_node_count: Option<i64>,
+                early_read_node_count: Option<i32>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -1621,11 +1621,11 @@ where
                 max_blob_size: Option<&'b str>,
                 max_total_data_size: Option<&'b str>,
                 pretty: Option<bool>,
-                rare_action_probability: Option<i64>,
+                rare_action_probability: Option<f64>,
                 rarely_abort_writes: Option<bool>,
-                read_node_count: Option<i64>,
-                register_operation_count: Option<i64>,
-                seed: Option<i64>,
+                read_node_count: Option<i32>,
+                register_operation_count: Option<i32>,
+                seed: Option<i32>,
                 source: Option<&'b str>,
                 timeout: Option<&'b str>,
             }
@@ -1663,7 +1663,7 @@ where
 #[doc = "API parts for the Snapshot Repository Verify Integrity API"]
 pub enum SnapshotRepositoryVerifyIntegrityParts<'b> {
     #[doc = "Repository"]
-    Repository(&'b str),
+    Repository(&'b [&'b str]),
 }
 #[cfg(feature = "experimental-apis")]
 impl<'b> SnapshotRepositoryVerifyIntegrityParts<'b> {
@@ -1671,8 +1671,9 @@ impl<'b> SnapshotRepositoryVerifyIntegrityParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotRepositoryVerifyIntegrityParts::Repository(repository) => {
+                let repository_str = repository.join(",");
                 let encoded_repository: Cow<str> =
-                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
                 p.push_str(encoded_repository.as_ref());
@@ -1682,27 +1683,27 @@ impl<'b> SnapshotRepositoryVerifyIntegrityParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Repository Verify Integrity API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nVerifies the integrity of the contents of a snapshot repository"]
+#[doc = "Builder for the [Snapshot Repository Verify Integrity API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-repository-verify-integrity)\n\nVerify the repository integrity"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct SnapshotRepositoryVerifyIntegrity<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotRepositoryVerifyIntegrityParts<'b>,
-    blob_thread_pool_concurrency: Option<i64>,
+    blob_thread_pool_concurrency: Option<i32>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    index_snapshot_verification_concurrency: Option<i64>,
-    index_verification_concurrency: Option<i64>,
+    index_snapshot_verification_concurrency: Option<i32>,
+    index_verification_concurrency: Option<i32>,
     max_bytes_per_sec: Option<&'b str>,
-    max_failed_shard_snapshots: Option<i64>,
-    meta_thread_pool_concurrency: Option<i64>,
+    max_failed_shard_snapshots: Option<i32>,
+    meta_thread_pool_concurrency: Option<i32>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
-    snapshot_verification_concurrency: Option<i64>,
+    snapshot_verification_concurrency: Option<i32>,
     source: Option<&'b str>,
     verify_blob_contents: Option<bool>,
 }
@@ -1739,7 +1740,7 @@ where
         }
     }
     #[doc = "Number of threads to use for reading blob contents"]
-    pub fn blob_thread_pool_concurrency(mut self, blob_thread_pool_concurrency: i64) -> Self {
+    pub fn blob_thread_pool_concurrency(mut self, blob_thread_pool_concurrency: i32) -> Self {
         self.blob_thread_pool_concurrency = Some(blob_thread_pool_concurrency);
         self
     }
@@ -1792,14 +1793,14 @@ where
     #[doc = "Number of snapshots to verify concurrently within each index"]
     pub fn index_snapshot_verification_concurrency(
         mut self,
-        index_snapshot_verification_concurrency: i64,
+        index_snapshot_verification_concurrency: i32,
     ) -> Self {
         self.index_snapshot_verification_concurrency =
             Some(index_snapshot_verification_concurrency);
         self
     }
     #[doc = "Number of indices to verify concurrently"]
-    pub fn index_verification_concurrency(mut self, index_verification_concurrency: i64) -> Self {
+    pub fn index_verification_concurrency(mut self, index_verification_concurrency: i32) -> Self {
         self.index_verification_concurrency = Some(index_verification_concurrency);
         self
     }
@@ -1809,12 +1810,12 @@ where
         self
     }
     #[doc = "Maximum permitted number of failed shard snapshots"]
-    pub fn max_failed_shard_snapshots(mut self, max_failed_shard_snapshots: i64) -> Self {
+    pub fn max_failed_shard_snapshots(mut self, max_failed_shard_snapshots: i32) -> Self {
         self.max_failed_shard_snapshots = Some(max_failed_shard_snapshots);
         self
     }
     #[doc = "Number of threads to use for reading metadata"]
-    pub fn meta_thread_pool_concurrency(mut self, meta_thread_pool_concurrency: i64) -> Self {
+    pub fn meta_thread_pool_concurrency(mut self, meta_thread_pool_concurrency: i32) -> Self {
         self.meta_thread_pool_concurrency = Some(meta_thread_pool_concurrency);
         self
     }
@@ -1831,7 +1832,7 @@ where
     #[doc = "Number of snapshots to verify concurrently"]
     pub fn snapshot_verification_concurrency(
         mut self,
-        snapshot_verification_concurrency: i64,
+        snapshot_verification_concurrency: i32,
     ) -> Self {
         self.snapshot_verification_concurrency = Some(snapshot_verification_concurrency);
         self
@@ -1856,18 +1857,18 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                blob_thread_pool_concurrency: Option<i64>,
+                blob_thread_pool_concurrency: Option<i32>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                index_snapshot_verification_concurrency: Option<i64>,
-                index_verification_concurrency: Option<i64>,
+                index_snapshot_verification_concurrency: Option<i32>,
+                index_verification_concurrency: Option<i32>,
                 max_bytes_per_sec: Option<&'b str>,
-                max_failed_shard_snapshots: Option<i64>,
-                meta_thread_pool_concurrency: Option<i64>,
+                max_failed_shard_snapshots: Option<i32>,
+                meta_thread_pool_concurrency: Option<i32>,
                 pretty: Option<bool>,
-                snapshot_verification_concurrency: Option<i64>,
+                snapshot_verification_concurrency: Option<i32>,
                 source: Option<&'b str>,
                 verify_blob_contents: Option<bool>,
             }
@@ -1925,7 +1926,7 @@ impl<'b> SnapshotRestoreParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nRestores a snapshot."]
+#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-restore)\n\nRestore a snapshot"]
 #[derive(Clone, Debug)]
 pub struct SnapshotRestore<'a, 'b, B> {
     transport: &'a Transport,
@@ -2109,7 +2110,7 @@ impl<'b> SnapshotStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-status)\n\nGet the snapshot status"]
 #[derive(Clone, Debug)]
 pub struct SnapshotStatus<'a, 'b> {
     transport: &'a Transport,
@@ -2247,7 +2248,7 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nVerifies a repository."]
+#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-verify-repository)\n\nVerify a snapshot repository"]
 #[derive(Clone, Debug)]
 pub struct SnapshotVerifyRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -2400,58 +2401,58 @@ impl<'a> Snapshot<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
+    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-cleanup-repository)\n\nClean up the snapshot repository"]
     pub fn cleanup_repository<'b>(
         &'a self,
         parts: SnapshotCleanupRepositoryParts<'b>,
     ) -> SnapshotCleanupRepository<'a, 'b, ()> {
         SnapshotCleanupRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+    #[doc = "[Snapshot Clone API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-clone)\n\nClone a snapshot"]
     pub fn clone<'b>(&'a self, parts: SnapshotCloneParts<'b>) -> SnapshotClone<'a, 'b, ()> {
         SnapshotClone::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+    #[doc = "[Snapshot Create API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-create)\n\nCreate a snapshot"]
     pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
         SnapshotCreate::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nCreates a repository."]
+    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-create-repository)\n\nCreate or update a snapshot repository"]
     pub fn create_repository<'b>(
         &'a self,
         parts: SnapshotCreateRepositoryParts<'b>,
     ) -> SnapshotCreateRepository<'a, 'b, ()> {
         SnapshotCreateRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nDeletes one or more snapshots."]
+    #[doc = "[Snapshot Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-delete)\n\nDelete snapshots"]
     pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
         SnapshotDelete::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nDeletes a repository."]
+    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-delete-repository)\n\nDelete snapshot repositories"]
     pub fn delete_repository<'b>(
         &'a self,
         parts: SnapshotDeleteRepositoryParts<'b>,
     ) -> SnapshotDeleteRepository<'a, 'b> {
         SnapshotDeleteRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about a snapshot."]
+    #[doc = "[Snapshot Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-get)\n\nGet snapshot information"]
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
         SnapshotGet::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about a repository."]
+    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-get-repository)\n\nGet snapshot repository information"]
     pub fn get_repository<'b>(
         &'a self,
         parts: SnapshotGetRepositoryParts<'b>,
     ) -> SnapshotGetRepository<'a, 'b> {
         SnapshotGetRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+    #[doc = "[Snapshot Repository Analyze API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-repository-analyze)\n\nAnalyze a snapshot repository"]
     pub fn repository_analyze<'b>(
         &'a self,
         parts: SnapshotRepositoryAnalyzeParts<'b>,
     ) -> SnapshotRepositoryAnalyze<'a, 'b, ()> {
         SnapshotRepositoryAnalyze::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Repository Verify Integrity API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nVerifies the integrity of the contents of a snapshot repository"]
+    #[doc = "[Snapshot Repository Verify Integrity API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-repository-verify-integrity)\n\nVerify the repository integrity"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn repository_verify_integrity<'b>(
@@ -2460,15 +2461,15 @@ impl<'a> Snapshot<'a> {
     ) -> SnapshotRepositoryVerifyIntegrity<'a, 'b, ()> {
         SnapshotRepositoryVerifyIntegrity::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nRestores a snapshot."]
+    #[doc = "[Snapshot Restore API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-restore)\n\nRestore a snapshot"]
     pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {
         SnapshotRestore::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+    #[doc = "[Snapshot Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-status)\n\nGet the snapshot status"]
     pub fn status<'b>(&'a self, parts: SnapshotStatusParts<'b>) -> SnapshotStatus<'a, 'b> {
         SnapshotStatus::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/modules-snapshots.html)\n\nVerifies a repository."]
+    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-snapshot-verify-repository)\n\nVerify a snapshot repository"]
     pub fn verify_repository<'b>(
         &'a self,
         parts: SnapshotVerifyRepositoryParts<'b>,
