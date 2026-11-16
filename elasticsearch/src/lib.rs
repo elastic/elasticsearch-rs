@@ -405,7 +405,6 @@ pub mod monitoring;
 pub mod nodes;
 pub mod profiling;
 pub mod query_rules;
-pub mod rollup;
 pub mod search_application;
 pub mod searchable_snapshots;
 pub mod security;
