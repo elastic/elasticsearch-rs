@@ -69,7 +69,7 @@ impl<'b> GraphExploreParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-graph)\n\nExplore graph analytics"]
 #[derive(Clone, Debug)]
 pub struct GraphExplore<'a, 'b, B> {
     transport: &'a Transport,
@@ -81,7 +81,7 @@ pub struct GraphExplore<'a, 'b, B> {
     human: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
-    routing: Option<&'b str>,
+    routing: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -158,7 +158,7 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: &'b str) -> Self {
+    pub fn routing(mut self, routing: &'b [&'b str]) -> Self {
         self.routing = Some(routing);
         self
     }
@@ -190,7 +190,8 @@ where
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 pretty: Option<bool>,
-                routing: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                routing: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
                 timeout: Option<&'b str>,
             }
@@ -225,7 +226,7 @@ impl<'a> Graph<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+    #[doc = "[Graph Explore API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-graph)\n\nExplore graph analytics"]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(self.transport(), parts)
     }
