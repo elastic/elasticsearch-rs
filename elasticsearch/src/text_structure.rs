@@ -61,7 +61,7 @@ impl TextStructureFindFieldStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
+#[doc = "Builder for the [Text Structure Find Field Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-text_structure)\n\nFind the structure of a text field"]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindFieldStructure<'a, 'b> {
     transport: &'a Transport,
@@ -69,7 +69,7 @@ pub struct TextStructureFindFieldStructure<'a, 'b> {
     column_names: Option<&'b [&'b str]>,
     delimiter: Option<&'b str>,
     documents_to_sample: Option<i32>,
-    ecs_compatibility: Option<&'b str>,
+    ecs_compatibility: Option<EcsCompatibility>,
     error_trace: Option<bool>,
     explain: Option<bool>,
     field: Option<&'b str>,
@@ -133,8 +133,8 @@ impl<'a, 'b> TextStructureFindFieldStructure<'a, 'b> {
         self.documents_to_sample = Some(documents_to_sample);
         self
     }
-    #[doc = "Optional parameter to specify the compatibility mode with ECS Grok patterns - may be either 'v1' or 'disabled'"]
-    pub fn ecs_compatibility(mut self, ecs_compatibility: &'b str) -> Self {
+    #[doc = "The mode of compatibility with ECS compliant Grok patterns.\nUse this parameter to specify whether to use ECS Grok patterns instead of legacy ones when the structure finder creates a Grok pattern.\nThis setting primarily has an impact when a whole message Grok pattern such as `%{CATALINALOG}` matches the input.\nIf the structure finder identifies a common structure but has no idea of the meaning then generic field names such as `path`, `ipaddress`, `field1`, and `field2` are used in the `grok_pattern` output.\nThe intention in that situation is that a user who knows the meanings will rename the fields before using them."]
+    pub fn ecs_compatibility(mut self, ecs_compatibility: EcsCompatibility) -> Self {
         self.ecs_compatibility = Some(ecs_compatibility);
         self
     }
@@ -237,7 +237,7 @@ impl<'a, 'b> TextStructureFindFieldStructure<'a, 'b> {
                 column_names: Option<&'b [&'b str]>,
                 delimiter: Option<&'b str>,
                 documents_to_sample: Option<i32>,
-                ecs_compatibility: Option<&'b str>,
+                ecs_compatibility: Option<EcsCompatibility>,
                 error_trace: Option<bool>,
                 explain: Option<bool>,
                 field: Option<&'b str>,
@@ -302,7 +302,7 @@ impl TextStructureFindMessageStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Message Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-find-message-structure)\n\nFind the structure of text messages"]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindMessageStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -310,7 +310,7 @@ pub struct TextStructureFindMessageStructure<'a, 'b, B> {
     body: Option<B>,
     column_names: Option<&'b [&'b str]>,
     delimiter: Option<&'b str>,
-    ecs_compatibility: Option<&'b str>,
+    ecs_compatibility: Option<EcsCompatibility>,
     error_trace: Option<bool>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -397,8 +397,8 @@ where
         self.delimiter = Some(delimiter);
         self
     }
-    #[doc = "Optional parameter to specify the compatibility mode with ECS Grok patterns - may be either 'v1' or 'disabled'"]
-    pub fn ecs_compatibility(mut self, ecs_compatibility: &'b str) -> Self {
+    #[doc = "The mode of compatibility with ECS compliant Grok patterns.\nUse this parameter to specify whether to use ECS Grok patterns instead of legacy ones when the structure finder creates a Grok pattern.\nThis setting primarily has an impact when a whole message Grok pattern such as `%{CATALINALOG}` matches the input.\nIf the structure finder identifies a common structure but has no idea of meaning then generic field names such as `path`, `ipaddress`, `field1`, and `field2` are used in the `grok_pattern` output, with the intention that a user who knows the meanings rename these fields before using it."]
+    pub fn ecs_compatibility(mut self, ecs_compatibility: EcsCompatibility) -> Self {
         self.ecs_compatibility = Some(ecs_compatibility);
         self
     }
@@ -493,7 +493,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 column_names: Option<&'b [&'b str]>,
                 delimiter: Option<&'b str>,
-                ecs_compatibility: Option<&'b str>,
+                ecs_compatibility: Option<EcsCompatibility>,
                 error_trace: Option<bool>,
                 explain: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -551,7 +551,7 @@ impl TextStructureFindStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-find-structure)\n\nFind the structure of a text file"]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -837,7 +837,7 @@ impl TextStructureTestGrokPatternParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
+#[doc = "Builder for the [Text Structure Test Grok Pattern API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-test-grok-pattern)\n\nTest a Grok pattern"]
 #[derive(Clone, Debug)]
 pub struct TextStructureTestGrokPattern<'a, 'b, B> {
     transport: &'a Transport,
@@ -983,19 +983,19 @@ impl<'a> TextStructure<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
+    #[doc = "[Text Structure Find Field Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-text_structure)\n\nFind the structure of a text field"]
     pub fn find_field_structure<'b>(&'a self) -> TextStructureFindFieldStructure<'a, 'b> {
         TextStructureFindFieldStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Message Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-find-message-structure)\n\nFind the structure of text messages"]
     pub fn find_message_structure<'b>(&'a self) -> TextStructureFindMessageStructure<'a, 'b, ()> {
         TextStructureFindMessageStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-find-structure)\n\nFind the structure of a text file"]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
+    #[doc = "[Text Structure Test Grok Pattern API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-text-structure-test-grok-pattern)\n\nTest a Grok pattern"]
     pub fn test_grok_pattern<'b>(&'a self) -> TextStructureTestGrokPattern<'a, 'b, ()> {
         TextStructureTestGrokPattern::new(self.transport())
     }
